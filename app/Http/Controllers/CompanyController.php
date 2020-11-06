@@ -2,17 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\DepartmentRequest;
-use App\Repositories\Contracts\DepartmentContract;
 use Illuminate\Http\Request;
 
-class DepartmentController extends Controller
+class CompanyController extends Controller
 {
-    private $department_contract;
-    public function __construct(DepartmentContract $department_contract)
-    {
-        $this->department_contract = $department_contract;
-    }
     /**
      * Display a listing of the resource.
      *
@@ -21,7 +14,6 @@ class DepartmentController extends Controller
     public function index()
     {
         //
-        return view('');
     }
 
     /**
@@ -32,20 +24,17 @@ class DepartmentController extends Controller
     public function create()
     {
         //
-        return view('');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\http\Requests\DepartmentRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(DepartmentRequest $request)
+    public function store(Request $request)
     {
         //
-        $this->department_contract->create($request->all());
-        return redirect()->route('departments.index')->with('success', __('alert.create_success'));
     }
 
     /**
@@ -68,21 +57,18 @@ class DepartmentController extends Controller
     public function edit($id)
     {
         //
-        $record = $this->department_contract->getById($id);
-        return view('', compact('record'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\DepartmentRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(DepartmentRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        $this->department_contract->updateById($id, $request->all());
-        return redirect()->route('departments.index')->with('success', __('alert.update_success'));
+        //
     }
 
     /**
@@ -94,7 +80,5 @@ class DepartmentController extends Controller
     public function destroy($id)
     {
         //
-        $this->department_contract->deleteById($id);
-        return redirect()->route('departments.index')->with('success', __('alert.delete_success'));
     }
 }
