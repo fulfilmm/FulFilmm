@@ -3,7 +3,9 @@
 <form action="{{$route}}" method="POST" >
     @csrf
 
-    @if ($route!== route('employees.create'))
+    
+    @if ($route!== route('employees.store'))
+        {{dd($route,route('employees.create'))}}
       @method('put')
     @endif
     

@@ -1,13 +1,9 @@
-<table>
+<head>
+    @livewireStyles
+</head>
 
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-</table>
+<body>
+    <livewire:employee-table />
+
+    @livewireScripts
+</body>
