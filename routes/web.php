@@ -2,6 +2,7 @@
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DepartmentController;
+use App\Repositories\Contracts\DepartmentContract;
 use Illuminate\Support\Facades\Route;
 
 /*
