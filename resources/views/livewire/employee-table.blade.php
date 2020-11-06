@@ -36,4 +36,5 @@
             </tr>
         @endforeach
     </table>
+    {{ $employees->links()}}
 </div>

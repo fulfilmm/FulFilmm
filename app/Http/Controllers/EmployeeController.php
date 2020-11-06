@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EmployeeRequest;
+use App\Models\Department;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 
@@ -28,9 +29,11 @@ class EmployeeController extends Controller
     public function create()
     {
         //
+        $departments = Department::all();
         $route = route('employees.store');
         return view('employee.createAndEdit', compact(
-            'route'
+            'route',
+            'departments'
         ));
     }
 
@@ -44,7 +47,7 @@ class EmployeeController extends Controller
     {
         // dd($request->validated());
         Employee::create($request->validated());
-        return redirect('employees');
+        return redirect('employees')->with('success', __('alert.create_success'));
     }
 
     /**
@@ -84,7 +87,7 @@ class EmployeeController extends Controller
     {
         //
         $employee->update($request->validated());
-        return redirect('employees');
+        return redirect('employees')->with('success', __('alert.update_success'));
     }
 
     /**
@@ -96,6 +99,6 @@ class EmployeeController extends Controller
     public function destroy(Employee $employee)
     {
         $employee->delete();
-        return redirect('employees');
+        return redirect('employees')->with('success', __('alert.delete_success'));
     }
 }
