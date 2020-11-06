@@ -34,4 +34,13 @@ class EmployeeRequest extends FormRequest
             'join_date' => 'required',
         ];
     }
+
+    protected function prepareForValidation()
+    {
+        if ($this->password) {
+            $this->merge([
+                'password' => bcrypt($this->password),
+            ]);
+        }
+    }
 }

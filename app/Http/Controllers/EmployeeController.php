@@ -29,7 +29,7 @@ class EmployeeController extends Controller
     {
         //
         $route = route('employees.store');
-        return view('employee.create', compact(
+        return view('employee.createAndEdit', compact(
             'route'
         ));
     }
@@ -42,6 +42,7 @@ class EmployeeController extends Controller
      */
     public function store(EmployeeRequest $request)
     {
+        // dd($request->validated());
         Employee::create($request->validated());
         return redirect('employees');
     }
@@ -66,7 +67,7 @@ class EmployeeController extends Controller
     public function edit(Employee $employee)
     {
         $route = route('employees.update', $employee->id);
-        return view('employee.create', compact(
+        return view('employee.createAndEdit', compact(
             'route',
             'employee'
         ));
