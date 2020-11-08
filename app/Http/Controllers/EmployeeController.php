@@ -30,9 +30,7 @@ class EmployeeController extends Controller
     {
         //
         $departments = Department::all();
-        $route = route('employees.store');
         return view('employee.createAndEdit', compact(
-            'route',
             'departments'
         ));
     }
@@ -69,9 +67,9 @@ class EmployeeController extends Controller
      */
     public function edit(Employee $employee)
     {
-        $route = route('employees.update', $employee->id);
+        $departments = Department::all();
         return view('employee.createAndEdit', compact(
-            'route',
+            'departments',
             'employee'
         ));
     }

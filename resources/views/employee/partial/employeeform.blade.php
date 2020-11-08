@@ -1,11 +1,8 @@
 
 
-<form action="{{$route}}" method="POST" >
-    @csrf
-    
-    
-    @if ($route!== route('employees.store'))
-    {{-- {{dd($route,route('employees.create'))}} --}}
+<form action="{{isset( $employee) ? route('employees.update',$employee->id): route('employees.store')}}" method="POST" >
+    @csrf 
+    @if (isset($employee))
     @method('put')
     @endif
     
