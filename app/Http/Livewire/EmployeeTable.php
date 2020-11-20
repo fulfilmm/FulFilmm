@@ -10,6 +10,12 @@ class EmployeeTable extends Component
 {
     use WithPagination;
     public $search_key = '';
+
+    public function updatingSearchKey()
+    {
+        $this->resetPage();
+    }
+
     public function render()
     {
 
