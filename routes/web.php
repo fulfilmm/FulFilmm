@@ -24,3 +24,8 @@ Route::get('/', function () {
 Route::resource('departments', DepartmentController::class);
 Route::resource('employees', EmployeeController::class);
 Route::resource('companies', CompanyController::class);
+
+//for ui testing
+Route::view('/login', 'auth.login');
+Route::view('/register', 'auth.register');
+Route::view('/','index');
