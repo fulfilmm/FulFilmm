@@ -6,6 +6,8 @@ use App\Http\Requests\EmployeeRequest;
 use App\Models\Department;
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\EmployeeExport;
 
 class EmployeeController extends Controller
 {
@@ -35,6 +37,10 @@ class EmployeeController extends Controller
         ));
     }
 
+    public function export()
+    {
+        return Excel::download(new EmployeeExport, 'users.xlsx');
+    }
     /**
      * Store a newly created resource in storage.
      *

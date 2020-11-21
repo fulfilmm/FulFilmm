@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DepartmentController;
@@ -21,6 +22,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('employees/export/', [EmployeeController::class, 'export']);
 Route::resource('departments', DepartmentController::class);
 Route::resource('employees', EmployeeController::class);
 Route::resource('companies', CompanyController::class);
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -1,6 +1,7 @@
 <div>
 
     <input type="text" wire:model="search_key">
+    <a href={{url('/employees/export')}}>Export</a>
     <table>
         <thead>
             <tr>
