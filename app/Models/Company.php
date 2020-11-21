@@ -16,4 +16,10 @@ class Company extends Model
         'vision', 'email', 'ceo_name', 'web_link', 'linkedin',
         'facebook_page', 'company_registry', 'parent_company', 'parent_company_2'
     ];
+
+    //relations
+    public function customers()
+    {
+        return $this->hasMany(Customer::class);
+    }
 }
