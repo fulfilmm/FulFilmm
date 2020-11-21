@@ -46,7 +46,7 @@ return [
             'provider' => 'users',
             'hash' => false,
         ],
-        'web' => [
+        'employee' => [
             'driver' => 'session',
             'provider' => 'employee',
         ],

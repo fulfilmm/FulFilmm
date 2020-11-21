@@ -4,7 +4,9 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DepartmentController;
 use App\Repositories\Contracts\DepartmentContract;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\Login\EmployeeAuthController as AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +24,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::namespace('Auth\Login')->prefix('employees')->as('employees.')->group(function () {
+    Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('login', [AuthController::class, 'login'])->name('login');
+    Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+});
+
+
+
 Route::get('employees/export/', [EmployeeController::class, 'export']);
 Route::resource('departments', DepartmentController::class);
 Route::resource('employees', EmployeeController::class);
