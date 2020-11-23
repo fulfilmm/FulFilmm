@@ -45,7 +45,7 @@ class DepartmentController extends Controller
     {
         //
         $this->department_contract->create($request->all());
-        return redirect()->route('department.index')->with('success', __('alert.create_success'));
+        return redirect()->route('departments.index')->with('success', __('alert.create_success'));
     }
 
     /**
@@ -82,7 +82,7 @@ class DepartmentController extends Controller
     public function update(DepartmentRequest $request, $id)
     {
         $this->department_contract->updateById($id, $request->all());
-        return redirect()->route('department.index')->with('success', __('alert.update_success'));
+        return redirect()->route('departments.index')->with('success', __('alert.update_success'));
     }
 
     /**
@@ -95,6 +95,6 @@ class DepartmentController extends Controller
     {
         //
         $this->department_contract->deleteById($id);
-        return redirect()->route('department.index')->with('success', __('alert.delete_success'));
+        return redirect()->route('departments.index')->with('success', __('alert.delete_success'));
     }
 }

@@ -33,4 +33,10 @@ class Company extends Model
     {
         return $date->format('Y-m-d H:i:s');
     }
+
+    //relations
+    public function customers()
+    {
+        return $this->hasMany(Customer::class);
+    }
 }
