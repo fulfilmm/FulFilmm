@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CompanyRequest;
-use App\Models\Department;
 use App\Repositories\Contracts\CompanyContract;
 use App\Repositories\Contracts\DepartmentContract;
 use Illuminate\Http\Request;
@@ -26,6 +25,7 @@ class CompanyController extends Controller
     public function index()
     {
         //
+        return view('company.index');
     }
 
     /**
@@ -36,6 +36,8 @@ class CompanyController extends Controller
     public function create()
     {
         //
+        $route = route('companies.store');
+        return view('company.form', compact('route'));
     }
 
     /**
