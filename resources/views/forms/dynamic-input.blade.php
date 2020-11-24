@@ -9,7 +9,7 @@
             <input
             id="{{$name}}"
             name="{{$name}}"
-            @error($name) is-invalid @enderror" name="{{$name}}"
+            @error($name) is-invalid @enderror name="{{$name}}"
             type="{{$type ?? 'text'}}"
             value="{{ $value ?? old($name) }}"
             {{($required??true)?'required':''}}

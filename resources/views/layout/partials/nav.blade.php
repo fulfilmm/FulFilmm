@@ -76,6 +76,17 @@
                             </ul>
                         </li>
 
+                        <li class="submenu">
+                            <a href="#"><i class="la la-company"></i> <span> Company</span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+
+                                <li><a class="{{ Request::is('companies') ? 'active' : '' }}" href="{{ route('companies.index') }}">All Companies</a></li>
+
+                                <li><a class="{{ Request::is('holidays') ? 'active' : '' }}" href="{{ route('companies.create') }}">Create Company</a></li>
+
+                            </ul>
+                        </li>
+
                         <li class="{{ Request::is('clients') ? 'active' : '' }}">
                             <a  href="{{ url('clients') }}"><i class="la la-users"></i> <span>Clients</span></a>
                         </li>

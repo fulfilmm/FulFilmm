@@ -13,7 +13,7 @@ class CompanyRequest extends FormRequest
     */
     public function authorize()
     {
-        return false;
+         return true;   //Default false .Now set return true;
     }
 
     /**
@@ -25,12 +25,12 @@ class CompanyRequest extends FormRequest
     {
         return [
             //
-            'name' => 'required|max:64',
-            'business_type' => 'required|max:64',
-            'address' => 'required',
-            'phone' => 'required|digits_between:5,15',
-            'ceo_name' => 'required|max:32',
-            'company_registry' => 'requried',
+            // 'name' => 'required|max:64',
+            // 'business_type' => 'required|max:64',
+            // 'address' => 'required',
+            // 'phone' => 'required',
+            // 'ceo_name' => 'required|max:32',
+            // 'company_registry' => 'required',
         ];
     }
 }

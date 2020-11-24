@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CompanyRequest;
+use App\Models\Company;
 use App\Repositories\Contracts\CompanyContract;
 use App\Repositories\Contracts\DepartmentContract;
 use Illuminate\Http\Request;
@@ -25,7 +26,8 @@ class CompanyController extends Controller
     public function index()
     {
         //
-        return view('company.index');
+        $companies = Company::get();
+        return view('company.index', compact('companies'));
     }
 
     /**
@@ -50,7 +52,7 @@ class CompanyController extends Controller
     {
         //
         $this->company_contract->create($request->all());
-        return redirect()->route('company.index')->with('success', __('alert.create_success'));
+        return redirect()->route('companies.index')->with('success', __('alert.create_success'));
 
     }
 
@@ -65,7 +67,7 @@ class CompanyController extends Controller
         //
         //
         $record = $this->company_contract->getById($id);
-        return view('', compact('record'));
+        return view('company.show', compact('record'));
     }
 
     /**
