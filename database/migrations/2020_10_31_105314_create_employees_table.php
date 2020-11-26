@@ -23,6 +23,7 @@ class CreateEmployeesTable extends Migration
             $table->string('work_phone', 16)->nullable();
             $table->boolean('can_login')->default(false);
             $table->string('password', 128)->nullable();
+            $table->rememberToken();
             $table->date('join_date');
             $table->timestamps();
 
