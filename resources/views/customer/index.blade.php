@@ -13,10 +13,10 @@
         <div class="page-header">
             <div class="row">
                 <div class="col">
-                    <h3 class="page-title">Departments Table</h3>
+                    <h3 class="page-title">Customers Table</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index">Dashboard</a></li>
-                        <li class="breadcrumb-item active">All Departments</li>
+                        <li class="breadcrumb-item active">All Customers</li>
                     </ul>
                 </div>
             </div>
@@ -24,7 +24,7 @@
         <!-- /Page Header -->
         <div class="row">
             <div class="col-12">
-                <livewire:department-table />
+                <livewire:customer-table />
             </div>
         </div>
     </div>
@@ -36,7 +36,7 @@
 @push('scripts')
 @livewireScripts
 <script>
-    function deleteDept(id) {
+    function deleteRecord(id) {
         Swal.fire({
             title: 'Are you sure?',
             text: "You cannot retrieve data back!",
@@ -52,7 +52,7 @@
                 'Record has been deleted.',
                 'success'
                 ).then(() => {
-                    document.getElementById("del-dept"+id).submit();
+                    document.getElementById("del-customer"+id).submit();
                 })
 
             }

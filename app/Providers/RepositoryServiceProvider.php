@@ -6,7 +6,7 @@ use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
-    protected $models = ['Department','Company'];
+    protected $models = ['Department','Company', 'Customer'];
     /**
      * Register services.
      *
