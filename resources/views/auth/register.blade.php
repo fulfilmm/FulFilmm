@@ -1,77 +1,89 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+        <meta name="description" content="Smarthr - Bootstrap Admin Template">
+		<meta name="keywords" content="admin, estimates, bootstrap, business, corporate, creative, management, minimal, modern, accounts, invoice, html5, responsive, CRM, Projects">
+        <meta name="author" content="Dreamguys - Bootstrap Admin Template">
+        <meta name="robots" content="noindex, nofollow">
+        <title>{{$title ?? 'Register'}}</title>
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
+		<!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png">
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
-                        @csrf
+		<!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="css/bootstrap.min.css">
 
-                        <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
+		<!-- Fontawesome CSS -->
+        <link rel="stylesheet" href="css/font-awesome.min.css">
 
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+		<!-- Main CSS -->
+        <link rel="stylesheet" href="css/style.css">
 
-                                @error('name')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+			<script src="assets/js/html5shiv.min.js"></script>
+			<script src="assets/js/respond.min.js"></script>
+		<![endif]-->
+    </head>
+    <body class="account-page">
 
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+		<!-- Main Wrapper -->
+        <div class="main-wrapper">
+			<div class="account-content">
+				<a href="job-list" class="btn btn-primary apply-btn">Apply Job</a>
+				<div class="container">
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+					<!-- Account Logo -->
+					<div class="account-logo">
+						<a href="index"><img src="img/logo2.png" alt="Dreamguy's Technologies"></a>
+					</div>
+					<!-- /Account Logo -->
 
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+					<div class="account-box">
+						<div class="account-wrapper">
+							<h3 class="account-title">Register</h3>
+							<p class="account-subtitle">Access to our dashboard</p>
 
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+							<!-- Account Form -->
+							<form action="index">
+								<div class="form-group">
+									<label>Email</label>
+									<input class="form-control" type="text">
+								</div>
+								<div class="form-group">
+									<label>Password</label>
+									<input class="form-control" type="password">
+								</div>
+								<div class="form-group">
+									<label>Repeat Password</label>
+									<input class="form-control" type="password">
+								</div>
+								<div class="form-group text-center">
+									<button class="btn btn-primary account-btn" type="submit">Register</button>
+								</div>
+								<div class="account-footer">
+									<p>Already have an account? <a href="login">Login</a></p>
+								</div>
+							</form>
+							<!-- /Account Form -->
+						</div>
+					</div>
+				</div>
+			</div>
         </div>
-    </div>
-</div>
-@endsection
+		<!-- /Main Wrapper -->
+
+		<!-- jQuery -->
+        <script src="js/jquery-3.2.1.min.js"></script>
+
+		<!-- Bootstrap Core JS -->
+        <script src="js/popper.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+
+		<!-- Custom JS -->
+		<script src="js/app.js"></script>
+
+    </body>
+</html>

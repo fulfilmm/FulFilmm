@@ -22,7 +22,7 @@ class Department extends Model
         return $this->hasMany(Employee::class, 'department_id');
     }
 
-    public function department() {
+    public function parent_dept() {
         return $this->belongsTo(Department::class, 'parent_department');
     }
 }

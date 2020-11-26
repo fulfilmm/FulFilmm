@@ -10,7 +10,9 @@ class DepartmentTable extends Component
 {
     use WithPagination;
 
-    private $search_key = "";
+    protected $paginationTheme = 'bootstrap';
+
+    public $search_key = "";
 
     public function updatingSearch()
     {
@@ -20,7 +22,7 @@ class DepartmentTable extends Component
     public function render()
     {
         return view('livewire.department-table', [
-            "departments" => Department::where('name', 'like', '%'.$this->search_key.'%')->paginate(10)
+            "departments" => Department::where('name', 'like', '%'.$this->search_key.'%')->with('parent_dept')->paginate(10)
         ]);
     }
 }

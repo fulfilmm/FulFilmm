@@ -2,10 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CompanyRequest;
+use App\Models\Company;
+use App\Repositories\Contracts\CompanyContract;
+use App\Repositories\Contracts\DepartmentContract;
 use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
+
+    private $company_contract;
+
+    public function __construct(CompanyContract $company_contract)
+    {
+        $this->company_contract = $company_contract;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,6 +26,8 @@ class CompanyController extends Controller
     public function index()
     {
         //
+        $companies = Company::get();
+        return view('company.index', compact('companies'));
     }
 
     /**
@@ -24,6 +38,8 @@ class CompanyController extends Controller
     public function create()
     {
         //
+        $route = route('companies.store');
+        return view('company.form', compact('route'));
     }
 
     /**
@@ -32,9 +48,12 @@ class CompanyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CompanyRequest $request)
     {
         //
+        $this->company_contract->create($request->all());
+        return redirect()->route('companies.index')->with('success', __('alert.create_success'));
+
     }
 
     /**
@@ -46,6 +65,9 @@ class CompanyController extends Controller
     public function show($id)
     {
         //
+        //
+        $record = $this->company_contract->getById($id);
+        return view('company.show', compact('record'));
     }
 
     /**
@@ -66,9 +88,11 @@ class CompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CompanyRequest $request, $id)
     {
         //
+        $this->company_contract->updateById($id, $request->all());
+        return redirect()->route('company.index')->with('success', __('alert.update_success'));
     }
 
     /**
@@ -80,5 +104,7 @@ class CompanyController extends Controller
     public function destroy($id)
     {
         //
+        $this->company_contract->deleteById($id);
+        return redirect()->route('company.index')->with('success', __('alert.delete_success'));
     }
 }
