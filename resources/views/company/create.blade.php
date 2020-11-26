@@ -4,7 +4,7 @@
 <div class="page-wrapper">
 
             <!-- Page Content -->
-            <div class="content container-fluid">
+            {{-- <div class="content container-fluid">
 
                 <!-- Page Header -->
                 <div class="page-header">
@@ -211,11 +211,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
             <!-- /Page Content -->
 
             <!-- Add Client Modal -->
-            <div id="add_client" class="modal custom-modal fade" role="dialog">
+            {{-- <div id="add_client" class="modal custom-modal fade" role="dialog">
                 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -432,7 +432,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
             <!-- /Add Client Modal -->
 
             <!-- Edit Client Modal -->

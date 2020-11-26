@@ -21,7 +21,7 @@ class DepartmentController extends Controller
     public function index()
     {
         //
-        return view('');
+        return view('department.index');
     }
 
     /**
@@ -31,8 +31,8 @@ class DepartmentController extends Controller
      */
     public function create()
     {
-        //
-        return view('');
+        $parent_departments = $this->department_contract->parentDepartments()->pluck('name','id')->all();
+        return view('department.create', compact('parent_departments'));
     }
 
     /**
@@ -69,7 +69,8 @@ class DepartmentController extends Controller
     {
         //
         $record = $this->department_contract->getById($id);
-        return view('', compact('record'));
+        $parent_departments = $this->department_contract->parentDepartments()->pluck('name','id')->all();
+        return view('department.edit', compact('record', 'parent_departments'));
     }
 
     /**

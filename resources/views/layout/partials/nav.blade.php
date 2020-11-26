@@ -87,6 +87,17 @@
                             </ul>
                         </li>
 
+                        <li class="submenu">
+                            <a href="#"><i class="la la-cube"></i> <span> Departments</span> <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+
+                                <li><a class="{{ Request::is('departments') ? 'active' : '' }}" href="{{ route('departments.index') }}">All Departments</a></li>
+
+                                <li><a class="{{ Request::is('departments/create') ? 'active' : '' }}" href="{{ route('departments.create') }}">Create Department</a></li>
+
+                            </ul>
+                        </li>
+
                         <li class="{{ Request::is('clients') ? 'active' : '' }}">
                             <a  href="{{ url('clients') }}"><i class="la la-users"></i> <span>Clients</span></a>
                         </li>

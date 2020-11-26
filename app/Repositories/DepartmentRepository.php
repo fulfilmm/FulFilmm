@@ -11,4 +11,9 @@ class DepartmentRepository extends BaseRepository implements DepartmentContract
     {
         return Department::class;
     }
+
+    public function parentDepartments()
+    {
+        return $this->model->whereNull('parent_department')->get();
+    }
 }
