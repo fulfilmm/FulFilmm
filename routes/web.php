@@ -1,8 +1,8 @@
 <?php
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DepartmentController;
-use App\Repositories\Contracts\DepartmentContract;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,3 +24,4 @@ Route::get('/', function () {
 Route::resource('departments', DepartmentController::class);
 Route::resource('employees', EmployeeController::class);
 Route::resource('companies', CompanyController::class);
+Route::resource('customers', CustomerController::class);

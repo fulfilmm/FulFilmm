@@ -12,6 +12,18 @@
                             <li> <a class="{{ Request::is('employee-dashboard') ? 'active' : '' }}" href="{{ url('employee-dashboard') }}">Employee Dashboard</a></li>
                         </ul>
                     </li>
+
+                    <li class="submenu">
+                        <a href="#"><i class="la la-cube"></i> <span> Customers</span> <span class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+
+                            <li><a class="{{ Request::is('customers') ? 'active' : '' }}" href="{{ route('customers.index') }}">All Customers</a></li>
+
+                            <li><a class="{{ Request::is('customers/create') ? 'active' : '' }}" href="{{ route('customers.create') }}">Create Customer</a></li>
+
+                        </ul>
+                    </li>
+
                     <li class="submenu">
                         <a href="#"><i class="la la-cube"></i> <span> Apps</span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
