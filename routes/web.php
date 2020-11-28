@@ -21,7 +21,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('customers/export', [CustomerController::class, 'export'])->name('customers.export');
+Route::get('departments/export', [DepartmentController::class, 'export'])->name('departments.export');
+
 Route::resource('departments', DepartmentController::class);
 Route::resource('employees', EmployeeController::class);
 Route::resource('companies', CompanyController::class);
 Route::resource('customers', CustomerController::class);
+
+

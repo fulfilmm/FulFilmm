@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\DepartmentExport;
 use App\Http\Requests\DepartmentRequest;
 use App\Repositories\Contracts\DepartmentContract;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DepartmentController extends Controller
 {
@@ -97,5 +99,10 @@ class DepartmentController extends Controller
         //
         $this->department_contract->deleteById($id);
         return redirect()->route('departments.index')->with('success', __('alert.delete_success'));
+    }
+
+    public function export()
+    {
+        return Excel::download(new DepartmentExport, 'departments.xlsx');
     }
 }

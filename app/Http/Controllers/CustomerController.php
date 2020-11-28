@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\CustomerExport;
 use App\Repositories\Contracts\CompanyContract;
 use App\Repositories\Contracts\CustomerContract;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CustomerController extends Controller
 {
@@ -102,5 +104,10 @@ class CustomerController extends Controller
         //
         $this->customerContract->deleteById($id);
         return redirect()->route('customers.index')->with('success', __('alert.delete_success'));
+    }
+
+    public function export()
+    {
+        return Excel::download(new CustomerExport, 'customers.xlsx');
     }
 }
