@@ -1,6 +1,6 @@
 
-                            @include('forms.dynamic-input',['name'=>'name', 'title'=>'Name', 'required' =>true])
-                            @include('forms.dynamic-input',['name'=>'address', 'title'=>'Address', 'required' =>true])
+                            @include('forms.dynamic-input',['name'=>'name', 'title'=>'Name', 'value' => $record->name ?? '', 'required' =>true])
+                            @include('forms.dynamic-input',['name'=>'address', 'title'=>'Address', 'value' => $record->address ?? '', 'required' =>true])
                             <div class="form-group row">
                                 <label class="col-form-label col-md-2">Business Type</label>
                                 <div class="col-md-10" id="business_type" name="business_type">
@@ -10,15 +10,15 @@
                                 </div>
                             </div>
 
-                            @include('forms.dynamic-input',['name'=>'phone', 'title'=>'Phone', 'type' => 'number', 'required' =>true])
-                            @include('forms.dynamic-input',['name'=>'mission', 'title'=>'Mission'])
-                            @include('forms.dynamic-input',['name'=>'vision', 'title'=>'Vision'])
-                            @include('forms.dynamic-input',['name'=>'email', 'title'=>'Email', 'type' => 'email'])
-                            @include('forms.dynamic-input',['name'=>'ceo_name', 'title'=>'CEO name'])
-                            @include('forms.dynamic-input',['name'=>'web_link', 'title'=>'Web link'])
-                            @include('forms.dynamic-input',['name'=>'linkedin', 'title'=>'Linkedin'])
-                            @include('forms.dynamic-input',['name'=>'facebook_page', 'title'=>'Facebook Page'])
-                            @include('forms.dynamic-input',['name'=>'company_registry', 'title'=>'Company Registry'])
+                            @include('forms.dynamic-input',['name'=>'phone', 'title'=>'Phone', 'value' => $record->phone ?? '' , 'type' => 'number','required' =>true])
+                            @include('forms.dynamic-input',['name'=>'mission', 'title'=>'Mission', 'value' => $record->mission ?? ''])
+                            @include('forms.dynamic-input',['name'=>'vision', 'title'=>'Vision', 'value' => $record->vision ?? ''])
+                            @include('forms.dynamic-input',['name'=>'email', 'title'=>'Email', 'value' => $record->email ?? '', 'type' => 'email'])
+                            @include('forms.dynamic-input',['name'=>'ceo_name', 'title'=>'CEO name', 'value' => $record->ceo_name ?? ''])
+                            @include('forms.dynamic-input',['name'=>'web_link', 'title'=>'Web link', 'value' => $record->web_link ?? ''])
+                            @include('forms.dynamic-input',['name'=>'linkedin', 'title'=>'Linkedin', 'value' => $record->linkedin ?? ''])
+                            @include('forms.dynamic-input',['name'=>'facebook_page', 'title'=>'Facebook Page', 'value' => $record->facebook_page ?? ''])
+                            @include('forms.dynamic-input',['name'=>'company_registry', 'title'=>'Company Registry', 'value' => $record->company_registry ?? ''])
                             <div class="form-group row">
                                 <label class="col-form-label col-md-2">Parent Company</label>
                                 <div class="col-md-10" id="parent_company" name="parent_company">

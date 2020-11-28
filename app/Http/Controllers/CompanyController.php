@@ -64,7 +64,6 @@ class CompanyController extends Controller
     public function show($id)
     {
         //
-        //
         $record = $this->company_contract->getById($id);
         return view('company.show', compact('record'));
     }
@@ -78,6 +77,8 @@ class CompanyController extends Controller
     public function edit($id)
     {
         //
+        $record = $this->company_contract->getById($id);
+        return view('company.edit', compact('record'));
     }
 
     /**

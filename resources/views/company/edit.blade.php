@@ -28,7 +28,7 @@
                         <h4 class="card-title mb-0">Company</h4>
                     </div>
                     <div class="card-body">
-                        <form action="{{route('companies.update')}}" method="PUT">
+                        <form action="{{route('companies.update',$record->id)}}" method="PUT">
                             @csrf
                             @include('company.form')
                         </form>
