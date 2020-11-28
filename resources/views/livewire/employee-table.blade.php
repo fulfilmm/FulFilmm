@@ -1,8 +1,13 @@
 <div>
+{{--  --}}
 
-    <input type="text" wire:model="search_key">
-    <a href={{url('/employees/export')}}>Export</a>
-    <table>
+<div class="flex row mb-2">
+    <input type="text" class="form-control col-3 ml-auto" placeholder="Search Name" wire:model="search_key">
+    <a href={{url('/employees/export')}}><button  class="btn btn-primary ml-2">Export</button></a>
+
+</div>
+    <div class="table-responsive">   
+        <table class="table ">
         <thead>
             <tr>
                 <th>Name</th>
@@ -26,16 +31,18 @@
             <td>{{ $em->can_login }}</td>
             <td>{{ $em->department_id }}</td>
             <td>{{ $em->role_id }}</td>
-            <td>
-            <a href="{{route('employees.edit',$em->id)}}">Edit</a>
-            <form action="{{route('employees.destroy',$em->id)}}" method="POST">
+            <td class="row">
+            <a class="pr-2 my-auto" href="{{route('employees.edit',$em->id)}}">Edit</a>
+        
+            <form  id="employee-del-{{$em->id}}" action="{{route('employees.destroy',$em->id)}}" method="POST">
                 @method('delete')
                 @csrf
-                <button type="submit">delete</button>
+                <button class="btn btn-danger" onclick="deleteRecord({{$em->id}})" type="submit">delete</button>
                </form>
             </td>
             </tr>
         @endforeach
-    </table>
+    </table></div>
+ 
     {{ $employees->links()}}
 </div>
