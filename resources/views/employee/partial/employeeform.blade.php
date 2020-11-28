@@ -1,21 +1,21 @@
 
 
 <form action="{{isset( $employee) ? route('employees.update',$employee->id): route('employees.store')}}" method="POST" >
-    @csrf 
+    @csrf
     @if (isset($employee))
     @method('put')
     @endif
-    
+
     <input type="text" placeholder="name" name="name" value="{{$employee->name ?? old('name')}}">
     <select class="js-example-basic-single" name="department_id"   value="{{ $employee->department_id?? old('department_id')}}">
         @foreach ($departments as $department)
-       <option value="{{$department->id}}">{{$department->name}}</option>
+        <option value="{{$department->id}}">{{$department->name}}</option>
         @endforeach
-      </select>
+    </select>
 
 
     {{-- <input type="text" name="department_id" placeholder="department"
-   > --}}
+    > --}}
 
     <input type="text" name="role_id"  placeholder="role" value="{{$employee->role_id??old('role_id')}}" >
     <input type="text" name="email" placeholder="Email"  value="{{$employee->email??old('email')}}" >
