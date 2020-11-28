@@ -38,8 +38,7 @@ class CompanyController extends Controller
     public function create()
     {
         //
-        $route = route('companies.store');
-        return view('company.form', compact('route'));
+        return view('company.create');
     }
 
     /**
