@@ -46,6 +46,7 @@
 
     <!-- Custom JS -->
     <script src="{{asset('js/app.js')}}"></script>
+    <script src="{{asset('js/style.js')}}"></script>
     <script>
         $(document).ready(function(){
             // Read value on page load
