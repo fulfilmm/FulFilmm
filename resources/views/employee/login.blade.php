@@ -52,7 +52,7 @@
 								<div class="form-group">
 									<label>{{__('E-Mail Address')}}</label>
                                      <input name="email" class="form-control" type="email" value="{{old('email')}}">
-                                    @error('email')
+									@error('email')
                                     {{-- <span class="invalid-feedback" role="alert"> --}}
                                         <strong>{{ $message }}</strong>
                                     {{-- </span> --}}
@@ -85,7 +85,7 @@
 								</div> --}}
 							</form>
 							<!-- /Account Form -->
-
+					
 						</div>
 					</div>
 				</div>

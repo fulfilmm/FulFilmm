@@ -29,7 +29,7 @@
             <td>{{ $em->work_phone }}</td>
             <td>{{ $em->join_date }}</td>
             <td>{{ $em->can_login }}</td>
-            <td>{{ $em->department_id }}</td>
+            <td>{{ $em->department->name }}</td>
             <td>{{ $em->role_id }}</td>
             <td class="row">
             <a class="pr-2 my-auto" href="{{route('employees.edit',$em->id)}}">Edit</a>

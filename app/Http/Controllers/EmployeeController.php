@@ -18,12 +18,10 @@ class EmployeeController extends Controller
      */
     public function __construct()
     {
+        $this->middleware('auth:employee')->except('create');
     }
     public function index()
     {
-        $this->middleware('auth:employee');
-
-
         return view('employee.index');
     }
 
@@ -35,6 +33,7 @@ class EmployeeController extends Controller
     public function create()
     {
         //
+
         $departments = Department::all();
         return view('employee.createAndEdit', compact(
             'departments'
