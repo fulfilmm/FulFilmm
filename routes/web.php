@@ -35,6 +35,7 @@ Route::namespace('Auth\Login')->prefix('employees')->as('employees.')->group(fun
 Route::get('employees/export/', [EmployeeController::class, 'export']);
 Route::resource('departments', DepartmentController::class);
 Route::resource('employees', EmployeeController::class);
+Route::get('companies/export', [CompanyController::class, 'export'])->name('companies.export');
 Route::resource('companies', CompanyController::class);
 
 Auth::routes();

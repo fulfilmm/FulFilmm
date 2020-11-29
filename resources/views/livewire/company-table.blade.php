@@ -26,7 +26,8 @@
                             <td>{{$company->email}}</td>
                             <td>{{$company->ceo_name}}</td>
                             <td style="display: flex">
-                                <a class="btn btn-success" href="{{route('companies.edit',$company->id)}}"><span class='fa fa-edit'></span></a>
+                                <a class="btn btn-primary" href="{{route('companies.show',$company->id)}}"><span class='fa fa-eye'></span></a>&nbsp;
+                                <a class="btn btn-success" href="{{route('companies.index',$company->id)}}"><span class='fa fa-edit'></span></a>&nbsp;
                                 <form action="{{route('companies.destroy',$company->id)}}" id="del-company{{$company->id}}" method="POST">
                                     @method('delete')
                                     @csrf

@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\CompaniesExport;
+use App\Exports\EmployeeExport;
 use App\Http\Requests\CompanyRequest;
 use App\Models\Company;
 use App\Repositories\Contracts\CompanyContract;
 use App\Repositories\Contracts\DepartmentContract;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CompanyController extends Controller
 {
@@ -39,6 +42,11 @@ class CompanyController extends Controller
     {
         //
         return view('company.create');
+    }
+
+    public function export()
+    {
+        return Excel::download(new CompaniesExport, 'companies.xlsx');
     }
 
     /**
