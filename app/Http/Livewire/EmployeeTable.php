@@ -10,6 +10,7 @@ class EmployeeTable extends Component
 {
     use WithPagination;
     public $search_key = '';
+    protected $paginationTheme = 'bootstrap';
 
     public function updatingSearchKey()
     {
@@ -20,7 +21,7 @@ class EmployeeTable extends Component
     {
 
         return view('livewire.employee-table', [
-            'employees' => Employee::where('name', 'like', "%$this->search_key%")->paginate(10)
+            'employees' => Employee::where('name', 'like', "%$this->search_key%")->paginate(1)
         ]);
     }
 }

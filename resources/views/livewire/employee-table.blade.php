@@ -46,8 +46,9 @@
             </td>
             </tr>
         @endforeach
-    </table></div>
+    </table>
+    {{ $employees->links()}}
+</div>
 </div>
  
-    {{ $employees->links()}}
 </div>

@@ -36,7 +36,7 @@
                 </div>
             </div>
             <button
-            class="btn btn-primary float-right"
+            class="btn btn-primary "
             type="submit">
             submit
         </button>
