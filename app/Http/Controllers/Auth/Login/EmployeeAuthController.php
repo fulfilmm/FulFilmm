@@ -25,4 +25,20 @@ class EmployeeAuthController extends LoginController
     {
         return Auth::guard('employee');
     }
+
+
+    protected function authenticated(Request $request, $user)
+    {
+        if ($user->can_login) {
+
+            return redirect()->intended($this->redirectPath());
+        }
+        return $this->logout($request)->withErrors(['email' => 'This user account is not authorized to Login']);
+    }
+
+    protected function loggedOut(Request $request)
+    {
+        //
+        return redirect('/employees/login');
+    }
 }

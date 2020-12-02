@@ -1,8 +1,15 @@
-<div>
-
-    <input type="text" wire:model="search_key">
-    <a href={{url('/employees/export')}}>Export</a>
-    <table>
+<div class="card">
+{{--  --}}
+<div class="card-header">
+    <h4 class="card-title mb-0 d-inline">Employees</h4>
+    <div class="float-right">
+        <input type="text" wire:model="search_key">
+    </div>
+</div>
+    {{-- <a href={{url('/employees/export')}}><button  class="btn btn-primary ml-2">Export</button></a> --}}
+    <div class="card-body">
+    <div class="table-responsive">   
+        <table class="table table-nowrap mb-0 ">
         <thead>
             <tr>
                 <th>Name</th>
@@ -10,7 +17,7 @@
                 <th>Phone</th>
                 <th>Work Phone</th>
                 <th>Join Date</th>
-                <th>can login</th>
+                <th>can login</th>  
                 <th>Department</th>
                 <th>Position</th>
                 <th>Action</th>
@@ -24,18 +31,24 @@
             <td>{{ $em->work_phone }}</td>
             <td>{{ $em->join_date }}</td>
             <td>{{ $em->can_login }}</td>
-            <td>{{ $em->department_id }}</td>
+            <td>{{ $em->department->name }}</td>
             <td>{{ $em->role_id }}</td>
-            <td>
-            <a href="{{route('employees.edit',$em->id)}}">Edit</a>
-            <form action="{{route('employees.destroy',$em->id)}}" method="POST">
+            <td style="display: flex">
+            <a class="pr-2 my-auto btn btn-success" href="{{route('employees.edit',$em->id)}}">
+                <span class='fa fa-edit'></span>
+            </a>
+        
+            <form  id="employee-del-{{$em->id}}" action="{{route('employees.destroy',$em->id)}}" method="POST">
                 @method('delete')
                 @csrf
-                <button type="submit">delete</button>
+                <button class="btn btn-danger" onclick="deleteRecord({{$em->id}})" type="submit"><span class='fa fa-trash'></span></button>
                </form>
             </td>
             </tr>
         @endforeach
     </table>
     {{ $employees->links()}}
+</div>
+</div>
+ 
 </div>

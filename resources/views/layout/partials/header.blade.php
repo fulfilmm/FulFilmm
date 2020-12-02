@@ -260,12 +260,16 @@
                     <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
                         <span class="user-img"><img src="img/profiles/avatar-21.jpg" alt="">
                         <span class="status online"></span></span>
-                        <span>Admin</span>
+                        <span>{{auth()->user()->name ?? ''}}</span>
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="profile">My Profile</a>
-                        <a class="dropdown-item" href="settings">Settings</a>
-                        <a class="dropdown-item" href="login">Logout</a>
+                        {{-- <a class="dropdown-item" href="profile">My Profile</a>
+                        <a class="dropdown-item" href="settings">Settings</a> --}}
+                            <form id="logout-form" action="{{ route('employees.logout') }}" method="POST" >
+                                @csrf
+                                <button class="dropdown-item"> Logout</button>
+
+                            </form>
                     </div>
                 </li>
             </ul>

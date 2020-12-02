@@ -64,9 +64,9 @@
                             <ul style="display: none;">
 
                                 <li><a class="{{ Request::is('employees') ? 'active' : '' }}" href="{{ url('employees') }}">All Employees</a></li>
+                                <li><a class="{{ Request::is('employees/create') ? 'active' : '' }}" href="{{ url('employees/create') }}">Create Employee</a></li>
 
-                                <li><a class="{{ Request::is('holidays') ? 'active' : '' }}" href="{{ url('holidays') }}">Holidays</a></li>
-
+{{-- 
                                 <li><a class="{{ Request::is('leaves') ? 'active' : '' }}" href="{{ url('leaves') }}">Leaves (Admin) <span class="badge badge-pill bg-primary float-right">1</span></a></li>
 
                                 <li><a class="{{ Request::is('leaves-employee') ? 'active' : '' }}" href="{{ url('leaves-employee') }}">Leaves (employee)</a></li>
@@ -83,7 +83,7 @@
 
                                 <li><a class="{{ Request::is('timesheet') ? 'active' : '' }}" href="{{ url('timesheet') }}">Timesheet</a></li>
 
-                                <li><a class="{{ Request::is('overtime') ? 'active' : '' }}" href="{{ url('overtime') }}">Overtime</a></li>
+                                <li><a class="{{ Request::is('overtime') ? 'active' : '' }}" href="{{ url('overtime') }}">Overtime</a></li> --}}
 
                             </ul>
                         </li>
