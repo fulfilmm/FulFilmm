@@ -45,7 +45,7 @@
     <script src="js/dropfiles.js"></script> -->
 
     <!-- Custom JS -->
-    <script src="{{asset('js/app.js')}}"></script>
+
     <script src="{{asset('js/style.js')}}"></script>
     <script>
         $(document).ready(function(){
@@ -64,6 +64,7 @@
         $(".stickyside").stick_in_parent({
             offset_top: 60
         });
+
         $('.stickyside a').click(function() {
             $('html, body').animate({
                 scrollTop: $($(this).attr('href')).offset().top - 60
@@ -130,3 +131,4 @@
             }
         });
     </script>
+    {{-- <script src="{{asset('js/app.js')}}"></script> --}}
