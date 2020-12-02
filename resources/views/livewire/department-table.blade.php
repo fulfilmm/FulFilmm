@@ -23,7 +23,7 @@
                             <td>{{ $department->parent_dept->name ?? '-' }}</td>
                             <td>{{ $department->address }}</td>
                             <td style="display: flex">
-                                <a class="btn btn-success" href="{{route('departments.edit',$department->id)}}"><span class='fa fa-edit'></span></a>
+                                <a class="btn btn-success" href="{{route('departments.edit',$department->id)}}"><span class='fa fa-edit'></span></a>&nbsp;
                                 <form action="{{route('departments.destroy',$department->id)}}" id="del-dept{{$department->id}}" method="POST">
                                     @method('delete')
                                     @csrf

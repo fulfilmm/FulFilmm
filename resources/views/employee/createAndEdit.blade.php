@@ -1,32 +1,30 @@
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+@extends('layout.mainlayout')
+@section('content')
+<!-- Page Header -->
+{{-- ဒီ breadcrumb နဲ့ header ကထည့်လည်းရတယ်မထည့်လည်းရတယ်။ --}}
+@include('layout.partials.breadcrumb',['header'=>'Employee Form'])
 
-    <title>Document</title>
-</head>
-<body>
+<!-- /Page Header -->
 
 
-<script src="https://code.jquery.com/jquery-3.5.1.min.js">
-</script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<div class="row justify-content-center">
+    <div class="col-xl-8 col-lg-8 col-md-10 col-sm-12 col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title mb-0">Create New Employee</h4>
+            </div>
+            <div class="card-body">
+                @include('employee.partial.employeeform')
 
-<script>
-$(document).ready(function() {
-    $('.js-example-basic-single').select2();
-});</script>
+            </div>
+        </div>
+    </div>
+</div>
 
-@include('employee.partial.employeeform')
+{{-- {{dd($errors->all())}} --}}
 
-</body>
-</html>
-
-
+@endsection
 
 
 

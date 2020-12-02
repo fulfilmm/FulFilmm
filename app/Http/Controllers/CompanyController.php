@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\CompaniesExport;
+use App\Exports\EmployeeExport;
 use App\Http\Requests\CompanyRequest;
 use App\Models\Company;
 use App\Repositories\Contracts\CompanyContract;
 use App\Repositories\Contracts\DepartmentContract;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CompanyController extends Controller
 {
@@ -38,8 +41,12 @@ class CompanyController extends Controller
     public function create()
     {
         //
-        $route = route('companies.store');
-        return view('company.form', compact('route'));
+        return view('company.create');
+    }
+
+    public function export()
+    {
+        return Excel::download(new CompaniesExport, 'companies.xlsx');
     }
 
     /**
@@ -65,7 +72,6 @@ class CompanyController extends Controller
     public function show($id)
     {
         //
-        //
         $record = $this->company_contract->getById($id);
         return view('company.show', compact('record'));
     }
@@ -79,6 +85,8 @@ class CompanyController extends Controller
     public function edit($id)
     {
         //
+        $record = $this->company_contract->getById($id);
+        return view('company.edit', compact('record'));
     }
 
     /**

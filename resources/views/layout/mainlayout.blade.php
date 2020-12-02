@@ -10,8 +10,13 @@
     @include('layout.partials.nav')
 
     @include('layout.partials.header')
-
-    @yield('content')
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        @include('layout.partials.flash-messages')
+        @yield('content')
+    </div>
+</div>
 
     @include('layout.partials.footer-scripts')
 

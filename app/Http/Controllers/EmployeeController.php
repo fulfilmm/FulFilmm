@@ -6,6 +6,8 @@ use App\Http\Requests\EmployeeRequest;
 use App\Models\Department;
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\EmployeeExport;
 
 class EmployeeController extends Controller
 {
@@ -14,10 +16,12 @@ class EmployeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        // $this->middleware('auth:employee')->except('create');
+    }
     public function index()
     {
-        //
-
         return view('employee.index');
     }
 
@@ -29,14 +33,17 @@ class EmployeeController extends Controller
     public function create()
     {
         //
+
         $departments = Department::all();
-        $route = route('employees.store');
         return view('employee.createAndEdit', compact(
-            'route',
             'departments'
         ));
     }
 
+    public function export()
+    {
+        return Excel::download(new EmployeeExport, 'users.xlsx');
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -69,9 +76,9 @@ class EmployeeController extends Controller
      */
     public function edit(Employee $employee)
     {
-        $route = route('employees.update', $employee->id);
+        $departments = Department::all();
         return view('employee.createAndEdit', compact(
-            'route',
+            'departments',
             'employee'
         ));
     }

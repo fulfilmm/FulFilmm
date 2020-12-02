@@ -1,63 +1,60 @@
 @extends('layout.mainlayout')
+
+@section('styles')
+    @livewireStyles
+@endsection
+
 @section('content')
-<!-- Page Wrapper -->
-<div class="page-wrapper">
-    <div class="content container-fluid">
 
-        <!-- Page Header -->
-        <div class="page-header">
-            <div class="row">
-                <div class="col">
-                    <h3 class="page-title">Basic Tables</h3>
-                    <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Basic Tables</li>
-                    </ul>
-                </div>
+<!-- Page Header -->
+@include('layout.partials.breadcrumb',['header'=>'Company Table'])
+<!-- /Page Header -->
+<div class="row justify-content-end">
+    <div class="col-xl-6 col-lg-8 col-md-10 col-12 text-right mb-3">
+        {{-- <div class="row">
+            <div class="col-lg-6 col-12">
+                @include('forms.dynamic-input',['name'=>'start_date', 'title'=>'Start Date', 'value' => $record->start_date ?? '' , 'type' => 'date','required' =>true])
             </div>
-        </div>
-        <!-- /Page Header -->
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title mb-0">Responsive Tables</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-nowrap mb-0">
-                                <thead>
-                                    <tr>
-                                        <th>Action</th>
-                                        <th>#</th>
-                                        <th>Name</th>
-                                        <th>Address</th>
-                                        <th>Phone</th>
-                                        <th>Email</th>
-                                        <th>CEO Name</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($companies as $company)
-                                    <tr>
-                                    <td><a class="btn btn-primary" href="{{route('companies.show',[$company->id])}}">View</a></td>
-                                        <td>{{$company->id}}</td>
-                                        <td>{{$company->name}}</td>
-                                        <td>{{$company->address}}</td>
-                                        <td>{{$company->email}}</td>
-                                        <td>{{$company->ceo_name}}</td>
-                                    </tr>
-                                    @endforeach
-
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+            <div class="col-lg-6 col-12">
+                @include('forms.dynamic-input',['name'=>'end_date', 'title'=>'End Date', 'value' => $record->end_date ?? '' , 'type' => 'date','required' =>true])
             </div>
-        </div>
-
+        </div> --}}
+        <a href="{{route('companies.export')}}" class="btn btn-primary">Export</a>
     </div>
 </div>
+<div class="row">
+    <div class="col-12">
+        <livewire:company-table />
+    </div>
+</div>
+
 @endsection
+
+@push('scripts')
+@livewireScripts
+<script>
+    function deleteDept(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You cannot retrieve data back!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ff9b44',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                'Deleted!',
+                'Record has been deleted.',
+                'success'
+                ).then(() => {
+                    document.getElementById("del-dept"+id).submit();
+                })
+
+            }
+        })
+    }
+</script>
+@endpush
+

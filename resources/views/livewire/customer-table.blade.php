@@ -25,7 +25,7 @@
                             <td>{{ $customer->email }}</td>
                             <td>{{ $customer->company->name }}</td>
                             <td style="display: flex">
-                                <a class="btn btn-success" href="{{route('customers.edit',$customer->id)}}"><span class='fa fa-edit'></span></a>
+                                <a class="btn btn-success" href="{{route('customers.edit',$customer->id)}}"><span class='fa fa-edit'></span></a>&nbsp;
                                 <form action="{{route('customers.destroy',$customer->id)}}" id="del-customer{{$customer->id}}" method="POST">
                                     @method('delete')
                                     @csrf

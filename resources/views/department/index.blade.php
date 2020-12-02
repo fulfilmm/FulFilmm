@@ -5,28 +5,25 @@
 @endsection
 
 @section('content')
-<!-- Page Wrapper -->
-<div class="page-wrapper">
-    <div class="content container-fluid">
-
-        <!-- Page Header -->
-        <div class="page-header">
-            <div class="row">
-                <div class="col">
-                    <h3 class="page-title">Departments Table</h3>
-                    <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index">Dashboard</a></li>
-                        <li class="breadcrumb-item active">All Departments</li>
-                    </ul>
-                </div>
+<!-- Page Header -->
+@include('layout.partials.breadcrumb',['header'=>'Department Table'])
+<!-- /Page Header -->
+<div class="row justify-content-end">
+    <div class="col-xl-6 col-lg-8 col-md-10 col-12 text-right mb-3">
+        {{-- <div class="row">
+            <div class="col-lg-6 col-12">
+                @include('forms.dynamic-input',['name'=>'start_date', 'title'=>'Start Date', 'value' => $record->start_date ?? '' , 'type' => 'date','required' =>true])
             </div>
-        </div>
-        <!-- /Page Header -->
-        <div class="row">
-            <div class="col-12">
-                <livewire:department-table />
+            <div class="col-lg-6 col-12">
+                @include('forms.dynamic-input',['name'=>'end_date', 'title'=>'End Date', 'value' => $record->end_date ?? '' , 'type' => 'date','required' =>true])
             </div>
-        </div>
+        </div> --}}
+        <a href="{{route('departments.export')}}" class="btn btn-primary">Export</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <livewire:department-table />
     </div>
 </div>
 
