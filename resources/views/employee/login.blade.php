@@ -54,20 +54,20 @@
                                      <input name="email" class="form-control" type="email" value="{{old('email')}}">
 									@error('email')
                                     {{-- <span class="invalid-feedback" role="alert"> --}}
-                                        <strong>{{ $message }}</strong>
+                                        <strong class="text-danger">{{ $message }}</strong>
                                     {{-- </span> --}}
-                                @enderror
+                                    @enderror
 								</div>
 								<div class="form-group">
 									<div class="row">
 										<div class="col">
 											<label>{{__('Password')}}</label>
 										</div>
-										<div class="col-auto">
+										{{-- <div class="col-auto">
 											<a class="text-muted" href="forgot-password.html">
 												Forgot password?
 											</a>
-										</div>
+										</div> --}}
 									</div>
                                     <input name="password" class="form-control" type="password">
                                     @error('password')
@@ -85,7 +85,7 @@
 								</div> --}}
 							</form>
 							<!-- /Account Form -->
-					
+
 						</div>
 					</div>
 				</div>
