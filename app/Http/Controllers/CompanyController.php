@@ -28,7 +28,7 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        //
+
         $companies = Company::get();
         return view('company.index', compact('companies'));
     }
@@ -41,8 +41,9 @@ class CompanyController extends Controller
     public function create()
     {
         //
+        $hasSetUp = $this->company_contract->isUserCompany();
         $parent_companies = $this->company_contract->parentCompanies()->pluck('name','id')->all();
-        return view('company.create', compact('parent_companies'));
+        return view('company.create', compact('parent_companies', 'hasSetUp'));
     }
 
     public function export()
@@ -86,9 +87,10 @@ class CompanyController extends Controller
     public function edit($id)
     {
         //
+        $hasSetUp = $this->company_contract->isUserCompany();
         $parent_companies = $this->company_contract->parentCompanies()->pluck('name','id')->all();
         $record = $this->company_contract->getById($id);
-        return view('company.edit', compact('record','parent_companies'));
+        return view('company.edit', compact('record','parent_companies','hasSetUp'));
     }
 
     /**

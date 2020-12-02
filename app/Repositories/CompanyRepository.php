@@ -16,4 +16,8 @@ class CompanyRepository extends BaseRepository implements CompanyContract
     {
         return $this->model->whereNull('parent_company')->get();
     }
+
+    public function isUserCompany(){
+        return Company::userCompany()->first() ? true : false;
+    }
 }

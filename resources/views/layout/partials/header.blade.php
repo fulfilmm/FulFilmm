@@ -1,6 +1,6 @@
 
 <div class="header">
-			
+
             <!-- Logo -->
             <div class="header-left">
                 <a href="index" class="logo">
@@ -8,7 +8,7 @@
                 </a>
             </div>
             <!-- /Logo -->
-            
+
             <a id="toggle_btn" href="javascript:void(0);">
                 <span class="bar-icon">
                     <span></span>
@@ -16,20 +16,20 @@
                     <span></span>
                 </span>
             </a>
-            
+
             <!-- Header Title -->
             <div class="page-title-box">
-                <h3>Dreamguy's Technologies</h3>
+            <h3>{{ App\Models\Company::userCompanyName() ?? null}}</h3>
             </div>
             <!-- /Header Title -->
-            
+
             <a id="mobile_btn" class="mobile_btn" href="#sidebar"><i class="fa fa-bars"></i></a>
-            
+
             <!-- Header Menu -->
             <ul class="nav user-menu">
-            
+
                 <!-- Search -->
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <div class="top-nav-search">
                         <a href="javascript:void(0);" class="responsive-search">
                             <i class="fa fa-search"></i>
@@ -39,11 +39,11 @@
                             <button class="btn" type="submit"><i class="fa fa-search"></i></button>
                         </form>
                     </div>
-                </li>
+                </li> --}}
                 <!-- /Search -->
-            
+
                 <!-- Flag -->
-                <li class="nav-item dropdown has-arrow flag-nav">
+                {{-- <li class="nav-item dropdown has-arrow flag-nav">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button">
                         <img src="img/flags/us.png" alt="" height="20"> <span>English</span>
                     </a>
@@ -61,11 +61,11 @@
                             <img src="img/flags/de.png" alt="" height="16"> German
                         </a>
                     </div>
-                </li>
+                </li> --}}
                 <!-- /Flag -->
-            
+
                 <!-- Notifications -->
-                <li class="nav-item dropdown">
+                {{-- <li class="nav-item dropdown">
                     <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
                         <i class="fa fa-bell-o"></i> <span class="badge badge-pill">3</span>
                     </a>
@@ -147,11 +147,11 @@
                             <a href="activities">View all Notifications</a>
                         </div>
                     </div>
-                </li>
+                </li> --}}
                 <!-- /Notifications -->
-                
+
                 <!-- Message Notifications -->
-                <li class="nav-item dropdown">
+                {{-- <li class="nav-item dropdown">
                     <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
                         <i class="fa fa-comment-o"></i> <span class="badge badge-pill">8</span>
                     </a>
@@ -253,7 +253,7 @@
                             <a href="chat">View all Messages</a>
                         </div>
                     </div>
-                </li>
+                </li> --}}
                 <!-- /Message Notifications -->
 
                 <li class="nav-item dropdown has-arrow main-drop">
@@ -274,7 +274,7 @@
                 </li>
             </ul>
             <!-- /Header Menu -->
-            
+
             <!-- Mobile Menu -->
             <div class="dropdown mobile-user-menu">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
@@ -285,5 +285,5 @@
                 </div>
             </div>
             <!-- /Mobile Menu -->
-            
+
         </div>

@@ -21,7 +21,21 @@
                             @include('forms.dynamic-input',['name'=>'company_registry', 'title'=>'Company Registry', 'value' => $record->company_registry ?? ''])
                             @include('forms.select',['name'=>'parent_company', 'title'=>'Parent Company', 'placeHolder' => "Choose Parent Company", 'options' => $parent_companies, 'value' => $record->parent_companies ?? ''])
                             @include('forms.select',['name'=>'parent_company_2', 'title'=>'Parent Company 2', 'placeHolder' => "Choose Parent Company 2", 'options' => $parent_companies, 'value' => $record->parent_companies ?? ''])
-                           
+
+                            @if(!$hasSetUp)
+
+                            <div class="form-group row">
+                                <label class="col-form-label col-md-2">Current Company</label>
+                                <div class="col-md-10">
+                                    <div class="checkbox">
+                                        <label for="user_company">
+                                            <input type="checkbox" name="user_company" id="user_company" value='1'>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @endif
 
 
 

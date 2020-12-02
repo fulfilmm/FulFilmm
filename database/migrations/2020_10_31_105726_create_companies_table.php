@@ -19,6 +19,9 @@ class CreateCompaniesTable extends Migration
             $table->string('business_type', 64);
             $table->text('address');
             $table->string('phone', 16);
+            $table->string('logo')->nullable();
+            $table->json('data')->nullable();
+            $table->boolean('user_company')->default(false);
             $table->text('mission')->nullable();
             $table->text('vision')->nullable();
             $table->string('email', 32)->nullable();

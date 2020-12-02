@@ -17,6 +17,9 @@ class Company extends Model
         'business_type',
         'address',
         'phone',
+        'logo',
+        'data',
+        'user_company',
         'mission',
         'vision',
         'email',
@@ -38,5 +41,15 @@ class Company extends Model
     public function customers()
     {
         return $this->hasMany(Customer::class);
+    }
+
+    //scopes
+    public function scopeUserCompany($query)
+    {
+        return $query->where('user_company', 1);
+    }
+
+    public function scopeUserCompanyName($query){
+        return $query->where('user_company', 1)->first()->name;
     }
 }
