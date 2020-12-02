@@ -38,6 +38,17 @@
                     </li>
 
                     <li class="submenu">
+                        <a href="#"><i class="la la-cube"></i> <span> Employees</span> <span class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+
+                            <li><a class="{{ Request::is('employees') ? 'active' : '' }}" href="{{ route('employees.index') }}">All Employees</a></li>
+
+                            <li><a class="{{ Request::is('employees/create') ? 'active' : '' }}" href="{{ route('employees.create') }}">Create Employee</a></li>
+
+                        </ul>
+                    </li>
+
+                    <li class="submenu">
                         <a href="#"><i class="la la-cube"></i> <span> Departments</span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
 

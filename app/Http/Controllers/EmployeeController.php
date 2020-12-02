@@ -42,7 +42,7 @@ class EmployeeController extends Controller
 
     public function export()
     {
-        return Excel::download(new EmployeeExport, 'users.xlsx');
+        return Excel::download(new EmployeeExport, 'employees.xlsx');
     }
     /**
      * Store a newly created resource in storage.

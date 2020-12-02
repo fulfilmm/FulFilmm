@@ -20,7 +20,7 @@
             </div>
         </div> --}}
         <a href="{{route('companies.export')}}" class="btn btn-primary">Export</a>
-        <a href="{{route('companies.create')}}" class="btn btn-secondary">Create</a>
+        <a href="{{route('customers.create')}}" class="btn btn-secondary">Create Customers</a>
     </div>
 </div>
 <div class="row">

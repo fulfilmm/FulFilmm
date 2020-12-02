@@ -50,6 +50,6 @@ class Company extends Model
     }
 
     public function scopeUserCompanyName($query){
-        return $query->where('user_company', 1)->first()->name;
+        return $query->where('user_company', 1)->first()->name ?? '';
     }
 }

@@ -1,10 +1,6 @@
 @extends('layout.mainlayout')
 @section('content')
 
-<!-- Page Wrapper -->
-<div class="page-wrapper">
-    <!-- Page Content -->
-    <div class="content container-fluid">
         <!-- Page Header -->
         <div class="page-header">
             <div class="row">
@@ -722,11 +718,5 @@
                 </div>
             </div>
         </div>
-
-    </div>
-    <!-- /Page Content -->
-
-</div>
-<!-- /Page Wrapper -->
 @endsection
 

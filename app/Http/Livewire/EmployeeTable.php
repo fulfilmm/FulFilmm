@@ -21,7 +21,7 @@ class EmployeeTable extends Component
     {
 
         return view('livewire.employee-table', [
-            'employees' => Employee::where('name', 'like', "%$this->search_key%")->paginate(1)
+            'employees' => Employee::where('name', 'like', "%$this->search_key%")->paginate(10)
         ]);
     }
 }

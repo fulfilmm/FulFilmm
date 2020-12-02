@@ -1,7 +1,6 @@
 <?php
 
 use App\Helpers\General\Timezone;
-use App\Helpers\General\HtmlHelper;
 use Illuminate\Support\Str;
 
 /*
@@ -17,18 +16,6 @@ if (!function_exists('app_name')) {
     function app_name()
     {
         return config('app.name');
-    }
-}
-
-
-
-if (!function_exists('gravatar')) {
-    /**
-     * Access the gravatar helper.
-     */
-    function gravatar()
-    {
-        return app('gravatar');
     }
 }
 
@@ -69,50 +56,6 @@ if (!function_exists('include_route_files')) {
     }
 }
 
-if (!function_exists('style')) {
-
-    /**
-     * @param       $url
-     * @param array $attributes
-     * @param null  $secure
-     *
-     * @return mixed
-     */
-    function style($url, $attributes = [], $secure = null)
-    {
-        return resolve(HtmlHelper::class)->style($url, $attributes, $secure);
-    }
-}
-
-if (!function_exists('script')) {
-
-    /**
-     * @param       $url
-     * @param array $attributes
-     * @param null  $secure
-     *
-     * @return mixed
-     */
-    function script($url, $attributes = [], $secure = null)
-    {
-        return resolve(HtmlHelper::class)->script($url, $attributes, $secure);
-    }
-}
-
-if (!function_exists('form_cancel')) {
-
-    /**
-     * @param        $cancel_to
-     * @param        $title
-     * @param string $classes
-     *
-     * @return mixed
-     */
-    function form_cancel($cancel_to, $title, $classes = 'btn btn-danger btn-sm')
-    {
-        return resolve(HtmlHelper::class)->formCancel($cancel_to, $title, $classes);
-    }
-}
 if (!function_exists('parse_phone_number')) {
 
     /**
@@ -131,21 +74,6 @@ if (!function_exists('parse_phone_number')) {
         } else {
             return $number;
         }
-    }
-}
-
-
-if (!function_exists('form_submit')) {
-
-    /**
-     * @param        $title
-     * @param string $classes
-     *
-     * @return mixed
-     */
-    function form_submit($title, $classes = 'btn btn-success btn-sm pull-right')
-    {
-        return resolve(HtmlHelper::class)->formSubmit($title, $classes);
     }
 }
 
