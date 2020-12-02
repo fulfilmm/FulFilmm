@@ -13,9 +13,13 @@
                 <h4 class="card-title mb-0">Company</h4>
             </div>
             <div class="card-body">
-                <form action="{{route('companies.update',$record->id)}}" method="PUT">
+                <form action="{{route('companies.update',$record->id)}}" method="POST">
                     @csrf
+                    @method('put')
                     @include('company.form')
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit">Update</button>
+                    </div>
                 </form>
                 {{-- {{dd($errors->all())}} --}}
             </div>

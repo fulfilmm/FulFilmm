@@ -15,6 +15,9 @@
                 <form action="{{route('companies.store')}}" method="POST" >
                     @csrf
                     @include('company.form')
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit">Create</button>
+                    </div>
                 </form>
                 {{-- {{dd($errors->all())}} --}}
             </div>

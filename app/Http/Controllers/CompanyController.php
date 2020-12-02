@@ -41,7 +41,8 @@ class CompanyController extends Controller
     public function create()
     {
         //
-        return view('company.create');
+        $parent_companies = $this->company_contract->parentCompanies()->pluck('name','id')->all();
+        return view('company.create', compact('parent_companies'));
     }
 
     public function export()
@@ -85,8 +86,9 @@ class CompanyController extends Controller
     public function edit($id)
     {
         //
+        $parent_companies = $this->company_contract->parentCompanies()->pluck('name','id')->all();
         $record = $this->company_contract->getById($id);
-        return view('company.edit', compact('record'));
+        return view('company.edit', compact('record','parent_companies'));
     }
 
     /**
@@ -96,11 +98,11 @@ class CompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CompanyRequest $request, $id)
+    public function update(Request $request, $id)
     {
         //
         $this->company_contract->updateById($id, $request->all());
-        return redirect()->route('company.index')->with('success', __('alert.update_success'));
+        return redirect()->route('companies.index')->with('success', __('alert.update_success'));
     }
 
     /**

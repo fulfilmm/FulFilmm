@@ -19,28 +19,9 @@
                             @include('forms.dynamic-input',['name'=>'linkedin', 'title'=>'Linkedin', 'value' => $record->linkedin ?? ''])
                             @include('forms.dynamic-input',['name'=>'facebook_page', 'title'=>'Facebook Page', 'value' => $record->facebook_page ?? ''])
                             @include('forms.dynamic-input',['name'=>'company_registry', 'title'=>'Company Registry', 'value' => $record->company_registry ?? ''])
-                            <div class="form-group row">
-                                <label class="col-form-label col-md-2">Parent Company</label>
-                                <div class="col-md-10" id="parent_company" name="parent_company">
-                                    <select name="parent_company" class="form-control">
-                                            <option value="1">Banana</option>
-                                            <option value="2">Apple</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-form-label col-md-2">Parent Company 2</label>
-                                <div class="col-md-10" id="parent_company_2" name="parent_company_2">
-                                    <select name="parent_company_2" class="form-control">
-                                            <option value="1">Banana</option>
-                                            <option value="2">Apple</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="submit">Submit</button>
-                            </div>
-                        </button>
+                            @include('forms.select',['name'=>'parent_company', 'title'=>'Parent Company', 'placeHolder' => "Choose Parent Company", 'options' => $parent_companies, 'value' => $record->parent_companies ?? ''])
+                            @include('forms.select',['name'=>'parent_company_2', 'title'=>'Parent Company 2', 'placeHolder' => "Choose Parent Company 2", 'options' => $parent_companies, 'value' => $record->parent_companies ?? ''])
+                           
 
 
 
