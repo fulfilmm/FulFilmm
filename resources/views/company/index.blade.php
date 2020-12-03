@@ -23,6 +23,11 @@
         <a href="{{route('customers.create')}}" class="btn btn-secondary">Create Customers</a>
     </div>
 </div>
+<div class="row justify-content-end">
+    <div class="col-xl-6 col-lg-8 col-md-10 col-12 text-right mb-3">
+        @include('forms.excel-import')
+    </div>
+</div>
 <div class="row">
     <div class="col-12">
         <livewire:company-table />
