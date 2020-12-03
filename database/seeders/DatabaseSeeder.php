@@ -18,9 +18,6 @@ class DatabaseSeeder extends Seeder
         Department::factory()
             ->times(10)
             ->create();
-        Employee::factory()
-            ->time(10)
-            ->create();
         // \App\Models\User::factory(10)->create();
     }
 }

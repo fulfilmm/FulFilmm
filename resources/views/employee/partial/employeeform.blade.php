@@ -29,7 +29,7 @@
                 <div class="col-md-10">
                     <div class="checkbox">
                         <label for="can_login">
-                            <input type="checkbox" name="can_login" id="can_login" value="{{$employee->can_login ?? 0}}"> 
+                            <input type="checkbox" value='1' name="can_login" id="can_login" checked={{$employee->can_login ? 'checked' : ''}}> 
                             
                         </label>
                     </div>

@@ -23,11 +23,7 @@
     @livewireStyles
 </head>
 
-    @if(session()->has('success'))
-    <div class="">
-        {{ session()->get('success') }}
-    </div>
-@endif
+   
     <livewire:employee-table />
 
 

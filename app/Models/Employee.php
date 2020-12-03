@@ -26,7 +26,10 @@ class Employee extends Authenticatable
 
 
     //relations
-
+    public function department_name()
+    {
+        return $this->department()->first()->name;
+    }
     public function department()
     {
         return $this->belongsTo(Department::class, 'department_id');

@@ -10,9 +10,9 @@ class Company extends Model
 {
     use HasFactory;
 
-    protected $guarded=[];
+    protected $guarded = [];
 
-    protected $fillable=[
+    protected $fillable = [
         'name',
         'business_type',
         'address',
@@ -49,7 +49,18 @@ class Company extends Model
         return $query->where('user_company', 1);
     }
 
-    public function scopeUserCompanyName($query){
+    public function scopeUserCompanyName($query)
+    {
         return $query->where('user_company', 1)->first()->name ?? '';
+    }
+
+    public function parentCompany()
+    {
+        return $this->belongsTo(Company::class, 'parent_company');
+    }
+
+    public function parentCompany2()
+    {
+        return $this->belongsTo(Company::class, 'parent_company_2');
     }
 }
