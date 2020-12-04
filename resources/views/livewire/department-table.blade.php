@@ -12,6 +12,7 @@
                     <tr>
                         <th>Name</th>
                         <th>Parent Department</th>
+                        <th>Deparment Head</th>
                         <th>Address</th>
                         <th>Action</th>
                     </tr>
@@ -21,6 +22,7 @@
                         <tr>
                             <td>{{$department->name}}</td>
                             <td>{{ $department->parent_dept->name ?? '-' }}</td>
+                            <td>{{ $department->departmentHeads[0]->employee->name ?? 'Null' }}</td>
                             <td>{{ $department->address }}</td>
                             <td style="display: flex">
                                 <a class="btn btn-success" href="{{route('departments.edit',$department->id)}}"><span class='fa fa-edit'></span></a>&nbsp;

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Exports\CustomerExport;
+use App\Imports\CustomerImport;
 use App\Repositories\Contracts\CompanyContract;
 use App\Repositories\Contracts\CustomerContract;
+use Exception;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -109,5 +111,18 @@ class CustomerController extends Controller
     public function export()
     {
         return Excel::download(new CustomerExport, 'customers.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        try
+        {
+            Excel::import(new CustomerImport, $request->file('import'));
+            return redirect()->route('customers.index')->with('success', __('alert.import_success'));
+        }catch(Exception $e)
+        {
+            return redirect()->route('customers.index')->with('error', $e->getMessage());
+        }
+
     }
 }

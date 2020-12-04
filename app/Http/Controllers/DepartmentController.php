@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Exports\DepartmentExport;
 use App\Http\Requests\DepartmentRequest;
+use App\Imports\DepartmentImport;
+use App\Models\Employee;
 use App\Repositories\Contracts\DepartmentContract;
+use Exception;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -34,7 +37,8 @@ class DepartmentController extends Controller
     public function create()
     {
         $parent_departments = $this->department_contract->parentDepartments()->pluck('name','id')->all();
-        return view('department.create', compact('parent_departments'));
+        $employees = Employee::all()->pluck('name', 'id');
+        return view('department.create', compact('parent_departments', 'employees'));
     }
 
     /**
@@ -46,7 +50,8 @@ class DepartmentController extends Controller
     public function store(DepartmentRequest $request)
     {
         //
-        $this->department_contract->create($request->all());
+        $department = $this->department_contract->create($request->all());
+        $this->department_contract->assignDepartmentHead($department->id, $request->employee_id);
         return redirect()->route('departments.index')->with('success', __('alert.create_success'));
     }
 
@@ -72,7 +77,8 @@ class DepartmentController extends Controller
         //
         $record = $this->department_contract->getById($id);
         $parent_departments = $this->department_contract->parentDepartments()->pluck('name','id')->all();
-        return view('department.edit', compact('record', 'parent_departments'));
+        $employees = Employee::all()->pluck('name', 'id');
+        return view('department.edit', compact('record', 'parent_departments', 'employees'));
     }
 
     /**
@@ -104,5 +110,17 @@ class DepartmentController extends Controller
     public function export()
     {
         return Excel::download(new DepartmentExport, 'departments.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        try
+        {
+            Excel::import(new DepartmentImport, $request->file('import'));
+            return redirect()->route('departments.index')->with('success', __('alert.import_success'));
+        }catch(Exception $e)
+        {
+            return redirect()->route('departments.index')->with('error', $e->getMessage());
+        }
     }
 }

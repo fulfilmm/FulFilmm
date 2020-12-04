@@ -25,4 +25,9 @@ class Department extends Model
     public function parent_dept() {
         return $this->belongsTo(Department::class, 'parent_department');
     }
+
+    public function departmentHeads()
+    {
+        return $this->hasMany(DepartmentHead::class, 'department_id')->orderBy('id', 'DESC');
+    }
 }

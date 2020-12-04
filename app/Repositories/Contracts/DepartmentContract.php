@@ -5,4 +5,6 @@ Interface DepartmentContract
 {
 
     public function parentDepartments();
+
+    public function assignDepartmentHead($department_id, $employee_id);
 }
