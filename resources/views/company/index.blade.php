@@ -1,66 +1,76 @@
 @extends('layout.mainlayout')
 
 @section('styles')
-    @livewireStyles
+@livewireStyles
 @endsection
 
 @section('content')
+@include('company.export', ['modal_id' => 'company-export', 'modal_title' => 'Company Export'])
+@include('company.import', ['modal_id' => 'company-import', 'modal_title' => 'Company import'])
+
 
 <!-- Page Header -->
-@include('layout.partials.breadcrumb',['header'=>'Company Table'])
-<!-- /Page Header -->
-<div class="row justify-content-end">
-    <div class="col-xl-6 col-lg-8 col-md-10 col-12 text-right mb-3">
-        {{-- <div class="row">
-            <div class="col-lg-6 col-12">
-                @include('forms.dynamic-input',['name'=>'start_date', 'title'=>'Start Date', 'value' => $record->start_date ?? '' , 'type' => 'date','required' =>true])
-            </div>
-            <div class="col-lg-6 col-12">
-                @include('forms.dynamic-input',['name'=>'end_date', 'title'=>'End Date', 'value' => $record->end_date ?? '' , 'type' => 'date','required' =>true])
-            </div>
-        </div> --}}
-        <a href="{{route('companies.export')}}" class="btn btn-primary">Export</a>
-        <a href="{{route('customers.create')}}" class="btn btn-secondary">Create Customers</a>
-    </div>
-</div>
-{{-- <div class="row justify-content-end">
-    <div class="col-xl-6 col-lg-8 col-md-10 col-12 text-right mb-3">
-        @include('forms.excel-import', ['route' => route('companies.import')])
-    </div>
-</div> --}}
-<div class="row">
-    <div class="col-12">
-        <livewire:company-table />
-    </div>
-</div>
 
-@endsection
+<div class="content container-fluid">
 
-@push('scripts')
-@livewireScripts
-<script>
-    function deleteDept(id) {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You cannot retrieve data back!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#ff9b44',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                @include('layout.partials.breadcrumb',['header'=>'Company Table'])
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <a href="{{route('customers.create')}}" class="btn add-btn"><i class="fa fa-plus"></i> Add Company</a>
+
+
+                <div class="view-icons">
+                    <a href="employees" class="grid-view btn btn-link"><i class="fa fa-th"></i></a>
+                    <a href="employees-list" class="list-view btn btn-link active"><i class="fa fa-bars"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-auto float-right ml-auto">
+                <a href="#" data-toggle="modal" data-target="#company-import" class="btn btn-primary rounded mr-3">Import</a>
+                <a href="#" data-toggle="modal" data-target="#company-export" class="btn btn-primary rounded mr-3">Export</a>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-12">
+            <livewire:company-table />
+        </div>
+    </div>
+
+    @endsection
+
+    @push('scripts')
+    @livewireScripts
+    <script>
+        function deleteDept(id) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You cannot retrieve data back!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ff9b44',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire(
-                'Deleted!',
-                'Record has been deleted.',
-                'success'
-                ).then(() => {
-                    document.getElementById("del-dept"+id).submit();
-                })
+                if (result.isConfirmed) {
+                    Swal.fire(
+                    'Deleted!',
+                    'Record has been deleted.',
+                    'success'
+                    ).then(() => {
+                        document.getElementById("del-dept"+id).submit();
+                    })
 
-            }
-        })
-    }
-</script>
-@endpush
+                }
+            })
+        }
+    </script>
+    @endpush
 
