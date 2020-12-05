@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Exports\CompaniesExport;
 use App\Exports\EmployeeExport;
 use App\Http\Requests\CompanyRequest;
+use App\Imports\CompanyImport;
 use App\Models\Company;
 use App\Repositories\Contracts\CompanyContract;
 use App\Repositories\Contracts\DepartmentContract;
+use Exception;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -33,6 +35,18 @@ class CompanyController extends Controller
         return view('company.index', compact('companies'));
     }
 
+
+    public function import(Request $request)
+    {
+        // dd($request);
+        try {
+            Excel::import(new CompanyImport, $request->file('import'));
+            return redirect()->route('companies.index')->with('success', __('alert.import_success'));
+        } catch (Exception $e) {
+            // dd($e);
+            return redirect()->route('companies.index')->with('error', $e->getMessage());
+        }
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -42,7 +56,7 @@ class CompanyController extends Controller
     {
         //
         $hasSetUp = $this->company_contract->isUserCompany();
-        $parent_companies = $this->company_contract->parentCompanies()->pluck('name','id')->all();
+        $parent_companies = $this->company_contract->parentCompanies()->pluck('name', 'id')->all();
         return view('company.create', compact('parent_companies', 'hasSetUp'));
     }
 
@@ -62,7 +76,6 @@ class CompanyController extends Controller
         //
         $this->company_contract->create($request->all());
         return redirect()->route('companies.index')->with('success', __('alert.create_success'));
-
     }
 
     /**
@@ -88,9 +101,9 @@ class CompanyController extends Controller
     {
         //
         $hasSetUp = $this->company_contract->isUserCompany();
-        $parent_companies = $this->company_contract->parentCompanies()->pluck('name','id')->all();
+        $parent_companies = $this->company_contract->parentCompanies()->pluck('name', 'id')->all();
         $record = $this->company_contract->getById($id);
-        return view('company.edit', compact('record','parent_companies','hasSetUp'));
+        return view('company.edit', compact('record', 'parent_companies', 'hasSetUp'));
     }
 
     /**

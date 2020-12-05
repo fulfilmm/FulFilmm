@@ -8,6 +8,9 @@ use App\Models\Employee;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\EmployeeExport;
+use App\Imports\EmployeeImport;
+use Exception;
+use Maatwebsite\Excel\Exceptions\LaravelExcelException;
 
 class EmployeeController extends Controller
 {
@@ -38,6 +41,20 @@ class EmployeeController extends Controller
         return view('employee.createAndEdit', compact(
             'departments'
         ));
+    }
+
+
+
+    public function import(Request $request)
+    {
+        // dd($request);
+        try {
+            Excel::import(new EmployeeImport, $request->file('import'));
+            return redirect()->route('employees.index')->with('success', __('alert.import_success'));
+        } catch (Exception $e) {
+            // dd($e);
+            return redirect()->route('employees.index')->with('error', $e->getMessage());
+        }
     }
 
     public function export()

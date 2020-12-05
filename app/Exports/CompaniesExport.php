@@ -13,7 +13,7 @@ class CompaniesExport implements FromCollection, WithHeadings, WithMapping
      * @return \Illuminate\Support\Collection
      */
     public $data = [];
-    public $exceptKeys = ['logo', 'data',];
+    public $exceptKeys = ['logo', 'data', 'user_company'];
     public function __construct()
     {
         $this->data = Company::all();

@@ -34,8 +34,8 @@ Route::get('companies/export', [CompanyController::class, 'export'])->name('comp
 //import routes
 Route::post('customers/import', [CustomerController::class, 'import'])->name('customers.import');
 Route::post('departments/import', [DepartmentController::class, 'import'])->name('departments.import');
-Route::post('employee/import', [DepartmentController::class, 'import'])->name('employees.import');
-Route::get('companies/import', [CompanyController::class, 'import'])->name('companies.import');
+Route::post('employees/import', [EmployeeController::class, 'import'])->name('employees.import');
+Route::post('companies/import', [CompanyController::class, 'import'])->name('companies.import');
 
 Route::namespace('Auth\Login')->prefix('employees')->as('employees.')->group(function () {
     Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -48,5 +48,3 @@ Route::resource('departments', DepartmentController::class);
 Route::resource('employees', EmployeeController::class);
 Route::resource('companies', CompanyController::class);
 Route::resource('customers', CustomerController::class);
-
-
