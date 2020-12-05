@@ -1,6 +1,6 @@
-<div class="row justify-content-center">
-    <div>
-        <form method="POST" action="{{$route}}" enctype="multipart/form-data">
+<div>
+    <div class="row justify-content-center">
+        <form method="POST" action="{{route($route)}}" enctype="multipart/form-data">
             @csrf
             <div class="form-group row">
                 <div class="">
@@ -24,4 +24,5 @@
             </div>
         </form>
     </div>
+
 </div>

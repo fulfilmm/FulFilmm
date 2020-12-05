@@ -5,22 +5,26 @@
 @endsection
 
 @section('content')
-@include('company.export', ['modal_id' => 'company-export', 'modal_title' => 'Company Export'])
-@include('company.import', ['modal_id' => 'company-import', 'modal_title' => 'Company import'])
 
+{{-- Modals --}}
+<x-partials.modal id="company-import" title="Import">
+    <x-forms.import route="customers.import" />
+</x-partials.modal>
 
-<!-- Page Header -->
+<x-partials.modal id="company-export" title="Export" >
+    <x-forms.export route="companies.export"/>
+</x-partials.modal>
 
 <div class="content container-fluid">
 
     <!-- Page Header -->
     <div class="page-header">
-        <div class="row align-items-center">
+        <div class="row align-items-center mb-3">
             <div class="col">
                 @include('layout.partials.breadcrumb',['header'=>'Company Table'])
             </div>
             <div class="col-auto float-right ml-auto">
-                <a href="{{route('customers.create')}}" class="btn add-btn"><i class="fa fa-plus"></i> Add Company</a>
+                <a href="{{route('companies.create')}}" class="btn add-btn"><i class="fa fa-plus"></i> Add Company</a>
 
 
                 <div class="view-icons">

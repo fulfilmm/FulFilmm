@@ -1,30 +1,48 @@
 
 @extends('layout.mainlayout')
 @section('content')
-<!-- Page Header -->
-{{-- ဒီ breadcrumb နဲ့ header ကထည့်လည်းရတယ်မထည့်လည်းရတယ်။ --}}
-@include('layout.partials.breadcrumb',['header'=>'Employee Table'])
-<!-- /Page Header -->
-<div class="row justify-content-end">
-    <div class="col-xl-6 col-lg-8 col-md-10 col-12 text-right mb-3">
-        {{-- <div class="row">
-            <div class="col-lg-6 col-12">
-                @include('forms.dynamic-input',['name'=>'start_date', 'title'=>'Start Date', 'value' => $record->start_date ?? '' , 'type' => 'date','required' =>true])
+
+{{-- Modals --}}
+<x-partials.modal id="employee-import" title="Import">
+    <x-forms.import route="employees.import" />
+</x-partials.modal>
+
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center mb-3">
+            <div class="col">
+                @include('layout.partials.breadcrumb',['header'=>'Employees Table'])
             </div>
-            <div class="col-lg-6 col-12">
-                @include('forms.dynamic-input',['name'=>'end_date', 'title'=>'End Date', 'value' => $record->end_date ?? '' , 'type' => 'date','required' =>true])
+            <div class="col-auto float-right ml-auto">
+                <a href="{{route('employees.create')}}" class="btn add-btn"><i class="fa fa-plus"></i> Add Employee</a>
+
+
+                <div class="view-icons">
+                    <a href="employees" class="grid-view btn btn-link"><i class="fa fa-th"></i></a>
+                    <a href="employees-list" class="list-view btn btn-link active"><i class="fa fa-bars"></i></a>
+                </div>
             </div>
-        </div> --}}
-        <a href="{{route('employees.export')}}" class="btn btn-primary">Export</a>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-auto float-right ml-auto">
+                <a href="#" data-toggle="modal" data-target="#employee-import" class="btn btn-primary rounded mr-3">Import</a>
+                <a href="{{route('employees.export')}}"  class="btn btn-primary rounded mr-3">Export</a>
+            </div>
+        </div>
     </div>
+
+    <div class="row">
+        <div class="col-12">
+            <head>
+                @livewireStyles
+            </head>
+            <livewire:employee-table />
+        </div>
+    </div>
+
 </div>
-
-<head>
-    @livewireStyles
-</head>
-
-   
-    <livewire:employee-table />
 
 
 @endsection
@@ -41,7 +59,7 @@
             confirmButtonColor: '#ff9b44',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
                 Swal.fire(
                 'Deleted!',

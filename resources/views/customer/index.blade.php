@@ -1,31 +1,45 @@
 @extends('layout.mainlayout')
 
 @section('styles')
-    @livewireStyles
+@livewireStyles
 @endsection
 
 @section('content')
+
+{{-- Modals --}}
+<x-partials.modal id="customer-import" title="Customer Import">
+    <x-forms.import route="customers.import" />
+</x-partials.modal>
+
+{{-- <x-partials.modal id="company-export" title="Export" >
+    <x-forms.export route="companies.export"/>
+</x-partials.modal> --}}
+
+
 <!-- Page Header -->
-@include('layout.partials.breadcrumb',['header'=>'Customer Table'])
-<!-- /Page Header -->
-<div class="row justify-content-end">
-    <div class="col-xl-6 col-lg-8 col-md-10 col-12 text-right mb-3">
-        {{-- <div class="row">
-            <div class="col-lg-6 col-12">
-                @include('forms.dynamic-input',['name'=>'start_date', 'title'=>'Start Date', 'value' => $record->start_date ?? '' , 'type' => 'date','required' =>true])
+<div class="page-header">
+    <div class="row align-items-center mb-3">
+        <div class="col">
+            @include('layout.partials.breadcrumb',['header'=>'Customers Table'])
+        </div>
+        <div class="col-auto float-right ml-auto">
+            <a href="{{route('customers.create')}}" class="btn add-btn"><i class="fa fa-plus"></i> Add Customer</a>
+
+
+            <div class="view-icons">
+                <a href="employees" class="grid-view btn btn-link"><i class="fa fa-th"></i></a>
+                <a href="employees-list" class="list-view btn btn-link active"><i class="fa fa-bars"></i></a>
             </div>
-            <div class="col-lg-6 col-12">
-                @include('forms.dynamic-input',['name'=>'end_date', 'title'=>'End Date', 'value' => $record->end_date ?? '' , 'type' => 'date','required' =>true])
-            </div>
-        </div> --}}
-        <a href="{{route('customers.export')}}" class="btn btn-primary">Export</a>
+        </div>
+    </div>
+    <div class="row align-items-center">
+        <div class="col-auto float-right ml-auto">
+            <a href="#" data-toggle="modal" data-target="#customer-import" class="btn btn-primary rounded mr-3">Import</a>
+            <a href="{{route('customers.export')}}"  class="btn btn-primary rounded mr-3">Export</a>
+        </div>
     </div>
 </div>
-<div class="row justify-content-end">
-    <div class="col-xl-6 col-lg-8 col-md-10 col-12 text-right mb-3">
-        @include('forms.excel-import', ['route' => route('customers.import')])
-    </div>
-</div>
+
 <div class="row">
     <div class="col-12">
         <livewire:customer-table />
@@ -47,7 +61,7 @@
             confirmButtonColor: '#ff9b44',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
                 Swal.fire(
                 'Deleted!',
