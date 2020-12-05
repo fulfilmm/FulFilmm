@@ -17,8 +17,13 @@
         </div> --}}
         <a href="{{route('employees.export')}}" class="btn btn-primary">Export</a>
     </div>
+    
 </div>
-
+<div class="row justify-content-end">
+    <div class="col-xl-6 col-lg-8 col-md-10 col-12 text-right mb-3">
+        @include('forms.excel-import', ['route' => route('employees.import')])
+    </div>
+</div>
 <head>
     @livewireStyles
 </head>
