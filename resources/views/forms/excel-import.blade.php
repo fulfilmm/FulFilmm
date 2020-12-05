@@ -1,9 +1,23 @@
-<form class="form-group row mt-4" method="POST" action="{{$route}}" enctype="multipart/form-data">
+<form method="POST" action="{{$route}}" enctype="multipart/form-data">
     @csrf
-    <div class="col-md-8 d-flex justify-content-end">
-        <input class="form-control" name="import" type="file">
+    <div class="form-group row">
+        <div class="">
+            <input
+            id="excel-import"
+            name="import"name="import"
+            type="file"
+            value="" required
+            autocomplete="name"
+            class="form-control">
+        </div>
+        @error('name')
+        <br>
+        <span class="" role="alert">
+            <p class="text-danger">{{ $message }}</p>
+        </span>
+        @enderror
     </div>
-    <div class="col-md-4">
+    <div class="d-flex justify-content-center">
         <button class="btn btn-primary">Import</button>
     </div>
 </form>

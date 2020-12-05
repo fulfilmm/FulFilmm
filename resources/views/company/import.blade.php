@@ -1,11 +1,8 @@
-<x-modal id="company-import" title="Import" >
-<div class="row justify-content-center">
-    <div>
+<x-partials.modal id="company-import" title="Import" >
+
+    <div class="row justify-content-center">
         <div>
-            <form action="">
-                @include('forms.excel-import', ['route' => route('customers.import')])
-            </form>
+            @include('forms.excel-import', ['route' => route('customers.import')])
         </div>
     </div>
-</div>
-</x-modal>
+</x-partials.modal>

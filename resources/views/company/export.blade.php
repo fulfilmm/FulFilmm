@@ -1,4 +1,4 @@
-<x-modal id="company-export" title="Export" >
+<x-partials.modal id="company-export" title="Export" >
     <div class="row justify-content-center">
         <div>
             <form action="" >
@@ -12,6 +12,6 @@
             </form>
         </div>
     </div>
-</x-modal>
+</x-partials.modal>
 
 
