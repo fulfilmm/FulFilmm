@@ -17,30 +17,29 @@
 
 <div class="content container-fluid">
 
-    <!-- Page Header -->
-    <div class="page-header">
-        <div class="row align-items-center mb-3">
-            <div class="col">
-                @include('layout.partials.breadcrumb',['header'=>'Company Table'])
-            </div>
-            <div class="col-auto float-right ml-auto">
-                <a href="{{route('companies.create')}}" class="btn add-btn"><i class="fa fa-plus"></i> Add Company</a>
-
-
-                <div class="view-icons">
-                    <a href="employees" class="grid-view btn btn-link"><i class="fa fa-th"></i></a>
-                    <a href="employees-list" class="list-view btn btn-link active"><i class="fa fa-bars"></i></a>
-                </div>
-            </div>
+<!-- Page Header -->
+<div class="page-header">
+    <div class="row align-items-center mb-3">
+        <div class="col">
+            @include('layout.partials.breadcrumb',['header'=>'Companies Table'])
         </div>
-        <div class="row align-items-center">
-            <div class="col-auto float-right ml-auto">
-                <a href="#" data-toggle="modal" data-target="#company-import" class="btn btn-primary rounded mr-3">Import</a>
-                <a href="#" data-toggle="modal" data-target="#company-export" class="btn btn-primary rounded mr-3">Export</a>
+        <div class="col-auto float-right ml-auto">
+            <a href="{{route('companies.create')}}" class="btn add-btn"><i class="fa fa-plus"></i> Add Customer</a>
+
+
+            <div class="view-icons">
+                <a href="{{route('companies.cards')}}" class="grid-view btn btn-link"><i class="fa fa-th"></i></a>
+                <a href="{{route('companies.index')}}" class="list-view btn btn-link active"><i class="fa fa-bars"></i></a>
             </div>
         </div>
     </div>
-
+    <div class="row align-items-center">
+        <div class="col-auto float-right ml-auto">
+            <a href="#" data-toggle="modal" data-target="#customer-import" class="btn btn-primary rounded mr-3">Import</a>
+            <a href="{{route('companies.export')}}"  class="btn btn-primary rounded mr-3">Export</a>
+        </div>
+    </div>
+</div>
 
     <div class="row">
         <div class="col-12">
@@ -53,7 +52,7 @@
     @push('scripts')
     @livewireScripts
     <script>
-        function deleteDept(id) {
+        function deleteRecord(id) {
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You cannot retrieve data back!",
@@ -69,7 +68,7 @@
                     'Record has been deleted.',
                     'success'
                     ).then(() => {
-                        document.getElementById("del-dept"+id).submit();
+                        document.getElementById("del-company"+id).submit();
                     })
 
                 }

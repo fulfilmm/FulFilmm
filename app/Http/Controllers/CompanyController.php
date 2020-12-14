@@ -30,11 +30,14 @@ class CompanyController extends Controller
      */
     public function index()
     {
-
         $companies = Company::get();
         return view('company.index', compact('companies'));
     }
 
+    public function card(){
+        $companies = Company::get();
+        return view('company.cards', compact('companies'));
+    }
 
     public function import(Request $request)
     {

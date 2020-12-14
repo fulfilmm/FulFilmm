@@ -48,3 +48,7 @@ Route::resource('departments', DepartmentController::class);
 Route::resource('employees', EmployeeController::class);
 Route::resource('companies', CompanyController::class);
 Route::resource('customers', CustomerController::class);
+
+
+//list routes
+Route::get('companies-card', [CompanyController::class, 'card'])->name('companies.cards');
