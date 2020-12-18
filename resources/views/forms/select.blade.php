@@ -7,5 +7,10 @@
                 <option value="{{$key}}" {{$key===($value??'')?'selected':''}}>{{$option}}</option>
             @endforeach
         </select>
+        @error($name)
+        <span role="alert">
+            <p class="text-danger mt-3 mb-0">{{ $message }}</p>
+        </span>
+        @enderror
     </div>
 </div>

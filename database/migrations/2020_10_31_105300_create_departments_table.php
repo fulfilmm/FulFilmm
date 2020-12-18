@@ -18,6 +18,7 @@ class CreateDepartmentsTable extends Migration
             $table->string('name',128);
             $table->foreignId('parent_department')->nullable();
             $table->text('address')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

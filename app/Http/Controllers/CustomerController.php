@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\CustomerExport;
+use App\Http\Requests\CustomerRequest;
 use App\Imports\CustomerImport;
 use App\Repositories\Contracts\CompanyContract;
 use App\Repositories\Contracts\CustomerContract;
@@ -48,7 +49,7 @@ class CustomerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CustomerRequest $request)
     {
         //
         $this->customerContract->create($request->all());

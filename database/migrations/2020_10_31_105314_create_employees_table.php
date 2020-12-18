@@ -25,6 +25,7 @@ class CreateEmployeesTable extends Migration
             $table->string('password', 128)->nullable();
             $table->rememberToken();
             $table->date('join_date');
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('department_id')

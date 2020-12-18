@@ -133,6 +133,6 @@ class CompanyController extends Controller
     {
         //
         $this->company_contract->deleteById($id);
-        return redirect()->route('company.index')->with('success', __('alert.delete_success'));
+        return redirect()->route('companies.index')->with('success', __('alert.delete_success'));
     }
 }

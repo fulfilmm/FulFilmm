@@ -20,6 +20,7 @@ class CreateCustomersTable extends Migration
             $table->string('email', 32);
             $table->text('address')->nullable();
             $table->foreignId('company_id');
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('company_id')

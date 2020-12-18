@@ -1,5 +1,5 @@
-@include('forms.dynamic-input',['name'=>'name', 'title'=>'Name', 'value' => $record->name ?? ''])
-@include('forms.select',['name'=>'parent_department', 'title'=>'Parent Department', 'placeHolder' => "Choose Parent Department", 'options' => $parent_departments, 'value' => $record->parent_department ?? ''])
+@include('forms.dynamic-input',['name'=>'name', 'title'=>'Name', 'value' => $record->name ?? old('name')])
+@include('forms.select',['name'=>'parent_department', 'title'=>'Parent Department', 'placeHolder' => "Choose Parent Department", 'options' => $parent_departments, 'value' => $record->parent_department ?? old('parent_department')])
 
 <div class="form-group row">
     <label class="col-form-label col-md-2">Department's Head</label>
@@ -10,10 +10,16 @@
                 <option value="{{$key}}" {{$key===($record->employee_id??'')?'selected':''}}>{{$option}}</option>
             @endforeach
         </select>
+
+        @error('employee_id')
+        <span role="alert">
+            <p class="text-danger mt-3 mb-0">{{ $message }}</p>
+        </span>
+        @enderror
     </div>
     <div class="col-md-2 add-company">
         <a href="{{route('employees.create')}}" class="btn btn-primary mt-1"><span class='fa fa-plus'></span></a>
     </div>
 
 </div>
-@include('forms.textarea', ['name' => 'address', 'title' => 'Address', 'value' => $record->address ?? '', 'required' => false])
+@include('forms.textarea', ['name' => 'address', 'title' => 'Address', 'value' => $record->address ?? old('address'), 'required' => false])

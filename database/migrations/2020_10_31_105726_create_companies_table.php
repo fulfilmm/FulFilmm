@@ -32,6 +32,7 @@ class CreateCompaniesTable extends Migration
             $table->text('company_registry');
             $table->foreignId('parent_company')->nullable();
             $table->foreignId('parent_company_2')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -22,7 +22,11 @@ class CustomerTable extends Component
     public function render()
     {
         return view('livewire.customer-table', [
-            'customers' => Customer::where('name', 'like', '%'.$this->search_key.'%')->with('company')->paginate(10)
+            'customers' => Customer::where('name', 'like', '%'.$this->search_key.'%')
+                            ->with(['company' => function($q) {
+                                $q->withTrashed();
+                            }])
+                            ->paginate(10)
         ]);
     }
 }
