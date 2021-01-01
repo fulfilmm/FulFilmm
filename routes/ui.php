@@ -10,3 +10,4 @@ Route::view('/','index');
 Route::view('/error-404', 'error.error-404');
 Route::view('/error-500', 'error.error-500');
 Route::view('/forms', 'forms.form-basic-inputs');
+Route::view('activity', 'activity.index');
