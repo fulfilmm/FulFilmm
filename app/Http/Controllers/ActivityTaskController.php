@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Contracts\ActivityContract;
+use App\Repositories\Contracts\ActivityTaskContract;
 use Illuminate\Http\Request;
 
-class ActivityController extends Controller
+class ActivityTaskController extends Controller
 {
-    private $activity_contract;
-    public function __construct(ActivityContract $activity_contract)
+    private $activity_task_contract;
+    public function __construct(ActivityTaskContract $activity_task_contract)
     {
-        $this->activity_contract = $activity_contract;
+        $this->activity_task_contract = $activity_task_contract;
     }
     /**
      * Display a listing of the resource.
@@ -20,7 +20,6 @@ class ActivityController extends Controller
     public function index()
     {
         //
-        return view('activity.index');
     }
 
     /**
@@ -28,10 +27,10 @@ class ActivityController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    // public function create()
-    // {
-    //     //
-    // }
+    public function create()
+    {
+        //
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -41,8 +40,8 @@ class ActivityController extends Controller
      */
     public function store(Request $request)
     {
-        $this->activity_contract->create($request->all());
-        return redirect()->route('activities.index')->with('success', __('alert.create_success'));
+        $this->activity_task_contract->create($request->all());
+        return redirect()->route('activity_tasks.index')->with('success', __('alert.create_success'));
     }
 
     /**
@@ -51,11 +50,10 @@ class ActivityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        $activity = $this->activity_contract->activityWithTasks($id);
-        return view('activity.details', compact('activity'));
-    }
+    // public function show($id)
+    // {
+    //     //
+    // }
 
     /**
      * Show the form for editing the specified resource.
@@ -63,10 +61,10 @@ class ActivityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
-    }
+    // public function edit($id)
+    // {
+    //     //
+    // }
 
     /**
      * Update the specified resource in storage.
@@ -77,8 +75,7 @@ class ActivityController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->activity_contract->updateById($id, $request->all());
-        return redirect()->route('activities.index')->with('success', __('alert.update_success'));
+        //
     }
 
     /**
@@ -89,7 +86,7 @@ class ActivityController extends Controller
      */
     public function destroy($id)
     {
-        $this->activity_contract->deleteById($id);
-        return redirect()->route('activities.index')->with('success', __('alert.delete_success'));
+        $this->activity_task_contract->deleteById($id);
+        return redirect()->route('activity_tasks.index')->with('success',__('alert.delete_success'));
     }
 }

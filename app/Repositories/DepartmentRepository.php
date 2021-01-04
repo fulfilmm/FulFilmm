@@ -18,6 +18,11 @@ class DepartmentRepository extends BaseRepository implements DepartmentContract
         return $this->model->whereNull('parent_department')->get();
     }
 
+    public function getDepartmentWithHead($department_id)
+    {
+        return $this->model->with('departmentHeads')->find($department_id);
+    }
+
     public function assignDepartmentHead($department_id, $employee_id)
     {
         DepartmentHead::create([

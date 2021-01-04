@@ -11,4 +11,9 @@ class ActivityRepository extends BaseRepository implements ActivityContract
     {
         return Activity::class;
     }
+
+    public function activityWithTasks($id)
+    {
+        return $this->model()->with('activity_tasks')->find($id);
+    }
 }

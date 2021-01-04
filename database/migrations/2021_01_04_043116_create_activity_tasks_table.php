@@ -17,15 +17,11 @@ class CreateActivityTasksTable extends Migration
             $table->id();
             $table->string('title');
             $table->foreignId('activity_id');
-            $table->foreignId('customer_id');
+            $table->foreignId('customer_id')->nullable();
             $table->timestamps();
 
             $table->foreign('activity_id')
                     ->on('activities')
-                    ->references('id');
-
-            $table->foreign('customer_id')
-                    ->on('customers')
                     ->references('id');
         });
     }

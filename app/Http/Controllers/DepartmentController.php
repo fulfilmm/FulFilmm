@@ -49,7 +49,6 @@ class DepartmentController extends Controller
      */
     public function store(DepartmentRequest $request)
     {
-        //
         $department = $this->department_contract->create($request->all());
         $this->department_contract->assignDepartmentHead($department->id, $request->employee_id);
         return redirect()->route('departments.index')->with('success', __('alert.create_success'));
@@ -75,7 +74,7 @@ class DepartmentController extends Controller
     public function edit($id)
     {
         //
-        $record = $this->department_contract->getById($id);
+        $record = $this->department_contract->getDepartmentWithHead($id);
         $parent_departments = $this->department_contract->parentDepartments()->pluck('name','id')->all();
         $employees = Employee::all()->pluck('name', 'id');
         return view('department.edit', compact('record', 'parent_departments', 'employees'));

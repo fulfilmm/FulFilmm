@@ -23,7 +23,7 @@ class DepartmentFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
-            'parent_department' => $this->faker->randomDigit,
+            // 'parent_department' => $this->faker->randomDigit,
             'address' => $this->faker->name,
         ];
     }

@@ -24,7 +24,15 @@ class DepartmentRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required'
+            'name' => 'required',
+            'employee_id' => 'required'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'employee_id.required' => "You must choose Department's head."
         ];
     }
 }

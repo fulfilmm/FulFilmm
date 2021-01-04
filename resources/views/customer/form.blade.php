@@ -1,6 +1,7 @@
-@include('forms.dynamic-input',['name'=>'name', 'title'=>'Name', 'value' => $record->name ?? old('name')])
-@include('forms.dynamic-input',['name'=>'phone', 'type' => 'tel', 'title'=>'Phone', 'value' => $record->phone ?? old('phone')])
-@include('forms.dynamic-input',['name'=>'email', 'type' => 'email', 'title'=>'Email', 'value' => $record->email ?? old('email')])
+<x-forms.basic.input name="name" title="Name" value="{{$record->name ?? old('name')}}" required></x-forms.basic.input>
+<x-forms.basic.input name="phone" type="tel" title="Phone" value="{{$record->phone ?? old('phone')}}" required></x-forms.basic.input>
+<x-forms.basic.input name="email" type="email" title="Email" value="{{$record->email ?? old('email')}}" required></x-forms.basic.input>
+
 <div class="form-group row">
     <label class="col-form-label col-md-2">Customer's Company</label>
     <div class="col-md-8">
@@ -23,4 +24,4 @@
     </div>
 
 </div>
-@include('forms.textarea', ['name' => 'address', 'title' => 'Address', 'value' => $record->address ?? old('address'), 'required' =>false])
+<x-forms.basic.textarea name='address' title="Address" value="{{$record->address ?? old('address')}}" :required="false"></x-forms.basic.textarea>
