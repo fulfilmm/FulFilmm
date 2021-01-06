@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\ActivityTaskController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CustomerController;
@@ -48,6 +50,8 @@ Route::resource('departments', DepartmentController::class);
 Route::resource('employees', EmployeeController::class);
 Route::resource('companies', CompanyController::class);
 Route::resource('customers', CustomerController::class);
+Route::resource('activities', ActivityController::class);
+Route::resource('activity_tasks', ActivityTaskController::class);
 
 
 //list routes

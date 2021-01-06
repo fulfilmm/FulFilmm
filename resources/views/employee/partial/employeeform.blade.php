@@ -2,35 +2,32 @@
 
 
         <form action="{{isset( $employee) ? route('employees.update',$employee->id): route('employees.store')}}" method="POST" >
-            @csrf 
+            @csrf
             @if (isset($employee))
             @method('put')
             @endif
-            @include('forms.dynamic-input',['required'=>true,'name'=>'name','value'=> $employee->name ?? old('name'),'title'=>'Name'])
-              @include('forms.select',['required'=>true,'value'=> $employee->department_id ?? old('department_id'),'title'=>"Department",'options'=>$departments->pluck('name','id'),
-              'name'=>'department_id'])
-              @include('forms.dynamic-input',['required'=>true,'name'=>'email','value'=> $employee->email ?? old('email'),'title'=>'Email'])
-              @include('forms.dynamic-input',['required'=>true,'name'=>'password','value'=> "",'type'=>'password','title'=>'Password'])
-              @include('forms.dynamic-input',['required'=>true,'name'=>'phone','value'=> $employee->phone ?? old('phone'),'title'=>'Phone'])
-              @include('forms.dynamic-input',['required'=>true,'name'=>'work_phone','value'=> $employee->work_phone ?? old('work_phone'),'title'=>'Work Phone'])
-              @include('forms.dynamic-input',['type'=>'date','required'=>true,'name'=>'join_date','value'=> $employee->join_date ?? old('join_date'),'title'=>'Joined Date'])
+            <x-forms.basic.input name="name" title="Name" value="{{$employee->name ?? old('name')}}" required></x-forms.basic.input>
+            <x-forms.basic.select name="department_id" title="Department" value="{{$employee->department_id ?? old('department_id')}}" :options="$departments->pluck('name', 'id')" required></x-forms.basic.select>
+            <x-forms.basic.input name="email" title="Email" value="{{$employee->email ?? old('email')}}" required></x-forms.basic.input>
+            <x-forms.basic.input name="password" title="Password" type="password" value="" required></x-forms.basic.input>
+            <x-forms.basic.input name="phone" title="Phone" value="{{$employee->phone ?? old('phone')}}" required></x-forms.basic.input>
+            <x-forms.basic.input name="work_phone" type="tel" title="Work Phone" value="{{$employee->work_phone ?? old('work_phone')}}" required></x-forms.basic.input>
+            <x-forms.basic.input name="join_date" title="Joined Date" type="date" value="{{$employee->join_date ?? old('join_date')}}" required></x-forms.basic.input>
 
-        
             {{-- <input type="text" name="department_id" placeholder="department"
            > --}}
-        
+
             {{-- <input type="text" name="role_id"  placeholder="role" value="" > --}}
-          
-            
-            @include('forms.dynamic-input',['name'=>'role_id','title'=>'Role','value'=>$employee->role_id ?? old('role_id')])
-            
+
+            <x-forms.basic.input name="role_id" title="Role" value="{{$employee->role_id ?? old('role_id')}}" required></x-forms.basic.input>
+
             <div class="form-group row">
                 <label class="col-form-label col-md-2">Can login</label>
                 <div class="col-md-10">
                     <div class="checkbox">
                         <label for="can_login">
-                            <input type="checkbox" value='1' name="can_login" id="can_login" checked={{isset( $employee->can_login) ? 'checked' : ''}}> 
-                            
+                            <input type="checkbox" value='1' name="can_login" id="can_login" checked={{isset( $employee->can_login) ? 'checked' : ''}}>
+
                         </label>
                     </div>
                 </div>
