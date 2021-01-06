@@ -13,7 +13,7 @@
 <!-- Page Wrapper -->
 <div class="page-wrapper">
         @include('layout.partials.flash-messages')
-        @yield('content')
+        @yield('content')`
 </div>
 
     @include('layout.partials.footer-scripts')
