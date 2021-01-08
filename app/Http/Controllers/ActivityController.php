@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\Contracts\ActivityContract;
+use App\Models\Employee;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ActivityController extends Controller
 {
@@ -15,12 +17,13 @@ class ActivityController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View
      */
     public function index()
     {
         //
-        return view('activity.index');
+        $employees = Employee::all()->pluck('name', 'id')->all();
+        return view('activity.index', compact('employees'));
     }
 
     /**
@@ -41,7 +44,9 @@ class ActivityController extends Controller
      */
     public function store(Request $request)
     {
-        $this->activity_contract->create($request->all());
+        $data = $request->all();
+        $data['employee_id'] = Auth::id() ?? 1;
+        $this->activity_contract->create($data);
         return redirect()->route('activities.index')->with('success', __('alert.create_success'));
     }
 
@@ -54,7 +59,7 @@ class ActivityController extends Controller
     public function show($id)
     {
         $activity = $this->activity_contract->activityWithTasks($id);
-        return view('activity.details', compact('activity'));
+        return view('activity.tasks', compact('activity'));
     }
 
     /**

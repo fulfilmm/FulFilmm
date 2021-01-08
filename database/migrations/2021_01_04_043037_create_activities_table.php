@@ -17,8 +17,13 @@ class CreateActivitiesTable extends Migration
             $table->id();
             $table->string('title');
             $table->boolean('is_acknowledged')->default(false);
+<<<<<<< Updated upstream
             $table->foreignId('employee_id');
             $table->foreignId('report_to_employee_id');
+=======
+            $table->foreignId('employee_id')->constrained('employees');
+            $table->foreignId('report_to_employee_id')->constrained('employees');
+>>>>>>> Stashed changes
             $table->softDeletes();
             $table->timestamps();
         });
