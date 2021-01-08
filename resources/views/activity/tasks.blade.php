@@ -1,7 +1,7 @@
 @extends('layout.mainlayout')
 @section('content')
     <!-- Main Wrapper -->
-    <div class="chat-main-row">
+    <div class="chat-main-row" style="margin-top: 30px">
         <div class="chat-main-wrapper">
             <div class="col-lg-7 message-view task-view task-left-sidebar">
                 <div class="chat-window">
