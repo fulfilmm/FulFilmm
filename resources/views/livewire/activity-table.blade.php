@@ -21,7 +21,7 @@
                     <tr>
                         <td>{{$activity->title}}</td>
                         <td>{{$activity->report_to_employee->name}}</td>
-                        <td>{{$activity->is_acknowledged}}</td>
+                        <td>{{$activity->is_acknowledged == 0 ? 'No' : 'Yes'}}</td>
                         <td style="display: flex">
                             <a class="btn btn-primary" href="{{route('activities.show', $activity->id)}}"><span class="fa fa-eye"></span></a>&nbsp;
                             <form action="{{route('activities.destroy', $activity->id)}}" id="del-activities{{$activity->id}}" method="POST">

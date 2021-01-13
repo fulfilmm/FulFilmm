@@ -43,10 +43,15 @@
                                                         <div class="task-container">
                                                             <span class="task-label" contenteditable="false">{{ $task->title }}</span>
                                                             <span class="task-action-btn task-btn-right">
-																<span class="action-circle large delete-btn"
-                                                                title="Delete Task">
-																	<i class="material-icons">delete</i>
-																</span>
+                                                                <form action="{{ route('activity_tasks.destroy', $task->id) }}" id="activity_task{{ $task->id }}" method="POST">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <input type="hidden" name="activity_id" value="{{ $activity->id }}">
+                                                                    <span class="action-circle large"
+                                                                    title="Delete Task">
+                                                                        <i class="material-icons" onclick="deleteActivity({{ $task->id }})">delete</i>
+                                                                    </span>
+                                                                </form>
 															</span>
                                                         </div>
                                                     </li>
@@ -333,4 +338,35 @@
 
 @push('scripts')
     @livewireScripts
+
+    <script>
+        $(document).ready(function () {
+            let success_alert = "{{ Session::get('success') }}"
+            console.log(success_alert);
+            if (success_alert) {
+                updateNotification('Success!!',success_alert, 'success')
+            }
+        })
+        function deleteActivity(task_id) {
+            $('#activity_task'+task_id).submit();
+        }
+
+        var updateNotification = function(task, notificationText, newClass){
+            var notificationPopup = $('.notification-popup ');
+            let notificationTimeout;
+			notificationPopup.find('.task').text(task);
+			notificationPopup.find('.notification-text').text(notificationText);
+			notificationPopup.removeClass('hide success');
+			// If a custom class is provided for the popup, add It
+			if(newClass)
+				notificationPopup.addClass(newClass);
+			// If there is already a timeout running for hiding current popup, clear it.
+			if(notificationTimeout)
+				clearTimeout(notificationTimeout);
+			// Init timeout for hiding popup after 3 seconds
+			notificationTimeout = setTimeout(function(){
+				notificationPopup.addClass('hide');
+			}, 3000);
+		};
+    </script>
 @endpush

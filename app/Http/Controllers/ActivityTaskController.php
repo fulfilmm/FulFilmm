@@ -85,9 +85,10 @@ class ActivityTaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
+        $activity_id = $request->activity_id;
         $this->activity_task_contract->deleteById($id);
-        return redirect()->route('activity_tasks.index')->with('success',__('alert.delete_success'));
+        return redirect()->route('activities.show', $activity_id)->with('success', __('alert.delete_success'));
     }
 }
