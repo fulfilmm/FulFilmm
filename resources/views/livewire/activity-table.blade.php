@@ -12,10 +12,6 @@
                 <tr>
                     <th>Title</th>
                     <th>Report To</th>
-<<<<<<< HEAD
-                    <th>Customer Name</th>
-=======
->>>>>>> feature/activities
                     <th>Acknowledged By</th>
                     <th>Action</th>
                 </tr>
@@ -24,20 +20,11 @@
                 @foreach ($activities as $activity)
                     <tr>
                         <td>{{$activity->title}}</td>
-<<<<<<< HEAD
-                        <td>{{$activity->report_to_employee_id->name}}</td>
-                        <td>{{$activity->customer->name}}</td>
-                        <td>{{$activity->is_acknowledged}}</td>
-                        <td style="display: flex">
-                            <a class="btn btn-primary" href="{{route('$activities.detail', $activities->id)}}">Details</a>&nbsp;
-                            <form action="{{route('activities.destroy', $activities->id)}}" id="del-activities{{$activity->id}}" method="POST">
-=======
                         <td>{{$activity->report_to_employee->name}}</td>
                         <td>{{$activity->is_acknowledged == 0 ? 'No' : 'Yes'}}</td>
                         <td style="display: flex">
                             <a class="btn btn-primary" href="{{route('activities.show', $activity->id)}}"><span class="fa fa-eye"></span></a>&nbsp;
                             <form action="{{route('activities.destroy', $activity->id)}}" id="del-activities{{$activity->id}}" method="POST">
->>>>>>> feature/activities
                                 @method('delete')
                                 @csrf
                                 <a class="btn btn-danger" href="#" onclick="deleteRecord({{$activity->id}})"><span class='fa fa-trash'></span></a>
