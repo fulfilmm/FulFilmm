@@ -109,8 +109,10 @@
                     <div class="fixed-header">
                         <div class="navbar">
                             <div class="task-assign">
+
+                                {{--Acknowledge button here--}}
                                 <a class="task-complete-btn" id="task_complete" href="javascript:void(0);">
-                                    <i class="material-icons">check</i> Mark Complete
+                                    <i class="material-icons">check</i> Acknowledge
                                 </a>
                             </div>
                             <ul class="nav float-right custom-menu">
@@ -349,6 +351,8 @@
 @endsection
 @section('styles')
     @livewireStyles
+@endsection
+@push('scripts')
     <script>
         $(document).ready(function () {
             let success_alert = "{{ Session::get('success') }}"
@@ -380,4 +384,4 @@
             }, 3000);
         };
     </script>
-    @endpush
+@endpush
