@@ -13,26 +13,22 @@ class Activity extends Model
     protected $guarded = [];
 
     protected $fillable = [
-        'title', 'employee_id', 'report_to_employee_id', 'customer_id', 'is_acknowledged'
+        'title', 'employee_id', 'report_to_employee_id', 'is_acknowledged'
     ];
 
     public function employee(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+
     {
-        return $this->belongsTo('employee', 'employee_id');
+        return $this->belongsTo(Employee::class, 'employee_id');
     }
 
     public function report_to_employee(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo('employee', 'report_to_employee_id');
-    }
-
-    public function customer(): \Illuminate\Database\Eloquent\Relations\BelongsTo
-    {
-        return $this->belongsTo('customer');
+        return $this->belongsTo(Employee::class, 'report_to_employee_id');
     }
 
     public function activity_tasks(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(ActivitiyTask::class, 'activity_id');
+        return $this->hasMany(ActivityTask::class, 'activity_id');
     }
 }

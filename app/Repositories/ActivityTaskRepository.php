@@ -1,7 +1,7 @@
 <?php
 namespace App\Repositories;
 
-use App\Models\ActivitiyTask;
+use App\Models\ActivityTask;
 use App\Repositories\Contracts\ActivityTaskContract;
 
 class ActivityTaskRepository extends BaseRepository implements ActivityTaskContract
@@ -9,6 +9,6 @@ class ActivityTaskRepository extends BaseRepository implements ActivityTaskContr
 
     public function model()
     {
-        return ActivitiyTask::class;
+        return ActivityTask::class;
     }
 }

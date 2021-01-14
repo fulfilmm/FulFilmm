@@ -17,7 +17,7 @@ class CreateActivityTasksTable extends Migration
             $table->id();
             $table->string('title');
             $table->foreignId('activity_id');
-            $table->integer('customer_id')->nullable();
+            $table->unsignedBigInteger('customer_id')->nullable();
             $table->timestamps();
 
             $table->foreign('activity_id')

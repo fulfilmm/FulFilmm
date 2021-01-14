@@ -7,9 +7,12 @@
 @section('content')
     {{-- Modals --}}
     <x-partials.modal id="acitvity-create" title="Create Activity">
-        <form action="">
+        <form action="{{ route('activities.store') }}" method="POST">
+            @csrf
             <x-forms.basic.input name="title" type="text" value="" title="Title" required></x-forms.basic.input>
-            <x-forms.basic.select name="customer_id" title="Customer" value="{{$activity->customer_id ?? old('customer_id')}}" :options="$customers->pluck('name', 'id')" required></x-forms.basic.select>
+            <x-forms.basic.select name="report_to_employee_id" title="Report To"
+                                  value="{{$activity->report_to_employee_id ?? old('report_to_employee_id')}}"
+                                  :options="$employees" required></x-forms.basic.select>
             <div class="d-flex justify-content-center">
                 <button class="btn btn-primary">Create</button>
             </div>
@@ -27,14 +30,16 @@
                 <div class="col-auto float-right ml-auto">
 
                     {{-- his will result to modal--}}
-                    <button data-toggle="modal" data-target="#acitvity-create" class="btn add-btn"><i class="fa fa-plus"></i> Create Activities</button>
+                    <button data-toggle="modal" data-target="#acitvity-create" class="btn add-btn"><i
+                            class="fa fa-plus"></i> Create Activities
+                    </button>
                 </div>
             </div>
         </div>
 
         <div class="row">
             <div class="col-12">
-                <livewire:activity-table />
+                <livewire:activity-table/>
             </div>
         </div>
 
@@ -59,7 +64,7 @@
                                 'Record has been deleted.',
                                 'success'
                             ).then(() => {
-                                document.getElementById("del-activity"+id).submit();
+                                document.getElementById("del-activity" + id).submit();
                             })
 
                         }
@@ -67,4 +72,3 @@
                 }
             </script>
     @endpush
-

@@ -5,37 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a55b5161-d741-4804-895f-54c551074d00" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/Http/Controllers/ActivityController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Http/Controllers/ActivityTaskController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Http/Livewire/ActivityTable.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Models/ActivitiyTask.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Models/Activity.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Repositories/ActivityRepository.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Repositories/ActivityTaskRepository.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Repositories/Contracts/ActivityContract.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Repositories/Contracts/ActivityTaskContract.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/migrations/2021_01_04_043037_create_activities_table.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/migrations/2021_01_04_043116_create_activity_tasks_table.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/activity/create.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/activity/tasks.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/components/forms/basic/select.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/components/forms/basic/textarea.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/livewire/activity-table.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DepartmentController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DepartmentController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Requests/DepartmentRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/DepartmentRequest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Providers/RepositoryServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Providers/RepositoryServiceProvider.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Repositories/Contracts/DepartmentContract.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/Contracts/DepartmentContract.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Repositories/DepartmentRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/DepartmentRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/factories/DepartmentFactory.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/factories/DepartmentFactory.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2020_10_31_105300_create_departments_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_10_31_105300_create_departments_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeders/DatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/DatabaseSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ActivityController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ActivityController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ActivityTaskController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ActivityTaskController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Livewire/ActivityTable.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Livewire/ActivityTable.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/ActivitiyTask.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/ActivityTask.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Activity.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Activity.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Repositories/ActivityRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/ActivityRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Repositories/ActivityTaskRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/ActivityTaskRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_04_043037_create_activities_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_04_043037_create_activities_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_04_043116_create_activity_tasks_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_04_043116_create_activity_tasks_table.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/activity/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/activity/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/customer/form.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/customer/form.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/department/form.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/department/form.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/employee/partial/employeeform.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/employee/partial/employeeform.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/ui.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/ui.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/activity/tasks.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/activity/tasks.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/livewire/activity-table.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/livewire/activity-table.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

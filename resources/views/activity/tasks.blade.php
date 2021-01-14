@@ -1,8 +1,7 @@
 @extends('layout.mainlayout')
 @section('content')
     <!-- Main Wrapper -->
-
-    <div class="chat-main-row">
+    <div class="chat-main-row" style="margin-top: 30px">
         <div class="chat-main-wrapper">
             <div class="col-lg-7 message-view task-view task-left-sidebar">
                 <div class="chat-window">
@@ -17,7 +16,9 @@
                             </div>
                             <a class="task-chat profile-rightbar float-right" id="task_chat" href="#task_window"><i
                                     class="fa fa fa-comment"></i></a>
-                            <ul class="nav float-right custom-menu">
+
+                            {{-- <ul class="nav float-right custom-menu">
+
                                 <li class="nav-item dropdown dropdown-action">
                                     <a href="" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i
                                             class="fa fa-cog"></i></a>
@@ -27,7 +28,8 @@
                                         <a class="dropdown-item" href="javascript:void(0)">All Tasks</a>
                                     </div>
                                 </li>
-                            </ul>
+
+                            </ul> --}}
                         </div>
                     </div>
                     <div class="chat-contents">
@@ -38,49 +40,51 @@
                                         <div class="task-list-container">
                                             <div class="task-list-body">
                                                 <ul id="task-list">
-                                                    <li class="task">
-                                                        <div class="task-container">
-                                                            <span class="task-label" contenteditable="false">Patient appointment booking</span>
-                                                            <span class="task-action-btn task-btn-right">
-																			<span class="action-circle large delete-btn"
-                                                                                  title="Delete Task">
-																				<i class="material-icons">delete</i>
-																			</span>
-																		</span>
-                                                        </div>
-                                                    </li>
-                                                    <li class="task">
-                                                        <div class="task-container">
-                                                            <span class="task-label" contenteditable="false">Appointment booking with payment gateway</span>
-                                                            <span class="task-action-btn task-btn-right">
-																			<span class="action-circle large delete-btn"
-                                                                                  title="Delete Task">
-																				<i class="material-icons">delete</i>
-																			</span>
-																		</span>
-                                                        </div>
-                                                    </li>
-                                                    <li class="completed task">
-                                                        <div class="task-container">
-                                                            <span class="task-label">Doctor available module</span>
-                                                            <span class="task-action-btn task-btn-right">
-																			<span class="action-circle large delete-btn"
-                                                                                  title="Delete Task">
-																				<i class="material-icons">delete</i>
-																			</span>
-																		</span>
-                                                        </div>
-                                                    </li>
+                                                    {{-- {{ dd($activity) }} --}}
+                                                    @forelse ($activity->activity_tasks as $task)
+                                                        <li class="task">
+                                                            <div class="task-container">
+                                                                <span class="task-label"
+                                                                      contenteditable="false">{{ $task->title }}</span>
+                                                                <span class="task-action-btn task-btn-right">
+                                                                <form
+                                                                    action="{{ route('activity_tasks.destroy', $task->id) }}"
+                                                                    id="activity_task{{ $task->id }}" method="POST">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <input type="hidden" name="activity_id"
+                                                                           value="{{ $activity->id }}">
+                                                                    <span class="action-circle large"
+                                                                          title="Delete Task">
+                                                                        <i class="material-icons"
+                                                                           onclick="deleteActivity({{ $task->id }})">delete</i>
+                                                                    </span>
+                                                                </form>
+															</span>
+                                                            </div>
+                                                        </li>
+                                                    @empty
+                                                        <li class="task">
+                                                            <div class="task-container">
+                                                                <span class="task-label" contenteditable="false">There is no task for this Activity yet.</span>
+                                                            </div>
+                                                        </li>
+                                                    @endforelse
                                                 </ul>
                                             </div>
                                             <div class="task-list-footer">
                                                 <div class="new-task-wrapper">
-                                                    <form action="">
-                                                         <textarea id="new-task"
-                                                                   placeholder="Enter new task here. . ."></textarea>
+                                                    <form action="{{ route('activity_tasks.store') }}" method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="activity_id"
+                                                               value="{{ $activity->id }}">
+                                                        <textarea name="title"
+                                                                  placeholder="Enter new task here. . ."></textarea>
                                                         <span
                                                             class="error-message hidden">You need to enter a task first</span>
-                                                        <button type="submit"  class="add-new-task-btn btn" id="add-task">Add Task</button>
+                                                        <button type="submit" class="add-new-task-btn btn"
+                                                                id="add-new-task">Add Task
+                                                        </button>
                                                         <span class="btn" id="close-task-panel">Close</span>
                                                     </form>
 
@@ -126,7 +130,7 @@
                             <div class="chat-wrap-inner">
                                 <div class="chat-box">
                                     <div class="chats">
-                                        <h4>Hospital Administration Phase 1</h4>
+                                        <h4>{{ $activity->title }}</h4>
                                         <div class="task-header">
                                             <div class="assignee-info">
                                                 <a href="#" data-toggle="modal" data-target="#assignee">
@@ -134,15 +138,15 @@
                                                         <img alt="" src="img/profiles/avatar-02.jpg">
                                                     </div>
                                                     <div class="assigned-info">
-                                                        <div class="task-head-title">Assigned To</div>
-                                                        <div class="task-assignee">John Doe</div>
+
+                                                        <div class="task-head-title">Task Owner</div>
+                                                        <div
+                                                            class="task-assignee">{{ Auth::user()->name ?? 'Guest' }}</div>
                                                     </div>
                                                 </a>
-                                                <span class="remove-icon">
-																<i class="fa fa-close"></i>
-															</span>
                                             </div>
-                                            <div class="task-due-date">
+                                            {{-- <div class="task-due-date">
+
                                                 <a href="#" data-toggle="modal" data-target="#assignee">
                                                     <div class="due-icon">
 																	<span>
@@ -157,7 +161,8 @@
                                                 <span class="remove-icon">
 																<i class="fa fa-close"></i>
 															</span>
-                                            </div>
+
+                                            </div> --}}
                                         </div>
                                         <hr class="task-line">
                                         <div class="task-desc">
@@ -344,8 +349,35 @@
 @endsection
 @section('styles')
     @livewireStyles
-@endsection
+    <script>
+        $(document).ready(function () {
+            let success_alert = "{{ Session::get('success') }}"
+            console.log(success_alert);
+            if (success_alert) {
+                updateNotification('Success!!', success_alert, 'success')
+            }
+        })
 
-@push('scripts')
-    @livewireScripts
-@endpush
+        function deleteActivity(task_id) {
+            $('#activity_task' + task_id).submit();
+        }
+
+        var updateNotification = function (task, notificationText, newClass) {
+            var notificationPopup = $('.notification-popup ');
+            let notificationTimeout;
+            notificationPopup.find('.task').text(task);
+            notificationPopup.find('.notification-text').text(notificationText);
+            notificationPopup.removeClass('hide success');
+            // If a custom class is provided for the popup, add It
+            if (newClass)
+                notificationPopup.addClass(newClass);
+            // If there is already a timeout running for hiding current popup, clear it.
+            if (notificationTimeout)
+                clearTimeout(notificationTimeout);
+            // Init timeout for hiding popup after 3 seconds
+            notificationTimeout = setTimeout(function () {
+                notificationPopup.addClass('hide');
+            }, 3000);
+        };
+    </script>
+    @endpush

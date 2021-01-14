@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use App\Repositories\Contracts\ActivityContract;
+use App\Models\Employee;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ActivityController extends Controller
 {
@@ -18,13 +20,18 @@ class ActivityController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * <<<<<<< HEAD
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     * =======
+     * @return \Illuminate\Contracts\View\View
+     * >>>>>>> feature/activities
      */
     public function index()
     {
         //
-        $customers = Customer::get();
-        return view('activity.index', compact('customers'));
+
+        $employees = Employee::all()->pluck('name', 'id')->all();
+        return view('activity.index', compact('employees'));
     }
 
     /**
@@ -41,11 +48,13 @@ class ActivityController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
-        $this->activity_contract->create($request->all());
+        $data = $request->all();
+        $data['employee_id'] = Auth::id() ?? 1;
+        $this->activity_contract->create($data);
         return redirect()->route('activities.index')->with('success', __('alert.create_success'));
     }
 
@@ -53,12 +62,12 @@ class ActivityController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function show($id)
     {
         $activity = $this->activity_contract->activityWithTasks($id);
-        return view('activity.details', compact('activity'));
+        return view('activity.tasks', compact('activity'));
     }
 
     /**
@@ -77,7 +86,7 @@ class ActivityController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {
@@ -89,7 +98,7 @@ class ActivityController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {

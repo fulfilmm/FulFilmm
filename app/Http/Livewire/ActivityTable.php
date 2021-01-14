@@ -22,7 +22,7 @@ class ActivityTable extends Component
     public function render()
     {
         return view('livewire.activity-table', [
-            "activities" => Activity::with('employee', 'report_to_employee', 'customer')->where('title', 'like', '%'.$this->search_key.'%')->paginate(10)
+            "activities" => Activity::with('employee', 'report_to_employee')->where('title', 'like', '%' . $this->search_key . '%')->paginate(10)
         ]);
     }
 }
