@@ -31,4 +31,9 @@ class Activity extends Model
     {
         return $this->hasMany(ActivityTask::class, 'activity_id');
     }
+
+    public function comments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ActivityTask::class, 'activity_id');
+    }
 }

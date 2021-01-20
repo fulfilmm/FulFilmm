@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Customer;
+use App\Models\Activity;
+use App\Models\Comment;
 use App\Repositories\Contracts\ActivityContract;
 use App\Models\Employee;
 use Illuminate\Http\Request;
@@ -67,7 +68,10 @@ class ActivityController extends Controller
     public function show($id)
     {
         $activity = $this->activity_contract->activityWithTasks($id);
-        return view('activity.tasks', compact('activity'));
+        $messages = Comment::where('activity_id', $id)
+            ->with('user')
+            ->get();
+        return view('activity.tasks', compact('activity', 'messages'));
     }
 
     /**

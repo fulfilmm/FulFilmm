@@ -142,13 +142,11 @@
                                                     <div class="assigned-info">
 
                                                         <div class="task-head-title">Task Owner</div>
-                                                        <div
-                                                            class="task-assignee">{{ Auth::user()->name ?? 'Guest' }}</div>
+                                                        <div class="task-assignee">{{ Auth::guard('employee')->user()->name ?? 'Guest' }}</div>
                                                     </div>
                                                 </a>
                                             </div>
-                                            {{-- <div class="task-due-date">
-
+                                            <div class="task-due-date">
                                                 <a href="#" data-toggle="modal" data-target="#assignee">
                                                     <div class="due-icon">
 																	<span>
@@ -163,6 +161,7 @@
                                                 <span class="remove-icon">
 																<i class="fa fa-close"></i>
 															</span>
+<<<<<<< HEAD
 
                                             </div> --}}
                                         </div>
@@ -173,173 +172,39 @@
                                             </div>
                                             <div class="task-textarea">
                                                 <textarea class="form-control" placeholder="Description"></textarea>
+=======
+>>>>>>> feature/activities
                                             </div>
                                         </div>
+
                                         <hr class="task-line">
-                                        <div class="task-information">
-                                            <span class="task-info-line"><a class="task-user" href="#">Lesley Grauer</a> <span
-                                                    class="task-info-subject">created task</span></span>
-                                            <div class="task-time">Jan 20, 2019</div>
-                                        </div>
-                                        <div class="task-information">
-                                            <span class="task-info-line"><a class="task-user" href="#">Lesley Grauer</a> <span
-                                                    class="task-info-subject">added to Hospital Administration</span></span>
-                                            <div class="task-time">Jan 20, 2019</div>
-                                        </div>
-                                        <div class="task-information">
-                                            <span class="task-info-line"><a class="task-user" href="#">Lesley Grauer</a> <span
-                                                    class="task-info-subject">assigned to John Doe</span></span>
-                                            <div class="task-time">Jan 20, 2019</div>
-                                        </div>
-                                        <hr class="task-line">
-                                        <div class="task-information">
-                                            <span class="task-info-line"><a class="task-user"
-                                                                            href="#">John Doe</a> <span
-                                                    class="task-info-subject">changed the due date to Sep 28</span> </span>
-                                            <div class="task-time">9:09pm</div>
-                                        </div>
-                                        <div class="task-information">
-                                            <span class="task-info-line"><a class="task-user"
-                                                                            href="#">John Doe</a> <span
-                                                    class="task-info-subject">assigned to you</span></span>
-                                            <div class="task-time">9:10pm</div>
-                                        </div>
-                                        <div class="chat chat-left">
-                                            <div class="chat-avatar">
-                                                <a href="profile" class="avatar">
-                                                    <img alt="" src="img/profiles/avatar-02.jpg">
-                                                </a>
-                                            </div>
-                                            <div class="chat-body">
-                                                <div class="chat-bubble">
-                                                    <div class="chat-content">
-                                                        <span class="task-chat-user">John Doe</span> <span
-                                                            class="chat-time">8:35 am</span>
-                                                        <p>I'm just looking around.</p>
-                                                        <p>Will you tell me something about yourself? </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="completed-task-msg"><span class="task-success"><a
-                                                    href="#">John Doe</a> completed this task.</span> <span
-                                                class="task-time">Today at 9:27am</span></div>
-                                        <div class="chat chat-left">
-                                            <div class="chat-avatar">
-                                                <a href="profile" class="avatar">
-                                                    <img alt="" src="img/profiles/avatar-02.jpg">
-                                                </a>
-                                            </div>
-                                            <div class="chat-body">
-                                                <div class="chat-bubble">
-                                                    <div class="chat-content">
-                                                        <span class="task-chat-user">John Doe</span> <span
-                                                            class="file-attached">attached 3 files <i
-                                                                class="fa fa-paperclip"></i></span> <span
-                                                            class="chat-time">Feb 17, 2019 at 4:32am</span>
-                                                        <ul class="attach-list">
-                                                            <li><i class="fa fa-file"></i> <a href="#">project_document.avi</a>
-                                                            </li>
-                                                            <li><i class="fa fa-file"></i> <a href="#">video_conferencing.psd</a>
-                                                            </li>
-                                                            <li><i class="fa fa-file"></i> <a
-                                                                    href="#">landing_page.psd</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="chat chat-left">
-                                            <div class="chat-avatar">
-                                                <a href="profile" class="avatar">
-                                                    <img alt="" src="img/profiles/avatar-16.jpg">
-                                                </a>
-                                            </div>
-                                            <div class="chat-body">
-                                                <div class="chat-bubble">
-                                                    <div class="chat-content">
-                                                        <span class="task-chat-user">Jeffery Lalor</span> <span
-                                                            class="file-attached">attached file <i
-                                                                class="fa fa-paperclip"></i></span> <span
-                                                            class="chat-time">Yesterday at 9:16pm</span>
-                                                        <ul class="attach-list">
-                                                            <li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a
-                                                                    href="#">Document_2016.pdf</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="chat chat-left">
-                                            <div class="chat-avatar">
-                                                <a href="profile" class="avatar">
-                                                    <img alt="" src="img/profiles/avatar-16.jpg">
-                                                </a>
-                                            </div>
-                                            <div class="chat-body">
-                                                <div class="chat-bubble">
-                                                    <div class="chat-content">
-                                                        <span class="task-chat-user">Jeffery Lalor</span> <span
-                                                            class="file-attached">attached file <i
-                                                                class="fa fa-paperclip"></i></span> <span
-                                                            class="chat-time">Today at 12:42pm</span>
-                                                        <ul class="attach-list">
-                                                            <li class="img-file">
-                                                                <div class="attach-img-download"><a href="#">avatar-1.jpg</a>
-                                                                </div>
-                                                                <div class="task-attach-img"><img src="img/user.jpg"
-                                                                                                  alt=""></div>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="task-information">
+
+                                    @foreach ($messages as $data)
+                                      {{-- {{dd($data->file)}} --}}
+                                      @include('activity.partial.message',[
+                                        'msg'=>$data->message,
+                                        'file'=> $data->file,
+                                        'name'=>$data->user->name,
+                                        'date'=>$data->created_at,
+                                    ])
+                                    @endforeach
+
+
+                                        {{-- <div class="task-information">
 														<span class="task-info-line">
 															<a class="task-user" href="#">John Doe</a>
 															<span
                                                                 class="task-info-subject">marked task as incomplete</span>
 														</span>
                                             <div class="task-time">1:16pm</div>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="chat-footer">
-                        <div class="message-bar">
-                            <div class="message-inner">
-                                <a class="link attach-icon" href="#"><img src="img/attachment.png" alt=""></a>
-                                <div class="message-area">
-                                    <div class="input-group">
-                                        <textarea class="form-control" placeholder="Type message..."></textarea>
-                                        <span class="input-group-append">
-														<button class="btn btn-primary" type="button"><i
-                                                                class="fa fa-send"></i></button>
-													</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="project-members task-followers">
-                            <span class="followers-title">Followers</span>
-                            <a class="avatar" href="#" data-toggle="tooltip" title="Jeffery Lalor">
-                                <img alt="" src="img/profiles/avatar-16.jpg">
-                            </a>
-                            <a class="avatar" href="#" data-toggle="tooltip" title="Richard Miles">
-                                <img alt="" src="img/profiles/avatar-09.jpg">
-                            </a>
-                            <a class="avatar" href="#" data-toggle="tooltip" title="John Smith">
-                                <img alt="" src="img/profiles/avatar-10.jpg">
-                            </a>
-                            <a class="avatar" href="#" data-toggle="tooltip" title="Mike Litorus">
-                                <img alt="" src="img/profiles/avatar-05.jpg">
-                            </a>
-                            <a href="#" class="followers-add" data-toggle="modal" data-target="#task_followers"><i
-                                    class="material-icons">add</i></a>
-                        </div>
+                       @include('activity.partial.message_input_box')
                     </div>
                 </div>
             </div>
@@ -355,15 +220,25 @@
 @push('scripts')
     <script>
         $(document).ready(function () {
+            //scroll to chat-box bottom to view latest message;
+            const chat_box = $('.chat-wrap-inner');
+            chat_box.animate({ scrollTop:10000 }, 1000);
+
+
             let success_alert = "{{ Session::get('success') }}"
             console.log(success_alert);
             if (success_alert) {
                 updateNotification('Success!!', success_alert, 'success')
             }
+
         })
 
         function deleteActivity(task_id) {
             $('#activity_task' + task_id).submit();
+        }
+        //trigger file Open when click on paper-clip icon
+        function triggerFile(e){
+             $('#file').trigger('click'); ;
         }
 
         var updateNotification = function (task, notificationText, newClass) {
