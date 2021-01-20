@@ -128,7 +128,7 @@
                                                     </div>
                                                     <div class="assigned-info">
                                                         <div class="task-head-title">Task Owner</div>
-                                                        <div class="task-assignee">{{ Auth::user()->name ?? 'Guest' }}</div>
+                                                        <div class="task-assignee">{{ Auth::guard('employee')->user()->name ?? 'Guest' }}</div>
                                                     </div>
                                                 </a>
                                             </div>
