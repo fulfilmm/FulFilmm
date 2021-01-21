@@ -58,6 +58,11 @@
 
                         </ul>
                     </li>
+
+                    <li class="menu">
+                    <a href="{{route('activities.index')}}"><i class="la la-cube"></i> <span>Activities</span></a>
+                    </li>
+
                 </ul>
             </div>
         </div>
