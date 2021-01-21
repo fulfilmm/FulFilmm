@@ -1,7 +1,7 @@
 @extends('layout.mainlayout')
 @section('content')
     <!-- Main Wrapper -->
-    <div class="chat-main-row" style="margin-top: 30px">
+    <div class="chat-main-row">
         <div class="chat-main-wrapper">
             <div class="col-lg-7 message-view task-view task-left-sidebar">
                 <div class="chat-window">
@@ -161,19 +161,6 @@
                                                 <span class="remove-icon">
 																<i class="fa fa-close"></i>
 															</span>
-<<<<<<< HEAD
-
-                                            </div> --}}
-                                        </div>
-                                        <hr class="task-line">
-                                        <div class="task-desc">
-                                            <div class="task-desc-icon">
-                                                <i class="material-icons">subject</i>
-                                            </div>
-                                            <div class="task-textarea">
-                                                <textarea class="form-control" placeholder="Description"></textarea>
-=======
->>>>>>> feature/activities
                                             </div>
                                         </div>
 
