@@ -13,6 +13,7 @@
             <x-forms.basic.select name="report_to_employee_id" title="Report To"
                                   value="{{$activity->report_to_employee_id ?? old('report_to_employee_id')}}"
                                   :options="$employees" required></x-forms.basic.select>
+            <x-forms.basic.date name="date" title="Date" required value=""></x-forms.basic.date>
             <div class="d-flex justify-content-center">
                 <button class="btn btn-primary">Create</button>
             </div>
