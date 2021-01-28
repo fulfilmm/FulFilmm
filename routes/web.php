@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\Login\EmployeeAuthController as AuthController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\GroupController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +55,7 @@ Route::resource('customers', CustomerController::class);
 Route::resource('comments', CommentController::class);
 Route::resource('activities', ActivityController::class);
 Route::resource('activity_tasks', ActivityTaskController::class);
+Route::resource('groups', GroupController::class);
 
 
 //list routes

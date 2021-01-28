@@ -63,6 +63,18 @@
                     <a href="{{route('activities.index')}}"><i class="la la-cube"></i> <span>Activities</span></a>
                     </li>
 
+                    <li class="submenu">
+                        <a href="#"><i class="la la-cube"></i> <span> Groups</span> <span class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+
+                            <li><a class="{{ Request::is('groups') ? 'active' : '' }}" href="{{ route('groups.index') }}">All Groups</a></li>
+
+                            <li><a class="{{ Request::is('groups/create') ? 'active' : '' }}" href="{{ route('groups.create') }}">Create Groups</a></li>
+
+                        </ul>
+                    </li>
+
+
                 </ul>
             </div>
         </div>
