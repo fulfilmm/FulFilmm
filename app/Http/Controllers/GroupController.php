@@ -27,11 +27,13 @@ class GroupController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    // public function create()
-    // {
-    //     //
+    public function create()
+    {
+        //
+        $employees = Department::with('employees')->has('employees')->get();
+        return view('groups.create', compact('employees'));
 
-    // }
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -42,6 +44,7 @@ class GroupController extends Controller
     public function store(Request $request)
     {
         //
+
     }
 
     /**
