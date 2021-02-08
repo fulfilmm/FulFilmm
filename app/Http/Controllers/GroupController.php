@@ -45,6 +45,14 @@ class GroupController extends Controller
     {
         //
 
+        $group = Group::create(['name' => $request->name]);
+        foreach($request->employees as $employee){
+
+            $group->employees()->attach($employee);
+        }
+
+        return redirect()->route('groups.create');
+
     }
 
     /**
