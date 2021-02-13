@@ -22,18 +22,16 @@ class PermissionSeeder extends Seeder
         foreach ($this->permissions as $permission) {
             $this->createResourcePermissions($permission);
         }
-        
     }
 
     private function createResourcePermissions($resource)
     {
-        Permission::create(['name' => $resource . '.index', 'display_name' => "View all $resource"]);
-        Permission::create(['name' => $resource . '.create', 'display_name' => "Show create form for $resource"]);
-        Permission::create(['name' => $resource . '.store', 'display_name' => "Store the $resource"]);
-        Permission::create(['name' => $resource . '.show', 'display_name' => "View detail of the $resource"]);
-        Permission::create(['name' => $resource . '.edit', 'display_name' => "Show Edit form for the $resource"]);
-        Permission::create(['name' => $resource . '.update', 'display_name' => "Update the $resource"]);
-        Permission::create(['name' => $resource . '.destroy', 'display_name' => "Delete the $resource"]);
-
+        Permission::create(['name' => $resource . '.index', 'display_name' => "View all $resource", 'guard_name' => 'employee']);
+        Permission::create(['name' => $resource . '.create', 'display_name' => "Show create form for $resource", 'guard_name' => 'employee']);
+        Permission::create(['name' => $resource . '.store', 'display_name' => "Store the $resource", 'guard_name' => 'employee']);
+        Permission::create(['name' => $resource . '.show', 'display_name' => "View detail of the $resource", 'guard_name' => 'employee']);
+        Permission::create(['name' => $resource . '.edit', 'display_name' => "Show Edit form for the $resource", 'guard_name' => 'employee']);
+        Permission::create(['name' => $resource . '.update', 'display_name' => "Update the $resource", 'guard_name' => 'employee']);
+        Permission::create(['name' => $resource . '.destroy', 'display_name' => "Delete the $resource", 'guard_name' => 'employee']);
     }
 }

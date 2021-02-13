@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\Login\EmployeeAuthController as AuthController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +48,7 @@ Route::namespace('Auth\Login')->prefix('employees')->as('employees.')->group(fun
 });
 
 //resource routes
+Route::resource('roles', RoleController::class);
 Route::resource('departments', DepartmentController::class);
 Route::resource('employees', EmployeeController::class);
 Route::resource('companies', CompanyController::class);
@@ -55,6 +57,9 @@ Route::resource('comments', CommentController::class);
 Route::resource('activities', ActivityController::class);
 Route::resource('activity_tasks', ActivityTaskController::class);
 
+
+//list routes post
+Route::put('roles/assign-permission/{id}', [RoleController::class, 'assignPermission'])->name('roles.assignPermission');
 
 //list routes
 Route::get('companies-card', [CompanyController::class, 'card'])->name('companies.cards');

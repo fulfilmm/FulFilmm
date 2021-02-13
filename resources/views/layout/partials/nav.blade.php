@@ -58,6 +58,17 @@
 
                         </ul>
                     </li>
+                    
+                    <li class="submenu">
+                        <a href="#"><i class="la la-cube"></i> <span> Roles</span> <span class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+
+                            <li><a class="{{ Request::is('roles') ? 'active' : '' }}" href="{{ route('roles.index') }}">All Roles</a></li>
+
+                            <li><a class="{{ Request::is('roles/create') ? 'active' : '' }}" href="{{ route('roles.create') }}">Create Role</a></li>
+
+                        </ul>
+                    </li>
 
                     <li class="menu">
                     <a href="{{route('activities.index')}}"><i class="la la-cube"></i> <span>Activities</span></a>

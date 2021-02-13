@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Permission\Traits\HasRoles;
 
 class Employee extends Authenticatable
 {
     use HasFactory, SoftDeletes;
+    use HasRoles;
 
     protected $guarded = [];
 
@@ -30,6 +32,10 @@ class Employee extends Authenticatable
     public function department_name()
     {
         return $this->department()->first()->name;
+    }
+    public  function getRoleAttribute()
+    {
+        return $this->roles[0] ?? null;
     }
     public function department()
     {
