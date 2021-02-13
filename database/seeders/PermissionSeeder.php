@@ -33,5 +33,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => $resource . '.edit', 'display_name' => "Show Edit form for the $resource", 'guard_name' => 'employee']);
         Permission::create(['name' => $resource . '.update', 'display_name' => "Update the $resource", 'guard_name' => 'employee']);
         Permission::create(['name' => $resource . '.destroy', 'display_name' => "Delete the $resource", 'guard_name' => 'employee']);
+        Permission::create(['name' => $resource . '.export', 'display_name' => "Export the $resource", 'guard_name' => 'employee']);
+        Permission::create(['name' => $resource . '.import', 'display_name' => "Import the $resource", 'guard_name' => 'employee']);
     }
 }
