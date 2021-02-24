@@ -11,6 +11,7 @@ use App\Exports\EmployeeExport;
 use App\Imports\EmployeeImport;
 use Exception;
 use Maatwebsite\Excel\Exceptions\LaravelExcelException;
+use Spatie\Permission\Models\Role;
 
 class EmployeeController extends Controller
 {
@@ -37,9 +38,12 @@ class EmployeeController extends Controller
     {
         //
 
-        $departments = Department::all();
+        $departments = Department::all()->pluck('name', 'id');
+        $roles = Role::all()->pluck('name', 'id');
+
         return view('employee.createAndEdit', compact(
-            'departments'
+            'departments',
+            'roles'
         ));
     }
 
@@ -69,8 +73,10 @@ class EmployeeController extends Controller
      */
     public function store(EmployeeRequest $request)
     {
-        // dd($request->validated());
-        Employee::create($request->validated());
+        $data  = collect($request->validated())->except('role_id')->toArray();
+
+        $employee = Employee::create($data);
+        $employee->assignRole($request->role_id);
         return redirect('employees')->with('success', __('alert.create_success'));
     }
 
@@ -93,9 +99,12 @@ class EmployeeController extends Controller
      */
     public function edit(Employee $employee)
     {
-        $departments = Department::all();
+        $departments = Department::all()->pluck('name', 'id');
+        $roles = Role::all()->pluck('name', 'id');
+
         return view('employee.createAndEdit', compact(
             'departments',
+            'roles',
             'employee'
         ));
     }
@@ -109,8 +118,10 @@ class EmployeeController extends Controller
      */
     public function update(EmployeeRequest $request, Employee $employee)
     {
-        //
-        $employee->update($request->validated());
+        $data  = collect($request->validated())->except('role_id')->toArray();
+
+        $employee->update($data);
+        $employee->syncRoles($request->role_id);
         return redirect('employees')->with('success', __('alert.update_success'));
     }
 

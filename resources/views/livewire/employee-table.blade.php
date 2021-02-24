@@ -19,6 +19,7 @@
                 <th>Join Date</th>
                 <th>can login</th>
                 <th>Department</th>
+                <th>Role</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -31,6 +32,7 @@
                 <td>{{ $em->join_date }}</td>
                 <td>{{ $em->can_login ? 'Yes' : 'No' }}</td>
                 <td>{{ $em->department->name }}</td>
+                <td>{{$em->getRoleNames()[0] ?? ''}}</td>
                 <td style="display: flex">
                 <a class="pr-2 my-auto btn btn-success" href="{{route('employees.edit',$em->id)}}">
                     <span class='fa fa-edit'></span>
