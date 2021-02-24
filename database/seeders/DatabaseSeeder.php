@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
             ->times(5)
             ->create();
 
-        Employee::updateOrCreate(
+        $employee = Employee::updateOrCreate(
             ['email' => 'admin@gmail.com'],
             [
                 'name' => 'pkk',
@@ -34,8 +34,13 @@ class DatabaseSeeder extends Seeder
         );
         $this->call([
             PermissionSeeder::class,
-
+            RoleSeeder::class,
+            RoleAndPermissionSeeder::class,
         ]);
+
+        $employee->assignRole('Employee');
         // \App\Models\User::factory(10)->create();
+
+
     }
 }

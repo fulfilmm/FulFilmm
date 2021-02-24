@@ -10,12 +10,12 @@ class RoleAndPermissionSeeder extends Seeder
     private $roles_and_permission = [
         'Employee' => [
             'resources' => [
-                'employees', 'activities', 'activity_tasks', 'comments', 'customers', 'companies'
+                'employees', 'activities', 'activity_tasks', 'comments', 'customers', 'companies','groups'
             ]
         ],
         'Manager' => [
             'resources' => [
-                'employees', 'activities', 'activity_tasks', 'comments', 'customers', 'companies', 'departments'
+                'employees', 'activities', 'activity_tasks', 'comments', 'customers', 'companies', 'departments','groups'
             ]
         ]
     ];
