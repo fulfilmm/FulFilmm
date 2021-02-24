@@ -21,11 +21,7 @@ class ActivityController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * <<<<<<< HEAD
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
-     * =======
      * @return \Illuminate\Contracts\View\View
-     * >>>>>>> feature/activities
      */
     public function index()
     {

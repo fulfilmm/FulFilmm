@@ -35,7 +35,7 @@ Route::namespace('Auth\Login')->prefix('employees')->as('employees.')->group(fun
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 });
 
-Route::middleware([ 'authorize'])->group(function () {
+Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function () {
     //resource routes
     Route::resource('roles', RoleController::class);
     Route::resource('departments', DepartmentController::class);

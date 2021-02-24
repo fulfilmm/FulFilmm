@@ -22,7 +22,7 @@ class RoleMiddleware
     {
         $user = Auth::guard('employee')->user();
         try {
-            $role = $user->roles[0];
+            $role = $user->role;
         }catch (Exception $e){
             throw UnauthorizedException::notLoggedIn();
         }
