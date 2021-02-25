@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
             RoleAndPermissionSeeder::class,
         ]);
 
-        $employee->assignRole('Employee');
+        $employee->assignRole('Manager');
         // \App\Models\User::factory(10)->create();
 
 
