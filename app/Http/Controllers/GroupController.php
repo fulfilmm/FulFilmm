@@ -17,9 +17,9 @@ class GroupController extends Controller
     public function index()
     {
         //
-        $employees = Department::with('employees')->has('employees')->get();
+        $groups = Group::with('employees')->get();
+        dd($groups);
         return view('groups.index');
-        // Group::with('employees')->where('');
     }
 
     /**
@@ -45,9 +45,8 @@ class GroupController extends Controller
     {
         //
 
-        $group = Group::create(['name' => $request->name]);
+        $group = Group::create(['name' => $request->name, 'created_by' => auth()->guard('employee')->id()]);
         foreach($request->employees as $employee){
-
             $group->employees()->attach($employee);
         }
 

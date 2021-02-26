@@ -32,6 +32,9 @@ class RoleAndPermissionSeeder extends Seeder
                             if ($permission_type == 'resources') {
                                 foreach ($permissions as $resource) {
                                     $this->giveResourcePermission($role, $resource);
+                                    if($resource === 'groups' && $role->name === 'Employee'){
+                                        $this->revokeResourcePermission($role, $resource);
+                                    }
                                 }
                             }
                         }
@@ -40,7 +43,7 @@ class RoleAndPermissionSeeder extends Seeder
 
                 public function giveResourcePermission($role, $resource): void
                 {
-                    //show permissions
+
                     $role->givePermissionTo([
                         $resource . '.index',
                         $resource . '.create',
@@ -50,18 +53,17 @@ class RoleAndPermissionSeeder extends Seeder
                         $resource . '.destroy',
                         ]
                     );
+                }
 
-                    if($resource === 'group' && $role === 'Employee'){
-                        $role->revokePermissionTo([
-                            $resource . '.create',
-                            $resource . '.store',
-                            $resource . '.edit',
-                            $resource . '.update',
-                            $resource . '.destroy',
-                            ]
-                        );
-                    }
-
+                private function revokeResourcePermission($role, $resource){
+                    $role->revokePermissionTo([
+                        $resource . '.create',
+                        $resource . '.store',
+                        $resource . '.edit',
+                        $resource . '.update',
+                        $resource . '.destroy',
+                        ]
+                    );
                 }
 
             }

@@ -11,7 +11,8 @@ class Group extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name'
+        'name',
+        'created_by'
     ];
 
     public function employees(){
