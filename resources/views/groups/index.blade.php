@@ -22,6 +22,14 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-12">
+                <head>
+                    @livewireStyles
+                </head>
+                <livewire:group-table />
+            </div>
+        </div>
     </div>
 
 </div>

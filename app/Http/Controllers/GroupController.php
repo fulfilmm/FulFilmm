@@ -17,8 +17,8 @@ class GroupController extends Controller
     public function index()
     {
         //
-        $groups = Group::with('employees')->get();
-        dd($groups);
+        // $groups = Group::with('employees')->get();
+        // dd($groups);
         return view('groups.index');
     }
 
