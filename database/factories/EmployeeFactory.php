@@ -20,6 +20,14 @@ class EmployeeFactory extends Factory
     *
     * @return array
     */
+
+    public function configure()
+    {
+        return $this->afterCreating(function (Employee $employee){
+            $employee->assignRole('Employee');
+        });
+    }
+
     public function definition()
     {
         return [

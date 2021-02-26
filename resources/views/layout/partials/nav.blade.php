@@ -58,7 +58,7 @@
 
                         </ul>
                     </li>
-                    
+
                     <li class="submenu">
                         <a href="#"><i class="la la-cube"></i> <span> Roles</span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
@@ -71,7 +71,7 @@
                     </li>
 
                     <li class="menu">
-                    <a href="{{route('activities.index')}}"><i class="la la-cube"></i> <span>Activities</span></a>
+                        <a href="{{route('activities.index')}}"><i class="la la-cube"></i> <span>Activities</span></a>
                     </li>
 
                     <li class="submenu">
@@ -80,8 +80,9 @@
 
                             <li><a class="{{ Request::is('groups') ? 'active' : '' }}" href="{{ route('groups.index') }}">All Groups</a></li>
 
+                            @if(\Auth::guard('employee')->user()->role->name === 'Manager' ||  \Auth::guard('employee')->user()->role->name === 'CEO')
                             <li><a class="{{ Request::is('groups/create') ? 'active' : '' }}" href="{{ route('groups.create') }}">Create Groups</a></li>
-
+                            @endif
                         </ul>
                     </li>
 
