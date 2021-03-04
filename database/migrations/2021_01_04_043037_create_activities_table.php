@@ -19,6 +19,7 @@ class CreateActivitiesTable extends Migration
             $table->boolean('is_acknowledged')->default(false);
             $table->foreignId('employee_id')->constrained('employees');
             $table->foreignId('report_to_employee_id')->constrained('employees');
+            $table->string('date');
             $table->softDeletes();
             $table->timestamps();
         });

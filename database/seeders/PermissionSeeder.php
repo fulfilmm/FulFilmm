@@ -22,6 +22,8 @@ class PermissionSeeder extends Seeder
         foreach ($this->permissions as $permission) {
             $this->createResourcePermissions($permission);
         }
+
+        Permission::create(['name' => 'activities.acknowledge', 'display_name' => "Can acknowledge the activities", 'guard_name' => 'employee']);
     }
 
     private function createResourcePermissions($resource)

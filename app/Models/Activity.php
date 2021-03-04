@@ -13,7 +13,7 @@ class Activity extends Model
     protected $guarded = [];
 
     protected $fillable = [
-        'title', 'employee_id', 'report_to_employee_id', 'is_acknowledged'
+        'title', 'employee_id', 'report_to_employee_id', 'is_acknowledged', 'date'
     ];
 
     public function employee(): \Illuminate\Database\Eloquent\Relations\BelongsTo

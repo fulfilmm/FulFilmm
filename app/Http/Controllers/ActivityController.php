@@ -25,8 +25,6 @@ class ActivityController extends Controller
      */
     public function index()
     {
-        //
-
         $employees = Employee::all()->pluck('name', 'id')->all();
         return view('activity.index', compact('employees'));
     }
@@ -104,5 +102,12 @@ class ActivityController extends Controller
     {
         $this->activity_contract->deleteById($id);
         return redirect()->route('activities.index')->with('success', __('alert.delete_success'));
+    }
+
+
+    public function acknowledge($activity_id)
+    {
+        $this->activity_contract->acknowledgeActivity($activity_id);
+        return redirect()->route('activities.index')->with('success', __('alert.acknowledged'));
     }
 }

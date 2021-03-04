@@ -59,6 +59,8 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::post('departments/import', [DepartmentController::class, 'import'])->name('departments.import');
     Route::post('employees/import', [EmployeeController::class, 'import'])->name('employees.import');
     Route::post('companies/import', [CompanyController::class, 'import'])->name('companies.import');
+
+    Route::get('activities/{id}/acknowledge', [ActivityController::class, 'acknowledge'])->name('activities.acknowledge');
 });
 
 

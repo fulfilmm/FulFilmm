@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         $employee = Employee::updateOrCreate(
             ['email' => 'admin@gmail.com'],
             [
-                'name' => 'pkk',
+                'name' => 'admin',
                 'department_id' => '1',
                 'phone' => '123123',
                 'email' => 'admin@gmail.com',

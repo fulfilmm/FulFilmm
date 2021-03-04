@@ -17,4 +17,12 @@ class ActivityRepository extends BaseRepository implements ActivityContract
     {
         return $this->model->with('activity_tasks')->find($id);
     }
+
+    public function acknowledgeActivity($activity_id)
+    {
+        $activity = $this->model->find($activity_id);
+        $activity->is_acknowledged = 1;
+        $activity->save();
+        return $activity;
+    }
 }
