@@ -3,7 +3,7 @@
 <div class="form-group row">
     <label class="col-form-label col-md-2">Employees</label>
     <div class="col-md-10" id="employee" name="employee">
-        <select class="js-example-basic-multiple w-50" name="employees[]" multiple="multiple" required>
+        <select class="employee_multiple_select w-50" name="employees[]" multiple="multiple" required>
             @foreach ($employees as $dept)
             <optgroup label={{$dept->name}}>
                 @foreach ($dept->employees as $employee)
@@ -16,3 +16,10 @@
           </select>
     </div>
 </div>
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $('.employee_multiple_select').select2();
+        });
+    </script>
+@endpush
