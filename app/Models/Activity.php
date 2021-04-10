@@ -13,7 +13,7 @@ class Activity extends Model
     protected $guarded = [];
 
     protected $fillable = [
-        'title', 'employee_id', 'report_to_employee_id', 'is_acknowledged', 'date'
+        'title', 'employee_id', 'report_to_employee_id', 'is_acknowledged', 'date', 'department_id'
     ];
 
     public function employee(): \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -35,5 +35,10 @@ class Activity extends Model
     public function comments(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(ActivityTask::class, 'activity_id');
+    }
+
+    public function co_owners()
+    {
+        return $this->hasMany(CoOwner::class, 'activity_id');
     }
 }

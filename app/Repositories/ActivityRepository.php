@@ -25,4 +25,12 @@ class ActivityRepository extends BaseRepository implements ActivityContract
         $activity->save();
         return $activity;
     }
+
+    public function addCoOwners($activity, $employee_ids)
+    {
+        foreach ($employee_ids as $employee_id) {
+            $activity->co_owners()->create(['employee_id' => $employee_id]);
+        }
+        return $activity;
+    }
 }

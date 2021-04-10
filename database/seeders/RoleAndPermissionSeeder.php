@@ -52,9 +52,12 @@ class RoleAndPermissionSeeder extends Seeder
             $resource . '.index',
             $resource . '.create',
             $resource . '.store',
+            $resource . '.show',
             $resource . '.edit',
             $resource . '.update',
             $resource . '.destroy',
+            $resource . '.import',
+            $resource . '.export'
         ]);
     }
 }

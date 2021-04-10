@@ -48,8 +48,12 @@ class ActivityController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $data['employee_id'] = Auth::id() ?? 1;
-        $this->activity_contract->create($data);
+        $data['employee_id'] = Auth::guard('employee')->id() ?? 1;
+        $data['department_id'] = Auth::guard('employee')->user()->department->id;
+        $activity = $this->activity_contract->create($data);
+        if (isset($data['co_owners'])) {
+            $this->activity_contract->addCoOwners($activity, $data['co_owners']);
+        }       
         return redirect()->route('activities.index')->with('success', __('alert.create_success'));
     }
 
@@ -61,7 +65,9 @@ class ActivityController extends Controller
      */
     public function show($id)
     {
+        
         $activity = $this->activity_contract->activityWithTasks($id);
+        $this->authorize('can-acknowledge', $activity);
         $messages = Comment::where('activity_id', $id)
             ->with('user')
             ->get();

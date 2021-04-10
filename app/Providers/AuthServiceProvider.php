@@ -26,5 +26,8 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         //
+        Gate::define('can-acknowledge', function($employee, $acknowldged_data) {
+            return $employee->id == $acknowldged_data->report_to_employee_id ? true : false;
+        });
     }
 }

@@ -24,11 +24,13 @@
                         <td>{{$activity->is_acknowledged == 0 ? 'No' : 'Yes'}}</td>
                         <td style="display: flex">
                             {{--this is acknowledge button--}}
+                            @can('can-acknowledge', $activity)
                             <a class="btn btn-success" href="{{ route('activities.acknowledge', $activity->id) }}"><span class="fa fa-check"></span></a>&nbsp;
+                            @endcan
                             <a class="btn btn-primary" href="{{route('activities.show', $activity->id)}}"><span
                                     class="fa fa-eye"></span></a>&nbsp;
                             <form action="{{route('activities.destroy', $activity->id)}}"
-                                  id="del-activities{{$activity->id}}" method="POST">
+                                  id="del-activity{{$activity->id}}" method="POST">
                                 @method('delete')
                                 @csrf
                                 <a class="btn btn-danger" href="#" onclick="deleteRecord({{$activity->id}})"><span

@@ -34,7 +34,7 @@ class EmployeeFactory extends Factory
                 'name' => $this->faker->name(),
                 'department_id' => '1',
                 'phone' => '123123',
-                'email' => $this->faker->unique()->safeEmail,
+                'email' => $this->faker->email,
                 'work_phone' => '0979540932',
                 'can_login' => true,
                 'password' => bcrypt('123123'),
