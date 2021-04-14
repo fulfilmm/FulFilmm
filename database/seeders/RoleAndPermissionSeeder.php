@@ -10,12 +10,12 @@ class RoleAndPermissionSeeder extends Seeder
     private $roles_and_permission = [
         'Employee' => [
             'resources' => [
-                'employees', 'activities', 'activity_tasks', 'comments', 'customers', 'companies',
+                'employees', 'activities', 'assignments', 'assignment_tasks', 'activity_tasks', 'comments', 'customers', 'companies',
             ]
             ],
         'Manager' => [
             'resources' => [
-                'employees', 'activities', 'activity_tasks', 'comments', 'customers', 'companies', 'departments','groups', 'roles', 'permissions'
+                'employees', 'activities', 'assignments', 'assignment_tasks', 'activity_tasks', 'comments', 'customers', 'companies', 'departments','groups', 'roles', 'permissions'
             ],
             'others' => [
                 'activities.acknowledge'
@@ -44,10 +44,10 @@ class RoleAndPermissionSeeder extends Seeder
                 }
         }
     }
-                
+
     public function giveResourcePermission($role, $resource): void
     {
-                    
+
         $role->givePermissionTo([
             $resource . '.index',
             $resource . '.create',
@@ -61,4 +61,3 @@ class RoleAndPermissionSeeder extends Seeder
         ]);
     }
 }
-            

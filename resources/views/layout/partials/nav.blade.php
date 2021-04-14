@@ -86,6 +86,9 @@
                         </ul>
                     </li>
 
+                    <li class="menu">
+                        <a href="{{route('assignments.index')}}"><i class="la la-cube"></i> <span>Assignments</span></a>
+                    </li>
 
                 </ul>
             </div>
