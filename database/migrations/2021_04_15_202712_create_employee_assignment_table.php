@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAssignmentsTable extends Migration
+class CreateEmployeeAssignmentTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateAssignmentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('assignments', function (Blueprint $table) {
+        Schema::create('employee_assignment', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('date');
-            $table->foreignId("assigned_by")->constrained('employees');
-            $table->foreignId("creator_department_id")->constrained('departments');
+            $table->foreignId('employee_id')->constrained('employees');
+            $table->foreignId('assignment_id')->constrained('assignments');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ class CreateAssignmentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('assignments');
+        Schema::dropIfExists('employee_assignment');
     }
 }
