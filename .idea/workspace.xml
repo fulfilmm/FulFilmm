@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4d8aa19e-eab1-4b9d-925d-36c0a35fff96" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/AssignmentController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/AssignmentController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/assignment/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/assignment/index.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -171,7 +172,7 @@
       <option name="presentableId" value="Default" />
       <updated>1618408652614</updated>
       <workItem from="1618408657389" duration="22000" />
-      <workItem from="1618713624761" duration="40000" />
+      <workItem from="1618713624761" duration="1229000" />
     </task>
     <servers />
   </component>

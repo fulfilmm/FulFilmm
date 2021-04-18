@@ -3,19 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\Assignment;
+use App\Models\Department;
+use App\Models\Employee;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AssignmentController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index()
     {
         //
-        return view('assignment.index');
+        $employees = Employee::all()->pluck('name', 'id')->all();
+        $deparment_id = Auth::user()->department()->first()->id;
+        return view('assignment.index', compact('employees'));
     }
 
     /**
