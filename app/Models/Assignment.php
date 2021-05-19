@@ -15,7 +15,7 @@ class Assignment extends Model
 
     public function assigned_employees()
     {
-        $this->belongsToMany(Employee::class, 'employee_assignment',);
+        $this->belongsToMany(Employee::class, 'assignment_employee');
     }
 
     public function assigned_by()

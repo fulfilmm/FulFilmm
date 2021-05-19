@@ -40,4 +40,9 @@ class Employee extends Authenticatable
     {
         return $this->belongsTo(Department::class, 'department_id');
     }
+
+    public function assignments()
+    {
+        return $this->belongsToMany(Assignment::class, 'assignment_employee');
+    }
 }
