@@ -111,7 +111,7 @@
                         <ul style="display: none;">
 
                             <li><a class="{{ Request::is('projects') ? 'active' : '' }}"
-                                   href="{{ route('projects.index') }}">All Groups</a></li>
+                                   href="{{ route('projects.index') }}">All Projects</a></li>
 
                             <li><a class="{{ Request::is('project/create') ? 'active' : '' }}"
                                    href="{{ route('projects.create') }}">Create Project</a></li>

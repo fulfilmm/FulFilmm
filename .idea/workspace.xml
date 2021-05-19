@@ -6,7 +6,15 @@
   <component name="ChangeListManager">
     <list default="true" id="4d8aa19e-eab1-4b9d-925d-36c0a35fff96" name="Default Changelist" comment="Added Project &#10;- Model (fillable and migration need to be done)&#10;- Controller&#10;- Routes&#10;- Livewire componenet and logic&#10;- Navigation item">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/assignment/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/assignment/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/EmployeeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/EmployeeController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ProjectController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ProjectController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Livewire/ProjectTable.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Livewire/ProjectTable.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Project.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Project.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_05_19_090509_create_projects_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_05_19_090509_create_projects_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layout/partials/nav.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layout/partials/nav.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/livewire/group-table.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/livewire/group-table.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/livewire/project-table.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/livewire/project-table.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/project/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/project/index.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -187,7 +195,8 @@
       <workItem from="1618408657389" duration="22000" />
       <workItem from="1618713624761" duration="1229000" />
       <workItem from="1621387584414" duration="1708000" />
-      <workItem from="1621391306919" duration="2412000" />
+      <workItem from="1621391306919" duration="2809000" />
+      <workItem from="1621398259108" duration="1705000" />
     </task>
     <task id="LOCAL-00001" summary="minor cosmetic changes">
       <created>1621392837445</created>

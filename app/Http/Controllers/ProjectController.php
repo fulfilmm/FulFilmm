@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\Group;
 use App\Models\Project;
+use DeepCopy\Matcher\PropertyNameMatcher;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -34,11 +36,19 @@ class ProjectController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
         //
+        $project = Project::where('title', $request->title)->first();
+        if (!$project) {
+            Project::create(['title' => $request->title, 'created_by' => auth()->guard('employee')->id()]);
+            $message = 'Project created successfully';
+        } else {
+            $message = 'The name you give already exists';
+        }
+        return redirect('projects')->with('error', $message);
     }
 
     /**
@@ -79,10 +89,12 @@ class ProjectController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \App\Models\Project $project
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function destroy(Project $project)
     {
         //
+        $project->delete();
+        return redirect('projects')->with('success', __('alert.delete_success'));
     }
 }

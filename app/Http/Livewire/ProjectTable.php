@@ -23,7 +23,7 @@ class ProjectTable extends Component
     public function render()
     {
         return view('livewire.project-table', [
-            'projects' => Project::where('name', 'like', "%$this->search_key%")
+            'projects' => Project::with('creator')->where('title', 'like', "%$this->search_key%")
                 ->paginate(10)
         ]);
     }
