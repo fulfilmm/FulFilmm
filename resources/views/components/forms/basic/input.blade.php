@@ -3,14 +3,14 @@
         <label for="{{$name}}" class="col-form-label col-md-2">{{$title}}</label>
         <div class="col-md-10">
             <input
-            id="{{$name}}"
-            name="{{$name}}"
-            @error($name) is-invalid @enderror name="{{$name}}"
-            type="{{$type ?? 'text'}}"
-            value="{{ $value ?? old($name) }}"
-            {{($required??true)?'required':''}}
-            autocomplete="name"
-            class="form-control">
+                id="{{$name}}"
+                name="{{$name}}"
+                @error($name) is-invalid @enderror
+                type="{{$type ?? 'text'}}"
+                value="{{ $value ?? old($name) }}"
+                {{($required??true)?'required':''}}
+                autocomplete="name"
+                class="form-control">
         </div>
         @error('name')
         <br>

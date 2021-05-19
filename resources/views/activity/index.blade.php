@@ -18,7 +18,8 @@
                 <div class="col-md-10 w-100" id="co_owners" name="co_owners">
                     {{--                    @dd($employees)--}}
 
-                    <select class="form-control" id="co_owner_multiple_select" style="width: 100%" name="co_owners[]" multiple="multiple" required>
+                    <select class="form-control" id="co_owner_multiple_select" style="width: 100%" name="co_owners[]"
+                            multiple="multiple" required>
                         @foreach ($employees as $key => $employee)
 
                             <option value={{$key}} @if($key === \Auth::id()) selected @endif>{{$employee}} </option>

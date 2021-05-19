@@ -10,38 +10,39 @@ class RoleAndPermissionSeeder extends Seeder
     private $roles_and_permission = [
         'Employee' => [
             'resources' => [
-                'employees', 'activities', 'assignments', 'assignment_tasks', 'activity_tasks', 'comments', 'customers', 'companies',
+                'employees', 'activities', 'assignments', 'assignment_tasks', 'activity_tasks', 'comments', 'customers', 'companies', 'projects'
             ]
-            ],
+        ],
         'Manager' => [
             'resources' => [
-                'employees', 'activities', 'assignments', 'assignment_tasks', 'activity_tasks', 'comments', 'customers', 'companies', 'departments','groups', 'roles', 'permissions'
+                'employees', 'activities', 'assignments', 'assignment_tasks', 'activity_tasks', 'comments', 'customers', 'companies', 'departments', 'groups', 'roles', 'permissions', 'projects'
             ],
             'others' => [
                 'activities.acknowledge'
             ]
         ]
     ];
+
     /**
-    * Run the database seeds.
-    *
-    * @return void
-    */
+     * Run the database seeds.
+     *
+     * @return void
+     */
     public function run()
     {
         foreach ($this->roles_and_permission as $role => $permission_types) {
             $role = Role::where('name', $role)->first();
-                foreach ($permission_types as $permission_type => $permissions) {
-                    if ($permission_type == 'resources') {
-                        foreach ($permissions as $resource) {
-                            $this->giveResourcePermission($role, $resource);
-                        }
-                    }else {
-                        foreach ($permissions as $permission) {
-                            $role->givePermissionTo($permission);
-                        }
+            foreach ($permission_types as $permission_type => $permissions) {
+                if ($permission_type == 'resources') {
+                    foreach ($permissions as $resource) {
+                        $this->giveResourcePermission($role, $resource);
+                    }
+                } else {
+                    foreach ($permissions as $permission) {
+                        $role->givePermissionTo($permission);
                     }
                 }
+            }
         }
     }
 
