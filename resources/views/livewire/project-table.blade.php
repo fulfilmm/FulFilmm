@@ -12,23 +12,26 @@
             <table class="table table-nowrap mb-0 ">
                 <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Created By<th>
+                    <th>Title</th>
+                    <th>Created By
+                    <th>
                 </tr>
                 </thead>
                 @foreach ($projects as $project)
                     <tr>
-                        <td>{{$project->name}}</td>
-                        <td>{{$project->created_by }}</td>
+                        <td>{{$project->title}}</td>
+                        <td>{{$project->creator->name }}</td>
                         <td style="display: flex">
-                            <a class="pr-2 my-auto btn btn-success" href="{{route('project.edit',$project->id)}}">
+                            <a class="pr-2 my-auto btn btn-success" href="{{route('projects.edit',$project->id)}}">
                                 <span class='fa fa-edit'></span>
                             </a>&nbsp;
 
-                            <form  id="project-del-{{$project->id}}" action="{{route('project.destroy',$project->id)}}" method="POST">
+                            <form id="del-project-{{$project->id}}" action="{{route('projects.destroy',$project->id)}}"
+                                  method="POST">
                                 @method('delete')
                                 @csrf
-                                <button class="btn btn-danger" onclick="deleteRecord({{$project->id}})" type="submit"><span class='fa fa-trash'></span></button>
+                                <a class="btn btn-danger" href="#" onclick="deleteRecord({{$project->id}})"><span
+                                        class='fa fa-trash'></span></a>
                             </form>
                         </td>
                     </tr>
