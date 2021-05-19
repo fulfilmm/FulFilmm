@@ -1,8 +1,9 @@
 <div class="form-group row">
     <label class="col-form-label col-md-2">{{$title}}</label>
     <div class="col-md-10">
-        <select class="form-control" id="{{$name}}" name="{{$name}}">
-            <option disabled selected>{{$placeHolder??$title}}</option>
+        <label for="{{$name}}"></label>
+        <select class="form-control" id="{{$name}}" name="{{$name}}" {{($required??true)?'required':''}}>
+            <option value="" disabled selected>{{$placeHolder??$title}}</option>
             @foreach ($options as $key => $option)
                 <option value="{{$key}}" {{$key==($value??'')?'selected':''}}>{{$option}}</option>
             @endforeach

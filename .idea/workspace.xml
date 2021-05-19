@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="4d8aa19e-eab1-4b9d-925d-36c0a35fff96" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/resources/views/project/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vOffice.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vOffice.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/AssignmentController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/AssignmentController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/assignment/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/assignment/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/seeders/PermissionSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/PermissionSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/seeders/RoleAndPermissionSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/RoleAndPermissionSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/activity/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/activity/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/components/forms/basic/input.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/components/forms/basic/input.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/components/forms/basic/select.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/components/forms/basic/select.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layout/partials/nav.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layout/partials/nav.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,6 +38,10 @@
       <filtered-out-file-type name="TAG" />
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
+  </component>
+  <component name="JsBowerSettings">
+    <bower-package value="" />
+    <bower.json value="" />
   </component>
   <component name="PhpWorkspaceProjectConfiguration">
     <include_path>
@@ -143,6 +160,7 @@
       <path value="$PROJECT_DIR$/vendor/symfony/http-foundation" />
       <path value="$PROJECT_DIR$/vendor/symfony/translation-contracts" />
       <path value="$PROJECT_DIR$/vendor/spatie/laravel-permission" />
+      <path value="$PROJECT_DIR$/vendor/ezyang/htmlpurifier" />
     </include_path>
   </component>
   <component name="ProjectId" id="1rAAis12HLaPXipN5bvoOqSoahs" />
@@ -155,7 +173,13 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.standard" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.standard" value="" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="prettierjs.PrettierConfiguration.Package" value="$PROJECT_DIR$/node_modules/prettier" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
@@ -173,6 +197,8 @@
       <updated>1618408652614</updated>
       <workItem from="1618408657389" duration="22000" />
       <workItem from="1618713624761" duration="1229000" />
+      <workItem from="1621387584414" duration="1708000" />
+      <workItem from="1621391306919" duration="1416000" />
     </task>
     <servers />
   </component>
@@ -190,5 +216,9 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
