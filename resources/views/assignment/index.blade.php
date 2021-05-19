@@ -37,7 +37,7 @@
         <div class="page-header">
             <div class="row align-items-center mb-3">
                 <div class="col">
-{{--                    @include('layout.partials.breadcrumb',['header'=>'Activities'])--}}
+                    @include('layout.partials.breadcrumb',['header'=>'Activities'])
                 </div>
                 <div class="col-auto float-right ml-auto">
 
