@@ -48,8 +48,8 @@ class ActivityController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $data['employee_id'] = Auth::guard('employee')->id() ?? 1;
-        $data['department_id'] = Auth::guard('employee')->user()->department->id;
+        $data['employee_id'] = loginUser()->id;
+        $data['department_id'] = loginUser()->department->id;
         $activity = $this->activity_contract->create($data);
 
         if (isset($data['co_owners'])) {

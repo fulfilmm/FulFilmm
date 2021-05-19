@@ -2,14 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AssignmentRequest;
 use App\Models\Assignment;
 use App\Models\Department;
 use App\Models\Employee;
+use App\Repositories\Contracts\AssignmentContract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AssignmentController extends Controller
 {
+    private $assignment_contract;
+
+    public function __construct(AssignmentContract $assignment_contract)
+    {
+        $this->assignment_contract = $assignment_contract;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -19,7 +27,6 @@ class AssignmentController extends Controller
     {
         //
         $employees = Employee::all()->pluck('name', 'id')->all();
-        $deparment_id = Auth::user()->department()->first()->id;
         return view('assignment.index', compact('employees'));
     }
 
@@ -28,10 +35,10 @@ class AssignmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
+    // public function create()
+    // {
+    //     //
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -39,9 +46,13 @@ class AssignmentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AssignmentRequest $request)
     {
-        //
+        $data = $request->all();
+        $data['assigned_by'] = loginUser()->id;
+        $data['creator_department_id'] = loginUser()->department->id;
+        $this->assignment_contract->create($data);
+        return redirect()->route('assignments.index')->with('success', __('alert.create_success'));
     }
 
     /**

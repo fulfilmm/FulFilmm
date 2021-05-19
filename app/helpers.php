@@ -1,6 +1,7 @@
 <?php
 
 use App\Helpers\General\Timezone;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 /*
@@ -92,5 +93,12 @@ if (!function_exists('camelcase_to_word')) {
         | (?<=[A-Z])
           (?=[A-Z][a-z])
         /x', $str));
+    }
+}
+
+if (!function_exists('loginUser')) {
+    function loginUser()
+    {
+        return Auth::guard('employee')->user();
     }
 }
