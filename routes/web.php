@@ -7,6 +7,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\Login\EmployeeAuthController as AuthController;
@@ -49,6 +50,7 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::resource('activity_tasks', ActivityTaskController::class);
     Route::resource('groups', GroupController::class);
     Route::resource('assignments',AssignmentController::class);
+    Route::resource('projects', ProjectController::class);
 
     //export routes
     Route::get('customers/export', [CustomerController::class, 'export'])->name('customers.export');

@@ -6,10 +6,13 @@
                     <li class="menu-title">
                         <span>Main</span>
                     </li>
-                    <li class="submenu"> <a href="#"><i class="la la-dashboard"></i> <span> Dashboard</span> <span class="menu-arrow"></span></a>
+                    <li class="submenu"><a href="#"><i class="la la-dashboard"></i> <span> Dashboard</span> <span
+                                class="menu-arrow"></span></a>
                         <ul style="display: none;">
-                            <li class="{{ Request::is('index') ? 'active' : '' }}"> <a  href="{{ url('index') }}">Admin Dashboard</a></li>
-                            <li> <a class="{{ Request::is('employee-dashboard') ? 'active' : '' }}" href="{{ url('employee-dashboard') }}">Employee Dashboard</a></li>
+                            <li class="{{ Request::is('index') ? 'active' : '' }}"><a href="{{ url('index') }}">Admin
+                                    Dashboard</a></li>
+                            <li><a class="{{ Request::is('employee-dashboard') ? 'active' : '' }}"
+                                   href="{{ url('employee-dashboard') }}">Employee Dashboard</a></li>
                         </ul>
                     </li>
 
@@ -17,22 +20,26 @@
                         <a href="#"><i class="la la-cube"></i> <span> Customers</span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
 
-                            <li><a class="{{ Request::is('customers') ? 'active' : '' }}" href="{{ route('customers.index') }}">All Customers</a></li>
+                            <li><a class="{{ Request::is('customers') ? 'active' : '' }}"
+                                   href="{{ route('customers.index') }}">All Customers</a></li>
 
-                            <li><a class="{{ Request::is('customers/create') ? 'active' : '' }}" href="{{ route('customers.create') }}">Create Customer</a></li>
+                            <li><a class="{{ Request::is('customers/create') ? 'active' : '' }}"
+                                   href="{{ route('customers.create') }}">Create Customer</a></li>
 
                         </ul>
                     </li>
 
 
-
                     <li class="submenu">
-                        <a href="#"><i class="la la-cube"></i> <span> Company</span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="la la-cube"></i> <span> Company</span> <span
+                                class="menu-arrow"></span></a>
                         <ul style="display: none;">
 
-                            <li><a class="{{ Request::is('companies') ? 'active' : '' }}" href="{{ route('companies.index') }}">All Companies</a></li>
+                            <li><a class="{{ Request::is('companies') ? 'active' : '' }}"
+                                   href="{{ route('companies.index') }}">All Companies</a></li>
 
-                            <li><a class="{{ Request::is('companies/create') ? 'active' : '' }}" href="{{ route('companies.create') }}">Create Company</a></li>
+                            <li><a class="{{ Request::is('companies/create') ? 'active' : '' }}"
+                                   href="{{ route('companies.create') }}">Create Company</a></li>
 
                         </ul>
                     </li>
@@ -41,20 +48,25 @@
                         <a href="#"><i class="la la-cube"></i> <span> Employees</span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
 
-                            <li><a class="{{ Request::is('employees') ? 'active' : '' }}" href="{{ route('employees.index') }}">All Employees</a></li>
+                            <li><a class="{{ Request::is('employees') ? 'active' : '' }}"
+                                   href="{{ route('employees.index') }}">All Employees</a></li>
 
-                            <li><a class="{{ Request::is('employees/create') ? 'active' : '' }}" href="{{ route('employees.create') }}">Create Employee</a></li>
+                            <li><a class="{{ Request::is('employees/create') ? 'active' : '' }}"
+                                   href="{{ route('employees.create') }}">Create Employee</a></li>
 
                         </ul>
                     </li>
 
                     <li class="submenu">
-                        <a href="#"><i class="la la-cube"></i> <span> Departments</span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="la la-cube"></i> <span> Departments</span> <span
+                                class="menu-arrow"></span></a>
                         <ul style="display: none;">
 
-                            <li><a class="{{ Request::is('departments') ? 'active' : '' }}" href="{{ route('departments.index') }}">All Departments</a></li>
+                            <li><a class="{{ Request::is('departments') ? 'active' : '' }}"
+                                   href="{{ route('departments.index') }}">All Departments</a></li>
 
-                            <li><a class="{{ Request::is('departments/create') ? 'active' : '' }}" href="{{ route('departments.create') }}">Create Department</a></li>
+                            <li><a class="{{ Request::is('departments/create') ? 'active' : '' }}"
+                                   href="{{ route('departments.create') }}">Create Department</a></li>
 
                         </ul>
                     </li>
@@ -63,9 +75,11 @@
                         <a href="#"><i class="la la-cube"></i> <span> Roles</span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
 
-                            <li><a class="{{ Request::is('roles') ? 'active' : '' }}" href="{{ route('roles.index') }}">All Roles</a></li>
+                            <li><a class="{{ Request::is('roles') ? 'active' : '' }}" href="{{ route('roles.index') }}">All
+                                    Roles</a></li>
 
-                            <li><a class="{{ Request::is('roles/create') ? 'active' : '' }}" href="{{ route('roles.create') }}">Create Role</a></li>
+                            <li><a class="{{ Request::is('roles/create') ? 'active' : '' }}"
+                                   href="{{ route('roles.create') }}">Create Role</a></li>
 
                         </ul>
                     </li>
@@ -78,16 +92,30 @@
                         <a href="#"><i class="la la-cube"></i> <span> Groups</span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
 
-                            <li><a class="{{ Request::is('groups') ? 'active' : '' }}" href="{{ route('groups.index') }}">All Groups</a></li>
+                            <li><a class="{{ Request::is('groups') ? 'active' : '' }}"
+                                   href="{{ route('groups.index') }}">All Groups</a></li>
 
                             @if(\Auth::guard('employee')->user()->role->name === 'Manager' ||  \Auth::guard('employee')->user()->role->name === 'CEO')
-                            <li><a class="{{ Request::is('groups/create') ? 'active' : '' }}" href="{{ route('groups.create') }}">Create Groups</a></li>
+                                <li><a class="{{ Request::is('groups/create') ? 'active' : '' }}"
+                                       href="{{ route('groups.create') }}">Create Groups</a></li>
                             @endif
                         </ul>
                     </li>
 
                     <li class="menu">
                         <a href="{{route('assignments.index')}}"><i class="la la-cube"></i> <span>Assignments</span></a>
+                    </li>
+
+                    <li class="submenu">
+                        <a href="#"><i class="la la-cube"></i> <span> Projects</span> <span class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+
+                            <li><a class="{{ Request::is('projects') ? 'active' : '' }}"
+                                   href="{{ route('projects.index') }}">All Groups</a></li>
+
+                            <li><a class="{{ Request::is('project/create') ? 'active' : '' }}"
+                                   href="{{ route('projects.create') }}">Create Project</a></li>
+                        </ul>
                     </li>
 
                 </ul>
