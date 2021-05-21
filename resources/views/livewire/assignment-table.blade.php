@@ -10,10 +10,10 @@
             <table class="table table-nowrap mb-0">
                 <thead>
                 <tr>
-                    <th>A</th>
-                    <th>B</th>
-                    <th>C</th>
-                    <th>D</th>
+                    <th>Title</th>
+                    <th>Date</th>
+                    <th>Assigned by</th>
+                    <th>Creator Department</th>
                 </tr>
                 </thead>
                 <tbody>

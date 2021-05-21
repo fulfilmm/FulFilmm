@@ -36,7 +36,7 @@
                                                             <span class="task-action-btn task-btn-right">
                                                                 <form
                                                                     {{-- action="{{ route('activity_tasks.destroy', $task->id) }}"--}}
-{{--                                                                    id="activity_task{{ $task->id }}"--}}
+                                                                    {{--                                                                    id="activity_task{{ $task->id }}"--}}
                                                                     method="POST">
                                                                     @csrf
                                                                     @method('DELETE')
@@ -51,30 +51,30 @@
 															</span>
                                                         </div>
                                                     </li>
-{{--                                                    @empty--}}
-{{--                                                        <li class="task">--}}
-{{--                                                            <div class="task-container">--}}
-{{--                                                                <span class="task-label" contenteditable="false">There is no task for this Activity yet.</span>--}}
-{{--                                                            </div>--}}
-{{--                                                        </li>--}}
-{{--                                                    @endforelse--}}
+                                                    {{--                                                    @empty--}}
+                                                    {{--                                                        <li class="task">--}}
+                                                    {{--                                                            <div class="task-container">--}}
+                                                    {{--                                                                <span class="task-label" contenteditable="false">There is no task for this Activity yet.</span>--}}
+                                                    {{--                                                            </div>--}}
+                                                    {{--                                                        </li>--}}
+                                                    {{--                                                    @endforelse--}}
                                                 </ul>
                                             </div>
                                             <div class="task-list-footer">
                                                 <div class="new-task-wrapper">
-{{--                                                    <form action="{{ route('activity_tasks.store') }}" method="POST">--}}
-{{--                                                        @csrf--}}
-{{--                                                        <input type="hidden" name="activity_id"--}}
-{{--                                                               value="{{ $activity->id }}">--}}
-{{--                                                        <textarea name="title"--}}
-{{--                                                                  placeholder="Enter new task here. . ."></textarea>--}}
-{{--                                                        <span--}}
-{{--                                                            class="error-message hidden">You need to enter a task first</span>--}}
-{{--                                                        <button type="submit" class="add-new-task-btn btn"--}}
-{{--                                                                id="add-new-task">Add Task--}}
-{{--                                                        </button>--}}
-{{--                                                        <span class="btn" id="close-task-panel">Close</span>--}}
-{{--                                                    </form>--}}
+                                                    {{--                                                    <form action="{{ route('activity_tasks.store') }}" method="POST">--}}
+                                                    {{--                                                        @csrf--}}
+                                                    {{--                                                        <input type="hidden" name="activity_id"--}}
+                                                    {{--                                                               value="{{ $activity->id }}">--}}
+                                                    {{--                                                        <textarea name="title"--}}
+                                                    {{--                                                                  placeholder="Enter new task here. . ."></textarea>--}}
+                                                    {{--                                                        <span--}}
+                                                    {{--                                                            class="error-message hidden">You need to enter a task first</span>--}}
+                                                    {{--                                                        <button type="submit" class="add-new-task-btn btn"--}}
+                                                    {{--                                                                id="add-new-task">Add Task--}}
+                                                    {{--                                                        </button>--}}
+                                                    {{--                                                        <span class="btn" id="close-task-panel">Close</span>--}}
+                                                    {{--                                                    </form>--}}
 
                                                 </div>
                                             </div>
@@ -120,18 +120,18 @@
                             <div class="chat-wrap-inner">
                                 <div class="chat-box">
                                     <div class="chats">
-                                        <h4>{{ $activity->title }}</h4>
+                                        <h4>{{ $assignment->title }}</h4>
                                         <div class="task-header">
                                             <div class="assignee-info">
                                                 <a href="#" data-toggle="modal" data-target="#assignee">
                                                     <div class="avatar">
-                                                        <img alt="" src="img/profiles/avatar-02.jpg">
+                                                        <img alt="" src="">
                                                     </div>
                                                     <div class="assigned-info">
 
                                                         <div class="task-head-title">Task Owner</div>
-{{--                                                        <div--}}
-{{--                                                            class="task-assignee">{{ Auth::guard('employee')->user()->name ?? 'Guest' }}</div>--}}
+                                                        {{--                                                        <div--}}
+                                                        {{--                                                            class="task-assignee">{{ Auth::guard('employee')->user()->name ?? 'Guest' }}</div>--}}
                                                     </div>
                                                 </a>
                                             </div>
@@ -155,22 +155,22 @@
 
                                         <hr class="task-line">
 
-{{--                                        @foreach ($messages as $data)--}}
-{{--                                            --}}{{-- {{dd($data->file)}} --}}
-{{--                                            @include('activity.partial.message',[--}}
-{{--                                              'msg'=>$data->message,--}}
-{{--                                              'file'=> $data->file,--}}
-{{--                                              'name'=>$data->user->name,--}}
-{{--                                              'date'=>$data->created_at,--}}
-{{--                                          ])--}}
-{{--                                        @endforeach--}}
+                                        {{--                                        @foreach ($messages as $data)--}}
+                                        {{--                                            --}}{{-- {{dd($data->file)}} --}}
+                                        {{--                                            @include('activity.partial.message',[--}}
+                                        {{--                                              'msg'=>$data->message,--}}
+                                        {{--                                              'file'=> $data->file,--}}
+                                        {{--                                              'name'=>$data->user->name,--}}
+                                        {{--                                              'date'=>$data->created_at,--}}
+                                        {{--                                          ])--}}
+                                        {{--                                        @endforeach--}}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="chat-footer">
-{{--                        @include('activity.partial.message_input_box')--}}
+                        {{--                        @include('activity.partial.message_input_box')--}}
                     </div>
                 </div>
             </div>
