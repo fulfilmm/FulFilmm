@@ -51,7 +51,8 @@ class AssignmentController extends Controller
         $data = $request->all();
         $data['assigned_by'] = loginUser()->id;
         $data['creator_department_id'] = loginUser()->department->id;
-        $this->assignment_contract->create($data);
+        $assignment = $this->assignment_contract->create($data);
+        $assignment->assigned_employees()->attach($data['assigned_employee']);
         return redirect()->route('assignments.index')->with('success', __('alert.create_success'));
     }
 
