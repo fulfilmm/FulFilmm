@@ -27,7 +27,7 @@ class AssignmentTable extends Component
 //        dd( Assignment::with('assigned_employees')->get());
 
         return view('livewire.assignment-table', [
-            'customers' => Assignment::
+            'assignments' => Assignment::
 //                ->where('department_id', $login_employee->department->id)
                 where('title', 'like', '%' . $this->search_key . '%')
                 ->paginate(10)
