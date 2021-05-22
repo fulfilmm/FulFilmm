@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\Contracts\AssignmentTaskContract;
 use Illuminate\Http\Request;
 
 class AssignmentTaskController extends Controller
@@ -11,7 +12,7 @@ class AssignmentTaskController extends Controller
     {
         $this->assignmentTaskContract = $assignmentTaskContract;
     }
-    
+
     /**
      * Display a listing of the resource.
      *
