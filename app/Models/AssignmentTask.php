@@ -10,6 +10,6 @@ class AssignmentTask extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name'
+        'name', 'assignment_id'
     ];
 }

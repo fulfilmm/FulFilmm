@@ -13,6 +13,10 @@ class Assignment extends Model
         'title', 'date', 'assigned_by', 'creator_department_id'
     ];
 
+    public function assignment_tasks()
+    {
+        return $this->hasMany(AssignmentTask::class, 'assignment_id');
+    }
     public function assigned_employees()
     {
         return $this->belongsToMany(Employee::class, 'assignment_employee');
