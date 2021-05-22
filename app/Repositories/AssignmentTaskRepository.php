@@ -4,7 +4,7 @@ namespace App\Repositories;
 use App\Models\AssignmentTask;
 use App\Repositories\Contracts\AssignmentTaskContract;
 
-class AssignmentRepository extends BaseRepository implements AssignmentTaskContract
+class AssignmentTaskRepository extends BaseRepository implements AssignmentTaskContract
 {
     public function model()
     {

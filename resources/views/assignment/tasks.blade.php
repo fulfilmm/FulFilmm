@@ -1,6 +1,19 @@
 @extends('layout.mainlayout')
 @section('content')
-    <!-- Main Wrapper -->
+
+    <x-partials.modal id="assignment_tasks-create" title="Create Assignment Tasks">
+        <form action="{{ route('assignment_tasks.store') }}" method="POST">
+            @csrf
+            <input type="hidden" name="assignment_id" value="{{ $assignment->id }}">
+            <x-forms.basic.input name="name" type="text" value="" title="Task Title" required></x-forms.basic.input>
+
+            <div class="d-flex justify-content-center">
+                <button class="btn btn-primary">Create</button>
+            </div>
+        </form>
+    </x-partials.modal>
+
+
     <div class="chat-main-row">
         <div class="chat-main-wrapper">
             <div class="col-lg-7 message-view task-view task-left-sidebar">
@@ -9,9 +22,8 @@
                         <div class="navbar">
                             <div class="float-left mr-auto">
                                 <div class="add-task-btn-wrapper">
-												<span class="add-task-btn btn btn-white btn-sm">
-													Add Task
-												</span>
+                                    <span class="add-task-btn btn btn-white btn-sm" data-toggle="modal"
+                                          data-target="#assignment_tasks-create"> Add Task </span>
                                 </div>
                             </div>
                             <a class="task-chat profile-rightbar float-right" id="task_chat" href="#task_window"><i
@@ -26,57 +38,39 @@
                                         <div class="task-list-container">
                                             <div class="task-list-body">
                                                 <ul id="task-list">
-                                                    {{-- {{ dd($activity) }} --}}
-                                                    {{-- @forelse ($activity->activity_tasks as $task)--}}
-                                                    <li class="task">
-                                                        <div class="task-container">
-                                                            {{-- <span class="task-label" contenteditable="false">{{ $task->title }}</span>--}}
-                                                            <span class="task-label"
-                                                                  contenteditable="false">Task Title</span>
-                                                            <span class="task-action-btn task-btn-right">
+                                                    {{--                                                                                                         {{ dd($assignment->assignment_tasks) }}--}}
+                                                    @forelse ($assignment->assignment_tasks as $task)
+                                                        <li class="task">
+                                                            <div class="task-container">
+                                                                <span class="task-label"
+                                                                      contenteditable="false">{{ $task->name }}</span>
+                                                                <span class="task-action-btn task-btn-right">
                                                                 <form
-                                                                    {{-- action="{{ route('activity_tasks.destroy', $task->id) }}"--}}
-                                                                    {{--                                                                    id="activity_task{{ $task->id }}"--}}
+                                                                    action="{{ route('assignment_tasks.destroy', $task->id) }}"
+                                                                    id="assignment_task{{ $task->id }}"
                                                                     method="POST">
                                                                     @csrf
                                                                     @method('DELETE')
-                                                                    <input type="hidden" name="activity_id"
-                                                                          ">
+                                                                    <input type="hidden" name="assignment_id"
+                                                                           value="{{ $assignment->id }}"
+                                                                    >
                                                                     <span class="action-circle large"
                                                                           title="Delete Task">
                                                                         <i class="material-icons"
-                                                                           onclick="deleteActivity({{ }})">delete</i>
+                                                                           onclick="deleteActivity({{$task->id}})">delete</i>
                                                                     </span>
                                                                 </form>
 															</span>
-                                                        </div>
-                                                    </li>
-                                                    {{--                                                    @empty--}}
-                                                    {{--                                                        <li class="task">--}}
-                                                    {{--                                                            <div class="task-container">--}}
-                                                    {{--                                                                <span class="task-label" contenteditable="false">There is no task for this Activity yet.</span>--}}
-                                                    {{--                                                            </div>--}}
-                                                    {{--                                                        </li>--}}
-                                                    {{--                                                    @endforelse--}}
+                                                            </div>
+                                                        </li>
+                                                    @empty
+                                                        <li class="task">
+                                                            <div class="task-container">
+                                                                <span class="task-label" contenteditable="false">There is no task for this Activity yet.</span>
+                                                            </div>
+                                                        </li>
+                                                    @endforelse
                                                 </ul>
-                                            </div>
-                                            <div class="task-list-footer">
-                                                <div class="new-task-wrapper">
-                                                    {{--                                                    <form action="{{ route('activity_tasks.store') }}" method="POST">--}}
-                                                    {{--                                                        @csrf--}}
-                                                    {{--                                                        <input type="hidden" name="activity_id"--}}
-                                                    {{--                                                               value="{{ $activity->id }}">--}}
-                                                    {{--                                                        <textarea name="title"--}}
-                                                    {{--                                                                  placeholder="Enter new task here. . ."></textarea>--}}
-                                                    {{--                                                        <span--}}
-                                                    {{--                                                            class="error-message hidden">You need to enter a task first</span>--}}
-                                                    {{--                                                        <button type="submit" class="add-new-task-btn btn"--}}
-                                                    {{--                                                                id="add-new-task">Add Task--}}
-                                                    {{--                                                        </button>--}}
-                                                    {{--                                                        <span class="btn" id="close-task-panel">Close</span>--}}
-                                                    {{--                                                    </form>--}}
-
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -130,8 +124,8 @@
                                                     <div class="assigned-info">
 
                                                         <div class="task-head-title">Task Owner</div>
-                                                        {{--                                                        <div--}}
-                                                        {{--                                                            class="task-assignee">{{ Auth::guard('employee')->user()->name ?? 'Guest' }}</div>--}}
+                                                        <div
+                                                            class="task-assignee">{{$assignment->assignedBy->name}}</div>
                                                     </div>
                                                 </a>
                                             </div>
@@ -144,26 +138,35 @@
                                                     </div>
                                                     <div class="due-info">
                                                         <div class="task-head-title">Due Date</div>
-                                                        <div class="due-date">Mar 26, 2019</div>
+                                                        <div class="due-date">{{$assignment->date}}</div>
                                                     </div>
                                                 </a>
-                                                <span class="remove-icon">
-																<i class="fa fa-close"></i>
-															</span>
+                                                {{--                                                <span class="remove-icon">--}}
+                                                {{--																<i class="fa fa-close"></i>--}}
+                                                {{--                                                </span>--}}
                                             </div>
                                         </div>
 
                                         <hr class="task-line">
+                                        {{--{{dd($assignment->assigned_employees->pluck('name'))}}--}}
+                                        <h4>Assigned Employees</h4>
+                                        <ol>
 
-                                        {{--                                        @foreach ($messages as $data)--}}
-                                        {{--                                            --}}{{-- {{dd($data->file)}} --}}
-                                        {{--                                            @include('activity.partial.message',[--}}
-                                        {{--                                              'msg'=>$data->message,--}}
-                                        {{--                                              'file'=> $data->file,--}}
-                                        {{--                                              'name'=>$data->user->name,--}}
-                                        {{--                                              'date'=>$data->created_at,--}}
-                                        {{--                                          ])--}}
-                                        {{--                                        @endforeach--}}
+                                        @foreach($assignment->assigned_employees as $employee)
+                                                <li>
+                                                    {{$employee->name}}
+                                                </li>
+                                        @endforeach
+                                        </ol>
+{{--                                        @foreach ($messages as $data)--}}
+{{--                                            {{dd($data->file)}}--}}
+{{--                                            @include('activity.partial.message',[--}}
+{{--                                              'msg'=>$data->message,--}}
+{{--                                              'file'=> $data->file,--}}
+{{--                                              'name'=>$data->user->name,--}}
+{{--                                              'date'=>$data->created_at,--}}
+{{--                                          ])--}}
+{{--                                        @endforeach--}}
                                     </div>
                                 </div>
                             </div>
@@ -200,7 +203,7 @@
         })
 
         function deleteActivity(task_id) {
-            $('#activity_task' + task_id).submit();
+            $('#assignment_task' + task_id).submit();
         }
 
         //trigger file Open when click on paper-clip icon

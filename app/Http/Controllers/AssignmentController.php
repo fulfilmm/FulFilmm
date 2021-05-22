@@ -60,12 +60,13 @@ class AssignmentController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Assignment  $assignment
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function show($assignment_id)
     {
         $assignment = $this->assignment_contract->getAssignmentsWithTasks($assignment_id);
-        return view('assignment.tasks', compact('assignment'));
+        $employees = Employee::all()->pluck('name', 'id')->all();
+        return view('assignment.tasks', compact('assignment','employees'));
     }
 
     /**
@@ -95,10 +96,12 @@ class AssignmentController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Assignment  $assignment
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Assignment $assignment)
+    public function destroy($id)
     {
         //
+        $this->assignment_contract->deleteById($id);
+        return redirect()->route('assignment.index')->with('success', __('alert.delete_success'));
     }
 }

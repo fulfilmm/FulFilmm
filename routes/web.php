@@ -3,6 +3,7 @@
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\ActivityTaskController;
 use App\Http\Controllers\AssignmentController;
+use App\Http\Controllers\AssignmentTaskController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CustomerController;
@@ -50,6 +51,7 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::resource('activity_tasks', ActivityTaskController::class);
     Route::resource('groups', GroupController::class);
     Route::resource('assignments',AssignmentController::class);
+    Route::resource('assignment_tasks',AssignmentTaskController::class);
     Route::resource('projects', ProjectController::class);
 
     //export routes
