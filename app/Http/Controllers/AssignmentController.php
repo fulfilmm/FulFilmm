@@ -86,9 +86,10 @@ class AssignmentController extends Controller
      * @param  \App\Models\Assignment  $assignment
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Assignment $assignment)
+    public function update(AssignmentRequest $request, $id)
     {
-        //
+        $this->assignment_contract->updateById($id, $request->all());
+        return redirect()->route('assignments.index')->with('success', __('alert.update_success'));
     }
 
     /**
@@ -97,7 +98,7 @@ class AssignmentController extends Controller
      * @param  \App\Models\Assignment  $assignment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Assignment $assignment)
+    public function destroy($id)
     {
         //
     }
