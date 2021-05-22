@@ -15,6 +15,8 @@ class CreateAssignmentTasksTable extends Migration
     {
         Schema::create('assignment_tasks', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->foreignId('assignment_id')->constrained('assignments');
             $table->timestamps();
         });
     }

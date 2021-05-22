@@ -62,9 +62,10 @@ class AssignmentController extends Controller
      * @param  \App\Models\Assignment  $assignment
      * @return \Illuminate\Http\Response
      */
-    public function show(Assignment $assignment)
+    public function show($assignment_id)
     {
-        //
+        $assignment = $this->assignment_contract->getAssignmentsWithTasks($assignment_id);
+        return view('assignment.tasks', compact('assignment'));
     }
 
     /**

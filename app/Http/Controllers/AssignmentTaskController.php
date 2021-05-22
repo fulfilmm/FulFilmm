@@ -40,7 +40,9 @@ class AssignmentTaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $assignment_id = $request->assignment_id;
+        $this->assignmentTaskContract->create($request->all());
+        return redirect()->route('assignments.show', $assignment_id)->with('success',__('alert.create_success'));
     }
 
     /**
@@ -83,8 +85,10 @@ class AssignmentTaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
-        //
+        $assignment_id = $request->assignment_id;
+        $this->assignmentTaskContract->deleteById($id);
+        return redirect()->route('assignments.show', $assignment_id)->with('success',__('alert.delete_success'));
     }
 }
