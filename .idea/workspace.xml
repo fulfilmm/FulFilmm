@@ -5,9 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4d8aa19e-eab1-4b9d-925d-36c0a35fff96" name="Default Changelist" comment="Added Project &#10;- Model (fillable and migration need to be done)&#10;- Controller&#10;- Routes&#10;- Livewire componenet and logic&#10;- Navigation item">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Livewire/AssignmentTable.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Livewire/AssignmentTable.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Models/Assignment.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Assignment.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_04_15_202712_create_employee_assignment_table.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/livewire/assignment-table.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/livewire/assignment-table.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

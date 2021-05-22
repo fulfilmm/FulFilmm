@@ -13,12 +13,12 @@ class Assignment extends Model
         'title', 'date', 'assigned_by', 'creator_department_id'
     ];
 
-    public function assigned_employees()
+    public function assigned_employees(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Employee::class, 'assignment_employee');
     }
 
-    public function assignedBy()
+    public function assignedBy(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Employee::class, 'assigned_by');
     }

@@ -23,8 +23,8 @@
                     <tr>
                         <td>{{$assignment->title}}</td>
                         <td>{{$assignment->date}}</td>
-                        <td>{{$assignment->assigned_by}}</td>
-                        <td>{{$assignment->creator_department_id}}</td>
+                        <td>{{$assignment->assignedBy->name}}</td>
+                        <td>{{$assignment->assignedBy->department->name}}</td>
                         <td style="display: flex">
                             <a class="btn btn-primary" href="{{route('companies.show',$assignment->id)}}"><span class='fa fa-eye'></span></a>&nbsp;
                             <a class="btn btn-success" href="{{route('companies.edit',$assignment->id)}}"><span class='fa fa-edit'></span></a>&nbsp;

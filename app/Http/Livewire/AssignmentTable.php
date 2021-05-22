@@ -23,13 +23,16 @@ class AssignmentTable extends Component
 
     public function render()
     {
-        $login_employee = Auth::guard('employee')->id();
-//        dd( Assignment::with('assigned_employees')->get());
+        $login_employee_id = Auth::guard('employee')->id();
+
 
         return view('livewire.assignment-table', [
-            'assignments' => Assignment::
-//                ->where('department_id', $login_employee->department->id)
-                where('title', 'like', '%' . $this->search_key . '%')
+            'assignments' => Assignment::with('assigned_employees', 'assignedBy', 'assignedBy.department')
+                ->where('assigned_by', $login_employee_id)
+                ->orWhereHas('assigned_employees', function ($q) use ($login_employee_id) {
+                    $q->where('employee_id', $login_employee_id);
+                })
+                ->where('title', 'like', '%' . $this->search_key . '%')
                 ->paginate(10)
         ]);
     }
