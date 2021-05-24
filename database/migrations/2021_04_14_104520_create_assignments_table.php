@@ -16,7 +16,7 @@ class CreateAssignmentsTable extends Migration
         Schema::create('assignments', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('date');
+            $table->date('due_date');
             $table->foreignId("assigned_by")->constrained('employees');
             $table->foreignId("creator_department_id")->constrained('departments');
             $table->timestamps();

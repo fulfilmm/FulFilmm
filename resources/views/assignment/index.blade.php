@@ -12,7 +12,7 @@
             <x-forms.basic.input name="title" type="text" value="" title="Title" required></x-forms.basic.input>
             <div class="form-group row">
                 <label class="col-form-label col-md-2">Assign to</label>
-                <div class="col-md-10 w-100" id="co_owners" name="co_owners">
+                <div class="col-md-10 w-100" id="co_owners">
                     {{--                    @dd($employees)--}}
 
                     <select class="form-control" id="employees_multiple_select" style="width: 100%" name="assigned_employee[]"
@@ -25,7 +25,7 @@
                     </select>
                 </div>
             </div>
-            <x-forms.basic.date name="date" title="Date" required value=""></x-forms.basic.date>
+            <x-forms.basic.date name="due_date" title="Due Date" required="true" value=""></x-forms.basic.date>
             <div class="d-flex justify-content-center">
                 <button class="btn btn-primary">Create</button>
             </div>

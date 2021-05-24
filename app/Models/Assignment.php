@@ -10,7 +10,7 @@ class Assignment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'date', 'assigned_by', 'creator_department_id'
+        'title', 'due_date', 'assigned_by', 'creator_department_id'
     ];
 
 
