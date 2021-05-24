@@ -52,6 +52,7 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::resource('groups', GroupController::class);
     Route::resource('assignments',AssignmentController::class);
     Route::resource('assignment_tasks',AssignmentTaskController::class);
+    Route::put('assignment_tasks/{id}/toggle',[AssignmentTaskController::class, 'toggleStatus'])->name('assignment_tasks.toggle');
     Route::resource('projects', ProjectController::class);
 
     //export routes

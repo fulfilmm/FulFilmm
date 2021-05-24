@@ -24,6 +24,7 @@ class PermissionSeeder extends Seeder
         }
 
         Permission::create(['name' => 'activities.acknowledge', 'display_name' => "Can acknowledge the activities", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'assignment_tasks.toggle', 'display_name' => 'Can toggle the assignment tasks status', "guard_name" => 'employee']);
     }
 
     private function createResourcePermissions($resource)

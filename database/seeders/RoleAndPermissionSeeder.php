@@ -11,6 +11,9 @@ class RoleAndPermissionSeeder extends Seeder
         'Employee' => [
             'resources' => [
                 'employees', 'activities', 'assignments', 'assignment_tasks', 'activity_tasks', 'comments', 'customers', 'companies', 'projects'
+            ],
+            'others' => [
+                'assignment_tasks.toggle'
             ]
         ],
         'Manager' => [
@@ -18,7 +21,8 @@ class RoleAndPermissionSeeder extends Seeder
                 'employees', 'activities', 'assignments', 'assignment_tasks', 'activity_tasks', 'comments', 'customers', 'companies', 'departments', 'groups', 'roles', 'permissions', 'projects'
             ],
             'others' => [
-                'activities.acknowledge'
+                'activities.acknowledge',
+                'assignment_tasks.toggle'
             ]
         ]
     ];

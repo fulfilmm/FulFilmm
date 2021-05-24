@@ -17,6 +17,7 @@ class CreateAssignmentTasksTable extends Migration
             $table->id();
             $table->string('name');
             $table->foreignId('assignment_id')->constrained('assignments');
+            $table->boolean('status')->default(false);
             $table->timestamps();
         });
     }

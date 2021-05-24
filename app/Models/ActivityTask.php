@@ -12,7 +12,7 @@ class ActivityTask extends Model
     protected $guarded = [];
 
     protected $fillable = [
-        'title', 'activity_id'
+        'title', 'activity_id','status'
     ];
 
     public function activity()

@@ -42,24 +42,49 @@
                                                     @forelse ($assignment->assignment_tasks as $task)
                                                         <li class="task">
                                                             <div class="task-container">
+
                                                                 <span class="task-label"
+                                                                      style="{{$task->status === 1 ? 'text-decoration: line-through' : '' }}"
                                                                       contenteditable="false">{{ $task->name }}</span>
 
-                                                                <span class="task-action-btn task-btn-right">
+                                                                {{--Delete form added here for cosmetic purposes--}}
+                                                                <form
+                                                                    action="{{ route('assignment_tasks.destroy', $task->id) }}"
+                                                                    id="assignment_task{{ $task->id }}" method="POST">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <input
+                                                                        type="hidden"
+                                                                        name="assignment_id"
+                                                                        value="{{ $assignment->id }}">
+                                                                </form>
 
-                                                                  <form
-                                                                      action="{{ route('assignment_tasks.destroy', $task->id) }}"
-                                                                      id="assignment_task{{ $task->id }}" method="POST">
-                                                                        @csrf
-                                                                      @method('DELETE')
-                                                                        <input type="hidden" name="assignment_id"
-                                                                               value="{{ $assignment->id }}">
+                                                                <form
+                                                                    action="{{route('assignment_tasks.toggle',$task->id)}}"
+                                                                    id="assignment_task_toggle{{ $task->id }}" method="POST">
+                                                                    @csrf
+                                                                    @method('PUT')
+                                                                    <input
+                                                                        type="hidden"
+                                                                        name="assignment_id"
+                                                                        value="{{ $assignment->id }}">
+                                                                </form>
+
+                                                                <span class="task-action-btn task-btn-right">
                                                                         <span class="action-circle large"
+                                                                              onclick="toggleTask({{$task->id}})"
+                                                                              title="{{$task->status === 1 ? 'Uncheck' : 'Check'}}">
+                                                                            <i class="material-icons">{{$task->status === 1 ? 'close' : 'check'}}</i>
+                                                                        </span>
+
+                                                                        &nbsp;  &nbsp;
+
+                                                                        <span class="action-circle large bg-danger"
                                                                               title="Delete Task">
                                                                             <i class="material-icons"
                                                                                onclick="deleteActivity({{$task->id}})">delete</i>
-                                                                    </span>
-                                                                    </form>
+                                                                        </span>
+
 															    </span>
                                                             </div>
                                                         </li>
@@ -138,9 +163,8 @@
                                                     </div>
                                                     <div class="due-info">
                                                         <div class="task-head-title">Due Date</div>
-
                                                         <div
-                                                            class="{{$assignment->date > today() ? 'due-date' : 'black'}}">{{$assignment->date}}</div>
+                                                            class="{{$assignment->due_date >= today() ? 'black' : 'due-date'}}">{{$assignment->due_date}}</div>
                                                     </div>
                                                 </a>
                                                 {{--                                                <span class="remove-icon">--}}
@@ -206,6 +230,10 @@
 
         function deleteActivity(task_id) {
             $('#assignment_task' + task_id).submit();
+        }
+
+        function toggleTask(task_id) {
+            $('#assignment_task_toggle' + task_id).submit();
         }
 
         //trigger file Open when click on paper-clip icon

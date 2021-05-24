@@ -25,7 +25,7 @@ class AssignmentRequest extends FormRequest
     {
         return [
             'title' => 'required',
-            'date' => 'required',
+            'due_date' => 'required',
         ];
     }
 }
