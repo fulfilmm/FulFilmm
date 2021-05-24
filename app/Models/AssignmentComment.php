@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Comment extends Model
+class AssignmentComment extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
 
 
-    public function activity()
+    public function assignment()
     {
-        return $this->belongsTo(Activity::class, 'activity_id');
+        return $this->belongsTo(Assignment::class, 'assignment_id');
     }
 
 

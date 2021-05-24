@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
@@ -26,8 +27,13 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         //
-        Gate::define('can-acknowledge', function($employee, $acknowldged_data) {
-            return $employee->id == $acknowldged_data->report_to_employee_id ? true : false;
+        Gate::define('can-acknowledge', function($employee, $acknowledged_data) {
+            #check if requested employee is the owner of acknowledged
+            if ($acknowledged_data->employee_id == Auth::guard('employee')->id()) {
+                return true;
+            }
+            # check requested employee is the reported supervisor
+            return $employee->id == $acknowledged_data->report_to_employee_id ? true : false;
         });
     }
 }

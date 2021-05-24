@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Comment;
+use App\Models\ActivityComment;
+use App\Models\AssignmentComment;
 use Illuminate\Http\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -45,9 +46,12 @@ class CommentController extends Controller
             $path = Storage::url($uploadedFile->store('attachments', ['disk' => 'public']));
         }
 
-        $data['commenter_id'] = auth('employee')->user()->id;
+        $data['commenter_id'] = auth('employee')->id();
         $data['file'] = $path;
-        Comment::create($data);
+        // dd($data);
+
+        if (isset($request->activity_id)) ActivityComment::create($data);
+        if (isset($request->assignment_id)) AssignmentComment::create($data);
 
         return redirect()->back()->with('success', __('alert.create_success'));
     }
@@ -55,10 +59,9 @@ class CommentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function show(Comment $comment)
+    public function show($id)
     {
         //
     }
@@ -66,10 +69,9 @@ class CommentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function edit(Comment $comment)
+    public function edit($id)
     {
         //
     }
@@ -78,10 +80,9 @@ class CommentController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Comment $comment)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -89,10 +90,9 @@ class CommentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Comment $comment)
+    public function destroy($id)
     {
         //
     }

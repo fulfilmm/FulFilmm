@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activity;
-use App\Models\Comment;
+use App\Models\ActivityComment;
 use App\Repositories\Contracts\ActivityContract;
 use App\Models\Employee;
 use Illuminate\Http\Request;
@@ -69,7 +69,7 @@ class ActivityController extends Controller
 
         $activity = $this->activity_contract->activityWithTasks($id);
         $this->authorize('can-acknowledge', $activity);
-        $messages = Comment::where('activity_id', $id)
+        $messages = ActivityComment::where('activity_id', $id)
             ->with('user')
             ->get();
         return view('activity.tasks', compact('activity', 'messages'));

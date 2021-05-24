@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCommentsTable extends Migration
+class CreateAssignmentCommentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateCommentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('comments', function (Blueprint $table) {
+        Schema::create('assignment_comments', function (Blueprint $table) {
             $table->id();
-            $table->string('commenter_id');
-            $table->string('activity_id');
+            $table->foreignId('commenter_id')->constrained('employees');
+            $table->foreignId('assignment_id')->constrained('assignments');
             $table->boolean('is_read')->default(false);
             $table->string('file')->nullable();
             $table->text('message');
@@ -31,6 +31,6 @@ class CreateCommentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('comments');
+        Schema::dropIfExists('assignment_comments');
     }
 }
