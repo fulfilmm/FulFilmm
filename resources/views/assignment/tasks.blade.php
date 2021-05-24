@@ -44,23 +44,23 @@
                                                             <div class="task-container">
                                                                 <span class="task-label"
                                                                       contenteditable="false">{{ $task->name }}</span>
+
                                                                 <span class="task-action-btn task-btn-right">
-                                                                <form
-                                                                    action="{{ route('assignment_tasks.destroy', $task->id) }}"
-                                                                    id="assignment_task{{ $task->id }}"
-                                                                    method="POST">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <input type="hidden" name="assignment_id"
-                                                                           value="{{ $assignment->id }}"
-                                                                    >
-                                                                    <span class="action-circle large"
-                                                                          title="Delete Task">
-                                                                        <i class="material-icons"
-                                                                           onclick="deleteActivity({{$task->id}})">delete</i>
+
+                                                                  <form
+                                                                      action="{{ route('assignment_tasks.destroy', $task->id) }}"
+                                                                      id="assignment_task{{ $task->id }}" method="POST">
+                                                                        @csrf
+                                                                      @method('DELETE')
+                                                                        <input type="hidden" name="assignment_id"
+                                                                               value="{{ $assignment->id }}">
+                                                                        <span class="action-circle large"
+                                                                              title="Delete Task">
+                                                                            <i class="material-icons"
+                                                                               onclick="deleteActivity({{$task->id}})">delete</i>
                                                                     </span>
-                                                                </form>
-															</span>
+                                                                    </form>
+															    </span>
                                                             </div>
                                                         </li>
                                                     @empty
@@ -138,7 +138,9 @@
                                                     </div>
                                                     <div class="due-info">
                                                         <div class="task-head-title">Due Date</div>
-                                                        <div class="due-date">{{$assignment->date}}</div>
+
+                                                        <div
+                                                            class="{{$assignment->date > today() ? 'due-date' : 'black'}}">{{$assignment->date}}</div>
                                                     </div>
                                                 </a>
                                                 {{--                                                <span class="remove-icon">--}}
@@ -152,21 +154,21 @@
                                         <h4>Assigned Employees</h4>
                                         <ol>
 
-                                        @foreach($assignment->assigned_employees as $employee)
+                                            @foreach($assignment->assigned_employees as $employee)
                                                 <li>
                                                     {{$employee->name}}
                                                 </li>
-                                        @endforeach
+                                            @endforeach
                                         </ol>
-{{--                                        @foreach ($messages as $data)--}}
-{{--                                            {{dd($data->file)}}--}}
-{{--                                            @include('activity.partial.message',[--}}
-{{--                                              'msg'=>$data->message,--}}
-{{--                                              'file'=> $data->file,--}}
-{{--                                              'name'=>$data->user->name,--}}
-{{--                                              'date'=>$data->created_at,--}}
-{{--                                          ])--}}
-{{--                                        @endforeach--}}
+                                        {{--                                        @foreach ($messages as $data)--}}
+                                        {{--                                            {{dd($data->file)}}--}}
+                                        {{--                                            @include('activity.partial.message',[--}}
+                                        {{--                                              'msg'=>$data->message,--}}
+                                        {{--                                              'file'=> $data->file,--}}
+                                        {{--                                              'name'=>$data->user->name,--}}
+                                        {{--                                              'date'=>$data->created_at,--}}
+                                        {{--                                          ])--}}
+                                        {{--                                        @endforeach--}}
                                     </div>
                                 </div>
                             </div>

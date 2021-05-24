@@ -5,17 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4d8aa19e-eab1-4b9d-925d-36c0a35fff96" name="Default Changelist" comment="Added Project &#10;- Model (fillable and migration need to be done)&#10;- Controller&#10;- Routes&#10;- Livewire componenet and logic&#10;- Navigation item">
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/AssignmentController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/AssignmentController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/AssignmentTaskController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/AssignmentTaskController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Providers/RepositoryServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Providers/RepositoryServiceProvider.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Repositories/AssignmentRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/AssignmentRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Repositories/AssignmentTaskRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/AssignmentTaskRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/assignment/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/assignment/index.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/assignment/tasks.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/assignment/tasks.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/livewire/assignment-table.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/livewire/assignment-table.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -202,6 +194,7 @@
       <workItem from="1621660735626" duration="475000" />
       <workItem from="1621670131536" duration="93000" />
       <workItem from="1621670357858" duration="2798000" />
+      <workItem from="1621823674435" duration="603000" />
     </task>
     <task id="LOCAL-00001" summary="minor cosmetic changes">
       <created>1621392837445</created>
