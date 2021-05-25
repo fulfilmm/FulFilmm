@@ -6,10 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="4d8aa19e-eab1-4b9d-925d-36c0a35fff96" name="Default Changelist" comment="Added comment and attachment user inter face">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/AssignmentController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/AssignmentController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Assignment.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Assignment.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_04_14_104520_create_assignments_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_04_14_104520_create_assignments_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/livewire/assignment-table.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/livewire/assignment-table.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/assignment/partial/message_input_box.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/assignment/partial/message_input_box.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
