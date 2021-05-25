@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AssignmentRequest;
+use App\Models\ActivityComment;
 use App\Models\Assignment;
+use App\Models\AssignmentComment;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Repositories\Contracts\AssignmentContract;
@@ -69,9 +71,12 @@ class AssignmentController extends Controller
     {
 
         $assignment = $this->assignment_contract->getAssignmentsWithTasks($assignment_id);
+        $messages = AssignmentComment::where('assignment_id', $assignment_id)
+            ->with('user')
+            ->get();
         if ($assignment) {
             $employees = Employee::all()->pluck('name', 'id')->all();
-            return view('assignment.tasks', compact('assignment', 'employees'));
+            return view('assignment.tasks', compact('assignment', 'employees', 'messages'));
         }
         return abort(404);
 
@@ -93,7 +98,7 @@ class AssignmentController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\Assignment $assignment
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(AssignmentRequest $request, $id)
     {
