@@ -61,7 +61,8 @@
 
                                                                 <form
                                                                     action="{{route('assignment_tasks.toggle',$task->id)}}"
-                                                                    id="assignment_task_toggle{{ $task->id }}" method="POST">
+                                                                    id="assignment_task_toggle{{ $task->id }}"
+                                                                    method="POST">
                                                                     @csrf
                                                                     @method('PUT')
                                                                     <input
@@ -82,7 +83,7 @@
                                                                         <span class="action-circle large bg-danger"
                                                                               title="Delete Task">
                                                                             <i class="material-icons"
-                                                                               onclick="deleteActivity({{$task->id}})">delete</i>
+                                                                               onclick="deleteAssignment({{$task->id}})">delete</i>
                                                                         </span>
 
 															    </span>
@@ -91,7 +92,7 @@
                                                     @empty
                                                         <li class="task">
                                                             <div class="task-container">
-                                                                <span class="task-label" contenteditable="false">There is no task for this Activity yet.</span>
+                                                                <span class="task-label" contenteditable="false">There is no task for this Assignment yet.</span>
                                                             </div>
                                                         </li>
                                                     @endforelse
@@ -184,25 +185,25 @@
                                                 </li>
                                             @endforeach
                                         </ol>
-                                        {{--                                        @foreach ($messages as $data)--}}
-                                        {{--                                            {{dd($data->file)}}--}}
-                                        {{--                                            @include('activity.partial.message',[--}}
-                                        {{--                                              'msg'=>$data->message,--}}
-                                        {{--                                              'file'=> $data->file,--}}
-                                        {{--                                              'name'=>$data->user->name,--}}
-                                        {{--                                              'date'=>$data->created_at,--}}
-                                        {{--                                          ])--}}
-                                        {{--                                        @endforeach--}}
+                                        <hr class="task-line">
+                                        @foreach ($messages as $data)
+                                            @include('assignment.partial.message',[
+                                              'msg'=>$data->message,
+                                              'file'=> $data->file,
+                                              'name'=>$data->user->name,
+                                              'date'=>$data->created_at,
+                                          ])
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="chat-footer">
-                        {{--                        @include('activity.partial.message_input_box')--}}
+                        @include('assignment.partial.message_input_box')
                     </div>
                 </div>
-            </div>
+            </div>`
         </div>
     </div>
 
@@ -228,7 +229,7 @@
 
         })
 
-        function deleteActivity(task_id) {
+        function deleteAssignment(task_id) {
             $('#assignment_task' + task_id).submit();
         }
 
