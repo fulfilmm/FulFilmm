@@ -19,6 +19,7 @@ class CreateAssignmentsTable extends Migration
             $table->date('due_date');
             $table->foreignId("assigned_by")->constrained('employees');
             $table->foreignId("creator_department_id")->constrained('departments');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
