@@ -117,6 +117,6 @@ class AssignmentController extends Controller
         //this would be soft delete
 
         $this->assignment_contract->deleteById($id);
-        return redirect()->route('assignment.index')->with('success', __('alert.delete_success'));
+        return redirect()->route('assignments.index')->with('success', __('alert.delete_success'));
     }
 }
