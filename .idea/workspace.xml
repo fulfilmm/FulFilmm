@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="4d8aa19e-eab1-4b9d-925d-36c0a35fff96" name="Default Changelist" comment="Added comment and attachment user inter face">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/assignment/partial/message_input_box.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/assignment/partial/message_input_box.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/assignment/partial/message.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/assignment/partial/message.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -195,6 +195,8 @@
       <workItem from="1621670357858" duration="2798000" />
       <workItem from="1621823674435" duration="603000" />
       <workItem from="1621903731706" duration="1008000" />
+      <workItem from="1621996509664" duration="121000" />
+      <workItem from="1621996674756" duration="1789000" />
     </task>
     <task id="LOCAL-00001" summary="minor cosmetic changes">
       <created>1621392837445</created>
