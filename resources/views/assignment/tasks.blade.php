@@ -30,13 +30,25 @@
                                     class="fa fa fa-comment"></i></a>
                         </div>
                     </div>
+
                     <div class="chat-contents">
                         <div class="chat-content-wrap">
                             <div class="chat-wrap-inner">
                                 <div class="chat-box">
                                     <div class="task-wrapper">
                                         <div class="task-list-container">
+                                            <div class="task-list-body mb-5">
+                                                @php
+                                                    $percentage = round(($assignment->task_done / $assignment->total_tasks) * 100);
+                                                @endphp
+                                                <h4>Progress</h4>
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" style="width: {{$percentage}}%" aria-valuenow="{{$percentage}}" aria-valuemin="0" aria-valuemax="100">
+                                                        {{$percentage}}%</div>
+                                                </div>
+                                            </div>
                                             <div class="task-list-body">
+                                                <h4>Tasks</h4>
                                                 <ul id="task-list">
                                                     {{--                                                                                                         {{ dd($assignment->assignment_tasks) }}--}}
                                                     @forelse ($assignment->assignment_tasks as $task)
