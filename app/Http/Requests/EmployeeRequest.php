@@ -30,6 +30,7 @@ class EmployeeRequest extends FormRequest
             'password' => 'required',
             'email' => 'required',
             'can_login' => 'nullable',
+            'can_post_assignments' => 'nullable',
             'phone' => 'required',
             'work_phone' => 'required',
             'join_date' => 'required',

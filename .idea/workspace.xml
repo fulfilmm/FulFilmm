@@ -6,8 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="4d8aa19e-eab1-4b9d-925d-36c0a35fff96" name="Default Changelist" comment="Added comment and attachment user inter face">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Repositories/AssignmentRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/AssignmentRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/assignment/tasks.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/assignment/tasks.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/EmployeeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/EmployeeController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/EmployeeRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/EmployeeRequest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Employee.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Employee.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_10_31_105314_create_employees_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_10_31_105314_create_employees_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/employee/partial/employeeform.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/employee/partial/employeeform.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -162,7 +165,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/views/assignment" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -198,6 +201,7 @@
       <workItem from="1621903731706" duration="1008000" />
       <workItem from="1621996509664" duration="121000" />
       <workItem from="1621996674756" duration="3332000" />
+      <workItem from="1622123426644" duration="1587000" />
     </task>
     <task id="LOCAL-00001" summary="minor cosmetic changes">
       <created>1621392837445</created>

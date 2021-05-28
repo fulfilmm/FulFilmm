@@ -22,7 +22,7 @@ class Employee extends Authenticatable
 
     protected $fillable = [
         'name', 'department_id', 'role_id', 'phone', 'email',
-        'work_phone', 'can_login', 'password', 'join_date'
+        'work_phone', 'can_login','can_post_assignments', 'password', 'join_date'
     ];
 
 
