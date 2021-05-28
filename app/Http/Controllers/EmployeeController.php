@@ -119,6 +119,8 @@ class EmployeeController extends Controller
     public function update(EmployeeRequest $request, Employee $employee)
     {
         $data  = collect($request->validated())->except('role_id')->toArray();
+        $data['can_login'] =  $data['can_login'] ?? "0";
+        $data['can_post_assignment'] =  $data['can_post_assignment'] ?? "0";
         $employee->update($data);
         $employee->syncRoles($request->role_id);
         return redirect('employees')->with('success', __('alert.update_success'));

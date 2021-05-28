@@ -27,7 +27,7 @@
                 <div class="col-md-10">
                     <div class="checkbox">
                         <label for="can_login">
-                            <input type="checkbox" value='1' name="can_login" id="can_login" checked={{isset( $employee->can_login) ?  $employee->can_login === 1 ? 'checked' : '' : ''}}>
+                            <input type="checkbox" value='1' name="can_login" id="can_login" {{isset( $employee->can_login) ?  $employee->can_login === 1 ? 'checked' : '' : ''}}>
                         </label>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
                     <div class="checkbox">
                         <label for="can_post_assignments">
 {{--                            @dd(isset( $employee->can_post_assignments))--}}
-                            <input type="checkbox" value='1' name="can_post_assignments" id="can_post_assignments" checked={{isset( $employee->can_post_assignments) ?  $employee->can_post_assignments === 1 ? 'checked' : '' : ''}}>
+                            <input type="checkbox" value='1' name="can_post_assignments" id="can_post_assignments" {{isset( $employee->can_post_assignments) ?  $employee->can_post_assignments === 1 ? 'checked' : '' : ''}}>
 
                         </label>
                     </div>

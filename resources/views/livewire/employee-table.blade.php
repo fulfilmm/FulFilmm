@@ -17,7 +17,8 @@
                 <th>Phone</th>
                 <th>Work Phone</th>
                 <th>Join Date</th>
-                <th>can login</th>
+                <th>Can login</th>
+                <th>Can post assignments</th>
                 <th>Department</th>
                 <th>Role</th>
                 <th>Action</th>
@@ -31,6 +32,7 @@
                 <td>{{ $em->work_phone }}</td>
                 <td>{{ $em->join_date }}</td>
                 <td>{{ $em->can_login ? 'Yes' : 'No' }}</td>
+                <td>{{ $em->can_post_assignments ? 'Yes' : 'No' }}</td>
                 <td>{{ $em->department->name }}</td>
                 <td>{{$em->getRoleNames()[0] ?? ''}}</td>
                 <td style="display: flex">
