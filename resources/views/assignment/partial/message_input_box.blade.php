@@ -8,11 +8,14 @@
             <form enctype="multipart/form-data" action="{{route('comments.store')}}" method="POST">
                 @csrf
                 <div class="input-group">
-                    <textarea name="message" required class="form-control" placeholder="Type message..."></textarea>
+                    <textarea name="message" class="form-control" placeholder="Type message..."></textarea>
+
+
                     <span class="input-group-append">
                     <input type="hidden" name="assignment_id"
                            value="{{request()->route()->parameters['assignment']}}">
                     <input type="file" id="file" class="d-none" name="file">
+
 
                     <button onclick="triggerFile()" class="btn btn-primary" type="button"><i
                             class="fa fa-paperclip"></i></button>
@@ -21,6 +24,15 @@
                                 <button type="submit" class="btn btn-primary"><i class="fa fa-send"></i></button>
                             </span>
                 </div>
+                @error('message')
+                <br>
+                <small class="text-danger">{{$message}}</small>
+                @enderror
+
+                @error('file')
+                <br>
+                <small class="text-danger">{{$message}}</small>
+                @enderror
             </form>
         </div>
     </div>

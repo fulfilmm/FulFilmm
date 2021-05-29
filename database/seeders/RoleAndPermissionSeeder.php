@@ -22,7 +22,8 @@ class RoleAndPermissionSeeder extends Seeder
             ],
             'others' => [
                 'activities.acknowledge',
-                'assignment_tasks.toggle'
+                'assignment_tasks.toggle',
+                'assignments.changeStatus'
             ]
         ]
     ];

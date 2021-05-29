@@ -12,6 +12,7 @@ use App\Repositories\Contracts\AssignmentContract;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class AssignmentController extends Controller
 {
@@ -118,5 +119,25 @@ class AssignmentController extends Controller
 
         $this->assignment_contract->deleteById($id);
         return redirect()->route('assignments.index')->with('success', __('alert.delete_success'));
+    }
+
+    public function changeStatus($id, Request $request): \Illuminate\Http\RedirectResponse
+    {
+        $request->validate([
+            'status' => [
+                'required',
+                Rule::in(['created','working','done']),
+            ]
+        ]);
+
+        $assignment = Assignment::find($id);
+        if($assignment){
+            $assignment->status = $request->status;
+            $assignment->save();
+
+            return redirect()->route('assignments.show', $id)->with('success', 'Assignment Status is updated');
+        }
+        return abort(404);
+
     }
 }

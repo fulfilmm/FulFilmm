@@ -1,4 +1,3 @@
-
 <div class="chat chat-left">
     <div class="chat-avatar">
         <a href="profile" class="avatar">
@@ -8,17 +7,17 @@
     <div class="chat-body">
         <div class="chat-bubble">
             <div class="chat-content">
-                <span class="task-chat-user">{{$name}}</span> 
-              
-                        <span
+                <span class="task-chat-user">{{$name}}</span>
+
+                <span
                     class="chat-time">at {{$date}}</span>
                 <ul class="attach-list">
-                   
-                @if ($file)
-                <li><i class="fa fa-file"></i> <a
-                    href="{{$file}}">attachment</a></li>
-                @endif  
-                            <p>{{$msg}}</p>
+                    @if ($file)
+                        <li><i class="fa fa-file"></i> <a
+                                href="{{$file}}">attachment</a></li>
+                        <img src="{{$file}}" class="img-fluid w-25" alt="">
+                    @endif
+                    <p>{{$msg}}</p>
                 </ul>
             </div>
         </div>

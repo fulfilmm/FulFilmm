@@ -25,7 +25,13 @@
                         <td style="display: flex">
                             {{--this is acknowledge button--}}
                             @can('can-acknowledge', $activity)
-                            <a class="btn btn-success" href="{{ route('activities.acknowledge', $activity->id) }}"><span class="fa fa-check"></span></a>&nbsp;
+                                <form action="{{route('activities.acknowledge', ['id' => $activity->id])}}" class="mr-1" method="post">
+                                    @csrf
+                                    @method('PUT')
+                                    <button class="btn btn-success"  {{$activity->is_acknowledged === 1 ? 'disabled' : ''}} type="submit" id="acknowledege">
+                                        <span class="fa fa-check"></span>
+                                    </button>
+                                </form>
                             @endcan
                             <a class="btn btn-primary" href="{{route('activities.show', $activity->id)}}"><span
                                     class="fa fa-eye"></span></a>&nbsp;

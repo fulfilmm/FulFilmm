@@ -109,22 +109,19 @@
                     <div class="fixed-header">
                         <div class="navbar">
                             <div class="task-assign">
-
                                 {{--Acknowledge button here--}}
-                                <a class="task-complete-btn" id="task_complete" href="javascript:void(0);">
-                                    <i class="material-icons">check</i> Acknowledge
-                                </a>
+                                <form action="{{route('activities.acknowledge', ['id' => $activity->id])}}"
+                                      method="post">
+                                    @csrf
+                                    @method('PUT')
+                                    <button
+                                        class="task-complete-btn {{$activity->is_acknowledged === 1 ? 'bg-success text-light' : ''}} "
+                                        {{$activity->is_acknowledged === 1 ? 'disabled' : ''}} type="submit"
+                                        id="acknowledege">
+                                        <i class="material-icons">check</i>{{$activity->is_acknowledged === 1 ? 'acknowledged' : 'acknowledge'}}
+                                    </button>
+                                </form>
                             </div>
-                            <ul class="nav float-right custom-menu">
-                                <li class="dropdown dropdown-action">
-                                    <a href="" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i
-                                            class="material-icons">more_vert</i></a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="javascript:void(0)">Delete Task</a>
-                                        <a class="dropdown-item" href="javascript:void(0)">Settings</a>
-                                    </div>
-                                </li>
-                            </ul>
                         </div>
                     </div>
                     <div class="chat-contents task-chat-contents">
@@ -142,39 +139,40 @@
                                                     <div class="assigned-info">
 
                                                         <div class="task-head-title">Task Owner</div>
-                                                        <div class="task-assignee">{{ Auth::guard('employee')->user()->name ?? 'Guest' }}</div>
+                                                        <div
+                                                            class="task-assignee">{{ Auth::guard('employee')->user()->name ?? 'Guest' }}</div>
                                                     </div>
                                                 </a>
                                             </div>
-                                            <div class="task-due-date">
-                                                <a href="#" data-toggle="modal" data-target="#assignee">
-                                                    <div class="due-icon">
-																	<span>
-																		<i class="material-icons">date_range</i>
-																	</span>
-                                                    </div>
-                                                    <div class="due-info">
-                                                        <div class="task-head-title">Due Date</div>
-                                                        <div class="due-date">Mar 26, 2019</div>
-                                                    </div>
-                                                </a>
-                                                <span class="remove-icon">
-																<i class="fa fa-close"></i>
-															</span>
-                                            </div>
+{{--                                            <div class="task-due-date">--}}
+{{--                                                <a href="#" data-toggle="modal" data-target="#assignee">--}}
+{{--                                                    <div class="due-icon">--}}
+{{--																	<span>--}}
+{{--																		<i class="material-icons">date_range</i>--}}
+{{--																	</span>--}}
+{{--                                                    </div>--}}
+{{--                                                    <div class="due-info">--}}
+{{--                                                        <div class="task-head-title">Due Date</div>--}}
+{{--                                                        <div class="due-date">Mar 26, 2019</div>--}}
+{{--                                                    </div>--}}
+{{--                                                </a>--}}
+{{--                                                <span class="remove-icon">--}}
+{{--                                                    <i class="fa fa-close"></i>--}}
+{{--                                                </span>--}}
+{{--                                            </div>--}}
                                         </div>
 
                                         <hr class="task-line">
 
-                                    @foreach ($messages as $data)
-                                      {{-- {{dd($data->file)}} --}}
-                                      @include('activity.partial.message',[
-                                        'msg'=>$data->message,
-                                        'file'=> $data->file,
-                                        'name'=>$data->user->name,
-                                        'date'=>$data->created_at,
-                                    ])
-                                    @endforeach
+                                        @foreach ($messages as $data)
+                                            {{-- {{dd($data->file)}} --}}
+                                            @include('activity.partial.message',[
+                                              'msg'=>$data->message,
+                                              'file'=> $data->file,
+                                              'name'=>$data->user->name,
+                                              'date'=>$data->created_at,
+                                          ])
+                                        @endforeach
 
 
                                         {{-- <div class="task-information">
@@ -191,7 +189,7 @@
                         </div>
                     </div>
                     <div class="chat-footer">
-                       @include('activity.partial.message_input_box')
+                        @include('activity.partial.message_input_box')
                     </div>
                 </div>
             </div>
@@ -209,7 +207,7 @@
         $(document).ready(function () {
             //scroll to chat-box bottom to view latest message;
             const chat_box = $('.chat-wrap-inner');
-            chat_box.animate({ scrollTop:10000 }, 1000);
+            chat_box.animate({scrollTop: 10000}, 1000);
 
 
             let success_alert = "{{ Session::get('success') }}"
@@ -223,9 +221,11 @@
         function deleteActivity(task_id) {
             $('#activity_task' + task_id).submit();
         }
+
         //trigger file Open when click on paper-clip icon
-        function triggerFile(e){
-             $('#file').trigger('click'); ;
+        function triggerFile(e) {
+            $('#file').trigger('click');
+            ;
         }
 
         var updateNotification = function (task, notificationText, newClass) {
