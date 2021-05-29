@@ -51,6 +51,7 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::resource('activity_tasks', ActivityTaskController::class);
     Route::resource('groups', GroupController::class);
     Route::resource('assignments',AssignmentController::class);
+    Route::put('assignments/{id}/changeStatus', [AssignmentController::class,'changeStatus'])->name('assignments.changeStatus');
     Route::resource('assignment_tasks',AssignmentTaskController::class);
     Route::put('assignment_tasks/{id}/toggle',[AssignmentTaskController::class, 'toggleStatus'])->name('assignment_tasks.toggle');
     Route::resource('projects', ProjectController::class);
@@ -67,7 +68,7 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::post('employees/import', [EmployeeController::class, 'import'])->name('employees.import');
     Route::post('companies/import', [CompanyController::class, 'import'])->name('companies.import');
 
-    Route::get('activities/{id}/acknowledge', [ActivityController::class, 'acknowledge'])->name('activities.acknowledge');
+    Route::put('activities/{id}/acknowledge', [ActivityController::class, 'acknowledge'])->name('activities.acknowledge');
 });
 
 
