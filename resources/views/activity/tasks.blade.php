@@ -111,20 +111,14 @@
                             <div class="task-assign">
 
                                 {{--Acknowledge button here--}}
-                                <a class="task-complete-btn" id="task_complete" href="javascript:void(0);">
-                                    <i class="material-icons">check</i> Acknowledge
-                                </a>
+                                <form action="{{route('activities.acknowledge', ['id' => $activity->id])}}" method="post">
+                                    @csrf
+                                    @method('PUT')
+                                    <button class="task-complete-btn {{$activity->is_acknowledged === 1 ? 'bg-success text-light' : ''}} "  {{$activity->is_acknowledged === 1 ? 'disabled' : ''}} type="submit" id="acknowledege">
+                                        <i class="material-icons">check</i>{{$activity->is_acknowledged === 1 ? 'acknowledged' : 'acknowledge'}}
+                                    </button>
+                                </form>
                             </div>
-                            <ul class="nav float-right custom-menu">
-                                <li class="dropdown dropdown-action">
-                                    <a href="" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i
-                                            class="material-icons">more_vert</i></a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="javascript:void(0)">Delete Task</a>
-                                        <a class="dropdown-item" href="javascript:void(0)">Settings</a>
-                                    </div>
-                                </li>
-                            </ul>
                         </div>
                     </div>
                     <div class="chat-contents task-chat-contents">

@@ -112,7 +112,7 @@ class ActivityController extends Controller
     }
 
 
-    public function acknowledge($activity_id)
+    public function acknowledge($activity_id): \Illuminate\Http\RedirectResponse
     {
         $this->activity_contract->acknowledgeActivity($activity_id);
         return redirect()->route('activities.index')->with('success', __('alert.acknowledged'));
