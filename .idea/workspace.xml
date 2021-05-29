@@ -4,18 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4d8aa19e-eab1-4b9d-925d-36c0a35fff96" name="Default Changelist" comment="Added comment and attachment user inter face">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ActivityController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ActivityController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/AssignmentController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/AssignmentController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_04_14_104520_create_assignments_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_04_14_104520_create_assignments_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeders/PermissionSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/PermissionSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeders/RoleAndPermissionSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/RoleAndPermissionSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/activity/tasks.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/activity/tasks.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/assignment/tasks.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/assignment/tasks.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/livewire/assignment-table.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/livewire/assignment-table.blade.php" afterDir="false" />
+    <list default="true" id="4d8aa19e-eab1-4b9d-925d-36c0a35fff96" name="Default Changelist" comment="Fixed acknowledge button not working">
       <change beforePath="$PROJECT_DIR$/resources/views/livewire/roles-table.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/livewire/roles-table.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -208,7 +198,7 @@
       <workItem from="1621996674756" duration="3332000" />
       <workItem from="1622123426644" duration="1587000" />
       <workItem from="1622171346836" duration="1925000" />
-      <workItem from="1622248983123" duration="3359000" />
+      <workItem from="1622248983123" duration="3414000" />
     </task>
     <task id="LOCAL-00001" summary="minor cosmetic changes">
       <created>1621392837445</created>
@@ -224,7 +214,21 @@
       <option name="project" value="LOCAL" />
       <updated>1621392915232</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Added status to assignments">
+      <created>1622252370385</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1622252370385</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Fixed acknowledge button not working">
+      <created>1622252393761</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1622252393761</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -245,7 +249,9 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="minor cosmetic changes" />
     <MESSAGE value="Added Project &#10;- Model (fillable and migration need to be done)&#10;- Controller&#10;- Routes&#10;- Livewire componenet and logic&#10;- Navigation item" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added Project &#10;- Model (fillable and migration need to be done)&#10;- Controller&#10;- Routes&#10;- Livewire componenet and logic&#10;- Navigation item" />
+    <MESSAGE value="Added status to assignments" />
+    <MESSAGE value="Fixed acknowledge button not working" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed acknowledge button not working" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
