@@ -19,7 +19,7 @@ class CreateActivityCommentsTable extends Migration
             $table->foreignId('activity_id')->constrained('activities');
             $table->boolean('is_read')->default(false);
             $table->string('file')->nullable();
-            $table->text('message');
+            $table->text('message')->nullable();
             $table->timestamps();
         });
     }
