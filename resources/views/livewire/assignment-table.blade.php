@@ -11,7 +11,8 @@
                 <thead>
                 <tr>
                     <th>Title</th>
-                    <th>Date</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
                     <th>Assigned by</th>
                     <th>Creator Department</th>
                     <th></th>
@@ -22,7 +23,8 @@
                 @foreach ($assignments as $assignment)
                     <tr>
                         <td>{{$assignment->title}}</td>
-                        <td>{{$assignment->due_date}}</td>
+                        <td class="{{$assignment->due_date >= today() ? 'text-dark' : 'text-danger'}}">{{$assignment->due_date}}</td>
+                        <td>{{$assignment->status}}</td>
                         <td>{{$assignment->assignedBy->name}}</td>
                         <td>{{$assignment->assignedBy->department->name}}</td>
                         <td style="display: flex">

@@ -38,9 +38,13 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
+        $validated = $request->validate([
+            'message' => 'required_without:file|max:255',
+            'file' => 'required_without:message',
+        ]);
+
         $data = $request->all();
         $path = '';
-
         if ($request->file('file')) {
             $uploadedFile = $request->file('file');
             $path = Storage::url($uploadedFile->store('attachments', ['disk' => 'public']));

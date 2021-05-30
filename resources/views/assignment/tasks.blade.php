@@ -39,14 +39,20 @@
                                         <div class="task-list-container">
                                             <div class="task-list-body mb-5">
                                                 @php
-                                                if ($assignment->total_tasks > 0) {
-                                                    $percentage = round(($assignment->task_done / $assignment->total_tasks) * 100);
-                                                }    
+                                                    if($assignment->total_tasks === 0){
+                                                        $percentage = 0;
+                                                    }else{
+                                                          $percentage = round(($assignment->task_done / $assignment->total_tasks) * 100);
+                                                    }
+
                                                 @endphp
                                                 <h4>Progress</h4>
                                                 <div class="progress">
-                                                    <div class="progress-bar" role="progressbar" style="width: {{$percentage ?? 0}}%" aria-valuenow="{{$percentage ?? 0}}" aria-valuemin="0" aria-valuemax="100">
-                                                        {{$percentage ?? 0}}%</div>
+                                                    <div class="progress-bar" role="progressbar"
+                                                         style="width: {{$percentage}}%" aria-valuenow="{{$percentage}}"
+                                                         aria-valuemin="0" aria-valuemax="100">
+                                                        {{$percentage}}%
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="task-list-body">
@@ -133,20 +139,24 @@
                             <div class="task-assign">
 
                                 {{--Acknowledge button here--}}
-                                <a class="task-complete-btn" id="task_complete" href="javascript:void(0);">
-                                    <i class="material-icons">check</i> Acknowledge
-                                </a>
+                                {{--                                <a class="task-complete-btn" id="task_complete" href="javascript:void(0);">--}}
+                                {{--                                    <i class="material-icons">check</i> Acknowledge--}}
+                                {{--                                </a>--}}
+                                <div>
+                                    <h3>Status</h3>
+                                    <form id="assignment_status_toggle" action="{{route('assignments.changeStatus', ['id' => $assignment->id])}}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <select class="form-control" name="status"
+                                                required>
+                                            <option disabled class="">Change Status to : </option>
+                                            <option value='created' @if($assignment->status === 'created') selected @endif> Created  </option>
+                                            <option value='working' @if($assignment->status === 'working') selected @endif> Working  </option>
+                                            <option value='done' @if($assignment->status === 'done') selected @endif> Done  </option>
+                                        </select>
+                                    </form>
+                                </div>
                             </div>
-                            <ul class="nav float-right custom-menu">
-                                <li class="dropdown dropdown-action">
-                                    <a href="" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i
-                                            class="material-icons">more_vert</i></a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="javascript:void(0)">Delete Task</a>
-                                        <a class="dropdown-item" href="javascript:void(0)">Settings</a>
-                                    </div>
-                                </li>
-                            </ul>
                         </div>
                     </div>
                     <div class="chat-contents task-chat-contents">
@@ -225,7 +235,8 @@
                         @include('assignment.partial.message_input_box')
                     </div>
                 </div>
-            </div>`
+            </div>
+            `
         </div>
     </div>
 
@@ -249,6 +260,10 @@
                 updateNotification('Success!!', success_alert, 'success')
             }
 
+            $('#assignment_status_toggle').change(() => {
+                $('#assignment_status_toggle').submit()
+            });
+
         })
 
         function deleteAssignment(task_id) {
@@ -257,6 +272,10 @@
 
         function toggleTask(task_id) {
             $('#assignment_task_toggle' + task_id).submit();
+        }
+
+        function toggleAssignmentStatus(){
+
         }
 
         //trigger file Open when click on paper-clip icon
