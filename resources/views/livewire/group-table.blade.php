@@ -22,9 +22,9 @@
                         <td>{{$group->name}}</td>
                         <td>{{$group->created_by }}</td>
                         <td style="display: flex">
-                            <a class="pr-2 my-auto btn btn-success" href="{{route('groups.edit',$group->id)}}">
-                                <span class='fa fa-edit'></span>
-                            </a>&nbsp;
+{{--                            <a class="pr-2 my-auto btn btn-success" href="{{route('groups.edit',$group->id)}}">--}}
+{{--                                <span class='fa fa-edit'></span>--}}
+{{--                            </a>&nbsp;--}}
 
                             <form id="group-del-{{$group->id}}" action="{{route('groups.destroy',$group->id)}}"
                                   method="POST">

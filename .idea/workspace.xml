@@ -4,16 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4d8aa19e-eab1-4b9d-925d-36c0a35fff96" name="Default Changelist" comment="Fixed id and title in role data table">
+    <list default="true" id="4d8aa19e-eab1-4b9d-925d-36c0a35fff96" name="Default Changelist" comment="fixed that users cannot post only files/attachments &#10;added nullable to migration files">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/CommentController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/CommentController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_05_24_205529_create_activity_comments_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_05_24_205529_create_activity_comments_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_05_24_205541_create_assignment_comments_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_05_24_205541_create_assignment_comments_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/activity/partial/message.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/activity/partial/message.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/activity/partial/message_input_box.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/activity/partial/message_input_box.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/activity/tasks.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/activity/tasks.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/assignment/partial/message_input_box.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/assignment/partial/message_input_box.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/livewire/activity-table.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/livewire/activity-table.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -206,7 +198,8 @@
       <workItem from="1621996674756" duration="3332000" />
       <workItem from="1622123426644" duration="1587000" />
       <workItem from="1622171346836" duration="1925000" />
-      <workItem from="1622248983123" duration="4687000" />
+      <workItem from="1622248983123" duration="5150000" />
+      <workItem from="1622372277493" duration="92000" />
     </task>
     <task id="LOCAL-00001" summary="minor cosmetic changes">
       <created>1621392837445</created>
@@ -243,7 +236,21 @@
       <option name="project" value="LOCAL" />
       <updated>1622252413881</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Change acknowledge method from get to put &#10;Added acknowledge function inside in assignment">
+      <created>1622253776934</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1622253776934</updated>
+    </task>
+    <task id="LOCAL-00007" summary="fixed that users cannot post only files/attachments &#10;added nullable to migration files">
+      <created>1622253834559</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1622253834559</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -267,7 +274,9 @@
     <MESSAGE value="Added status to assignments" />
     <MESSAGE value="Fixed acknowledge button not working" />
     <MESSAGE value="Fixed id and title in role data table" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed id and title in role data table" />
+    <MESSAGE value="Change acknowledge method from get to put &#10;Added acknowledge function inside in assignment" />
+    <MESSAGE value="fixed that users cannot post only files/attachments &#10;added nullable to migration files" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed that users cannot post only files/attachments &#10;added nullable to migration files" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
