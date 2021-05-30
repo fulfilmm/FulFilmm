@@ -22,7 +22,7 @@
                 @foreach ($assignments as $assignment)
                     <tr>
                         <td>{{$assignment->title}}</td>
-                        <td>{{$assignment->date}}</td>
+                        <td>{{$assignment->due_date}}</td>
                         <td>{{$assignment->assignedBy->name}}</td>
                         <td>{{$assignment->assignedBy->department->name}}</td>
                         <td style="display: flex">

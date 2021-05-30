@@ -50,7 +50,7 @@ class GroupController extends Controller
             $group->employees()->attach($employee);
         }
 
-        return redirect()->route('groups.create');
+        return redirect()->route('groups.index')->with('success', __('alert.create_success'));
 
     }
 
@@ -96,6 +96,7 @@ class GroupController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Group::destroy($id);
+        return redirect()->route('groups.index')->with('success', __('alert.delete_success'));
     }
 }

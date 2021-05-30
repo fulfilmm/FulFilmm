@@ -39,12 +39,14 @@
                                         <div class="task-list-container">
                                             <div class="task-list-body mb-5">
                                                 @php
+                                                if ($assignment->total_tasks > 0) {
                                                     $percentage = round(($assignment->task_done / $assignment->total_tasks) * 100);
+                                                }    
                                                 @endphp
                                                 <h4>Progress</h4>
                                                 <div class="progress">
-                                                    <div class="progress-bar" role="progressbar" style="width: {{$percentage}}%" aria-valuenow="{{$percentage}}" aria-valuemin="0" aria-valuemax="100">
-                                                        {{$percentage}}%</div>
+                                                    <div class="progress-bar" role="progressbar" style="width: {{$percentage ?? 0}}%" aria-valuenow="{{$percentage ?? 0}}" aria-valuemin="0" aria-valuemax="100">
+                                                        {{$percentage ?? 0}}%</div>
                                                 </div>
                                             </div>
                                             <div class="task-list-body">
@@ -196,6 +198,14 @@
                                                     {{$employee->name}}
                                                 </li>
                                             @endforeach
+
+                                            @if (isset($assignment->assigned_groups))
+                                                @foreach ($assignment->assigned_groups as $group)
+                                                    @foreach ($group->employees as $employee)
+                                                        <li>{{ $employee->name }}</li>
+                                                    @endforeach
+                                                @endforeach                                              
+                                            @endif
                                         </ol>
                                         <hr class="task-line">
                                         @foreach ($messages as $data)

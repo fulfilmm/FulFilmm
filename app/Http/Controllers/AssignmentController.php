@@ -8,6 +8,7 @@ use App\Models\Assignment;
 use App\Models\AssignmentComment;
 use App\Models\Department;
 use App\Models\Employee;
+use App\Models\Group;
 use App\Repositories\Contracts\AssignmentContract;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -31,7 +32,8 @@ class AssignmentController extends Controller
     {
         //
         $employees = Employee::all()->pluck('name', 'id')->all();
-        return view('assignment.index', compact('employees'));
+        $groups = Group::all()->pluck('name', 'id');
+        return view('assignment.index', compact('employees', 'groups'));
     }
 
     /**
@@ -57,7 +59,8 @@ class AssignmentController extends Controller
         $data['assigned_by'] = loginUser()->id;
         $data['creator_department_id'] = loginUser()->department->id;
         $assignment = $this->assignment_contract->create($data);
-        $assignment->assigned_employees()->attach($data['assigned_employee']);
+        $assignment->assigned_employees()->attach($data['assigned_employee'] ?? []);
+        $assignment->assigned_groups()->attach($data['assigned_group'] ?? []);
         return redirect()->route('assignments.index')->with('success', __('alert.create_success'));
     }
 
@@ -102,7 +105,7 @@ class AssignmentController extends Controller
      */
     public function update(AssignmentRequest $request, $id)
     {
-        $this->assignment_contract->updateById($id, $request->all());
+        $assignment = $this->assignment_contract->updateById($id, $request->all());
         return redirect()->route('assignments.index')->with('success', __('alert.update_success'));
     }
 

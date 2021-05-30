@@ -25,6 +25,11 @@ class Assignment extends Model
         return $this->belongsToMany(Employee::class, 'assignment_employee');
     }
 
+    public function assigned_groups()
+    {
+        return $this->belongsToMany(Group::class, 'assignment_group');
+    }
+
     public function assignedBy(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Employee::class, 'assigned_by');

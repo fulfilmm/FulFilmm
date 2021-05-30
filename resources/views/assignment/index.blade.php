@@ -10,13 +10,27 @@
         <form action="{{ route('assignments.store') }}" method="POST">
             @csrf
             <x-forms.basic.input name="title" type="text" value="" title="Title" required></x-forms.basic.input>
+
+            <div class="form-group row">
+                <label class="col-form-label col-md-2">Assign Group</label>
+                <div class="col-md-10 w-100" id="co_owners">
+                    <select class="form-control" id="groups_multiple_select" style="width: 100%" name="assigned_group[]"
+                            multiple="multiple">
+                        @foreach ($groups as $key => $group_name)
+
+                            <option value={{$key}} @if($key === \Auth::id()) selected @endif>{{$group_name}} </option>
+                        @endforeach
+
+                    </select>
+                </div>
+            </div>
+
+
             <div class="form-group row">
                 <label class="col-form-label col-md-2">Assign to</label>
                 <div class="col-md-10 w-100" id="co_owners">
-                    {{--                    @dd($employees)--}}
-
                     <select class="form-control" id="employees_multiple_select" style="width: 100%" name="assigned_employee[]"
-                            multiple="multiple" required>
+                            multiple="multiple">
                         @foreach ($employees as $key => $employee)
 
                             <option value={{$key}} @if($key === \Auth::id()) selected @endif>{{$employee}} </option>
@@ -63,6 +77,8 @@
             <script>
                 $(document).ready(function () {
                     $('#employees_multiple_select').select2();
+
+                    $('#groups_multiple_select').select2();
 
                 });
             </script>
