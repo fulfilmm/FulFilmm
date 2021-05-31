@@ -208,6 +208,14 @@
                                                     {{$employee->name}}
                                                 </li>
                                             @endforeach
+
+                                            @if (isset($assignment->assigned_groups))
+                                                @foreach ($assignment->assigned_groups as $group)
+                                                    @foreach ($group->employees as $employee)
+                                                        <li>{{ $employee->name }}</li>
+                                                    @endforeach
+                                                @endforeach                                              
+                                            @endif
                                         </ol>
                                         <hr class="task-line">
                                         @foreach ($messages as $data)

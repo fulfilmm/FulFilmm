@@ -13,14 +13,14 @@
                 <thead>
                 <tr>
                     <th>Name</th>
-                    <th>Created By
-                    <th>
+                    <th>Created By</th>
+                    <th></th>
                 </tr>
                 </thead>
                 @foreach ($groups as $group)
                     <tr>
                         <td>{{$group->name}}</td>
-                        <td>{{$group->created_by }}</td>
+                        <td>{{$group->created_employee->name }}</td>
                         <td style="display: flex">
 {{--                            <a class="pr-2 my-auto btn btn-success" href="{{route('groups.edit',$group->id)}}">--}}
 {{--                                <span class='fa fa-edit'></span>--}}
