@@ -8,6 +8,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -29,9 +30,7 @@ use App\Http\Controllers\RoleController;
 
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'index'])->middleware(['auth:employee']);
 
 Route::namespace('Auth\Login')->prefix('employees')->as('employees.')->group(function () {
     Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
