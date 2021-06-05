@@ -17,6 +17,14 @@ class CreateProjectsTable extends Migration
             $table->id();
             $table->string('title');
             $table->foreignId('created_by')->constrained('employees');
+            $table->string('proposed_to');
+            $table->string('leader');
+            $table->string('owner');
+            $table->string('start_date');
+            $table->string('end_date');
+            $table->string('priority', 32);
+            $table->string('status', 8)->default('pending');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
