@@ -11,7 +11,15 @@ class Project extends Model
 
     protected $fillable = [
         'title',
-        'created_by'
+        'created_by',
+        'proposed_to',
+        'leader',
+        'owner',
+        'start_date',
+        'end_date',
+        'priority',
+        'status',
+        'description',
     ];
 
 //    public function employees()
