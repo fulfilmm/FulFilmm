@@ -5,11 +5,21 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use App\Models\Group;
 use App\Models\Project;
+use App\Repositories\Contracts\ProjectContract;
+use Carbon\Carbon;
 use DeepCopy\Matcher\PropertyNameMatcher;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
+
+    private $projectContract;
+
+    public function __construct(ProjectContract $projectContract)
+    {
+        $this->projectContract = $projectContract;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -41,9 +51,22 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
         //
+
+        $validated = $request->validate([
+            'start_date' => 'required|date|after_or_equal:today',
+            'end_date' => 'required|date|after:start_date|after_or_equal:today',
+        ]);
+
+        dd($validated);
+
+        $data = $request->all();
+        $data['created_by'] = loginUser()->id;
+        $data['start_date'] = Carbon::createFromFormat('d/m/Y', $request->start_date);
+        $data['end_date'] = Carbon::createFromFormat('d/m/Y', $request->end_date);
+
         $project = Project::where('title', $request->title)->first();
         if (!$project) {
-            Project::create(['title' => $request->title, 'created_by' => auth()->guard('employee')->id()]);
+            $this->projectContract->create($data);
             $message = 'Project created successfully';
         } else {
             $message = 'The name you give already exists';
