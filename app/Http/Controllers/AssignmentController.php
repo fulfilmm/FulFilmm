@@ -75,12 +75,12 @@ class AssignmentController extends Controller
     {
 
         $assignment = $this->assignment_contract->getAssignmentsWithTasks($assignment_id);
-        $messages = AssignmentComment::where('assignment_id', $assignment_id)
-            ->with('user')
-            ->get();
+
         if ($assignment) {
-            $employees = Employee::all()->pluck('name', 'id')->all();
-            return view('assignment.tasks', compact('assignment', 'employees', 'messages'));
+            $messages = AssignmentComment::where('assignment_id', $assignment_id)
+                ->with('user')
+                ->get();
+            return view('assignment.tasks', compact('assignment', 'messages'));
         }
         return abort(404);
 

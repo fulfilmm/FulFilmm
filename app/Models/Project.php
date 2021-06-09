@@ -27,6 +27,25 @@ class Project extends Model
 //        return $this->belongsToMany(Employee::class, 'groups_employees', 'group_id', 'employee_id');
 //    }
 
+    public function projectTasks(){
+        return $this->hasMany(ProjectTask::class, 'project_id');
+    }
+
+    public function leadedBy(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Employee::class, 'leader');
+    }
+
+    public function ownedBy(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Employee::class, 'owner');
+    }
+
+    public function proposedTo()
+    {
+        return $this->belongsTo(Employee::class, 'proposed_to');
+    }
+
     public function creator(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Employee::class, 'created_by');

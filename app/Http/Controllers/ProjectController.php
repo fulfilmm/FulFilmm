@@ -57,12 +57,12 @@ class ProjectController extends Controller
             'end_date' => 'required|date|after:start_date|after_or_equal:today',
         ]);
 
-        dd($validated);
-
         $data = $request->all();
         $data['created_by'] = loginUser()->id;
         $data['start_date'] = Carbon::createFromFormat('d/m/Y', $request->start_date);
         $data['end_date'] = Carbon::createFromFormat('d/m/Y', $request->end_date);
+
+
 
         $project = Project::where('title', $request->title)->first();
         if (!$project) {
@@ -78,11 +78,17 @@ class ProjectController extends Controller
      * Display the specified resource.
      *
      * @param \App\Models\Project $project
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function show(Project $project)
     {
         //
+        $project = $this->projectContract->getProjectsWithTasks($project->id);
+        if ($project){
+            $messages = [];
+            return view('project.show', compact('project','messages'));
+        }
+        return abort(404);
     }
 
     /**

@@ -20,8 +20,8 @@ class CreateProjectsTable extends Migration
             $table->string('proposed_to');
             $table->string('leader');
             $table->string('owner');
-            $table->string('start_date');
-            $table->string('end_date');
+            $table->date('start_date');
+            $table->date('end_date');
             $table->string('priority', 32);
             $table->string('status', 8)->default('pending');
             $table->text('description')->nullable();

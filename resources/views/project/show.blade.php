@@ -4,7 +4,7 @@
     <x-partials.modal id="assignment_tasks-create" title="Create Assignment Tasks">
         <form action="{{ route('assignment_tasks.store') }}" method="POST">
             @csrf
-            <input type="hidden" name="assignment_id" value="{{ $assignment->id }}">
+            <input type="hidden" name="project_id" value="{{ $project->id }}">
             <x-forms.basic.input name="name" type="text" value="" title="Task Title" required></x-forms.basic.input>
 
             <div class="d-flex justify-content-center">
@@ -37,29 +37,11 @@
                                 <div class="chat-box">
                                     <div class="task-wrapper">
                                         <div class="task-list-container">
-                                            <div class="task-list-body mb-5">
-                                                @php
-                                                    if($assignment->total_tasks === 0){
-                                                        $percentage = 0;
-                                                    }else{
-                                                          $percentage = round(($assignment->task_done / $assignment->total_tasks) * 100);
-                                                    }
-
-                                                @endphp
-                                                <h4>Progress</h4>
-                                                <div class="progress">
-                                                    <div class="progress-bar" role="progressbar"
-                                                         style="width: {{$percentage}}%" aria-valuenow="{{$percentage}}"
-                                                         aria-valuemin="0" aria-valuemax="100">
-                                                        {{$percentage}}%
-                                                    </div>
-                                                </div>
-                                            </div>
                                             <div class="task-list-body">
                                                 <h4>Tasks</h4>
                                                 <ul id="task-list">
                                                     {{--                                                                                                         {{ dd($assignment->assignment_tasks) }}--}}
-                                                    @forelse ($assignment->assignment_tasks as $task)
+                                                    @forelse ($project->projectTasks as $task)
                                                         <li class="task">
                                                             <div class="task-container">
 
@@ -76,7 +58,7 @@
                                                                     <input
                                                                         type="hidden"
                                                                         name="assignment_id"
-                                                                        value="{{ $assignment->id }}">
+                                                                        value="{{ $projectF->id }}">
                                                                 </form>
 
                                                                 <form
@@ -112,7 +94,7 @@
                                                     @empty
                                                         <li class="task">
                                                             <div class="task-container">
-                                                                <span class="task-label" contenteditable="false">There is no task for this Assignment yet.</span>
+                                                                <span class="task-label" contenteditable="false">There is no task for this Project yet.</span>
                                                             </div>
                                                         </li>
                                                     @endforelse
@@ -142,20 +124,20 @@
                                 {{--                                <a class="task-complete-btn" id="task_complete" href="javascript:void(0);">--}}
                                 {{--                                    <i class="material-icons">check</i> Acknowledge--}}
                                 {{--                                </a>--}}
-                                <div>
-                                    <h3>Status</h3>
-                                    <form id="assignment_status_toggle" action="{{route('assignments.changeStatus', ['id' => $assignment->id])}}" method="POST">
-                                        @csrf
-                                        @method('PUT')
-                                        <select class="form-control" name="status"
-                                                required>
-                                            <option disabled class="">Change Status to : </option>
-                                            <option value='created' @if($assignment->status === 'created') selected @endif> Created  </option>
-                                            <option value='working' @if($assignment->status === 'working') selected @endif> Working  </option>
-                                            <option value='done' @if($assignment->status === 'done') selected @endif> Done  </option>
-                                        </select>
-                                    </form>
-                                </div>
+{{--                                <div>--}}
+{{--                                    <h3>Status</h3>--}}
+{{--                                    <form id="assignment_status_toggle" action="{{route('assignments.changeStatus', ['id' => $assignment->id])}}" method="POST">--}}
+{{--                                        @csrf--}}
+{{--                                        @method('PUT')--}}
+{{--                                        <select class="form-control" name="status"--}}
+{{--                                                required>--}}
+{{--                                            <option disabled class="">Change Status to : </option>--}}
+{{--                                            <option value='created' @if($assignment->status === 'created') selected @endif> Created  </option>--}}
+{{--                                            <option value='working' @if($assignment->status === 'working') selected @endif> Working  </option>--}}
+{{--                                            <option value='done' @if($assignment->status === 'done') selected @endif> Done  </option>--}}
+{{--                                        </select>--}}
+{{--                                    </form>--}}
+{{--                                </div>--}}
                             </div>
                         </div>
                     </div>
@@ -164,59 +146,7 @@
                             <div class="chat-wrap-inner">
                                 <div class="chat-box">
                                     <div class="chats">
-                                        <h4>{{ $assignment->title }}</h4>
-                                        <div class="task-header">
-                                            <div class="assignee-info">
-                                                <a href="#" data-toggle="modal" data-target="#assignee">
-                                                    <div class="avatar">
-                                                        <img alt="" src="">
-                                                    </div>
-                                                    <div class="assigned-info">
-
-                                                        <div class="task-head-title">Task Owner</div>
-                                                        <div
-                                                            class="task-assignee">{{$assignment->assignedBy->name}}</div>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                            <div class="task-due-date">
-                                                <a href="#" data-toggle="modal" data-target="#assignee">
-                                                    <div class="due-icon">
-																	<span>
-																		<i class="material-icons">date_range</i>
-																	</span>
-                                                    </div>
-                                                    <div class="due-info">
-                                                        <div class="task-head-title">Due Date</div>
-                                                        <div
-                                                            class="{{$assignment->due_date >= today() ? 'black' : 'due-date'}}">{{$assignment->due_date}}</div>
-                                                    </div>
-                                                </a>
-                                                {{--                                                <span class="remove-icon">--}}
-                                                {{--																<i class="fa fa-close"></i>--}}
-                                                {{--                                                </span>--}}
-                                            </div>
-                                        </div>
-
-                                        <hr class="task-line">
-                                        {{--{{dd($assignment->assigned_employees->pluck('name'))}}--}}
-                                        <h4>Assigned Employees</h4>
-                                        <ol>
-
-                                            @foreach($assignment->assigned_employees as $employee)
-                                                <li>
-                                                    {{$employee->name}}
-                                                </li>
-                                            @endforeach
-
-                                            @if (isset($assignment->assigned_groups))
-                                                @foreach ($assignment->assigned_groups as $group)
-                                                    @foreach ($group->employees as $employee)
-                                                        <li>{{ $employee->name }}</li>
-                                                    @endforeach
-                                                @endforeach
-                                            @endif
-                                        </ol>
+                                  @include('project.partial.project_header')
                                         <hr class="task-line">
                                         @foreach ($messages as $data)
                                             @include('assignment.partial.message',[
@@ -232,7 +162,7 @@
                         </div>
                     </div>
                     <div class="chat-footer">
-                        @include('assignment.partial.message_input_box')
+                        @include('project.partial.message_input_box')
                     </div>
                 </div>
             </div>

@@ -5,14 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4d8aa19e-eab1-4b9d-925d-36c0a35fff96" name="Default Changelist" comment="fixed that users cannot post only files/attachments &#10;added nullable to migration files">
-      <change afterPath="$PROJECT_DIR$/resources/views/project/show.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/project/partial/message.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/project/partial/message_input_box.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/project/partial/project_header.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/AssignmentController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/AssignmentController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ProjectController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ProjectController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Providers/RepositoryServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Providers/RepositoryServiceProvider.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/project/form.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/project/form.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/project/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/project/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/raw-ui/chat.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/raw-ui/chat.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/ui.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/ui.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Livewire/ProjectTable.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Livewire/ProjectTable.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Project.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Project.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Repositories/Contracts/ProjectContract.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/Contracts/ProjectContract.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Repositories/ProjectRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/ProjectRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_05_19_090509_create_projects_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_05_19_090509_create_projects_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/livewire/project-table.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/livewire/project-table.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/project/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/project/show.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -167,7 +172,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/views/project" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -179,6 +184,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/resources/views/project" />
       <recent name="$PROJECT_DIR$/resources/views/assignment" />
     </key>
   </component>
@@ -211,6 +217,7 @@
       <workItem from="1623041107009" duration="1626000" />
       <workItem from="1623062056928" duration="2663000" />
       <workItem from="1623151888902" duration="3238000" />
+      <workItem from="1623208154673" duration="4167000" />
     </task>
     <task id="LOCAL-00001" summary="minor cosmetic changes">
       <created>1621392837445</created>
