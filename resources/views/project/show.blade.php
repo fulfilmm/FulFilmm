@@ -3,12 +3,12 @@
     <div class="chat-main-row">
         <div class="chat-main-wrapper">
             <div class="col-lg-7 message-view task-view task-left-sidebar">
-                <div>
+                <div class="">
                     <ul class="nav nav-tabs nav-tabs-solid nav-justified mb-0">
                         <li class="nav-item"><a class="nav-link active" href="#tasks"
                                                 data-toggle="tab">Tasks</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#team_members"
-                                                data-toggle="tab">Members</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#proposed_budget"
+                                                data-toggle="tab">Proposed Budget</a></li>
                         <li class="nav-item"><a class="nav-link" href="#proposed_resource" data-toggle="tab">Proposed
                                 Resource</a></li>
                     </ul>
@@ -16,11 +16,11 @@
                         <div class="tab-pane show active" id="tasks">
                             @include('project.partial.task')
                         </div>
-                        <div class="tab-pane" id="team_members">
-                            These are team members
+                        <div class="tab-pane" id="proposed_budget">
+                            @include('project.partial.budget')
                         </div>
                         <div class="tab-pane" id="proposed_resource">
-                            These are resources
+                            @include('project.partial.resource')
                         </div>
                     </div>
                 </div>

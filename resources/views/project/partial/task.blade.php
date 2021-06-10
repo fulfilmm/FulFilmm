@@ -1,4 +1,4 @@
-<x-partials.modal id="assignment_tasks-create" title="Create Assignment Tasks">
+<x-partials.modal id="project_task-create" title="Create Project Tasks">
     <form action="{{ route('project_tasks.store') }}" method="POST">
         @csrf
         <input type="hidden" name="project_id" value="{{ $project->id }}">
@@ -15,7 +15,7 @@
         <div class="float-left mr-auto">
             <div class="add-task-btn-wrapper">
                                     <span class="add-task-btn btn btn-white btn-sm" data-toggle="modal"
-                                          data-target="#assignment_tasks-create"> Add Task </span>
+                                          data-target="#project_task-create"> Add Task </span>
             </div>
         </div>
         <a class="task-chat profile-rightbar float-right" id="task_chat" href="#task_window"><i
@@ -89,7 +89,7 @@
                         <li class="task">
                             <div class="task-container">
                             <span class="task-label"
-                                  contenteditable="false">There is no task for this Assignment yet.</span>
+                                  contenteditable="false">There is no task for this Project yet.</span>
                             </div>
                         </li>
                     @endforelse
