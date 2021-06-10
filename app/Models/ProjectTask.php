@@ -9,7 +9,9 @@ class ProjectTask extends Model
 {
     use HasFactory;
 
+    protected $table = 'project_tasks';
+
     protected $fillable = [
-        'name', 'project_id'
+        'name', 'project_id', 'keyword', 'duration', 'due_date', 'progress', 'status'
     ];
 }

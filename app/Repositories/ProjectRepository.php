@@ -19,7 +19,7 @@ class ProjectRepository extends BaseRepository implements ProjectContract
 
     public function getProjectsWithTasks($project_id)
     {
-        return $this->model->with('projectTasks')
+        return $this->model->with(['task', 'proposed_budget','proposed_resource'])
              ->withCount(['projectTasks as task_done' => function (Builder $q) {
         $q->where('status', 1);
     }])

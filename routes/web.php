@@ -10,6 +10,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ProjectTaskController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\Login\EmployeeAuthController as AuthController;
@@ -54,6 +55,7 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::resource('assignment_tasks',AssignmentTaskController::class);
     Route::put('assignment_tasks/{id}/toggle',[AssignmentTaskController::class, 'toggleStatus'])->name('assignment_tasks.toggle');
     Route::resource('projects', ProjectController::class);
+    Route::resource('project_tasks',ProjectTaskController::class);
 
     //export routes
     Route::get('customers/export', [CustomerController::class, 'export'])->name('customers.export');

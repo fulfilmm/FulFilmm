@@ -16,10 +16,10 @@ class CreateProjectTasksTable extends Migration
         Schema::create('project_tasks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('project_id')->constrained('projects');
-            $table->string('keyword')->default('normal'); //keywords -> normal, propose budge, propose resources
+            $table->string('keyword')->default('normal'); //keywords -> normal, propose budget, propose resources
             $table->string('name');
-            $table->string('duration', 32);
-            $table->string('due_date');
+            $table->string('duration', 32)->nullable();
+            $table->string('due_date')->nullable();
             $table->tinyInteger('progress')->default(0);
             $table->boolean('status')->default(false);
             $table->timestamps();

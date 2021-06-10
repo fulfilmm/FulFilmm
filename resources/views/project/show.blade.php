@@ -1,118 +1,30 @@
 @extends('layout.mainlayout')
 @section('content')
-
-    <x-partials.modal id="assignment_tasks-create" title="Create Assignment Tasks">
-        <form action="{{ route('assignment_tasks.store') }}" method="POST">
-            @csrf
-            <input type="hidden" name="project_id" value="{{ $project->id }}">
-            <x-forms.basic.input name="name" type="text" value="" title="Task Title" required></x-forms.basic.input>
-
-            <div class="d-flex justify-content-center">
-                <button class="btn btn-primary">Create</button>
-            </div>
-        </form>
-    </x-partials.modal>
-
-
     <div class="chat-main-row">
         <div class="chat-main-wrapper">
             <div class="col-lg-7 message-view task-view task-left-sidebar">
-                <div class="chat-window">
-                    <div class="fixed-header">
-                        <div class="navbar">
-                            <div class="float-left mr-auto">
-                                <div class="add-task-btn-wrapper">
-                                    <span class="add-task-btn btn btn-white btn-sm" data-toggle="modal"
-                                          data-target="#assignment_tasks-create"> Add Task </span>
-                                </div>
-                            </div>
-                            <a class="task-chat profile-rightbar float-right" id="task_chat" href="#task_window"><i
-                                    class="fa fa fa-comment"></i></a>
+                <div>
+                    <ul class="nav nav-tabs nav-tabs-solid nav-justified mb-0">
+                        <li class="nav-item"><a class="nav-link active" href="#tasks"
+                                                data-toggle="tab">Tasks</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#team_members"
+                                                data-toggle="tab">Members</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#proposed_resource" data-toggle="tab">Proposed
+                                Resource</a></li>
+                    </ul>
+                    <div class="tab-content p-0">
+                        <div class="tab-pane show active" id="tasks">
+                            @include('project.partial.task')
                         </div>
-                    </div>
-
-                    <div class="chat-contents">
-                        <div class="chat-content-wrap">
-                            <div class="chat-wrap-inner">
-                                <div class="chat-box">
-                                    <div class="task-wrapper">
-                                        <div class="task-list-container">
-                                            <div class="task-list-body">
-                                                <h4>Tasks</h4>
-                                                <ul id="task-list">
-                                                    {{--                                                                                                         {{ dd($assignment->assignment_tasks) }}--}}
-                                                    @forelse ($project->projectTasks as $task)
-                                                        <li class="task">
-                                                            <div class="task-container">
-
-                                                                <span class="task-label"
-                                                                      style="{{$task->status === 1 ? 'text-decoration: line-through' : '' }}"
-                                                                      contenteditable="false">{{ $task->name }}</span>
-
-                                                                {{--Delete form added here for cosmetic purposes--}}
-                                                                <form
-                                                                    action="{{ route('assignment_tasks.destroy', $task->id) }}"
-                                                                    id="assignment_task{{ $task->id }}" method="POST">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <input
-                                                                        type="hidden"
-                                                                        name="assignment_id"
-                                                                        value="{{ $projectF->id }}">
-                                                                </form>
-
-                                                                <form
-                                                                    action="{{route('assignment_tasks.toggle',$task->id)}}"
-                                                                    id="assignment_task_toggle{{ $task->id }}"
-                                                                    method="POST">
-                                                                    @csrf
-                                                                    @method('PUT')
-                                                                    <input
-                                                                        type="hidden"
-                                                                        name="assignment_id"
-                                                                        value="{{ $assignment->id }}">
-                                                                </form>
-
-                                                                <span class="task-action-btn task-btn-right">
-                                                                        <span class="action-circle large"
-                                                                              onclick="toggleTask({{$task->id}})"
-                                                                              title="{{$task->status === 1 ? 'Uncheck' : 'Check'}}">
-                                                                            <i class="material-icons">{{$task->status === 1 ? 'close' : 'check'}}</i>
-                                                                        </span>
-
-                                                                        &nbsp;  &nbsp;
-
-                                                                        <span class="action-circle large bg-danger"
-                                                                              title="Delete Task">
-                                                                            <i class="material-icons"
-                                                                               onclick="deleteAssignment({{$task->id}})">delete</i>
-                                                                        </span>
-
-															    </span>
-                                                            </div>
-                                                        </li>
-                                                    @empty
-                                                        <li class="task">
-                                                            <div class="task-container">
-                                                                <span class="task-label" contenteditable="false">There is no task for this Project yet.</span>
-                                                            </div>
-                                                        </li>
-                                                    @endforelse
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="notification-popup hide">
-                                        <p>
-                                            <span class="task"></span>
-                                            <span class="notification-text"></span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="tab-pane" id="team_members">
+                            These are team members
+                        </div>
+                        <div class="tab-pane" id="proposed_resource">
+                            These are resources
                         </div>
                     </div>
                 </div>
+
             </div>
             <div class="col-lg-5 message-view task-chat-view task-right-sidebar" id="task_window">
                 <div class="chat-window">
@@ -124,20 +36,20 @@
                                 {{--                                <a class="task-complete-btn" id="task_complete" href="javascript:void(0);">--}}
                                 {{--                                    <i class="material-icons">check</i> Acknowledge--}}
                                 {{--                                </a>--}}
-{{--                                <div>--}}
-{{--                                    <h3>Status</h3>--}}
-{{--                                    <form id="assignment_status_toggle" action="{{route('assignments.changeStatus', ['id' => $assignment->id])}}" method="POST">--}}
-{{--                                        @csrf--}}
-{{--                                        @method('PUT')--}}
-{{--                                        <select class="form-control" name="status"--}}
-{{--                                                required>--}}
-{{--                                            <option disabled class="">Change Status to : </option>--}}
-{{--                                            <option value='created' @if($assignment->status === 'created') selected @endif> Created  </option>--}}
-{{--                                            <option value='working' @if($assignment->status === 'working') selected @endif> Working  </option>--}}
-{{--                                            <option value='done' @if($assignment->status === 'done') selected @endif> Done  </option>--}}
-{{--                                        </select>--}}
-{{--                                    </form>--}}
-{{--                                </div>--}}
+                                {{--                                <div>--}}
+                                {{--                                    <h3>Status</h3>--}}
+                                {{--                                    <form id="assignment_status_toggle" action="{{route('assignments.changeStatus', ['id' => $assignment->id])}}" method="POST">--}}
+                                {{--                                        @csrf--}}
+                                {{--                                        @method('PUT')--}}
+                                {{--                                        <select class="form-control" name="status"--}}
+                                {{--                                                required>--}}
+                                {{--                                            <option disabled class="">Change Status to : </option>--}}
+                                {{--                                            <option value='created' @if($assignment->status === 'created') selected @endif> Created  </option>--}}
+                                {{--                                            <option value='working' @if($assignment->status === 'working') selected @endif> Working  </option>--}}
+                                {{--                                            <option value='done' @if($assignment->status === 'done') selected @endif> Done  </option>--}}
+                                {{--                                        </select>--}}
+                                {{--                                    </form>--}}
+                                {{--                                </div>--}}
                             </div>
                         </div>
                     </div>
@@ -146,7 +58,7 @@
                             <div class="chat-wrap-inner">
                                 <div class="chat-box">
                                     <div class="chats">
-                                  @include('project.partial.project_header')
+                                        @include('project.partial.project_header')
                                         <hr class="task-line">
                                         @foreach ($messages as $data)
                                             @include('assignment.partial.message',[
@@ -204,7 +116,7 @@
             $('#assignment_task_toggle' + task_id).submit();
         }
 
-        function toggleAssignmentStatus(){
+        function toggleAssignmentStatus() {
 
         }
 

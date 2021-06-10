@@ -14,7 +14,7 @@ class PermissionSeeder extends Seeder
      */
     protected $permissions = [
         'activities', 'activity_tasks', 'comments', 'companies', 'customers', 'departments',
-        'employees', 'groups', 'roles', 'permissions', 'assignments', 'assignment_tasks', 'projects'
+        'employees', 'groups', 'roles', 'permissions', 'assignments', 'assignment_tasks', 'projects', 'project_tasks'
     ];
     public function run()
     {

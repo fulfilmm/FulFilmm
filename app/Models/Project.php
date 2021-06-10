@@ -31,6 +31,19 @@ class Project extends Model
         return $this->hasMany(ProjectTask::class, 'project_id');
     }
 
+    public function task(){
+        return $this->projectTasks()->where('keyword', 'normal');
+    }
+
+    public function proposed_budget(){
+        return $this->projectTasks()->where('keyword', 'proposed_budget');
+    }
+
+    public function proposed_resource(){
+        return $this->projectTasks()->where('keyword', 'proposed_resource');
+    }
+
+
     public function leadedBy(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Employee::class, 'leader');
