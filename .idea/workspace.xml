@@ -5,11 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4d8aa19e-eab1-4b9d-925d-36c0a35fff96" name="Default Changelist" comment="fixed that users cannot post only files/attachments &#10;added nullable to migration files">
-      <change afterPath="$PROJECT_DIR$/resources/views/project/partial/budget.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/project/partial/resource.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ProjectTaskController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ProjectTaskController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/ProjectTask.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/ProjectTask.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_06_04_200321_create_project_tasks_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_06_04_200321_create_project_tasks_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/project/form.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/project/form.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/project/partial/task.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/project/partial/task.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/project/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/project/show.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -210,7 +211,8 @@
       <workItem from="1623062056928" duration="2663000" />
       <workItem from="1623151888902" duration="3238000" />
       <workItem from="1623208154673" duration="4209000" />
-      <workItem from="1623296516765" duration="5476000" />
+      <workItem from="1623296516765" duration="5574000" />
+      <workItem from="1623388268797" duration="1801000" />
     </task>
     <task id="LOCAL-00001" summary="minor cosmetic changes">
       <created>1621392837445</created>

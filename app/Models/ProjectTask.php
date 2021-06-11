@@ -14,4 +14,9 @@ class ProjectTask extends Model
     protected $fillable = [
         'name', 'project_id', 'keyword', 'duration', 'due_date', 'progress', 'status'
     ];
+
+    public function assigned_employees()
+    {
+        return $this->belongsToMany(Employee::class, 'assignment_employee');
+    }
 }

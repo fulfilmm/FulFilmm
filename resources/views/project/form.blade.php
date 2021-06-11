@@ -1,9 +1,6 @@
-@error('start_date')
-<div class="alert alert-danger alert-block">
-    {{$message}}
-</div>
-@enderror
-
+@if($errors->any())
+    {{ implode('', $errors->all('<div>:message</div>')) }}
+@endif
 <br>
 
 <form action="{{ route('projects.store') }}" method="POST">

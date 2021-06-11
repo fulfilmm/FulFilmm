@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\Contracts\ProjectTaskContract;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ProjectTaskController extends Controller
@@ -44,8 +45,18 @@ class ProjectTaskController extends Controller
     public function store(Request $request)
     {
 
+
+
+        if ($request->keyword === 'normal') {
+            $request['due_date'] = Carbon::createFromFormat('d/m/Y', $request->due_date);
+            $validated = $request->validate([
+                'due_date' => 'required|date|after_or_equal:today',
+            ]);
+
+        }
+
         $project_id = $request->project_id;
-        $this->projectTaskContract->create($request->all());
+        $this->projectTaskContract->create( $request->all());
         return redirect()->route('projects.show', $project_id)->with('success', __('alert.create_success'));
     }
 

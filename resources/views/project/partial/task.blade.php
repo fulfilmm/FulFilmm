@@ -2,7 +2,10 @@
     <form action="{{ route('project_tasks.store') }}" method="POST">
         @csrf
         <input type="hidden" name="project_id" value="{{ $project->id }}">
+        <input type="hidden" name="keyword" value="normal">
         <x-forms.basic.input name="name" type="text" value="" title="Task Title" required></x-forms.basic.input>
+        <x-forms.basic.input name="duration" type="text" value="" title="Duration" required></x-forms.basic.input>
+        <x-forms.basic.date name="due_date" title="Due Date" required value=""></x-forms.basic.date>
 
         <div class="d-flex justify-content-center">
             <button class="btn btn-primary">Create</button>
@@ -14,8 +17,8 @@
     <div class="navbar">
         <div class="float-left mr-auto">
             <div class="add-task-btn-wrapper">
-                                    <span class="add-task-btn btn btn-white btn-sm" data-toggle="modal"
-                                          data-target="#project_task-create"> Add Task </span>
+                <span class="add-task-btn btn btn-white btn-sm" data-toggle="modal"
+                      data-target="#project_task-create"> Add Task </span>
             </div>
         </div>
         <a class="task-chat profile-rightbar float-right" id="task_chat" href="#task_window"><i
@@ -66,23 +69,18 @@
                                         value="{{ $project->id }}">
                                 </form>
 
-
                                 <span class="task-action-btn task-btn-right">
-                                                                        <span class="action-circle large"
-                                                                              onclick="toggleTask({{$task->id}})"
-                                                                              title="{{$task->status === 1 ? 'Uncheck' : 'Check'}}">
-                                                                            <i class="material-icons">{{$task->status === 1 ? 'close' : 'check'}}</i>
-                                                                        </span>
-
-                                                                        &nbsp;  &nbsp;
-
-                                                                        <span class="action-circle large bg-danger"
-                                                                              title="Delete Task">
-                                                                            <i class="material-icons"
-                                                                               onclick="deleteAssignment({{$task->id}})">delete</i>
-                                                                        </span>
-
-															    </span>
+                                    <span class="action-circle large"
+                                          onclick="toggleTask({{$task->id}})"
+                                          title="{{$task->status === 1 ? 'Uncheck' : 'Check'}}">
+                                        <i class="material-icons">{{$task->status === 1 ? 'close' : 'check'}}</i>'
+                                        </span>
+                                    <span class="action-circle large bg-danger"
+                                          title="Delete Task">
+                                        <i class="material-icons"
+                                           onclick="deleteAssignment({{$task->id}})">delete</i>
+                                    </span>
+                                </span>
                             </div>
                         </li>
                     @empty

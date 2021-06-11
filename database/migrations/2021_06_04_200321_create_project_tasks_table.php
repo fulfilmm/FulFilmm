@@ -19,7 +19,7 @@ class CreateProjectTasksTable extends Migration
             $table->string('keyword')->default('normal'); //keywords -> normal, propose budget, propose resources
             $table->string('name');
             $table->string('duration', 32)->nullable();
-            $table->string('due_date')->nullable();
+            $table->date('due_date')->nullable();
             $table->tinyInteger('progress')->default(0);
             $table->boolean('status')->default(false);
             $table->timestamps();
