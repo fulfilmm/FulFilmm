@@ -6,6 +6,19 @@
         <x-forms.basic.input name="name" type="text" value="" title="Task Title" required></x-forms.basic.input>
         <x-forms.basic.input name="duration" type="text" value="" title="Duration" required></x-forms.basic.input>
         <x-forms.basic.date name="due_date" title="Due Date" required value=""></x-forms.basic.date>
+        <div class="form-group row">
+            <label class="col-form-label col-md-2">Task Members</label>
+            <div class="col-md-10 w-100" id="co_owners">
+                <select class="form-control" id="employees_multiple_select" style="width: 100%" name="project_task_employee[]"
+                        multiple="multiple">
+                    @foreach ($employees as $key => $employee)
+
+                        <option value={{$key}} @if($key === \Auth::id()) selected @endif>{{$employee}} </option>
+                    @endforeach
+
+                </select>
+            </div>
+        </div>
 
         <div class="d-flex justify-content-center">
             <button class="btn btn-primary">Create</button>
@@ -34,7 +47,6 @@
                     }else{
                           $percentage = round(($project->task_done / $project->total_tasks) * 100);
                     }
-
                 @endphp
                 <h4>Progress</h4>
                 <div class="progress">
@@ -48,14 +60,16 @@
             <div class="task-list-body">
                 <h4>Tasks</h4>
                 <ul id="task-list">
+
+
                     {{--                                                                                                         {{ dd($assignment->assignment_tasks) }}--}}
                     @forelse ($project->task as $task)
                         <li class="task">
-                            <div class="task-container">
-
-                                                                <span class="task-label"
-                                                                      style="{{$task->status === 1 ? 'text-decoration: line-through' : '' }}"
-                                                                      contenteditable="false">{{ $task->name }}</span>
+                            <a href="{{route('projects.show', [$project->id, $task->id])}}">
+                            <div class="task-container {{ $task_id === (string)$task->id ? 'bg-primary' : '' }}">
+                                <span class="task-label"
+                                      style="{{$task->status === 1 ? 'text-decoration: line-through' : '' }}"
+                                      contenteditable="false">{{ $task->name }}</span>
 
                                 {{--Delete form added here for cosmetic purposes--}}
                                 <form
@@ -82,6 +96,7 @@
                                     </span>
                                 </span>
                             </div>
+                            </a>
                         </li>
                     @empty
                         <li class="task">
@@ -105,3 +120,13 @@
 
 </div>
 
+
+@push('scripts')
+    <script>
+        $(document).ready(function () {
+            $('#employees_multiple_select').select2();
+        });
+
+
+    </script>
+@endpush

@@ -17,6 +17,6 @@ class ProjectTask extends Model
 
     public function assigned_employees()
     {
-        return $this->belongsToMany(Employee::class, 'assignment_employee');
+        return $this->belongsToMany(Employee::class, 'project_task_employee');
     }
 }

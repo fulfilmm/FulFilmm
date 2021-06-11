@@ -54,7 +54,16 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::put('assignments/{id}/changeStatus', [AssignmentController::class,'changeStatus'])->name('assignments.changeStatus');
     Route::resource('assignment_tasks',AssignmentTaskController::class);
     Route::put('assignment_tasks/{id}/toggle',[AssignmentTaskController::class, 'toggleStatus'])->name('assignment_tasks.toggle');
-    Route::resource('projects', ProjectController::class);
+    Route::resource('projects', ProjectController::class)->except([
+        'show'
+    ]);;
+
+    Route::get('/projects/{project}/{task_id?}', [ProjectController::class,'show'])->name('projects.show');
+
+//    Route::get('/projects/{id}/{task_id}', function (){
+//        print('hello');
+//    })->name('projects.show');
+
     Route::resource('project_tasks',ProjectTaskController::class);
 
     //export routes

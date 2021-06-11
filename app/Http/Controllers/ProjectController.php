@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use App\Models\Group;
 use App\Models\Project;
+use App\Models\ProjectTask;
 use App\Repositories\Contracts\ProjectContract;
 use Carbon\Carbon;
 use DeepCopy\Matcher\PropertyNameMatcher;
@@ -63,7 +64,6 @@ class ProjectController extends Controller
         $data['end_date'] = Carbon::createFromFormat('d/m/Y', $request->end_date);
 
 
-
         $project = Project::where('title', $request->title)->first();
         if (!$project) {
             $this->projectContract->create($data);
@@ -80,13 +80,15 @@ class ProjectController extends Controller
      * @param \App\Models\Project $project
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
-    public function show(Project $project)
+    public function show(Project $project, $task_id = null)
     {
         //
+        $employees = Employee::all()->pluck('name', 'id')->all();
         $project = $this->projectContract->getProjectsWithTasks($project->id);
-        if ($project){
+
+        if ($project) {
             $messages = [];
-            return view('project.show', compact('project','messages'));
+            return view('project.show', compact('project', 'messages', 'employees', 'task_id'));
         }
         return abort(404);
     }

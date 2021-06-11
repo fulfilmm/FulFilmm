@@ -45,8 +45,6 @@ class ProjectTaskController extends Controller
     public function store(Request $request)
     {
 
-
-
         if ($request->keyword === 'normal') {
             $request['due_date'] = Carbon::createFromFormat('d/m/Y', $request->due_date);
             $validated = $request->validate([
@@ -56,7 +54,9 @@ class ProjectTaskController extends Controller
         }
 
         $project_id = $request->project_id;
-        $this->projectTaskContract->create( $request->all());
+        $project_task = $this->projectTaskContract->create( $request->all());
+        $project_task->assigned_employees()->attach($request->project_task_employee ?? []);
+
         return redirect()->route('projects.show', $project_id)->with('success', __('alert.create_success'));
     }
 
