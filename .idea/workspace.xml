@@ -5,15 +5,53 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4d8aa19e-eab1-4b9d-925d-36c0a35fff96" name="Default Changelist" comment="Fixed id and title in role data table">
+      <change afterPath="$PROJECT_DIR$/public/css/ticket.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/js/ticket.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/cases/create.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/cases/delete.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/cases/edit.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/cases/import.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/cases/index.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/inquery/create.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/inquery/delete.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/inquery/edit.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/inquery/index.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/inquery/show.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/lead/edit.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/lead/followed_lead.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/lead/lead.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/lead/lead_create.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/lead/lead_table.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/lead/lead_view.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/priority/create.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/priority/delete.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/priority/edit.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/priority/import.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/priority/index.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/product/create.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/product/edit.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/product/index.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/product/show.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/ticket/chartreport.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/ticket/create.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/ticket/delete.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/ticket/edit.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/ticket/filter.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/ticket/import.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/ticket/index.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/ticket/ticket-view.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/ticket/ticket_for_guest.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/CommentController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/CommentController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_05_24_205529_create_activity_comments_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_05_24_205529_create_activity_comments_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_05_24_205541_create_assignment_comments_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_05_24_205541_create_assignment_comments_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/activity/partial/message.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/activity/partial/message.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/activity/partial/message_input_box.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/activity/partial/message_input_box.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/activity/tasks.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/activity/tasks.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/assignment/partial/message_input_box.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/assignment/partial/message_input_box.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/livewire/activity-table.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/livewire/activity-table.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Employee.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Employee.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/seeders/DatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/DatabaseSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/seeders/PermissionSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/PermissionSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/seeders/RoleSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/RoleSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/customer/form.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/customer/form.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layout/mainlayout.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layout/mainlayout.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layout/partials/footer-scripts.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layout/partials/footer-scripts.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layout/partials/head.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layout/partials/head.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layout/partials/nav.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layout/partials/nav.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +61,9 @@
   <component name="ComposerSettings" doNotAsk="true">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
     <execution />
+  </component>
+  <component name="Git.Merge.Settings">
+    <option name="BRANCH" value="origin/develop" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -34,6 +75,16 @@
       <filtered-out-file-type name="TAG" />
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/resources/views/layout/partials/nav.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/.env.example" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/database/migrations/2020_10_31_112741_create_department_heads_table.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/database/migrations/2020_10_31_105726_create_companies_table.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/app/Http/Controllers/RoleController.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/database/seeders/PermissionSeeder.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/routes/web.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/database/migrations/2020_10_31_105314_create_employees_table.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
   </component>
   <component name="JsBowerSettings">
     <bower-package value="" />
@@ -160,6 +211,7 @@
     </include_path>
   </component>
   <component name="ProjectId" id="1rAAis12HLaPXipN5bvoOqSoahs" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -168,7 +220,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Documents/support-ticket-system" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -180,6 +232,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/resources/views" />
       <recent name="$PROJECT_DIR$/resources/views/assignment" />
     </key>
   </component>
@@ -207,6 +260,9 @@
       <workItem from="1622123426644" duration="1587000" />
       <workItem from="1622171346836" duration="1925000" />
       <workItem from="1622248983123" duration="4687000" />
+      <workItem from="1623146876710" duration="47126000" />
+      <workItem from="1623384589227" duration="612000" />
+      <workItem from="1623390440995" duration="1360000" />
     </task>
     <task id="LOCAL-00001" summary="minor cosmetic changes">
       <created>1621392837445</created>
@@ -268,6 +324,17 @@
     <MESSAGE value="Fixed acknowledge button not working" />
     <MESSAGE value="Fixed id and title in role data table" />
     <option name="LAST_COMMIT_MESSAGE" value="Fixed id and title in role data table" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/resources/views/layout/partials/footer-scripts.blade.php</url>
+          <line>1</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

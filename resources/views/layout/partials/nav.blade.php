@@ -117,7 +117,47 @@
                                    href="{{ route('projects.create') }}">Create Project</a></li>
                         </ul>
                     </li>
+                    <li class="submenu">
+                        <a href="#"><i class="la la-ticket"></i> <span> Ticket</span> <span class="menu-arrow"></span></a>
+                        <ul style="display: none;">
 
+                            <li><a class="{{ Request::is('tickets') ? 'active' : '' }}" href="{{ route('tickets.index') }}">All Ticket</a></li>
+                            <li><a class="{{ Request::is('cases') ? 'active' : '' }}" href="{{ route('cases.index') }}">All Cases</a></li>
+                            <li><a class="{{ Request::is('priority') ? 'active' : '' }}" href="{{ route('priorities.index') }}">All Priority</a></li>
+                            <li><a class="{{ Request::is('piechart/report') ? 'active' : '' }}" href="{{ url('piechart/report') }}">Pie Chart Report</a></li>
+                            <li><a class="{{ Request::is('ticket/senders') ? 'active' : '' }}" href="{{ url('ticket/senders') }}">Sender Information</a></li>
+
+                            {{--                            @if(\Auth::guard('employee')->user()->role->name === 'Manager' ||  \Auth::guard('employee')->user()->role->name === 'CEO')--}}
+                            {{--                                <li><a class="{{ Request::is('tickets/create') ? 'active' : '' }}" href="{{ route('tickets.create') }}">Create Ticket</a></li>--}}
+                            {{--                            @endif--}}
+                        </ul>
+                    </li>
+
+                    <li class="submenu">
+                        <a href="#"><i class="la la-cube"></i> <span> Product</span> <span class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+
+                            <li><a class="{{ Request::is('products') ? 'active' : '' }}" href="{{url('/products')}}">All Products</a></li>
+                            {{--                            <li><a class="{{ Request::is('cases') ? 'active' : '' }}" href="{{ route('cases.index') }}">All Cases</a></li>--}}
+                            {{--                            <li><a class="{{ Request::is('priority') ? 'active' : '' }}" href="{{ route('priorities.index') }}">All Priority</a></li>--}}
+
+                        </ul>
+                    </li>
+                    <li class="submenu">
+                        <a href="#"><i class="la la-cube"></i> <span> InQuery</span> <span class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+                            <li><a class="{{ Request::is('inqueries.index') ? 'active' : '' }}" href="{{ route('inqueries.index') }}">All InQuery</a></li>
+                            <li><a class="{{ Request::is('inqueries.create') ? 'active' : '' }}" href="{{ route('inqueries.create') }}">InQuery Create</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="submenu">
+                        <a href="#"><i class="la la-cube"></i> <span> Lead</span> <span class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+                            <li><a class="{{ Request::is('leads') ? 'active' : '' }}" href="{{ route('leads.index') }}">All Leads</a></li>
+                            <li><a class="{{ Request::is('leads.myfollowed') ? 'active' : '' }}" href="{{ route('leads.myfollowed') }}">Followed Lead</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>

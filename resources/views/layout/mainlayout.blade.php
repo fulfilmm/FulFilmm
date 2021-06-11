@@ -6,7 +6,7 @@
 </head>
 
 <body>
-
+@if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
     @include('layout.partials.nav')
 
     @include('layout.partials.header')
@@ -15,7 +15,9 @@
         @include('layout.partials.flash-messages')
         @yield('content')`
 </div>
-
+@else
+    @yield('content')`
+@endif
     @include('layout.partials.footer-scripts')
 
     @stack('scripts')

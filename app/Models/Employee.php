@@ -45,4 +45,16 @@ class Employee extends Authenticatable
     {
         return $this->belongsToMany(Assignment::class, 'assignment_employee');
     }
+    public function assign_ticket(){
+        return $this->hasMany(assign_ticket::class);
+    }
+    public function ticket(){
+        return $this->hasMany(ticket::class);
+    }
+    public function ticket_comment(){
+        return $this->hasMany(ticket_comments::class);
+    }
+    public function followed(){
+        return $this->hasMany(ticket_follower::class);
+    }
 }

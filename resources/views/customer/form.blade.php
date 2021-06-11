@@ -7,6 +7,7 @@
     <div class="col-md-8">
         <select class="form-control" id="company_id" name="company_id">
             <option disabled selected>Choose Customer's Current Company</option>
+
             @foreach ($companies as $key => $option)
                 <option value="{{$key}}" {{$key===($record->company_id?? old('company_id'))?'selected':''}}>{{$option}}</option>
             @endforeach

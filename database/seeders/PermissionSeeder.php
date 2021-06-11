@@ -14,7 +14,7 @@ class PermissionSeeder extends Seeder
      */
     protected $permissions = [
         'activities', 'activity_tasks', 'comments', 'companies', 'customers', 'departments',
-        'employees', 'groups', 'roles', 'permissions', 'assignments', 'assignment_tasks', 'projects'
+        'employees', 'groups', 'roles', 'permissions', 'assignments', 'assignment_tasks', 'projects','tickets','cases','priorities',
     ];
     public function run()
     {
@@ -26,6 +26,28 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'activities.acknowledge', 'display_name' => "Can acknowledge the activities", 'guard_name' => 'employee']);
         Permission::create(['name' => 'assignment_tasks.toggle', 'display_name' => 'Can toggle the assignment tasks status', "guard_name" => 'employee']);
         Permission::create(['name' => 'assignments.changeStatus', 'display_name' => 'Can change the assignment status', "guard_name" => 'employee']);
+        Permission::create(['name' => 'inqueries.index', 'display_name' => "Can view all inquery", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'inqueries.edit', 'display_name' => "Can Edit all inquery", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'inqueries.update', 'display_name' => "Can Update all inquery", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'inqueries.show', 'display_name' => "Can view Details inquery", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'inqueries.destroy', 'display_name' => "Can Delete all inquery", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'product.index', 'display_name' => "Can view all product", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'product.create', 'display_name' => "Can Go to product create page", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'product.show', 'display_name' => "Can view Details product", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'product.edit', 'display_name' => "Can  edit product", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'product.update', 'display_name' => "Can update  product", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'product.delete', 'display_name' => "Can delete  product", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'duplicate', 'display_name' => "Can duplicate  product", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'product.store', 'display_name' => "Can store product", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'tax.create', 'display_name' => "Can store tax", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'category.create', 'display_name' => "Can store category", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'action_confirm', 'display_name' => "Can change product status", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'change_status', 'display_name' => "Can change ticket status", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'postcomment', 'display_name' => "Can write comment for ticket", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'addfollower', 'display_name' => "Can add more ticket follower", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'reassign', 'display_name' => "Can reassign ticket ", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'piechart', 'display_name' => "Can view piechart report for ticket", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'sender_info', 'display_name' => "Can view ticket sender information", 'guard_name' => 'employee']);
     }
 
     private function createResourcePermissions($resource)

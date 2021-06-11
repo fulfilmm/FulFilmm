@@ -7,10 +7,11 @@
 		<meta name="keywords" content="admin, estimates, bootstrap, business, corporate, creative, management, minimal, modern, accounts, invoice, html5, responsive, CRM, Projects">
         <meta name="author" content="Dreamguys - Bootstrap Admin Template">
         <meta name="robots" content="noindex, nofollow">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>Dashboard - HRMS admin template</title>
 
 		<!-- Favicon -->
-        <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png">
+        <link rel="shortcut icon" type="image/x-icon" href="{{url(asset('img/favicon.png'))}}">
 
 		<!-- Bootstrap CSS -->
         <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
@@ -46,5 +47,6 @@
         <link rel="stylesheet" href="{{asset('css/style.css')}}">
 
         <link rel="stylesheet" href="{{asset('css/custom.css')}}">
+        <script src="{{asset('js/jquery-3.2.1.min.js')}}"></script>
 
     </head>

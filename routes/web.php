@@ -4,11 +4,19 @@ use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\ActivityTaskController;
 use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\AssignmentTaskController;
+use App\Http\Controllers\CaseTypeController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\InqueryController;
+use App\Http\Controllers\LeadController;
+use App\Http\Controllers\PriorityController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\TicketController;
+use App\Http\Controllers\TicketPieChartReport;
+use App\Http\Controllers\TicketSender;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\Login\EmployeeAuthController as AuthController;
@@ -40,6 +48,29 @@ Route::namespace('Auth\Login')->prefix('employees')->as('employees.')->group(fun
 });
 
 Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function () {
+
+    Route::get("/products",[ProductController::class,'index'])->name('product.index');
+    Route::get("/product/create",[ProductController::class,'create'])->name('product.create');
+    Route::post("/product/create",[ProductController::class,'store'])->name('product.store');
+    Route::get("/product/edit/{id}",[ProductController::class,'edit'])->name('product.edit');
+    Route::post("product/update/{id}",[ProductController::class,'update'])->name('product.update');
+    Route::get("/product/delete/{id}",[ProductController::class,'destroy'])->name('product.delete');
+    Route::post("/tax/create",[ProductController::class,'tax'])->name('tax.create');
+    Route::post("/cat/create",[ProductController::class,'category'])->name('category.create');
+    Route::get("product/show/{id}",[ProductController::class,'show'])->name('product.show');
+    Route::get("/product/duplicate/{id}",[ProductController::class,'duplicate'])->name('duplicate');
+    Route::post("/action/confirm",[ProductController::class,'action_confirm'])->name('action_confirm');
+    Route::post('status/{id}',[TicketController::class,'status_change'])->name('change_status');
+    Route::post('ticket/comment/',[TicketController::class,'postcomment'])->name('postcomment');
+    Route::post('/add/more/follower',[TicketController::class,'add_more_follower'])->name('addfollower');
+    Route::post("reassign/ticket",[TicketController::class,'reassign'])->name('reassign');
+    Route::get("/piechart/report",[TicketPieChartReport::class,'index'])->name('piechart');
+    Route::get('ticket/senders',[TicketSender::class,'index'])->name("sender_info");
+    Route::resource('tickets',TicketController::class);
+    Route::resource('cases',CaseTypeController::class);
+    Route::resource('priorities',PriorityController::class);
+    Route::resource('/inqueries',InqueryController::class);
+
     //resource routes
     Route::resource('roles', RoleController::class);
     Route::resource('departments', DepartmentController::class);
@@ -78,3 +109,15 @@ Route::put('roles/assign-permission/{id}', [RoleController::class, 'assignPermis
 
 //list routes
 Route::get('companies-card', [CompanyController::class, 'card'])->name('companies.cards');
+Route::get('ticket/create/guest',[TicketController::class,'guest_ticket']);
+Route::post('ticket/create/guest',[TicketController::class,'store']);
+Route::resource('/inqueries',InqueryController::class)->only('create','store');
+Route::resource('leads',LeadController::class);
+Route::post("/tags/create",[LeadController::class,'tag_add']);
+Route::get("/myfollowed/lead",[LeadController::class,'my_followed'])->name('leads.myfollowed');
+Route::post("/lead/post/comment",[LeadController::class,'comment'])->name('leads.comment');
+Route::post("/lead/followed/",[LeadController::class,'lead_follower'])->name('leads.followed');
+Route::post("/update/followed/",[LeadController::class,'unfollower'])->name('unfollowed');
+Route::get('convert/lead/{id}',[InqueryController::class,'convert_lead'])->name('convert.lead');
+Route::get("/workdone/{id}",[LeadController::class,'work_done'])->name('workdone');
+Route::get("/qualified/{id}",[LeadController::class,'qualified'])->name("qualified");
