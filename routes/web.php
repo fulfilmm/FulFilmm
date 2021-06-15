@@ -44,7 +44,9 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::resource('roles', RoleController::class);
     Route::resource('departments', DepartmentController::class);
     Route::resource('employees', EmployeeController::class);
+
     Route::resource('companies', CompanyController::class);
+
     Route::resource('customers', CustomerController::class);
     Route::resource('comments', CommentController::class);
     Route::resource('activities', ActivityController::class);
@@ -86,5 +88,5 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
 //list routes post
 Route::put('roles/assign-permission/{id}', [RoleController::class, 'assignPermission'])->name('roles.assignPermission');
 
-//list routes
+//card routes
 Route::get('companies-card', [CompanyController::class, 'card'])->name('companies.cards');

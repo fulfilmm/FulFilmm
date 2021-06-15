@@ -25,7 +25,8 @@ class ActivityController extends Controller
      */
     public function index()
     {
-        $employees = Employee::all()->pluck('name', 'id')->all();
+        //The activity creator name is excluded due to request
+        $employees = Employee::where('id', '!=', auth()->id())->pluck('name', 'id')->all();
         return view('activity.index', compact('employees'));
     }
 
