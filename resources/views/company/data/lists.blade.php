@@ -1,17 +1,17 @@
-@extends('layout.mainlayout')
+@extends('company.index')
 
 @section('styles')
     @livewireStyles
 @endsection
 
-@section('content')
-    <div class="content container-fluid">
-        <!-- Page Header -->
-        @include('layout.partials.page-header', ['route' => 'companies', 'import' => true, 'export' => false, 'card' => true, 'list' => true])
-        @yield('data')
-    </div>
-@endsection
+@section('data')
 
+<div class="row">
+    <div class="col-12">
+        <livewire:company-table />
+    </div>
+</div>
+@endsection
 @push('scripts')
     @livewireScripts
     <script>
@@ -31,7 +31,7 @@
                         'Record has been deleted.',
                         'success'
                     ).then(() => {
-                        document.getElementById("del-company" + id).submit();
+                        document.getElementById("del-company"+id).submit();
                     })
 
                 }
@@ -39,5 +39,3 @@
         }
     </script>
 @endpush
-
-

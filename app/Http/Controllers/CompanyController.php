@@ -30,13 +30,13 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $companies = Company::get();
-        return view('company.index', compact('companies'));
+        //data are displayed by livewire
+        return view('company.data.lists');
     }
 
     public function card(){
-        $companies = Company::get();
-        return view('company.cards', compact('companies'));
+        $companies = Company::paginate(20);
+        return view('company.data.cards', compact('companies'));
     }
 
     public function import(Request $request)
@@ -114,7 +114,7 @@ class CompanyController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {
@@ -127,7 +127,7 @@ class CompanyController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {

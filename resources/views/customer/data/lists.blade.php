@@ -1,17 +1,18 @@
-@extends('layout.mainlayout')
+@extends('customer.index')
+
 
 @section('styles')
     @livewireStyles
 @endsection
 
-@section('content')
-    <div class="content container-fluid">
-        <!-- Page Header -->
-        @include('layout.partials.page-header', ['route' => 'companies', 'import' => true, 'export' => false, 'card' => true, 'list' => true])
-        @yield('data')
+@section('data')
+    <div class="row">
+        <div class="col-12">
+            <livewire:customer-table/>
+        </div>
     </div>
-@endsection
 
+@endsection
 @push('scripts')
     @livewireScripts
     <script>
@@ -39,5 +40,3 @@
         }
     </script>
 @endpush
-
-

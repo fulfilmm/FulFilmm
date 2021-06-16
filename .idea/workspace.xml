@@ -5,12 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4d8aa19e-eab1-4b9d-925d-36c0a35fff96" name="Default Changelist" comment="fixed that users cannot post only files/attachments &#10;added nullable to migration files">
+      <change afterPath="$PROJECT_DIR$/app/View/Components/Partials/Card.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/company/data/lists.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/components/partials/card.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/customer/data/cards.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/customer/data/lists.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ActivityController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ActivityController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/CompanyController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/CompanyController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/CustomerController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/CustomerController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/company/cards.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/company/cards.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/customer/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/customer/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/company/cards.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/company/data/cards.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/company/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/company/index.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/customer/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/customer/index.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
@@ -182,6 +186,10 @@
       <recent name="$PROJECT_DIR$/resources/views/project" />
       <recent name="$PROJECT_DIR$/resources/views/assignment" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/resources/views/company/data" />
+      <recent name="$PROJECT_DIR$/resources/views/customer/data" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -216,7 +224,8 @@
       <workItem from="1623296516765" duration="5574000" />
       <workItem from="1623388268797" duration="5622000" />
       <workItem from="1623469868944" duration="255000" />
-      <workItem from="1623730541238" duration="1197000" />
+      <workItem from="1623730541238" duration="1799000" />
+      <workItem from="1623813619180" duration="5707000" />
     </task>
     <task id="LOCAL-00001" summary="minor cosmetic changes">
       <created>1621392837445</created>
