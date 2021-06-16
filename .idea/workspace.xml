@@ -5,17 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4d8aa19e-eab1-4b9d-925d-36c0a35fff96" name="Default Changelist" comment="fixed that users cannot post only files/attachments &#10;added nullable to migration files">
-      <change afterPath="$PROJECT_DIR$/app/View/Components/Partials/Card.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/company/data/lists.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/components/partials/card.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/customer/data/cards.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/customer/data/lists.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/department/data/cards.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/department/data/lists.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/employee/data/cards.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/employee/data/lists.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/CompanyController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/CompanyController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/CustomerController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/CustomerController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/company/cards.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/company/data/cards.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DepartmentController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DepartmentController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/EmployeeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/EmployeeController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/company/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/company/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/company/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/company/edit.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/company/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/company/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/customer/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/customer/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/department/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/department/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/department/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/department/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/employee/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/employee/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/groups/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/groups/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layout/partials/head.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layout/partials/head.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layout/partials/header.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layout/partials/header.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layout/partials/nav.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layout/partials/nav.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layout/partials/page-header.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layout/partials/page-header.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/role/createAndEdit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/role/createAndEdit.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -171,7 +180,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$USER_HOME$/codigo" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/views/department" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -183,6 +192,8 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/resources/views/department" />
+      <recent name="$PROJECT_DIR$/resources/views/employee" />
       <recent name="$PROJECT_DIR$/resources/views/project" />
       <recent name="$PROJECT_DIR$/resources/views/assignment" />
     </key>
@@ -225,7 +236,8 @@
       <workItem from="1623388268797" duration="5622000" />
       <workItem from="1623469868944" duration="255000" />
       <workItem from="1623730541238" duration="1799000" />
-      <workItem from="1623813619180" duration="5707000" />
+      <workItem from="1623813619180" duration="5813000" />
+      <workItem from="1623836503703" duration="2698000" />
     </task>
     <task id="LOCAL-00001" summary="minor cosmetic changes">
       <created>1621392837445</created>

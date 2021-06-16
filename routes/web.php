@@ -91,3 +91,5 @@ Route::put('roles/assign-permission/{id}', [RoleController::class, 'assignPermis
 //card routes
 Route::get('companies-card', [CompanyController::class, 'card'])->name('companies.cards');
 Route::get('customers-card', [CustomerController::class, 'card'])->name('customers.cards');
+Route::get('employees-card', [EmployeeController::class, 'card'])->name('employees.cards');
+Route::get('departments-card', [DepartmentController::class, 'card'])->name('departments.cards');

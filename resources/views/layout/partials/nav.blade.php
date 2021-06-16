@@ -106,18 +106,10 @@
                         <a href="{{route('assignments.index')}}"><i class="la la-cube"></i> <span>Assignments</span></a>
                     </li>
 
-                    <li class="submenu">
-                        <a href="#"><i class="la la-cube"></i> <span> Projects</span> <span class="menu-arrow"></span></a>
-                        <ul style="display: none;">
-
-                            <li><a class="{{ Request::is('projects') ? 'active' : '' }}"
-                                   href="{{ route('projects.index') }}">All Projects</a></li>
-
-                            <li><a class="{{ Request::is('project/create') ? 'active' : '' }}"
-                                   href="{{ route('projects.create') }}">Create Project</a></li>
-                        </ul>
+                    <li class="menu">
+                        <a class="{{ Request::is('projects') ? 'active' : '' }}"
+                           href="{{ route('projects.index') }}"><i class="la la-cube"></i> <span>Projects</span></a>
                     </li>
-
                 </ul>
             </div>
         </div>

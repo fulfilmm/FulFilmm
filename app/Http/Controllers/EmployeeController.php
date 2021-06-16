@@ -26,7 +26,12 @@ class EmployeeController extends Controller
     }
     public function index()
     {
-        return view('employee.index');
+        return view('employee.data.lists');
+    }
+
+    public function card(){
+        $employees = Employee::paginate(20);
+        return view('employee.data.cards', compact('employees'));
     }
 
     /**

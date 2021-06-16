@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\DepartmentExport;
 use App\Http\Requests\DepartmentRequest;
 use App\Imports\DepartmentImport;
+use App\Models\Department;
 use App\Models\Employee;
 use App\Repositories\Contracts\DepartmentContract;
 use Exception;
@@ -21,12 +22,17 @@ class DepartmentController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function index()
     {
         //
-        return view('department.index');
+        return view('department.data.lists');
+    }
+
+    public function card(){
+        $departments = Department::paginate(20);
+        return view('department.data.cards', compact('departments'));
     }
 
     /**
