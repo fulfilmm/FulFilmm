@@ -11,6 +11,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectTaskController;
+use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\Login\EmployeeAuthController as AuthController;
@@ -39,7 +40,10 @@ Route::namespace('Auth\Login')->prefix('employees')->as('employees.')->group(fun
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 });
 
+Route::get('settings', [SettingsController::class, 'settings'])->middleware(['auth:employee']);
+
 Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function () {
+
     //resource routes
     Route::resource('roles', RoleController::class);
     Route::resource('departments', DepartmentController::class);
@@ -81,15 +85,18 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::post('companies/import', [CompanyController::class, 'import'])->name('companies.import');
 
     Route::put('activities/{id}/acknowledge', [ActivityController::class, 'acknowledge'])->name('activities.acknowledge');
+
+
+//list routes post
+    Route::put('roles/assign-permission/{id}', [RoleController::class, 'assignPermission'])->name('roles.assignPermission');
+
+//card routes
+    Route::get('companies-card', [CompanyController::class, 'card'])->name('companies.cards');
+    Route::get('customers-card', [CustomerController::class, 'card'])->name('customers.cards');
+    Route::get('employees-card', [EmployeeController::class, 'card'])->name('employees.cards');
+    Route::get('departments-card', [DepartmentController::class, 'card'])->name('departments.cards');
+
 });
 
 
 
-//list routes post
-Route::put('roles/assign-permission/{id}', [RoleController::class, 'assignPermission'])->name('roles.assignPermission');
-
-//card routes
-Route::get('companies-card', [CompanyController::class, 'card'])->name('companies.cards');
-Route::get('customers-card', [CustomerController::class, 'card'])->name('customers.cards');
-Route::get('employees-card', [EmployeeController::class, 'card'])->name('employees.cards');
-Route::get('departments-card', [DepartmentController::class, 'card'])->name('departments.cards');

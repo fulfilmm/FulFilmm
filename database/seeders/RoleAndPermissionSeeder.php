@@ -13,7 +13,7 @@ class RoleAndPermissionSeeder extends Seeder
                 'employees', 'activities', 'assignments', 'assignment_tasks', 'activity_tasks', 'comments', 'customers', 'companies', 'projects', 'project_tasks'
             ],
             'others' => [
-                'assignment_tasks.toggle'
+                'assignment_tasks.toggle',
             ]
         ],
         'Manager' => [
@@ -23,7 +23,7 @@ class RoleAndPermissionSeeder extends Seeder
             'others' => [
                 'activities.acknowledge',
                 'assignment_tasks.toggle',
-                'assignments.changeStatus'
+                'assignments.changeStatus',
             ]
         ]
     ];
@@ -63,7 +63,8 @@ class RoleAndPermissionSeeder extends Seeder
             $resource . '.update',
             $resource . '.destroy',
             $resource . '.import',
-            $resource . '.export'
+            $resource . '.export',
+            $resource . '.cards'
         ]);
     }
 }
