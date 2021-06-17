@@ -9,10 +9,10 @@
                     <li class="submenu"><a href="#"><i class="la la-dashboard"></i> <span> Dashboard</span> <span
                                 class="menu-arrow"></span></a>
                         <ul style="display: none;">
-                            <li class="{{ Request::is('index') ? 'active' : '' }}"><a href="{{ url('index') }}">Admin
+                            <li class="{{ Request::is('index') ? 'active' : '' }}"><a href="{{ url('/') }}">
                                     Dashboard</a></li>
-                            <li><a class="{{ Request::is('employee-dashboard') ? 'active' : '' }}"
-                                   href="{{ url('employee-dashboard') }}">Employee Dashboard</a></li>
+                            <li><a class="{{ Request::is('settings') ? 'active' : '' }}"
+                                   href="{{ route('settings.settings') }}">Settings</a></li>
                         </ul>
                     </li>
 

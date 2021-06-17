@@ -3,7 +3,7 @@
     <!-- Logo -->
     <div class="header-left">
         <a href="{{url('/')}}" class="logo">
-            <img src="{{'img/logo.png'}}" width="40" height="40" alt="">
+            <img src="{{ App\Models\Company::userCompanyLogo() ?? 'img/logo.png'}}" width="40" height="40" alt="">
         </a>
     </div>
     <!-- /Logo -->

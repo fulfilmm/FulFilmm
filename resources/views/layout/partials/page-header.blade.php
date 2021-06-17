@@ -18,7 +18,7 @@
             @include('layout.partials.breadcrumb',['header'=> ucfirst($route).'Table'])
         </div>
         <div class="col-auto float-right ml-auto">
-            <a href="{{route('customers.create')}}" class="btn add-btn"><i class="fa fa-plus"></i>
+            <a href="{{route($route.'.create')}}" class="btn add-btn"><i class="fa fa-plus"></i>
                 Add {{ucfirst($route)}}</a>
             <div class="view-icons">
                 @if($card === true)

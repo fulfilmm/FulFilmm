@@ -10,9 +10,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Company extends Model
 {
     use HasFactory, SoftDeletes;
-
+    
     protected $guarded = [];
-
+    
     protected $fillable = [
         'name',
         'business_type',
@@ -32,34 +32,39 @@ class Company extends Model
         'parent_company',
         'parent_company_2'
     ];
-
+    
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
     }
-
+    
     //relations
     public function customers()
     {
         return $this->hasMany(Customer::class);
     }
-
+    
     //scopes
     public function scopeUserCompany($query)
     {
         return $query->where('user_company', 1);
     }
-
+    
     public function scopeUserCompanyName($query)
     {
         return $query->where('user_company', 1)->first()->name ?? '';
     }
-
+    
+    public function scopeUserCompanyLogo($query)
+    {
+        return $query->where('user_company', 1)->first()->logo ?? '';
+    }
+    
     public function parentCompany()
     {
         return $this->belongsTo(Company::class, 'parent_company');
     }
-
+    
     public function parentCompany2()
     {
         return $this->belongsTo(Company::class, 'parent_company_2');

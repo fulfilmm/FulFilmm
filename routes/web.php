@@ -40,7 +40,7 @@ Route::namespace('Auth\Login')->prefix('employees')->as('employees.')->group(fun
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 });
 
-Route::get('settings', [SettingsController::class, 'settings'])->middleware(['auth:employee']);
+Route::get('settings', [SettingsController::class, 'settings'])->name('settings.settings')->middleware(['auth:employee']);
 Route::post('update-profile', [SettingsController::class, 'updateProfile'])->name('settings.profile-update')->middleware(['auth:employee']);
 
 Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function () {
