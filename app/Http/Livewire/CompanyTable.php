@@ -22,7 +22,6 @@ class CompanyTable extends Component
 
     public function render()
     {
-
         return view('livewire.company-table', [
             'companies' => Company::where('name', 'like', "%$this->search_key%")->paginate(10)
         ]);

@@ -77,6 +77,7 @@ class CompanyController extends Controller
     public function store(CompanyRequest $request)
     {
         //
+//        dd($request->all());
         $this->company_contract->create($request->all());
         return redirect()->route('companies.index')->with('success', __('alert.create_success'));
     }

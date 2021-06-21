@@ -5,52 +5,35 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4d8aa19e-eab1-4b9d-925d-36c0a35fff96" name="Default Changelist" comment="Fixed id and title in role data table">
-      <change afterPath="$PROJECT_DIR$/public/css/ticket.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/ticket.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/cases/create.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/cases/delete.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/cases/edit.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/cases/import.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/cases/index.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/inquery/create.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/inquery/delete.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/inquery/edit.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/inquery/index.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/inquery/show.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/lead/edit.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/lead/followed_lead.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/lead/lead.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/lead/lead_create.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/lead/lead_table.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/lead/lead_view.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/priority/create.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/priority/delete.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/priority/edit.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/priority/import.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/priority/index.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/product/create.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/product/edit.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/product/index.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/product/show.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/ticket/chartreport.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/ticket/create.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/ticket/delete.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/ticket/edit.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/ticket/filter.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/ticket/import.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/ticket/index.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/ticket/ticket-view.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/ticket/ticket_for_guest.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/js/add_customer_and_company.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/Deal/add_company.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/Deal/add_customer.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/Deal/create.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/Deal/edit.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/Deal/fullform.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/Deal/index.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/Deal/quickform.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/Deal/show.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/quotation/create.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/quotation/edit.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/quotation/index.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/quotation/sendmail.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/quotation/show.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/quotation/testmail.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/ticket/status_change.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Employee.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Employee.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeders/DatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/DatabaseSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/CompanyController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/CompanyController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/TicketController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/TicketController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Livewire/CompanyTable.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Livewire/CompanyTable.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/lead_comment.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/lead_comment.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database/seeders/PermissionSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/PermissionSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeders/RoleSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/RoleSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/customer/form.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/customer/form.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layout/mainlayout.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layout/mainlayout.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/style.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/style.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/layout/partials/footer-scripts.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layout/partials/footer-scripts.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/layout/partials/head.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layout/partials/head.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/layout/partials/nav.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layout/partials/nav.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/ticket/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/ticket/edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/ticket/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/ticket/index.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -58,7 +41,7 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ComposerSettings" doNotAsk="true">
+  <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
     <execution />
   </component>
@@ -77,14 +60,25 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/resources/views/layout/partials/nav.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/.env.example" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/database/migrations/2020_10_31_112741_create_department_heads_table.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/database/migrations/2020_10_31_105726_create_companies_table.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/app/Http/Controllers/RoleController.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/database/seeders/PermissionSeeder.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/routes/web.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/resources/views/product/create.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/database/migrations/2020_10_31_105314_create_employees_table.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/resources/views/layout/partials/nav.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/database/migrations/2020_10_31_105726_create_companies_table.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/.env.example" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/app/Http/Controllers/DealController.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/app/Http/Controllers/CompanyController.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/app/Http/Controllers/CommentController.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/resources/views/Deal/quickform.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/app/Http/Controllers/CustomerController.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/resources/views/Deal/fullform.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/database/migrations/2020_10_31_112741_create_department_heads_table.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/app/Http/Controllers/RoleController.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/resources/views/Deal/edit.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/routes/web.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/resources/views/Deal/index.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/resources/views/company/form.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/resources/views/Deal/create.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/database/seeders/PermissionSeeder.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
   </component>
   <component name="JsBowerSettings">
     <bower-package value="" />
@@ -220,14 +214,15 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Documents/support-ticket-system" />
+    <property name="dart.analysis.tool.window.visible" value="false" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Pictures/vOffice" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.standard" value="" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="prettierjs.PrettierConfiguration.Package" value="$PROJECT_DIR$/node_modules/prettier" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+    <property name="settings.editor.selected.configurable" value="Errors" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
@@ -263,6 +258,14 @@
       <workItem from="1623146876710" duration="47126000" />
       <workItem from="1623384589227" duration="612000" />
       <workItem from="1623390440995" duration="1360000" />
+      <workItem from="1623483939193" duration="16029000" />
+      <workItem from="1623556752023" duration="1614000" />
+      <workItem from="1623558384003" duration="26531000" />
+      <workItem from="1623821342186" duration="9879000" />
+      <workItem from="1623988232810" duration="15972000" />
+      <workItem from="1624080172429" duration="1048000" />
+      <workItem from="1624163544302" duration="9542000" />
+      <workItem from="1624252287723" duration="49000" />
     </task>
     <task id="LOCAL-00001" summary="minor cosmetic changes">
       <created>1621392837445</created>

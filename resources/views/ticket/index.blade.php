@@ -1,7 +1,7 @@
 @extends('layout.mainlayout')
 @section('content')
     <link rel="stylesheet" href="{{url(asset('css/ticket.css'))}}">
-    {{-- Modals --}}
+    <{-- Modals --}}
 
         <!-- Page Content -->
         <div class="content container-fluid">
@@ -100,15 +100,24 @@
             <!-- Search Filter -->
             <div class="row filter-row">
                 <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
-                    <div class="form-group form-focus">
-                        <input type="text" id="emp_name" class="form-control floating">
-                        <label class="focus-label">Employee Name</label>
+                    <div class="form-group form-focus select-focus">
+                        <label class="focus-label">Assign Staff</label>
+                        <select name="emp_name" class="form-control floating" id="emp_name">
+                            <option value="">All</option>
+                            @foreach($all_emp as $agent)
+                            <option value="{{$agent->name}}">{{$agent->name}}</option>
+                            @endforeach
+                                <option disabled>Department</option>
+                                @foreach($depts as $dept)
+                                    <option value="{{$dept->name}}">{{$dept->name}}</option>
+                                @endforeach
+                        </select>
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
                     <div class="form-group form-focus select-focus">
                         <select class="select floating" id="status">
-                            <option> -- Select -- </option>
+                            <option value="">All</option>
                             @foreach($statuses as $status)
                             <option value="{{$status->name}}"> {{$status->name}} </option>
                             @endforeach
@@ -119,10 +128,10 @@
                 <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
                     <div class="form-group form-focus select-focus">
                         <select class="select floating" id="priority">
-                            <option> -- Select -- </option>
-                            <option> High </option>
-                            <option> Low </option>
-                            <option> Medium </option>
+                            <option value="">All</option>
+                            @foreach($priorities as $priority)
+                                <option value="{{$priority->priority}}">{{$priority->priority}}</option>
+                            @endforeach
                         </select>
                         <label class="focus-label">Priority</label>
                     </div>
@@ -130,7 +139,7 @@
                 <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
                     <div class="form-group form-focus">
                         <div class="cal-icon">
-                            <input class="form-control floating datetimepicker" id="min" type="text">
+                            <input type="text" id="min" class="date-range-filter form-control floating datetimepicker" name="min">
                         </div>
                         <label class="focus-label">From</label>
                     </div>
@@ -138,7 +147,7 @@
                 <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
                     <div class="form-group form-focus">
                         <div class="cal-icon">
-                            <input class="form-control floating datetimepicker" id="max" type="text">
+                            <input type="text" class="date-range-filter form-control floating datetimepicker" id="max" name="max">
                         </div>
                         <label class="focus-label">To</label>
                     </div>
@@ -152,7 +161,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="table-responsive">
-                        <table class="table table-striped custom-table mb-0 datatable" id="ticket">
+                        <table class="table" id="ticket">
                             <thead>
                             <tr>
                                 <th>#</th>
@@ -187,42 +196,28 @@
                                         </a>
                                     </h2>
                                 </td>
-                                <td>{{$ticket->created_at}}</td>
-                                <td>5 Jan 2019 11.12 AM</td>
+                                <td>{{$ticket->created_at->toFormattedDateString()}}</td>
+                                <td></td>
 
-                                <td class="text-center">
-                                    <div class="dropdown action-label">
-                                        <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
-                                            <i class="fa fa-dot-circle-o text-danger"></i>{{$ticket->ticket_priority->priority}}
-                                        </a>
-                                    </div>
-                                </td>
                                 <td>
-                                    <div class="dropdown action-label">
-                                        <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-danger"></i>{{$ticket->ticket_status->name}} </a>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            @foreach($statuses as $status)
-                                                <form action="{{url("/status/$ticket->id")}}" method="POST">
-                                                    @csrf
-{{--                                                    @method('PUT')--}}
-                                                    <input type="hidden" name="status_id" value="{{$status->id}}">
-                                                    <button type="submit" class="dropdown-item " ><i class="fa fa-dot-circle-o text-danger"></i>
-                                                    {{$status->name}}</button>
-                                                </form>
-                                            @endforeach
+                                    {{$ticket->ticket_priority->priority}}
 
-                                        </div>
-                                    </div>
+                                </td>
+                                <td>{{$ticket->ticket_status->name}}
+
                                 </td>
                                 <td class="text-right">
                                     <div class="dropdown dropdown-action">
                                         <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                         <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#change_status{{$ticket->id}}"><i class="fa fa-pencil m-r-5"></i>Status Edit</a>
                                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_ticket"><i class="fa fa-pencil m-r-5"></i> Edit</a>
                                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_ticket"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                                         </div>
                                     </div>
                                 </td>
+                                @include('ticket.edit')
+                                @include('ticket.status_change')
                             </tr>
                             @endforeach
                             </tbody>
@@ -235,12 +230,48 @@
 
        @include('ticket.create')
 
-       @include('ticket.edit')
+
 
         <!-- Delete Ticket Modal -->
         @include('ticket.delete')
-{{--    <script src="{{url(asset('/js/ticket.js'))}}"></script>--}}
-    <script>
+    <script src="{{url(asset('/js/filterdaterange.js'))}}"></script>
+        <script>
+        $(document).ready(function() {
+            $(document).ready(function() {
+                $('#emp_name').select2({
+                        "language": {
+                            "noResults": function(){
+                                return "No Results";
+                            }
+                        },
+                        escapeMarkup: function (markup) {
+                            return markup;
+                        }
+
+                    }
+
+                );
+            });
+            $('#emp_name').on('change', function () {
+                var table = $('#ticket').DataTable();
+                table.column(3).search($(this).val()).draw();
+            });
+        });
+        $(document).ready(function() {
+            $('#priority').on('change', function () {
+                var table = $('#ticket').DataTable();
+                table.column(6).search($(this).val()).draw();
+
+            });
+        });
+        $(document).ready(function() {
+            $('#status').on('change', function () {
+                var table = $('#ticket').DataTable();
+                table.column(7).search($(this).val()).draw();
+
+            });
+        });
+//
         $(document).ready(function() {
             if (window.File && window.FileList && window.FileReader) {
                 $("#files").on("change", function(e) {
@@ -267,6 +298,16 @@
             } else {
                 alert("Your browser doesn't support to File API")
             }
+        });
+        $(document).ready(function (){
+                // var min=document.getElementById('min').val();
+             $('#min').on('select',function (){
+                 var max=$('#min').val();
+                 var max=$('#max').val();
+                 alert(max);
+             })
+
+
         });
     </script>
         <!-- /Delete Ticket Modal -->

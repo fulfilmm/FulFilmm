@@ -14,7 +14,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Ticket Subject</label>
-                                <input class="form-control" type="text" value="Laptop Issue">
+                                <input class="form-control" type="text" value="{{$ticket->title}}">
                             </div>
                         </div>
                         <div class="col-sm-6">

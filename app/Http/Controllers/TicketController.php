@@ -77,9 +77,6 @@ class TicketController extends Controller
      */
     public function create()
     {
-        //
-    }
-    public function guest_ticket(){
         $statuses=status::all();
         $cases = case_type::all();
         $depts=Department::all();

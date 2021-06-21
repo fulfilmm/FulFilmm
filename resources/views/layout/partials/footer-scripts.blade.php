@@ -1,5 +1,5 @@
 <!-- jQuery -->
-<script src="{{asset('js/jquery-3.2.1.min.js')}}"></script>
+{{--<script src="{{asset('js/jquery-3.2.1.min.js')}}"></script>--}}
 
 <!-- Sweet Alert -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
@@ -47,34 +47,33 @@
     <!-- Custom JS -->
 
     <script src="{{asset('js/style.js')}}"></script>
-    <script>
-        $(document).ready(function(){
-            // Read value on page load
-            $("#result b").html($("#customRange").val());
+<script>
+    $(document).ready(function(){
+        // Read value on page load
+        $("#result b").html($("#customRange").val());
 
-            // Read value on change
-            $("#customRange").change(function(){
-                $("#result b").html($(this).val());
-            });
+        // Read value on change
+        $("#customRange").change(function(){
+            $("#result b").html($(this).val());
         });
-        $(".header").stick_in_parent({
+    });
+    $(".header").stick_in_parent({
 
-        });
-        // This is for the sticky sidebar
-        $(".stickyside").stick_in_parent({
-            offset_top: 60
-        });
-
-        $('.stickyside a').click(function() {
-            $('html, body').animate({
-                scrollTop: $($(this).attr('href')).offset().top - 60
-            }, 500);
-            return false;
-        });
-        // This is auto select left sidebar
-        // Cache selectors
-        // Cache selectors
-        var lastId,
+    });
+    // This is for the sticky sidebar
+    $(".stickyside").stick_in_parent({
+        offset_top: 60
+    });
+    $('.stickyside a').click(function() {
+        $('html, body').animate({
+            scrollTop: $($(this).attr('href')).offset().top - 60
+        }, 500);
+        return false;
+    });
+    // This is auto select left sidebar
+    // Cache selectors
+    // Cache selectors
+    var lastId,
         topMenu = $(".stickyside"),
         topMenuHeight = topMenu.outerHeight(),
         // All list items
@@ -87,48 +86,48 @@
             }
         });
 
-        // Bind click handler to menu items
+    // Bind click handler to menu items
 
 
-        // Bind to scroll
-        $(window).scroll(function() {
-            // Get container scroll position
-            var fromTop = $(this).scrollTop() + topMenuHeight - 250;
+    // Bind to scroll
+    $(window).scroll(function() {
+        // Get container scroll position
+        var fromTop = $(this).scrollTop() + topMenuHeight - 250;
 
-            // Get id of current scroll item
-            var cur = scrollItems.map(function() {
-                if ($(this).offset().top < fromTop)
+        // Get id of current scroll item
+        var cur = scrollItems.map(function() {
+            if ($(this).offset().top < fromTop)
                 return this;
-            });
-            // Get the id of the current element
-            cur = cur[cur.length - 1];
-            var id = cur && cur.length ? cur[0].id : "";
+        });
+        // Get the id of the current element
+        cur = cur[cur.length - 1];
+        var id = cur && cur.length ? cur[0].id : "";
 
-            if (lastId !== id) {
-                lastId = id;
-                // Set/remove active class
-                menuItems
+        if (lastId !== id) {
+            lastId = id;
+            // Set/remove active class
+            menuItems
                 .removeClass("active")
                 .filter("[href='#" + id + "']").addClass("active");
-            }
+        }
+    });
+    $(function () {
+        $(document).on("click", '.btn-add-row', function () {
+            var id = $(this).closest("table.table-review").attr('id');  // Id of particular table
+            console.log(id);
+            var div = $("<tr />");
+            div.html(GetDynamicTextBox(id));
+            $("#"+id+"_tbody").append(div);
         });
-        $(function () {
-            $(document).on("click", '.btn-add-row', function () {
-                var id = $(this).closest("table.table-review").attr('id');  // Id of particular table
-                console.log(id);
-                var div = $("<tr />");
-                div.html(GetDynamicTextBox(id));
-                $("#"+id+"_tbody").append(div);
-            });
-            $(document).on("click", "#comments_remove", function () {
-                $(this).closest("tr").prev().find('td:last-child').html('<button type="button" class="btn btn-danger" id="comments_remove"><i class="fa fa-trash-o"></i></button>');
-                $(this).closest("tr").remove();
-            });
-            function GetDynamicTextBox(table_id) {
-                $('#comments_remove').remove();
-                var rowsLength = document.getElementById(table_id).getElementsByTagName("tbody")[0].getElementsByTagName("tr").length+1;
-                return '<td>'+rowsLength+'</td>' + '<td><input type="text" name = "DynamicTextBox" class="form-control" value = "" ></td>' + '<td><input type="text" name = "DynamicTextBox" class="form-control" value = "" ></td>' + '<td><input type="text" name = "DynamicTextBox" class="form-control" value = "" ></td>' + '<td><button type="button" class="btn btn-danger" id="comments_remove"><i class="fa fa-trash-o"></i></button></td>'
-            }
+        $(document).on("click", "#comments_remove", function () {
+            $(this).closest("tr").prev().find('td:last-child').html('<button type="button" class="btn btn-danger" id="comments_remove"><i class="fa fa-trash-o"></i></button>');
+            $(this).closest("tr").remove();
         });
-    </script>
+        function GetDynamicTextBox(table_id) {
+            $('#comments_remove').remove();
+            var rowsLength = document.getElementById(table_id).getElementsByTagName("tbody")[0].getElementsByTagName("tr").length+1;
+            return '<td>'+rowsLength+'</td>' + '<td><input type="text" name = "DynamicTextBox" class="form-control" value = "" ></td>' + '<td><input type="text" name = "DynamicTextBox" class="form-control" value = "" ></td>' + '<td><input type="text" name = "DynamicTextBox" class="form-control" value = "" ></td>' + '<td><button type="button" class="btn btn-danger" id="comments_remove"><i class="fa fa-trash-o"></i></button></td>'
+        }
+    });
+</script>
     {{-- <script src="{{asset('js/app.js')}}"></script> --}}

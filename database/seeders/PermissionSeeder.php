@@ -15,6 +15,7 @@ class PermissionSeeder extends Seeder
     protected $permissions = [
         'activities', 'activity_tasks', 'comments', 'companies', 'customers', 'departments',
         'employees', 'groups', 'roles', 'permissions', 'assignments', 'assignment_tasks', 'projects','tickets','cases','priorities',
+        'leads','deals','quotations'
     ];
     public function run()
     {
@@ -48,6 +49,23 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'reassign', 'display_name' => "Can reassign ticket ", 'guard_name' => 'employee']);
         Permission::create(['name' => 'piechart', 'display_name' => "Can view piechart report for ticket", 'guard_name' => 'employee']);
         Permission::create(['name' => 'sender_info', 'display_name' => "Can view ticket sender information", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'tagadd', 'display_name' => "Can add tag industry", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'leads.myfollowed', 'display_name' => "Can view employee followed in lead ", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'leads.comment', 'display_name' => "Can post comments in lead ", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'leads.followed', 'display_name' => "Can add new follower in lead ", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'unfollowed', 'display_name' => "Can remove follower in lead ", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'convert.lead', 'display_name' => "Can change convert to lead status in inQuery", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'workdone', 'display_name' => "If Lead Next step complete,can change workdone status ", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'qualified', 'display_name' => "If lead qualified ,can change qualified status ", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'deals.status_change', 'display_name' => "Can change sale stage in Deal", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'add_new_customer', 'display_name' => "Can add new customer while deal create", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'company_create', 'display_name' => "Can add new company while deal create", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'quotations.discard', 'display_name' => "Cancel quotation", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'orders.store', 'display_name' => "Can store new Order in quotation", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'orders.update', 'display_name' => "Can update  Order in quotation", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'orders.destroy', 'display_name' => "Cancel Order in quotation", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'quotation.sendemail', 'display_name' => "Can go to the quotation email create page", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'quotations.mail', 'display_name' => "Can send to customer the quotation email", 'guard_name' => 'employee']);
     }
 
     private function createResourcePermissions($resource)
