@@ -67,8 +67,8 @@ class ActivityController extends Controller
      */
     public function show($id)
     {
-
         $activity = $this->activity_contract->activityWithTasks($id);
+  
         $this->authorize('can-acknowledge', $activity);
         $messages = ActivityComment::where('activity_id', $id)
             ->with('user')
