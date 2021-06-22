@@ -77,239 +77,234 @@
                                                         contenteditable="false">{{ $task->name }}</span>
                                                         
                                                         {{--Delete form added here for cosmetic purposes--}}
-                                                        <form
-                                                        action="{{ route('assignment_tasks.destroy', $task->id) }}"
-                                                        id="assignment_task{{ $task->id }}" method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <input
-                                                        type="hidden"
-                                                        name="assignment_id"
-                                                        value="{{ $assignment->id }}">
-                                                    </form>
-                                                    
-                                                    <form
-                                                    action="{{route('assignment_tasks.toggle',$task->id)}}"
-                                                    id="assignment_task_toggle{{ $task->id }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <input
-                                                    type="hidden"
-                                                    name="assignment_id"
-                                                    value="{{ $assignment->id }}">
-                                                </form>
-                                                
-                                                <span class="task-action-btn task-btn-right">
-                                                    <span class="action-circle large"
-                                                    onclick="toggleTask({{$task->id}})"
-                                                    title="{{$task->status === 1 ? 'Uncheck' : 'Check'}}">
-                                                    <i class="material-icons">{{$task->status === 1 ? 'close' : 'check'}}</i>
-                                                </span>
-                                                
-                                                &nbsp;  &nbsp;
-                                                
-                                                <span class="action-circle large bg-danger"
-                                                title="Delete Task">
-                                                <i class="material-icons"
-                                                onclick="deleteAssignment({{$task->id}})">delete</i>
-                                            </span>
-                                            
-                                        </span>
-                                    </div>
-                                </li>
-                                @empty
-                                <li class="task">
-                                    <div class="task-container">
-                                        <span class="task-label" contenteditable="false">There is no task for this Assignment yet.</span>
-                                    </div>
-                                </li>
-                                @endforelse
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="notification-popup hide">
-                    <p>
-                        <span class="task"></span>
-                        <span class="notification-text"></span>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-</div>
-</div>
-<div class="col-lg-5 message-view task-chat-view task-right-sidebar" id="task_window">
-    <div class="chat-window">
-        <div class="fixed-header">
-            <div class="navbar">
-                <div class="task-assign">
-                    
-                    {{--Acknowledge button here--}}
-                    {{--                                <a class="task-complete-btn" id="task_complete" href="javascript:void(0);">--}}
-                        {{--                                    <i class="material-icons">check</i> Acknowledge--}}
-                        {{--                                </a>--}}
-                        <div>
-                            <h3>Status</h3>
-                            <form id="assignment_status_toggle" action="{{route('assignments.changeStatus', ['id' => $assignment->id])}}" method="POST">
-                                @csrf
-                                @method('PUT')
-                                <select class="form-control" name="status"
-                                required>
-                                <option disabled class="">Change Status to : </option>
-                                <option value='created' @if($assignment->status === 'created') selected @endif> Created  </option>
-                                <option value='working' @if($assignment->status === 'working') selected @endif> Working  </option>
-                                <option value='done' @if($assignment->status === 'done') selected @endif> Done  </option>
-                            </select>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="chat-contents task-chat-contents">
-            <div class="chat-content-wrap">
-                <div class="chat-wrap-inner">
-                    <div class="chat-box">
-                        <div class="chats">
-                            <h4>{{ $assignment->title }}</h4>
-                            <div class="task-header">
-                                <div class="assignee-info">
-                                    <a href="#" data-toggle="modal" data-target="#assignee">
-                                        <div class="avatar">
-                                            <img alt="" src="">
+                                                        <form action="{{ route('assignment_tasks.destroy', $task->id) }}"
+                                                            id="assignment_task{{ $task->id }}" method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <input
+                                                            type="hidden"
+                                                            name="assignment_id"
+                                                            value="{{ $assignment->id }}">
+                                                        </form>
+                                                        
+                                                        <form action="{{route('assignment_tasks.toggle',$task->id)}}"
+                                                            id="assignment_task_toggle{{ $task->id }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <input
+                                                            type="hidden"
+                                                            name="assignment_id"
+                                                            value="{{ $assignment->id }}">
+                                                        </form>
+                                                        
+                                                        <span class="task-action-btn task-btn-right">
+                                                            <span class="action-circle large" onclick="toggleTask({{$task->id}})"  title="{{$task->status === 1 ? 'Uncheck' : 'Check'}}">
+                                                                <i class="material-icons">{{$task->status === 1 ? 'close' : 'check'}}</i>
+                                                            </span>
+                                                            
+                                                            &nbsp;  &nbsp;
+                                                            
+                                                            <span class="action-circle large bg-danger"  title="Delete Task">
+                                                                <i class="material-icons" onclick="deleteAssignment({{$task->id}})">delete</i>
+                                                            </span>
+                                                            
+                                                        </span>
+                                                    </div>
+                                                </li>
+                                                @empty
+                                                <li class="task">
+                                                    <div class="task-container">
+                                                        <span class="task-label" contenteditable="false">There is no task for this Assignment yet.</span>
+                                                    </div>
+                                                </li>
+                                                @endforelse
+                                            </ul>
                                         </div>
-                                        <div class="assigned-info">
-                                            
-                                            <div class="task-head-title">Task Owner</div>
-                                            <div
-                                            class="task-assignee">{{$assignment->assignedBy->name}}</div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="task-due-date">
-                                    <a href="#" data-toggle="modal" data-target="#assignee">
-                                        <div class="due-icon">
-                                            <span>
-                                                <i class="material-icons">date_range</i>
-                                            </span>
-                                        </div>
-                                        <div class="due-info">
-                                            <div class="task-head-title">Due Date</div>
-                                            <div
-                                            class="{{$assignment->due_date >= today() ? 'black' : 'due-date'}}">{{$assignment->due_date}}</div>
-                                        </div>
-                                    </a>
-                                    {{--                                                <span class="remove-icon">--}}
-                                        {{--																<i class="fa fa-close"></i>--}}
-                                        {{--                                                </span>--}}
                                     </div>
                                 </div>
-                                
-                                <hr class="task-line">
-                                {{--{{dd($assignment->assigned_employees->pluck('name'))}}--}}
-                                <h4>Assigned Employees</h4>
-                                <ol>
-                                    
-                                    @foreach($assignment->assigned_employees as $employee)
-                                    <li>
-                                        {{$employee->name}}
-                                    </li>
-                                    @endforeach
-                                    
-                                    @if (isset($assignment->assigned_groups))
-                                    @foreach ($assignment->assigned_groups as $group)
-                                    @foreach ($group->employees as $employee)
-                                    <li>{{ $employee->name }}</li>
-                                    @endforeach
-                                    @endforeach                                              
-                                    @endif
-                                </ol>
-                                <hr class="task-line">
-                                @foreach ($messages as $data)
-                                @include('assignment.partial.message',[
-                                'msg'=>$data->message,
-                                'file'=> $data->file,
-                                'name'=>$data->user->name,
-                                'date'=>$data->created_at,
-                                ])
-                                @endforeach
+                                <div class="notification-popup hide">
+                                    <p>
+                                        <span class="task"></span>
+                                        <span class="notification-text"></span>
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="chat-footer">
-                {{-- @include('assignment.partial.message_input_box') --}}
-                @include('layout.partials.commentbox', ['route' => 'assignment'])
+        </div>
+        <div class="col-lg-5 message-view task-chat-view task-right-sidebar" id="task_window">
+            <div class="chat-window">
+                <div class="fixed-header">
+                    <div class="navbar">
+                        <div class="task-assign">
+                            
+                            {{--Acknowledge button here--}}
+                            {{--                                <a class="task-complete-btn" id="task_complete" href="javascript:void(0);">--}}
+                                {{--                                    <i class="material-icons">check</i> Acknowledge--}}
+                                {{--                                </a>--}}
+                                <div>
+                                    <h3>Status</h3>
+                                    <form id="assignment_status_toggle" action="{{route('assignments.changeStatus', ['id' => $assignment->id])}}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <select class="form-control" name="status"
+                                        required>
+                                        <option disabled class="">Change Status to : </option>
+                                        <option value='created' @if($assignment->status === 'created') selected @endif> Created  </option>
+                                        <option value='working' @if($assignment->status === 'working') selected @endif> Working  </option>
+                                        <option value='done' @if($assignment->status === 'done') selected @endif> Done  </option>
+                                    </select>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-contents task-chat-contents">
+                    <div class="chat-content-wrap">
+                        <div class="chat-wrap-inner">
+                            <div class="chat-box">
+                                <div class="chats">
+                                    <h4>{{ $assignment->title }}</h4>
+                                    <div class="task-header">
+                                        <div class="assignee-info">
+                                            <a href="#" data-toggle="modal" data-target="#assignee">
+                                                <div class="avatar">
+                                                    <img alt="" src="">
+                                                </div>
+                                                <div class="assigned-info">
+                                                    
+                                                    <div class="task-head-title">Task Owner</div>
+                                                    <div
+                                                    class="task-assignee">{{$assignment->assignedBy->name}}</div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div class="task-due-date">
+                                            <a href="#" data-toggle="modal" data-target="#assignee">
+                                                <div class="due-icon">
+                                                    <span>
+                                                        <i class="material-icons">date_range</i>
+                                                    </span>
+                                                </div>
+                                                <div class="due-info">
+                                                    <div class="task-head-title">Due Date</div>
+                                                    <div
+                                                    class="{{$assignment->due_date >= today() ? 'black' : 'due-date'}}">{{$assignment->due_date}}</div>
+                                                </div>
+                                            </a>
+                                            {{--                                                <span class="remove-icon">--}}
+                                                {{--																<i class="fa fa-close"></i>--}}
+                                                {{--                                                </span>--}}
+                                            </div>
+                                        </div>
+                                        
+                                        <hr class="task-line">
+                                        {{--{{dd($assignment->assigned_employees->pluck('name'))}}--}}
+                                        <h4>Assigned Employees</h4>
+                                        <ol>
+                                            
+                                            @foreach($assignment->assigned_employees as $employee)
+                                            <li>
+                                                {{$employee->name}}
+                                            </li>
+                                            @endforeach
+                                            
+                                            @if (isset($assignment->assigned_groups))
+                                            @foreach ($assignment->assigned_groups as $group)
+                                            @foreach ($group->employees as $employee)
+                                            <li>{{ $employee->name }}</li>
+                                            @endforeach
+                                            @endforeach                                              
+                                            @endif
+                                        </ol>
+                                        <hr class="task-line">
+                                        @foreach ($messages as $data)
+                                        @include('assignment.partial.message',[
+                                        'msg'=>$data->message,
+                                        'file'=> $data->file,
+                                        'name'=>$data->user->name,
+                                        'date'=>$data->created_at,
+                                        ])
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-footer">
+                        {{-- @include('assignment.partial.message_input_box') --}}
+                        @include('layout.partials.commentbox', ['route' => 'assignment'])
+                    </div>
+                </div>
             </div>
+            `
         </div>
     </div>
-    `
-</div>
-</div>
-
-<!-- /Page Wrapper -->
-<!-- /Main Wrapper -->
-@endsection
-@section('styles')
-@livewireStyles
-@endsection
-@push('scripts')
-<script>
-    $(document).ready(function () {
-        //scroll to chat-box bottom to view latest message;
-        const chat_box = $('.chat-wrap-inner');
-        chat_box.animate({scrollTop: 10000}, 1000);
+    
+    <!-- /Page Wrapper -->
+    <!-- /Main Wrapper -->
+    @endsection
+    @section('styles')
+    @livewireStyles
+    @endsection
+    @push('scripts')
+    <script>
+        $(document).ready(function () {
+            //scroll to chat-box bottom to view latest message;
+            const chat_box = $('.chat-wrap-inner');
+            chat_box.animate({scrollTop: 10000}, 1000);
+            
+            
+            let success_alert = "{{ Session::get('success') }}"
+            console.log(success_alert);
+            if (success_alert) {
+                updateNotification('Success!!', success_alert, 'success')
+            }
+            
+            $('#assignment_status_toggle').change(() => {
+                $('#assignment_status_toggle').submit()
+            });
+            
+        })
         
-        
-        let success_alert = "{{ Session::get('success') }}"
-        console.log(success_alert);
-        if (success_alert) {
-            updateNotification('Success!!', success_alert, 'success')
+        function deleteAssignment(task_id) {
+            $('#assignment_task' + task_id).submit();
         }
         
-        $('#assignment_status_toggle').change(() => {
-            $('#assignment_status_toggle').submit()
-        });
+        function toggleTask(task_id) {
+            $('#assignment_task_toggle' + task_id).submit();
+        }
         
-    })
-    
-    function deleteAssignment(task_id) {
-        $('#assignment_task' + task_id).submit();
-    }
-    
-    function toggleTask(task_id) {
-        $('#assignment_task_toggle' + task_id).submit();
-    }
-    
-    function toggleAssignmentStatus(){
+        function toggleAssignmentStatus(){
+            
+        }
         
-    }
+        //trigger file Open when click on paper-clip icon
+        function triggerFile(e) {
+            $('#file').trigger('click');
+            ;
+        }
+        
+        var updateNotification = function (task, notificationText, newClass) {
+            var notificationPopup = $('.notification-popup ');
+            let notificationTimeout;
+            notificationPopup.find('.task').text(task);
+            notificationPopup.find('.notification-text').text(notificationText);
+            notificationPopup.removeClass('hide success');
+            // If a custom class is provided for the popup, add It
+            if (newClass)
+            notificationPopup.addClass(newClass);
+            // If there is already a timeout running for hiding current popup, clear it.
+            if (notificationTimeout)
+            clearTimeout(notificationTimeout);
+            // Init timeout for hiding popup after 3 seconds
+            notificationTimeout = setTimeout(function () {
+                notificationPopup.addClass('hide');
+            }, 3000);
+        };
+    </script>
+    @endpush
     
-    //trigger file Open when click on paper-clip icon
-    function triggerFile(e) {
-        $('#file').trigger('click');
-        ;
-    }
-    
-    var updateNotification = function (task, notificationText, newClass) {
-        var notificationPopup = $('.notification-popup ');
-        let notificationTimeout;
-        notificationPopup.find('.task').text(task);
-        notificationPopup.find('.notification-text').text(notificationText);
-        notificationPopup.removeClass('hide success');
-        // If a custom class is provided for the popup, add It
-        if (newClass)
-        notificationPopup.addClass(newClass);
-        // If there is already a timeout running for hiding current popup, clear it.
-        if (notificationTimeout)
-        clearTimeout(notificationTimeout);
-        // Init timeout for hiding popup after 3 seconds
-        notificationTimeout = setTimeout(function () {
-            notificationPopup.addClass('hide');
-        }, 3000);
-    };
-</script>
-@endpush

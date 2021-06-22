@@ -45,7 +45,7 @@
         </div>
     </div>
     <button class="btn btn-primary" type="submit">submit</button>
-    <a href="{{route('departments.index')}}" class="btn btn-secondary ml-3">Cancel</a>
+    <a href="{{route('employees.index')}}" class="btn btn-secondary ml-3">Cancel</a>
 </form>
 {{-- {{dd($errors->all())}} --}}
 

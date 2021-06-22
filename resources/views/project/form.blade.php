@@ -39,6 +39,6 @@
 
     <div class="d-flex justify-content-center">
         <button class="btn btn-primary">Create</button>
-        <a href="{{route('departments.index')}}" class="btn btn-secondary ml-3">Cancel</a>
+        <a href="{{route('projects.index')}}" class="btn btn-secondary ml-3">Cancel</a>
     </div>
 </form>

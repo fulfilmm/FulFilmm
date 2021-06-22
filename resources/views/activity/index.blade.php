@@ -33,7 +33,7 @@
     <x-forms.basic.date name="date" title="Date" required value=""></x-forms.basic.date>
     <div class="d-flex justify-content-center">
         <button class="btn btn-primary">Create</button>
-        <a href="{{route('departments.index')}}" class="btn btn-secondary ml-3">Cancel</a>
+        <a href="{{route('activities.index')}}" class="btn btn-secondary ml-3">Cancel</a>
     </div>
 </form>
 </x-partials.modal>

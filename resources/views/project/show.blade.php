@@ -1,5 +1,7 @@
 @extends('layout.mainlayout')
-@section('title', $project->name)
+
+@section('title', $project->title)
+
 @section('content')
     <div class="chat-main-row">
         <div class="chat-main-wrapper">
@@ -111,59 +113,5 @@
     @livewireStyles
 @endsection
 @push('scripts')
-    <script>
-        $(document).ready(function () {
-            //scroll to chat-box bottom to view latest message;
-            const chat_box = $('.chat-wrap-inner');
-            chat_box.animate({scrollTop: 10000}, 1000);
 
-
-            let success_alert = "{{ Session::get('success') }}"
-            console.log(success_alert);
-            if (success_alert) {
-                updateNotification('Success!!', success_alert, 'success')
-            }
-
-            $('#assignment_status_toggle').change(() => {
-                $('#assignment_status_toggle').submit()
-            });
-
-        })
-
-        function deleteAssignment(task_id) {
-            $('#assignment_task' + task_id).submit();
-        }
-
-        function toggleTask(task_id) {
-            $('#assignment_task_toggle' + task_id).submit();
-        }
-
-        function toggleAssignmentStatus() {
-
-        }
-
-        //trigger file Open when click on paper-clip icon
-        function triggerFile(e) {
-            $('#file').trigger('click');
-            ;
-        }
-
-        var updateNotification = function (task, notificationText, newClass) {
-            var notificationPopup = $('.notification-popup ');
-            let notificationTimeout;
-            notificationPopup.find('.task').text(task);
-            notificationPopup.find('.notification-text').text(notificationText);
-            notificationPopup.removeClass('hide success');
-            // If a custom class is provided for the popup, add It
-            if (newClass)
-                notificationPopup.addClass(newClass);
-            // If there is already a timeout running for hiding current popup, clear it.
-            if (notificationTimeout)
-                clearTimeout(notificationTimeout);
-            // Init timeout for hiding popup after 3 seconds
-            notificationTimeout = setTimeout(function () {
-                notificationPopup.addClass('hide');
-            }, 3000);
-        };
-    </script>
 @endpush

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProjectTask;
 use App\Repositories\Contracts\ProjectTaskContract;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -101,8 +102,21 @@ class ProjectTaskController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
         //
+        $project_id = $request->project;
+        $this->projectTaskContract->deleteById($id);
+        return redirect()->route('projects.show', $project_id)->with('success', __('alert.delete_success'));
+    }
+
+    public function toggleStatus($id, Request $request)
+    {
+        $project_id = $request->project_id;
+        $task = ProjectTask::find($id);
+        $task->status = !$task->status;
+        $task->save();
+
+        return redirect()->route('projects.show', $project_id)->with('success', 'Task Updated');
     }
 }

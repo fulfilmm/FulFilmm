@@ -65,7 +65,7 @@
                     {{--                                                                                                         {{ dd($assignment->assignment_tasks) }}--}}
                     @forelse ($project->task as $task)
                         <li class="task">
-                            <a href="{{route('projects.show', [$project->id, $task->id])}}">
+                            {{-- <a href="{{route('projects.show', [$project->id, $task->id])}}"> --}}
                             <div class="task-container {{ $task_id === (string)$task->id ? 'bg-primary' : '' }}">
                                 <span class="task-label"
                                       style="{{$task->status === 1 ? 'text-decoration: line-through' : '' }}"
@@ -73,30 +73,44 @@
 
                                 {{--Delete form added here for cosmetic purposes--}}
                                 <form
-                                    action="{{ route('assignment_tasks.destroy', $task->id) }}"
-                                    id="assignment_task{{ $task->id }}" method="POST">
+                                    action="{{ route('project_tasks.destroy', $task->id) }}"
+                                    id="project_task{{ $task->id }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <input
                                         type="hidden"
-                                        name="assignment_id"
+                                        name="project_id"
                                         value="{{ $project->id }}">
                                 </form>
 
+                                  
+                                <form action="{{route('project_tasks.toggle',$task->id)}}"
+                                    id="project_task_toggle{{ $task->id }}"
+                                    method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <input
+                                    type="hidden"
+                                    name="project_id"
+                                    value="{{ $project->id }}">
+                                </form>
+
                                 <span class="task-action-btn task-btn-right">
-                                    <span class="action-circle large"
-                                          onclick="toggleTask({{$task->id}})"
+                                    <a class="action-circle large" href="{{route('projects.show', [$project->id, $task->id])}}">
+                                      <i class="material-icons">visibility</i>
+                                    </a>
+                                    <span class="action-circle large" onclick="toggleTask({{$task->id}})"
                                           title="{{$task->status === 1 ? 'Uncheck' : 'Check'}}">
                                         <i class="material-icons">{{$task->status === 1 ? 'close' : 'check'}}</i>'
                                         </span>
-                                    <span class="action-circle large bg-danger"
+                                    {{-- <span class="action-circle large bg-danger"
                                           title="Delete Task">
                                         <i class="material-icons"
-                                           onclick="deleteAssignment({{$task->id}})">delete</i>
-                                    </span>
+                                           onclick="deleteProject({{$task->id}})">delete</i>
+                                    </span> --}}
                                 </span>
                             </div>
-                            </a>
+                            {{-- </a> --}}
                         </li>
                     @empty
                         <li class="task">
@@ -125,8 +139,55 @@
     <script>
         $(document).ready(function () {
             $('#employees_multiple_select').select2();
-        });
-
-
+            //scroll to chat-box bottom to view latest message;
+            const chat_box = $('.chat-wrap-inner');
+            chat_box.animate({scrollTop: 10000}, 1000);
+            
+            
+            let success_alert = "{{ Session::get('success') }}"
+            console.log(success_alert);
+            if (success_alert) {
+                updateNotification('Success!!', success_alert, 'success')
+            }
+            
+            $('#project_status_toggle').change(() => {
+                $('#project_status_toggle').submit()
+            });
+            
+        })
+        
+        function deleteProject(task_id) {
+            $('#project_task' + task_id).submit();
+        }
+        
+        function toggleTask(task_id) {
+            console.log('hi')
+            $('#project_task_toggle' + task_id).submit();
+        }
+        
+        
+        //trigger file Open when click on paper-clip icon
+        function triggerFile(e) {
+            $('#file').trigger('click');
+            ;
+        }
+        
+        var updateNotification = function (task, notificationText, newClass) {
+            var notificationPopup = $('.notification-popup ');
+            let notificationTimeout;
+            notificationPopup.find('.task').text(task);
+            notificationPopup.find('.notification-text').text(notificationText);
+            notificationPopup.removeClass('hide success');
+            // If a custom class is provided for the popup, add It
+            if (newClass)
+            notificationPopup.addClass(newClass);
+            // If there is already a timeout running for hiding current popup, clear it.
+            if (notificationTimeout)
+            clearTimeout(notificationTimeout);
+            // Init timeout for hiding popup after 3 seconds
+            notificationTimeout = setTimeout(function () {
+                notificationPopup.addClass('hide');
+            }, 3000);
+        };
     </script>
 @endpush
