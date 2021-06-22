@@ -53,6 +53,9 @@ class ProjectController extends Controller
     {
         //
 
+        $request['start_date'] = Carbon::createFromFormat('d/m/Y', $request->start_date);
+        $request['end_date'] = Carbon::createFromFormat('d/m/Y', $request->end_date);
+
         $validated = $request->validate([
             'start_date' => 'required|date|after_or_equal:today',
             'end_date' => 'required|date|after:start_date|after_or_equal:today',
@@ -60,8 +63,8 @@ class ProjectController extends Controller
 
         $data = $request->all();
         $data['created_by'] = loginUser()->id;
-        $data['start_date'] = Carbon::createFromFormat('d/m/Y', $request->start_date);
-        $data['end_date'] = Carbon::createFromFormat('d/m/Y', $request->end_date);
+        // $data['start_date'] = Carbon::createFromFormat('d/m/Y', $request->start_date);
+        // $data['end_date'] = Carbon::createFromFormat('d/m/Y', $request->end_date);
 
 
         $project = Project::where('title', $request->title)->first();

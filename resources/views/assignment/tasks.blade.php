@@ -241,7 +241,8 @@
                 </div>
             </div>
             <div class="chat-footer">
-                @include('assignment.partial.message_input_box')
+                {{-- @include('assignment.partial.message_input_box') --}}
+                @include('layout.partials.commentbox', ['route' => 'assignment'])
             </div>
         </div>
     </div>
