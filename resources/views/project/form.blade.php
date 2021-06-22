@@ -19,18 +19,6 @@
                           value="" placeHolder="Please choose one"
                           :options="$employees" required></x-forms.basic.select>
 
-    {{--    <div class="form-group row">--}}
-    {{--        <label class="col-form-label col-md-2">Team members</label>--}}
-    {{--        <div class="col-md-10 w-100 pt-2" id="team_members">--}}
-    {{--            <select class="form-control" id="employees_multiple_select" style="width: 100%" name="team_members[]"--}}
-    {{--                    multiple="multiple" required>--}}
-    {{--                @foreach ($employees as $key => $employee)--}}
-    {{--                    <option value={{$key}} @if($key === \Auth::id()) selected @endif>{{$employee}} </option>--}}
-    {{--                @endforeach--}}
-    {{--            </select>--}}
-    {{--        </div>--}}
-    {{--    </div>--}}
-
     <x-forms.basic.date name="start_date" title="Start Date" required value=""></x-forms.basic.date>
 
     <x-forms.basic.date name="end_date" title="End Date" required value=""></x-forms.basic.date>
@@ -51,5 +39,6 @@
 
     <div class="d-flex justify-content-center">
         <button class="btn btn-primary">Create</button>
+        <a href="{{route('departments.index')}}" class="btn btn-secondary ml-3">Cancel</a>
     </div>
 </form>

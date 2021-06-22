@@ -1,4 +1,5 @@
 @extends('layout.mainlayout')
+@section('title', 'Company Edit')
 @section('content')
     <div class="content container-fluid">
         <!-- Page Header -->
@@ -18,6 +19,7 @@
                             @include('company.form')
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="submit">Update</button>
+                                <a href="{{route('departments.index')}}" class="btn btn-secondary ml-3">Cancel</a>
                             </div>
                         </form>
                         {{-- {{dd($errors->all())}} --}}

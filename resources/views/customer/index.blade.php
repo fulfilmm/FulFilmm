@@ -1,5 +1,6 @@
 @extends('layout.mainlayout')
 
+@section('name', 'Customer')
 
 @section('content')
 

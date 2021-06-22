@@ -1,5 +1,5 @@
 @extends('layout.mainlayout')
-
+@section('title', 'Department')
 @section('styles')
     @livewireStyles
 @endsection

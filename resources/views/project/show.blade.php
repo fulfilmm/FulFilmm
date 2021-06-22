@@ -1,4 +1,5 @@
 @extends('layout.mainlayout')
+@section('title', $project->name)
 @section('content')
     <div class="chat-main-row">
         <div class="chat-main-wrapper">

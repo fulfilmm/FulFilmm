@@ -1,5 +1,5 @@
 @extends('layout.mainlayout')
-
+@section('title', 'Assignment')
 @section('styles')
     @livewireStyles
 @endsection
@@ -42,6 +42,7 @@
             <x-forms.basic.date name="due_date" title="Due Date" required="true" value=""></x-forms.basic.date>
             <div class="d-flex justify-content-center">
                 <button class="btn btn-primary">Create</button>
+                <a href="{{route('departments.index')}}" class="btn btn-secondary ml-3">Cancel</a>
             </div>
         </form>
     </x-partials.modal>

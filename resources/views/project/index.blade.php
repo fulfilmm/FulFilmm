@@ -1,4 +1,5 @@
 @extends('layout.mainlayout')
+@section('title', 'Project')
 @section('content')
 
     {{-- Modals --}}

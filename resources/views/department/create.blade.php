@@ -1,5 +1,5 @@
 @extends('layout.mainlayout')
-
+@section('title', 'Department Create')
 @section('content')
     <!-- Page Header -->
     {{-- ဒီ breadcrumb နဲ့ header ကထည့်လည်းရတယ်မထည့်လည်းရတယ်။ --}}
@@ -18,6 +18,7 @@
                             @include('department.form')
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="submit">Submit</button>
+                                <a href="{{route('departments.index')}}" class="btn btn-secondary ml-3">Cancel</a>
                             </div>
                             </button>
                         </form>

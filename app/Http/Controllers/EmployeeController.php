@@ -46,7 +46,7 @@ class EmployeeController extends Controller
         $departments = Department::all()->pluck('name', 'id');
         $roles = Role::all()->pluck('name', 'id');
 
-        return view('employee.createAndEdit', compact(
+        return view('employee.create', compact(
             'departments',
             'roles'
         ));
@@ -107,7 +107,7 @@ class EmployeeController extends Controller
         $departments = Department::all()->pluck('name', 'id');
         $roles = Role::all()->pluck('name', 'id');
 
-        return view('employee.createAndEdit', compact(
+        return view('employee.edit', compact(
             'departments',
             'roles',
             'employee'

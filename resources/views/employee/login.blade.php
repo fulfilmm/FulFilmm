@@ -28,7 +28,7 @@
 		<![endif]-->
     </head>
     <body class="account-page">
-
+		<title>Login</title>
 		<!-- Main Wrapper -->
         <div class="main-wrapper">
 			<div class="account-content">
