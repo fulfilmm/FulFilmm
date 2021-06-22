@@ -1,5 +1,5 @@
 @extends('layout.mainlayout')
-@section('name', 'Department Edit')
+@section('title', 'Department Edit')
 @section('content')
 
 <!-- Page Header -->

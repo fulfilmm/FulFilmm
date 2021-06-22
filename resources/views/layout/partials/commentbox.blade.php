@@ -40,7 +40,8 @@
 </div>
 
 @push('scripts')
-    <script>
+<script>
+console.log('hi');
         file.onchange = evt => {
             const [form_file] = file.files
             if (form_file) {

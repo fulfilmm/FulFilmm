@@ -39,7 +39,7 @@
                         $color = 'bg-success';
                     }   
                     @endphp
-
+                    
                     <tr>
                         <td>{{$assignment->title}}</td>
                         <td class="{{$assignment->due_date >= today() ? 'text-dark' : 'text-danger'}}">{{$assignment->due_date}}</td>
@@ -54,7 +54,7 @@
                         <td>{{$assignment->assignedBy->department->name}}</td>
                         <td style="display: flex">
                             <a class="btn btn-primary" href="{{route('assignments.show',$assignment->id)}}"><span class='fa fa-eye'></span></a>&nbsp;
-                            {{--                            <a class="btn btn-success" href="{{route('assignments.edit',$assignment->id)}}"><span class='fa fa-edit'></span></a>&nbsp;--}}
+                            <a class="btn btn-success" href="{{route('assignments.edit',$assignment->id)}}"><span class='fa fa-edit'></span></a>&nbsp;
                             <form action="{{route('assignments.destroy',$assignment->id)}}" id="del-assignment{{$assignment->id}}" method="POST">
                                 @method('delete')
                                 @csrf
