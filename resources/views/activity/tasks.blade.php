@@ -189,7 +189,7 @@
             </div>
         </div>
         <div class="chat-footer">
-            @include('activity.partial.message_input_box')
+            @include('layout.partials.commentbox', ['route' => 'activity'])
         </div>
     </div>
 </div>

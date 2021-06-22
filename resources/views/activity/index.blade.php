@@ -4,6 +4,8 @@
     @livewireStyles
 @endsection
 
+@section('title', 'Activity')
+
 @section('content')
     {{-- Modals --}}
     <x-partials.modal id="acitvity-create" title="Create Activity">
