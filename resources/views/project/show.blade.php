@@ -65,41 +65,45 @@
                                         <hr class="task-line">
                                         {{--{{dd($assignment->assigned_employees->pluck('name'))}}--}}
                                         <h4> {{ $task_id === null ? 'Please select a task to view detail' : 'Assigned Employees for '. $project->task->find($task_id)->name}}</h4>
-                                        <ol>
-                                            @if($task_id !== null)
-                                                @foreach($project->task->find($task_id)->assigned_employees as $employee)
-                                                    <li>
-                                                        {{$employee->name}}
-                                                    </li>
-                                                @endforeach
-
-                                                @if (isset($assignment->assigned_groups))
-                                                    @foreach ($assignment->assigned_groups as $group)
-                                                        @foreach ($group->employees as $employee)
-                                                            <li>{{ $employee->name }}</li>
-                                                        @endforeach
+                                        @if (isset(request()->route()->parameters['task_id']))
+                                            <ol>
+                                                @if($task_id !== null)
+                                                    @foreach($project->task->find($task_id)->assigned_employees as $employee)
+                                                        <li>
+                                                            {{$employee->name}}
+                                                        </li>
                                                     @endforeach
-                                                @endif
 
-                                                @endif
-                                        </ol>
-                                        <hr class="task-line">
-                                        @foreach ($messages as $data)
-                                            @include('assignment.partial.message',[
-                                              'msg'=>$data->message,
-                                              'file'=> $data->file,
-                                              'name'=>$data->user->name,
-                                              'date'=>$data->created_at,
-                                          ])
-                                        @endforeach
+                                                    @if (isset($assignment->assigned_groups))
+                                                        @foreach ($assignment->assigned_groups as $group)
+                                                            @foreach ($group->employees as $employee)
+                                                                <li>{{ $employee->name }}</li>
+                                                            @endforeach
+                                                        @endforeach
+                                                    @endif
+
+                                                    @endif
+                                            </ol>
+                                            <hr class="task-line">
+                                            @foreach ($messages as $data)
+                                                @include('assignment.partial.message',[
+                                                'msg'=>$data->message,
+                                                'file'=> $data->file,
+                                                'name'=>$data->user->name,
+                                                'date'=>$data->created_at,
+                                            ])
+                                            @endforeach
+                                        @endif
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="chat-footer">
-                        @include('project.partial.message_input_box')
-                    </div>
+                    @if (isset(request()->route()->parameters['task_id']))
+                        <div class="chat-footer">
+                            @include('project.partial.message_input_box')
+                        </div>
+                    @endif 
                 </div>
             </div>
             `

@@ -10,10 +10,9 @@
                 <div class="input-group">
                     <textarea name="message" class="form-control" placeholder="Type message..."></textarea>
 
-
+                    <input type="hidden" name="project_task_id"
+                           value="{{request()->route()->parameters['task_id'] ?? ''}}">
                     <span class="input-group-append">
-                    <input type="hidden" name="assignment_id"
-                           value="{{request()->route()->parameters['project']}}">
                     <input type="file" id="file" class="d-none" name="file">
 
 

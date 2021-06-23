@@ -6,6 +6,7 @@ use App\Models\Employee;
 use App\Models\Group;
 use App\Models\Project;
 use App\Models\ProjectTask;
+use App\Models\ProjectTaskComment;
 use App\Repositories\Contracts\ProjectContract;
 use Carbon\Carbon;
 use DeepCopy\Matcher\PropertyNameMatcher;
@@ -90,7 +91,7 @@ class ProjectController extends Controller
         $project = $this->projectContract->getProjectsWithTasks($project->id);
 
         if ($project) {
-            $messages = [];
+            $messages = ProjectTaskComment::where('project_task_id', $task_id)->get();
             return view('project.show', compact('project', 'messages', 'employees', 'task_id'));
         }
         return abort(404);
