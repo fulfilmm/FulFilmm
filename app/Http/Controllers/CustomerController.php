@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\CustomerExport;
 use App\Http\Requests\CustomerRequest;
 use App\Imports\CustomerImport;
+use App\Models\Customer;
 use App\Repositories\Contracts\CompanyContract;
 use App\Repositories\Contracts\CustomerContract;
 use Exception;
@@ -15,26 +16,33 @@ class CustomerController extends Controller
 {
 
     private $customerContract, $companyContract;
+
     public function __construct(CustomerContract $customerContract, CompanyContract $companyContract)
     {
         $this->customerContract = $customerContract;
         $this->companyContract = $companyContract;
     }
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function index()
     {
         //
-        return view('customer.index');
+        return view('customer.data.lists');
+    }
+
+    public function card(){
+        $customers = Customer::paginate(20);
+        return view('customer.data.cards', compact('customers'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function create()
     {
@@ -46,8 +54,8 @@ class CustomerController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(CustomerRequest $request)
     {
@@ -59,7 +67,7 @@ class CustomerController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -70,8 +78,8 @@ class CustomerController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function edit($id)
     {
@@ -84,9 +92,9 @@ class CustomerController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {
@@ -99,8 +107,8 @@ class CustomerController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {
@@ -116,14 +124,14 @@ class CustomerController extends Controller
 
     public function import(Request $request)
     {
-        try
-        {
+        try {
             Excel::import(new CustomerImport, $request->file('import'));
             return redirect()->route('customers.index')->with('success', __('alert.import_success'));
-        }catch(Exception $e)
-        {
+        } catch (Exception $e) {
             return redirect()->route('customers.index')->with('error', $e->getMessage());
         }
 
     }
+
+
 }

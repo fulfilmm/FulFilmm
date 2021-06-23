@@ -26,7 +26,12 @@ class EmployeeController extends Controller
     }
     public function index()
     {
-        return view('employee.index');
+        return view('employee.data.lists');
+    }
+
+    public function card(){
+        $employees = Employee::paginate(20);
+        return view('employee.data.cards', compact('employees'));
     }
 
     /**
@@ -41,7 +46,7 @@ class EmployeeController extends Controller
         $departments = Department::all()->pluck('name', 'id');
         $roles = Role::all()->pluck('name', 'id');
 
-        return view('employee.createAndEdit', compact(
+        return view('employee.create', compact(
             'departments',
             'roles'
         ));
@@ -102,7 +107,7 @@ class EmployeeController extends Controller
         $departments = Department::all()->pluck('name', 'id');
         $roles = Role::all()->pluck('name', 'id');
 
-        return view('employee.createAndEdit', compact(
+        return view('employee.edit', compact(
             'departments',
             'roles',
             'employee'

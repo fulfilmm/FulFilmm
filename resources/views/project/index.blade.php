@@ -1,38 +1,15 @@
 @extends('layout.mainlayout')
+@section('title', 'Project')
 @section('content')
 
     {{-- Modals --}}
     <x-partials.modal id="project-create" title="Create Projects">
-        <form action="{{ route('projects.store') }}" method="POST">
-            @csrf
-            <x-forms.basic.input name="title" type="text" value="" title="Title" required></x-forms.basic.input>
-{{--            <div class="form-group row">--}}
-{{--                <label class="col-form-label col-md-2">Members</label>--}}
-{{--                <div class="col-md-10 w-100" id="co_owners" name="co_owners">--}}
-{{--                    @dd($employees)--}}
-
-{{--                    <select class="form-control" id="employees_multiple_select" style="width: 100%" name="co_owners[]"--}}
-{{--                            multiple="multiple" required>--}}
-{{--                        @foreach ($employees as $key => $employee)--}}
-
-{{--                            <option value={{$key}} @if($key === \Auth::id()) selected @endif>{{$employee}} </option>--}}
-{{--                        @endforeach--}}
-
-{{--                    </select>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-
-            {{--            Date က လိုလောက်လား?--}}
-            {{-- <x-forms.basic.date name="date" title="Date" required value=""></x-forms.basic.date>--}}
-            <div class="d-flex justify-content-center">
-                <button class="btn btn-primary">Create</button>
-            </div>
-        </form>
+        @include('project.form')
     </x-partials.modal>
     {{--End modals--}}
 
     <div class="content container-fluid">
-        <!-- Page Header -->
+    <!-- Page Header -->
         <div class="page-header">
             <div class="row align-items-center mb-3">
                 <div class="col">

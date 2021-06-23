@@ -41,4 +41,8 @@ class Activity extends Model
     {
         return $this->hasMany(CoOwner::class, 'activity_id');
     }
+
+    public function getCoOwnerIdsAttribute(){
+        return $this->co_owners->pluck('id');
+    }
 }

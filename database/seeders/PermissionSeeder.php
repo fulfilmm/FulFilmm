@@ -14,7 +14,7 @@ class PermissionSeeder extends Seeder
      */
     protected $permissions = [
         'activities', 'activity_tasks', 'comments', 'companies', 'customers', 'departments',
-        'employees', 'groups', 'roles', 'permissions', 'assignments', 'assignment_tasks', 'projects'
+        'employees', 'groups', 'roles', 'permissions', 'assignments', 'assignment_tasks', 'projects', 'project_tasks'
     ];
     public function run()
     {
@@ -25,6 +25,8 @@ class PermissionSeeder extends Seeder
 
         Permission::create(['name' => 'activities.acknowledge', 'display_name' => "Can acknowledge the activities", 'guard_name' => 'employee']);
         Permission::create(['name' => 'assignment_tasks.toggle', 'display_name' => 'Can toggle the assignment tasks status', "guard_name" => 'employee']);
+        Permission::create(['name' => 'activity_tasks.toggle', 'display_name' => 'Can toggle the activity tasks status', "guard_name" => 'employee']);
+        Permission::create(['name' => 'project_tasks.toggle', 'display_name' => 'Can toggle the projects tasks status', "guard_name" => 'employee']);
         Permission::create(['name' => 'assignments.changeStatus', 'display_name' => 'Can change the assignment status', "guard_name" => 'employee']);
     }
 
@@ -39,5 +41,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => $resource . '.destroy', 'display_name' => "Delete the $resource", 'guard_name' => 'employee']);
         Permission::create(['name' => $resource . '.export', 'display_name' => "Export the $resource", 'guard_name' => 'employee']);
         Permission::create(['name' => $resource . '.import', 'display_name' => "Import the $resource", 'guard_name' => 'employee']);
+        Permission::create(['name' => $resource . '.cards', 'display_name' => "View the $resource card", 'guard_name' => 'employee']);
+
     }
 }

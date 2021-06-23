@@ -13,7 +13,7 @@ class Group extends Model
 
     protected $fillable = [
         'name',
-        'created_by'
+        'created_by',
     ];
 
     public function created_employee()

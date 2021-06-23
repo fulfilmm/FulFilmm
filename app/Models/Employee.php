@@ -45,4 +45,9 @@ class Employee extends Authenticatable
     {
         return $this->belongsToMany(Assignment::class, 'assignment_employee');
     }
+
+    public function project_tasks()
+    {
+        return $this->belongsToMany(ProjectTask::class, 'project_task_employee');
+    }
 }

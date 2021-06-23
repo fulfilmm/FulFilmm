@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActivityTask;
 use App\Repositories\Contracts\ActivityTaskContract;
 use Illuminate\Http\Request;
 
@@ -90,5 +91,15 @@ class ActivityTaskController extends Controller
         $activity_id = $request->activity_id;
         $this->activity_task_contract->deleteById($id);
         return redirect()->route('activities.show', $activity_id)->with('success', __('alert.delete_success'));
+    }
+
+    public function toggleStatus($id, Request $request)
+    {
+        $activity_id = $request->activity_id;
+        $task = ActivityTask::find($id);
+        $task->status = !$task->status;
+        $task->save();
+
+        return redirect()->route('activities.show', $activity_id)->with('success', 'Task Updated');
     }
 }

@@ -5,11 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use App\Models\Group;
 use App\Models\Project;
+use App\Models\ProjectTask;
+use App\Repositories\Contracts\ProjectContract;
+use Carbon\Carbon;
 use DeepCopy\Matcher\PropertyNameMatcher;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
+
+    private $projectContract;
+
+    public function __construct(ProjectContract $projectContract)
+    {
+        $this->projectContract = $projectContract;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -41,9 +52,24 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
         //
+
+        $request['start_date'] = Carbon::createFromFormat('d/m/Y', $request->start_date);
+        $request['end_date'] = Carbon::createFromFormat('d/m/Y', $request->end_date);
+
+        $validated = $request->validate([
+            'start_date' => 'required|date|after_or_equal:today',
+            'end_date' => 'required|date|after:start_date|after_or_equal:today',
+        ]);
+
+        $data = $request->all();
+        $data['created_by'] = loginUser()->id;
+        // $data['start_date'] = Carbon::createFromFormat('d/m/Y', $request->start_date);
+        // $data['end_date'] = Carbon::createFromFormat('d/m/Y', $request->end_date);
+
+
         $project = Project::where('title', $request->title)->first();
         if (!$project) {
-            Project::create(['title' => $request->title, 'created_by' => auth()->guard('employee')->id()]);
+            $this->projectContract->create($data);
             $message = 'Project created successfully';
         } else {
             $message = 'The name you give already exists';
@@ -55,11 +81,19 @@ class ProjectController extends Controller
      * Display the specified resource.
      *
      * @param \App\Models\Project $project
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
-    public function show(Project $project)
+    public function show(Project $project, $task_id = null)
     {
         //
+        $employees = Employee::all()->pluck('name', 'id')->all();
+        $project = $this->projectContract->getProjectsWithTasks($project->id);
+
+        if ($project) {
+            $messages = [];
+            return view('project.show', compact('project', 'messages', 'employees', 'task_id'));
+        }
+        return abort(404);
     }
 
     /**
