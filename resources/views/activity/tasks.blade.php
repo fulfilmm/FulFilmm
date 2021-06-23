@@ -1,4 +1,5 @@
 @extends('layout.mainlayout')
+@section('title', $activity->title)
 @section('content')
 <!-- Main Wrapper -->
 <div class="chat-main-row">

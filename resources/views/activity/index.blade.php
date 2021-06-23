@@ -11,26 +11,7 @@
 <x-partials.modal id="acitvity-create" title="Create Activity">
     <form action="{{ route('activities.store') }}" method="POST">
         @csrf
-        <x-forms.basic.input name="title" type="text" value="" title="Title" required></x-forms.basic.input>
-        <x-forms.basic.select name="report_to_employee_id" title="Report To"
-        value="{{$activity->report_to_employee_id ?? old('report_to_employee_id')}}"
-        :options="$employees" required></x-forms.basic.select>
-        <div class="form-group row">
-            <label class="col-form-label col-md-2">Co Owners</label>
-            <div class="col-md-10 w-100" id="co_owners" name="co_owners">
-                {{--                    @dd($employees)--}}
-                
-                <select class="form-control" id="co_owner_multiple_select" style="width: 100%" name="co_owners[]"
-                multiple="multiple" required>
-                @foreach ($employees as $key => $employee)
-                
-                <option value={{$key}} @if($key === \Auth::id()) selected @endif>{{$employee}} </option>
-                @endforeach
-                
-            </select>
-        </div>
-    </div>
-    <x-forms.basic.date name="date" title="Date" required value=""></x-forms.basic.date>
+        @include('activity.partial.form')
     <div class="d-flex justify-content-center">
         <button class="btn btn-primary">Create</button>
         <a href="{{route('activities.index')}}" class="btn btn-secondary ml-3">Cancel</a>
@@ -66,12 +47,6 @@
     
     @push('scripts')
     @livewireScripts
-    <script>
-        $(document).ready(function () {
-            $('#co_owner_multiple_select').select2();
-            
-        });
-    </script>
     <script>
         function deleteRecord(id) {
             Swal.fire({

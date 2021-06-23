@@ -6,6 +6,7 @@ use App\Models\Activity;
 use App\Models\ActivityComment;
 use App\Repositories\Contracts\ActivityContract;
 use App\Models\Employee;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -49,6 +50,7 @@ class ActivityController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
+        $data['date'] = Carbon::createFromFormat('d/m/Y', $request->date);
         $data['employee_id'] = loginUser()->id;
         $data['department_id'] = loginUser()->department->id;
         $activity = $this->activity_contract->create($data);
@@ -82,9 +84,11 @@ class ActivityController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Activity $activity)
     {
         //
+        $employees = Employee::where('id', '!=', auth()->id())->pluck('name', 'id')->all();
+        return view('activity.edit', compact('activity','employees'));
     }
 
     /**
@@ -96,7 +100,15 @@ class ActivityController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->activity_contract->updateById($id, $request->all());
+
+        
+        $request['date'] = Carbon::createFromFormat('d/m/Y', $request->date);
+        // dd(Carbon::createFromFormat('d/m/Y', $request->date));
+
+        $activity = $this->activity_contract->updateById($id, $request->all());
+
+        $this->activity_contract->syncCoOwners($activity, $request->co_owners);
+
         return redirect()->route('activities.index')->with('success', __('alert.update_success'));
     }
 
