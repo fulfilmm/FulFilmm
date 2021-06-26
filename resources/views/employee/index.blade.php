@@ -9,21 +9,11 @@
     @include('layout.partials.page-header', ['route' => 'employees', 'import' => true, 'export' => false, 'card' => true, 'list' => true])
     @yield('data')
 
-    <div class="row">
-        <div class="col-12">
-            <head>
-                @livewireStyles
-            </head>
-            <livewire:employee-table />
-        </div>
-    </div>
-
 </div>
 
 
 @endsection
 @push('scripts')
-@livewireScripts
 <script>
     function deleteRecord(id) {
         event.preventDefault()

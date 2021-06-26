@@ -17,7 +17,7 @@
                     </li>
 
                     <li class="submenu">
-                        <a href="#"><i class="la la-cube"></i> <span> Customers</span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="la la-group"></i> <span> Customers</span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
 
                             <li><a class="{{ Request::is('customers') ? 'active' : '' }}"
@@ -31,7 +31,7 @@
 
 
                     <li class="submenu">
-                        <a href="#"><i class="la la-cube"></i> <span> Company</span> <span
+                        <a href="#"><i class="la la-building"></i> <span> Company</span> <span
                                 class="menu-arrow"></span></a>
                         <ul style="display: none;">
 
@@ -45,7 +45,7 @@
                     </li>
 
                     <li class="submenu">
-                        <a href="#"><i class="la la-cube"></i> <span> Employees</span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="la la-group"></i> <span> Employees</span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
 
                             <li><a class="{{ Request::is('employees') ? 'active' : '' }}"
@@ -58,7 +58,7 @@
                     </li>
 
                     <li class="submenu">
-                        <a href="#"><i class="la la-cube"></i> <span> Departments</span> <span
+                        <a href="#"><i class="la la-calculator"></i> <span> Departments</span> <span
                                 class="menu-arrow"></span></a>
                         <ul style="display: none;">
 
@@ -72,7 +72,7 @@
                     </li>
 
                     <li class="submenu">
-                        <a href="#"><i class="la la-cube"></i> <span> Roles</span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="la la-user"></i> <span> Roles</span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
 
                             <li><a class="{{ Request::is('roles') ? 'active' : '' }}" href="{{ route('roles.index') }}">All
@@ -85,11 +85,11 @@
                     </li>
 
                     <li class="menu">
-                        <a href="{{route('activities.index')}}"><i class="la la-cube"></i> <span>Activities</span></a>
+                        <a href="{{route('activities.index')}}"><i class="la la-file"></i> <span>Activities</span></a>
                     </li>
 
                     <li class="submenu">
-                        <a href="#"><i class="la la-cube"></i> <span> Groups</span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="la la-group"></i> <span> Groups</span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
 
                             <li><a class="{{ Request::is('groups') ? 'active' : '' }}"
@@ -103,7 +103,7 @@
                     </li>
 
                     <li class="menu">
-                        <a href="{{route('assignments.index')}}"><i class="la la-cube"></i> <span>Assignments</span></a>
+                        <a href="{{route('assignments.index')}}"><i class="la la-tasks"></i> <span>Assignments</span></a>
                     </li>
 
                     <li class="menu">
