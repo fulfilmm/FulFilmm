@@ -16,11 +16,11 @@
                     @include('layout.partials.breadcrumb',['header'=>'My Projects'])
                 </div>
                 <div class="col-auto float-right ml-auto">
-                    {{-- @if(\Auth::guard('employee')->user()->role->name === 'Manager' ||  \Auth::guard('employee')->user()->role->name === 'CEO')--}}
+                    @if(\Auth::guard('employee')->user()->role->name === 'Manager' ||  \Auth::guard('employee')->user()->role->name === 'CEO')
                     <button data-toggle="modal" data-target="#project-create" class="btn add-btn"><i
                             class="fa fa-plus"></i> Create Projects
                     </button>
-                    {{-- @endif--}}
+                    @endif
 
                     <div class="view-icons">
                         {{-- <a href="{{route('companies.cards')}}" class="grid-view btn btn-link"><i class="fa fa-th"></i></a>--}}

@@ -9,7 +9,7 @@
 
     <x-forms.basic.select name="proposed_to" title="Proposed To"
                           value="" placeHolder="Please choose one"
-                          :options="$employees" required></x-forms.basic.select>
+                          :options="$employee_without_user" required></x-forms.basic.select>
 
     <x-forms.basic.select name="owner" title="Project Owner"
                           value="" placeHolder="Please choose one"

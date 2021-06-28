@@ -10,6 +10,8 @@ use App\Models\ProjectTaskComment;
 use App\Repositories\Contracts\ProjectContract;
 use Carbon\Carbon;
 use DeepCopy\Matcher\PropertyNameMatcher;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -29,9 +31,10 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        //
+        
         $employees = Employee::all()->pluck('name', 'id')->all();
-        return view('project.index', compact('employees'));
+        $employee_without_user = Employee::where('id', '!=', Auth::id())->pluck('name', 'id')->all();
+        return view('project.index', compact(['employees', 'employee_without_user']));
     }
 
     /**
