@@ -10,7 +10,7 @@ class ProjectTaskComment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'commenter_id', 'project_task_id', 'is_read', 'file', 'message'
+        'commenter_id', 'project_task_id', 'is_read', 'file', 'file_name', 'message'
     ];
 
     public function projectTask()

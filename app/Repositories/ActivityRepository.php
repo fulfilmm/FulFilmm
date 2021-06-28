@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Activity;
 use App\Repositories\Contracts\ActivityContract;
+use Illuminate\Support\Facades\Auth;
 
 class ActivityRepository extends BaseRepository implements ActivityContract
 {
@@ -15,7 +16,8 @@ class ActivityRepository extends BaseRepository implements ActivityContract
     
     public function activityWithTasks($id)
     {
-        return $this->model->with('activity_tasks')->findOrFail($id);
+        $user_id = Auth::id();
+        return $this->model->with('activity_tasks')->where('employee_id', $id)->orWhere('report_to_employee_id', $id)->findOrFail($id);
     }
     
     public function acknowledgeActivity($activity_id)

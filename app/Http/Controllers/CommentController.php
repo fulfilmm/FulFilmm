@@ -52,6 +52,7 @@ class CommentController extends Controller
         }
 
         $data['commenter_id'] = auth('employee')->id();
+        $data['file_name'] = $request->file->getClientOriginalName();
         $data['file'] = $path;
         // dd($data);
 
