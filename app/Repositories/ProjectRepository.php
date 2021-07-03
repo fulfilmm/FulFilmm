@@ -20,28 +20,24 @@ class ProjectRepository extends BaseRepository implements ProjectContract
 
     public function getProjectsWithTasks($project_id)
     {
+
+        $user_id = Auth::id();
+
         return $this->model
         ->whereHas('task', function(Builder $query){
             $query->whereHas('assigned_employees', function(Builder $query){
                 $query->where('employee_id', Auth::id());
             });
         })
-        ->orWhereHas('ownedBy', function(Builder $query){
-            $query->where('owner', Auth::id());
-        })
-        ->orWhereHas('creator', function(Builder $query){
-            $query->where('created_by', Auth::id());    
-        })
-        // ->orWhereHas('leadedBy', function(Builder $query){
-        //     $query->where('leader', Auth::id());    
-        // })
-        // ->orWhereHas('proposedTo', function(Builder $query){
-        //     $query->where('proposed_to', Auth::id());    
-        // })
+        ->orWhere('leader', $user_id)
+        ->orWhere('proposed_to', $user_id)
+        ->orWhere('owner', $user_id)
+        ->orWhere('created_by', $user_id)
+
         ->withCount(['projectTasks as task_done' => function (Builder $q) {
         $q->where('status', 1);
         }])
         ->withCount(['projectTasks as total_tasks'])
-        ->find($project_id);
+        ->findorFail($project_id);
     }
 }
