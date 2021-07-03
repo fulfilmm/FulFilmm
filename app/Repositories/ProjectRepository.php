@@ -20,26 +20,27 @@ class ProjectRepository extends BaseRepository implements ProjectContract
 
     public function getProjectsWithTasks($project_id)
     {
-        return $this->model->whereHas('task', function(Builder $query){
+        return $this->model
+        ->whereHas('task', function(Builder $query){
             $query->whereHas('assigned_employees', function(Builder $query){
-                $query->where('project_task_id', Auth::id());
+                $query->where('employee_id', Auth::id());
             });
         })
         ->orWhereHas('ownedBy', function(Builder $query){
-            $query->where('id', Auth::id());
+            $query->where('owner', Auth::id());
         })
         ->orWhereHas('creator', function(Builder $query){
-            $query->where('id', Auth::id());    
+            $query->where('created_by', Auth::id());    
         })
-        ->orWhereHas('leadedBy', function(Builder $query){
-            $query->where('id', Auth::id());    
-        })
-        ->orWhereHas('proposedTo', function(Builder $query){
-            $query->where('id', Auth::id());    
-        })
+        // ->orWhereHas('leadedBy', function(Builder $query){
+        //     $query->where('leader', Auth::id());    
+        // })
+        // ->orWhereHas('proposedTo', function(Builder $query){
+        //     $query->where('proposed_to', Auth::id());    
+        // })
         ->withCount(['projectTasks as task_done' => function (Builder $q) {
         $q->where('status', 1);
-    }])
+        }])
         ->withCount(['projectTasks as total_tasks'])
         ->find($project_id);
     }

@@ -36,6 +36,7 @@
                             <div class="task-assign">
 
                                 {{--Acknowledge button here--}}
+                                {{-- {{ dd($project->status) }} --}}
                                 @if ($project->status == 'proposed')
                                     <a class="task-complete-btn" id="proposal_accepted" href="{{ route('projects.accept_proposal', $project->id) }}">
                                         <i class="material-icons">check</i> Accept Proposal
