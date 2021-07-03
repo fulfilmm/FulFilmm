@@ -36,23 +36,15 @@
                             <div class="task-assign">
 
                                 {{--Acknowledge button here--}}
-                                {{--                                <a class="task-complete-btn" id="task_complete" href="javascript:void(0);">--}}
-                                {{--                                    <i class="material-icons">check</i> Acknowledge--}}
-                                {{--                                </a>--}}
-                                {{--                                <div>--}}
-                                {{--                                    <h3>Status</h3>--}}
-                                {{--                                    <form id="assignment_status_toggle" action="{{route('assignments.changeStatus', ['id' => $assignment->id])}}" method="POST">--}}
-                                {{--                                        @csrf--}}
-                                {{--                                        @method('PUT')--}}
-                                {{--                                        <select class="form-control" name="status"--}}
-                                {{--                                                required>--}}
-                                {{--                                            <option disabled class="">Change Status to : </option>--}}
-                                {{--                                            <option value='created' @if($assignment->status === 'created') selected @endif> Created  </option>--}}
-                                {{--                                            <option value='working' @if($assignment->status === 'working') selected @endif> Working  </option>--}}
-                                {{--                                            <option value='done' @if($assignment->status === 'done') selected @endif> Done  </option>--}}
-                                {{--                                        </select>--}}
-                                {{--                                    </form>--}}
-                                {{--                                </div>--}}
+                                @if ($project->status == 'proposed')
+                                    <a class="task-complete-btn" id="proposal_accepted" href="{{ route('projects.accept_proposal', $project->id) }}">
+                                        <i class="material-icons">check</i> Accept Proposal
+                                    </a>
+                                @elseif ($project->status == 'In progress')
+                                    <a class="task-complete-btn" id="proposal_accepted" href="{{ route('projects.status_update', $project->id) }}">
+                                        <i class="material-icons">check</i> Project is done
+                                    </a>
+                                @endif                                
                             </div>
                         </div>
                     </div>

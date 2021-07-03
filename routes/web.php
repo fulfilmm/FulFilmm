@@ -58,18 +58,20 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::resource('activity_tasks', ActivityTaskController::class);
     Route::resource('groups', GroupController::class);
     Route::resource('assignments',AssignmentController::class);
-    Route::put('assignments/{id}/changeStatus', [AssignmentController::class,'changeStatus'])->name('assignments.changeStatus');
+    Route::resource('project_tasks',ProjectTaskController::class);
     Route::resource('assignment_tasks',AssignmentTaskController::class);
+
+    Route::put('assignments/{id}/changeStatus', [AssignmentController::class,'changeStatus'])->name('assignments.changeStatus');
+    
     Route::put('assignment_tasks/{id}/toggle',[AssignmentTaskController::class, 'toggleStatus'])->name('assignment_tasks.toggle');
     Route::put('activity_tasks/{id}/toggle',[ActivityTaskController::class, 'toggleStatus'])->name('activity_tasks.toggle');
     Route::resource('projects', ProjectController::class)->except([
         'show'
     ]);
 
-    
-    Route::get('/projects/{project}/{task_id?}', [ProjectController::class,'show'])->name('projects.show');
-    
-    Route::resource('project_tasks',ProjectTaskController::class);
+    Route::get('/projects/{project}/accept-proposal', [ProjectController::class, 'acceptProposal'])->name('projects.accept_proposal');
+    Route::get('/projects/{project}/status-update', [ProjectController::class, 'statusUpdate'])->name('projects.status_update');
+    Route::get('/projects/{project}/tasks/{task_id?}', [ProjectController::class,'show'])->name('projects.show');
     Route::put('project_tasks/{id}/toggle',[ProjectTaskController::class, 'toggleStatus'])->name('project_tasks.toggle');
     
     //export routes

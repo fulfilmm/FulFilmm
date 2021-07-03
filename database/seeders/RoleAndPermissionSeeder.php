@@ -28,6 +28,8 @@ class RoleAndPermissionSeeder extends Seeder
                 'activity_tasks.toggle',
                 'project_tasks.toggle',
                 'assignments.changeStatus',
+                'projects.accept_proposal',
+                'projects.status_update'
             ]
         ]
     ];

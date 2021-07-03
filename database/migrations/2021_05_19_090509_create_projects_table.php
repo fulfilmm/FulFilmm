@@ -23,7 +23,7 @@ class CreateProjectsTable extends Migration
             $table->date('start_date');
             $table->date('end_date');
             $table->string('priority', 32);
-            $table->string('status', 8)->default('pending');
+            $table->string('status', 64)->default('proposed');
             $table->text('description')->nullable();
             $table->timestamps();
         });

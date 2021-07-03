@@ -72,10 +72,12 @@ class ProjectController extends Controller
         if (!$project) {
             $this->projectContract->create($data);
             $message = 'Project created successfully';
+            $alert = 'success';
         } else {
             $message = 'The name you give already exists';
+            $alert = 'error';
         }
-        return redirect('projects')->with('error', $message);
+        return redirect('projects')->with($alert, $message);
     }
 
     /**
@@ -131,5 +133,19 @@ class ProjectController extends Controller
         //
         $project->delete();
         return redirect('projects')->with('success', __('alert.delete_success'));
+    }
+
+    public function acceptProposal(Project $project)
+    {
+        $project->status = 'In Progress';
+        $project->save();
+        return redirect('projects')->with('success', __('alert.project.proposal_accepted'));
+    }
+
+    public function statusUpdate(Project $project)
+    {
+        $project->status = 'Done';
+        $project->save();
+        return redirect('projects')->with('success', __('alert.project.project_done'));
     }
 }

@@ -28,6 +28,9 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'activity_tasks.toggle', 'display_name' => 'Can toggle the activity tasks status', "guard_name" => 'employee']);
         Permission::create(['name' => 'project_tasks.toggle', 'display_name' => 'Can toggle the projects tasks status', "guard_name" => 'employee']);
         Permission::create(['name' => 'assignments.changeStatus', 'display_name' => 'Can change the assignment status', "guard_name" => 'employee']);
+
+        Permission::create(['name' => 'projects.accept_proposal', 'display_name' => 'Can accept proposal', "guard_name" => 'employee']);
+        Permission::create(['name' => 'projects.status_update', 'display_name' => 'Can udpate project status', "guard_name" => 'employee']);
     }
 
     private function createResourcePermissions($resource)
