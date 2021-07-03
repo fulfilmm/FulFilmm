@@ -2,7 +2,7 @@
 
 @section('data')
     <div class="row staff-grid-row">
-        @foreach($employees as $employee)
+        @forelse($employees as $employee)
             <x-partials.card
                 route="customers"
                 id="{{$employee->id}}"
@@ -10,7 +10,11 @@
                 subtitle="{{$employee->email}}">
 
             </x-partials.card>
-        @endforeach
+            @empty
+            <div class="col-12 text-center">
+                <span class="text-center">@lang('messages.no-item-pls-add', ['name' => 'employee'])</span> 
+            </div>
+            @endforelse
     </div>
     {{$employees->links()}}
 

@@ -19,6 +19,7 @@ class CreateProjectTaskCommentsTable extends Migration
             $table->foreignId('project_task_id')->constrained('project_tasks');
             $table->boolean('is_read')->default(false);
             $table->string('file')->nullable();
+            $table->string('file_name')->nullable();
             $table->text('message')->nullable();
             $table->timestamps();
         });

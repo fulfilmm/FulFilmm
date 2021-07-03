@@ -225,6 +225,7 @@
                                         @include('assignment.partial.message',[
                                         'msg'=>$data->message,
                                         'file'=> $data->file,
+                                        'file_name' => $data->file_name,
                                         'name'=>$data->user->name,
                                         'date'=>$data->created_at,
                                         ])

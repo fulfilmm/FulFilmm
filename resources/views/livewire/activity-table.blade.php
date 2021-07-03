@@ -13,6 +13,7 @@
                         <th>Title</th>
                         <th>Report To</th>
                         <th>Acknowledged By</th>
+                        <th>Date</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -21,7 +22,8 @@
                     <tr>
                         <td>{{$activity->title}}</td>
                         <td>{{$activity->report_to_employee->name}}</td>
-                        <td>{{$activity->is_acknowledged == 0 ? 'No' : 'Yes'}}</td>
+                        <td>{{$activity->is_acknowledged == 0 ? 'No' : 'Yes'}}</td> 
+                        <td>{{\Carbon\Carbon::parse($activity->created_at)->format('d M Y')}}</td>
                         <td style="display: flex">
                             {{--this is acknowledge button--}}
                             @can('can-acknowledge', $activity)
