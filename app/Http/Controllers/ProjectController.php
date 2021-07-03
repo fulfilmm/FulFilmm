@@ -95,7 +95,7 @@ class ProjectController extends Controller
         $employees = Employee::all()->pluck('name', 'id')->all();
         $project = $this->projectContract->getProjectsWithTasks($project->id);
 
-        dd($project->id, $project->title);
+        // dd($project->id, $project->title);
         if ($project) {
             $messages = ProjectTaskComment::where('project_task_id', $task_id)->get();
             return view('project.show', compact('project', 'messages', 'employees', 'task_id'));

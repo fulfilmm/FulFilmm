@@ -24,9 +24,9 @@ class ProjectRepository extends BaseRepository implements ProjectContract
         $user_id = Auth::id();
 
         return $this->model
-        ->whereHas('task', function(Builder $query){
-            $query->whereHas('assigned_employees', function(Builder $query){
-                $query->where('employee_id', Auth::id());
+        ->whereHas('task', function(Builder $query) use ($user_id){
+            $query->whereHas('assigned_employees', function(Builder $query) use ($user_id){
+                $query->where('employee_id', $user_id);
             });
         })
         ->orWhere('leader', $user_id)

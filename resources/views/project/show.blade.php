@@ -41,8 +41,8 @@
                                     <a class="task-complete-btn" id="proposal_accepted" href="{{ route('projects.accept_proposal', $project->id) }}">
                                         <i class="material-icons">check</i> Accept Proposal
                                     </a>
-                                @elseif ($project->status == 'In progress')
-                                    <a class="task-complete-btn" id="proposal_accepted" href="{{ route('projects.status_update', $project->id) }}">
+                                @elseif ($project->status == 'In Progress')
+                                    <a class="task-complete-btn" id="status_update" href="{{ route('projects.status_update', $project->id) }}">
                                         <i class="material-icons">check</i> Project is done
                                     </a>
                                 @endif                                
