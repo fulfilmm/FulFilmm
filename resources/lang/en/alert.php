@@ -10,6 +10,7 @@ return [
 
     'project' => [
         'proposal_accepted' => 'Proposal is Accepted.',
-        'project_done' => 'Project status updated.'
+        'project_done' => 'Project status updated.',
+        'project_reversed' => 'Project status is reversed and now in progress'
     ]
 ];

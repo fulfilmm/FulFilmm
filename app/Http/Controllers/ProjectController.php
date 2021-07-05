@@ -143,13 +143,21 @@ class ProjectController extends Controller
     {
         $project->status = 'In Progress';
         $project->save();
-        return redirect('projects')->with('success', __('alert.project.proposal_accepted'));
+        return redirect()->back()->with('success', __('alert.project.proposal_accepted'));
     }
 
     public function statusUpdate(Project $project)
     {
         $project->status = 'Done';
         $project->save();
-        return redirect('projects')->with('success', __('alert.project.project_done'));
+      
+        return redirect()->back()->with('success', __('alert.project.project_done'));
+    }
+
+    public function reverseStatus(Project $project){
+        $project->status = 'In Progress';
+        $project->save();
+
+        return redirect()->back()->with('success', __('alert.project.project_reversed'));
     }
 }
