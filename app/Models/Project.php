@@ -35,6 +35,10 @@ class Project extends Model
         return $this->projectTasks()->where('keyword', 'normal');
     }
 
+    public function taskCount(){
+        return $this->task()->count();
+    }
+
     public function proposed_budget(){
         return $this->projectTasks()->where('keyword', 'proposed_budget');
     }

@@ -68,7 +68,6 @@
                 <h4>Tasks</h4>
                 <ul id="task-list">
                     
-                    
                     {{--                                                                                                         {{ dd($assignment->assignment_tasks) }}--}}
                     @forelse ($project->task as $task)
                     <li class="task">
@@ -108,7 +107,7 @@
                                 </a>
                                 <span class="action-circle large" onclick="toggleTask({{$task->id}})"
                                     title="{{$task->status === 1 ? 'Uncheck' : 'Check'}}">
-                                    <i class="material-icons">{{$task->status === 1 ? 'close' : 'check'}}</i>'
+                                    <i class="material-icons">{{$task->status === 1 ? 'close' : 'check'}}</i>
                                 </span>
                                 {{-- <span class="action-circle large bg-danger"
                                 title="Delete Task">

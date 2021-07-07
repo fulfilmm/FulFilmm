@@ -34,10 +34,10 @@ class ProjectRepository extends BaseRepository implements ProjectContract
         ->orWhere('owner', $user_id)
         ->orWhere('created_by', $user_id)
 
-        ->withCount(['projectTasks as task_done' => function (Builder $q) {
+        ->withCount(['task as task_done' => function (Builder $q) {
         $q->where('status', 1);
         }])
-        ->withCount(['projectTasks as total_tasks'])
+        ->withCount(['task as total_tasks'])
         ->findorFail($project_id);
     }
 }
