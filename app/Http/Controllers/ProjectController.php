@@ -92,6 +92,7 @@ class ProjectController extends Controller
     public function show(Project $project, $task_id = null)
     {
         //
+        // dd($project, $task_id);
         $employees = Employee::all()->pluck('name', 'id')->all();
         $project = $this->projectContract->getProjectsWithTasks($project->id);
 

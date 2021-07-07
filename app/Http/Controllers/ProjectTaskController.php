@@ -117,6 +117,6 @@ class ProjectTaskController extends Controller
         $task->status = !$task->status;
         $task->save();
 
-        return redirect()->route('projects.show', $project_id)->with('success', 'Task Updated');
+        return redirect()->route('projects.show', ['project' => $project_id, 'task_id' => $task->id])->with('success', 'Task Updated');
     }
 }

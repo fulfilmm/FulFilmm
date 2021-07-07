@@ -68,132 +68,125 @@
                 <h4>Tasks</h4>
                 <ul id="task-list">
                     
-                    {{--                                                                                                         {{ dd($assignment->assignment_tasks) }}--}}
+                    {{-- {{ dd($assignment->assignment_tasks) }}--}}
                     @forelse ($project->task as $task)
                     <li class="task">
                         {{-- <a href="{{route('projects.show', [$project->id, $task->id])}}"> --}}
-                            <div class="task-container {{ $task_id === (string)$task->id ? 'bg-primary' : '' }}">
-                                <span class="task-label"
-                                style="{{$task->status === 1 ? 'text-decoration: line-through' : '' }}"
-                                contenteditable="false">{{ $task->name }}</span>
+                            <div class="task-container {{ $task_id === (string)$task->id ? 'bg-primary' : '' }}" onclick="gotoTask({{$task->id}})">
+                                <span class="task-label"   style="{{$task->status === 1 ? 'text-decoration: line-through' : '' }}"  contenteditable="false">{{ $task->name }}</span>
                                 
                                 {{--Delete form added here for cosmetic purposes--}}
-                                <form
-                                action="{{ route('project_tasks.destroy', $task->id) }}"
-                                id="project_task{{ $task->id }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <input
-                                type="hidden"
-                                name="project_id"
-                                value="{{ $project->id }}">
-                            </form>
-                            
-                            
-                            <form action="{{route('project_tasks.toggle',$task->id)}}"
-                                id="project_task_toggle{{ $task->id }}"
-                                method="POST">
-                                @csrf
-                                @method('PUT')
-                                <input
-                                type="hidden"
-                                name="project_id"
-                                value="{{ $project->id }}">
-                            </form>
-                            
-                            <span class="task-action-btn task-btn-right">
-                                <a class="action-circle large" href="{{route('projects.show', [$project->id, $task->id])}}">
-                                    <i class="material-icons">visibility</i>
-                                </a>
-                                <span class="action-circle large" onclick="toggleTask({{$task->id}})"
-                                    title="{{$task->status === 1 ? 'Uncheck' : 'Check'}}">
-                                    <i class="material-icons">{{$task->status === 1 ? 'close' : 'check'}}</i>
+                                <form  action="{{ route('project_tasks.destroy', $task->id) }}"
+                                    id="project_task{{ $task->id }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <input type="hidden" name="project_id" value="{{ $project->id }}">
+                                </form>
+                                
+                                
+                                <form action="{{route('project_tasks.toggle',$task->id)}}" id="project_task_toggle{{ $task->id }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <input type="hidden" name="project_id" value="{{ $project->id }}">
+                                    <input type="hidden" name="task_id" value="{{ $task->id}}">
+                                </form>
+                                
+                                <span class="task-action-btn task-btn-right">
+                                    {{-- <a class="action-circle large" href="{{route('projects.show', [$project->id, $task->id])}}">
+                                        <i class="material-icons">visibility</i>
+                                    </a> --}}
+                                    <span class="action-circle large" onclick="toggleTask({{$task->id}}, event)"
+                                        title="{{$task->status === 1 ? 'Uncheck' : 'Check'}}">
+                                        <i class="material-icons">{{$task->status === 1 ? 'close' : 'check'}}</i>
+                                    </span>
+                                    {{-- <span class="action-circle large bg-danger"  title="Delete Task">
+                                        <i class="material-icons" onclick="deleteProject({{$task->id}})">delete</i>
+                                    </span> --}}
                                 </span>
-                                {{-- <span class="action-circle large bg-danger"
-                                title="Delete Task">
-                                <i class="material-icons"
-                                onclick="deleteProject({{$task->id}})">delete</i>
-                            </span> --}}
-                        </span>
-                    </div>
-                    {{-- </a> --}}
-                </li>
-                @empty
-                <li class="task">
-                    <div class="task-container">
-                        <span class="task-label"
-                        contenteditable="false">There is no task for this Project yet.</span>
-                    </div>
-                </li>
-                @endforelse
-                
-            </ul>
+                            </div>
+                            {{-- </a> --}}
+                        </li>
+                        @empty
+                        <li class="task">
+                            <div class="task-container">
+                                <span class="task-label"
+                                contenteditable="false">There is no task for this Project yet.</span>
+                            </div>
+                        </li>
+                        @endforelse
+                        
+                    </ul>
+                </div>
+            </div>
         </div>
+        <div class="notification-popup hide">
+            <p>
+                <span class="task"></span>
+                <span class="notification-text"></span>
+            </p>
+        </div>
+        
     </div>
-</div>
-<div class="notification-popup hide">
-    <p>
-        <span class="task"></span>
-        <span class="notification-text"></span>
-    </p>
-</div>
-
-</div>
-
-
-@push('scripts')
-<script>
-    $(document).ready(function () {
-        $('#employees_multiple_select').select2();
-        //scroll to chat-box bottom to view latest message;
-        const chat_box = $('.chat-wrap-inner');
-        chat_box.animate({scrollTop: 10000}, 1000);
+    
+    
+    @push('scripts')
+    <script>
+        $(document).ready(function () {
+            $('#employees_multiple_select').select2();
+            //scroll to chat-box bottom to view latest message;
+            const chat_box = $('.chat-wrap-inner');
+            chat_box.animate({scrollTop: 10000}, 1000);
+            
+            
+            let success_alert = "{{ Session::get('success') }}"
+            console.log(success_alert);
+            if (success_alert) {
+                updateNotification('Success!!', success_alert, 'success')
+            }
+            
+            $('#project_status_toggle').change(() => {
+                $('#project_status_toggle').submit()
+            });
+            
+        })
         
-        
-        let success_alert = "{{ Session::get('success') }}"
-        console.log(success_alert);
-        if (success_alert) {
-            updateNotification('Success!!', success_alert, 'success')
+        function gotoTask(task_id){
+            window.location.href = task_id   
         }
         
-        $('#project_status_toggle').change(() => {
-            $('#project_status_toggle').submit()
-        });
+        function deleteProject(task_id) {
+            $('#project_task' + task_id).submit();
+        }
         
-    })
+        function toggleTask(task_id, e) {
+            e.stopImmediatePropagation()
+            $('#project_task_toggle' + task_id).submit();
+        }
+        
+        
+        //trigger file Open when click on paper-clip icon
+        function triggerFile(e) {
+            $('#file').trigger('click');
+            ;
+        }
+        
+        var updateNotification = function (task, notificationText, newClass) {
+            var notificationPopup = $('.notification-popup ');
+            let notificationTimeout;
+            notificationPopup.find('.task').text(task);
+            notificationPopup.find('.notification-text').text(notificationText);
+            notificationPopup.removeClass('hide success');
+            // If a custom class is provided for the popup, add It
+            if (newClass)
+            notificationPopup.addClass(newClass);
+            // If there is already a timeout running for hiding current popup, clear it.
+            if (notificationTimeout)
+            clearTimeout(notificationTimeout);
+            // Init timeout for hiding popup after 3 seconds
+            notificationTimeout = setTimeout(function () {
+                notificationPopup.addClass('hide');
+            }, 3000);
+        };
+    </script>
+    @endpush
     
-    function deleteProject(task_id) {
-        $('#project_task' + task_id).submit();
-    }
-    
-    function toggleTask(task_id) {
-        console.log('hi')
-        $('#project_task_toggle' + task_id).submit();
-    }
-    
-    
-    //trigger file Open when click on paper-clip icon
-    function triggerFile(e) {
-        $('#file').trigger('click');
-        ;
-    }
-    
-    var updateNotification = function (task, notificationText, newClass) {
-        var notificationPopup = $('.notification-popup ');
-        let notificationTimeout;
-        notificationPopup.find('.task').text(task);
-        notificationPopup.find('.notification-text').text(notificationText);
-        notificationPopup.removeClass('hide success');
-        // If a custom class is provided for the popup, add It
-        if (newClass)
-        notificationPopup.addClass(newClass);
-        // If there is already a timeout running for hiding current popup, clear it.
-        if (notificationTimeout)
-        clearTimeout(notificationTimeout);
-        // Init timeout for hiding popup after 3 seconds
-        notificationTimeout = setTimeout(function () {
-            notificationPopup.addClass('hide');
-        }, 3000);
-    };
-</script>
-@endpush
