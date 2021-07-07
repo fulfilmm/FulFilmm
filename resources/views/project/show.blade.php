@@ -8,20 +8,23 @@
             <div class="col-lg-7 message-view task-view task-left-sidebar">
                 <div class="">
                     <ul class="nav nav-tabs nav-tabs-solid nav-justified mb-0">
-                        <li class="nav-item"><a class="nav-link active" href="#tasks"
-                                                data-toggle="tab">Tasks</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#proposed_budget"
-                                                data-toggle="tab">Proposed Budget</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#proposed_resource" data-toggle="tab">Proposed
+                        <li class="nav-item"><a class="nav-link" id="tasks_link" href="#tasks" data-toggle="tab">Tasks</a></li>
+                        <li class="nav-item"><a class="nav-link" id="proposed_budget_link" href="#proposed_budget" data-toggle="tab">Proposed Budget</a></li>
+                        <li class="nav-item"><a class="nav-link" id="proposed_resource_link" href="#proposed_resource" data-toggle="tab">Proposed
                                 Resource</a></li>
                     </ul>
                     <div class="tab-content p-0">
-                        <div class="tab-pane show active" id="tasks">
+                     
+                       
+
+                        <div class="tab-pane" id="tasks">
                             @include('project.partial.task')
                         </div>
+
                         <div class="tab-pane" id="proposed_budget">
                             @include('project.partial.budget')
                         </div>
+
                         <div class="tab-pane" id="proposed_resource">
                             @include('project.partial.resource')
                         </div>
@@ -111,5 +114,21 @@
     @livewireStyles
 @endsection
 @push('scripts')
+<script>
+    $(document).ready(function () {
+    $('a').click(function() {
+        //store the id of the collapsible element
+        localStorage.setItem('tabItem', $(this).attr('href'));
+    });
 
+    var tabItem = localStorage.getItem('tabItem'); 
+    if (tabItem) {
+       $(tabItem).addClass('active')
+       $(tabItem+'_link').addClass('active')
+    }else{
+        $('#task').addClass('active')
+        $('#task_link').addClass('active')
+    }
+})
+</script>
 @endpush
