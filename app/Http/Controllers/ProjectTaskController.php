@@ -57,6 +57,7 @@ class ProjectTaskController extends Controller
         $project_id = $request->project_id;
         $project_task = $this->projectTaskContract->create( $request->all());
         $project_task->assigned_employees()->attach($request->project_task_employee ?? []);
+        $project_task->assigned_groups()->attach($request->assigned_group ?? []);
 
         return redirect()->route('projects.show', $project_id)->with('success', __('alert.create_success'));
     }

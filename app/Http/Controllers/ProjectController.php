@@ -99,7 +99,8 @@ class ProjectController extends Controller
         // dd($project->id, $project->title);
         if ($project) {
             $messages = ProjectTaskComment::where('project_task_id', $task_id)->get();
-            return view('project.show', compact('project', 'messages', 'employees', 'task_id'));
+            $groups = Group::all()->pluck('name', 'id');
+            return view('project.show', compact('project', 'messages', 'employees', 'task_id', 'groups'));
         }
         return abort(404);
     }

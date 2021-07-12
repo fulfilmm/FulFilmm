@@ -19,4 +19,9 @@ class ProjectTask extends Model
     {
         return $this->belongsToMany(Employee::class, 'project_task_employee');
     }
+
+    public function assigned_groups()
+    {
+        return $this->belongsToMany(Group::class, 'project_task_group');
+    }
 }

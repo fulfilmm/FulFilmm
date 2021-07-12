@@ -70,8 +70,8 @@
                                                         </li>
                                                     @endforeach
 
-                                                    @if (isset($assignment->assigned_groups))
-                                                        @foreach ($assignment->assigned_groups as $group)
+                                                    @if (isset($project->task->find($task_id)->assigned_groups))
+                                                        @foreach ($project->task->find($task_id)->assigned_groups as $group)
                                                             @foreach ($group->employees as $employee)
                                                                 <li>{{ $employee->name }}</li>
                                                             @endforeach

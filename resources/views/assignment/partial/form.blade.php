@@ -4,19 +4,19 @@
     <label class="col-form-label col-md-2">Assign Group</label>
     <div class="col-md-10 w-100" id="co_owners">
         <select class="form-control" id="groups_multiple_select" style="width: 100%" name="assigned_group[]"
-        multiple="multiple">
-        @foreach ($groups as $key => $group_name)
-        <option value={{$key}}  
-            @isset($assignment)
-                @if( in_array($key, $assignment->group_ids->toArray())) 
-                    selected 
-                @endif
-            @endisset
-        >{{$group_name}} </option>
-        @endforeach
-        
-    </select>
-</div>
+            multiple="multiple">
+            @foreach ($groups as $key => $group_name)
+            <option value={{$key}}  
+                @isset($assignment)
+                    @if( in_array($key, $assignment->group_ids->toArray())) 
+                        selected 
+                    @endif
+                @endisset
+            >{{$group_name}} </option>
+            @endforeach
+            
+        </select>
+    </div>
 </div>
 
 <div class="form-group row">

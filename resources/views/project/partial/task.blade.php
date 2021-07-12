@@ -10,20 +10,39 @@
             <label class="col-form-label col-md-2">Task Members</label>
             <div class="col-md-10 w-100" id="co_owners">
                 <select class="form-control" id="employees_multiple_select" style="width: 100%" name="project_task_employee[]"
-                multiple="multiple">
-                @foreach ($employees as $key => $employee)
-                
-                <option value={{$key}} @if($key === \Auth::id()) selected @endif>{{$employee}} </option>
-                @endforeach
-                
-            </select>
+                    multiple="multiple">
+                    @foreach ($employees as $key => $employee)
+                    
+                    <option value={{$key}} @if($key === \Auth::id()) selected @endif>{{$employee}} </option>
+                    @endforeach
+                    
+                </select>
+            </div>
         </div>
-    </div>
+
+        <div class="form-group row">
+            <label class="col-form-label col-md-2">Assign Group</label>
+            <div class="col-md-10 w-100" id="co_owners">
+                <select class="form-control" id="groups_multiple_select" style="width: 100%" name="assigned_group[]"
+                    multiple="multiple">
+                    @foreach ($groups as $key => $group_name)
+                    <option value={{$key}}  
+                        @isset($assignment)
+                            @if( in_array($key, $assignment->group_ids->toArray())) 
+                                selected 
+                            @endif
+                        @endisset
+                    >{{$group_name}} </option>
+                    @endforeach
+                    
+                </select>
+            </div>
+        </div>
     
-    <div class="d-flex justify-content-center">
-        <button class="btn btn-primary">Create</button>
-    </div>
-</form>
+        <div class="d-flex justify-content-center">
+            <button class="btn btn-primary">Create</button>
+        </div>
+    </form>
 </x-partials.modal>
 
 <div class="pt-3">
@@ -72,7 +91,7 @@
                     @forelse ($project->task as $task)
                     <li class="task">
                         {{-- <a href="{{route('projects.show', [$project->id, $task->id])}}"> --}}
-                            <div class="task-container {{ $task_id === (string)$task->id ? 'bg-primary' : '' }}" onclick="gotoTask({{$task->id}})">
+                            <div class="task-container {{ $task_id === (string)$task->id ? 'bg-primary' : '' }}" onclick="gotoTask({{ $project->id }},{{$task->id}})">
                                 <span class="task-label"   style="{{$task->status === 1 ? 'text-decoration: line-through' : '' }}"  contenteditable="false">{{ $task->name }}</span>
                                 
                                 {{--Delete form added here for cosmetic purposes--}}
@@ -133,6 +152,7 @@
     <script>
         $(document).ready(function () {
             $('#employees_multiple_select').select2();
+            $('#groups_multiple_select').select2();
             //scroll to chat-box bottom to view latest message;
             const chat_box = $('.chat-wrap-inner');
             chat_box.animate({scrollTop: 10000}, 1000);
@@ -150,8 +170,8 @@
             
         })
         
-        function gotoTask(task_id){
-            window.location.href = task_id   
+        function gotoTask(project_id,task_id){
+            window.location.href = '/projects/' + project_id + '/tasks/' + task_id   
         }
         
         function deleteProject(task_id) {

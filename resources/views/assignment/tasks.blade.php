@@ -213,11 +213,11 @@
                                             @endforeach
                                             
                                             @if (isset($assignment->assigned_groups))
-                                            @foreach ($assignment->assigned_groups as $group)
-                                            @foreach ($group->employees as $employee)
-                                            <li>{{ $employee->name }}</li>
-                                            @endforeach
-                                            @endforeach                                              
+                                                @foreach ($assignment->assigned_groups as $group)
+                                                    @foreach ($group->employees as $employee)
+                                                    <li>{{ $employee->name }}</li>
+                                                    @endforeach
+                                                @endforeach                                              
                                             @endif
                                         </ol>
                                         <hr class="task-line">
