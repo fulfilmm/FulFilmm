@@ -51,6 +51,6 @@ class OwnershipMiddleware
             //routes do not need to check ownership
             return $next($request);
         }
-        
+
     }
 }

@@ -15,15 +15,36 @@
             margin-left: auto;
             margin-right: auto;
         }
+        .nav{
+            width: 100%;
+            height: 150px;
+        }
+        .logo,h3{
+            width: 200px;
+            height: 200px;
+            margin-left: 50px;
+            margin-right: 50px;
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+
     </style>
 </head>
+
 <body>
 <form action="{{route('quotations.mail')}}" enctype="multipart/form-data" method="post" >
     {{csrf_field()}}
     <div class="col-md-8 offset-md-2 col-12">
     <div class="border-dark card ">
+        <div class="nav">
+            <div class="logo">
+                <img src="{{url(asset('/ticket_attach/512x512bb.jpg'))}}" alt="logo" width="100px;" height="100px">
+
+            </div>
+            <h3 class="mt-3">{{$company}}</h3>
+        </div>
         <div class="col-12">
-            <h3 align="center" class="mt-3">{{$company}}</h3>
+
             <input type="hidden" value="{{$company}}" name="company">
             <input type="hidden" name="client_name" value="{{$quotation->customer->name}}">
             <div class="text-center">
@@ -107,7 +128,11 @@
        </div>
         <div class="form-group ml-3 mb-5">
         <h4>Terms and Conditions</h4>
-            <p class="ml-5">{{$quotation->terms_conditions}}</p>
+            <ul style="list-style-type: disc">
+                <li>{{$quotation->terms_conditions}}</li>
+                <li>{{$quotation->terms_conditions}}</li>
+            </ul>
+
             <input type="hidden" name="term_condition" class="form-control" style="width: 90%" value="{{$quotation->terms_conditions}}">
         </div>
         <div class="form-group text-center">

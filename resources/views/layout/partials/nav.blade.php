@@ -101,7 +101,17 @@
                             @endif
                         </ul>
                     </li>
+                    <li class="submenu">
+                        <a href="#"><i class="la la-cube"></i> <span> Meeting</span> <span class="menu-arrow"></span></a>
+                        <ul style="display: none;">
 
+                            <li><a class="{{ Request::is('meetings') ? 'active' : '' }}"
+                                   href="{{ route('meetings.index') }}">Meeting</a></li>
+                            <li><a class="{{ Request::is('meetings.create') ? 'active' : '' }}"
+                                   href="{{ route('meetings.create') }}">Meeting Create</a></li>
+
+                        </ul>
+                    </li>
                     <li class="menu">
                         <a href="{{route('assignments.index')}}"><i class="la la-cube"></i> <span>Assignments</span></a>
                     </li>
@@ -122,7 +132,7 @@
                         <a href="#"><i class="la la-cube"></i> <span> CRM</span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             <li class="submenu">
-                                <a href="#"><i class="la la-ticket"></i> <span> Ticket</span> <span class="menu-arrow"></span></a>
+                                <a href="#"> <span> Ticket</span> <span class="menu-arrow"></span></a>
                                 <ul style="display: none;">
 
                                     <li><a class="{{ Request::is('tickets') ? 'active' : '' }}" href="{{ route('tickets.index') }}">All Ticket</a></li>
@@ -138,7 +148,7 @@
                             </li>
 
                             <li class="submenu">
-                                <a href="#"><i class="la la-cube"></i> <span> Product</span> <span class="menu-arrow"></span></a>
+                                <a href="#"><span> Product</span> <span class="menu-arrow"></span></a>
                                 <ul style="display: none;">
 
                                     <li><a class="{{ Request::is('products') ? 'active' : '' }}" href="{{url('/products')}}">All Products</a></li>
@@ -148,7 +158,7 @@
                                 </ul>
                             </li>
                             <li class="submenu">
-                                <a href="#"><i class="la la-cube"></i> <span> InQuery</span> <span class="menu-arrow"></span></a>
+                                <a href="#"> <span> InQuery</span> <span class="menu-arrow"></span></a>
                                 <ul style="display: none;">
                                     <li><a class="{{ Request::is('inqueries.index') ? 'active' : '' }}" href="{{ route('inqueries.index') }}">All InQuery</a></li>
                                     <li><a class="{{ Request::is('inqueries.create') ? 'active' : '' }}" href="{{ route('inqueries.create') }}">InQuery Create</a></li>
@@ -156,24 +166,37 @@
                             </li>
 
                             <li class="submenu">
-                                <a href="#"><i class="la la-cube"></i> <span> Lead</span> <span class="menu-arrow"></span></a>
+                                <a href="#"><span> Lead</span> <span class="menu-arrow"></span></a>
                                 <ul style="display: none;">
                                     <li><a class="{{ Request::is('leads') ? 'active' : '' }}" href="{{ route('leads.index') }}">All Leads</a></li>
                                     <li><a class="{{ Request::is('leads.myfollowed') ? 'active' : '' }}" href="{{ route('leads.myfollowed') }}">Followed Lead</a></li>
                                 </ul>
                             </li>
                             <li class="submenu">
-                                <a href="#"><i class="la la-cube"></i> <span> Deal</span> <span class="menu-arrow"></span></a>
+                                <a href="#"><span> Deal</span> <span class="menu-arrow"></span></a>
                                 <ul style="display: none;">
                                     <li><a class="{{ Request::is('deals') ? 'active' : '' }}" href="{{ route('deals.index') }}">All Deals</a></li>
                                 </ul>
                             </li>
                             <li class="submenu">
-                                <a href="#"><i class="la la-cube"></i> <span> Quotation</span> <span class="menu-arrow"></span></a>
+                                <a href="#"><span> Quotation</span> <span class="menu-arrow"></span></a>
                                 <ul style="display: none;">
                                     <li><a class="{{ Request::is('quotations') ? 'active' : '' }}" href="{{ route('quotations.index') }}">All Quotation</a></li>
                                 </ul>
                             </li>
+                            <li class="submenu">
+                                <a href="#"><span> Invoice</span> <span class="menu-arrow"></span></a>
+                                <ul style="display: none;">
+                                    <li><a class="{{ Request::is('invoices') ? 'active' : '' }}" href="{{ route('invoices.index') }}">All Invoice</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="submenu">
+                        <a href="#"><i class="la la-cube"></i><span> Approval Request</span> <span class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+                            <li><a class="{{ Request::is('approvals') ? 'active' : '' }}" href="{{ route('approvals.index') }}">My Approval </a></li>
+                            <li><a class="{{ Request::is('request.me') ? 'active' : '' }}" href="{{ route('request.me') }}">Requests Me </a></li>
                         </ul>
                     </li>
                 </ul>

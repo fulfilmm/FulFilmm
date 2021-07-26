@@ -14,7 +14,6 @@
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url("home")}}">Dashboard</a></li>
                         <li class="breadcrumb-item active">New</li>
-                        <li class="breadcrumb-item active">{{$quotation_id}}</li>
                     </ul>
                 </div>
             </div>
@@ -32,7 +31,7 @@
             <hr>
             <div class="card">
                 <div class="col-12 mt-3">
-                    <input type="hidden" id="quotation_id" name="quotation_id" value="{{$quotation_id}}">
+{{--                    <input type="hidden" id="quotation_id" name="quotation_id" value="{{$quotation_id}}">--}}
                     <h3>NEW </h3>
                     <div class="row">
                         <div class="col-md-1 offset-md-1">  <label for="">Customer</label></div>
@@ -42,6 +41,11 @@
                                     @foreach($allcustomers as $client)
                                         <option value="{{$client->id}}">{{$client->name}}</option>
                                     @endforeach
+                                        @error('quo_customer')
+                                        {{-- <span class="invalid-feedback" role="alert"> --}}
+                                        <strong class="text-danger">{{ $message }}</strong>
+                                        {{-- </span> --}}
+                                        @enderror
                                 </select>
                             </div>
                         </div>
@@ -53,7 +57,12 @@
                         <div class="col-md-1 ">  <label for="">Expiration</label></div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <input type="date" class="form-control" name="exp_date" id="exp">
+                                <input type="date" class="form-control {{ $errors->has('exp_date') ? ' is-invalid' : '' }}" name="exp_date" id="exp" required>
+                                @if ($errors->has('exp_date'))
+                                    <span class="help-block">
+                                        <strong class="text-danger text-center">{{ $errors->first('exp_date') }}</strong>
+                                        </span>
+                                @endif
                             </div>
                         </div>
                         <div class="offset-md-7 col-md-1">
@@ -97,13 +106,6 @@
                                 <th>Action</th>
                                 </thead>
                                 <tbody id="tbody">
-                                @php
-                                    $orderline=\App\Models\Orderline::with('product')->where("quotation_id",$quotation_id)->get();
-                                    $grand_total=0;
-                                     for ($i=0;$i<count($orderline);$i++){
-                                         $grand_total=$grand_total+$orderline[$i]->total_amount;
-                                     }
-                                @endphp
                                 @foreach($orderline as $order)
                                     <tr>
                                         <td>
@@ -134,9 +136,36 @@
                                         <td>
                                             <div class="row">
                                                 <a class="btn btn-success btn-sm mr-2" href="" type="button" id="update_order_{{$order->id}}"><i class="fa fa-save"></i></a><br>
-                                                <a class="btn btn-danger btn-sm" href="{{route('orders.destroy',$order->id)}}" ><i class="fa fa-trash-o "></i></a>
+                                                <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete{{$order->id}}" href="#" ><i class="fa fa-trash-o "></i></a>
                                             </div>
                                         </td>
+                                        <div class="modal fade" id="delete{{$order->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Cancel Order</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <form action="{{route('orders.destroy',$order->id)}}" method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <div class="modal-body">
+                                                            <div class="text-center">
+                                                <span>
+                                                    Are you sure cancel this order?
+                                              </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="text-center">
+                                                            <button class="btn btn-outline-primary">Cancel</button>
+                                                            <button type="submit" class="btn btn-danger  my-2">Delete</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <script>
                                             //order update
                                             $(document).on('change', 'input', function() {
@@ -191,7 +220,7 @@
                                                             total:total,
                                                             order_id:order_id,
                                                         },
-                                                        type:'POST',
+                                                        type:'PUT',
                                                         url:"{{route('orders.update',$order->id)}}",
                                                         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                                                         success:function(data){
@@ -208,6 +237,7 @@
                                 @endforeach
                                 <tr>
                                     <td>
+                                        <input type="hidden" id="form_id" value="{{$request_id[0]}}">
                                         <select name="" id="product" class="form-control">
                                             <option value="">Select Product</option>
                                             @foreach($products as $product)
@@ -253,9 +283,10 @@
                                     <td><input class="form-control" type="text" id="grand_total" value="{{$grand_total}}"></td>
                                 </tr>
                             </table>
-                            <div class="form-group">
-                                <label for="">Terms and Condition</label>
-                                <input type="text" class="form-control" name="term_condition" id="term_and_condition" placeholder="..terms and conditions ..">
+                            <label for="">Terms and Condition</label>
+                            <div class="term">
+                            <div class="input-group">
+                                <input type="text" class="form-control " name="term_condition" id="term_and_condition" placeholder="..terms and conditions .."><br>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
@@ -329,7 +360,7 @@
             //order line function
             $(document).ready(function() {
                 $(document).on('click', '#add', function () {
-                    var quotation_id=$('#quotation_id').val();
+                    var quotation_id=$('#form_id').val();
                     var product=$('#product option:selected').val();
                     var desc=$('#order_description').val();
                     var quantity=$('#quantity').val();
@@ -446,6 +477,18 @@
                         success:function(data){
                             console.log(data);
                             window.location.href = "/quotations";
+                        },
+                        error: function (err) {
+                            if (err.status == 422) { // when status code is 422, it's a validation issue
+                                console.log(err.responseJSON);
+                                $('#success_message').fadeIn().html(err.responseJSON.message);
+                                // you can loop through the errors object and show it to the user
+                                console.warn(err.responseJSON.errors);
+                                // display errors on each form field
+                                $.each(err.responseJSON.errors, function (i, error) {
+                                   alert(error);
+                                });
+                            }
                         }
                     });
                 });
@@ -492,7 +535,19 @@
                         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                         success:function(data){
                             console.log(data);
-                            window.location.href = "/quotations/sendemail/{{$quotation_id}}";
+                            // window.location.href = "/quotations/sendemail/{";
+                        },
+                        error: function (err) {
+                            if (err.status == 422) { // when status code is 422, it's a validation issue
+                                console.log(err.responseJSON);
+                                $('#success_message').fadeIn().html(err.responseJSON.message);
+                                // you can loop through the errors object and show it to the user
+                                console.warn(err.responseJSON.errors);
+                                // display errors on each form field
+                                $.each(err.responseJSON.errors, function (i, error) {
+                                    alert(error);
+                                });
+                            }
                         }
                     });
                 });

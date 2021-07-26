@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\meetingshowcontrol;
 use App\Http\Middleware\OwnershipMiddleware;
 use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
@@ -66,5 +67,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'authorize' => RoleMiddleware::class,
         'ownership' => OwnershipMiddleware::class,
+        'meeting_view_relative_emp'=>meetingshowcontrol::class,
     ];
 }

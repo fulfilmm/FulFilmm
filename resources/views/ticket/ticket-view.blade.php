@@ -132,12 +132,11 @@
                             <span class="assign-title">Assigned to </span>
                             @if($assign_ticket->type_of_assign==0)
                                 <a href="#" data-toggle="tooltip" data-placement="bottom" title="{{$assign_ticket->agent->name}}" class="avatar">
-                                <img src="img/profiles/avatar-02.jpg" alt="">
+                                    <img src="img/profiles/avatar-02.jpg" alt=""></a>
                                 @else
                                         <a href="#" data-toggle="tooltip" data-placement="bottom" title="{{$assign_ticket->dept->name}}" class="avatar">
-                                            <img src="img/profiles/avatar-02.jpg" alt="">
+                                            <img src="img/profiles/avatar-02.jpg" alt=""> </a>
                                 @endif
-                            </a>
                             <a href="#" class="followers-add" title="Reassign" data-toggle="modal" data-target="#assignee"><i class="la la-arrow-right"></i></a>
                         </div>
                         <ul class="nav float-right custom-menu">

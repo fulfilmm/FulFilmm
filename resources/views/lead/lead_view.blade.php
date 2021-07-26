@@ -128,56 +128,50 @@
                 </div>
             </div>
             <div class="col-lg-4 col-xl-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="card-title m-b-15">Lead details</h6>
-                        <table class="table table-striped table-border">
-                            <tbody>
-                            <tr>
-                                <td>Lead ID:</td>
-                                <td class="text-right">{{$lead->lead_id}}</td>
-                            </tr>
-                            <tr>
-                                <td>Sale Person:</td>
-                                <td class="text-right">{{$lead->saleMan->name}}</td>
-                            </tr>
-                            <tr>
-                                <td>Customer:</td>
-                                <td class="text-right">{{$lead->customer->name}}</td>
-                            </tr>
+                <div class="card-body col-md-12">
+                    <h6 class="card-title">Lead details</h6>
+                    <table class="col-12 table table-striped table-border" >
+                        <tbody>
+                        <tr>
+                            <td>Lead ID:</td>
+                            <td class="text-right">{{$lead->lead_id}}</td>
+                        </tr>
+                        <tr>
+                            <td>Sale Person:</td>
+                            <td class="text-right">{{$lead->saleMan->name}}</td>
+                        </tr>
+                        <tr>
+                            <td>Customer:</td>
+                            <td class="text-right">{{$lead->customer->name}}</td>
+                        </tr>
 
-                            <tr>
-                                <td>Email:</td>
-                                <td class="text-right">{{$lead->customer->email}}</td>
-                            </tr>
-                            <tr>
-                                <td>Contact Phone:</td>
-                                <td class="text-right">{{$lead->customer->phone}}</td>
-                            </tr>
-                            <tr>
-                                <td>Priority:</td>
-                                <td class="text-right">
-                                    {{$lead->priority}}
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>Email:</td>
+                            <td class="text-right">{{$lead->customer->email}}</td>
+                        </tr>
+                        <tr>
+                            <td>Contact Phone:</td>
+                            <td class="text-right">{{$lead->customer->phone}}</td>
+                        </tr>
+                        <tr>
+                            <td>Priority:</td>
+                            <td class="text-right">
+                                {{$lead->priority}}
+                            </td>
+                        </tr>
 
-                            <tr>
-                                <td>Status:</td>
-                                <td class="text-right">
-                                    @if($lead->is_qualified==1)
-                                        Qualified
-                                    @else
-                                        Unqualified
-                                    @endif
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        {{--                            <p class="m-b-5">Progress <span class="text-success float-right">40%</span></p>--}}
-                        {{--                            <div class="progress progress-xs mb-0">--}}
-                        {{--                                <div class="progress-bar bg-success" role="progressbar" data-toggle="tooltip" title="40%" style="width: 40%"></div>--}}
-                        {{--                            </div>--}}
-                    </div>
+                        <tr>
+                            <td>Status:</td>
+                            <td class="text-right">
+                                @if($lead->is_qualified==1)
+                                    Qualified
+                                @else
+                                    Unqualified
+                                @endif
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
                 <div class="project-members task-followers">
                     <span class="followers-title">Followers</span>

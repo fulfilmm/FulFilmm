@@ -67,7 +67,7 @@
                                             </div>
                                             <div class="text-center">
                                                 <button data-dismiss="modal" class="btn btn-outline-primary">No</button>
-                                                <a href="{{url("quotation/delete/$quotation->id")}}" class="btn btn-danger  my-2">Yes</a>
+                                                <a href="{{route("quotations.destroy",$quotation->id)}}" class="btn btn-danger  my-2">Yes</a>
                                             </div>
                                         </div>
                                     </div>

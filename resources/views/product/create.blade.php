@@ -47,7 +47,7 @@
             </div>
         </div>
         <!-- /Page Header -->
-        <form action="{{url("product/create")}}" method="POST" enctype="multipart/form-data" autocomplete="off">
+        <form action="{{route("products.store")}}" method="POST" enctype="multipart/form-data" autocomplete="off">
             {{csrf_field()}}
             <div class="row">
                 <div class="form-group col-md-4 col-12 offset-md-2">

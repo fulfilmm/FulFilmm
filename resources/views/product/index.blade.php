@@ -24,7 +24,7 @@
         <div class="col-md-12">
             <div class="table-responsive">
                 <div class="bg-gradient-blue">
-                    <a href="{{url("/product/create")}}" class="btn btn-white float-right mr-3 mt-3 border-dark" style="box-shadow: white"><i class="fa fa-plus"></i></a>
+                    <a href="{{route("products.create")}}" class="btn btn-white float-right mr-3 mt-3 border-dark" style="box-shadow: white"><i class="fa fa-plus"></i></a>
                     <div class="row">
                         <div class="form-group offset-md-1 my-3 col-md-4">
                             <select class="select" name="action" id="action_type">
@@ -56,7 +56,7 @@
                             <td>
                                 <input type="checkbox" name="product[]" value="{{$product->id}}" class="single">
                             </td>
-                            <td><a href="{{url("product/show/$product->id")}}">
+                            <td><a href="{{route("products.show",$product->id)}}">
                                     <img src="{{url(asset("/product_picture/$product->image"))}}" class="border rounded" alt="product picture" width="40px" height="40px;">
                                     <span class="ml-3">{{$product->name}}</span></a></td>
                             <td>{{$product->category->name}}</td>
@@ -74,7 +74,7 @@
                                 <div class="dropdown dropdown-action">
                                     <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                     <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="{{url("product/edit/$product->id")}}" ><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                        <a class="dropdown-item" href="{{route("products.edit",$product->id)}}" ><i class="fa fa-pencil m-r-5"></i> Edit</a>
                                         <a class="dropdown-item" href="{{url("product/duplicate/$product->id")}}" ><i class="fa fa-copy m-r-5"></i> Duplicate</a>
                                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_product{{$product->id}}"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                                     </div>
@@ -88,6 +88,9 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
+                                            <form action="{{route("products.destroy",$product->id)}}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
                                             <div class="modal-body">
                                                 <div class="text-center">
                                                 <span>
@@ -97,8 +100,9 @@
                                             </div>
                                             <div class="text-center">
                                                 <button class="btn btn-outline-primary">Cancel</button>
-                                                <a href="{{url("product/delete/$product->id")}}" class="btn btn-danger  my-2">Delete</a>
+                                                <button type="submit" class="btn btn-danger  my-2">Delete</button>
                                             </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>

@@ -1,7 +1,6 @@
 @extends('layout.mainlayout')
 @section('content')
     <link rel="stylesheet" href="{{url(asset('css/ticket.css'))}}">
-    <{-- Modals --}}
 
         <!-- Page Content -->
         <div class="content container-fluid">

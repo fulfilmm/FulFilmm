@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\ActivityComment;
+use App\Models\approval_comment;
 use App\Models\AssignmentComment;
 use Illuminate\Http\File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class CommentController extends Controller
@@ -99,5 +101,20 @@ class CommentController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function approval_cmt(Request $request,$id){
+        $approval_cmt=new approval_comment();
+        $approval_cmt->cmt_text=$request->cmt_text;
+        $approval_cmt->approval_id=$id;
+        $approval_cmt->emp_id=Auth::guard('employee')->user()->id;
+        $approval_cmt->save();
+        return response()->json([
+            'post_comment' => "success",
+        ]);
+    }
+    public function delete_approval_cmt($id){
+    $approval_cmt=approval_comment::where('id',$id)->first();
+    $approval_cmt->delete();
+    return redirect()->back();
     }
 }

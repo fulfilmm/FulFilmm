@@ -35,9 +35,6 @@
             </div>
             <div class="col-md-12 col-12" style="overflow-x: auto">
                 <h4>Order Line</h4>
-                @php
-                    $orderline=\App\Models\Orderline::with('product')->where("quotation_id",$id)->get();
-                @endphp
                 <table class="table">
                     <thead>
                     <th scope="col">Product</th>
@@ -48,7 +45,7 @@
                     <th>Total(Include Tax)</th>
                     </thead>
                     <tbody id="tbody">
-                    @foreach($orderline as $order)
+                    @foreach($orders as $order)
                         <tr>
                             <td>
                                 {{$order->product->name}}

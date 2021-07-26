@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\ActivityTaskController;
+use App\Http\Controllers\ApprovalController;
 use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\AssignmentTaskController;
 use App\Http\Controllers\CaseTypeController;
@@ -11,12 +12,18 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\InqueryController;
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\InvoiceItemController;
 use App\Http\Controllers\LeadController;
+use App\Http\Controllers\MeetingController;
+use App\Http\Controllers\MessengerController;
+use App\Http\Controllers\MinutesController;
 use App\Http\Controllers\OrderlineController;
 use App\Http\Controllers\PriorityController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\QuotationController;
+use App\Http\Controllers\SessionController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\TicketPieChartReport;
 use App\Http\Controllers\TicketSender;
@@ -53,13 +60,7 @@ Route::namespace('Auth\Login')->prefix('employees')->as('employees.')->group(fun
 Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function () {
 
     //Product route
-    Route::get("/products",[ProductController::class,'index'])->name('product.index');
-    Route::get("/product/create",[ProductController::class,'create'])->name('product.create');
-    Route::post("/product/create",[ProductController::class,'store'])->name('product.store');
-    Route::get("/product/edit/{id}",[ProductController::class,'edit'])->name('product.edit');
-    Route::post("product/update/{id}",[ProductController::class,'update'])->name('product.update');
-    Route::get("/product/delete/{id}",[ProductController::class,'destroy'])->name('product.delete');
-    Route::get("product/show/{id}",[ProductController::class,'show'])->name('product.show');
+    Route::resource('products',ProductController::class);
     Route::get("/product/duplicate/{id}",[ProductController::class,'duplicate'])->name('duplicate');
     Route::post("/action/confirm",[ProductController::class,'action_confirm'])->name('action_confirm');
     Route::post("/tax/create",[ProductController::class,'tax'])->name('tax.create');
@@ -75,7 +76,7 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::resource('tickets',TicketController::class);
     Route::resource('cases',CaseTypeController::class);
     Route::resource('priorities',PriorityController::class);
-    Route::resource('/inqueries',InqueryController::class);
+    Route::resource('inqueries',InqueryController::class);
     Route::get('convert/lead/{id}',[InqueryController::class,'convert_lead'])->name('convert.lead');
 
     //leads route
@@ -96,12 +97,31 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
    //quotation route
     Route::resource('quotations',QuotationController::class);
     Route::post('discard',[QuotationController::class,'discard'])->name('quotations.discard');
-    Route::post('orders/store',[OrderlineController::class,'store'])->name('orders.store');
-    Route::post('orders/update/{id}',[OrderlineController::class,'update'])->name('orders.update');
-    Route::get('orders/delete/{id}',[OrderlineController::class,'destroy'])->name('orders.destroy');
+    Route::resource('orders',OrderlineController::class)->only('store','update','destroy');
     Route::post("add/new/customer",[DealController::class,'add_newcustomer'])->name('add_new_customer');
     Route::get('/quotations/sendemail/{id}',[QuotationController::class,'sendEmail'])->name('quotation.sendemail');
     Route::post('/quotations/sendmail',[QuotationController::class,'email'])->name('quotations.mail');
+  //invoice
+    Route::resource("invoices",InvoiceController::class);
+    Route::post("/invoices/search",[InvoiceController::class,'search'])->name('invoices.search');
+    Route::resource("invoice_items",InvoiceItemController::class);
+    Route::get("invoice/sendmail/{id}",[InvoiceController::class,'sending_form'])->name('invoice.sendmail');
+    Route::post("invoice/mail/send",[InvoiceController::class,'email'])->name('send');
+    Route::post('invoice/status/{id}',[InvoiceController::class,'status_change'])->name('invoice.statuschange');
+
+    //Approval
+    Route::resource('approvals', ApprovalController::class);
+    Route::get("approvals/request/me",[ApprovalController::class,'request_to_me'])->name('request.me');
+    Route::post('approval/post/comment/{id}',[CommentController::class,'approval_cmt'])->name('approval_cmt');
+    Route::get('approval/cmt/delete/{id}',[CommentController::class,'delete_approval_cmt'])->name('approval_cmt.delete');
+
+    //Meeting
+    Route::resource('meetings',MeetingController::class)->only('index','create','store','destroy');
+    Route::resource('minutes',MinutesController::class);
+    Route::post('minutes/assign',[MinutesController::class,'assign_minutes'])->name('assign.minutes');
+
+
+
 
     //resource routes
     Route::resource('roles', RoleController::class);
@@ -143,5 +163,10 @@ Route::put('roles/assign-permission/{id}', [RoleController::class, 'assignPermis
 Route::get('companies-card', [CompanyController::class, 'card'])->name('companies.cards');
 Route::get('ticket/create/guest',[TicketController::class,'create']);
 Route::post('ticket/create/guest',[TicketController::class,'store']);
-Route::resource('/inqueries',InqueryController::class)->only('create','store');
+Route::resource('inqueries',InqueryController::class)->only('create','store');
 
+
+Route::middleware(['meeting_view_relative_emp','auth:employee', 'authorize', 'ownership'])->group(function () {
+    Route::resource('meetings',MeetingController::class)->only('show');
+});
+Route::resource('chats',MessengerController::class);

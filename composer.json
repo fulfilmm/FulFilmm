@@ -17,7 +17,9 @@
         "laravel/ui": "^3.1",
         "livewire/livewire": "^2.3",
         "maatwebsite/excel": "^3.1",
-        "spatie/laravel-permission": "^4.0"
+        "spatie/laravel-permission": "^4.0",
+      "ext-json": "*",
+      "ext-mysql_xdevapi": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
