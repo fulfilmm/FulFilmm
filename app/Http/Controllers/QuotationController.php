@@ -72,7 +72,7 @@ class QuotationController extends Controller
     public function store(Request $request)
     {
 
-        $validated = $request->validate([
+        $this->validate($request,[
             'customer' => 'required',
             'expiration' => 'required',
             'term_and_condition' => 'required',
@@ -157,7 +157,7 @@ class QuotationController extends Controller
             'orders'=>$orderline,
             'attach'=>public_path().'/attach_file/'.$file_name,
         ];
-        Mail::send('quotation.testmail', $details, function ($message) use ($details) {
+        Mail::send('quotation.mail', $details, function ($message) use ($details) {
             $message->from('cincin.com@gmail.com', 'Cloudark');
             $message->to($details['email']);
             $message->subject($details['subject']);

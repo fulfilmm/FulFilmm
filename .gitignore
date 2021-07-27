@@ -12,7 +12,3 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 /.idea
-/resources/views/chat
-/app/Http/Controllers/MessengerController.php
-/app/Models/Messanger.php
-/database/migrations/2021_07_25_102316_create_messangers_table.php
