@@ -20,7 +20,7 @@ class CreateActivitiesTable extends Migration
             $table->foreignId('employee_id')->constrained('employees');
             $table->foreignId('report_to_employee_id')->constrained('employees');
             $table->foreignId('department_id')->constrained('departments'); // for only querying
-            $table->string('date');
+            $table->date('date');
             $table->softDeletes();
             $table->timestamps();
         });

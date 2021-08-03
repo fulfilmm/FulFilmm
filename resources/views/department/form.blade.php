@@ -1,5 +1,5 @@
 <x-forms.basic.input name="name" title="Name" value="{{$record->name ?? old('name')}}" required></x-forms.basic.input>
-<x-forms.basic.select name="parent_department" title="Parent Department" placeHolder="Choose Parent Department" :options="$parent_departments" value="{{$record->parent_department ?? old('parent_department')}}"></x-forms.basic.select>
+<x-forms.basic.select name="parent_department" title="Parent Department" placeHolder="Choose Parent Department" :required="false" :options="$parent_departments" value="{{$record->parent_department ?? old('parent_department')}}"></x-forms.basic.select>
 <div class="form-group row">
     <label class="col-form-label col-md-2">Department's Head</label>
     <div class="col-md-8">

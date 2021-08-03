@@ -1,4 +1,5 @@
 @extends('layout.mainlayout')
+@section('title', $record->name)
 @section('content')
 	<!-- Page Wrapper -->
     <div class="page-wrapper">

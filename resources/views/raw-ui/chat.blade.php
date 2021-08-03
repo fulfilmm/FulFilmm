@@ -8,22 +8,22 @@
         <meta name="author" content="Dreamguys - Bootstrap Admin Template">
         <meta name="robots" content="noindex, nofollow">
         <title>Chat - HRMS admin template</title>
-		
+
 		<!-- Favicon -->
         <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png">
-		
+
 		<!-- Bootstrap CSS -->
         <link rel="stylesheet" href="css/bootstrap.min.css">
-		
+
 		<!-- Fontawesome CSS -->
         <link rel="stylesheet" href="css/font-awesome.min.css">
-		
+
 		<!-- Lineawesome CSS -->
 		<link rel="stylesheet" href="css/line-awesome.min.css">
-		
+
 		<!-- Main CSS -->
         <link rel="stylesheet" href="css/style.css">
-		
+
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		<!--[if lt IE 9]>
 			<script src="assets/js/html5shiv.min.js"></script>
@@ -33,10 +33,10 @@
     <body>
 		<!-- Main Wrapper -->
         <div class="main-wrapper">
-		
+
 			<!-- Header -->
 			<div class="header">
-			
+
 			<!-- Logo -->
 			<div class="header-left">
 				<a href="index" class="logo">
@@ -44,7 +44,7 @@
 				</a>
 			</div>
 			<!-- /Logo -->
-			
+
 			<a id="toggle_btn" href="javascript:void(0);">
 				<span class="bar-icon">
 					<span></span>
@@ -52,18 +52,18 @@
 					<span></span>
 				</span>
 			</a>
-			
+
 			<!-- Header Title -->
 			<div class="page-title-box">
 				<h3>Dreamguy's Technologies</h3>
 			</div>
 			<!-- /Header Title -->
-			
+
 			<a id="mobile_btn" class="mobile_btn" href="#sidebar"><i class="fa fa-bars"></i></a>
-			
+
 			<!-- Header Menu -->
 			<ul class="nav user-menu">
-			
+
 				<!-- Search -->
 				<li class="nav-item">
 					<div class="top-nav-search">
@@ -77,7 +77,7 @@
 					</div>
 				</li>
 				<!-- /Search -->
-			
+
 				<!-- Flag -->
 				<li class="nav-item dropdown has-arrow flag-nav">
 					<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button">
@@ -99,7 +99,7 @@
 					</div>
 				</li>
 				<!-- /Flag -->
-			
+
 				<!-- Notifications -->
 				<li class="nav-item dropdown">
 					<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
@@ -185,7 +185,7 @@
 					</div>
 				</li>
 				<!-- /Notifications -->
-				
+
 				<!-- Message Notifications -->
 				<li class="nav-item dropdown">
 					<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
@@ -306,7 +306,7 @@
 				</li>
 			</ul>
 			<!-- /Header Menu -->
-			
+
 			<!-- Mobile Menu -->
 			<div class="dropdown mobile-user-menu">
 				<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
@@ -317,46 +317,46 @@
 				</div>
 			</div>
 			<!-- /Mobile Menu -->
-			
+
 		</div>
 			<!-- /Header -->
 <div class="sidebar" id="sidebar">
                 <div class="sidebar-inner slimscroll">
 					<div class="sidebar-menu">
 						<ul>
-							<li> 
+							<li>
 								<a href="index"><i class="la la-home"></i> <span>Back to Home</span></a>
 							</li>
 							<li class="menu-title"><span>Chat Groups</span> <a href="#" data-toggle="modal" data-target="#add_group"><i class="fa fa-plus"></i></a></li>
-							<li> 
+							<li>
 								<a href="chat">
 									<span class="chat-avatar-sm user-img">
 										<img class="rounded-circle" alt="" src="img/user.jpg">
-									</span> 
+									</span>
 									<span class="chat-user">#General</span>
 								</a>
 							</li>
-							<li> 
+							<li>
 								<a href="chat">
 									<span class="chat-avatar-sm user-img">
 										<img class="rounded-circle" alt="" src="img/user.jpg">
-									</span> 
+									</span>
 									<span class="chat-user">#Video Responsive Survey</span>
 								</a>
 							</li>
-							<li> 
+							<li>
 								<a href="chat">
 									<span class="chat-avatar-sm user-img">
 										<img class="rounded-circle" alt="" src="img/user.jpg">
-									</span> 
+									</span>
 									<span class="chat-user">#500rs</span>
 								</a>
 							</li>
-							<li> 
+							<li>
 								<a href="chat">
 									<span class="chat-avatar-sm user-img">
 										<img class="rounded-circle" alt="" src="img/user.jpg">
-									</span> 
+									</span>
 									<span class="chat-user">#warehouse</span>
 								</a>
 							</li>
@@ -365,7 +365,7 @@
 								<a href="chat">
 									<span class="chat-avatar-sm user-img">
 										<img class="rounded-circle" alt="" src="img/profiles/avatar-02.jpg"><span class="status online"></span>
-									</span> 
+									</span>
 									<span class="chat-user">John Doe</span> <span class="badge badge-pill bg-danger">1</span>
 								</a>
 							</li>
@@ -373,7 +373,7 @@
 								<a href="chat">
 									<span class="chat-avatar-sm user-img">
 										<img class="rounded-circle" alt="" src="img/profiles/avatar-09.jpg"><span class="status offline"></span>
-									</span> 
+									</span>
 									<span class="chat-user">Richard Miles</span> <span class="badge badge-pill bg-danger">7</span>
 								</a>
 							</li>
@@ -381,7 +381,7 @@
 								<a href="chat">
 									<span class="chat-avatar-sm user-img">
 										<img class="rounded-circle" alt="" src="img/profiles/avatar-10.jpg"><span class="status away"></span>
-									</span> 
+									</span>
 									<span class="chat-user">John Smith</span>
 								</a>
 							</li>
@@ -389,7 +389,7 @@
 								<a href="chat">
 									<span class="chat-avatar-sm user-img">
 										<img class="rounded-circle" alt="" src="img/profiles/avatar-05.jpg"><span class="status online"></span>
-									</span> 
+									</span>
 									<span class="chat-user">Mike Litorus</span> <span class="badge badge-pill bg-danger">2</span>
 								</a>
 							</li>
@@ -398,16 +398,16 @@
                 </div>
             </div>
 			<!-- /Sidebar -->
-			
+
 			<!-- Page Wrapper -->
             <div class="page-wrapper">
-			
+
 				<!-- Chat Main Row -->
 				<div class="chat-main-row">
-				
+
 					<!-- Chat Main Wrapper -->
 					<div class="chat-main-wrapper">
-					
+
 						<!-- Chats View -->
 						<div class="col-lg-9 message-view task-view">
 							<div class="chat-window">
@@ -779,7 +779,7 @@
 																</div>
 															</div>
 														</div>
-													</div>	
+													</div>
 													<div class="chat chat-right">
 														<div class="chat-body">
 															<div class="chat-bubble">
@@ -836,7 +836,7 @@
 							</div>
 						</div>
 						<!-- /Chats View -->
-						
+
 						<!-- Chat Right Sidebar -->
 						<div class="col-lg-3 message-view chat-profile-view chat-sidebar" id="task_window">
 							<div class="chat-window video-window">
@@ -1044,13 +1044,13 @@
 							</div>
 						</div>
 						<!-- /Chat Right Sidebar -->
-						
+
 					</div>
 					<!-- /Chat Main Wrapper -->
-					
+
 				</div>
 				<!-- /Chat Main Row -->
-				
+
 				<!-- Drogfiles Modal -->
 				<div id="drag_files" class="modal custom-modal fade" role="dialog">
 					<div class="modal-dialog modal-dialog-centered modal-md" role="document">
@@ -1126,7 +1126,7 @@
 					</div>
 				</div>
 				<!-- /Drogfiles Modal -->
-				
+
 				<!-- Add Group Modal -->
 				<div id="add_group" class="modal custom-modal fade" role="dialog">
 					<div class="modal-dialog modal-dialog-centered modal-md" role="document">
@@ -1157,7 +1157,7 @@
 					</div>
 				</div>
 				<!-- /Add Group Modal -->
-				
+
 				<!-- Add Chat User Modal -->
 				<div id="add_chat_user" class="modal custom-modal fade" role="dialog">
 					<div class="modal-dialog modal-dialog-centered modal-md" role="document">
@@ -1236,7 +1236,7 @@
 					</div>
 				</div>
 				<!-- /Add Chat User Modal -->
-				
+
 				<!-- Share Files Modal -->
 				<div id="share_files" class="modal custom-modal fade" role="dialog">
 					<div class="modal-dialog modal-dialog-centered modal-md" role="document">
@@ -1271,27 +1271,27 @@
 					</div>
 				</div>
 				<!-- /Share Files Modal -->
-				
+
             </div>
 			<!-- /Page Wrapper -->
 			</div>
 		<!-- /Main Wrapper -->
-		
+
 		<!-- jQuery -->
         <script src="js/jquery-3.2.1.min.js"></script>
-		
+
 		<!-- Bootstrap Core JS -->
         <script src="js/popper.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
-		
+
 		<!-- Slimscroll JS -->
 		<script src="js/jquery.slimscroll.min.js"></script>
-		
+
 		<!-- Dropfiles JS -->
 		<script src="js/dropfiles.js"></script>
-		
+
 		<!-- Custom JS -->
 		<script src="js/app.js"></script>
-		
+
     </body>
 </html>

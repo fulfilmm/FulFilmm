@@ -11,6 +11,9 @@ class AssignmentComment extends Model
 
     protected $guarded = [];
 
+    protected $fillable = [
+        'commenter_id', 'assignment_id', 'is_read', 'file', 'file_name', 'message'
+    ];
 
     public function assignment()
     {

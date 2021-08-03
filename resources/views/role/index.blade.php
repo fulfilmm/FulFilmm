@@ -8,23 +8,7 @@
 <div class="content container-fluid">
 
     <!-- Page Header -->
-    <div class="page-header">
-        <div class="row align-items-center mb-3">
-            <div class="col">
-                @include('layout.partials.breadcrumb',['header'=>'Roles Table'])
-            </div>
-            <div class="col-auto float-right ml-auto">
-                <a href="{{route('roles.create')}}" class="btn add-btn"><i class="fa fa-plus"></i> Add Role</a>
-
-
-                <div class="view-icons">
-                    <a href="employees" class="grid-view btn btn-link"><i class="fa fa-th"></i></a>
-                    <a href="employees-list" class="list-view btn btn-link active"><i class="fa fa-bars"></i></a>
-                </div>
-            </div>
-        </div>
-       
-    </div>
+    @include('layout.partials.page-header', ['route' => 'roles', 'import' => false, 'export' => false, 'card' => false, 'list' => true])
     <div class="row">
         <div class="col-12">
             <head>

@@ -27,7 +27,7 @@ class OwnershipMiddleware
         {
             //check it is activity
             if (!is_null($request->route('activity'))) {
-                $record = Activity::find($request->route()->activity);
+                $record = Activity::findOrFail($request->route()->activity);
             }
 
             $logged_in_user = Auth::guard('employee')->user();

@@ -23,6 +23,7 @@ class CreateEmployeesTable extends Migration
             $table->boolean('can_login')->default(false);
             $table->boolean('can_post_assignments')->default(false);
             $table->string('password', 128)->nullable();
+            $table->string('profile_img')->nullable();
             $table->rememberToken();
             $table->date('join_date');
             $table->softDeletes();

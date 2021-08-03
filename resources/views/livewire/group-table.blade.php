@@ -9,7 +9,7 @@
     {{-- <a href={{url('/employees/export')}}><button  class="btn btn-primary ml-2">Export</button></a> --}}
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-nowrap mb-0 ">
+            <table class="table table-nowrap datatable mb-0 ">
                 <thead>
                 <tr>
                     <th>Name</th>
@@ -22,9 +22,9 @@
                         <td>{{$group->name}}</td>
                         <td>{{$group->created_employee->name }}</td>
                         <td style="display: flex">
-                            <a class="pr-2 my-auto btn btn-success" href="{{route('groups.edit',$group->id)}}">
-                                <span class='fa fa-edit'></span>
-                            </a>&nbsp;
+{{--                            <a class="pr-2 my-auto btn btn-success" href="{{route('groups.edit',$group->id)}}">--}}
+{{--                                <span class='fa fa-edit'></span>--}}
+{{--                            </a>&nbsp;--}}
 
                             <form id="group-del-{{$group->id}}" action="{{route('groups.destroy',$group->id)}}"
                                   method="POST">

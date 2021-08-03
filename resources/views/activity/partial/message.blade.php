@@ -14,7 +14,7 @@
                 <ul class="attach-list">
                     @if ($file)
                         <li><i class="fa fa-file"></i> <a
-                                href="{{$file}}">attachment</a></li>
+                                href="{{$file}}">{{$file_name}}</a></li>
                         <img src="{{$file}}" class="img-fluid w-25" alt="">
                     @endif
                     <p>{{$msg}}</p>

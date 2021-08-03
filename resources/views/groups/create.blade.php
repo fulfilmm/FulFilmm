@@ -1,4 +1,5 @@
 @extends('layout.mainlayout')
+@section('name', 'Group Create')
 @section('content')
 <!-- Page Header -->
 {{-- ဒီ breadcrumb နဲ့ header ကထည့်လည်းရတယ်မထည့်လည်းရတယ်။ --}}

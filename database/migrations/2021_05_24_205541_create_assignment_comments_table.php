@@ -19,6 +19,7 @@ class CreateAssignmentCommentsTable extends Migration
             $table->foreignId('assignment_id')->constrained('assignments');
             $table->boolean('is_read')->default(false);
             $table->string('file')->nullable();
+            $table->string('file_name')->nullable();
             $table->text('message')->nullable();
             $table->timestamps();
         });

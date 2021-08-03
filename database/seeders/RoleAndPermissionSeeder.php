@@ -10,20 +10,26 @@ class RoleAndPermissionSeeder extends Seeder
     private $roles_and_permission = [
         'Employee' => [
             'resources' => [
-                'employees', 'activities', 'assignments', 'assignment_tasks', 'activity_tasks', 'comments', 'customers', 'companies', 'projects'
+                'employees', 'activities', 'assignments', 'assignment_tasks', 'activity_tasks', 'comments', 'customers', 'companies', 'projects', 'project_tasks'
             ],
             'others' => [
-                'assignment_tasks.toggle'
+                'assignment_tasks.toggle',
+                'activity_tasks.toggle',
+                'project_tasks.toggle',
             ]
         ],
         'Manager' => [
             'resources' => [
-                'employees', 'activities', 'assignments', 'assignment_tasks', 'activity_tasks', 'comments', 'customers', 'companies', 'departments', 'groups', 'roles', 'permissions', 'projects'
+                'employees', 'activities', 'assignments', 'assignment_tasks', 'activity_tasks', 'comments', 'customers', 'companies', 'departments', 'groups', 'roles', 'permissions', 'projects', 'project_tasks'
             ],
             'others' => [
                 'activities.acknowledge',
                 'assignment_tasks.toggle',
-                'assignments.changeStatus'
+                'activity_tasks.toggle',
+                'project_tasks.toggle',
+                'assignments.changeStatus',
+                'projects.accept_proposal',
+                'projects.status_update'
             ]
         ]
     ];
@@ -63,7 +69,8 @@ class RoleAndPermissionSeeder extends Seeder
             $resource . '.update',
             $resource . '.destroy',
             $resource . '.import',
-            $resource . '.export'
+            $resource . '.export',
+            $resource . '.cards'
         ]);
     }
 }

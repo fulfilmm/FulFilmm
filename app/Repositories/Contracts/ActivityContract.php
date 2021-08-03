@@ -8,4 +8,6 @@ interface ActivityContract
     public function acknowledgeActivity($activity_id);
 
     public function addCoOwners($activity, $employee_ids);
+
+    public function syncCoOwners($activity, $employee_ids);
 }

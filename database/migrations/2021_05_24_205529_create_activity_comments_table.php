@@ -17,6 +17,7 @@ class CreateActivityCommentsTable extends Migration
             $table->id();
             $table->foreignId('commenter_id')->constrained('employees');
             $table->foreignId('activity_id')->constrained('activities');
+            $table->string('file_name')->nullable();
             $table->boolean('is_read')->default(false);
             $table->string('file')->nullable();
             $table->text('message')->nullable();

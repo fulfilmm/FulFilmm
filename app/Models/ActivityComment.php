@@ -10,6 +10,9 @@ class ActivityComment extends Model
     use HasFactory;
 
     protected $guarded = [];
+    protected $fillable = [
+        'commenter_id', 'activity_id', 'is_read', 'file', 'file_name', 'message'
+    ];
 
     public function activity()
     {

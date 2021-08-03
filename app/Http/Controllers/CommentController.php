@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ActivityComment;
 use App\Models\approval_comment;
 use App\Models\AssignmentComment;
+use App\Models\ProjectTaskComment;
 use Illuminate\Http\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -53,11 +54,13 @@ class CommentController extends Controller
         }
 
         $data['commenter_id'] = auth('employee')->id();
+        $data['file_name'] = $request->file->getClientOriginalName();
         $data['file'] = $path;
         // dd($data);
 
         if (isset($request->activity_id)) ActivityComment::create($data);
         if (isset($request->assignment_id)) AssignmentComment::create($data);
+        if (isset($request->project_task_id)) ProjectTaskComment::create($data);
 
         return redirect()->back()->with('success', __('alert.create_success'));
     }
