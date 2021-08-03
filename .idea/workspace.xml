@@ -5,52 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4d8aa19e-eab1-4b9d-925d-36c0a35fff96" name="Default Changelist" comment="Fixed id and title in role data table">
-      <change afterPath="$PROJECT_DIR$/public/minutes_attach/invoice2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/minutes_attach/invoice3.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/ticket_attach/invoice item add.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/ticket_attach/invoice.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/ticket_picture/New Project.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/ticket_picture/lesson.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/Deal/delete.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/ticket/followed_ticket.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/ticket/sender.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/ticket/senderdetail.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/CaseTypeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/CaseTypeController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DealController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DealController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/MeetingController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/MeetingController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/MinutesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/MinutesController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/TicketController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/TicketController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/TicketSender.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/TicketSender.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/meetingshowcontrol.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Middleware/meetingshowcontrol.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/ticket_follower.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/ticket_follower.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_07_16_140227_create_meetingminutes_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_07_16_140227_create_meetingminutes_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/task.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/task.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/ticket_attach/512x512bb.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/public/ticket_attach/512x512bb.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/Deal/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/Deal/create.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/Deal/fullform.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/Deal/fullform.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/Deal/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/Deal/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/Deal/quickform.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/Deal/quickform.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/Deal/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/Deal/show.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/cases/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/cases/create.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/event.blade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/inquery/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/inquery/create.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layout/partials/head.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layout/partials/head.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layout/partials/nav.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layout/partials/nav.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/lead/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/lead/edit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/lead/lead_create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/lead/lead_create.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/lead/lead_view.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/lead/lead_view.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/meeting/assign_jquerycode.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/meeting/assign_jquerycode.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/meeting/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/meeting/show.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/product/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/product/create.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/product/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/product/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/ticket/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/ticket/create.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/ticket/delete.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/ticket/delete.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/ticket/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/ticket/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/ticket/status_change.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/ticket/status_change.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/ticket/ticket-view.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/ticket/ticket-view.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/ticket/ticket_for_guest.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/ticket/ticket_for_guest.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -79,33 +34,19 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/resources/views/layout/partials/header.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/resources/views/invoice/create.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/resources/views/meeting/create.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/resources/views/invoice/itemsedit.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/resources/views/Deal/fullform.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/resources/views/Deal/index.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/resources/views/Deal/quickform.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/resources/views/layout/partials/nav.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/app/Http/Controllers/CaseTypeController.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/app/Http/Controllers/CommentController.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/config/session.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/.gitignore" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/resources/views/meeting/show.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/app/Http/Controllers/RoleController.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/database/migrations/2020_10_31_105726_create_companies_table.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/resources/views/product/create.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/resources/views/Deal/create.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/app/Http/Controllers/CustomerController.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/.env.example" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/resources/views/meeting/assign_jquerycode.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/app/Http/Controllers/QuotationController.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/database/migrations/2021_06_08_164926_create_inqueries_table.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/app/Http/Controllers/CompanyController.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/app/Http/Controllers/OrderlineController.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/resources/views/Deal/edit.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/app/Http/Controllers/MinutesController.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/app/Http/Controllers/MeetingController.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/database/migrations/2020_10_31_105314_create_employees_table.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/app/Http/Controllers/InvoiceController.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/app/Http/Controllers/DealController.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/app/Http/Controllers/ApprovalController.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/database/migrations/2021_06_08_164648_create_products_table.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/app/Models/lead_comment.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/app/Models/leadModel.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/database/migrations/2020_10_31_112741_create_department_heads_table.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
@@ -114,7 +55,30 @@
     <setting file="file://$PROJECT_DIR$/resources/views/quotation/index.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/app/Models/ActivityTask.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/resources/views/quotation/edit.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/resources/views/ticket/senderdetail.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/app/Http/Middleware/meetingshowcontrol.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/composer.lock" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/resources/views/inquery/create.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/resources/views/meeting/create.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/resources/views/Deal/fullform.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/resources/views/Deal/index.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/resources/views/Deal/quickform.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/resources/views/layout/partials/nav.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/.gitignore" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/resources/views/meeting/show.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/resources/views/product/create.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/resources/views/Deal/create.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/.env.example" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/resources/views/meeting/assign_jquerycode.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/.env" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/resources/views/Deal/edit.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/app/Http/Controllers/MinutesController.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/app/Http/Controllers/MeetingController.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/app/Http/Controllers/InvoiceController.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/app/Http/Controllers/DealController.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/app/Http/Controllers/ApprovalController.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/resources/views/cases/create.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/resources/views/cases/edit.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/database/seeders/PermissionSeeder.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/resources/views/company/form.blade.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/routes/web.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
@@ -344,6 +308,7 @@
       <workItem from="1627703464279" duration="14712000" />
       <workItem from="1627881981695" duration="2302000" />
       <workItem from="1627884609465" duration="20025000" />
+      <workItem from="1627968837648" duration="825000" />
     </task>
     <task id="LOCAL-00001" summary="minor cosmetic changes">
       <created>1621392837445</created>

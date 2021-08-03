@@ -48,7 +48,7 @@ class InqueryController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -64,7 +64,7 @@ class InqueryController extends Controller
         $inquery->age=$request->age;
         $inquery->convert_lead=$request->convert;
         $inquery->save();
-        return redirect(route('inqueries'))->back();
+        return redirect()->route('inqueries.index')->with('success', __('alerts.update_success'));
     }
 
     /**
