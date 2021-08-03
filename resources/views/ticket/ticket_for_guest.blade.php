@@ -28,9 +28,6 @@
             background: white;
             color: black;
         }
-        #cke_11,#cke_19,#cke_21,#cke_26,#cke_27,#cke_28,#cke_29,#cke_30,#cke_32,#cke_47{
-            visibility: hidden;
-        }
     </style>
     {{-- Modals --}}
     <!-- Page Content -->
@@ -42,40 +39,47 @@
         <div class="row">
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label>Ticket Subject</label>
-                    <input class="form-control" type="text" name="subject">
+                    <label for="subject">Subject <span class="text-danger">*</span></label>
+                    <input class="form-control" value="{{old('subject')}}" id="subject" type="text" name="subject">
+                    @error('subject')
+                    <span class="text-danger">{{$message}}</span>
+                    @enderror
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label>Ticket Id</label>
-                    <input class="form-control" type="text"  value="{{$ticket_id}}">
-                    <input type="hidden" name="ticket_id" value="{{$ticket_id}}">
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="form-group">
-                    <label>Client Name</label>
-                    <input type="text" name="client_name" class="form-control">
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="form-group">
-                    <label>Client Phone</label>
-                    <input type="number" name="client_phone" class="form-control"  min="0" required  oninput="validity.valid||(value='');">
+                    <label for="ticketId">Ticket Id <span class="text-danger">*</span></label>
+                    <input class="form-control" id="ticketId" type="text" name="ticket_id"  value="{{$ticket_id}}" readonly>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label>Case Type</label>
+                    <label>Client Name <span class="text-danger">*</span></label>
+                    <input type="text" value="{{old('client_name')}}" name="client_name" class="form-control" >
+                    @error('client_name')
+                    <span class="text-danger">{{$message}}</span>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label>Client Phone <span class="text-danger">*</span></label>
+                    <input type="number" value="{{old('client_phone')}}" name="client_phone" class="form-control"  min="0" oninput="validity.valid||(value='');">
+                @error('client_phone')
+                    <span class="text-danger">{{$message}}</span>
+                    @enderror
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label>Case Type <span class="text-danger">*</span></label>
                     <select class="select" name="case">
-                        <option>-</option>
-                        @foreach($cases as $case)
-                            <option value="{{$case->id}}">{{$case->name}}</option>
+                        @foreach($data['case'] as $case)
+                            <option value="{{$case->id}}"{{old('case')==$case->id?'selected':''}}>{{$case->name}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -83,10 +87,10 @@
 
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label>Priority</label>
+                    <label>Priority <span class="text-danger">*</span></label>
                     <select class="select" name="priority">
-                        @foreach($priorities as $priority)
-                            <option value="{{$priority->id}}">{{$priority->priority}}</option>
+                        @foreach($data['priority'] as $priority)
+                            <option value="{{$priority->id}}" {{old('priority')==$priority->id?'selected':''}}>{{$priority->priority}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -95,52 +99,71 @@
         <div class="row">
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label>Assign</label>
+                    <label>Assign <span class="text-danger">*</span></label>
                     <select class="select" id="type" name="assignType">
                         <option value="item0">Choose Assign Type</option>
-                        <option value="dept">Assign To Department</option>
-                        <option value="agent">Assign To Agent</option>
+                        <option value="dept">Department</option>
+                        <option value="agent">Agent</option>
+                        <option value="group">Group</option>
                     </select>
-
+                    @error('assignType')
+                    <span class="text-danger">{{$message}}Select Department or Agent.</span>
+                    @enderror
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label>Product</label>
+                    <label>Product <span class="text-danger">*</span></label>
                     <select name="product_id" id="" class="select">
-                        @foreach($products as $product)
-                            <option value="{{$product->id}}">{{$product->name}}</option>
+                        @foreach($data['product'] as $product)
+                            <option value="{{$product->id}}" {{old('product_id')==$product->id?'selected':''}}>{{$product->name}}</option>
                         @endforeach
                     </select>
+                    @error('product_id')
+                    <span class="text-danger">{{$message}}</span>
+                    @enderror
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="">Assign To</label>
+                    <label for="">Assign To <span class="text-danger">*</span></label>
                     <select name="assign_id" id="assign_to" class="select">
                         <option></option>
                     </select>
+                    @error('assign_id')
+                    <span class="text-danger">Assign To is required.You must to select assign type first.</span>
+                    @enderror
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
                     <label>Add Followers</label>
                     <select name="follower[]" id="follower" class="select" multiple>
-                        @foreach($all_emp as $agent)
+                        @foreach($data['all_emp'] as $agent)
                             <option value="{{$agent->id}}">{{$agent->name}}</option>
                         @endforeach
                     </select>
                 </div>
             </div>
         </div>
-
         <div class="row">
             <div class="col-sm-12">
                 <div class="form-group">
-                    <label>Description</label>
-                    <textarea class="form-control" name="description"></textarea>
+                    <label for="source">Source</label>
+                    <input type="text" class="form-control" id="source" name="source">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label>Description <span class="text-danger">*</span></label>
+                    <textarea class="form-control" id="guest_description" name="description">{{old('description')}}</textarea>
+                    @error('description')
+                    <span class="text-danger">{{$message}}</span>
+                    @enderror
                 </div>
                 <div class="form-group">
                     <label>Upload Files</label>
@@ -152,7 +175,7 @@
             <div class="col-12">
                 <div class=" form-group ">
                     <label align="center">Upload your images</label>
-                    <input type="file" class="form-control"  id="files" name="files[]" multiple  required/>
+                    <input type="file" class="form-control"  id="files" name="files[]" multiple  />
                 </div>
             </div>
         </div>
@@ -194,11 +217,16 @@
             $("#type").change(function () {
                 var val = $(this).val();
                 if (val == "dept") {
-                    $("#assign_to").html("@foreach($depts as $dept)<option value='{{$dept->id}}'>{{$dept->name}}</option> @endforeach");
+                    $("#assign_to").html("@foreach($data['depts'] as $dept)<option value='{{$dept->id}}'>{{$dept->name}}</option> @endforeach");
                 } else if (val == "agent") {
-                    $("#assign_to").html(" @foreach($all_emp as $agent)@if($agent->role->name=='Agent')<option value='{{$agent->id}}'>{{$agent->name}}</option> @endif @endforeach");
+                    $("#assign_to").html(" @foreach($data['all_emp'] as $agent)@if($agent->role->name=='Agent')<option value='{{$agent->id}}'>{{$agent->name}}</option> @endif @endforeach");
                 }
             });
         });
+        ClassicEditor
+            .create( document.querySelector( '#guest_description' ) )
+            .catch( error => {
+                console.error( error );
+            } );
     </script>
 @endsection

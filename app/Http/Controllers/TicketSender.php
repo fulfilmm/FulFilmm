@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ticket;
 use App\Models\ticket_sender;
 use Illuminate\Http\Request;
 
@@ -10,12 +11,13 @@ class TicketSender extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function index()
     {
         $sender_info=ticket_sender::all();
-        dd($sender_info);
+        $ticket=ticket::all();
+       return  view('ticket.sender',compact('sender_info','ticket'));
     }
 
     /**
@@ -47,7 +49,10 @@ class TicketSender extends Controller
      */
     public function show($id)
     {
-        //
+        $status_color=['New'=>'#49d1b6','Open'=>'#e84351','Close'=>'#4e5450','Pending'=>'#f0ed4f','Progress'=>'#2333e8','Complete'=>'#18b820'];
+        $sender_info=ticket_sender::where('id',$id);
+        $ticket=ticket::with("ticket_status",'ticket_priority','sender_info','created_by')->where('customer_id',$id)->get();
+        return view('ticket.senderdetail',compact('status_color','sender_info','ticket'));
     }
 
     /**

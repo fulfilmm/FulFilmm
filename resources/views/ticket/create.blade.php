@@ -1,72 +1,85 @@
-<!-- Add Ticket Modal -->
-<div id="add_ticket" class="modal custom-modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Add Ticket</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+@extends('layout.mainlayout')
+@section('content')
+    <link rel="stylesheet" href="{{url(asset('css/ticket.css'))}}">
+    <!-- Page Content -->
+    <div class="content container-fluid">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">Tickets Create</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Tickets</li>
+                    </ul>
+                </div>
             </div>
-            <div class="modal-body">
-                <form action="{{route('tickets.store')}}" method="POST" enctype="multipart/form-data">
+        </div>
+        <!-- /Page Header -->
+        <div class="col-md-12 col-sm-12 col-12">
+            <form action="{{route('tickets.store')}}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method("POST")
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Ticket Subject</label>
-                                <input class="form-control" type="text" name="subject">
+                                <label>Subject <span class='text-danger'>*</span></label>
+                                <input class="form-control @error('subject')is-invalid @enderror" type="text" name="subject" value="{{old('subject')}}">
+                                @error('subject')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Ticket Id</label>
-                                <input class="form-control" type="text" name="ticket_id" value="{{$ticket_id}}">
+                                <input class="form-control" type="text" name="ticket_id" value="{{$ticket_id}}" readonly>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Case Type</label>
+                                <label>Case Type <span class="text-danger">*</span></label>
                                 <select class="select" name="case">
-                                    <option>-</option>
-                                    @foreach($cases as $case)
-                                        <option value="{{$case->id}}">{{$case->name}}</option>
+                                    @foreach($data['case'] as $case)
+                                        <option value="{{$case->id}}" {{old('case')==$case->id?'selected':''}}>{{$case->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-9 col-sm-5 col-md-5" id="client">
                             <div class="form-group">
-                                <label>Client</label>
-                                <select class="select" name="client">
-                                    <option>-</option>
-                                    @foreach($clients as $client)
-                                        <option value="{{$client->id}}">{{$client->name}}</option>
+                                <label>Client <span class="text-danger">*</span></label>
+                                <select class="form-control" name="client">
+                                    @foreach($data['client'] as $client)
+                                        <option value="{{$client->id}}" {{old('client')==$client->id?'selected':''}}>{{$client->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
+                        </div>
+                        <div class="form-group col-md-1 col-1 col-sm-1">
+                            <label for="">Add</label>
+                            <button class="btn btn-white" type="button" data-toggle="modal" href="#add_user" ><i class="la la-plus"></i></button>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Priority</label>
+                                <label>Priority <span class="text-danger">*</span></label>
                                 <select class="select" name="priority">
-                                    @foreach($priorities as $priority)
-                                        <option value="{{$priority->id}}">{{$priority->priority}}</option>
+                                    @foreach($data['priority'] as $priority)
+                                        <option value="{{$priority->id}}" {{old('priority')==$priority->id?'selected':''}}>{{$priority->priority}}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Product</label>
+                                <label>Product <span class='text-danger'>*</span></label>
                                 <select name="product_id" id="" class="select">
-                                    @foreach($products as $product)
-                                        <option value="{{$product->id}}">{{$product->name}}</option>
+                                    @foreach($data['product'] as $product)
+                                        <option value="{{$product->id}}"{{old('product_id')==$product->id?'selected':''}}>{{$product->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -75,45 +88,63 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Assign</label>
+                                <label>Assign <span class="text-danger">*</span></label>
                                 <select class="select" id="type" name="assignType">
                                     <option value="item0">Choose Assign Type</option>
                                     <option value="dept">Assign To Department</option>
                                     <option value="agent">Assign To Agent</option>
                                 </select>
-
+                                @error('assignType')
+                                <span class="text-danger">{{$message}}Select Department or Agent.</span>
+                                @enderror
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Add Followers</label>
                                 <select name="follower[]" id="follower" class="select" multiple>
-                                    @foreach($all_emp as $agent)
-                                        <option value="{{$agent->id}}">{{$agent->name}}</option>
+                                    @foreach($data['all_emp'] as $agent)
+                                        <option value="{{$agent->id}}" >{{$agent->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
                     </div>
+
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="">Assign To</label>
+                                <label for="">Assign To <span class="text-danger">*</span>  </label>
                                 <select name="assign_id" id="assign_to" class="select">
                                     <option></option>
                                 </select>
+                                @error('assign_id')
+                                <span class="text-danger">Assign To is required.You must to select assign type first.</span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="source">Source</label>
+                                <input type="text" class="form-control" name="source" id="source">
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="form-group">
-                                <label>Description</label>
-                                <textarea class="form-control" name="description"></textarea>
+                                <label for="description">Description <span class="text-danger">*</span></label>
+                                <textarea class="form-control @error('description')is-invalid @enderror" id="description" name="description" style="height: 200px;" ></textarea>
+                           @error('description')
+                                <span class="text-danger">{{$message}}</span>
+                                @enderror
                             </div>
                             <div class="form-group">
                                 <label>Upload Files</label>
                                 <input class="form-control" name="attachment" type="file">
+                                @error('attachment')
+                                <span class="text-danger">{{$message}}</span>
+                                @enderror
                             </div>
                         </div>
                     </div>
@@ -121,28 +152,65 @@
                         <div class="col-12">
                             <div class=" form-group ">
                                 <label align="center">Upload your images</label>
-                                <input type="file" class="form-control"  id="files" name="files[]" multiple  required/>
+                                <input type="file" class="form-control"  id="files" name="files[]" multiple />
                             </div>
+                            @error('files.*')
+                            <span class="text-danger">{{$message}}</span>
+                            @enderror
                         </div>
                     </div>
                     <div class="submit-section">
                         <button type="submit" class="btn btn-primary submit-btn">Submit</button>
                     </div>
                 </form>
-            </div>
         </div>
+        @include('Deal.add_customer')
     </div>
-</div>
+
 <script>
+    $(document).ready(function() {
+        $(document).on('click', '#customer_add', function () {
+
+            // var customer_id=$("#customer_id").val();
+            var customer_name =$("#customer_name").val();
+            var customer_phone=$("#customer_phone").val();
+            var customer_email=$("#customer_email").val();
+            var customer_company=$("#customer_company_id option:selected").val();
+            var customer_address=$("#customer_address").text();
+            var type="ajax";
+            $.ajax({
+                data : {
+                    name:customer_name,
+                    phone:customer_phone,
+                    email:customer_email,
+                    company_id:customer_company,
+                    address:customer_address,
+                },
+                type:'POST',
+                url:"{{route('add_new_customer')}}",
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                success:function(data){
+                    console.log(data);
+                    $("#client").load(location.href + " #client>* ");
+
+                }
+            });
+        });
+    });
     $(document).ready(function () {
         $("#type").change(function () {
             var val = $(this).val();
             if (val == "dept") {
-                $("#assign_to").html("@foreach($depts as $dept)<option value='{{$dept->id}}'>{{$dept->name}}</option> @endforeach");
+                $("#assign_to").html("@foreach($data['depts'] as $dept)<option value='{{$dept->id}}'>{{$dept->name}}</option> @endforeach");
             } else if (val == "agent") {
-                $("#assign_to").html(" @foreach($all_emp as $agent)@if($agent->role->name=='Agent')<option value='{{$agent->id}}'>{{$agent->name}}</option> @endif @endforeach");
+                $("#assign_to").html(" @foreach($data['all_emp'] as $agent)@if($agent->role->name=='Agent')<option value='{{$agent->id}}'>{{$agent->name}}</option> @endif @endforeach");
             }
         });
     });
+    ClassicEditor
+        .create( document.querySelector( '#description' ) )
+        .catch( error => {
+            console.error( error );
+        } );
 </script>
-<!-- /Add Ticket Modal -->
+@endsection

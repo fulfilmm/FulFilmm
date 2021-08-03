@@ -11,13 +11,13 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label>Subject</label>
-                            <input class="form-control" type="text" name="subject">
+                            <input class="form-control" type="text" name="subject" required>
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label>Name</label>
-                            <input type="text" name="client_name" class="form-control">
+                            <input type="text" name="client_name" class="form-control" required>
                         </div>
                     </div>
                     <div class="col-sm-2">
@@ -37,7 +37,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label>Email</label>
-                            <input type="email" name="email" class="form-control">
+                            <input type="email" name="email" class="form-control" required>
                         </div>
                     </div>
                 </div>
@@ -45,13 +45,13 @@
                     <div class="col-6">
                         <div class="form-group">
                             <label for="">Township</label>
-                            <input type="text" class="form-control" name="township" >
+                            <input type="text" class="form-control" name="township" required>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="form-group">
                             <label for="">Product</label>
-                            <select name="product_id[]" id="" class="select" multiple>
+                            <select name="product_id[]" id="" class="select" multiple required>
                                 @foreach($products as $product)
                                     <option value={{$product->id}}>{{$product->name}}</option>
                                 @endforeach
@@ -76,7 +76,7 @@
                     <div class="col-12">
                         <div class="form-group">
                             <label for="">Description</label>
-                            <textarea name="description" id="" rows="10" style="width: 100%;"></textarea>
+                            <textarea name="description" id="" rows="10" style="width: 100%;" required></textarea>
                         </div>
                     </div>
                 </div>

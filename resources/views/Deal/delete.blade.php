@@ -1,13 +1,13 @@
-<div class="modal custom-modal fade" id="delete_ticket{{$ticket->id}}" role="dialog">
+<div class="modal custom-modal fade" id="delete_deal{{$deal->id}}" role="dialog">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body">
                 <div class="form-header">
-                    <h3>Delete Ticket ID:{{$ticket->ticket_id}}</h3>
+                    <h3>Delete Deal "{{$deal->name}}"</h3>
                     <p>Are you sure want to delete?</p>
                 </div>
                 <div class="modal-btn delete-action">
-                    <form action="{{route('tickets.destroy',$ticket->id)}}" method="post">
+                    <form action="{{route('deals.destroy',$deal->id)}}" method="post">
                         @csrf
                         @method('DELETE')
                         <div class="row text-center">

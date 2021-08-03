@@ -15,7 +15,7 @@
                         </ul>
                     </div>
                     <div class="col-auto float-right ml-auto">
-                        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_ticket"><i class="fa fa-plus"></i> Add Ticket</a>
+                        <a href="{{route('tickets.create')}}" class="btn add-btn" ><i class="fa fa-plus"></i> Add Ticket</a>
                         <a href="{{route('inqueries.create')}}" class="btn add-btn" ><i class="fa fa-plus"></i> Add Inquery</a>
                     </div>
                 </div>
@@ -198,25 +198,28 @@
                                 <td>{{$ticket->created_at->toFormattedDateString()}}</td>
                                 <td></td>
 
-                                <td>
-                                    {{$ticket->ticket_priority->priority}}
+                                <td style="min-width: 150px;">
+                                    <a class="btn btn-white btn-sm btn-rounded " href="#" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-{{$ticket->ticket_priority->color}}"></i> {{$ticket->ticket_priority->priority}}</a>
 
                                 </td>
-                                <td>{{$ticket->ticket_status->name}}
-
+                                <td style="min-width: 150px;">
+                                    @foreach($status_color as $staus=>$color)
+                                   @if($staus==$ticket->ticket_status->name)
+                                    <a class="btn btn-white btn-sm btn-rounded " href="#" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o mr-1" style="color:{{$color}}"></i>{{$ticket->ticket_status->name}}</a>
+                                   @endif
+                                    @endforeach
                                 </td>
                                 <td class="text-right">
                                     <div class="dropdown dropdown-action">
                                         <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                         <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#change_status{{$ticket->id}}"><i class="fa fa-pencil m-r-5"></i>Status Edit</a>
-                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_ticket"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_ticket"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                            <a class="dropdown-item" href="{{route('tickets.show',$ticket->id)}}"><i class="la la-eye m-r-5"></i>View Ticket</a>
+                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_ticket{{$ticket->id}}"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                                         </div>
                                     </div>
                                 </td>
-                                @include('ticket.edit')
-                                @include('ticket.status_change')
+{{--                                @include('ticket.edit')--}}
+                                @include('ticket.delete')
                             </tr>
                             @endforeach
                             </tbody>
@@ -227,12 +230,10 @@
         </div>
         <!-- /Page Content -->
 
-       @include('ticket.create')
-
 
 
         <!-- Delete Ticket Modal -->
-        @include('ticket.delete')
+
     <script src="{{url(asset('/js/filterdaterange.js'))}}"></script>
         <script>
         $(document).ready(function() {

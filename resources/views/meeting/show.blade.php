@@ -26,7 +26,9 @@
 {{--                                    </div>--}}
                                 </div>
                                 <div class="float-right">
-                                    <div class="input-group"><input type="text" name="search" class="form-control" placeholder="Search with record no"><button type="button" class="btn btn-outline-info"><i class="fa fa-search"></i></button></div>
+                                    <form action="{{route('filter.minutes',$meeting->id)}}" method="get">
+                                    <div class="input-group"><input type="text" id="filter" name="search" class="form-control" placeholder="Search..."><button type="submit" id="search" class="btn btn-outline-info"><i class="fa fa-search"></i></button></div>
+                                    </form>
                                 </div>
                             </div>
 
@@ -36,28 +38,43 @@
                                 <div class="chat-wrap-inner">
                                     <div class="chat-box">
                                         <div class="task-wrapper">
-                                            <div class="task-list-container">
-                                                <div class="task-list-body">
+                                            <div class="task-list-container" id="minute_list">
+                                                <div class="task-list-body" id="list_view">
                                                     <ul id="task-list">
-
                                                         @foreach($minutes as $minute)
                                                             <input type="hidden" id="minutes_id{{$minute->id}}" value="{{$minute->id}}">
 
                                                             <li class="task" id="minutelist{{$minute->id}}">
                                                                 <div class="task-container">
-																		<span class="task-action-btn task-check">
-																			<input type="checkbox" name="is_assign" class="custom-control" {{$minute->is_assign  ? 'checked title=Assigned' : 'title=UnAssign'}}>
-																		</span>
-                                                                    <span class="task-label" contenteditable="true">{{$minute->minutes_text}}</span>
-                                                                    <span class="task-action-btn task-btn-right">
-																		@if(!$minute->is_assign)
-                                                                        <span data-toggle="modal" data-target="#assign{{$minute->id}}" class="action-circle large" title="Assign">
-																				<i class="material-icons">person_add</i>
+                                                                    <span class="task-action-btn task-check" id="complete_todo{{$minute->id}}" >
+																			<span class="action-circle large complete-btn {{$minute->is_complete==1  ? 'bg-info ':''}}" title="">
+																				<i class="material-icons">{{$minute->is_complete==1  ? 'check' : ''}}</i>
 																			</span>
-                                                                        @endif
+																		</span>
+
+                                                                    <span class="task-label" contenteditable="true" style="{{ $minute->is_complete==0 ?'':'color: #989c9e'}}">{{substr($minute->minutes_text,0,20)}}
+                                                                        <a href="" data-toggle="modal" data-target="#view{{$minute->id}}" >
+                                                                            <span class="large text-center " title="View Details">
+																				{{strlen($minute->minutes_text) > 20 ?'..more':''}}
+																			</span>
+                                                                              </a></span>
+                                                                        @foreach($assign_name as $name)
+                                                                            @if($name->minutes_id==$minute->id)
+                                                                                <span class="task-label {{ $minute->is_complete==0 ?"text-danger":'text-success'}}" contenteditable="true" >{{ $minute->is_complete==0 ?\Carbon\Carbon::now() > $name->due_date ? 'Over Due Date':'':'Completed at'.$minute->updated_at}}</span>
+                                                                            @endif
+                                                                        @endforeach
+                                                                    <span class="task-action-btn task-btn-right">
+                                                                         @if($minute->attach_file!=null)
+                                                                            <span data-toggle="modal" data-target="#attach{{$minute->id}}" class="action-circle large" title="It has attachment file">
+																				<i class="material-icons">attach_file</i>
+																			</span>
+                                                                             @endif
+                                                                        <span data-toggle="modal" data-target="#assign{{$minute->id}}" class="action-circle large" title="{{$minute->is_assign ? 'Have been Assigned' :'Assign'}}">
+																				<i class="material-icons">{{$minute->is_assign ? 'person':'person_add'}}</i>
+																			</span>
 																		<a href="" data-toggle="modal" data-target="#view{{$minute->id}}" >
-                                                                            <span class="action-circle large " title="View Details">
-																				<i class="fa fa-th-list"></i>
+                                                                            <span class="action-circle large text-center " title="View Details">
+																				<i class="la la-eye sm mt-1"></i>
 																			</span>
                                                                               </a>
 																		</span>
@@ -67,37 +84,83 @@
                                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                                     <div class="modal-content">
                                                                         <div class="modal-header">
-                                                                            <h5 class="modal-title">{{$minute->minutes_no}}</h5>
+                                                                            <h5 class="modal-title">Minutes No:{{$minute->minutes_no}}</h5>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                    <hr>
+                                                                        <div class="modal-body">
+                                                                            <div class="form-group">
+                                                                                <label for="">Record No.</label>
+                                                                                <input type="text" class="form-control" readonly value="{{$minute->minutes_no}}">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="description">Minutes</label>
+                                                                           <textarea readonly id="description" class="form-control">{{$minute->minutes_text}}</textarea>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            @if($minute->is_assign==1)
+                                                                                @foreach($assign_name as $name)
+                                                                                    @if($name->minutes_id==$minute->id)
+                                                                                        @if($name->assign_type=='group')
+                                                                                            <span  class="action-circle large float-right" title="{{$name->group_id}}">
+																				            <i class="material-icons">person</i>
+																			            </span>
+                                                                                        @else
+                                                                                            <div class="row">
+                                                                                                <span class="ml-2 {{\Carbon\Carbon::now() >$name->due_date && $minute->is_complete==0 ?'btn btn-danger':''}}">{{ $minute->is_complete==0 ? \Carbon\Carbon::now() >$name->due_date ?'Over Due Date':'Due Date:'.\Carbon\Carbon::parse($name->due_date)->toFormattedDateString():'Complete at '.$minute->updated_at}}</span>
+                                                                                            </div>
+                                                                                        @endif
+                                                                                    @endif
+                                                                                @endforeach
+                                                                                @endif
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div id="attach{{$minute->id}}" class="modal custom-modal fade" role="dialog">
+                                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title">Attachment Files</h5>
                                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                                 <span aria-hidden="true">&times;</span>
                                                                             </button>
                                                                         </div>
                                                                         <div class="modal-body">
-                                                                           <p>{{$minute->minutes_text}}</p>
+                                                                           @if($minute->attach_file!=null)
+                                                                                @php $attach=json_decode($minute->attach_file) @endphp
+                                                                             <div class="row">
+                                                                               @foreach($attach as $key=>$val)
+                                                                                    <div class="col-6 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                                                                                        <div class="card card-file" style="min-width: 100px;">
+                                                                                            @php
+                                                                                                $infoPath = pathinfo(public_path('minutes_attach/'.$val));
+                                                                                                 $extension = $infoPath['extension'];
+                                                                                            @endphp
+                                                                                            <div class="card-file-thumb">
+                                                                                                @if($extension=='xlsx')
+                                                                                                    <i class="fa fa-file-excel-o"></i>
+                                                                                                @elseif($extension=='pdf')
+                                                                                                    <i class="fa fa-file-pdf-o"></i>
+                                                                                                @else
+                                                                                                    <i class="fa fa-file-word-o"></i>
+                                                                                                @endif
+                                                                                            </div>
+                                                                                            <div class="card-body">
+                                                                                                <h6><a href="{{url(asset('minutes_attach/'.$val))}}" download>{{$val}}</a></h6>
+                                                                                            </div>
+                                                                                            <div class="card-footer">{{$minute->created_at->toFormattedDateString()}}
+                                                                                                <a href="{{url(asset('minutes_attach/'.$val))}}" class="float-right" ><i class="fa fa-download" style="font-size: 16px;"></i></a>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                @endforeach
+                                                                             </div>
+                                                                               @endif
                                                                         </div>
-                                                                        <div class="modal-footer">
-                                                                            @foreach($assign_name as $name)
-                                                                                @if($name->minutes_id==$minute->id)
-                                                                                    @if($name->assign_type=='group')
-                                                                                        <span  class="action-circle large float-right" title="{{$name->group_id}}">
-																				            <i class="material-icons">person</i>
-																			            </span>
-                                                                                    @else
-                                                                                        <div class="row">
-
-                                                                                                <strong >Due Date: </strong> <span class="mr-5">{{\Carbon\Carbon::parse($name->due_date)->toFormattedDateString()}}</span>
-                                                                                        </div>
-
-                                                                                        <div class="row">
-                                                                                            <strong class="mr-2">Assign to:</strong>
-                                                                                            <span  class="action-circle large mr-2 float-right" title="{{$name->assign_type=='emp' ? $name->emp->name : $name->dept->name}}">
-																				            <i class="material-icons">person</i>
-																			            </span><span class="mr-2">{{$name->assign_type=='emp' ? $name->emp->name : $name->dept->name}}</span>
-                                                                                        </div>
-                                                                                    @endif
-                                                                                @endif
-
-                                                                            @endforeach</div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -148,7 +211,12 @@
                                                 </div>
                                             </div>
                                         </div>
-
+                                        <div class="notification-popup hide">
+                                            <p>
+                                                <span class="task"></span>
+                                                <span class="notification-text"></span>
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -271,8 +339,6 @@
         <!-- /Create Project Modal -->
     </div>
 @include('layout.partials.footer-scripts')
-
-@stack('scripts')
 
 </body>
 </html>

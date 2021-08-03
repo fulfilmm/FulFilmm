@@ -12,10 +12,7 @@
             display: none;
         }
     </style>
-
-{{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>--}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
-{{--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />--}}
     <script src="{{asset("/js/rating.js")}}"></script>
     <!-- Page Wrapper -->
         <!-- Page Content -->
@@ -39,25 +36,29 @@
                    <form action="{{route("leads.store")}}" method="POST">
                        {{csrf_field()}}
                        <div class="row">
-                           <div class="form-group col-md-4 col-xl-4 col-6">
+                           <div class="form-group col-md-4 col-xl-4 col-12">
                                <label for="">Lead ID <span class="text-danger">*</span></label>
                                <input type="text" class="form-control" name="lead_id" value="{{$lead_id}}">
                            </div>
-                           <div class="form-group col-md-4 col-xl-4 col-6">
+                           <div class="form-group col-md-4 col-xl-4 col-12">
                                <label for="">Lead Title <span class="text-danger">*</span></label>
                                <input type="text" class="form-control" name="lead_title">
                            </div>
-                           <div class="form-group col-md-4 col-xl-4 col-6">
+                           <div class="form-group col-md-4 col-xl-4 col-12">
                                <label for="">Sale Man <span class="text-danger">*</span></label>
-                               <select name="sale_man" id="saleman" class="form-control">
-                                   @foreach($allemployees as $key=>$value)
-                                       <option value="{{$key}}">{{$value}}</option>
-                                   @endforeach
-                               </select>
+                             <div class="col-md-12 col-12">
+                                <div class="row">
+                                    <select name="sale_man" id="saleman" class="form-control">
+                                        @foreach($allemployees as $key=>$value)
+                                            <option value="{{$key}}">{{$value}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                             </div>
                            </div>
                        </div>
                        <div class="row">
-                           <div class="form-group col-md-4 col-xl-4 col-6">
+                           <div class="form-group col-md-4 col-xl-4 col-12">
                                <label for="">Customer Name <span class="text-danger">*</span></label>
                               <div class="col-12">
                                   <div class="row " id="customer">
@@ -74,32 +75,36 @@
                               </div>
                            </div>
 {{--                           <a href="{{url("client/customer/create")}}"><i class="fa fa-plus"></i></a>--}}
-                           <div class="form-group col-md-4 col-xl-4 col-6" id="tagdiv" >
+                           <div class="form-group col-md-4 col-xl-4 col-12" id="tagdiv" >
                                <label for="category" >Industry <span class="text-danger">*</span></label>
                                <div class="col-12">
-                                    <div class="row">
-                                     <select name="tags" id="industry" class="form-control col-md-10">
-                                   @foreach($tags as $tag)
-                                       @if($tag->id==$last_tag->id)
-                                           <option value="{{$tag->id}}" selected>{{$tag->tag_industry}}</option>
-                                       @else
-                                           <option value="{{$tag->id}}">{{$tag->tag_industry}}</option>
-                                       @endif
-                                   @endforeach
-                               </select>
-                                        <div class="col-md-2 col-2 mt-1">
-                                    <a data-toggle='modal' class="btn btn-outline-dark" data-target='#industry_add'><i class="fa fa-plus"></i></a>
-                               </div>
-                               </div>
+                                        <div class="row">
+                                            <div class="col-md-10 col-10">
+                                                <div class="row">
+                                                <select name="tags" id="industry" class="form-control ">
+                                                    @foreach($tags as $tag)
+                                                        @if($tag->id==$last_tag->id)
+                                                            <option value="{{$tag->id}}" selected>{{$tag->tag_industry}}</option>
+                                                        @else
+                                                            <option value="{{$tag->id}}">{{$tag->tag_industry}}</option>
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 col-2 mt-1">
+                                                <a data-toggle='modal' class="btn btn-outline-dark" data-target='#industry_add'><i class="fa fa-plus"></i></a>
+                                            </div>
+                                   </div>
                                </div>
                            </div>
-                           <div class="form-group col-md-4 col-xl-4 col-6">
+                           <div class="form-group col-md-4 col-xl-4 col-12">
                                <label for="">Organization Name</label>
                                <input type="text" class="form-control" name="org_name">
                            </div>
                        </div>
                        <div class="row">
-                           <div class="col-md-4 col-xl-4 col-6">
+                           <div class="col-md-4 col-xl-4 col-12">
                                <div class="form-group">
                                    <label for="">Priority</label>
                                    <select name="priority" id="" class="select">
@@ -109,7 +114,7 @@
                                    </select>
                                </div>
                            </div>
-                           <div class="col-md-4 col-xl-4 col-6">
+                           <div class="col-md-4 col-xl-4 col-12">
                                <label for="">Qualify Status</label>
                                <div class="form-check form-switch">
                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="qualified">

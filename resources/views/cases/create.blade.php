@@ -11,8 +11,11 @@
                 <form id="case_create" action="{{route("cases.store")}}" method="POST">
                     {{csrf_field()}}
                     <div class="form-group">
-                        <label for="dept_name">Case Name:</label><br>
-                        <input type="text" id="dept_name" class="form-control mb-3"  name="case_name">
+                        <label for="name">Case Name:</label><br>
+                        <input type="text" id="name" class="form-control mb-3"  name="case_name" required>
+                    @error('case_name')
+                        <span class="text-danger">{{$message}}</span>
+                        @enderror
                     </div>
                     <button type="submit" class="btn btn-success float-right mr-2">Save</button>
                     <button type="button" class="btn btn-danger float-right mr-2" data-dismiss="modal">Close</button>

@@ -37,6 +37,9 @@ class CaseTypeController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request,[
+           'case_name'=>'required'
+        ]);
         $case=new case_type();
         $case->name=$request->case_name;
         $case->save();

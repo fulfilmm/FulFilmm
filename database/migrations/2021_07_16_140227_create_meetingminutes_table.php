@@ -21,6 +21,7 @@ class CreateMeetingminutesTable extends Migration
             $table->text('minutes_text');
             $table->text('attach_file')->nullable();
             $table->boolean('is_assign')->default(false);
+            $table->tinyInteger('is_complete');
             $table->timestamps();
         });
     }

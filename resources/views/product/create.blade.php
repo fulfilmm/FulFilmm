@@ -49,16 +49,26 @@
         <!-- /Page Header -->
         <form action="{{route("products.store")}}" method="POST" enctype="multipart/form-data" autocomplete="off">
             {{csrf_field()}}
+
+            <div class="text-center">
+                <div class="form-group col-md-2 offset-md-5">
+                    <img id="output" class="rounded mt-3" src="{{url(asset("/img/profiles/avatar-01.jpg"))}}" width="100px" height="100px;">
+                </div>
+                <div class="form-group col-md-3 col-6 offset-md-5">
+                    <label for="">Picture</label>
+                    <input type="file" accept="image/*" name="picture"  class=" offset-md-1" onchange="loadFile(event)">
+                </div>
+            </div>
             <div class="row">
                 <div class="form-group col-md-4 col-12 offset-md-2">
                     <label for="">Product Name</label>
                     <input type="text" class="form-control" name="name" required>
                 </div>
-                <div class=" col-md-4 col-12 " id="tax_div">
+                <div class="col-md-4 col-12" id="tax_div">
                     <div class="form-group">
                         <label for="">Tax</label>
-                        <div class="row ">
-                            <div class="col-md-10 col-10">
+                        <div class="row">
+                            <div class="col-md-9 col-10">
                                 <select name="tax" id="product_tax" class="form-control">
                                     @foreach($taxes as $tax)
                                         @if($tax->id == $lasttax->id)
@@ -70,10 +80,12 @@
                                 </select>
                             </div>
                             <div class="col-md-2 col-2">
-                                <a href="" data-toggle="modal" data-target="#add" class="btn btn-outline-dark"><i class="fa fa-plus"></i></a>
+                                <div class="form-group">
+                                        <a href="" data-toggle="modal" data-target="#add" class="btn btn-outline-dark"><i class="fa fa-plus"></i></a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
                 </div>
                 <div class="form-group col-md-4 col-12 offset-md-2">
                     <label for="">Model No.</label>
@@ -99,7 +111,6 @@
                     <label for="">Available Stock</label>
                     <input type="number" class="form-control" name="aval_stock" value="0" required>
                 </div>
-
                 <div class="form-group col-md-3 col-12 offset-md-2">
                     <label for="">Sale Price</label>
                     <input type="number" class="form-control " min="0" name="sale_price" oninput="validity.valid||(value='');" required>
@@ -115,11 +126,11 @@
                         <option value="USD">USD</option>
                     </select>
                 </div>
-                <div class=" col-md-3 col-12 offset-md-2" id="cat_div">
+                <div class=" col-md-4 col-12 offset-md-2" id="cat_div">
                     <div class="form-group">
                         <label for="">Category</label>
                         <div class="row">
-                            <div class="col-md-10 col-8">
+                            <div class="col-md-10 col-xl-10 col-sm-8 col-9">
                                 <select name="cat_id" id="product_cat" class="form-control" required>
                                     @foreach($allcat as $cat)
                                         @if($cat->id==$lastcat->id)
@@ -136,13 +147,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group col-md-3 col-6">
-                    <label for="">Picture</label>
-                    <input type="file" accept="image/*" name="picture"  class=" offset-md-1" onchange="loadFile(event)">
-                </div>
-                <div class="form-group col-md-2">
-                    <img id="output" class="rounded mt-3" src="{{url(asset("/img/profiles/avatar-01.jpg"))}}" width="100px" height="100px;">
-                </div>
+            </div>
+                <div class="row">
                 <div class="form-group offset-md-2 ">
                     <input type="checkbox" name="enable" class="ml-3">
                     <label for="">Enable</label>
@@ -164,17 +170,19 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="form-group col-md-6 col-6">
+                        <div class="form-group">
                             <label>Tax Name</label>
                             <input type="text" id="p_tax" class="form-control" name="tax" >
                         </div>
-                        <div class="form-group col-md-6 col-6">
-                            <label>Tax Rate</label>
-                            <input type="number" id="rate" class="form-control" name="rate" placeholder="%" >
+                    <label>Tax Rate</label>
+                        <div class="input-group">
+
+                            <input type="number" id="rate" class="form-control" name="rate">
+                            <button type="button" class="btn btn-white">%</button>
                         </div>
                     </div>
-                    <button  id="tax_create" data-dismiss="modal" class="btn btn-primary float-right">Add</button>
+                <div class="form-group text-center">
+                    <button  id="tax_create" data-dismiss="modal" class="btn btn-primary">Add</button>
                 </div>
             </div>
         </div>

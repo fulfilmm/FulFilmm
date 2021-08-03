@@ -83,15 +83,20 @@
                                 @endforeach
                             </ul>
                         </div>
+                        <hr>
                         <form method="POST" action="{{url("/lead/post/comment")}}" class="mt-2">
                             {{csrf_field()}}
                             <div class="row">
-                                <div class="form-group col-xl-9 col-md-9 col-9 ml-5">
+                                <div class="col-xl-9 col-md-9 col-9">
                                     <input type="hidden" name="lead_id" value="{{$lead->id}}">
-                                    <input type="text" class="form-control" name="comment">
+                                    <div class="form-group col-12">
+                                        <input type="text" class="form-control" name="comment">
+                                    </div>
                                 </div>
-                                <div>
-                                    <button class="btn btn-primary" type="submit" style="font-size: 20px;"><i class="fa fa-paper-plane"></i></button>
+                                <div class=" col-3">
+                                    <div class="row">
+                                        <button class="btn btn-primary col-8" type="submit" style="font-size: 20px;"><i class="fa fa-paper-plane"></i></button>
+                                    </div>
                                 </div>
                             </div>
                         </form>

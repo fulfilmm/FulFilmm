@@ -20,7 +20,9 @@ use Illuminate\Support\Facades\Auth;
 
 class DealController extends Controller
 {
-
+    protected $lead_sources=["Cold Call","Referral","Word of mouth","Website",
+        "Trade Show","Conference","Direct Mail","Public Relation","Partner",
+        "Employee","Self Generated","Existing Customer","Facebook"];
     private $customerContract, $company_contract;
     public function __construct(CustomerContract $customerContract, CompanyContract $company_contract)
     {
@@ -67,7 +69,8 @@ class DealController extends Controller
             $allcat=products_category::all();
              $lastcat=products_category::orderBy('id', 'desc')->first();
             $products=product::with("category","taxes")->get();
-        return  view("Deal.create",compact("products",'hasSetUp','companies','parent_companies',"taxes","lasttax","lastcat","allcat","lasttax","allemployees","allcustomers"));
+            $lead_source=$this->lead_sources;
+        return  view("Deal.create",compact("products",'hasSetUp','companies','parent_companies',"taxes","lasttax","lastcat","allcat","lasttax","allemployees","allcustomers",'lead_source'));
     }
 
     /**
@@ -203,13 +206,13 @@ class DealController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {
         $deal=deal::where("id",$id)->first();
         $deal->delete();
-        return redirect("deal")->with("message","$deal->name Delete Successful");
+        return redirect()->back();
     }
     public function sale_stage_change(Request $request){
         $deal=deal::where("id",$request->deal_id)->first();

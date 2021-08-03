@@ -45,30 +45,7 @@
                                         <div class="card mb-0">
                                             <h5 class="card-header m-b-20">Next Plan</h5>
                                             <div class="card-body">
-                                                <ul class="files-list">
-                                                    <li>
-                                                        <div class="files-cont">
-                                                            <div class="file-type">
-                                                                <span class="files-icon"><i class="fa fa-file-pdf-o"></i></span>
-                                                            </div>
-                                                            <div class="files-info">
-                                                                <span class="file-name text-ellipsis">{{$deal->next_step}}</span>
-                                                                    <span class="file-author"><a href="#"></a></span>
-                                                                <div class="file-size"></div>
-                                                            </div>
-                                                            <ul class="files-action">
-                                                                <li class="dropdown dropdown-action">
-                                                                    <a href="" class="dropdown-toggle btn btn-link" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_horiz</i></a>
-                                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                                        <a class="dropdown-item" href="">Download</a>
-                                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#share_files">Share</a>
-                                                                        <a class="dropdown-item" href="javascript:void(0)">Delete</a>
-                                                                    </div>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </li>
-                                                </ul>
+                                                <span>{{$deal->next_step}}</span>
                                             </div>
                                         </div>
                                     </div>

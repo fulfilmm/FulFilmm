@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 use mysql_xdevapi\Exception;
 
 class MeetingController extends Controller
@@ -90,8 +91,6 @@ class MeetingController extends Controller
            foreach ($request->guest_email as $key=>$email){
                array_push($reciver_mail,$email);
            }
-
-
        }
        $meeting_member=[];
       foreach ($request->internal_members as $key=>$val){
@@ -123,7 +122,6 @@ class MeetingController extends Controller
         $all_emp=Employee::all();
         $depts=Department::all();
         $assign_name=MinutesAssign::with('emp','dept')->get();
-
         return view('meeting.show',compact('meeting','members','emp_members','agenda','minutes','depts','all_emp','assign_name'));
     }
 

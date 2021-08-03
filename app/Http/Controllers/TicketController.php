@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\assign_ticket;
 use App\Models\case_type;
+use App\Models\Company;
 use App\Models\count_down;
 use App\Models\countdown;
 use App\Models\Customer;
@@ -33,15 +34,15 @@ class TicketController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    protected $status_color=['New'=>'#49d1b6','Open'=>'#e84351','Close'=>'#4e5450','Pending'=>'#f0ed4f','Progress'=>'#2333e8','Complete'=>'#18b820'];
     public function index()
     {
-
+        $status_color=$this->status_color;
         $auth_user=Auth::guard('employee')->user();
         $statuses=status::all();
         $depts=Department::all();
         $cases = case_type::all();
         $priorities = priority::all();
-        $products=product::all();
         $clients=Customer::all();
         $all_emp=Employee::all();
         $last_ticket = ticket::orderBy('id', 'desc')->first();
@@ -58,7 +59,7 @@ class TicketController extends Controller
             $status_report=$this->report_status();
             $report_percentage=$this->report_with_percentage();
 //            dd($all_tickets);
-            return view('ticket.index',compact('all_tickets','assign_ticket','status_report','report_percentage','statuses','depts','ticket_id',"cases",'priorities','clients','all_emp','products'));
+            return view('ticket.index',compact('status_color','all_tickets','assign_ticket','status_report','report_percentage','statuses','depts','ticket_id',"cases",'priorities','clients','all_emp'));
         }else{
             $all_tickets=ticket::with('ticket_status','ticket_priority')->get();
             $status_report=$this->report_status();
@@ -67,22 +68,28 @@ class TicketController extends Controller
 
         }
 
-        return view('ticket.index',compact('all_tickets','assign_ticket','statuses','ticket_id','cases','priorities','all_emp','depts','clients','products','status_report','report_percentage'));
+        return view('ticket.index',compact('status_color','all_tickets','assign_ticket','statuses','ticket_id','cases','priorities','all_emp','depts','clients','status_report','report_percentage'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return array
      */
-    public function create()
-    {
-        $statuses=status::all();
-        $cases = case_type::all();
+    public function data_all(){
         $depts=Department::all();
+        $cases = case_type::all();
         $priorities = priority::all();
         $products=product::all();
+        $clients=Customer::all();
         $all_emp=Employee::all();
+        return ['depts'=>$depts,'case'=>$cases,'priority'=>$priorities,'product'=>$products,'client'=>$clients,'all_emp'=>$all_emp];
+    }
+    public function create()
+    {
+        $parent_companies=Company::all()->pluck('name', 'id')->all();
+        $companies=Company::all()->pluck('name', 'id')->all();
+        $data=$this->data_all();
         $last_ticket = ticket::orderBy('id', 'desc')->first();
         if (isset($last_ticket)) {
             // Sum 1 + last id
@@ -91,8 +98,42 @@ class TicketController extends Controller
         } else {
             $ticket_id = "Ticket" . "-00001";
         }
-        return view('ticket.ticket_for_guest',compact('statuses','ticket_id','cases','priorities','all_emp','depts','products'));
+        $assign_ticket=assign_ticket::with('agent','dept')->get();
+        return view('ticket.create',compact('ticket_id','data','companies','parent_companies'));
+    }
+    public function guest_ticket(){
+        $statuses=status::all();
+       $data=$this->data_all();
+        $last_ticket = ticket::orderBy('id', 'desc')->first();
+        if (isset($last_ticket)) {
+            // Sum 1 + last id
+            $last_ticket->ticket_id++;
+            $ticket_id = $last_ticket->ticket_id;
+        } else {
+            $ticket_id = "Ticket" . "-00001";
+        }
+        return view('ticket.ticket_for_guest',compact('statuses','ticket_id','data'));
 
+    }
+    public function followed_ticket(){
+        $status_color=$this->status_color;
+        $statuses=status::all();
+        $data=$this->data_all();
+        $assign_ticket=assign_ticket::with('agent','dept')->get();
+        $followed_tickets=ticket_follower::with('ticket')->where("emp_id",Auth::guard('employee')->user()->id)->get();
+        $last_ticket = ticket::orderBy('id', 'desc')->first();
+        if (isset($last_ticket)) {
+            // Sum 1 + last id
+            $last_ticket->ticket_id++;
+            $ticket_id = $last_ticket->ticket_id;
+        } else {
+            $ticket_id = "Ticket" . "-00001";
+        }
+        $all_tickets=[];
+        foreach ($followed_tickets as $follow_ticket){
+            array_push($all_tickets,$follow_ticket->ticket);
+        }
+        return view('ticket.followed_ticket',compact('status_color','assign_ticket','all_tickets','data','statuses','ticket_id',));
     }
     /**
      * Store a newly created resource in storage.
@@ -102,12 +143,17 @@ class TicketController extends Controller
      */
     public function store(Request $request)
     {
-//        $this->validate($request, [
-//            'files.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-//            'title' => 'required',
-//            'message' => 'required',
-//
-//        ]);
+        $this->validate($request, [
+            'files.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'attachment'=>'mimes:pdf,xlsx,doc,docx,jpg,jpeg,ppt,bip',
+            'subject' => 'required',
+            'assignType'=>'in:agent,dept',
+            'assign_id'=>'required',
+            'description'=>'required',
+            'client_name'=>$request->has('client_name')?'required':'',
+            'client_phone'=>$request->has('client_phone')?'required':''
+
+        ]);
 //        dd($request->all());
         //add customer info store
         $this->add_sender_info($request->all());
@@ -131,9 +177,9 @@ class TicketController extends Controller
                 $image->move(public_path() . '/ticket_picture/', $name,);
                 $data[] = $name;
             }
-
+            $ticket->photo =json_encode($data);
         }
-        $ticket->photo =json_encode($data);
+
         if ($request->hasfile('attachment')) {
             $attach=$request->file('attachment');
             $attach_name = $attach->getClientOriginalName();
@@ -145,19 +191,22 @@ class TicketController extends Controller
         $this->assign_ticket($request->assign_id,$ticket->id,$request->assignType);
         //add follower
         $last_ticket=ticket::orderBy('id','desc')->first();
-        $this->add_ticket_follower($request->follower,$last_ticket->id);
+        if($request->follower!=null){
+            $this->add_ticket_follower($request->follower,$last_ticket->id);
+        }
 
-        return redirect()->back()->with('Success', __('alert.create_success'));
+        return redirect()->route('tickets.index')->with('Success', __('alert.create_success'));
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function show($id)
     {
+        $statuses=status::all();
         $assign_ticket=assign_ticket::with("agent","dept")->where("ticket_id",$id)->first();
         $ticket=ticket::with("ticket_status",'ticket_priority','sender_info','created_by')->where('id',$id)->first();
         $photos = json_decode($ticket->photo);
@@ -191,7 +240,7 @@ class TicketController extends Controller
             $end = Carbon::create($countdown->endtime);
         }
 //        dd($unfollowed_emps);
-        return view('ticket.ticket-view',compact('ticket','photos','assign_ticket','comment','ticket_followers','all_emp','unfollowed_emps','all_emp','depts','unassign_emp','end'));
+        return view('ticket.ticket-view',compact('ticket','photos','assign_ticket','comment','ticket_followers','all_emp','unfollowed_emps','depts','unassign_emp','end','statuses'));
     }
 
     /**
@@ -221,11 +270,13 @@ class TicketController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {
-        //
+        $ticket=ticket::where('id',$id)->first();
+        $ticket->delete();
+        return redirect()->route('tickets.index')->with('success', __('alert.delete_success'));
     }
     public function postcomment(Request $request)
     {
@@ -263,7 +314,7 @@ class TicketController extends Controller
             $user_info = new ticket_sender();
             $existing_customer=Customer::where('id',$data['client'])->first();
             if($existing_customer==null){
-                $user_info->name=$data['client_name'];
+                    $user_info->name=$data['client_name'];
                 $user_info->phone=$data['client_phone'];
             }else{
                 $user_info->name=$existing_customer->name;

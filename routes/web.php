@@ -72,15 +72,14 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::post('/add/more/follower',[TicketController::class,'add_more_follower'])->name('addfollower');
     Route::post("reassign/ticket",[TicketController::class,'reassign'])->name('reassign');
     Route::get("/piechart/report",[TicketPieChartReport::class,'index'])->name('piechart');
-    Route::get('ticket/senders',[TicketSender::class,'index'])->name("sender_info");
-    Route::resource('tickets',TicketController::class);
+    Route::resource('tickets',TicketController::class)->only('index','edit','create','store','destroy','update');
     Route::resource('cases',CaseTypeController::class);
     Route::resource('priorities',PriorityController::class);
     Route::resource('inqueries',InqueryController::class);
     Route::get('convert/lead/{id}',[InqueryController::class,'convert_lead'])->name('convert.lead');
 
     //leads route
-    Route::resource('leads',LeadController::class);
+    Route::resource('leads',LeadController::class)->only('index','create','edit','store','destroy','update');;
     Route::post("/tags/create",[LeadController::class,'tag_add'])->name('tagadd');
     Route::get("/myfollowed/lead",[LeadController::class,'my_followed'])->name('leads.myfollowed');
     Route::post("/lead/post/comment",[LeadController::class,'comment'])->name('leads.comment');
@@ -90,7 +89,7 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::get("/qualified/{id}",[LeadController::class,'qualified'])->name("qualified");
 
   //deal route
-    Route::resource('deals',DealController::class);
+    Route::resource('deals',DealController::class)->only('index','create','edit','store','destroy','update');;
     Route::post("/deal/status/change",[DealController::class,'sale_stage_change'])->name('deals.status_change');
     Route::post("/deal/company/create",[DealController::class,'company_create'])->name('company_create');
 
@@ -110,13 +109,13 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::post('invoice/status/{id}',[InvoiceController::class,'status_change'])->name('invoice.statuschange');
 
     //Approval
-    Route::resource('approvals', ApprovalController::class);
+    Route::resource('approvals', ApprovalController::class)->only('index','create','store','destroy','update');;
     Route::get("approvals/request/me",[ApprovalController::class,'request_to_me'])->name('request.me');
     Route::post('approval/post/comment/{id}',[CommentController::class,'approval_cmt'])->name('approval_cmt');
     Route::get('approval/cmt/delete/{id}',[CommentController::class,'delete_approval_cmt'])->name('approval_cmt.delete');
 
     //Meeting
-    Route::resource('meetings',MeetingController::class)->only('index','create','store','destroy');
+    Route::resource('meetings',MeetingController::class)->only('index','create','store','destroy','update');
     Route::resource('minutes',MinutesController::class);
     Route::post('minutes/assign',[MinutesController::class,'assign_minutes'])->name('assign.minutes');
 
@@ -161,12 +160,19 @@ Route::put('roles/assign-permission/{id}', [RoleController::class, 'assignPermis
 
 //list routes
 Route::get('companies-card', [CompanyController::class, 'card'])->name('companies.cards');
-Route::get('ticket/create/guest',[TicketController::class,'create']);
+Route::get('ticket/create/guest',[TicketController::class,'guest_ticket']);
 Route::post('ticket/create/guest',[TicketController::class,'store']);
 Route::resource('inqueries',InqueryController::class)->only('create','store');
 
 
 Route::middleware(['meeting_view_relative_emp','auth:employee', 'authorize', 'ownership'])->group(function () {
     Route::resource('meetings',MeetingController::class)->only('show');
+    Route::resource('tickets',TicketController::class)->only('show');
+    Route::resource('leads',LeadController::class)->only('show');
+    Route::resource('deals',DealController::class)->only('show');
+    Route::resource('approvals',ApprovalController::class)->only('show');
 });
-Route::resource('chats',MessengerController::class);
+Route::get('followed/ticket',[TicketController::class,'followed_ticket'])->name('followed.tickets');
+Route::post('complete/minutes',[MinutesController::class,'complete'])->name('complete.minutes');
+Route::get('filter/minute/{id}',[MinutesController::class,'filter'])->name('filter.minutes');
+Route::resource('senders',TicketSender::class);

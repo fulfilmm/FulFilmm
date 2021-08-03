@@ -5,6 +5,7 @@
             height: 490px;
             overflow: scroll;
         }
+
     </style>
     <!-- Page Wrapper -->
 
@@ -190,7 +191,7 @@
                             url:"{{route('deals.store')}}",
                             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                             success:function(data){
-                                window.location.href = "/deal";
+                                window.location.href = "/deals";
                                 console.log(data);
                                 // $("#org_div").load(location.href + " #org_div>* ");
                                 // $("#full_org_div").load(location.href + " #full_org_div>* ");

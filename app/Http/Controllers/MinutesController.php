@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
+use App\Models\Employee;
+use App\Models\Meeting;
+use App\Models\Meetingmember;
 use App\Models\Meetingminutes;
 use App\Models\MinutesAssign;
 use Carbon\Carbon;
@@ -17,6 +21,7 @@ class MinutesController extends Controller
         $minutes=new Meetingminutes();
         $minutes->meeting_id=$request->meeting_id;
         $minutes->minutes_no=$request->record_no;
+        $minutes->is_complete=0;
         $minutes->minutes_text=$request->minutes;
         if ($request->hasfile('attach_file')) {
             foreach ($request->file('attach_file') as $attach) {
@@ -60,6 +65,39 @@ class MinutesController extends Controller
         }else{
             return response()->json(['error'=>$validator->errors()]);
         }
+    }
+    public function complete(Request $request){
+       $minutes=Meetingminutes::where('id',$request->minute_id)->first();
+       if($minutes->is_assign){
+           $minutes->is_complete=1;
+           $minutes->update();
+           return response()->json([
+               'success'=>'completed',
+           ]);
+       }else{
+           return response()->json([
+               'error_msg'=>'Error',
+           ]);
+       }
+
+    }
+    public function filter(Request $request,$id){
+        $minutes=[];
+           $meeting_search=Meetingminutes::orWhere('minutes_no','LIKE','%'.$request->search)->orWhere('minutes_text','LIKE','%'.$request->search)->get();
+           foreach ($meeting_search as $filter){
+               if($filter->meeting_id==$id){
+                   array_push($minutes,$filter);
+               }
+           }
+        $meeting=Meeting::with('emp')->where('id',$id)->first();
+        $members=$meeting->guest_member ? json_decode($meeting->guest_member) :null;
+        $agenda=json_decode($meeting->agenda);
+        $emp_members=Meetingmember::with('emp_member')->where('meeting_id',$id)->get();
+        $all_emp=Employee::all();
+        $depts=Department::all();
+        $assign_name=MinutesAssign::with('emp','dept')->get();
+        return view('meeting.show',compact('meeting','members','emp_members','agenda','minutes','depts','all_emp','assign_name'));
+
     }
 
 }

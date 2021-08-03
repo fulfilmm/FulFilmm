@@ -16,6 +16,9 @@
                         <li class="breadcrumb-item active">Product</li>
                     </ul>
                 </div>
+                <div class="col-auto float-right ml-auto">
+                <a href="{{route("products.create")}}" class="btn btn-white float-right mr-3 mt-3 border-dark rounded-pill" style="box-shadow: white"><i class="fa fa-plus mr-2"></i>Add Product</a>
+                </div>
             </div>
         </div>
         <!-- /Page Header -->
@@ -24,18 +27,24 @@
         <div class="col-md-12">
             <div class="table-responsive">
                 <div class="bg-gradient-blue">
-                    <a href="{{route("products.create")}}" class="btn btn-white float-right mr-3 mt-3 border-dark" style="box-shadow: white"><i class="fa fa-plus"></i></a>
                     <div class="row">
-                        <div class="form-group offset-md-1 my-3 col-md-4">
-                            <select class="select" name="action" id="action_type">
-                                <option value="Enable">Enable</option>
-                                <option value="Disable">Disable</option>
-                                <option value="Delete">Delete</option>
-                            </select>
+                        <div class="ml-2 my-3 col-md-4 col-8">
+                            <div class="input-group">
+                                <select class="select" name="action" id="action_type">
+                                    <option value="Enable">Enable</option>
+                                    <option value="Disable">Disable</option>
+                                    <option value="Delete">Delete</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="form-group my-3 col-md-2">
-                            <button type="button" id="confirm" class="btn btn-primary">Confirm</button>
+                        <div class="my-3 col-md-2 col-3">
+                            <div class="form-group">
+                                <div class="row">
+                                <button type="button" id="confirm" class="btn btn-primary">Confirm</button>
+                                </div>
+                            </div>
                         </div>
+
                     </div>
                 </div>
                 <table class="table table-striped custom-table mb-0 datatable">

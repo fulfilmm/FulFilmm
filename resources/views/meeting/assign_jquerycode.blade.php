@@ -42,6 +42,7 @@
                    if($.isEmptyObject(data.error)){
                        console.log(data);
                        $("#minutelist{{$minute->id}}").load(location.href + " #minutelist{{$minute->id}}>* ");
+                       $("#view{{$minute->id}}").load(location.href + " #view{{$minute->id}}>* ");
                    }else {
                        $.each(data.error,function (key,value){
                            console.log(key);
@@ -53,6 +54,23 @@
 
         });
     });
+    $(document).ready(function() {
+        $(document).on('click', "#complete_todo{{$minute->id}}", function () {
+            var minutes_id=$('#minutes_id{{$minute->id}}').val()
+            $.ajax({
+                type:'POST',
+                data : {
+                    minute_id:minutes_id,
+                },
+                url:"{{route('complete.minutes')}}",
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                success:function(data){
+                   console.log(data);
+                        $("#minutelist{{$minute->id}}").load(location.href + " #minutelist{{$minute->id}}>* ");
+                        $("#view{{$minute->id}}").load(location.href + " #view{{$minute->id}}>* ");
+                }
+            });
 
-
+        });
+    });
 </script>

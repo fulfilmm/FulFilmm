@@ -177,7 +177,7 @@
                                                                     <a class="dropdown-item" href="{{route('deals.edit',$deal->id)}}">Edit</a>
                                                                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_modal{{$deal->id}}">Change Stage</a></li>
                                                                     <a class="dropdown-item" href="{{route('deals.show',$deal->id)}}">Detail View</a></li>
-                                                                    <a class="dropdown-item" href="{{url("/deal/delete/$deal->id")}}">Delete</a></li>
+                                                                    <a class="dropdown-item" data-toggle="modal" data-target="#delete_deal{{$deal->id}}">Delete</a></li>
                                                                 </div>
                                                                 <div id="edit_task_modal{{$deal->id}}" class="modal custom-modal fade" role="dialog">
                                                                     <div class="modal-dialog">
@@ -233,6 +233,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                @include('Deal.delete')
                                             @endif
                                         @endforeach
                                     </div>
@@ -265,8 +266,10 @@
                                                                     <a class="dropdown-item" href="{{route('deals.edit',$deal->id)}}">Edit</a>
                                                                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_modal{{$deal->id}}">Change Stage</a></li>
                                                                     <a class="dropdown-item" href="{{route('deals.show',$deal->id)}}">Detail View</a></li>
-                                                                    <a class="dropdown-item" href="{{url("/deal/delete/$deal->id")}}">Delete</a></li>
+                                                                    <a class="dropdown-item" data-toggle="modal" data-target="#delete_deal{{$deal->id}}">Delete</a></li>
+
                                                                 </div>
+                                                                @include('Deal.delete')
                                                                 <div id="edit_task_modal{{$deal->id}}" class="modal custom-modal fade" role="dialog">
                                                                     <div class="modal-dialog">
                                                                         <div class="modal-content">
@@ -353,8 +356,10 @@
                                                                     <a class="dropdown-item" href="{{route('deals.edit',$deal->id)}}">Edit</a>
                                                                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_modal{{$deal->id}}">Change Stage</a></li>
                                                                     <a class="dropdown-item" href="{{route('deals.show',$deal->id)}}">Detail View</a></li>
-                                                                    <a class="dropdown-item" href="{{url("/deal/delete/$deal->id")}}">Delete</a></li>
+                                                                    <a class="dropdown-item" data-toggle="modal" data-target="#delete_deal{{$deal->id}}">Delete</a></li>
+
                                                                 </div>
+                                                                @include('Deal.delete')
                                                                 <div id="edit_task_modal{{$deal->id}}" class="modal custom-modal fade" role="dialog">
                                                                     <div class="modal-dialog">
                                                                         <div class="modal-content">
@@ -408,6 +413,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                @include('Deal.delete')
                                             @endif
                                         @endforeach
                                     </div>
@@ -441,8 +447,9 @@
                                                                     <a class="dropdown-item" href="{{route('deals.edit',$deal->id)}}">Edit</a>
                                                                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_modal{{$deal->id}}">Change Stage</a></li>
                                                                     <a class="dropdown-item" href="{{route('deals.show',$deal->id)}}">Detail View</a></li>
-                                                                    <a class="dropdown-item" href="{{url("/deal/delete/$deal->id")}}">Delete</a></li>
+                                                                    <a class="dropdown-item" data-toggle="modal" data-target="#delete_deal{{$deal->id}}">Delete</a></li>
                                                                 </div>
+                                                                @include('Deal.delete')
                                                                 <div id="edit_task_modal{{$deal->id}}" class="modal custom-modal fade" role="dialog">
                                                                     <div class="modal-dialog">
                                                                         <div class="modal-content">
@@ -530,8 +537,10 @@
                                                                     <a class="dropdown-item" href="{{route('deals.edit',$deal->id)}}">Edit</a>
                                                                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_modal{{$deal->id}}">Change Stage</a></li>
                                                                     <a class="dropdown-item" href="{{route('deals.show',$deal->id)}}">Detail View</a></li>
-                                                                    <a class="dropdown-item" href="{{url("/deal/delete/$deal->id")}}">Delete</a></li>
+                                                                    <a class="dropdown-item" data-toggle="modal" data-target="#delete_deal{{$deal->id}}">Delete</a></li>
+
                                                                 </div>
+                                                                @include('Deal.delete')
                                                                 <div id="edit_task_modal{{$deal->id}}" class="modal custom-modal fade" role="dialog">
                                                                     <div class="modal-dialog">
                                                                         <div class="modal-content">
@@ -618,8 +627,9 @@
                                                                     <a class="dropdown-item" href="{{route('deals.edit',$deal->id)}}">Edit</a>
                                                                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_modal{{$deal->id}}">Change Stage</a></li>
                                                                     <a class="dropdown-item" href="{{route('deals.show',$deal->id)}}">Detail View</a></li>
-                                                                    <a class="dropdown-item" href="{{url("/deal/delete/$deal->id")}}">Delete</a></li>
+                                                                    <a class="dropdown-item" data-toggle="modal" data-target="#delete_deal{{$deal->id}}">Delete</a></li>
                                                                 </div>
+                                                                @include('Deal.delete')
                                                                 <div id="edit_task_modal{{$deal->id}}" class="modal custom-modal fade" role="dialog">
                                                                     <div class="modal-dialog">
                                                                         <div class="modal-content">
@@ -685,8 +695,6 @@
                 </div>
             </div>
         </div>
-
-        <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
 <script>
 </script>
 @endsection
