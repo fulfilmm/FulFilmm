@@ -3,7 +3,7 @@
     <!-- Logo -->
     <div class="header-left">
         <a href="{{url('/')}}" class="logo">
-            <img src="{{ App\Models\Company::userCompanyLogo() ?? 'img/logo.png'}}" width="40" height="40" alt="">
+            <img src="{{asset(\App\Models\Company::userCompanyLogo())? : ''}}" width="40" height="40" alt="">
         </a>
     </div>
     <!-- /Logo -->
@@ -62,7 +62,7 @@
         </div>
     </li> --}}
     <!-- /Flag -->
-
+@yield('noti_section')
         <!-- Notifications -->
     {{-- <li class="nav-item dropdown">
         <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
@@ -126,15 +126,6 @@
                                 </div>
                             </div>
                         </a>
-<<<<<<< HEAD
-                    </div>
-                </li> --}}
-                <!-- /Flag -->
-
-                <!-- Notifications -->
-                 @yield('noti_section')
-                <!-- /Notifications -->
-=======
                     </li>
                     <li class="notification-message">
                         <a href="activities">
@@ -157,7 +148,6 @@
         </div>
     </li> --}}
     <!-- /Notifications -->
->>>>>>> origin/develop
 
         <!-- Message Notifications -->
     {{-- <li class="nav-item dropdown">

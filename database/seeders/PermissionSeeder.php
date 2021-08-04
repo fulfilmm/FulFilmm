@@ -14,12 +14,8 @@ class PermissionSeeder extends Seeder
      */
     protected $permissions = [
         'activities', 'activity_tasks', 'comments', 'companies', 'customers', 'departments',
-<<<<<<< HEAD
-        'employees', 'groups', 'roles', 'permissions', 'assignments', 'assignment_tasks', 'projects','tickets','cases','priorities',
-        'leads','deals','quotations','invoices','approvals','meetings','minutes','inqueries','products','orders'
-=======
-        'employees', 'groups', 'roles', 'permissions', 'assignments', 'assignment_tasks', 'projects', 'project_tasks'
->>>>>>> origin/develop
+        'employees','roles', 'permissions', 'assignments', 'assignment_tasks', 'projects','tickets','cases','priorities',
+        'leads','deals','quotations','invoices','approvals','meetings','minutes','inqueries','products','orders', 'groups','project_tasks'
     ];
     public function run()
     {
@@ -33,8 +29,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'activity_tasks.toggle', 'display_name' => 'Can toggle the activity tasks status', "guard_name" => 'employee']);
         Permission::create(['name' => 'project_tasks.toggle', 'display_name' => 'Can toggle the projects tasks status', "guard_name" => 'employee']);
         Permission::create(['name' => 'assignments.changeStatus', 'display_name' => 'Can change the assignment status', "guard_name" => 'employee']);
-<<<<<<< HEAD
-       //Products
+        //Products
         Permission::create(['name' => 'duplicate', 'display_name' => "Can duplicate  product", 'guard_name' => 'employee']);
         Permission::create(['name' => 'tax.create', 'display_name' => "Can store tax", 'guard_name' => 'employee']);
         Permission::create(['name' => 'category.create', 'display_name' => "Can store category", 'guard_name' => 'employee']);
@@ -55,30 +50,28 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'convert.lead', 'display_name' => "Can change convert to lead status in inQuery", 'guard_name' => 'employee']);
         Permission::create(['name' => 'workdone', 'display_name' => "If Lead Next step complete,can change workdone status ", 'guard_name' => 'employee']);
         Permission::create(['name' => 'qualified', 'display_name' => "If lead qualified ,can change qualified status ", 'guard_name' => 'employee']);
-       //deal
+        //deal
         Permission::create(['name' => 'deals.status_change', 'display_name' => "Can change sale stage in Deal", 'guard_name' => 'employee']);
         Permission::create(['name' => 'add_new_customer', 'display_name' => "Can add new customer while deal create", 'guard_name' => 'employee']);
         Permission::create(['name' => 'company_create', 'display_name' => "Can add new company while deal create", 'guard_name' => 'employee']);
-       //quotation
+        //quotation
         Permission::create(['name' => 'quotations.discard', 'display_name' => "Cancel quotation", 'guard_name' => 'employee']);
         Permission::create(['name' => 'quotation.sendemail', 'display_name' => "Can go to the quotation email create page", 'guard_name' => 'employee']);
         Permission::create(['name' => 'quotations.mail', 'display_name' => "Can send to customer the quotation email", 'guard_name' => 'employee']);
-       //invoice
+        //invoice
         Permission::create(['name' => 'invoices.search', 'display_name' => "Can Search invoices", 'guard_name' => 'employee']);
         Permission::create(['name' => 'invoice.sendmail', 'display_name' => "Can go to invoices email preparation view page", 'guard_name' => 'employee']);
         Permission::create(['name' => 'send', 'display_name' => "Can send invoice mail", 'guard_name' => 'employee']);
         Permission::create(['name' => 'invoice.statuschange', 'display_name' => "Can change invoice status", 'guard_name' => 'employee']);
-       //approval
+        //approval
         Permission::create(['name' => 'request.me', 'display_name' => "Can view employee approval request to login employee", 'guard_name' => 'employee']);
         Permission::create(['name' => 'approval_cmt', 'display_name' => "Can post comment in approval show", 'guard_name' => 'employee']);
         Permission::create(['name' => 'approval_cmt.delete', 'display_name' => "Can delete comment in approval show", 'guard_name' => 'employee']);
-      //minutes
+        //minutes
         Permission::create(['name' => 'assign.minutes', 'display_name' => "Can assign  minutes  in meeting show", 'guard_name' => 'employee']);
-=======
 
         Permission::create(['name' => 'projects.accept_proposal', 'display_name' => 'Can accept proposal', "guard_name" => 'employee']);
         Permission::create(['name' => 'projects.status_update', 'display_name' => 'Can udpate project status', "guard_name" => 'employee']);
->>>>>>> origin/develop
     }
 
     private function createResourcePermissions($resource)

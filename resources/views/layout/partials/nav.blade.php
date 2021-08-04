@@ -120,7 +120,6 @@
                         <a class="{{ Request::is('projects') ? 'active' : '' }}"
                            href="{{ route('projects.index') }}"><i class="la la-cube"></i> <span>Projects</span></a>
                     </li>
-<<<<<<< HEAD
                     <li class="menu-title">
                         <span>CRM</span>
                     </li>
@@ -189,8 +188,6 @@
                             <li><a class="{{ Request::is('request.me') ? 'active' : '' }}" href="{{ route('request.me') }}">Requests Me </a></li>
                         </ul>
                     </li>
-=======
->>>>>>> origin/develop
                 </ul>
             </div>
         </div>

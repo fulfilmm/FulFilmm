@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<<<<<<< HEAD
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
@@ -12,7 +11,6 @@
         <title>Dashboard - HRMS admin template</title>
         <!-- Favicon -->
         <link rel="shortcut icon" type="image/x-icon" href="{{url(asset('img/favicon.png'))}}">
-=======
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
@@ -22,7 +20,7 @@
     <meta name="author" content="Dreamguys - Bootstrap Admin Template">
     <meta name="robots" content="noindex, nofollow">
     {{--        <title>{{env('APP_NAME')}}</title>--}}
-    
+
     @hasSection('title')
         <title> @yield('title')</title>
     @else
@@ -31,7 +29,6 @@
 
 <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png">
->>>>>>> origin/develop
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
@@ -67,8 +64,6 @@
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
 
     <link rel="stylesheet" href="{{asset('css/custom.css')}}">
-
-<<<<<<< HEAD
         <script src="{{asset('js/jquery-3.2.1.min.js')}}"></script>
 
         <!-- Bootstrap CSS -->
@@ -109,6 +104,4 @@
 
 
     </head>
-=======
 </head>
->>>>>>> origin/develop

@@ -45,7 +45,6 @@ class Employee extends Authenticatable
     {
         return $this->belongsToMany(Assignment::class, 'assignment_employee');
     }
-<<<<<<< HEAD
     public function assign_ticket(){
         return $this->hasMany(assign_ticket::class);
     }
@@ -55,13 +54,12 @@ class Employee extends Authenticatable
     public function ticket_comment(){
         return $this->hasMany(ticket_comments::class);
     }
-    public function followed(){
+    public function followed()
+    {
         return $this->hasMany(ticket_follower::class);
-=======
-
+    }
     public function project_tasks()
     {
         return $this->belongsToMany(ProjectTask::class, 'project_task_employee');
->>>>>>> origin/develop
     }
 }
