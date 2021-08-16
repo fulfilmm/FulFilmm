@@ -35,49 +35,49 @@ class DatabaseSeeder extends Seeder
                 'join_date' => '1999-10-20',
             ]
         );
-        $superadmin->assignRole('Super Admin');
+
         $ticketadmin = Employee::updateOrCreate(
             ['email' => 'thomascinpu@gmail.com'],
             [
                 'name' => 'TicketAdmin',
                 'department_id' => '1',
                 'phone' => '123123',
-                'email' => 'admin@gmail.com',
+                'email' => 'thomascinpu@gmail.com',
                 'work_phone' => 'asdasd',
                 'can_login' => true,
                 'password' => bcrypt('123123'),
                 'join_date' => '1999-10-20',
             ]
         );
-        $ticketadmin->assignRole('Ticket Admin');
+
         $ticketagent = Employee::updateOrCreate(
-            ['email' => 'thomascinpu@gmail.com'],
+            ['email' => 'ma.sa.kitaite@gmail.com'],
             [
-                'name' => 'admin',
+                'name' => 'Agent',
                 'department_id' => '1',
                 'phone' => '123123',
-                'email' => 'admin@gmail.com',
+                'email' => 'ma.sa.kitaite@gmail.com',
                 'work_phone' => 'asdasd',
                 'can_login' => true,
                 'password' => bcrypt('123123'),
                 'join_date' => '1999-10-20',
             ]
         );
-        $ticketagent->assignRole('Agent');
+
         $ceo = Employee::updateOrCreate(
             ['email' => 'wailinaung@gmail.com'],
             [
                 'name' => 'Ko Wai Lin(CEO)',
                 'department_id' => '1',
                 'phone' => '123123',
-                'email' => 'admin@gmail.com',
+                'email' => 'wailinaung@gmail.com',
                 'work_phone' => 'asdasd',
                 'can_login' => true,
                 'password' => bcrypt('123123'),
                 'join_date' => '1999-10-20',
             ]
         );
-        $ceo->assignRole('CEO');
+
         case_type::create(['name'=>'Problem One']);
         case_type::create(['name'=>'Problem Two']);
         case_type::create(['name'=>'Problem Three']);
@@ -102,6 +102,10 @@ class DatabaseSeeder extends Seeder
 
         Employee::factory(10)->create();
         // \App\Models\User::factory(10)->create();
+        $superadmin->assignRole('Super Admin');
+        $ticketagent->assignRole('Agent');
+        $ticketadmin->assignRole('Ticket Admin');
+        $ceo->assignRole('CEO');
 
 
     }
