@@ -1,4 +1,5 @@
 @extends('layout.mainlayout')
+@section('title','Meeting Create')
 @section('content')
     <!-- Page Wrapper -->
 

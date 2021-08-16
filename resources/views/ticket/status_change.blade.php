@@ -1,33 +1,36 @@
-<div class="modal fade" id="change_status{{$ticket->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ticket Status Change</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="{{url("/status/$ticket->id")}}" method="POST">
-                        @csrf
-                          <div class="col">
-                            <div class="form-group">
-                                <select name="status_id" id="" class="select">
-                                    @foreach($statuses as $status)
-                                        @if($status->id==$ticket->status)
-                                    <option value="{{$status->id}}" selected>{{$status->name}}</option>
-                                        @else
-                                    <option value="{{$status->id}}">{{$status->name}}</option>
-                                        @endif
-                                    @endforeach
-                                </select>
-                            </div>
-                          </div>
-                    <div class="form-group text-center">
-                        <button type="submit" class="btn btn-outline-info" >Save</button>
-                    </div>
-                    </form>
-            </div>
-        </div>
-    </div>
+<div class="dropdown-menu dropdown-menu-right">
+    @foreach($statuses as $key=>$val)
+
+           @if($val!='Overdue')
+            @foreach($status_color as $staus=>$color)
+                @if($staus==$val)
+                    <input type="hidden" id="status_id{{$key}}" value="{{$key}}">
+                    <a class="dropdown-item" href="#" id="status_change{{$key}}" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o mr-1" style="color:{{$color}}"></i>{{$val}}</a>
+                @endif
+            @endforeach
+            <script>
+                $(document).ready(function() {
+                    $(document).on('click', '#status_change{{$key}}', function () {
+
+                        // var customer_id=$("#customer_id").val();
+                        var status=$("#status_id{{$key}}").val();
+                        $.ajax({
+                            data : {
+                                status_id:status,
+
+                            },
+                            type:'POST',
+                            url:"{{url('status/'.$ticket->id)}}",
+                            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                            success:function(data){
+                                console.log(data);
+                                $("#status_div").load(location.href + " #status_div>* ");
+
+                            }
+                        });
+                    });
+                });
+            </script>
+               @endif
+    @endforeach
 </div>

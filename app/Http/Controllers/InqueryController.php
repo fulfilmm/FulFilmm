@@ -37,7 +37,7 @@ class InqueryController extends Controller
         'Thongwa Township','Twante Township','Ahlon Township','Bahan Township','Dagon Township','Kyauktada Township',
         'Kyimyindaing Township','Lanmadaw Township','Latha Township','Pabedan Township','Sanchaung Township','Seikkan Township',
         'Hlaing Township','Kamayut Township','Mayangon Township'];
-    public function create()
+    public function create(Request $request)
     {
         $products=product::all();
         $townships=$this->townships;
@@ -129,6 +129,6 @@ class InqueryController extends Controller
         $inquery=Inquery::where("id",$id)->first();
         $inquery->convert_lead=true;
         $inquery->update();
-        return redirect(route('leads.create'));
+        return redirect(route('leads.create',compact('inquery')));
     }
 }

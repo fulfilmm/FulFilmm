@@ -25,16 +25,16 @@ class MeetingController extends Controller
     public function index()
     {
         $curren_user=Auth::guard('employee')->user();
-        $meeting=Meeting::where('meeting_creater',$curren_user->id)->get();
-        $invite_me=Meetingmember::with('meeting')->where('member_id',$curren_user->id)->get();
+        $meetings=Meeting::where('meeting_creater',$curren_user->id)->get();
+        $invites_me=Meetingmember::with('meeting')->where('member_id',$curren_user->id)->get();
         $alert_meeting=[];
-        foreach ($meeting as $item){
-            if(\Carbon\Carbon::parse($item->date_time)<= (\Carbon\Carbon::now()->addMinutes(30)))
+        foreach ($meetings as $item){
+            if(\Carbon\Carbon::parse($item->date_time)<= (\Carbon\Carbon::now()->addMinutes(30)) && \Carbon\Carbon::parse($item->date_time)->hour(23)>= (\Carbon\Carbon::now()) )
             {
                 array_push($alert_meeting,$item);
             }
-            if($invite_me!=null){
-            foreach ($invite_me as $invite){
+            if($invites_me!=null){
+            foreach ($invites_me as $invite){
                     if(Carbon::parse($invite->meeting->date_time)<= (Carbon::now()->addMinutes(30))){
                         array_push($alert_meeting,$invite->meeting);
                     }
@@ -43,7 +43,7 @@ class MeetingController extends Controller
             }
 
         }
-        return view('meeting.index',compact('meeting','invite_me','alert_meeting'));
+        return view('meeting.index',compact('meetings','invites_me','alert_meeting'));
     }
     /**
      * Show the form for creating a new resource.

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 class EmployeeAuthController extends LoginController
 {
 
-    protected $redirectTo = '/employees';
+    protected $redirectTo = '/';
 
     public function __construct()
     {
@@ -29,11 +29,13 @@ class EmployeeAuthController extends LoginController
 
     protected function authenticated(Request $request, $user)
     {
+        $this->redirectTo=Auth::guard('employee')->user()->role->name=='Agent'?'tickets':'/';
         if ($user->can_login) {
-
             return redirect()->intended($this->redirectPath());
+        }else{
+            return $this->logout($request)->withErrors(['email' => 'This user account is not authorized to Login']);
         }
-        return $this->logout($request)->withErrors(['email' => 'This user account is not authorized to Login']);
+
     }
 
     protected function loggedOut(Request $request)

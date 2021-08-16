@@ -1,4 +1,5 @@
 @extends('layout.mainlayout')
+@section('title','Approval')
 @section('content')
     <!-- Page Wrapper -->
 
@@ -53,7 +54,7 @@
                         <td style="min-width: 150px;">{{$approval->request_emp->name}}</td>
                         <td style="min-width: 100px;">{{$approval->state==null ? "N/A" : $approval->state}}</td>
                         <td style="min-width: 150px;">{{$approval->approver->name}}</td>
-                        <td style="min-width: 160px;">{{$approval->secondary_approved ? $approval->secondary_approver->name :"N/A"}}</li></ul></td>
+                        <td style="min-width: 160px;">{{$approval->secondary_approved ? $approval->secondary_approver->name :"N/A"}}/td>
                         <td style="min-width: 100px;"><a href="{{route('approvals.show',$approval->id)}}" class="btn btn-outline-info btn-sm la la-eye mr-2"></a><a href="" data-toggle="modal" data-target="#delete{{$approval->id}}" class="btn btn-outline-danger btn-sm la la-trash"></a></td>
                         @include('approval.delete')
                     </tr>
@@ -84,7 +85,7 @@
                             <td style="min-width: 100px;">{{$data->request_emp->name}}</td>
                             <td style="min-width: 100px;">{{$data->state==null ? "N/A" : $approval->state}}</td>
                             <td style="min-width: 150px;">{{$data->approver->name}}</td>
-                            <td style="min-width: 160px;">{{$data->secondary_approved ?$data->secondary_approver->name :""}}</li></ul></td>
+                            <td style="min-width: 160px;">{{$data->secondary_approved ?$data->secondary_approver->name :""}}/td>
                             <td style="min-width: 100px;"><a  href="{{route('approvals.show',$data->id)}}" class="btn btn-outline-info btn-sm"><i class="la la-eye"></i></a>
                              @php $approval=$data;@endphp
                                 <a href="" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#delete{{$approval->id}}"><i class="la la-trash"></i></a></td>
@@ -164,10 +165,10 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="">CC</label>
-                            <select name="cc[]" id="" class="select" multiple>
+                            <label for="cc">CC</label>
+                            <select name="cc[]" id="cc" class="select" multiple>
                                 @foreach($all_emp as $emp)
-                                    @if($emp->id !=\Illuminate\Support\Facades\Auth::guard('employee')->user()->id)
+                                    @if($emp->id != \Illuminate\Support\Facades\Auth::guard('employee')->user()->id)
                                     <option value="{{$emp->id}}">{{$emp->name}}</option>
                                     @endif
                                 @endforeach

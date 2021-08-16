@@ -8,6 +8,7 @@ use App\Models\Employee;
 use App\Models\lead_comment;
 use App\Models\lead_follower;
 use App\Models\leadModel;
+use App\Models\MainCompany;
 use App\Models\next_plan;
 use App\Models\tags_industry;
 use Carbon\Carbon;
@@ -49,6 +50,7 @@ class LeadController extends Controller
      */
     public function create()
     {
+        $prefix=MainCompany::where('ismaincompany',true)->pluck('lead_prefix','id')->first();
             $allemployees = Employee::all()->pluck('name', 'id')->all();
             $allcustomers = Customer::all()->pluck('name', 'id')->all();
 //            dd($allcustomers);
@@ -59,7 +61,7 @@ class LeadController extends Controller
             $lastlead->lead_id++;
             $lead_id = $lastlead->lead_id;
         } else {
-            $lead_id ="#Lead" . "-0001";
+            $lead_id =($prefix ? :'Lead') . "-0001";
         }
         $tags = tags_industry::all();
         $last_tag = tags_industry::orderBy('id', 'desc')->first();
@@ -75,6 +77,7 @@ class LeadController extends Controller
     public function store(Request $request)
     {
 //        dd($request->all());
+
             $lead = new leadModel();
             $lead->lead_id = $request->lead_id;
             $lead->title = $request->lead_title;

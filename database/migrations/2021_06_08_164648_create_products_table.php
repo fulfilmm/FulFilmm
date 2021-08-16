@@ -29,7 +29,7 @@ class CreateProductsTable extends Migration
             $table->bigInteger("cat_id")->unsigned();
             $table->foreign("cat_id")->references("id")->on("products_categories")->onDelete("cascade");
             $table->tinyInteger("enable");
-            $table->text("image");
+            $table->text("image")->nullable();
             $table->string("currency_unit");
             $table->timestamps();
         });

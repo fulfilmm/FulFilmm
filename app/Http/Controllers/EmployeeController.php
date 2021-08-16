@@ -78,6 +78,9 @@ class EmployeeController extends Controller
      */
     public function store(EmployeeRequest $request)
     {
+        $this->validate($request,[
+            'email'=>'unique:employees'
+        ]);
         $data  = collect($request->validated())->except('role_id')->toArray();
 
         $employee = Employee::create($data);

@@ -41,13 +41,13 @@
                         <tr>
                             <td><i class="fa fa-bars mr-3"></i> {{$priority->priority}}</td>
                             <td>@if($priority->color=="success")
-                                    <a href=""class="btn btn-success">Green</a>
+                                    <a href=""class="btn btn-{{$priority->color}}" style="width: 100px;">Green</a>
                                 @elseif($priority->color=="danger")
-                                    <a href=""class="btn btn-danger">Red</a>
-                                @elseif($priority->color=="primary")
-                                    <a href=""class="btn btn-primary">Blue</a>
+                                    <a href=""class="btn btn-{{$priority->color}}" style="width: 100px;">Red</a>
+                                @elseif($priority->color=="info")
+                                    <a href=""class="btn btn-{{$priority->color}}" style="width: 100px;">Blue</a>
                                 @elseif($priority->color=="warning")
-                                    <a href=""class="btn btn-warning">Yellow</a>
+                                    <a href=""class="btn btn-{{$priority->color}}" style="width: 100px;">Yellow</a>
                                 @endif
                             </td>
                             <td>

@@ -1,12 +1,6 @@
 @extends('layout.mainlayout')
+@section("title",'Deal Edit')
 @section('content')
-    <style>
-        .scoll{
-            height: 490px;
-            overflow: scroll;
-        }
-    </style>
-    <!-- Page Wrapper -->
 
         <!-- Page Content -->
         <div class="content container-fluid">
@@ -16,7 +10,7 @@
                     <div class="col-sm-12">
                         <h3 class="page-title">Deal Edit</h3>
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
                             <li class="breadcrumb-item active"><a href="{{url("deal")}}">Deal</a></li>
                             <li class="breadcrumb-item active">Deal Edit</li>
                         </ul>
@@ -34,7 +28,7 @@
                     <div class="col-12 my-3">
                     <div class="row my-3">
                         <div class="col-md-2">
-                            <label for="" >Deal Name</label>
+                            <label for="full_form_name" >Deal Name</label>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
@@ -42,11 +36,11 @@
                             </div>
                         </div>
                         <div class="col-md-2 col-12">
-                            <label for="">Amount</label>
+                            <label for="amount">Amount</label>
                         </div>
                         <div class="col-md-4 col-12">
                             <div class="input-group">
-                                <input type="number" name="amount" class="form-control"value="{{$deal->amount}}" aria-describedby="basic-addon2">
+                                <input type="number" id="amount" name="amount" class="form-control"value="{{$deal->amount}}" aria-describedby="basic-addon2">
                                     <select name="unit" name="unit" id="full_form_unit" class="form-control">
                                     @if($deal->unit=="MMK")
                                         <option value="MMK" selected>MMK</option>
@@ -61,7 +55,7 @@
                     </div>
                     <div class="row my-3">
                         <div class="col-md-2 col-12 mt-3">
-                            <label for="" >Organization</label>
+                            <label for="full_org" >Organization</label>
                         </div>
                         <div class="col-md-4 col-12" id="edit_org_div">
                             <div class="input-group">
@@ -78,7 +72,7 @@
                             </div>
                         </div>
                         <div class="col-md-2 col-12 mt-3">
-                            <label for="">Contact Name</label>
+                            <label for="full_contact">Contact Name</label>
                         </div>
                         <div class="col-md-4 col-12">
                             <div class="input-group" id="contact_div" >
@@ -97,14 +91,14 @@
                     </div>
                     <div class="row my-3">
                         <div class="col-md-2 mt-3">
-                            <label for="" >Expected Close Date</label>
+                            <label for="full_exp_date" >Expected Close Date</label>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <input type="date" id="full_exp_date" name="exp_date" class="form-control"  value="{{\Carbon\Carbon::parse($deal->close_date)->format('Y-m-d')}}">
                             </div>
                         </div>
-                        <div class="col-md-2 mt-3"><label for="">Pipeline</label></div>
+                        <div class="col-md-2 mt-3"><label for="full_pipeline">Pipeline</label></div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <select name="pipeline" id="full_pipeline" class="form-control ">
@@ -118,7 +112,7 @@
                     </div>
                     <div class="row my-3">
                         <div class="col-md-2 mt-3">
-                            <label for="" >Sale Stage</label>
+                            <label for="full_sale_stage" >Sale Stage</label>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
@@ -133,7 +127,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-2 mt-3"><label for="">Assigned To
+                        <div class="col-md-2 mt-3"><label for="full_assign_to">Assigned To
                             </label></div>
                         <div class="col-md-4">
                             <div class="form-group">
@@ -151,7 +145,7 @@
                     </div>
                     <div class="row my-3">
                         <div class="col-md-2 mt-3">
-                            <label for="" >Lead Source</label>
+                            <label for="full_lead_source" >Lead Source</label>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
@@ -167,42 +161,37 @@
                             </div>
                         </div>
                         <div class="col-md-2 mt-3">
-                            <label for="">Next Step</label></div>
+                            <label for="next_step">Next Step</label></div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <input type="text"id="next_step" name="next_step" value="{{$deal->next_step}}" class="form-control">
+                                <input type="text" id="next_step" name="next_step" value="{{$deal->next_step}}" class="form-control">
                             </div>
                         </div>
                     </div>
                     <div class="row my-3">
                         <div class="col-md-2 mt-3">
-                            <label for="" >Type</label>
+                            <label for="full_type" >Type</label>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <select name="type" id="full_type" class="form-control">
-                                    @if($deal->type=="Existing Business")
-                                        <option value="Existing Business" selected>Existing Business</option>
-                                        <option value="New Business">New Business</option>
-                                    @else
-                                        <option value="Existing Business">Existing Business</option>
-                                        <option value="New Business" selected>New Business</option>
-                                    @endif
+                                        <option value="Existing Business" {{$deal->type=="Existing Business" ? 'selected' : ''}}>Existing Business</option>
+                                        <option value="New Business" {{$deal->type=="New Business" ? 'selected' : ''}}>New Business</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-2 col-12 mt-3">
-                            <label for="">Probability</label></div>
+                            <label for="probability">Probability</label></div>
                         <div class="col-md-4">
                             <div class="input-group">
-                                <input type="number" name="probality" class="form-control"value="{{$deal->probability}}" aria-describedby="basic-addon2">
+                                <input type="number" id="probability" name="probality" class="form-control" value="{{$deal->probability}}" aria-describedby="basic-addon2">
                                 <span class="input-group-text" id="basic-addon2">%</span>
                             </div>
                         </div>
                     </div>
                     <div class="row my-3">
                         <div class="col-md-2 mt-3">
-                            <label for="">Weighted Revenue</label></div>
+                            <label for="weight_revenue">Weighted Revenue</label></div>
                         <div class="col-md-4">
                            <div class="input-group">
                                 <input type="number" name="revenue" id="weight_revenue" value="{{$deal->weighted_revenue}}" class="form-control col-8">
@@ -218,7 +207,7 @@
                             </div>
                         </div>
                         <div class="col-md-2 mt-3">
-                            <label for="" >Lost Reason</label>
+                            <label for="lost_reason" >Lost Reason</label>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
@@ -239,7 +228,7 @@
             </div>
             <div class="card">
                 <div class="card-header">
-                    Decription Detail
+                    <label for="description">Description </label>
                 </div>
                 <div class="mx-3 my-3">
                     <textarea name="description" id="description" style="width: 100%" rows="10">{{$deal->description}}</textarea>
@@ -265,14 +254,13 @@
                 var customer_email=$("#customer_email").val();
                 var customer_company=$("#customer_company_id option:selected").val();
                 var customer_address=$("#customer_address").text();
-                var type="ajax";
                 $.ajax({
                     data : {
                         name:customer_name,
                         phone:customer_phone,
                         email:customer_email,
                         company_id:customer_company,
-                        address:customer_address,
+                        address:customer_address
                     },
                     type:'POST',
                     url:"{{route('add_new_customer')}}",
@@ -319,7 +307,7 @@
                         facebook_page:facebook_page,
                         parent_company:parent_company,
                         parent_company_2:parent_company_2,
-                        user_company:user_company,
+                        user_company:user_company
                     },
                     url:"{{route('company_create')}}",
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},

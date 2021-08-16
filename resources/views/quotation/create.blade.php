@@ -93,7 +93,7 @@
                         </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab" style="overflow: auto">
                             <table class="table">
                                 <thead>
                                 <th scope="col">Product</th>
@@ -236,7 +236,7 @@
                                     </tr>
                                 @endforeach
                                 <tr>
-                                    <td>
+                                    <td style="min-width: 150px;">
                                         <input type="hidden" id="form_id" value="{{$request_id[0]}}">
                                         <select name="" id="product" class="form-control">
                                             <option value="">Select Product</option>
@@ -245,20 +245,20 @@
                                             @endforeach
                                         </select>
                                     </td>
-                                    <td>
+                                    <td style="min-width: 150px;">
                                         <input type="text" name="description" id="order_description" class="form-control">
                                     </td>
                                     <td>
-                                        <input type="number" name="hello" id="quantity" class="form-control " value="0">
+                                        <input type="number" name="quantity" id="quantity" class="form-control " value="0">
                                     </td>
-                                    <td>
+                                    <td style="min-width: 150px;">
                                         <input type="number" id="price" class="form-control " value="0">
                                     </td>
                                     <td>
                                         <input type="text" class="form-control" name="tax" id="product_tax">
                                     </td>
-                                    <td>
-                                        <input type="number" name="total" id="total" class="form-control col-md-7" value="0">
+                                    <td style="min-width: 150px;">
+                                        <input type="number" name="total" id="total" class="form-control" value="0">
                                     </td>
                                     <td><input type="text" class="form-control" id="unit"></td>
                                     <td>
@@ -283,15 +283,15 @@
                                     <td><input class="form-control" type="text" id="grand_total" value="{{$grand_total}}"></td>
                                 </tr>
                             </table>
-                            <label for="">Terms and Condition</label>
-                            <div class="term">
-                            <div class="input-group">
-                                <input type="text" class="form-control " name="term_condition" id="term_and_condition" placeholder="..terms and conditions .."><br>
+
+
+                    </div>
+                        <label for="term_and_condition" class="mt-3">Terms and Condition</label>
+                        <div class="term">
+                            <div class="input-group my-3">
+                                <textarea  class="form-control " name="term_condition" id="term_and_condition" placeholder="Write terms and conditions .."></textarea><br>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
-                        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
-                    </div>
                 </div>
             </div>
         </form>

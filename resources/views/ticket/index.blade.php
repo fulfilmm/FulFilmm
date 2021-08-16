@@ -1,4 +1,5 @@
 @extends('layout.mainlayout')
+@section('title','Tickets')
 @section('content')
     <link rel="stylesheet" href="{{url(asset('css/ticket.css'))}}">
 
@@ -10,7 +11,7 @@
                     <div class="col">
                         <h3 class="page-title">Tickets</h3>
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="index">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
                             <li class="breadcrumb-item active">Tickets</li>
                         </ul>
                     </div>
@@ -27,75 +28,97 @@
                     <div class="card-group m-b-30">
                         <div class="card">
                             <div class="card-body">
-                                <div class="d-flex justify-content-between mb-3">
+                                <div class="d-flex justify-content-between">
                                     <div>
-                                        <span class="d-block">New Tickets</span>
+                                        <span class="d-block">New </span>
                                     </div>
-                                    <div>
-                                        <span class="text-success">{{$report_percentage['New']}}%</span>
-                                    </div>
+
                                 </div>
                                 <h3 class="mb-3">{{$status_report['New']}}</h3>
                                 <div class="progress mb-2" style="height: 5px;">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 70%;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: {{$report_percentage['New']}}%;" aria-valuenow="{{$report_percentage['New']}}" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <div>
+                                    <span class="text-success">{{$report_percentage['New']}}%</span>
                                 </div>
                             </div>
                         </div>
 
                         <div class="card">
                             <div class="card-body">
-                                <div class="d-flex justify-content-between mb-3">
+                                <div class="d-flex justify-content-between ">
                                     <div>
-                                        <span class="d-block">Solved Tickets</span>
-                                    </div>
-                                    <div>
-                                        <span class="text-success">{{$report_percentage['Solve']}}%</span>
+                                        <span class="d-block">Solved </span>
                                     </div>
                                 </div>
                                 <h3 class="mb-3">{{$status_report['Complete']+$status_report['Close']}}</h3>
                                 <div class="progress mb-2" style="height: 5px;">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 70%;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: {{$report_percentage['Solve']}}%;" aria-valuenow="{{$report_percentage['Solve']}}" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <div>
+                                    <span class="text-success">{{$report_percentage['Solve']}}%</span>
                                 </div>
                             </div>
                         </div>
 
                         <div class="card">
                             <div class="card-body">
-                                <div class="d-flex justify-content-between mb-3">
+                                <div class="d-flex justify-content-between">
                                     <div>
-                                        <span class="d-block">Open Tickets</span>
+                                        <span class="d-block">Open and Progress </span>
                                     </div>
-                                    <div>
-                                        <span class="text-danger">{{$report_percentage['Open']}}%</span>
-                                    </div>
+
                                 </div>
-                                <h3 class="mb-3">{{$status_report['Open']}}</h3>
+                                <h3 class="mb-3">{{$status_report['Open']+$status_report['Progress']}}</h3>
+
                                 <div class="progress mb-2" style="height: 5px;">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 70%;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: {{$report_percentage['Open']}}%;" aria-valuenow="{{$report_percentage['Open']}}" aria-valuemin="0" aria-valuemax="100"></div>
+
+                                </div>
+                                <div>
+                                    <span class="text-success">{{$report_percentage['Open']}}%</span>
                                 </div>
                             </div>
                         </div>
 
                         <div class="card">
                             <div class="card-body">
-                                <div class="d-flex justify-content-between mb-3">
+                                <div class="d-flex justify-content-between">
                                     <div>
-                                        <span class="d-block">Pending Tickets</span>
+                                        <span class="d-block">Pending </span>
                                     </div>
-                                    <div>
-                                        <span class="text-danger">{{$report_percentage['Pending']}}%</span>
-                                    </div>
+
                                 </div>
                                 <h3 class="mb-3">{{$status_report['Pending']}}</h3>
                                 <div class="progress mb-2" style="height: 5px;">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 70%;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: {{$report_percentage['Pending']}}%;" aria-valuenow="{{$report_percentage['Pending']}}" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <div>
+                                    <span class="text-danger">{{$report_percentage['Pending']}}%</span>
                                 </div>
                             </div>
                         </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <span class="d-block">Overdue </span>
+                                    </div>
+
+                                </div>
+                                <h3 class="mb-3">{{$status_report['Overdue']}}</h3>
+                                <div class="progress mb-2" style="height: 5px;">
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: {{$report_percentage['Overdue']}}%;" aria-valuenow="{{$report_percentage['Overdue']}}" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <div>
+                                    <span class="text-danger">{{$report_percentage['Overdue']}}%</span>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
-
             <!-- Search Filter -->
             <div class="row filter-row">
                 <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
@@ -103,13 +126,14 @@
                         <label class="focus-label">Assign Staff</label>
                         <select name="emp_name" class="form-control floating" id="emp_name">
                             <option value="">All</option>
-                            @foreach($all_emp as $agent)
-                            <option value="{{$agent->name}}">{{$agent->name}}</option>
+                            @foreach($all_emp as $key=>$val)
+                            <option value="{{$val}}">{{$val}}</option>
                             @endforeach
                                 <option disabled>Department</option>
-                                @foreach($depts as $dept)
-                                    <option value="{{$dept->name}}">{{$dept->name}}</option>
+                                @foreach($depts as $key=>$val)
+                                    <option value="{{$val}}">{{$val}}</option>
                                 @endforeach
+                            <option value="Unassign">Unassign</option>
                         </select>
                     </div>
                 </div>
@@ -117,8 +141,8 @@
                     <div class="form-group form-focus select-focus">
                         <select class="select floating" id="status">
                             <option value="">All</option>
-                            @foreach($statuses as $status)
-                            <option value="{{$status->name}}"> {{$status->name}} </option>
+                            @foreach($statuses as $key=>$val)
+                            <option value="{{$val}}"> {{$val}} </option>
                             @endforeach
                         </select>
                         <label class="focus-label">Status</label>
@@ -128,8 +152,8 @@
                     <div class="form-group form-focus select-focus">
                         <select class="select floating" id="priority">
                             <option value="">All</option>
-                            @foreach($priorities as $priority)
-                                <option value="{{$priority->priority}}">{{$priority->priority}}</option>
+                            @foreach($priorities as $key=>$val)
+                                <option value="{{$val}}">{{$val}}</option>
                             @endforeach
                         </select>
                         <label class="focus-label">Priority</label>
@@ -168,7 +192,7 @@
                                 <th>Ticket Subject</th>
                                 <th>Assigned Staff</th>
                                 <th>Created Date</th>
-                                <th>Last Reply</th>
+                                <th>Created Employee</th>
                                 <th>Priority</th>
                                 <th class="text-center">Status</th>
                                 <th class="text-right">Actions</th>
@@ -183,20 +207,25 @@
                                 <td>
                                     <h2 class="table-avatar">
                                         <a href="#">
-                                           @foreach($assign_ticket as $assign_staff)
-                                               @if($assign_staff->ticket_id==$ticket->id && $assign_staff->type_of_assign ==0)
-                                                    <a class="avatar avatar-xs" href="profile"><img alt="" src="img/profiles/avatar-10.jpg"></a>
+                                          @if($ticket->isassign==1)
+                                                @foreach($assign_ticket as $assign_staff)
+                                                    @if($assign_staff->ticket_id==$ticket->id && $assign_staff->type_of_assign =="agent")
+                                                        <a class="avatar avatar-xs" href=""><img alt="" src="{{url(asset('img/profiles/avatar-10.jpg'))}}"></a>
                                                         {{$assign_staff->agent->name}}
-                                                   @elseif($assign_staff->ticket_id==$ticket->id && $assign_staff->type_of_assign ==1)
-                                                    <a class="" href=""><i class="la la-users avatar avatar-xs"></i></a>
-                                                   {{$assign_staff->dept->name}}
-                                                   @endif
-                                            @endforeach
+                                                    @elseif($assign_staff->ticket_id==$ticket->id && $assign_staff->type_of_assign =='dept')
+                                                        <a class="" href=""><i class="la la-users avatar avatar-xs"></i></a>
+                                                        {{$assign_staff->dept->name}}
+                                                    @endif
+                                                @endforeach
+
+                                            @endif
+
                                         </a>
                                     </h2>
+
                                 </td>
                                 <td>{{$ticket->created_at->toFormattedDateString()}}</td>
-                                <td></td>
+                                <td>{{$ticket->created_by->name}}</td>
 
                                 <td style="min-width: 150px;">
                                     <a class="btn btn-white btn-sm btn-rounded " href="#" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-{{$ticket->ticket_priority->color}}"></i> {{$ticket->ticket_priority->priority}}</a>

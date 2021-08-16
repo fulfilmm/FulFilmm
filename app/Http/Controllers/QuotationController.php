@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Company;
 use App\Models\Customer;
 use App\Models\Employee;
+use App\Models\MainCompany;
 use App\Models\Orderline;
 use App\Models\product;
 use App\Models\Quotation;
@@ -31,6 +32,7 @@ class QuotationController extends Controller
         return view("quotation.index",compact("all_quotation"));
     }
     public function create(){
+        $prefix=MainCompany::where('ismaincompany',true)->pluck('quotation_prefix','id')->first();
             $allcustomers = Customer::all();
             $products=product::with("category","taxes")->get();
             $lastcustomer=customer::orderBy('id', 'desc')->first();
@@ -42,7 +44,7 @@ class QuotationController extends Controller
             $lastcompany->company_id ++;
             $company_id = $lastcompany->company_id;
         } else {
-            $company_id="Company"."-00001";
+            $company_id=($prefix ? :'Quotation')."-00001";
         }
 
         if (isset($lastcustomer)) {
@@ -137,9 +139,11 @@ class QuotationController extends Controller
     public function email(Request $request){
 //        dd(env('MAIL_PORT'));
 //        dd($request->all());
-        $file = $request->attch;
-        $file_name = $file->getClientOriginalName();
-        $request->attch->move(public_path() . '/attach_file/', $file_name);
+      if($request->attch!=null){
+          $file = $request->attch;
+          $file_name = $file->getClientOriginalName();
+          $request->attch->move(public_path() . '/attach_file/', $file_name);
+      }
 
         $orderline=Orderline::with('product')->where("quotation_id",$request->id)->get();
 
@@ -155,16 +159,19 @@ class QuotationController extends Controller
             'company'=>$request->company,
             'cc'=>$request->email_cc,
             'orders'=>$orderline,
-            'attach'=>public_path().'/attach_file/'.$file_name,
+            'attach'=>$request->attach!=null?public_path().'/attach_file/'.$file_name:'',
         ];
         Mail::send('quotation.mail', $details, function ($message) use ($details) {
-            $message->from('cincin.com@gmail.com', 'Cloudark');
+            $message->from('siyincin@gmail.com', 'Cloudark');
             $message->to($details['email']);
             $message->subject($details['subject']);
             if ($details['cc']!=null) {
                 $message->cc($details['cc']);
             }
-            $message->attach($details['attach']);
+            if($details['attach']!=''){
+                $message->attach($details['attach']);
+            }
+
         });
 
         return redirect("quotations")->with("message","Email has been sent");

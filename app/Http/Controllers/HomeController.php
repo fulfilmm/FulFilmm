@@ -3,10 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activity;
+use App\Models\assign_ticket;
 use App\Models\Assignment;
+use App\Models\countdown;
+use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Group;
+use App\Models\priority;
 use App\Models\Project;
+use App\Models\status;
+use App\Models\ticket;
+use App\Models\ticket_follower;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PhpParser\Node\Expr\Assign;
@@ -30,19 +38,108 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $id = Auth::id();
 
-        $items = [
+      if(Auth::guard('employee')->user()->role->name=='Ticket Admin'){
+          $agents=[];
+              $allemp=Employee::all();
+//              dd($allemp);
+              foreach ($allemp as $emp){
+                  if($emp->role->name=='Agent'){
+                      array_push($agents,$emp);
+                  }
+              }
+              $assign_ticket=assign_ticket::with('ticket')->get();
+              $status=status::where('name','Complete')->orWhere('name','CLose')->get();
+              $status_report=$this->report_status();
+              $report_percentage=$this->report_with_percentage();
+              $count_down=countdown::all()->pluck('endtime','ticket_id')->all();
+              $numberOfalltickets=ticket::all()->count();
+              $depts=Department::all();
+          return view('index', compact('numberOfalltickets','agents','depts','assign_ticket','status','status_report','report_percentage','count_down',));
+      }else{
+          $user=Auth::guard('employee')->user();
+          $follow_ticket=ticket_follower::where('emp_id',$user->id)->count();
+         if($user->role->name=='Agent'){
+             $numberOfalltickets=count($this->agent_all_ticket())+$follow_ticket;
+         }elseif ($user->role->name=='Super Admin'||$user->role->name=='CEO'||$user->role->name=='Manager'){
+             $numberOfalltickets=ticket::all()->count();
+         }else{
+             $myticket=ticket::where('created_emp_id',$user->id)->count();
+             $follow_ticket=ticket_follower::where('emp_id',$user->id)->count();
+             $numberOfalltickets=$myticket+$follow_ticket;
+         }
+          $id = Auth::id();
+
+          $items = [
 //            'projects' => Project::count(),
-            'my_assignments' => Assignment::whereHas('assigned_employees', function ($query) use ($id) {
-                $query->where('employee_id', $id);
-            })->count(),
-            'my_activities' => Activity::where('employee_id', $id)->count(),
-            'my_groups' => Group::whereHas('employees', function ($query) use ($id) {
-                $query->where('employee_id', $id);
-            })->count(),
-        ];
+              'my_assignments' => Assignment::whereHas('assigned_employees', function ($query) use ($id) {
+                  $query->where('employee_id', $id);
+              })->count(),
+              'my_activities' => Activity::where('employee_id', $id)->count(),
+              'my_groups' => Group::whereHas('employees', function ($query) use ($id) {
+                  $query->where('employee_id', $id);
+              })->count(),
+              'all_ticket'=>$numberOfalltickets,
+          ];
 
-        return view('index', compact('items'));
+          return view('index', compact('items'));
+      }
+    }
+    public function agent_all_ticket(){
+        $auth_user=Auth::guard('employee')->user();
+        $all_tickets=[];
+        $created_tickets=ticket::where("created_emp_id",$auth_user->id)->get();
+        if(!$created_tickets->isEmpty()){
+            foreach ($created_tickets as $ticket){
+                array_push($all_tickets,$ticket);
+            }
+        }
+        $agent_tickets=assign_ticket::with('ticket')->orWhere("agent_id",$auth_user->id)->orWhere("dept_id",$auth_user->department_id)->get();
+        if(!$agent_tickets->isEmpty()){
+            foreach ($agent_tickets as $agent_ticket) {
+                array_push($all_tickets, $agent_ticket->ticket);
+
+            }
+        }
+        return $all_tickets;
+    }
+    public function report_status(){
+        $all_status=status::all();
+//        dd($all_status);
+        $statuses=[];
+        $report_for_agent=$this->agent_all_ticket();
+        for($i=0;$i<count($all_status);$i ++){
+            if(Auth::guard('employee')->user()->role->name=="Agent"){
+                $same_status=[];
+                foreach ($report_for_agent as $ticket){
+                    if($ticket->status==$all_status[$i]->id){
+                        array_push($same_status,$ticket);
+                    }
+                }
+                $statuses[$all_status[$i]->name]=count($same_status);
+            }else{
+                $ticket=ticket::with("ticket_status","ticket_priority")->where('status',$all_status[$i]->id)->get();
+                $statuses[$all_status[$i]->name]=count($ticket);
+            }
+        }
+        return $statuses;
+    }
+    public function report_with_percentage()
+    {
+
+        $ticket = $this->report_status();
+//        dd($ticket);
+        $all_percentage = [];
+        $all_ticket =$ticket['New']+$ticket['Open']+$ticket['Complete']+$ticket['Pending']+$ticket['Overdue']+$ticket['Close']+$ticket['Progress'];
+        if ($all_ticket == 0) {
+            $all_ticket = 1;
+        }
+        $all_percentage['New'] = round($ticket['New'] / $all_ticket * 100, 2);
+        $all_percentage['Open'] = round($ticket['Open']+$ticket['Progress'] / $all_ticket * 100, 2);
+        $all_percentage['Solve'] = round(($ticket['Complete'] + $ticket['Close']) / $all_ticket * 100, 2);
+        $all_percentage['Pending'] = round($ticket['Pending'] / $all_ticket * 100, 2);
+        $all_percentage['Overdue'] = round($ticket['Overdue'] / $all_ticket * 100, 2);
+        return $all_percentage;
+
     }
 }

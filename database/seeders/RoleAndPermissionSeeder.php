@@ -31,6 +31,34 @@ class RoleAndPermissionSeeder extends Seeder
                 'projects.accept_proposal',
                 'projects.status_update'
             ]
+        ],
+         'Ticket Admin' => [
+            'resources' => [
+                'employees', 'tickets','cases','priorities','activities', 'assignments', 'assignment_tasks', 'activity_tasks', 'comments', 'customers', 'companies', 'departments', 'groups', 'roles', 'permissions', 'projects', 'project_tasks'
+            ],
+            'others' => [
+                'activities.acknowledge',
+                'assignment_tasks.toggle',
+                'activity_tasks.toggle',
+                'project_tasks.toggle',
+                'assignments.changeStatus',
+                'projects.accept_proposal',
+                'projects.status_update'
+            ]
+        ],
+        'Agent' => [
+            'resources' => [
+                'employees','tickets','activities', 'assignments', 'assignment_tasks', 'activity_tasks', 'comments', 'customers', 'companies', 'departments', 'groups', 'roles', 'permissions', 'projects', 'project_tasks'
+            ],
+            'others' => [
+                'activities.acknowledge',
+                'assignment_tasks.toggle',
+                'activity_tasks.toggle',
+                'project_tasks.toggle',
+                'assignments.changeStatus',
+                'projects.accept_proposal',
+                'projects.status_update'
+            ]
         ]
     ];
 

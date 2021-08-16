@@ -1,10 +1,7 @@
 @extends('layout.mainlayout')
+@section('title','Lead Edit')
 @section('content')
-    <style>
-        #cke_15,#cke_66,#cke_75,#cke_77,#cke_78,#cke_79,#cke_81,#cke_82,#cke_83,#cke_84,#cke_86,#cke_88,#cke_23,#cke_21,#cke_35,#cke_26,#cke_27,#cke_36,#cke_28,#cke_29,#cke_30,#cke_32,#cke_47{
-            visibility: hidden;
-        }
-    </style>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
     <!-- Page Wrapper -->
         <!-- Page Content -->
@@ -34,7 +31,7 @@
                               <div class="col-12">
                                     <div class="row mt-3">
                                         <div class="form-group col-md-6 col-xl-6 col-12">
-                                      <label for="">Lead ID</label>
+                                      <label for="z">Lead ID</label>
                                       <input type="text" class="form-control" name="lead_id" value="{{$lead->lead_id}}">
                                   </div>
                                         <div class="form-group col-md-6 col-xl-6 col-12">
@@ -218,16 +215,6 @@
                         $("#button").text("Update");
                     }
                 });
-            $(document).ready(function(){ //Make script DOM ready
-                $('#add_customer').change(function() { //jQuery Change Function
-                    var opval = $(this).val(); //Get value from select element
-                    var urlmenu = document.getElementById( 'add_customer' );
-                    urlmenu.onchange = function() {
-                        if(opval=="Add"){
-                            window.open( "{{url("/client/customer/create/1")}}" );
-                        };
-                    }
-                });
-            });
+
         </script>
 @endsection

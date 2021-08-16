@@ -43,7 +43,6 @@
                     @foreach($case_types as $case)
                         <tr>
                             <td><i class="fa fa-bars mr-3"></i>{{$case->name}}
-                            </td>
                             <td>
                                 <div class="dropdown ">
                                     <a href="#" class=" dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-th-list"></i></a>
@@ -51,11 +50,11 @@
                                         <a href="" class="dropdown-item" data-toggle="modal" data-target="#case{{$case->id}}" data-whatever="@getbootstrap"><i class="fa fa-edit mr-2"></i>Edit</a>
                                         <a class="dropdown-item" data-toggle="modal" data-target="#delete{{$case->id}}"><i class="fa fa-trash mr-2"></i>Delete</a>
                                     </div>
-
-                                   @include('cases.edit')
-                                    @include('cases.delete')
+                                </div>
                             </td>
                         </tr>
+                        @include('cases.edit')
+                        @include('cases.delete')
                     @endforeach
                     </tbody>
                 </table>

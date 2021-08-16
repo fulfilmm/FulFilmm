@@ -14,41 +14,41 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Subject</label>
-                                <input class="form-control" type="text" name="subject" value="{{$inquery->subject}}">
+                                <label for="subject">Subject</label>
+                                <input class="form-control" id="subject" type="text" name="subject" value="{{$inquery->subject}}">
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label>Name</label>
-                                <input type="text" name="client_name" class="form-control" value="{{$inquery->customer_name}}">
+                                <label for="name">Name</label>
+                                <input type="text" id="name" name="client_name" class="form-control" value="{{$inquery->customer_name}}">
                             </div>
                         </div>
                         <div class="col-sm-2">
                             <div class="form-group">
-                                <label for="">Age</label>
-                                <input type="number" name="age" class="form-control" value="{{$inquery->age}}">
+                                <label for="age">Age</label>
+                                <input type="number"  id="age" name="age" class="form-control" value="{{$inquery->age}}">
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Phone</label>
-                                <input type="number" name="client_phone" class="form-control"  min="0" required  oninput="validity.valid||(value='');" value="{{$inquery->phone}}">
+                                <label for="phone">Phone</label>
+                                <input type="number" id="phone" name="client_phone" class="form-control"  min="0" required  oninput="validity.valid||(value='');" value="{{$inquery->phone}}">
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Email</label>
-                                <input type="email" name="email" class="form-control" value="{{$inquery->email}}">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" class="form-control" value="{{$inquery->email}}">
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-6">
                             <div class="form-group">
-                                <label for="">Township</label>
+                                <label for="township">Township</label>
                                 <select name="township" id="township" class="form-control">
                                     @foreach($townships as $key=>$value)
                                         @if($value==$inquery->townships)

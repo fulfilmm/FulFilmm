@@ -76,7 +76,7 @@ class MinutesController extends Controller
            ]);
        }else{
            return response()->json([
-               'error_msg'=>'Error',
+               'error_msg'=>'You Must to assign this minute first!',
            ]);
        }
 

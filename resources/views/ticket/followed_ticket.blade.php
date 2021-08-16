@@ -1,4 +1,5 @@
 @extends('layout.mainlayout')
+@section('title','My Followed Tickets')
 @section('content')
     <link rel="stylesheet" href="{{url(asset('css/ticket.css'))}}">
 
@@ -8,15 +9,11 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Tickets</h3>
+                    <h3 class="page-title">Follow Tickets</h3>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
                         <li class="breadcrumb-item active">Tickets</li>
                     </ul>
-                </div>
-                <div class="col-auto float-right ml-auto">
-                    <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_ticket"><i class="fa fa-plus"></i> Add Ticket</a>
-                    <a href="{{route('inqueries.create')}}" class="btn add-btn" ><i class="fa fa-plus"></i> Add Inquery</a>
                 </div>
             </div>
         </div>

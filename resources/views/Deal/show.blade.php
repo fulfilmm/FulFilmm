@@ -1,4 +1,5 @@
 @extends('layout.mainlayout')
+@section('title','Deal Detail View')
 @section('content')
     <!-- Page Wrapper -->
     <div class="chat-main-row">
@@ -16,7 +17,7 @@
                                     <span class="m-l-15 text-muted">Created: </span>
                                     <span>{{$deal->created_at->toFormattedDateString()}}</span>
                                     <span class="m-l-15 text-muted">Created by:</span>
-                                    <span><a href="profile">{{$deal->created_person->name}}</a></span>
+                                    <span><a href="">{{$deal->created_person->name}}</a></span>
 
                                 </div>
                             </div>
@@ -68,7 +69,7 @@
                             <div class="task-assign">
                                 <span class="assign-title">Assigned to </span>
                                 <a href="#" data-toggle="tooltip" data-placement="bottom" title="{{$deal->employee->name}}" class="avatar">
-                                    <img src="img/profiles/avatar-02.jpg" alt=""></a>
+                                    <img src="{{url(asset('img/profiles/avatar-02.jpg'))}}" alt=""></a>
 {{--                                            <a href="#" class="followers-add" title="Reassign" data-toggle="modal" data-target="#assignee"><i class="la la-arrow-right"></i></a>--}}
                             </div>
                             <ul class="nav float-right custom-menu">

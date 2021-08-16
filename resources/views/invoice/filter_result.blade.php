@@ -1,4 +1,5 @@
 @extends('layout.mainlayout')
+@section('title','Invoice Search Results')
 @section('content')
     <!-- Page Content -->
     <div class="content container-fluid">

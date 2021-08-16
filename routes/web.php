@@ -6,6 +6,7 @@ use App\Http\Controllers\ApprovalController;
 use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\AssignmentTaskController;
 use App\Http\Controllers\CaseTypeController;
+use App\Http\Controllers\CompanySetting;
 use App\Http\Controllers\DealController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\CompanyController;
@@ -22,13 +23,13 @@ use App\Http\Controllers\PriorityController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\QuotationController;
+use App\Http\Controllers\RequestTicket;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\TicketPieChartReport;
 use App\Http\Controllers\TicketSender;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProjectTaskController;
 use App\Http\Controllers\SettingsController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\Login\EmployeeAuthController as AuthController;
 use App\Http\Controllers\CommentController;
@@ -69,6 +70,10 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::post("/cat/create",[ProductController::class,'category'])->name('category.create');
 
     //ticket route
+    Route::post("ticket/assign",[TicketController::class,'assignee'])->name('tickets.assign');
+    Route::get('ticket/comment/delete/{id}',[TicketController::class,'cmt_delete'])->name('ticket_cmt.delete');
+    Route::get('followed/ticket',[TicketController::class,'followed_ticket'])->name('followed.tickets');
+    Route::resource('senders',TicketSender::class);
     Route::post('status/{id}',[TicketController::class,'status_change'])->name('change_status');
     Route::post('ticket/comment/',[TicketController::class,'postcomment'])->name('postcomment');
     Route::post('/add/more/follower',[TicketController::class,'add_more_follower'])->name('addfollower');
@@ -77,8 +82,11 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::resource('tickets',TicketController::class)->only('index','edit','create','store','destroy','update');
     Route::resource('cases',CaseTypeController::class);
     Route::resource('priorities',PriorityController::class);
+    Route::post('priority/change/{id}',[TicketController::class,'priority_change'])->name('priority.change');
     Route::resource('inqueries',InqueryController::class);
     Route::get('convert/lead/{id}',[InqueryController::class,'convert_lead'])->name('convert.lead');
+    Route::resource('request_tickets',RequestTicket::class);
+    Route::get('open/ticket/{id}',[RequestTicket::class,'openTicket'])->name('openticket');
 
     //leads route
     Route::resource('leads',LeadController::class)->only('index','create','edit','store','destroy','update');;
@@ -120,6 +128,15 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::resource('meetings',MeetingController::class)->only('index','create','store','destroy','update');
     Route::resource('minutes',MinutesController::class);
     Route::post('minutes/assign',[MinutesController::class,'assign_minutes'])->name('assign.minutes');
+    Route::post('complete/minutes',[MinutesController::class,'complete'])->name('complete.minutes');
+    Route::get('filter/minute/{id}',[MinutesController::class,'filter'])->name('filter.minutes');
+
+    //Setting routes
+    Route::resource('companysettings',CompanySetting::class);
+    Route::get('setting/prefix',[CompanySetting::class,'edit'])->name('companysettings.prefix');
+    Route::post('setting/prefix',[CompanySetting::class,'update'])->name('companysetting.setprefix');
+    Route::get('setting/email',[CompanySetting::class,'emailSetting'])->name('emailsetting');
+    Route::post('setting/email',[CompanySetting::class,'mailsetting'])->name('mail.setting');
 
     //resource routes
     Route::resource('roles', RoleController::class);
@@ -181,9 +198,10 @@ Route::put('roles/assign-permission/{id}', [RoleController::class, 'assignPermis
 
 //list routes
 Route::get('companies-card', [CompanyController::class, 'card'])->name('companies.cards');
-Route::get('ticket/create/guest',[TicketController::class,'guest_ticket']);
-Route::post('ticket/create/guest',[TicketController::class,'store']);
+Route::resource('request_tickets',RequestTicket::class)->only('create','store');
+;
 Route::resource('inqueries',InqueryController::class)->only('create','store');
+
 
 
 Route::middleware(['meeting_view_relative_emp','auth:employee', 'authorize', 'ownership'])->group(function () {
@@ -193,7 +211,12 @@ Route::middleware(['meeting_view_relative_emp','auth:employee', 'authorize', 'ow
     Route::resource('deals',DealController::class)->only('show');
     Route::resource('approvals',ApprovalController::class)->only('show');
 });
-Route::get('followed/ticket',[TicketController::class,'followed_ticket'])->name('followed.tickets');
-Route::post('complete/minutes',[MinutesController::class,'complete'])->name('complete.minutes');
-Route::get('filter/minute/{id}',[MinutesController::class,'filter'])->name('filter.minutes');
-Route::resource('senders',TicketSender::class);
+
+Route::get('test',function (){
+    $orders=\App\Models\Orderline::with('product')->get();
+    $total=0;
+    for ($i=0;$i<count($orders);$i++){
+        $total=$total+$orders[$i]->total_amount;
+    }
+   return view('quotation.mail',compact('orders','total'));
+});

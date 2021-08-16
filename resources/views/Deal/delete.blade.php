@@ -12,7 +12,7 @@
                         @method('DELETE')
                         <div class="row text-center">
                             <div class="col-6">
-                                <button type="submit"class="btn btn-primary continue-btn col-12">Delete</button>
+                                <button type="submit" class="btn btn-primary continue-btn col-12">Delete</button>
                             </div>
                             <div class="col-6">
                                 <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>

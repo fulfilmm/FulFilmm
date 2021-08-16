@@ -13,7 +13,7 @@
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-9 col-12">
-                                    <label for="" >Deal Name</label>
+                                    <label for="full_form_name" >Deal Name</label>
                                     <input type="text" id="full_form_name" name="deal_name" class="form-control ">
                                         </div>
                                     </div>
@@ -21,7 +21,7 @@
                             </div>
                             <div class="col-md-6 col-12">
                                 <div class="form-group">
-                                    <label for="">Amount</label>
+                                    <label for="full_form_amount">Amount</label>
                                     <div class="row">
                                         <div class="col-md-9 col-8">
                                             <input type="number" id="full_form_amount" name="amount" class="form-control">
@@ -39,7 +39,7 @@
                         <div class="row">
                             <div class="col-md-6 col-12">
                                 <div class="form-group" >
-                                    <label for="" >Organization</label>
+                                    <label for="full_org" >Organization</label>
                                     <div class="row">
                                         <div class="col-md-9 col-10" id="full_org_div">
                                             <select name="org_name" id="full_org"  class="select" >
@@ -54,7 +54,7 @@
                             </div>
                             <div class="col-md-6 col-12">
                                 <div class="form-group" id="full_org_div">
-                                    <label for="">Contact Name</label>
+                                    <label for="full_contact">Contact Name</label>
                                     <div class="row">
                                         <div class="col-md-9 col-10" id="contact_div">
                                             <select name="contact_name" id="full_contact"   class="select">
@@ -71,7 +71,7 @@
                         <div class="row">
                             <div class="col-md-6 col-12">
                                 <div class="form-group">
-                                    <label for="" >Expected Close Date</label>
+                                    <label for="full_exp_date" >Expected Close Date</label>
                                     <div class="row">
                                         <div class="col-md-9 col-12">
                                             <input type="date" id="full_exp_date" name="exp_date" class="form-control">
@@ -80,7 +80,7 @@
                                 </div>
                             </div>
                            <div class="col-md-6 col-12">
-                               <label for="">Pipeline</label>
+                               <label for="full_pipeline">Pipeline</label>
                                <div class="row">
                                    <div class="col-md-9 col-12">
                                        <select name="pipeline" id="full_pipeline" class="select col-md-10" style="width: 85%">
@@ -93,7 +93,7 @@
                         <div class="row">
                             <div class="col-md-6 col-12">
                                 <div class="form-group">
-                                    <label for="" >Sale Stage</label>
+                                    <label for="full_sale_stage" >Sale Stage</label>
                                   <div class="row">
                                       <div class="col-md-9 col-12">
                                           <select name="sale_stage" id="full_sale_stage" class="select " style="width: 85%">
@@ -111,7 +111,7 @@
                             </div>
                             <div class="col-md-6 col-12">
                                 <div class="form-group">
-                                    <label for="">Assigned To</label>
+                                    <label for="full_assign_to">Assigned To</label>
                                     <div class="row">
                                         <div class="col-md-9 col-12">
                                             <select name="assign_to" id="full_assign_to" class="select">
@@ -127,7 +127,7 @@
                         <div class="row">
                             <div class="col-md-6 col-12">
                                 <div class="form-group">
-                                    <label for="" >Lead Source</label>
+                                    <label for="full_lead_source" >Lead Source</label>
                                     <div class="row">
                                         <div class="col-md-9 col-12">
                                             <select name="lead_source" id="full_lead_source" class="select">
@@ -142,10 +142,10 @@
                             </div>
                             <div class="col-md-6 col-12">
                                 <div class="form-group">
-                                    <label for="">Next Step</label>
+                                    <label for="next_step">Next Step</label>
                                     <div class="row">
                                         <div class="col-md-9 col-12">
-                                    <input type="text"id="next_step" name="next_step" class="form-control">
+                                    <input type="text" id="next_step" name="next_step" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -154,7 +154,7 @@
                         <div class="row">
                             <div class="col-md-6 col-12">
                                 <div class="form-group">
-                                    <label for="" >Type</label>
+                                    <label for="full_type" >Type</label>
                                     <div class="row">
                                     <div class="col-md-9 col-12">
                                         <select name="type" id="full_type" class="select">
@@ -167,7 +167,7 @@
                             </div>
                             <div class="col-md-6 col-12">
                                 <div class="form-group">
-                                    <label for="">Probability</label>
+                                    <label for="full_probability">Probability</label>
                                     <div class="row">
                                         <div class="col-md-9 col-10">
                                             <input type="number" name="probability" id="full_probability" class="form-control">
@@ -180,7 +180,7 @@
                         <div class="row">
                             <div class="col-md-6 col-12">
                                 <div class="form-group">
-                                    <label for="">Weighted Revenue</label>
+                                    <label for="weight_revenue">Weighted Revenue</label>
                                     <div class="row">
                                         <div class="col-md-9 col-8">
                                             <input type="number" name="revenue" id="weight_revenue" class="form-control">
@@ -196,7 +196,7 @@
                             </div>
                             <div class="col-md-6 col-12">
                                 <div class="form-group">
-                                    <label for="" >Lost Reason</label>
+                                    <label for="lost_reason" >Lost Reason</label>
                                     <div class="row">
                                         <div class="col-md-9 col-12">
                                             <select name="deal_name" id="lost_reason" class="select">
@@ -217,7 +217,7 @@
                     </div>
                     <div class="card">
                         <div class="card-header">
-                            Decription Detail
+                           <label for="description"> Description </label>
                         </div>
                         <div class="col-12 my-1">
                             <textarea name="description" id="description" style="width: 100%" rows="10"></textarea>

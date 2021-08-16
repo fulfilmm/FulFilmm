@@ -6,6 +6,7 @@ use App\Models\Company;
 use App\Models\Customer;
 use App\Models\Invoice;
 use App\Models\invoice_item;
+use App\Models\MainCompany;
 use App\Models\product;
 use App\Models\products_tax;
 use Carbon\Carbon;
@@ -72,14 +73,14 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
-
+        $prefix=MainCompany::where('ismaincompany',true)->pluck('invoice_prefix','id')->first();
         $last_invoice=Invoice::orderBy('id', 'desc')->first();
         if (isset($last_invoice)) {
             // Sum 1 + last id
             $last_invoice->invoice_id ++;
             $invoice_id = $last_invoice->invoice_id;
         } else {
-            $invoice_id="INV"."-0001";
+            $invoice_id=($prefix ? :'INV')."-0001";
         }
         $newInvoice=new Invoice();
         $newInvoice->title=$request->title;

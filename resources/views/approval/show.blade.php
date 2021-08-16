@@ -1,4 +1,5 @@
 @extends('layout.mainlayout')
+@section('title','Approval Detail View')
 @section('content')
     <!-- Page Wrapper -->
 
@@ -36,9 +37,9 @@
                                                             <span class="h5 card-title ">{{$details_approval->title}}</span>
                                                             <div class="float-right">
                                                                 <span>Status: </span>
-                                                                    <li class="nav-item dropdown dropdown-action badge badge-warning">
+                                                                    <div class="nav-item dropdown dropdown-action badge badge-warning">
                                                                         <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{$details_approval->state ? :"N/A"}}</a>
-                                                                        @if($details_approval->approved_id==\Illuminate\Support\Facades\Auth::guard('employee')->user()->id||$details_approval->secondary_approved==\Illuminate\Support\Facades\Auth::guard('employee')->user()->id)
+                                                                        @if($details_approval->approved_id == \Illuminate\Support\Facades\Auth::guard('employee')->user()->id||$details_approval->secondary_approved==\Illuminate\Support\Facades\Auth::guard('employee')->user()->id)
                                                                         <div class="dropdown-menu">
                                                                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#add-category">Change Status</a>
                                                                         </div>
@@ -47,7 +48,7 @@
                                                                                 <a class="dropdown-item">You Doesn't not have permission to Change Status</a>
                                                                             </div>
                                                                             @endif
-                                                                    </li>
+                                                                    </div>
                                                             </div>
                                                         </div>
 
@@ -59,7 +60,7 @@
                                                 <div class="card-footer">
                                                     <div class="text-center">
                                                         <span class="m-l-15 text-muted">Requested by:</span>
-                                                        <span><a href="profile">{{$details_approval->request_emp->name}}</a></span>
+                                                        <span><a href="#">{{$details_approval->request_emp->name}}</a></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -134,12 +135,12 @@
                                         <div class="chats" id="cmt">
                                             @foreach($all_cmt as $cmt)
                                             <div class="chat chat-left">
-                                                <ul class="nav float-right custom-menu">
+                                                <div class="nav float-right custom-menu">
                                                     <a href="{{route('approval_cmt.delete',$cmt->id)}}" class="followers-add" data-toggle="tooltip" data-placement="bottom" ><i class="la la-trash-o"></i></a>
-                                                </ul>
+                                                </div>
                                                 <div class="chat-avatar">
-                                                    <a href="profile" class="avatar">
-                                                        <img src="img/profiles/avatar-02.jpg" alt="">
+                                                    <a href="#" class="avatar">
+                                                        <img src="{{url(asset('img/profiles/avatar-02.jpg'))}}" alt="">
                                                     </a>
                                                 </div>
                                                 <div class="chat-body">
@@ -215,7 +216,7 @@
                 var cmt_text=$("#message").val();
                 $.ajax({
                     data : {
-                        cmt_text:cmt_text,
+                        cmt_text:cmt_text
                     },
                     type:'POST',
                     url:"{{url("approval/post/comment/$details_approval->id")}}",

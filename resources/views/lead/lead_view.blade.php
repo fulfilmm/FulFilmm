@@ -1,4 +1,5 @@
 @extends('layout.mainlayout')
+@section('title','Lead Details')
 @section('content')
     <style>
         .scroll {

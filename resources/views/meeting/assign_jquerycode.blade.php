@@ -37,21 +37,20 @@
                 },
                 url:"{{route('assign.minutes')}}",
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-
                 success:function(data){
-                   if($.isEmptyObject(data.error)){
-                       console.log(data);
-                       $("#minutelist{{$minute->id}}").load(location.href + " #minutelist{{$minute->id}}>* ");
-                       $("#view{{$minute->id}}").load(location.href + " #view{{$minute->id}}>* ");
-                   }else {
-                       $.each(data.error,function (key,value){
-                           console.log(key);
-                           $('.'+key+'_err').text(value);
-                       });
-                   }
+                    if($.isEmptyObject(data.error)){
+                        console.log(data);
+                        $("#minutelist{{$minute->id}}").load(location.href + " #minutelist{{$minute->id}}>* ");
+                        $("#view{{$minute->id}}").load(location.href + " #view{{$minute->id}}>* ");
+                        alert(data.Success);
+                    }else {
+                        $.each(data.error,function (key,value){
+                            console.log(key);
+                            $('.'+key+'_err').text(value);
+                        });
+                    }
                 }
             });
-
         });
     });
     $(document).ready(function() {
@@ -65,12 +64,15 @@
                 url:"{{route('complete.minutes')}}",
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 success:function(data){
-                   console.log(data);
+                    console.log(data);
+                    if($.isEmptyObject(data.error_msg)) {
                         $("#minutelist{{$minute->id}}").load(location.href + " #minutelist{{$minute->id}}>* ");
                         $("#view{{$minute->id}}").load(location.href + " #view{{$minute->id}}>* ");
+                    }else {
+                        alert(data.error_msg);
+                    }
                 }
             });
-
         });
     });
 </script>

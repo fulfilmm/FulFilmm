@@ -12,9 +12,9 @@
                 autocomplete="name"
                 class="form-control">
         </div>
-        @error('name')
+        @error($name)
         <br>
-        <span class="" role="alert">
+        <span class="offset-md-3" role="alert">
             <p class="text-danger">{{ $message }}</p>
         </span>
         @enderror

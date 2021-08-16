@@ -46,21 +46,27 @@ class meetingshowcontrol
                 return $next($request);
             }
         }elseif (isset($request->ticket)){
-            $ticket=ticket::where('id',$request->ticket)->where('created_emp_id',$current_user->id)->first();
-            $aticket=assign_ticket::where("ticket_id",$request->ticket)->first();
-            if($aticket!=null){
-                if($aticket->type_of_assign==0 && $aticket->agent_id==$current_user->id){
-                    $is_has=false;
-                }elseif ($aticket->dept_id==$current_user->department_id){
-                    $is_has=false;
+            if(Auth::user()->role->name=="Employee"||Auth::user()->role->name=="Agent"){
+                $ticket=ticket::where('id',$request->ticket)->where('created_emp_id',$current_user->id)->first();
+                $aticket=assign_ticket::where("ticket_id",$request->ticket)->first();
+                if($aticket!=null){
+                    if($aticket->type_of_assign==0 && $aticket->agent_id==$current_user->id){
+                        $is_has=false;
+                    }elseif ($aticket->dept_id==$current_user->department_id){
+                        $is_has=false;
+                    }else{
+                        $is_has=true;
+                    }
                 }else{
-                    $is_has=true;
+                    $is_has=false;
                 }
-            }
-            $is_followed=ticket_follower::where("ticket_id",$request->ticket)->where("emp_id",$current_user->id)->first();
+                $is_followed=ticket_follower::where("ticket_id",$request->ticket)->where("emp_id",$current_user->id)->first();
 
-            if($ticket==null && $is_has && $is_followed==null){
-                abort(403, 'You do not have permission to access requested record!');
+                if($ticket==null && $is_has && $is_followed==null){
+                    abort(403, 'You do not have permission to access requested record!');
+                }else{
+                    return $next($request);
+                }
             }else{
                 return $next($request);
             }

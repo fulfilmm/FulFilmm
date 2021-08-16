@@ -13,9 +13,10 @@ class PermissionSeeder extends Seeder
      * @return void
      */
     protected $permissions = [
-        'activities', 'activity_tasks', 'comments', 'companies', 'customers', 'departments',
+        'activities','activity_tasks', 'comments', 'companies', 'customers', 'departments',
         'employees','roles', 'permissions', 'assignments', 'assignment_tasks', 'projects','tickets','cases','priorities',
-        'leads','deals','quotations','invoices','approvals','meetings','minutes','inqueries','products','orders', 'groups','project_tasks'
+        'leads','deals','quotations','invoices','invoice_items','approvals','meetings','minutes','inqueries','products','orders', 'groups','project_tasks',
+        'companysettings','senders'
     ];
     public function run()
     {
@@ -40,7 +41,14 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'addfollower', 'display_name' => "Can add more ticket follower", 'guard_name' => 'employee']);
         Permission::create(['name' => 'reassign', 'display_name' => "Can reassign ticket ", 'guard_name' => 'employee']);
         Permission::create(['name' => 'piechart', 'display_name' => "Can view piechart report for ticket", 'guard_name' => 'employee']);
-        Permission::create(['name' => 'sender_info', 'display_name' => "Can view ticket sender information", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'followed.tickets', 'display_name' => "Can Add Ticket Follower", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'tickets.assign', 'display_name' => "Can assign Ticket", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'ticket_cmt.delete', 'display_name' => "Can delete comments", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'priority.change', 'display_name' => "Can change Priority", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'request_tickets.index', 'display_name' => "Ticket Request index", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'request_tickets.show', 'display_name' => "Ticket Request Show", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'openticket', 'display_name' => "Open Ticket ", 'guard_name' => 'employee']);
+
         //lead
         Permission::create(['name' => 'tagadd', 'display_name' => "Can add tag industry", 'guard_name' => 'employee']);
         Permission::create(['name' => 'leads.myfollowed', 'display_name' => "Can view employee followed in lead ", 'guard_name' => 'employee']);
@@ -67,11 +75,18 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'request.me', 'display_name' => "Can view employee approval request to login employee", 'guard_name' => 'employee']);
         Permission::create(['name' => 'approval_cmt', 'display_name' => "Can post comment in approval show", 'guard_name' => 'employee']);
         Permission::create(['name' => 'approval_cmt.delete', 'display_name' => "Can delete comment in approval show", 'guard_name' => 'employee']);
-        //minutes
-        Permission::create(['name' => 'assign.minutes', 'display_name' => "Can assign  minutes  in meeting show", 'guard_name' => 'employee']);
-
+        //project
         Permission::create(['name' => 'projects.accept_proposal', 'display_name' => 'Can accept proposal', "guard_name" => 'employee']);
         Permission::create(['name' => 'projects.status_update', 'display_name' => 'Can udpate project status', "guard_name" => 'employee']);
+        //minutes
+        Permission::create(['name' => 'assign.minutes', 'display_name' => "Can assign  minutes  in meeting show", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'complete.minutes', 'display_name' => 'Can change Minutes Status Complete', "guard_name" => 'employee']);
+        Permission::create(['name' => 'filter.minutes', 'display_name' => 'Search Minutes', "guard_name" => 'employee']);
+        //setting
+        Permission::create(['name' => 'companysettings.prefix', 'display_name' => 'Prefix Setting', "guard_name" => 'employee']);
+        Permission::create(['name' => 'companysetting.setprefix', 'display_name' => 'Update Prefix Setting', "guard_name" => 'employee']);
+        Permission::create(['name' => 'emailsetting', 'display_name' => 'Email Server setting', "guard_name" => 'employee']);
+        Permission::create(['name' => 'mail.setting', 'display_name' => 'Update Email Server setting', "guard_name" => 'employee']);
     }
 
     private function createResourcePermissions($resource)

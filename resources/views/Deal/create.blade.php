@@ -1,12 +1,6 @@
 @extends('layout.mainlayout')
+@section('title','Deal Create')
 @section('content')
-    <style>
-        .scoll{
-            height: 490px;
-            overflow: scroll;
-        }
-
-    </style>
     <!-- Page Wrapper -->
 
         <!-- Page Content -->
@@ -42,14 +36,13 @@
                         var customer_email=$("#customer_email").val();
                         var customer_company=$("#customer_company_id option:selected").val();
                         var customer_address=$("#customer_address").text();
-                        var type="ajax";
                         $.ajax({
                             data : {
                                 name:customer_name,
                                 phone:customer_phone,
                                 email:customer_email,
                                 company_id:customer_company,
-                                address:customer_address,
+                                address:customer_address
                             },
                             type:'POST',
                             url:"{{route('add_new_customer')}}",
@@ -96,7 +89,7 @@
                                 facebook_page:facebook_page,
                                 parent_company:parent_company,
                                 parent_company_2:parent_company_2,
-                                user_company:user_company,
+                                user_company:user_company
                             },
                             url:"{{route('company_create')}}",
                             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
@@ -159,7 +152,7 @@
                         var asign_to=$("#full_assign_to option:selected").val();
                         var lead_source=$("#full_lead_source option:selected ").val();
                         var next_step=$("#next_step").val();
-                        var type=$("#full_type option:selected").val();
+                        // var type=$("#full_type option:selected").val();
                         var probability=$("#full_probability").val();
                         // var camping_source=$("#camp_source option:selected").val();
                         var weight_revenue=$("#weight_revenue ").val();
@@ -185,7 +178,7 @@
                                 revenue_unit:revenue_unit,
                                 lost_reason:lost_reason,
                                 description:description,
-                                type:'full',
+                                type:'full'
                             },
                             type:'POST',
                             url:"{{route('deals.store')}}",
@@ -200,4 +193,5 @@
                     });
                 });
             </script>
+        </div>
 @endsection

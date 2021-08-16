@@ -1,4 +1,5 @@
 @extends('layout.mainlayout')
+@section('title','Lead Followed')
 @section('content')
     <style>
         a[aria-expanded=true] .fa-chevron-circle-right {

@@ -1,4 +1,5 @@
 @extends("layout.mainlayout")
+@section('title','Product Details')
 @section("content")
     <style>
         input[type="file"] {

@@ -2,9 +2,6 @@
 @section("title","Lead Create")
 @section('content')
     <style>
-        #cke_15,#cke_66,#cke_75,#cke_77,#cke_78,#cke_79,#cke_81,#cke_82,#cke_83,#cke_84,#cke_86,#cke_88,#cke_23,#cke_21,#cke_35,#cke_26,#cke_27,#cke_36,#cke_28,#cke_29,#cke_30,#cke_32,#cke_47{
-            visibility: hidden;
-        }
          a[aria-expanded=true] .fa-chevron-circle-right {
              display: none;
          }
@@ -13,7 +10,6 @@
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
-    <script src="{{asset("/js/rating.js")}}"></script>
     <!-- Page Wrapper -->
         <!-- Page Content -->
         <div class="content container-fluid">
@@ -23,7 +19,7 @@
                     <div class="col-sm-12">
                         <h3 class="page-title">Leads</h3>
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{url("")}}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="{{url("/")}}">Dashboard</a></li>
                             <li class="breadcrumb-item active">Lead</li>
                             <li class="breadcrumb-item active">Create</li>
                         </ul>
@@ -38,17 +34,17 @@
                        <div class="row">
                            <div class="form-group col-md-4 col-xl-4 col-12">
                                <label for="">Lead ID <span class="text-danger">*</span></label>
-                               <input type="text" class="form-control" name="lead_id" value="{{$lead_id}}">
+                               <input type="text" class="form-control" name="lead_id" value="{{$lead_id}}" readonly>
                            </div>
                            <div class="form-group col-md-4 col-xl-4 col-12">
                                <label for="">Lead Title <span class="text-danger">*</span></label>
-                               <input type="text" class="form-control" name="lead_title">
+                               <input type="text" class="form-control" name="lead_title" required>
                            </div>
                            <div class="form-group col-md-4 col-xl-4 col-12">
                                <label for="">Sale Man <span class="text-danger">*</span></label>
                              <div class="col-md-12 col-12">
                                 <div class="row">
-                                    <select name="sale_man" id="saleman" class="form-control">
+                                    <select name="sale_man" id="saleman" class="form-control" required>
                                         @foreach($allemployees as $key=>$value)
                                             <option value="{{$key}}">{{$value}}</option>
                                         @endforeach
@@ -62,8 +58,8 @@
                                <label for="">Customer Name <span class="text-danger">*</span></label>
                               <div class="col-12">
                                   <div class="row " id="customer">
-                                      <select name="customer_id" id="add_customer" class="form-control col-md-12">
-                                          <option value="empty">Select Customer Name</option>
+                                      <select name="customer_id" id="add_customer" class="form-control col-md-12" required>
+                                          <option value="">Select Customer Name</option>
                                           @foreach($allcustomers as $key=>$value)
                                               <option value="{{$key}}">{{$value}}</option>
                                           @endforeach
@@ -81,7 +77,7 @@
                                         <div class="row">
                                             <div class="col-md-10 col-10">
                                                 <div class="row">
-                                                <select name="tags" id="industry" class="form-control ">
+                                                <select name="tags" id="industry" class="form-control " required>
                                                     @foreach($tags as $tag)
                                                         @if($tag->id==$last_tag->id)
                                                             <option value="{{$tag->id}}" selected>{{$tag->tag_industry}}</option>
@@ -122,7 +118,7 @@
                                </div>
                            </div>
                        </div>
-                       <textarea name="description" id="description"  rows="5" style="width:100%;" >
+                       <textarea name="description" id="description"  rows="5" style="width:100%;" required>
                     </textarea>
                        <div class="form-group mt-2">
                            <a class="btn btn-outline-info" data-toggle="collapse" data-target="#next_plan" aria-expanded="false" aria-controls="collapseExample" >

@@ -1,4 +1,5 @@
 @extends('layout.mainlayout')
+@section('title','Leads')
 @section('content')
     <style>
         a[aria-expanded=true] .fa-chevron-circle-right {
@@ -9,8 +10,6 @@
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
-    <script src="{{asset("/js/rating.js")}}"></script>
-    <!-- Page Wrapper -->
 
     <!-- Page Content -->
     <div class="content container-fluid">

@@ -1,4 +1,5 @@
 @extends('layout.mainlayout')
+@section('title','Meetings')
 @section('noti_section')
     <li class="nav-item dropdown">
         <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
@@ -6,14 +7,14 @@
         </a>
         <div class="dropdown-menu notifications">
             <div class="topnav-dropdown-header">
-                <span class="notification-title">Notifications</span>
+                <span class="notification-title">Meeting Notifications</span>
 {{--                <a href="javascript:void(0)" class="clear-noti"> Clear All </a>--}}
             </div>
             <div class="noti-content">
                 <ul class="notification-list">
                     @foreach($alert_meeting as $alert)
                     <li class="notification-message">
-                        <a href="activities">
+                        <a href="{{route('meetings.show',$alert->id)}}">
                             <div class="media">
                                 <div class="media-body">
                                     <p class="noti-details">You have to attend <span class="noti-title"> {{$alert->title}}</span><span class="noti-title"> meeting. </span></p>
@@ -26,14 +27,12 @@
                 </ul>
             </div>
             <div class="topnav-dropdown-footer">
-                <a href="activities">View all Notifications</a>
+                <a href="">View all Notifications</a>
             </div>
         </div>
     </li>
 @endsection
 @section('content')
-    <!-- Page Wrapper -->
-
     <!-- Page Content -->
     <div class="content container-fluid">
         <!-- Page Header -->
@@ -71,7 +70,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($meeting as $meeting)
+                        @foreach($meetings as $meeting)
 
                             <tr>
                                 <td>{{$meeting->title}}</td>
@@ -101,15 +100,15 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($invite_me as $invite_me)
+                        @foreach($invites_me as $invite_me)
                             <tr>
                                 <td>{{$invite_me->meeting->title}}</td>
                                 <td>{{\Carbon\Carbon::parse($invite_me->meeting->due_date)->toFormattedDateString()}}</td>
                                 <td>{{$invite_me->meeting->meeting_type}}</td>
                                 <td>{{$invite_me->meeting->address ? :$invite_me->meeting->link_id}}</td>
                                 <td>{{$invite_me->meeting->room_no ? :$invite_me->meeting->password}}</td>
-                                <th><a href="" class="btn btn-outline-info btn-sm"><i class="fa fa-eye"></i></a>
-                                    <a href="" data-toggle="modal" data-target="" class="btn btn-outline-danger btn-sm"><i class="fa fa-trash"></i></a>
+                                <th><a href="{{route('meetings.show',$invite_me->meeting->id)}}" class="btn btn-outline-info btn-sm" ><i class="fa fa-eye"></i></a>
+                                    <a href="" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#delete{{$invite_me->meeting->id}}"><i class="fa fa-trash-o"></i></a>
                                 </th>
                             </tr>
                         @endforeach
@@ -121,7 +120,4 @@
         </div>
     </div>
     <!-- /Page Content -->
-
-    <!-- /Page Wrapper -->
-
 @endsection

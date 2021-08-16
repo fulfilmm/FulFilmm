@@ -1,37 +1,12 @@
 @extends("layout.mainlayout")
+@section('title','Inquery Detail View')
 @section("content")
     <style>
         input[type="file"] {
             display: block;
         }
-        .imageThumb {
-            max-height: 90px;
-            max-width: 150px;
-            border: 2px solid;
-            padding: 1px;
-            cursor: pointer;
-        }
-        .pip {
-            display: inline-block;
-            margin: 10px 10px 10px 0;
-        }
-        .remove {
-            display: block;
-            background: #edeff2;
-            border: 1px solid black;
-            color: black;
-            text-align: center;
-            cursor: pointer;
-        }
-        .remove:hover {
-            background: white;
-            color: black;
-        }
-        #cke_11,#cke_19,#cke_21,#cke_26,#cke_27,#cke_28,#cke_29,#cke_30,#cke_32,#cke_47{
-            visibility: hidden;
-        }
+
     </style>
-    <!-- Page Wrapper -->
     <!-- Page Content -->
     <div class="content container-fluid">
         <!-- Page Header -->
@@ -107,7 +82,7 @@
                                @foreach($products as $product)
                                    @if($product->id==$inquery_products[$i])
                                        <div class="col-md-3">
-                                           <a href="{{url("product/show/$product->id")}}" title="{{$product->name}}" >
+                                           <a href="{{route("products.show",$product->id)}}" title="{{$product->name}}" >
                                                <img src="{{url(asset("/product_picture/$product->image"))}}" class="border rounded" alt="product picture" width="200px" height="200px;">
                                            </a>
                                            <div class="text-center mt-3">
@@ -123,5 +98,5 @@
         </div>
     </div>
     <!-- /Page Content -->
-    <!-- /Page Wrapper -->
+    </div>
 @endsection

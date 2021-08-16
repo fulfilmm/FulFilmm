@@ -121,7 +121,8 @@
                         {{$statuses["Close"]}},
                         {{$statuses["Pending"]}},
                         {{$statuses["Progress"]}},
-                        {{$statuses["Complete"]}}
+                        {{$statuses["Complete"]}},
+                        {{--{{$overdue}}--}}
                     ],
                     backgroundColor: [
                         '#5B7656FF',
@@ -129,7 +130,8 @@
                         '#0b43ee',
                         '#f8f159',
                         "#50d007",
-                        "#f30d3b",
+                        "#859446",
+                        // "#f30d3b",
                     ],
                 }],
                 labels: [
@@ -138,7 +140,8 @@
                     'Pending',
                     'Progress',
                     'Complete',
-                    'Close'
+                    'Close',
+                    // 'Overdue'
                 ]
             };
             var myDoughnutChart_2 = new Chart(ctx_2, {

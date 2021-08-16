@@ -1,4 +1,5 @@
 @extends("layout.mainlayout")
+@section('title','Product Create')
 @section("content")
     <style>
         input[type="file"] {
@@ -27,9 +28,7 @@
             background: white;
             color: black;
         }
-        #cke_11,#cke_19,#cke_21,#cke_26,#cke_27,#cke_28,#cke_29,#cke_30,#cke_32,#cke_47{
-            visibility: hidden;
-        }
+
     </style>
     <!-- Page Wrapper -->
     <!-- Page Content -->
@@ -56,7 +55,7 @@
                 </div>
                 <div class="form-group col-md-3 col-6 offset-md-5">
                     <label for="">Picture</label>
-                    <input type="file" accept="image/*" name="picture"  class=" offset-md-1" onchange="loadFile(event)">
+                    <input type="file" accept="image/*" name="picture"  class=" offset-md-1" onchange="loadFile(event)" required>
                 </div>
             </div>
             <div class="row">
@@ -69,7 +68,7 @@
                         <label for="">Tax</label>
                         <div class="row">
                             <div class="col-md-9 col-10">
-                                <select name="tax" id="product_tax" class="form-control">
+                                <select name="tax" id="product_tax" class="form-control" required>
                                     @foreach($taxes as $tax)
                                         @if($tax->id == $lasttax->id)
                                             <option value="{{$tax->id}}" selected >{{$tax->name}}({{$tax->rate}}%)</option>

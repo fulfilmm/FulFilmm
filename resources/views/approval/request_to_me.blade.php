@@ -1,4 +1,5 @@
 @extends('layout.mainlayout')
+@section('title','Approval Request Me')
 @section('content')
     <!-- Page Wrapper -->
 
@@ -38,7 +39,7 @@
                     <td>{{\Carbon\Carbon::parse($approval->target_date)->toFormattedDateString()}}</td>
                     <td>{{$approval->request_emp->name}}</td>
                     <td>{{$approval->state==null ? "N/A" : $approval->state}}</td>
-                    <td>{{$approval->secondary_approved ?$approval->secondary_approver->name :""}}</li></ul></td>
+                    <td>{{$approval->secondary_approved ?$approval->secondary_approver->name :""}}</td>
                     <td><a href="{{route('approvals.show',$approval->id)}}" class="btn btn-outline-info btn-sm la la-eye mr-2"></a><a href="" data-toggle="modal" data-target="#delete{{$approval->id}}" class="btn btn-outline-danger btn-sm la la-trash"></a></td>
                     @include('approval.delete')
                 </tr>

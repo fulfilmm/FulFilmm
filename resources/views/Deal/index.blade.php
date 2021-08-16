@@ -1,12 +1,7 @@
 @extends('layout.mainlayout')
+@section('title','All Deals')
 @section('content')
-{{--    <link rel="stylesheet" href="{{url(asset("js/kaban/style.css"))}}">--}}
-<style>
-   #cke_12,#cke_13,#cke_14,#cke_15,.cke_toolbar_separator,#cke_16,#cke_17,#cke_18,#cke_19{
-        visibility: hidden;
-    }
-</style>
-    <!-- Page Wrapper -->
+
 
         <!-- Page Content -->
         <div class="content container-fluid">
@@ -77,7 +72,7 @@
                             <td>{{$deal->sale_stage}}</td>
                             <td>{{$deal->employee->name}}</td>
                             <td>
-                                <a href="#"class="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-ellipsis-v ml-2 mt-2" style="font-size: 18px;"></i></a>
+                                <a href="#" class="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-ellipsis-v ml-2 mt-2" style="font-size: 18px;"></i></a>
                                 <div class="dropdown-menu">
                                     <a href="{{route('deals.edit',$deal->id)}}" class="dropdown-item"><i class="fa fa-edit mr-2"></i>Edit</a>
                                     <a href="{{route('deals.destroy',$deal->id)}}" class="dropdown-item"><i class="fa fa-trash-o mr-2"></i>Delete</a>
@@ -175,9 +170,9 @@
                                                                 </a>
                                                                 <div class="dropdown-menu dropdown-menu-right">
                                                                     <a class="dropdown-item" href="{{route('deals.edit',$deal->id)}}">Edit</a>
-                                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_modal{{$deal->id}}">Change Stage</a></li>
-                                                                    <a class="dropdown-item" href="{{route('deals.show',$deal->id)}}">Detail View</a></li>
-                                                                    <a class="dropdown-item" data-toggle="modal" data-target="#delete_deal{{$deal->id}}">Delete</a></li>
+                                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_modal{{$deal->id}}">Change Stage</a>
+                                                                    <a class="dropdown-item" href="{{route('deals.show',$deal->id)}}">Detail View</a>
+                                                                    <a class="dropdown-item" data-toggle="modal" data-target="#delete_deal{{$deal->id}}">Delete</a>
                                                                 </div>
                                                                 <div id="edit_task_modal{{$deal->id}}" class="modal custom-modal fade" role="dialog">
                                                                     <div class="modal-dialog">
@@ -194,7 +189,7 @@
                                                                                         <input type="hidden" name="deal_id" class="form-control" value="{{$deal->id}}">
                                                                                     </div>
                                                                                     <div class="form-group">
-                                                                                        <label>Sale Stage</label>
+                                                                                        <label for="sale_stage">Sale Stage</label>
                                                                                         <select name="sale_stage" id="sale_stage" class="form-control">
                                                                                             <option value="New">New</option>
                                                                                             <option value="Qualified">Qualified</option>
@@ -219,16 +214,16 @@
                                                                 Organization Name: <strong>{{$deal->customer_company->name}}</strong>
 
                                                             </div>
-                                                            Amount: {{$deal->amount}} <strong class="ml-3">{{$deal->unit}}</strong>
+                                                               Amount: {{$deal->amount}} <strong class="ml-3">{{$deal->unit}}</strong>
                                                             <div class="kanban-footer">
-                                                    <span class="task-info-cont">
-                                                        <span class="task-date"><i class="fa fa-clock-o mr-2"></i>{{\Carbon\Carbon::parse($deal->close_date)->toFormattedDateString() }}</span>
-                                                        <span class="task-priority badge bg-inverse-danger">{{$deal->sale_stage}}</span>
-                                                    </span>
+                                                                <span class="task-info-cont">
+                                                                    <span class="task-date"><i class="fa fa-clock-o mr-2"></i>{{\Carbon\Carbon::parse($deal->close_date)->toFormattedDateString() }}</span>
+                                                                    <span class="task-priority badge bg-inverse-danger">{{$deal->sale_stage}}</span>
+                                                                </span>
                                                                 <span class="task-users">
-                                                        <img src="img/profiles/avatar-12.jpg" class="task-avatar" width="24" height="24">
-                                                            <span>{{$deal->employee->name}}</span>
-                                                    </span>
+                                                                    <img src="{{url(asset('img/profiles/avatar-12.jpg'))}}" class="task-avatar" width="24" height="24" alt="">
+                                                                    <span>{{$deal->employee->name}}</span>
+                                                                </span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -257,16 +252,16 @@
                                                 <div class="card panel">
                                                     <div class="kanban-box">
                                                         <div class="task-board-header">
-                                                            <span class="status-title"><a href="task-view">{{$deal->name}}</a></span>
+                                                            <span class="status-title"><a href="">{{$deal->name}}</a></span>
                                                             <div class="dropdown kanban-task-action">
                                                                 <a href="" data-toggle="dropdown">
                                                                     <i class="fa fa-angle-down"></i>
                                                                 </a>
                                                                 <div class="dropdown-menu dropdown-menu-right">
                                                                     <a class="dropdown-item" href="{{route('deals.edit',$deal->id)}}">Edit</a>
-                                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_modal{{$deal->id}}">Change Stage</a></li>
-                                                                    <a class="dropdown-item" href="{{route('deals.show',$deal->id)}}">Detail View</a></li>
-                                                                    <a class="dropdown-item" data-toggle="modal" data-target="#delete_deal{{$deal->id}}">Delete</a></li>
+                                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_modal{{$deal->id}}">Change Stage</a>
+                                                                    <a class="dropdown-item" href="{{route('deals.show',$deal->id)}}">Detail View</a>
+                                                                    <a class="dropdown-item" data-toggle="modal" data-target="#delete_deal{{$deal->id}}">Delete</a>
 
                                                                 </div>
                                                                 @include('Deal.delete')
@@ -307,7 +302,6 @@
                                                         <div class="task-board-body">
                                                             <div class="kanban-info">
                                                                 Organization Name: <strong>{{$deal->customer_company->name}}</strong>
-
                                                             </div>
                                                             Amount: {{$deal->amount}} <strong class="ml-3">{{$deal->unit}}</strong>
                                                             <div class="kanban-footer">
@@ -316,7 +310,7 @@
                                                         <span class="task-priority badge bg-inverse-danger">{{$deal->sale_stage}}</span>
                                                     </span>
                                                                 <span class="task-users">
-                                                        <img src="img/profiles/avatar-12.jpg" class="task-avatar" width="24" height="24">
+                                                        <img src="{{url(asset('img/profiles/avatar-12.jpg'))}}" alt="" class="task-avatar" width="24" height="24">
                                                             <span>{{$deal->employee->name}}</span>
                                                     </span>
                                                             </div>
@@ -347,16 +341,16 @@
                                                 <div class="card panel">
                                                     <div class="kanban-box">
                                                         <div class="task-board-header">
-                                                            <span class="status-title"><a href="task-view">{{$deal->name}}</a></span>
+                                                            <span class="status-title"><a href="">{{$deal->name}}</a></span>
                                                             <div class="dropdown kanban-task-action">
                                                                 <a href="" data-toggle="dropdown">
                                                                     <i class="fa fa-angle-down"></i>
                                                                 </a>
                                                                 <div class="dropdown-menu dropdown-menu-right">
                                                                     <a class="dropdown-item" href="{{route('deals.edit',$deal->id)}}">Edit</a>
-                                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_modal{{$deal->id}}">Change Stage</a></li>
-                                                                    <a class="dropdown-item" href="{{route('deals.show',$deal->id)}}">Detail View</a></li>
-                                                                    <a class="dropdown-item" data-toggle="modal" data-target="#delete_deal{{$deal->id}}">Delete</a></li>
+                                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_modal{{$deal->id}}">Change Stage</a>
+                                                                    <a class="dropdown-item" href="{{route('deals.show',$deal->id)}}">Detail View</a>
+                                                                    <a class="dropdown-item" data-toggle="modal" data-target="#delete_deal{{$deal->id}}">Delete</a>
 
                                                                 </div>
                                                                 @include('Deal.delete')
@@ -406,7 +400,7 @@
                                                         <span class="task-priority badge bg-inverse-danger">{{$deal->sale_stage}}</span>
                                                     </span>
                                                                 <span class="task-users">
-                                                        <img src="img/profiles/avatar-12.jpg" class="task-avatar" width="24" height="24">
+                                                        <img src="{{url(asset('img/profiles/avatar-12.jpg'))}}" alt="" class="task-avatar" width="24" height="24">
                                                             <span>{{$deal->employee->name}}</span>
                                                     </span>
                                                             </div>
@@ -438,16 +432,16 @@
                                                 <div class="card panel">
                                                     <div class="kanban-box">
                                                         <div class="task-board-header">
-                                                            <span class="status-title"><a href="task-view">{{$deal->name}}</a></span>
+                                                            <span class="status-title"><a href="">{{$deal->name}}</a></span>
                                                             <div class="dropdown kanban-task-action">
                                                                 <a href="" data-toggle="dropdown">
                                                                     <i class="fa fa-angle-down"></i>
                                                                 </a>
                                                                 <div class="dropdown-menu dropdown-menu-right">
                                                                     <a class="dropdown-item" href="{{route('deals.edit',$deal->id)}}">Edit</a>
-                                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_modal{{$deal->id}}">Change Stage</a></li>
-                                                                    <a class="dropdown-item" href="{{route('deals.show',$deal->id)}}">Detail View</a></li>
-                                                                    <a class="dropdown-item" data-toggle="modal" data-target="#delete_deal{{$deal->id}}">Delete</a></li>
+                                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_modal{{$deal->id}}">Change Stage</a>
+                                                                    <a class="dropdown-item" href="{{route('deals.show',$deal->id)}}">Detail View</a>
+                                                                    <a class="dropdown-item" data-toggle="modal" data-target="#delete_deal{{$deal->id}}">Delete</a>
                                                                 </div>
                                                                 @include('Deal.delete')
                                                                 <div id="edit_task_modal{{$deal->id}}" class="modal custom-modal fade" role="dialog">
@@ -496,7 +490,7 @@
                                                         <span class="task-priority badge bg-inverse-danger">{{$deal->sale_stage}}</span>
                                                     </span>
                                                                 <span class="task-users">
-                                                        <img src="img/profiles/avatar-12.jpg" class="task-avatar" width="24" height="24">
+                                                        <img src="{{url(asset('img/profiles/avatar-12.jpg'))}}" alt="" class="task-avatar" width="24" height="24">
                                                             <span>{{$deal->employee->name}}</span>
                                                     </span>
                                                             </div>
@@ -528,16 +522,16 @@
                                                 <div class="card panel">
                                                     <div class="kanban-box">
                                                         <div class="task-board-header">
-                                                            <span class="status-title"><a href="task-view">{{$deal->name}}</a></span>
+                                                            <span class="status-title"><a href="">{{$deal->name}}</a></span>
                                                             <div class="dropdown kanban-task-action">
                                                                 <a href="" data-toggle="dropdown">
                                                                     <i class="fa fa-angle-down"></i>
                                                                 </a>
                                                                 <div class="dropdown-menu dropdown-menu-right">
                                                                     <a class="dropdown-item" href="{{route('deals.edit',$deal->id)}}">Edit</a>
-                                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_modal{{$deal->id}}">Change Stage</a></li>
-                                                                    <a class="dropdown-item" href="{{route('deals.show',$deal->id)}}">Detail View</a></li>
-                                                                    <a class="dropdown-item" data-toggle="modal" data-target="#delete_deal{{$deal->id}}">Delete</a></li>
+                                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_modal{{$deal->id}}">Change Stage</a>
+                                                                    <a class="dropdown-item" href="{{route('deals.show',$deal->id)}}">Detail View</a>
+                                                                    <a class="dropdown-item" data-toggle="modal" data-target="#delete_deal{{$deal->id}}">Delete</a>
 
                                                                 </div>
                                                                 @include('Deal.delete')
@@ -587,7 +581,7 @@
                                                         <span class="task-priority badge bg-inverse-danger">{{$deal->sale_stage}}</span>
                                                     </span>
                                                                 <span class="task-users">
-                                                        <img src="img/profiles/avatar-12.jpg" class="task-avatar" width="24" height="24">
+                                                        <img src="{{url(asset('img/profiles/avatar-12.jpg'))}}" alt="" class="task-avatar" width="24" height="24">
                                                             <span>{{$deal->employee->name}}</span>
                                                     </span>
                                                             </div>
@@ -618,16 +612,16 @@
                                                 <div class="card panel">
                                                     <div class="kanban-box">
                                                         <div class="task-board-header">
-                                                            <span class="status-title"><a href="task-view">{{$deal->name}}</a></span>
+                                                            <span class="status-title"><a href="">{{$deal->name}}</a></span>
                                                             <div class="dropdown kanban-task-action">
                                                                 <a href="" data-toggle="dropdown">
                                                                     <i class="fa fa-angle-down"></i>
                                                                 </a>
                                                                 <div class="dropdown-menu dropdown-menu-right">
                                                                     <a class="dropdown-item" href="{{route('deals.edit',$deal->id)}}">Edit</a>
-                                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_modal{{$deal->id}}">Change Stage</a></li>
-                                                                    <a class="dropdown-item" href="{{route('deals.show',$deal->id)}}">Detail View</a></li>
-                                                                    <a class="dropdown-item" data-toggle="modal" data-target="#delete_deal{{$deal->id}}">Delete</a></li>
+                                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_modal{{$deal->id}}">Change Stage</a>
+                                                                    <a class="dropdown-item" href="{{route('deals.show',$deal->id)}}">Detail View</a>
+                                                                    <a class="dropdown-item" data-toggle="modal" data-target="#delete_deal{{$deal->id}}">Delete</a>
                                                                 </div>
                                                                 @include('Deal.delete')
                                                                 <div id="edit_task_modal{{$deal->id}}" class="modal custom-modal fade" role="dialog">
@@ -676,9 +670,9 @@
                                                         <span class="task-priority badge bg-inverse-danger">{{$deal->sale_stage}}</span>
                                                     </span>
                                                                 <span class="task-users">
-                                                        <img src="img/profiles/avatar-12.jpg" class="task-avatar" width="24" height="24">
-                                                            <span>{{$deal->employee->name}}</span>
-                                                    </span>
+                                                                    <img src="{{url(asset('img/profiles/avatar-12.jpg'))}}" alt="" class="task-avatar" width="24" height="24">
+                                                                <span>{{$deal->employee->name}}</span>
+                                                            </span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -695,6 +689,4 @@
                 </div>
             </div>
         </div>
-<script>
-</script>
 @endsection

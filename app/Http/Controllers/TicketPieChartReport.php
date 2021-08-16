@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\assign_ticket;
+use App\Models\countdown;
 use App\Models\priority;
 use App\Models\status;
 use App\Models\ticket;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class TicketPieChartReport extends Controller
@@ -13,6 +15,7 @@ class TicketPieChartReport extends Controller
     public function index(){
         $priority=$this->report_priority();
         $statuses=$this->report_status();
+
         return view('ticket.chartreport',compact('statuses','priority'));
     }
     public function report_priority(){

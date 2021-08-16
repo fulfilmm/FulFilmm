@@ -1,6 +1,6 @@
 <div class="col-12">
     <div class="row">
-        <label for="" class="col-md-2 offset-md-1 ">Deal Name<span class="text-danger">*</span></label>
+        <label for="deal_name" class="col-md-2 offset-md-1 ">Deal Name<span class="text-danger">*</span></label>
         <div class="col-md-6">
             <div class="form-group">
                 <div class="row">
@@ -24,7 +24,7 @@
         </div>
     </div>
     <div class="row">
-        <label for="" class="col-md-2 offset-md-1">Probability<span class="text-danger">*</span></label>
+        <label for="propability" class="col-md-2 offset-md-1">Probability<span class="text-danger">*</span></label>
         <div class="col-md-6">
             <div class="form-group">
                <div class="row">
@@ -37,7 +37,7 @@
         </div>
     </div>
     <div class="row">
-        <label for="" class="col-md-2 offset-md-1">Amount<span class="text-danger">*</span></label>
+        <label for="amount" class="col-md-2 offset-md-1">Amount<span class="text-danger">*</span></label>
         <div class="col-md-6">
             <div class="form-group">
                 <div class="row">
@@ -60,7 +60,7 @@
         </div>
     </div>
     <div class="row" id="org_div">
-        <label for="" class="col-md-2 offset-md-1">Organization Name<span class="text-danger">*</span></label>
+        <label for="quick_org" class="col-md-2 offset-md-1">Organization Name<span class="text-danger">*</span></label>
         <div class="col-md-6">
           <div class="form-group">
               <div class="row">
@@ -78,12 +78,12 @@
 
     </div>
     <div class="row">
-        <label for="" class="col-md-2 offset-md-1">Pipeline<span class="text-danger">*</span></label>
+        <label for="pipeline" class="col-md-2 offset-md-1">Pipeline<span class="text-danger">*</span></label>
         <div class="col-md-6">
             <div class="form-group">
                 <div class="row">
                     <div class="col-md-9 col-12">
-                        <select name="deal_name" id="pipeline" class="select" required>
+                        <select name="pipeline" id="pipeline" class="select" required>
                             <option value="Standard">Standard</option>
                         </select>
                     </div>
@@ -92,12 +92,12 @@
         </div>
     </div>
     <div class="row">
-        <label for="" class="col-md-2 offset-md-1">Sale Stage<span class="text-danger">*</span></label>
+        <label for="sale_stage" class="col-md-2 offset-md-1">Sale Stage<span class="text-danger">*</span></label>
         <div class="col-md-6">
             <div class="form-group">
                 <div class="row">
                     <div class="col-md-9 col-12">
-                        <select name="deal_name" id="sale_stage" class="form-control col-11" required>
+                        <select name="sale_stage" id="sale_stage" class="form-control col-11" required>
                   <option value="New">New</option>
                   <option value="Qualified">Qualified</option>
                   <option value="Quotation">Quatation</option>
@@ -111,7 +111,7 @@
        </div>
     </div>
     <div class="row">
-        <label for="" class="col-md-2 offset-md-1">Assign To<span class="text-danger">*</span></label>
+        <label for="assign_to" class="col-md-2 offset-md-1">Assign To<span class="text-danger">*</span></label>
         <div class="col-md-6">
             <div class="form-group">
                 <div class="row">
@@ -129,7 +129,7 @@
       </div>
     </div>
     <div class="row">
-        <label for="" class="col-md-2 offset-md-1">Lead Source<span class="text-danger">*</span></label>
+        <label for="lead_source" class="col-md-2 offset-md-1">Lead Source<span class="text-danger">*</span></label>
         <div class="col-md-6">
             <div class="form-group">
                 <div class="row">

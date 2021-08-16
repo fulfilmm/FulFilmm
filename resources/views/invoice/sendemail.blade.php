@@ -1,4 +1,5 @@
 @extends('layout.mainlayout')
+@section('title','Invoice Email Sending Prepare ')
 @section('content')
     <!-- Page Content -->
     <div class="content container-fluid">
@@ -54,8 +55,8 @@
                                     <input type="hidden" name="email" value="{{$detail_inv->customer->email}}">
                                     <input type="hidden" name="inv_id" value="{{$detail_inv->id}}">
                                     <div class="form-group">
-                                        <label for="">CC Email</label>
-                                        <input type="text" class="form-control" name="cc_mail">
+                                        <label for="cc">CC Email</label>
+                                        <input type="text" id="cc" class="form-control" name="cc_mail">
                                     </div>
                                     <div class="form-group">
                                         <label for="">Attach File</label>

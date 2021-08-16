@@ -71,7 +71,6 @@ return [
             'transport' => 'array',
         ],
     ],
-
     /*
     |--------------------------------------------------------------------------
     | Global "From" Address
@@ -84,7 +83,7 @@ return [
     */
 
     'from' => [
-        'address' => env('cincin.com@gmail.com', 'hello@example.com'),
+        'address' => env('siyincin@gmail.com', 'hello@example.com'),
         'name' => env('MAIL_FROM_NAME', 'Cloudark'),
     ],
 

@@ -1,4 +1,5 @@
 @extends('layout.mainlayout')
+@section('title','Ticket Post')
 @section('content')
     <link rel="stylesheet" href="{{url(asset('css/ticket.css'))}}">
     <!-- Page Content -->
@@ -53,7 +54,7 @@
                                 <label>Client <span class="text-danger">*</span></label>
                                 <select class="form-control" name="client">
                                     @foreach($data['client'] as $client)
-                                        <option value="{{$client->id}}" {{old('client')==$client->id?'selected':''}}>{{$client->name}}</option>
+                                        <option value="{{$client->id}}" {{isset($complain)?($complain->email==$client->email?'selected':''):(old('client')==$client->id?'selected':'')}}>{{$client->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -88,11 +89,12 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Assign <span class="text-danger">*</span></label>
+                                <label>Assign Type<span class="text-danger">*</span></label>
                                 <select class="select" id="type" name="assignType">
-                                    <option value="item0">Choose Assign Type</option>
-                                    <option value="dept">Assign To Department</option>
-                                    <option value="agent">Assign To Agent</option>
+                                    <option value="item0">Unassign</option>
+                                    <option value="dept">Department</option>
+                                    <option value="group">Group</option>
+                                    <option value="agent">Agent</option>
                                 </select>
                                 @error('assignType')
                                 <span class="text-danger">{{$message}}Select Department or Agent.</span>
@@ -126,7 +128,22 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="source">Source</label>
-                                <input type="text" class="form-control" name="source" id="source">
+                               <select class='select' name="source" id="source">
+                                    <option value="Phone">Phone</option>
+                                    <option value="Email">Email</option>
+                                    <option value="Web Messager">Web Messager</option>
+                                    <option value="Viber">Viber</option>
+                                    <option value="Whatapp">Whatapp</option>
+                                    <option value="Other">Other</option>
+                               </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                            <label for='tag'>Tag</label>
+                            <input type="text" class='form-control' name='tag'>
                             </div>
                         </div>
                     </div>
@@ -134,14 +151,16 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label for="description">Description <span class="text-danger">*</span></label>
-                                <textarea class="form-control @error('description')is-invalid @enderror" id="description" name="description" style="height: 200px;" ></textarea>
+                                <textarea class="form-control @error('description')is-invalid @enderror"  id="description" name="description" style="height: 200px;" >
+                                    {{isset($complain)?$complain->description:''}}
+                                </textarea>
                            @error('description')
                                 <span class="text-danger">{{$message}}</span>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 <label>Upload Files</label>
-                                <input class="form-control" name="attachment" type="file">
+                                <input class="form-control" value="{{isset($complain)?url(asset('/ticket_attach/'.$complain->attach_file))??'':''}}" name="attachment" type="file">
                                 @error('attachment')
                                 <span class="text-danger">{{$message}}</span>
                                 @enderror
@@ -198,19 +217,22 @@
         });
     });
     $(document).ready(function () {
+
         $("#type").change(function () {
             var val = $(this).val();
             if (val == "dept") {
                 $("#assign_to").html("@foreach($data['depts'] as $dept)<option value='{{$dept->id}}'>{{$dept->name}}</option> @endforeach");
             } else if (val == "agent") {
                 $("#assign_to").html(" @foreach($data['all_emp'] as $agent)@if($agent->role->name=='Agent')<option value='{{$agent->id}}'>{{$agent->name}}</option> @endif @endforeach");
+            }else if(val=='group'){
+                $("#assign_to").html("@foreach($group as $key=>$val)<option value='{{$key}}'>{{$val}}</option> @endforeach");
+            }else {
+                $("#assign_to").html("<option value=''></option>");
             }
         });
     });
     ClassicEditor
-        .create( document.querySelector( '#description' ) )
-        .catch( error => {
-            console.error( error );
-        } );
+        .create( document.querySelector( '#description' ) );
+
 </script>
 @endsection

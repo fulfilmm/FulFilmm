@@ -10,42 +10,42 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label>Subject</label>
-                            <input class="form-control" type="text" name="subject" required>
+                            <label for="subject">Subject</label>
+                            <input class="form-control" id="subject" type="text" name="subject" required>
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <div class="form-group">
-                            <label>Name</label>
-                            <input type="text" name="client_name" class="form-control" required>
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="client_name" class="form-control" required>
                         </div>
                     </div>
                     <div class="col-sm-2">
                       <div class="form-group">
-                          <label for="">Age</label>
-                          <input type="number" name="age" class="form-control">
+                          <label for="age">Age</label>
+                          <input type="number" id="age" name="age" class="form-control">
                       </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label>Phone</label>
-                            <input type="number" name="client_phone" class="form-control"  min="0" required  oninput="validity.valid||(value='');">
+                            <label for="phone">Phone</label>
+                            <input type="number" id="phone" name="client_phone" class="form-control"  min="0" required  oninput="validity.valid||(value='');">
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label>Email</label>
-                            <input type="email" name="email" class="form-control" required>
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" class="form-control" required>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-6">
                         <div class="form-group">
-                            <label for="">Township</label>
-                            <input type="text" class="form-control" name="township" required>
+                            <label for="township">Township</label>
+                            <input type="text" id="township" class="form-control" name="township" required>
                         </div>
                     </div>
                     <div class="col-6">
@@ -64,10 +64,10 @@
                         <div class="form-group">
                             <label for="">Convert To Lead</label>
                            <div class="group">
-                               <input type="radio" name="convert" value="1">
-                               <label for="">Yes</label>
-                               <input type="radio" name="convert" checked value="0">
-                               <label for="">Not Now</label>
+                               <input type="radio" id="yes" name="convert" value="1">
+                               <label for="yes">Yes</label>
+                               <input type="radio" id="not_now" name="convert" checked value="0">
+                               <label for="not_now">Not Now</label>
                            </div>
                         </div>
                     </div>

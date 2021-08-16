@@ -1,4 +1,5 @@
 @extends('layout.mainlayout')
+@section('title','Invoice Create')
 @section('content')
             <!-- Page Content -->
             <div class="content container-fluid">
@@ -12,7 +13,6 @@
                                 <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
                                 <li class="breadcrumb-item active">Create Invoice</li>
                                 <li class="breadcrumb-item float-right">New</li>
-                                <input type="hidden" id="invoice_id" value="{{$request_id[0]}}">
                             </ul>
                         </div>
                     </div>
@@ -51,8 +51,8 @@
                                 </div>
                                 <div class="col-sm-6 col-md-3">
                                     <div class="form-group">
-                                        <label for="form_id">Create Form ID</label>
-                                        <input type="text" id="form_id" class="form-control" value="{{$request_id[0]}}" readonly>
+                                        <label for="invoice_id">Create Form ID</label>
+                                        <input type="text" id="invoice_id" class="form-control" value="{{$request_id[0]}}" readonly>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-md-3">
@@ -289,7 +289,7 @@
                                 'unit_price':price,
                                 "currency_unit":unit,
                                 "total":total,
-                                "invoice_id":invoice_id,
+                                "invoice_id":invoice_id
 
                             },
                             type:'POST',
@@ -340,7 +340,7 @@
                                 'bill_address':bill_address,
                                 "save_type":action_type,
                                 'status':status,
-                                'payment_method':payment,
+                                'payment_method':payment
 
                             },
                             type:'POST',
@@ -380,7 +380,7 @@
                                 'bill_address':bill_address,
                                 'inv_grand_total':inv_grand_total,
                                 'status':status,
-                                'payment_method':payment,
+                                'payment_method':payment
 
                             },
                             type:'POST',

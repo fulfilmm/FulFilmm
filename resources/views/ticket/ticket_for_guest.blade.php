@@ -32,91 +32,66 @@
     {{-- Modals --}}
     <!-- Page Content -->
     <div class="content container-fluid">
-        <div class="col-md-10 offset-md-1 col-12">
-            <h3 class="my-3">Ticket Create </h3>
-    <form action="{{url('ticket/create/guest')}}" method="POST" enctype="multipart/form-data">
+        <div class="card col-md-8 offset-md-2 col-12 my-3">
+            <div class="card-header">
+                <div class="row">
+                    @php $company=\App\Models\MainCompany::where('ismaincompany',true)->first(); @endphp
+
+                    <div class="col-9">
+                        <h3>Ticket Request Form</h3>
+                    </div>
+                    <span class="mr-2 mt-2">{{$company->name ??''}}</span><img src="{{$company!=null?url(asset('/img/profiles/'.$company->logo)):''}}" width="40px" height="40px"></span>
+                </div>
+            </div>
+    <form action="{{route('request_tickets.store')}}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="row">
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="subject">Subject <span class="text-danger">*</span></label>
-                    <input class="form-control" value="{{old('subject')}}" id="subject" type="text" name="subject">
-                    @error('subject')
+                    <label>Name <span class="text-danger">*</span></label>
+                    <input type="text" value="{{old('name')}}" name="name" class="form-control" >
+                    @error('name')
                     <span class="text-danger">{{$message}}</span>
                     @enderror
                 </div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-md-6">
                 <div class="form-group">
-                    <label for="ticketId">Ticket Id <span class="text-danger">*</span></label>
-                    <input class="form-control" id="ticketId" type="text" name="ticket_id"  value="{{$ticket_id}}" readonly>
+                    <label>Email <span class="text-danger">*</span></label>
+                    <input type="text" value="{{old('email')}}" name="email" class="form-control" >
+                    @error('email')
+                    <span class="text-danger">{{$message}}</span>
+                    @enderror
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label>Client Name <span class="text-danger">*</span></label>
-                    <input type="text" value="{{old('client_name')}}" name="client_name" class="form-control" >
-                    @error('client_name')
-                    <span class="text-danger">{{$message}}</span>
-                    @enderror
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="form-group">
-                    <label>Client Phone <span class="text-danger">*</span></label>
-                    <input type="number" value="{{old('client_phone')}}" name="client_phone" class="form-control"  min="0" oninput="validity.valid||(value='');">
+                    <label>Phone <span class="text-danger">*</span></label>
+                    <input type="number" value="{{old('phone')}}" name="phone" class="form-control"  min="0" oninput="validity.valid||(value='');">
                 @error('client_phone')
                     <span class="text-danger">{{$message}}</span>
                     @enderror
                 </div>
             </div>
-        </div>
-        <div class="row">
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label>Case Type <span class="text-danger">*</span></label>
-                    <select class="select" name="case">
-                        @foreach($data['case'] as $case)
-                            <option value="{{$case->id}}"{{old('case')==$case->id?'selected':''}}>{{$case->name}}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-
-            <div class="col-sm-6">
-                <div class="form-group">
-                    <label>Priority <span class="text-danger">*</span></label>
-                    <select class="select" name="priority">
-                        @foreach($data['priority'] as $priority)
-                            <option value="{{$priority->id}}" {{old('priority')==$priority->id?'selected':''}}>{{$priority->priority}}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="form-group">
-                    <label>Assign <span class="text-danger">*</span></label>
-                    <select class="select" id="type" name="assignType">
-                        <option value="item0">Choose Assign Type</option>
-                        <option value="dept">Department</option>
-                        <option value="agent">Agent</option>
-                        <option value="group">Group</option>
-                    </select>
-                    @error('assignType')
-                    <span class="text-danger">{{$message}}Select Department or Agent.</span>
+                    <label>Address <span class="text-danger">*</span></label>
+                    <input type="text" value="{{old('address')}}" name="address" class="form-control">
+                    @error('address')
+                    <span class="text-danger">{{$message}}</span>
                     @enderror
                 </div>
             </div>
+        </div>
+        <div class="row">
             <div class="col-sm-6">
                 <div class="form-group">
                     <label>Product <span class="text-danger">*</span></label>
                     <select name="product_id" id="" class="select">
-                        @foreach($data['product'] as $product)
-                            <option value="{{$product->id}}" {{old('product_id')==$product->id?'selected':''}}>{{$product->name}}</option>
+                        @foreach($products as $key=>$val)
+                            <option value="{{$key}}" {{old('product_id')==$key?'selected':''}}>{{$val}}</option>
                         @endforeach
                     </select>
                     @error('product_id')
@@ -124,37 +99,22 @@
                     @enderror
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
+            <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="">Assign To <span class="text-danger">*</span></label>
-                    <select name="assign_id" id="assign_to" class="select">
-                        <option></option>
+                    <label>Company <span class="text-danger">*</span></label>
+                    <select name="company_id" id="" class="select">
+                        @foreach($customercompany as $key=>$val)
+                            <option value="{{$key}}" {{old('company_id')==$key?'selected':''}}>{{$val}}</option>
+                        @endforeach
+                            <option value="">Other</option>
                     </select>
-                    @error('assign_id')
-                    <span class="text-danger">Assign To is required.You must to select assign type first.</span>
+                    @error('company_id')
+                    <span class="text-danger">{{$message}}</span>
                     @enderror
                 </div>
             </div>
-            <div class="col-sm-6">
-                <div class="form-group">
-                    <label>Add Followers</label>
-                    <select name="follower[]" id="follower" class="select" multiple>
-                        @foreach($data['all_emp'] as $agent)
-                            <option value="{{$agent->id}}">{{$agent->name}}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="form-group">
-                    <label for="source">Source</label>
-                    <input type="text" class="form-control" id="source" name="source">
-                </div>
-            </div>
+
+
         </div>
         <div class="row">
             <div class="col-sm-12">
@@ -167,13 +127,13 @@
                 </div>
                 <div class="form-group">
                     <label>Upload Files</label>
-                    <input class="form-control" name="attachment" type="file">
+                    <input class="form-control" name="attach_file" type="file">
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-12">
-                <div class=" form-group ">
+                <div class=" form-group">
                     <label align="center">Upload your images</label>
                     <input type="file" class="form-control"  id="files" name="files[]" multiple  />
                 </div>
@@ -213,20 +173,8 @@
                 alert("Your browser doesn't support to File API")
             }
         });
-            $(document).ready(function () {
-            $("#type").change(function () {
-                var val = $(this).val();
-                if (val == "dept") {
-                    $("#assign_to").html("@foreach($data['depts'] as $dept)<option value='{{$dept->id}}'>{{$dept->name}}</option> @endforeach");
-                } else if (val == "agent") {
-                    $("#assign_to").html(" @foreach($data['all_emp'] as $agent)@if($agent->role->name=='Agent')<option value='{{$agent->id}}'>{{$agent->name}}</option> @endif @endforeach");
-                }
-            });
-        });
+
         ClassicEditor
-            .create( document.querySelector( '#guest_description' ) )
-            .catch( error => {
-                console.error( error );
-            } );
+            .create( document.querySelector( '#guest_description' ) );
     </script>
 @endsection

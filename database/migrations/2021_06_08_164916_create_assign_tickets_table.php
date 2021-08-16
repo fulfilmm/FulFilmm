@@ -21,7 +21,7 @@ class CreateAssignTicketsTable extends Migration
             $table->foreign("ticket_id")->references('id')->on('tickets')->onDelete('cascade');;
             $table->bigInteger('dept_id')->unsigned()->nullable();
             $table->foreign("dept_id")->references("id")->on("departments")->onDelete('cascade');
-            $table->tinyInteger("type_of_assign");
+            $table->string("type_of_assign");
             $table->timestamps();
         });
     }

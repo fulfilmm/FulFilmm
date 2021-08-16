@@ -33,6 +33,8 @@ class CreateTicketsTable extends Migration
             $table->text("photo")->nullable();
             $table->text("attachment")->nullable();
             $table->tinyInteger("isassign")->default(1);
+            $table->text('tag')->nullable();
+            $table->string('source');
             $table->timestamps();
         });
     }

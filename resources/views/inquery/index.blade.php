@@ -1,5 +1,5 @@
 @extends("layout.mainlayout")
-@section("title","Cases Type")
+@section("title","Inquery")
 @section("content")
     <!-- Page Content -->
     <div class="content container-fluid">
