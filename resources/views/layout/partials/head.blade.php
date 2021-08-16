@@ -88,6 +88,6 @@
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <!-- Main CSS -->
         <link rel="stylesheet" href="{{url(asset("css/style.css"))}}">
-        <script src="{{asset("js/jquery-3.2.1.min.js")}}"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="https://cdn.ckeditor.com/ckeditor5/29.0.0/classic/ckeditor.js"></script>
 </head>

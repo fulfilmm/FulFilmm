@@ -5,38 +5,38 @@
     var CalendarApp = function() {
         this.$body = $("body")
         this.$modal = $('#event-modal'),
-        this.$event = ('#external-events div.external-event'),
-        this.$calendar = $('#calendar'),
-        this.$saveCategoryBtn = $('.save-category'),
-        this.$categoryForm = $('#add-category form'),
-        this.$extEvents = $('#external-events'),
-        this.$calendarObj = null
+            this.$event = ('#external-events div.external-event'),
+            this.$calendar = $('#calendar'),
+            this.$saveCategoryBtn = $('.save-category'),
+            this.$categoryForm = $('#add-category form'),
+            this.$extEvents = $('#external-events'),
+            this.$calendarObj = null
     };
 
 
     /* on drop */
     CalendarApp.prototype.onDrop = function (eventObj, date) {
         var $this = this;
-            // retrieve the dropped element's stored Event Object
-            var originalEventObject = eventObj.data('eventObject');
-            var $categoryClass = eventObj.attr('data-class');
-            // we need to copy it, so that multiple events don't have a reference to the same object
-            var copiedEventObject = $.extend({}, originalEventObject);
-            // assign it the date that was reported
-            copiedEventObject.start = date;
-            if ($categoryClass)
-                copiedEventObject['className'] = [$categoryClass];
-            // render the event on the calendar
-            $this.$calendar.fullCalendar('renderEvent', copiedEventObject, true);
-            // is the "remove after drop" checkbox checked?
-            if ($('#drop-remove').is(':checked')) {
-                // if so, remove the element from the "Draggable Events" list
-                eventObj.remove();
-            }
+        // retrieve the dropped element's stored Event Object
+        var originalEventObject = eventObj.data('eventObject');
+        var $categoryClass = eventObj.attr('data-class');
+        // we need to copy it, so that multiple events don't have a reference to the same object
+        var copiedEventObject = $.extend({}, originalEventObject);
+        // assign it the date that was reported
+        copiedEventObject.start = date;
+        if ($categoryClass)
+            copiedEventObject['className'] = [$categoryClass];
+        // render the event on the calendar
+        $this.$calendar.fullCalendar('renderEvent', copiedEventObject, true);
+        // is the "remove after drop" checkbox checked?
+        if ($('#drop-remove').is(':checked')) {
+            // if so, remove the element from the "Draggable Events" list
+            eventObj.remove();
+        }
     },
-    /* on click on event */
-    CalendarApp.prototype.onEventClick =  function (calEvent, jsEvent, view) {
-        var $this = this;
+        /* on click on event */
+        CalendarApp.prototype.onEventClick =  function (calEvent, jsEvent, view) {
+            var $this = this;
             var form = $("<form class='event-form'></form>");
             form.append("<label>Change event name</label>");
             form.append("<div class='input-group'><input class='form-control' type=text value='" + calEvent.title + "' /><span class='input-group-append'><button type='submit' class='btn btn-success btn-md'>Save</button></span></div>");
@@ -55,18 +55,18 @@
                 $this.$modal.modal('hide');
                 return false;
             });
-    },
-    /* on select */
-    CalendarApp.prototype.onSelect = function (start, end, allDay) {
-        var $this = this;
+        },
+        /* on select */
+        CalendarApp.prototype.onSelect = function (start, end, allDay) {
+            var $this = this;
             $this.$modal.modal({
                 backdrop: 'static'
             });
             var form = $("<form></form>");
             form.append("<div class='row'></div>");
             form.find(".row")
-                .append("<div class='col-md-12'><div class='form-group'><label class='control-label'>Event Name</label><input class='form-control' type='text' name='title'/></div></div>")
-                .append("<div class='col-md-12'><div class='form-group'><label class='control-label'>Category</label><select class='select form-control' name='category'></select></div></div>")
+                .append("<div class='col-md-12'><div class='form-group'><label class='control-label'>Event Name</label><input class='form-control' id='title' type='text' name='title'/></div></div>")
+                .append("<div class='col-md-12'><div class='form-group'><label class='control-label'>Category</label><select class='select form-control' id='category' name='category'></select></div></div>")
                 .find("select[name='category']")
                 .append("<option value='bg-danger'>Danger</option>")
                 .append("<option value='bg-success'>Success</option>")
@@ -80,7 +80,9 @@
                 .append("<option value='bg-teal'>Teal</option>")
                 .append("<option value='bg-warning'>Warning</option></div></div>");
             $this.$modal.find('.delete-event').hide().end().find('.save-event').show().end().find('.modal-body').empty().prepend(form).end().find('.save-event').unbind('click').click(function () {
-                form.submit();
+                form.submit(
+
+                );
             });
             $this.$modal.find('form').on('submit', function () {
                 var title = form.find("input[name='title']").val();
@@ -104,25 +106,25 @@
 
             });
             $this.$calendarObj.fullCalendar('unselect');
-    },
-    CalendarApp.prototype.enableDrag = function() {
-        //init events
-        $(this.$event).each(function () {
-            // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
-            // it doesn't need to have a start or end
-            var eventObject = {
-                title: $.trim($(this).text()) // use the element's text as the event title
-            };
-            // store the Event Object in the DOM element so we can get to it later
-            $(this).data('eventObject', eventObject);
-            // make the event draggable using jQuery UI
-            $(this).draggable({
-                zIndex: 999,
-                revert: true,      // will cause the event to go back to its
-                revertDuration: 0  //  original position after the drag
+        },
+        CalendarApp.prototype.enableDrag = function() {
+            //init events
+            $(this.$event).each(function () {
+                // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
+                // it doesn't need to have a start or end
+                var eventObject = {
+                    title: $.trim($(this).text()) // use the element's text as the event title
+                };
+                // store the Event Object in the DOM element so we can get to it later
+                $(this).data('eventObject', eventObject);
+                // make the event draggable using jQuery UI
+                $(this).draggable({
+                    zIndex: 999,
+                    revert: true,      // will cause the event to go back to its
+                    revertDuration: 0  //  original position after the drag
+                });
             });
-        });
-    }
+        }
     /* Initializing */
     CalendarApp.prototype.init = function() {
         this.enableDrag();
@@ -133,20 +135,28 @@
         var y = date.getFullYear();
         var form = '';
         var today = new Date($.now());
-       var test= $.ajax({
-            url: "http://localhost:8000/data",
-            type: 'GET',
-            dataType: 'json', // added data type
-            success: function(res) {
-                console.log(res);
-            }
-        });
-        var data= [{
-            title:'test',
+
+        var defaultEvents =  [{
+            title: 'Event Name 4',
             start: new Date($.now() + 148000000),
             className: 'bg-purple'
-        }];
-        var defaultEvents = data;
+        },
+            {
+                title: 'Test Event 1',
+                start: today,
+                end: today,
+                className: 'bg-success'
+            },
+            {
+                title: 'Test Event 2',
+                start: new Date($.now() + 168000000),
+                className: 'bg-info'
+            },
+            {
+                title: 'Test Event 3',
+                start: new Date($.now() + 338000000),
+                className: 'bg-primary'
+            }];
 
         var $this = this;
         $this.$calendarObj = $this.$calendar.fullCalendar({
@@ -184,13 +194,13 @@
         });
     },
 
-   //init CalendarApp
-    $.CalendarApp = new CalendarApp, $.CalendarApp.Constructor = CalendarApp
+        //init CalendarApp
+        $.CalendarApp = new CalendarApp, $.CalendarApp.Constructor = CalendarApp
 
 }(window.jQuery),
 
 //initializing CalendarApp
-function($) {
-    "use strict";
-    $.CalendarApp.init()
-}(window.jQuery);
+    function($) {
+        "use strict";
+        $.CalendarApp.init()
+    }(window.jQuery);

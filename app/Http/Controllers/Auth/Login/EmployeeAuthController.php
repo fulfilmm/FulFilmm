@@ -29,7 +29,7 @@ class EmployeeAuthController extends LoginController
 
     protected function authenticated(Request $request, $user)
     {
-        $this->redirectTo=Auth::guard('employee')->user()->role->name=='Agent'?'tickets':'/';
+//        $this->redirectTo=Auth::guard('employee')->user()->role->name=='Agent'?'tickets':'/';
         if ($user->can_login) {
             return redirect()->intended($this->redirectPath());
         }else{

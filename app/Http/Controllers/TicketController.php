@@ -265,7 +265,9 @@ class TicketController extends Controller
         $change_ticket_status = ticket::where('id', $id)->first();
         $change_ticket_status->status = $request->status_id;
         $change_ticket_status->update();
-        return redirect()->back();
+        return response()->json([
+            'success'=>'Change Success'
+        ]);
     }
     public function priority_change(Request $request,$id){
         $ticket=ticket::where('id',$id)->first();

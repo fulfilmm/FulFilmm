@@ -104,6 +104,9 @@ class DealController extends Controller
         $deal->probability=$data['propability'];
         $deal->created_id=Auth::guard('employee')->user()->id;
         $deal->save();
+        return response()->json([
+           'success'=>'Create Sussful'
+        ]);
     }
     public function full_form($data){
         $deal=new deal();
@@ -126,6 +129,9 @@ class DealController extends Controller
         $deal->description=$data['description'];
         $deal->created_id=Auth::guard('employee')->user()->id;
         $deal->save();
+        return response()->json([
+            'success'=>'Create Sussful'
+        ]);
     }
 
 
@@ -164,6 +170,7 @@ class DealController extends Controller
         $lead_sources=["Cold Call","Referral","Word of mouth","Website","Trade Show","Conference","Direct Mail",
                         "Public Relation","Partner","Employee","Self Generated","Existing Customer","Facebook"];
         $lost_reason=["Price","Authority","Timing","Missing Feature","Usability","Unknown","No need"];
+        
         return  view("Deal.edit",compact('hasSetUp','parent_companies',"products","deal",
             "taxes","lasttax","lastcat","allcat","lasttax","allemployees",
             "companies","allcustomers",'sale_stage','lead_sources','lost_reason'));

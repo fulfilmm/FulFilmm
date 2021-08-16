@@ -47,7 +47,7 @@
 							<p class="account-subtitle">Access to our dashboard</p>
 
 							<!-- Account Form -->
-                            <form action="{{  route('employees.login') }}" method="POST">
+                            <form action="{{  route('employees.emplogin') }}" method="POST">
                                 @csrf
 								<div class="form-group">
 									<label>{{__('E-Mail Address')}}</label>
