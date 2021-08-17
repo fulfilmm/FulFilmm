@@ -116,6 +116,7 @@
                         <ul style="display: none;">
 
                             <li><a class="{{ Request::is('rooms') ? 'active' : '' }}" href="{{route('rooms.index')}}">Rooms</a></li>
+                            <li><a class="{{ Request::is('rooms') ? 'active' : '' }}" href="{{route('booking')}}">Room Booking</a></li>
                             {{--                            <li><a class="{{ Request::is('cases') ? 'active' : '' }}" href="{{ route('cases.index') }}">All Cases</a></li>--}}
                             {{--                            <li><a class="{{ Request::is('priority') ? 'active' : '' }}" href="{{ route('priorities.index') }}">All Priority</a></li>--}}
 

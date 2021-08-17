@@ -49,8 +49,8 @@ use App\Http\Controllers\RoleController;
 */
 
 Route::resource('rooms',RoomController::class);
-Route::get('rooms.booking',[RoomController::class,'booking'])->name('booking');
-Route::post('rooms.savebooking',[RoomController::class,'booking_save'])->name('savebooking');
+Route::get('booking',[RoomController::class,'booking'])->name('booking');
+Route::post('savebooking',[RoomController::class,'booking_save'])->name('savebooking');
 Route::get('booking/cancel/{id}',[RoomController::class,'bookigCancel'])->name('cancel');
 
 Route::get('/', [HomeController::class, 'index'])->middleware(['auth:employee']);
