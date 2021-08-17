@@ -40,6 +40,7 @@ class RoomController extends Controller
     public function store(Request $request)
     {
         Room::create($request->all());
+        return redirect()->back()->with('success','New Room Add Successful');
     }
 
     /**
@@ -61,8 +62,9 @@ class RoomController extends Controller
      */
     public function edit($id)
     {
-        $select_room=Room::where('id',$id)->first();
-        return view('room.edit',compact('select_room'));
+//        $select_room=Room::where('id',$id)->first();
+//        return view('room.edit',compact('select_room'));
+        return redirect()->back();
     }
 
     /**
