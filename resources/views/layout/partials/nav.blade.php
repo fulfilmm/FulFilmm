@@ -112,6 +112,16 @@
                         </ul>
                     </li>
                     <li class="submenu">
+                        <a href="#"><i class="la la-cube"></i><span> Room</span> <span class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+
+                            <li><a class="{{ Request::is('rooms') ? 'active' : '' }}" href="{{route('rooms.index')}}">Rooms</a></li>
+                            {{--                            <li><a class="{{ Request::is('cases') ? 'active' : '' }}" href="{{ route('cases.index') }}">All Cases</a></li>--}}
+                            {{--                            <li><a class="{{ Request::is('priority') ? 'active' : '' }}" href="{{ route('priorities.index') }}">All Priority</a></li>--}}
+
+                        </ul>
+                    </li>
+                    <li class="submenu">
                         <a href="#"><i class="la la-calendar-check-o"></i> <span> Meeting</span> <span
                                     class="menu-arrow"></span></a>
                         <ul style="display: none;">
@@ -148,6 +158,8 @@
                             @else
                                 <li><a class="{{ Request::is('tickets') ? 'active' : '' }}"
                                        href="{{ route('tickets.index') }}">{{\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=="Agent"?'My Tickets':'All Ticket'}}</a></li>
+                                <li><a class="{{ Request::is('followed') ? 'active' : '' }}"
+                                       href="{{ route('request_tickets.index') }}">External Ticket Request</a></li>
                                 <li><a class="{{ Request::is('followed') ? 'active' : '' }}"
                                        href="{{ route('followed.tickets') }}">My Follow Ticket</a></li>
                                 <li><a class="{{ Request::is('cases.index') ? 'active' : '' }}"

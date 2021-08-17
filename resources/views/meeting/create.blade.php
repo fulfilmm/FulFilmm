@@ -72,14 +72,16 @@
                            <div id="realtive_field">
                                <div class="col-md-12" id="for_real">
                                    <div class="form-group">
-                                       <label for="">Address <span class="text-danger">*</span></label>
-                                       <input type="text" class="form-control" name="address" value="{{old('address')}}" required>
-                                   </div>
-                                   <div class="form-group">
-                                       <label for="location">Room No(Room Name) <span class="text-danger">*</span></label>
-                                       <input type="text" id="location" name="room_no" class="form-control" value="{{old('room_no')}}" required>
+                                       <label for="room_no">Room No(Room Name) <span class="text-danger">*</span></label>
+                                       <select id="room_no" name="room_no" class="form-control select" >
+                                           <option value="">Choose Your Booking Room</option>
+                                          @foreach($data['rooms'] as $room)
+                                           <option value="{{$room->id}}">{{$room->room_no}}</option>
+                                              @endforeach
+                                       </select>
 
                                    </div>
+
                                </div>
                            </div>
 
@@ -92,7 +94,7 @@
                                <div class="fom-group">
                                    <label for="internal">Internal Member <span class="text-danger">*</span></label>
                                    <select class="select" name="internal_members[]" multiple required>
-                                       @foreach($employees as $key=>$val)
+                                       @foreach($data['employees'] as $key=>$val)
                                            @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->id!=$key)
                                        <option value="{{$key}}">{{$val}}</option>
                                            @endif
@@ -112,8 +114,8 @@
                        </div>
                    </div>
                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-outline-primary">Submit</button>
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-outline-primary col-md-2 col-4">Submit</button>
                 </div>
             </form>
         </div>
@@ -176,10 +178,11 @@
                 }else {
 
                     $('#visual_input').remove();
-                    $('#realtive_field').append('<div class="col-md-12" id="for_real"><div class="form-group"><label for="">Address <span class="text-danger">*</span></label><input type="text" class="form-control" name="address" value="{{old('address')}}" required></div><div class="form-group"><label for="location">Room No(Room Name) <span class="text-danger">*</span></label><input type="text" id="location" name="room_no" value="{{old('room_no')}}" class="form-control" required></div></div>');
+                    $('#realtive_field').append('<div class="col-md-12" id="for_real"><div class="form-group"><label for="room_no">Room No(Room Name) <span class="text-danger">*</span></label><select id="room_no" name="room_no" class="form-control select" ><option value="">Choose Your Booking Room</option>@foreach($data['rooms'] as $room)<option value="{{$room->id}}">{{$room->room_no}}</option>@endforeach</select></div></div>');
                 }
             });
         });
+
 
     </script>
 @endsection

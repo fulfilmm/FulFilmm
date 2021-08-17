@@ -24,6 +24,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\RequestTicket;
+use App\Http\Controllers\RoomController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\TicketPieChartReport;
 use App\Http\Controllers\TicketSender;
@@ -47,7 +48,10 @@ use App\Http\Controllers\RoleController;
 |
 */
 
-
+Route::resource('rooms',RoomController::class);
+Route::get('rooms.booking',[RoomController::class,'booking'])->name('booking');
+Route::post('rooms.savebooking',[RoomController::class,'booking_save'])->name('savebooking');
+Route::get('booking/cancel/{id}',[RoomController::class,'bookigCancel'])->name('cancel');
 
 Route::get('/', [HomeController::class, 'index'])->middleware(['auth:employee']);
 

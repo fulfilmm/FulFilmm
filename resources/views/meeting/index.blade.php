@@ -76,8 +76,8 @@
                                 <td>{{$meeting->title}}</td>
                                 <td>{{\Carbon\Carbon::parse($meeting->due_date)->toFormattedDateString()}}</td>
                                 <td>{{$meeting->meeting_type}}</td>
-                                <td>{{$meeting->address ? :$meeting->link_id}}</td>
-                                <td>{{$meeting->room_no ? :$meeting->password}}</td>
+                                <td>{{$meeting->room_no  ? $meeting->meeting_room->address:$meeting->link_id}}</td>
+                                <td>{{$meeting->room_no ? $meeting->meeting_room->room_no :$meeting->password}}</td>
                                 <th><a href="{{route('meetings.show',$meeting->id)}}" class="btn btn-outline-info btn-sm" ><i class="fa fa-eye"></i></a>
                                     <a href="" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#delete{{$meeting->id}}"><i class="fa fa-trash-o"></i></a>
                                 </th>

@@ -19,6 +19,7 @@ use App\Models\ticket;
 use App\Models\ticket_comments;
 use App\Models\ticket_follower;
 use App\Models\ticket_sender;
+use App\Models\ticketrequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -147,7 +148,7 @@ class TicketController extends Controller
         } catch (ValidationException $e) {
             return redirect()->route('tickets.create')->with('error', $e->getMessage());
         }
-//        dd($request->all());
+
         //add customer info store
         $this->add_sender_info($request->all());
         $last_sender = ticket_sender::orderBy('id', 'desc')->first();
@@ -183,6 +184,12 @@ class TicketController extends Controller
             $ticket->attachment = $attach_name;
         }
         $ticket->save();
+        if($request->complain_id!=null){
+            $exterrequest=ticketrequest::where('id',$request->complain_id)->first();
+            $exterrequest->is_open=1;
+            $exterrequest->update();
+        }
+
         //assign_ticket
         if ($request->assignType != 'item0') {
             $this->assign_ticket($request->assign_id, $ticket->id, $request->assignType);

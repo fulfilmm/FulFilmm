@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+@php $maincompany=\App\Models\MainCompany::where('ismaincompany',true)->first(); @endphp
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
@@ -10,16 +11,16 @@
         <title>{{$title ?? 'Login'}}</title>
 
 		<!-- Favicon -->
-        <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png">
+        <link rel="shortcut icon" type="image/x-icon" href="{{$maincompany!=null ? url(asset('/img/profiles/'.$maincompany->logo)): url(asset('/img/logo2.png'))}}">
 
 		<!-- Bootstrap CSS -->
         <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
 
 		<!-- Fontawesome CSS -->
-        <link rel="stylesheet" href="/css/font-awesome.min.css">
+        <link rel="stylesheet" href="{{url(asset('/css/font-awesome.min.css'))}}">
 
 		<!-- Main CSS -->
-        <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="{{url(asset('/css/style.css'))}}">
 
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		<!--[if lt IE 9]>
@@ -27,6 +28,7 @@
 			<script src="assets/js/respond.min.js"></script>
 		<![endif]-->
     </head>
+
     <body class="account-page">
 		<title>Login</title>
 		<!-- Main Wrapper -->
@@ -37,7 +39,7 @@
 
 					<!-- Account Logo -->
 					<div class="account-logo">
-						<a href="index"><img src="/img/logo2.png" alt="Dreamguy's Technologies"></a>
+						<a href="index"><img class="rounded-circle" src="{{$maincompany!=null ? url(asset('/img/profiles/'.$maincompany->logo)): url(asset('/img/logo2.png'))}}" alt="Company Logo"></a>
 					</div>
 					<!-- /Account Logo -->
                         {{-- {{dump($errors)}} --}}
@@ -94,14 +96,14 @@
 		<!-- /Main Wrapper -->
 
 		<!-- jQuery -->
-        <script src="js/jquery-3.2.1.min.js"></script>
+        <script src="{{url(asset('js/jquery-3.2.1.min.js'))}}"></script>
 
 		<!-- Bootstrap Core JS -->
-        <script src="js/popper.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
+        <script src="{{url(asset('js/popper.min.js'))}}"></script>
+        <script src="{{url(asset('js/bootstrap.min.js'))}}"></script>
 
 		<!-- Custom JS -->
-		<script src="js/app.js"></script>
+		<script src="{{url(asset('js/app.js'))}}"></script>
 
     </body>
 </html>

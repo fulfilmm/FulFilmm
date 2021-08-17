@@ -11,4 +11,7 @@ class Meeting extends Model
     public function emp(){
         return $this->belongsTo(Employee::class,'meeting_creater','id');
     }
+    public function meeting_room(){
+        return $this->belongsTo(Room::class,'room_no','id');
+    }
 }

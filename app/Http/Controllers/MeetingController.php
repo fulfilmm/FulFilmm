@@ -8,6 +8,7 @@ use App\Models\Meeting;
 use App\Models\Meetingmember;
 use App\Models\Meetingminutes;
 use App\Models\MinutesAssign;
+use App\Models\RoomBooking;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +26,7 @@ class MeetingController extends Controller
     public function index()
     {
         $curren_user=Auth::guard('employee')->user();
-        $meetings=Meeting::where('meeting_creater',$curren_user->id)->get();
+        $meetings=Meeting::with('meeting_room')->where('meeting_creater',$curren_user->id)->get();
         $invites_me=Meetingmember::with('meeting')->where('member_id',$curren_user->id)->get();
         $alert_meeting=[];
         foreach ($meetings as $item){
@@ -53,7 +54,13 @@ class MeetingController extends Controller
     public function create()
     {
         $employees=Employee::all()->pluck('name','id')->all();
-        return view('meeting.create',compact('employees'));
+        $booked_room=RoomBooking::with('bookroom')->where('created_emp',Auth::guard('employee')->user()->id)->get();
+        $all_booking=[];
+        foreach ($booked_room as $room){
+            array_push($all_booking,$room->bookroom);
+        }
+        $data=['employees'=>$employees,'rooms'=>$all_booking];
+        return view('meeting.create',compact('data'));
     }
 
     /**
@@ -76,7 +83,6 @@ class MeetingController extends Controller
         $meeting->date_time=Carbon::create($request->due_date);
         $meeting->meeting_type=$request->meeting_type;
         if($request->meeting_type=='Real'){
-            $meeting->address=$request->address;
             $meeting->room_no=$request->room_no;
         }else{
             $meeting->link_id=$request->link;
@@ -100,7 +106,7 @@ class MeetingController extends Controller
       }
        $meeting->meeting_creater=Auth::guard('employee')->user()->id;
        $meeting->save();
-       $last_meeting=Meeting::with('emp')->where('id',$meeting->id)->first();
+       $last_meeting=Meeting::with('emp','meeting_room')->where('id',$meeting->id)->first();
        $this->invitemail($last_meeting,$reciver_mail,$meeting_member);
        $this->invite_member($last_meeting->id,$request->internal_members);
        return redirect(route('meetings.index'));

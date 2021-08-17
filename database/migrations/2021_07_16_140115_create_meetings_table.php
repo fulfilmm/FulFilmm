@@ -19,8 +19,8 @@ class CreateMeetingsTable extends Migration
             $table->text('agenda');
             $table->timestamp('date_time');
             $table->string('meeting_type');
-            $table->string('address')->nullable();
-            $table->string('room_no')->nullable();
+            $table->bigInteger('room_no')->unsigned()->nullable();
+            $table->foreign('room_no')->references('id')->on('rooms')->onDelete('cascade');
             $table->string('link_id')->nullable();
             $table->string('password')->nullable();
             $table->text('guest_member')->nullable();

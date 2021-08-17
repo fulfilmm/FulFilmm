@@ -3,7 +3,6 @@
     <!-- Logo -->
     <div class="header-left">
         <a href="{{url('/')}}" class="logo">
-            @php $maincompany=\App\Models\MainCompany::where('ismaincompany',true)->first(); @endphp
             <img src="{{$maincompany!=null ? url(asset('/img/profiles/'.$maincompany->logo)): url(asset('/img/profiles/avatar-01.jpg'))}}" width="40" height="40" alt="">
         </a>
     </div>

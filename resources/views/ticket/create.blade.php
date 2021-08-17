@@ -31,6 +31,7 @@
                                 @enderror
                             </div>
                         </div>
+                        <input type="hidden" name="complain_id" value="{{isset($complain)?$complain->id:''}}">
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Ticket Id</label>
