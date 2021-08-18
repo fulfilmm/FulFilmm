@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use App\Models\Employee;
+use App\Models\ExternalMeetingMember;
 use App\Models\Meeting;
 use App\Models\Meetingmember;
 use App\Models\Meetingminutes;
@@ -91,14 +92,10 @@ class MeetingController extends Controller
         $agender=json_encode($request->agender);
        $meeting->agenda=$agender;
        $reciver_mail=[];
-       if(!empty($request->guest_email[0])){
-           $guests=json_encode($request->guest_email);
-           $meeting->guest_member=$guests;
-           foreach ($request->guest_email as $key=>$email){
-               array_push($reciver_mail,$email);
-           }
-       }
-       $meeting_member=[];
+        $meeting_member=[];
+
+
+//       $meeting_member=[];
       foreach ($request->internal_members as $key=>$val){
           $emp=Employee::where('id',$val)->first();
           array_push($reciver_mail,$emp->email);
@@ -107,8 +104,23 @@ class MeetingController extends Controller
        $meeting->meeting_creater=Auth::guard('employee')->user()->id;
        $meeting->save();
        $last_meeting=Meeting::with('emp','meeting_room')->where('id',$meeting->id)->first();
+        if(!empty($request->guest_email[0])){
+            $this->validate($request,['guest_name'=>'required']);
+
+            for($i=0;$i<count($request->guest_email);$i++){
+                $external=new ExternalMeetingMember();
+                $external->email=$request->guest_email[$i];
+                $external->name=$request->guest_name[$i];
+                $external->save();
+                array_push($meeting_member,$request->guest_name[$i]);
+                array_push($reciver_mail,$request->guest_email[$i]);
+                $this->invite_member($last_meeting->id,$external->id,'external');
+            }
+
+
+        }
        $this->invitemail($last_meeting,$reciver_mail,$meeting_member);
-       $this->invite_member($last_meeting->id,$request->internal_members);
+       $this->invite_member($last_meeting->id,$request->internal_members,'internal');
        return redirect(route('meetings.index'));
     }
 
@@ -123,7 +135,7 @@ class MeetingController extends Controller
         $meeting=Meeting::with('emp')->where('id',$id)->first();
         $members=$meeting->guest_member ? json_decode($meeting->guest_member) :null;
         $agenda=json_decode($meeting->agenda);
-        $emp_members=Meetingmember::with('emp_member')->where('meeting_id',$id)->get();
+        $emp_members=Meetingmember::with('emp_member','external')->where('meeting_id',$id)->get();
         $minutes=Meetingminutes::where('meeting_id',$id)->get();
         $all_emp=Employee::all();
         $depts=Department::all();
@@ -183,7 +195,6 @@ class MeetingController extends Controller
                 'meeting_data'=>$meeting,
                 'agenda'=>$agender,
                 'our_emps'=>$members_name,
-                'guest_email'=> json_decode($meeting->guest_member),
             ];
             Mail::send('meeting.invitemail', $details, function ($message) use ($details) {
                 $message->from('cincin.com@gmail.com', 'Cloudark');
@@ -193,14 +204,23 @@ class MeetingController extends Controller
         }
 
     }
-    public function invite_member($meeting_id,$members_id){
-        foreach ($members_id as $key=>$value){
-            $meeting_member=new Meetingmember();
-            $meeting_member->meeting_id=$meeting_id;
-            $meeting_member->member_id=$value;
-            $meeting_member->is_accept=0;
-            $meeting_member->save();
-        }
+    public function invite_member($meeting_id,$members_id,$type){
+     if($type=='external'){
+         $meeting_member = new Meetingmember();
+         $meeting_member->meeting_id = $meeting_id;
+         $meeting_member->exeternal_member_id = $members_id;
+         $meeting_member->is_accept = 0;
+         $meeting_member->is_external=1;
+         $meeting_member->save();
+     }else {
+         foreach ($members_id as $key => $value) {
+             $meeting_member = new Meetingmember();
+             $meeting_member->meeting_id = $meeting_id;
+             $meeting_member->member_id = $value;
+             $meeting_member->is_accept = 0;
+             $meeting_member->save();
+         }
+     }
 
     }
 }

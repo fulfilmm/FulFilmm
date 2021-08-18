@@ -23,7 +23,6 @@ class CreateMeetingsTable extends Migration
             $table->foreign('room_no')->references('id')->on('rooms')->onDelete('cascade');
             $table->string('link_id')->nullable();
             $table->string('password')->nullable();
-            $table->text('guest_member')->nullable();
             $table->bigInteger('meeting_creater')->unsigned();
             $table->timestamps();
         });

@@ -86,7 +86,7 @@ class RoomController extends Controller
         return view('room.booking',compact('data'));
     }
     public function booking_save(Request $request){
-        $booked_rooms=RoomBooking::where('start_time','<=',$request->start_time)->where('endtime','>=',$request->endtime)->get();
+        $booked_rooms=RoomBooking::where('start_time','<=',$request->start_time)->where('endtime','<=',$request->endtime)->get();
     $isvalid=true;
      if(!$booked_rooms->isEmpty()){
          foreach ($booked_rooms as $room){

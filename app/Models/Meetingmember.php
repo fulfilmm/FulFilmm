@@ -14,4 +14,7 @@ class Meetingmember extends Model
     public function emp_member(){
         return $this->belongsTo(Employee::class,'member_id','id');
     }
+    public function external(){
+        return $this->belongsTo(ExternalMeetingMember::class,'exeternal_member_id','id');
+    }
 }

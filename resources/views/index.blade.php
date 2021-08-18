@@ -144,7 +144,6 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Name</th>
-                                        <th>Join Date</th>
                                         <th>Total Assign Ticket</th>
                                         <th>Solved Ticket</th>
                                         <th>Over Due Ticket</th>
@@ -155,7 +154,6 @@
                                         <tr>
                                             <th>#{{$agent->id}}</th>
                                             <td>{{$agent->name}}</td>
-                                            <td>{{$agent->join_date}}</td>
                                             @php $agent_ticket=[];
                                             $solved_ticket=0;
                                             $overdue_status=\App\Models\status::where('name','Overdue')->first();
@@ -295,17 +293,21 @@
                         </div>
                     </div>
                 </div>
-                            <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                                <div class="card dash-widget">
-                                    <div class="card-body">
-                                        <span class="dash-widget-icon"><i class="fa fa-ticket"></i></span>
-                                        <div class="dash-widget-info">
-                                            <h3>{{$items['all_ticket']}}</h3>
-                                            <span>My Tickets</span>
-                                        </div>
-                                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                        <a href="{{route('tickets.index')}}">
+                        <div class="card dash-widget">
+                            <div class="card-body">
+                                <span class="dash-widget-icon"><i class="fa fa-ticket"></i></span>
+                                <div class="dash-widget-info">
+                                    <h3>{{$items['all_ticket']}}</h3>
+                                    <span>My Tickets</span>
                                 </div>
                             </div>
+                        </div>
+                        </a>
+                    </div>
+
             </div>
         @endif
 

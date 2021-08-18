@@ -105,6 +105,7 @@
                                <div id="add_guestrow">
                                    <div class="input-group mb-3">
                                        <input type="email" name="guest_email[]" class="form-control m-input" placeholder="Enter Guest Person Email" autocomplete="off">
+                                       <input type="text" name="guest_name[]" class="form-control m-input" placeholder="Mr/Mrs" autocomplete="off">
                                    </div>
                                </div>
 
@@ -149,6 +150,7 @@
             html += '<div id="add_guestrow">';
             html += '<div class="input-group mb-3">';
             html += '<input type="email" name="guest_email[]" value="{{old('guest_email[]')}}" class="form-control m-input" placeholder="Enter Guest Person Email" autocomplete="off">';
+            html += '<input type="text" name="guest_name[]" value="{{old('guest_email[]')}}" class="form-control m-input" placeholder="Mr/Mrs" autocomplete="off">';
             html += '<div class="input-group-append">';
             html += '<button id="remove_guest" type="button" class="btn btn-outline-info"><i class="fa fa-trash"></i></button>';
             html += '</div>';

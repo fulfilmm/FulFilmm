@@ -25,6 +25,7 @@ class RequestTicket extends Controller
     public function index()
     {
         $all_request=ticketrequest::with('complain_company','compalin_product')->get();
+//        dd($all_request);
         return view("ticket.complain_request",compact('all_request'));
     }
 
@@ -83,6 +84,7 @@ class RequestTicket extends Controller
             $request_ticket->attach_file = $attach_name;
         }
         $request_ticket->save();
+        return redirect()->back()->with('Complain Posted successful!Thank You.');
     }
 
     /**

@@ -41,7 +41,7 @@
                                <td>{{$request->phone}}</td>
                                <td>{{$request->address??''}}</td>
                                <td><img src="{{url(asset("/product_picture/".$request->compalin_product->image))}}" class="mr-2"  alt="product picture" width="40px" height="40px;">{{$request->compalin_product->name}}</td>
-                               <td>{{$request->complain_company->name}}</td>
+                               <td>{{$request->complain_company->name ??''}}</td>
 
                                <td>{{$request->is_open==0?'No':'Yes'}}</td>
                                <td>

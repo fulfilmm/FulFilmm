@@ -19,19 +19,13 @@ Dear,{{$member_name}}<br>
 </ol>
 <h4>Meeting Members</h4>
             <ol type="1">
-                <h5>Our Employees</h5>
                 @foreach($our_emps as $key=>$val)
                     <li>{{$val}}</li>
                 @endforeach
-            @if($guest_email !=null)
-                    <h5>Guest Person Email Address</h5>
-                        @foreach($guest_email as $key=>$val)
-                            <li>{{$val}}</li>
-                        @endforeach
-                @endif
+
         </ol>
-<div style="float:right">
-Invited By:<br>
+<div style="margin-left: 20px;">
+Invited By,<br>
 <strong >{{$meeting_data->emp->name}}</strong>
 </div>
 </body>
