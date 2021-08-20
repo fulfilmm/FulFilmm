@@ -85,7 +85,7 @@ class DatabaseSeeder extends Seeder
         status::create(['name'=>'Open']);
         status::create(['name'=>'Close']);
         status::create(['name'=>'Pending']);
-        status::create(['name'=>'Progress']);
+        status::create(['name'=>'In Progress']);
         status::create(['name'=>'Complete']);
         status::create(['name'=>'Overdue']);
         priority::create(['priority'=>'Urgent','color'=>'danger','hours'=>0,'minutes'=>10,'seconds'=>0]);

@@ -4,7 +4,7 @@
 <!-- Sweet Alert -->
 
 {{--<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>--}}
-
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <!-- Bootstrap Core JS -->
 <script src="{{asset('js/popper.min.js')}}"></script>
 <script src="{{asset('js/bootstrap.min.js')}}"></script>

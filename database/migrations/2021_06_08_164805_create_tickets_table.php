@@ -26,7 +26,7 @@ class CreateTicketsTable extends Migration
             $table->foreign("status")->references('id')->on('statuses')->onDelete('cascade');
             $table->bigInteger("case_type")->unsigned();
             $table->foreign("case_type")->references('id')->on('case_types')->onDelete('cascade');
-            $table->bigInteger("product_id")->unsigned();
+            $table->bigInteger("product_id")->unsigned()->nullable();
             $table->foreign("product_id")->references('id')->on('products')->onDelete('cascade');
             $table->bigInteger("priority")->unsigned();
             $table->foreign("priority")->references('id')->on('priorities')->onDelete('cascade');

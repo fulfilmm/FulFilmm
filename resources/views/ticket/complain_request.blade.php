@@ -7,7 +7,7 @@
         <div class="page-header">
             <div class="row">
                 <div class="col-sm-12">
-                    <h3 class="page-title">Request To Open Ticket</h3>
+                    <h3 class="page-title">Complains</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
                         <li class="breadcrumb-item active">Request Ticket</li>

@@ -196,7 +196,7 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::get('departments-card', [DepartmentController::class, 'card'])->name('departments.cards');
 
 });
-
+Route::get('piect/search',[TicketPieChartReport::class,'filter'])->name('piechart.filter');
 //list routes post
 Route::put('roles/assign-permission/{id}', [RoleController::class, 'assignPermission'])->name('roles.assignPermission');
 
@@ -217,10 +217,10 @@ Route::middleware(['meeting_view_relative_emp','auth:employee', 'authorize', 'ow
 });
 
 Route::get('test',function (){
-    $orders=\App\Models\Orderline::with('product')->get();
-    $total=0;
-    for ($i=0;$i<count($orders);$i++){
-        $total=$total+$orders[$i]->total_amount;
-    }
-   return view('quotation.mail',compact('orders','total'));
+//    $orders=\App\Models\Orderline::with('product')->get();
+//    $total=0;
+//    for ($i=0;$i<count($orders);$i++){
+//        $total=$total+$orders[$i]->total_amount;
+//    }
+   return view('test');
 });

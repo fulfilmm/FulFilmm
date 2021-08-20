@@ -8,6 +8,7 @@ use App\Models\priority;
 use App\Models\status;
 use App\Models\ticket;
 use Carbon\Carbon;
+use http\Env\Request;
 use Illuminate\Support\Facades\Auth;
 
 class TicketPieChartReport extends Controller
@@ -82,5 +83,12 @@ class TicketPieChartReport extends Controller
                    }
         }
         return $all_tickets;
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function filter(){
+
     }
 }

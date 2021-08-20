@@ -72,7 +72,7 @@
                                     </div>
 
                                 </div>
-                                <h3 class="mb-3">{{$status_report['Open']+$status_report['Progress']}}</h3>
+                                <h3 class="mb-3">{{$status_report['Open']+$status_report['In Progress']}}</h3>
 
                                 <div class="progress mb-2" style="height: 5px;">
                                     <div class="progress-bar bg-primary" role="progressbar"

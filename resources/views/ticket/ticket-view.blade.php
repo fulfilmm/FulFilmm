@@ -14,7 +14,11 @@
                                     <div class="dropdown action-label" id="status_div">
                                         @foreach($status_color as $staus=>$color)
                                             @if($staus==$ticket->ticket_status->name)
-                                                <a class="btn btn-white btn-sm btn-rounded " href="#" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o mr-1" style="color:{{$color}}"></i>{{$ticket->ticket_status->name}}</a>
+                                                <a class="btn btn-white btn-sm btn-rounded " href="#"
+                                                   data-toggle="dropdown" aria-expanded="false"><i
+                                                            class="fa fa-dot-circle-o mr-1"
+                                                            style="color:{{$color}}"></i>{{$ticket->ticket_status->name}}
+                                                </a>
                                             @endif
                                         @endforeach
                                         @include('ticket.status_change')
@@ -49,7 +53,8 @@
                             </div>
                         @endif
                         <span id="end"></span>
-                        <b id="days"></b> <b id="hours"></b>
+                        {{--<b id="day"></b>--}}
+                        <b id="hours"></b>
                         <b id="mins"></b>
                         <b id="secs"></b>
                     </div>
@@ -63,7 +68,10 @@
                                             <div class="card-header">Description
                                                 <div class="float-right ticket-priority"><span>Priority:</span>
                                                     <div class="dropdown action-label" id="priority_div">
-                                                                <a class="btn btn-white btn-sm btn-rounded " href="#" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o mr-1 text-{{$ticket->ticket_priority->color}}"></i>{{$ticket->ticket_priority->priority}}</a>
+                                                        <a class="btn btn-white btn-sm btn-rounded " href="#"
+                                                           data-toggle="dropdown" aria-expanded="false"><i
+                                                                    class="fa fa-dot-circle-o mr-1 text-{{$ticket->ticket_priority->color}}"></i>{{$ticket->ticket_priority->priority}}
+                                                        </a>
                                                         @include('priority.priority_change')
                                                     </div>
                                                 </div>
@@ -182,7 +190,8 @@
                                        aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" href="#" data-toggle="modal"
-                                           data-target="#assignee">{{$ticket->isassign==0 ? 'Assign':'Reassign'}} Ticket</a>
+                                           data-target="#assignee">{{$ticket->isassign==0 ? 'Assign':'Reassign'}}
+                                            Ticket</a>
                                         <a class="dropdown-item" href="#" data-toggle="modal"
                                            data-target="#delete_ticket{{$ticket->id}}">Delete Ticket</a>
                                     </div>
@@ -198,7 +207,9 @@
                                         @foreach($comment as $cmt)
                                             <div class="chat chat-left">
                                                 <div class="nav float-right custom-menu">
-                                                    <a href="{{route('ticket_cmt.delete',$cmt->id)}}" class="followers-add" data-toggle="tooltip" data-placement="bottom" ><i class="la la-trash-o"></i></a>
+                                                    <a href="{{route('ticket_cmt.delete',$cmt->id)}}"
+                                                       class="followers-add" data-toggle="tooltip"
+                                                       data-placement="bottom"><i class="la la-trash-o"></i></a>
                                                 </div>
                                                 <div class="chat-avatar">
                                                     <a href="#" class="avatar">
@@ -208,13 +219,16 @@
                                                 <div class="chat-body">
                                                     <div class="chat-bubble">
                                                         <div class="chat-content">
-                                                            <span class="task-chat-user">{{$cmt->comment_user->name}}</span> <span class="chat-time">{{$cmt->created_at->toFormattedDateString()}} at {{date('h:i a', strtotime($cmt->created_at))}}</span>
+                                                            <span class="task-chat-user">{{$cmt->comment_user->name}}</span>
+                                                            <span class="chat-time">{{$cmt->created_at->toFormattedDateString()}} at {{date('h:i a', strtotime($cmt->created_at))}}</span>
                                                             <p>{{$cmt->comment}}</p>
                                                         </div>
                                                     </div>
                                                     @if($cmt->document_file!=null)
                                                         <ul class="attach-list">
-                                                            <li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a href="{{url(asset('ticket_attach/'.$cmt->document_file))}}" download="">{{$cmt->document_file}}</a></li>
+                                                            <li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a
+                                                                        href="{{url(asset('ticket_attach/'.$cmt->document_file))}}"
+                                                                        download="">{{$cmt->document_file}}</a></li>
                                                         </ul>
                                                     @endif
                                                 </div>
@@ -239,8 +253,11 @@
                                         <div class="input-group">
                                             <input type="hidden" name="ticket_id" value="{{$ticket->id}}">
                                             <input type="file" id="file1" name="attach_file" style="display:none"/>
-                                            <button class="btn btn-white" onClick="openSelect('#file1')" id="attchment_field" type="button"><i class="la la-paperclip"></i></button>
-                                            <input type="text" class="form-control" name="comment" placeholder="Add Note...">
+                                            <button class="btn btn-white" onClick="openSelect('#file1')"
+                                                    id="attchment_field" type="button"><i class="la la-paperclip"></i>
+                                            </button>
+                                            <input type="text" class="form-control" name="comment"
+                                                   placeholder="Add Note...">
                                             <span class="input-group-append">
                                         <button class="btn btn-primary" type="submit">Add</button>
                                     </span>
@@ -299,7 +316,8 @@
                             </div>
                         </div>
                         <div class="submit-section">
-                            <button type="submit" class="btn btn-primary submit-btn">{{$ticket->isassign==0 ? 'Assign':'Reassign'}}</button>
+                            <button type="submit"
+                                    class="btn btn-primary submit-btn">{{$ticket->isassign==0 ? 'Assign':'Reassign'}}</button>
                         </div>
                     </form>
                 </div>
@@ -341,8 +359,8 @@
 
     <!-- /Page Wrapper -->
     <script>
-        $(document).on('click','#attchment_field',function () {
-           $('#attach_div').append('<input type="file" class="form-control" name="attach_file">')
+        $(document).on('click', '#attchment_field', function () {
+            $('#attach_div').append('<input type="file" class="form-control" name="attach_file">')
         });
         $(document).ready(function () {
             $("#type").change(function () {
@@ -369,21 +387,21 @@
                 var timeleft = countDownDate - now;
                 // alert(timeleft)
                 // Calculating the days, hours, minutes and seconds left
-                var days = Math.floor(timeleft / (1000 * 60 * 60 * 24));
+                // var days = Math.floor(timeleft / (1000 * 60 * 60 * 24));
                 var hours = Math.floor((timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 var minutes = Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60));
                 var seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
 
                 // Result is output to the specific element
-                document.getElementById("days").innerHTML = days + "d ";
-                document.getElementById("hours").innerHTML = hours + "h ";
-                document.getElementById("mins").innerHTML = minutes + "m ";
-                document.getElementById("secs").innerHTML = seconds + "s remaining";
+                // document.getElementById("days").innerHTML = days + "d ";
+                document.getElementById("hours").innerHTML = hours + "h :";
+                document.getElementById("mins").innerHTML = minutes + "m :";
+                document.getElementById("secs").innerHTML = seconds + "s Remaining";
 
                 // Display the message when countdown is over
                 if (timeleft < 0) {
                     clearInterval(myfunc);
-                    document.getElementById("days").innerHTML = "";
+                    // document.getElementById("days").innerHTML = "";
                     document.getElementById("hours").innerHTML = "";
                     document.getElementById("mins").innerHTML = "";
                     document.getElementById("secs").innerHTML = "";
@@ -392,8 +410,8 @@
             }, 1000);
 
         }
-        function openSelect(file)
-        {
+
+        function openSelect(file) {
             $(file).trigger('click');
         }
     </script>

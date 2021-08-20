@@ -42,7 +42,7 @@
     <link rel="stylesheet" href="{{asset('plugins/bootstrap-tagsinput/bootstrap-tagsinput.css')}}">
 
     <!-- Datatable CSS -->
-    <link rel="stylesheet" href="{{asset('css/dataTables.bootstrap4.min.css')}}">
+    <link rel="stylesheet" href="{{url(asset('css/dataTables.bootstrap4.min.css'))}}">
 
     <!-- Chart CSS -->
     <link rel="stylesheet" href="{{asset('plugins/morris/morris.css')}}">

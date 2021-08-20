@@ -130,12 +130,12 @@ class HomeController extends Controller
         $ticket = $this->report_status();
 //        dd($ticket);
         $all_percentage = [];
-        $all_ticket =$ticket['New']+$ticket['Open']+$ticket['Complete']+$ticket['Pending']+$ticket['Overdue']+$ticket['Close']+$ticket['Progress'];
+        $all_ticket =$ticket['New']+$ticket['Open']+$ticket['Complete']+$ticket['Pending']+$ticket['Overdue']+$ticket['Close']+$ticket['In Progress'];
         if ($all_ticket == 0) {
             $all_ticket = 1;
         }
         $all_percentage['New'] = round($ticket['New'] / $all_ticket * 100, 2);
-        $all_percentage['Open'] = round($ticket['Open']+$ticket['Progress'] / $all_ticket * 100, 2);
+        $all_percentage['Open'] = round($ticket['Open']+$ticket['In Progress'] / $all_ticket * 100, 2);
         $all_percentage['Solve'] = round(($ticket['Complete'] + $ticket['Close']) / $all_ticket * 100, 2);
         $all_percentage['Pending'] = round($ticket['Pending'] / $all_ticket * 100, 2);
         $all_percentage['Overdue'] = round($ticket['Overdue'] / $all_ticket * 100, 2);

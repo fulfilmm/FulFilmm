@@ -69,7 +69,7 @@
                                     </div>
 
                                 </div>
-                                <h3 class="mb-3">{{$status_report['Open']+$status_report['Progress']}}</h3>
+                                <h3 class="mb-3">{{$status_report['Open']+$status_report['In Progress']}}</h3>
 
                                 <div class="progress mb-2" style="height: 5px;">
                                     <div class="progress-bar bg-primary" role="progressbar" style="width: {{$report_percentage['Open']}}%;" aria-valuenow="{{$report_percentage['Open']}}" aria-valuemin="0" aria-valuemax="100"></div>
@@ -123,6 +123,12 @@
             <div class="row filter-row">
                 <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
                     <div class="form-group form-focus select-focus">
+                        <input type="text" class="form-control floating" id="ticket_id" placeholder="All" value="#">
+                        <label class="focus-label">Ticket ID</label>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+                    <div class="form-group form-focus select-focus">
                         <label class="focus-label">Assign Staff</label>
                         <select name="emp_name" class="form-control floating" id="emp_name">
                             <option value="">All</option>
@@ -161,23 +167,21 @@
                 </div>
                 <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
                     <div class="form-group form-focus">
-                        <div class="cal-icon">
-                            <input type="text" id="min" class="date-range-filter form-control floating datetimepicker" name="min">
+                        <div>
+                            <input type="text" id="min" class="form-control floating " name="min">
                         </div>
                         <label class="focus-label">From</label>
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
                     <div class="form-group form-focus">
-                        <div class="cal-icon">
-                            <input type="text" class="date-range-filter form-control floating datetimepicker" id="max" name="max">
+                        <div>
+                            <input type="text" class="form-control floating " id="max" name="max">
                         </div>
                         <label class="focus-label">To</label>
                     </div>
                 </div>
-                <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
-                    <a href="#" class="btn btn-success btn-block"> Search </a>
-                </div>
+
             </div>
             <!-- /Search Filter -->
 
@@ -188,13 +192,14 @@
                             <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Ticket Id</th>
-                                <th>Ticket Subject</th>
-                                <th>Assigned Staff</th>
-                                <th>Created Date</th>
-                                <th>Created Employee</th>
+                                <th style="min-width: 100px;">Ticket Id</th>
+                                <th style="min-width: 150px">Ticket Subject</th>
+                                <th style="min-width: 150px">Assigned Staff</th>
+                                <th style="min-width: 130px">Created Date</th>
+                                <th style="min-width: 150px;">Created Employee</th>
                                 <th>Priority</th>
                                 <th class="text-center">Status</th>
+                                <th style="min-width: 150px;">Last Status Change </th>
                                 <th class="text-right">Actions</th>
                             </tr>
                             </thead>
@@ -238,6 +243,7 @@
                                    @endif
                                     @endforeach
                                 </td>
+                                <td>{{$ticket->updated_at->diffForHumans()}}</td>
                                 <td class="text-right">
                                     <div class="dropdown dropdown-action">
                                         <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -258,13 +264,13 @@
             </div>
         </div>
         <!-- /Page Content -->
-
-
-
         <!-- Delete Ticket Modal -->
 
-    <script src="{{url(asset('/js/filterdaterange.js'))}}"></script>
+
         <script>
+            $(document).ready(function () {
+                $('#ticket_filter').hide();
+            });
         $(document).ready(function() {
             $(document).ready(function() {
                 $('#emp_name').select2({
@@ -284,6 +290,10 @@
             $('#emp_name').on('change', function () {
                 var table = $('#ticket').DataTable();
                 table.column(3).search($(this).val()).draw();
+            });
+            $('#ticket_id').on('change', function () {
+                var table = $('#ticket').DataTable();
+                table.column(1).search($(this).val()).draw();
             });
         });
         $(document).ready(function() {
@@ -328,15 +338,28 @@
                 alert("Your browser doesn't support to File API")
             }
         });
-        $(document).ready(function (){
-                // var min=document.getElementById('min').val();
-             $('#min').on('select',function (){
-                 var max=$('#min').val();
-                 var max=$('#max').val();
-                 alert(max);
-             })
+        $(document).ready(function(){
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var min = $('#min').datepicker("getDate");
+                    var max = $('#max').datepicker("getDate");
+                    var startDate = new Date(data[4]);
+                    if (min == null && max == null) { return true; }
+                    if (min == null && startDate <= max) { return true;}
+                    if(max == null && startDate >= min) {return true;}
+                    if (startDate <= max && startDate >= min) { return true; }
+                    return false;
+                }
+            );
 
+            $("#min").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
+            $("#max").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
+            var table = $('#ticket').DataTable({searching: false});
 
+            // Event listener to the two range filtering inputs to redraw on input
+            $('#min, #max').change(function () {
+                table.draw();
+            });
         });
     </script>
         <!-- /Delete Ticket Modal -->

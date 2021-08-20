@@ -55,7 +55,7 @@
                 </div>
                 <div class="form-group col-md-3 col-6 offset-md-5">
                     <label for="">Picture</label>
-                    <input type="file" accept="image/*" name="picture"  class=" offset-md-1" onchange="loadFile(event)" required>
+                    <input type="file" accept="image/*" name="picture"  class=" offset-md-1" onchange="loadFile(event)" >
                 </div>
             </div>
             <div class="row">

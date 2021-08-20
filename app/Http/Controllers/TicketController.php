@@ -28,7 +28,7 @@ use Illuminate\Validation\ValidationException;
 
 class TicketController extends Controller
 {
-    protected $status_color = ['New' => '#49d1b6', 'Open' => '#e84351', 'Close' => '#4e5450', 'Pending' => '#f0ed4f', 'Progress' => '#2333e8', 'Complete' => '#18b820', 'Overdue' => '##e84351'];
+    protected $status_color = ['New' => '#49d1b6', 'Open' => '#e84351', 'Close' => '#4e5450', 'Pending' => '#f0ed4f', 'In Progress' => '#2333e8', 'Complete' => '#18b820', 'Overdue' => '#000'];
 
 //query select
     public function __construct()
@@ -298,7 +298,7 @@ class TicketController extends Controller
                 $ticket_follower->save();
                 $emp=Employee::where('id',$follower[$i])->first();
                 $ticket=ticket::where('id',$ticket_id)->first();
-                $this->mailnoti($emp, 'You are added  as a follower in ', $ticket->ticket_id,$ticket->id);
+                $this->mailnoti($emp->email,$emp->name, 'You are added  as a follower in ', $ticket->ticket_id,$ticket->id);
             }
 
 
@@ -337,35 +337,44 @@ class TicketController extends Controller
 
     public function assign_ticket($assigned_id, $ticket_id, $type)
     {
-        $assign_ticket = new assign_ticket();
-        if ($type == "agent") {
-            $assign_ticket->agent_id = $assigned_id;
-            $assign_ticket->ticket_id = $ticket_id;
+        $is_assign= assign_ticket::where("ticket_id", $ticket_id)->first();
 
-        } elseif ($type == 'dept') {
-            $assign_ticket->dept_id = $assigned_id;
-            $assign_ticket->ticket_id = $ticket_id;
+       if($is_assign==null) {
+           $assign_ticket = new assign_ticket();
+           if ($type == "agent") {
+               $assign_ticket->agent_id = $assigned_id;
+               $assign_ticket->ticket_id = $ticket_id;
 
-        } elseif ($type == 'group') {
-            $assign_ticket->group_id = $assigned_id;
-            $assign_ticket->ticket_id = $ticket_id;
-        }
-        $assign_ticket->type_of_assign = $type;
-        $assign_ticket->save();
-        if($type=='agent'){
-            $emp = Employee::where('id', $assigned_id)->first();
-            $this->mailnoti($emp, 'You are Aassigned', $assign_ticket->ticket->ticket_id,$ticket_id);
-        }elseif($type=='dept'){
-            $employee=Employee::where('department_id',$assigned_id)->get();
-            foreach ($employee as $emp){
-                $this->mailnoti($emp, 'Your department are Aassigned ', $assign_ticket->ticket->ticket_id,$ticket_id);
-            }
-        }
+           } elseif ($type == 'dept') {
+               $assign_ticket->dept_id = $assigned_id;
+               $assign_ticket->ticket_id = $ticket_id;
 
-        $ticket_status = ticket::where('id', $ticket_id)->first();
-        $ticket_status->isassign = 1;
-        $ticket_status->update();
-        $this->countdown($ticket_id, $assigned_id);
+           } elseif ($type == 'group') {
+               $assign_ticket->group_id = $assigned_id;
+               $assign_ticket->ticket_id = $ticket_id;
+           }
+           $assign_ticket->type_of_assign = $type;
+           $assign_ticket->save();
+
+           if ($type == 'agent') {
+               $emp = Employee::where('id', $assigned_id)->first();
+               $this->mailnoti($emp->name, $emp->email, 'You are Aassigned', $assign_ticket->ticket->ticket_id, $ticket_id);
+           } elseif ($type == 'dept') {
+               $employee = Employee::where('department_id', $assigned_id)->get();
+               $email = [];
+               foreach ($employee as $emp) {
+                   array_push($email, $emp->email);
+               }
+               $this->mailnoti($email, 'Employee of ' . $employee[0]->department->name, 'Your department are Aassigned ', $assign_ticket->ticket->ticket_id, $ticket_id);
+           }
+
+           $ticket_status = ticket::where('id', $ticket_id)->first();
+           $ticket_status->isassign = 1;
+           $ticket_status->update();
+           $this->countdown($ticket_id, $assigned_id);
+       }else{
+        return redirect()->back()->with('error','It has been assigned');
+       }
     }
 
     public function add_more_follower(Request $request)
@@ -393,12 +402,15 @@ class TicketController extends Controller
         $assign_ticket->update();
         if($request->assignType=='agent'){
             $emp = Employee::where('id', $request->assign_id)->first();
-            $this->mailnoti($emp, 'You are reaassigned', $assign_ticket->ticket->ticket_id,$assign_ticket->ticket->id);
+            $this->mailnoti($emp->email,$emp->name, 'You are reaassigned', $assign_ticket->ticket->ticket_id,$assign_ticket->ticket->id);
         }elseif($request->assignType=='dept'){
-            $employee=Employee::where('department_id',$request->assign_id)->get();
+            $employee=Employee::with('department')->where('department_id',$request->assign_id)->get();
+           $email=[];
             foreach ($employee as $emp){
-                $this->mailnoti($emp, 'Your department are reaassigned ', $assign_ticket->ticket->ticket_id,$assign_ticket->ticket->id);
+                array_push($email,$emp->email);
             }
+
+            $this->mailnoti($email,'Employee of '.$employee[0]->department->name, 'Your department are reaassigned ', $assign_ticket->ticket->ticket_id,$assign_ticket->ticket->id);
         }
         return redirect()->back();
     }
@@ -454,12 +466,12 @@ class TicketController extends Controller
         $ticket = $this->report_status();
 //        dd($ticket);
         $all_percentage = [];
-        $all_ticket = $ticket['New'] + $ticket['Open'] + $ticket['Complete'] + $ticket['Pending'] + $ticket['Overdue'] + $ticket['Close'] + $ticket['Progress'];
+        $all_ticket = $ticket['New'] + $ticket['Open'] + $ticket['Complete'] + $ticket['Pending'] + $ticket['Overdue'] + $ticket['Close'] + $ticket['In Progress'];
         if ($all_ticket == 0) {
             $all_ticket = 1;
         }
         $all_percentage['New'] = round($ticket['New'] / $all_ticket * 100, 2);
-        $all_percentage['Open'] = round(($ticket['Open'] + $ticket['Progress'] )/ $all_ticket * 100, 2);
+        $all_percentage['Open'] = round(($ticket['Open'] + $ticket['In Progress'] )/ $all_ticket * 100, 2);
         $all_percentage['Solve'] = round(($ticket['Complete'] + $ticket['Close']) / $all_ticket * 100, 2);
         $all_percentage['Pending'] = round($ticket['Pending'] / $all_ticket * 100, 2);
         $all_percentage['Overdue'] = round($ticket['Overdue'] / $all_ticket * 100, 2);
@@ -501,14 +513,15 @@ class TicketController extends Controller
         return $all_tickets;
     }
 
-    public function mailnoti($receiver, $type, $id,$ticket_id)
+    public function mailnoti($email,$name, $type, $id,$ticket_id)
     {
+        $address=$email;
         $company = MainCompany::where('ismaincompany', 1)->first();
         $details = [
-            'email' => $receiver['email'],
+
             'subject' => $company->name."Ticket notification.",
             'type' => $type,
-            'name' => $receiver['name'],
+            'name' => $name,
             'id' => $id,
             'ticket_id'=>$ticket_id,
             'from' => Auth::guard('employee')->user()->email,
@@ -516,9 +529,16 @@ class TicketController extends Controller
             'company' => $company->name,
 
         ];
-        Mail::send('ticket.mailnoti', $details, function ($message) use ($details) {
+        Mail::send('ticket.mailnoti', $details, function ($message) use ($details,$address) {
             $message->from($details['from'], $details['company']);
-            $message->to($details['email']);
+          if(is_array($address)){
+              foreach ($address as $key=>$val){
+                  $message->to($val);
+              }
+          }else{
+              $message->to($address);
+          }
+
             $message->subject($details['subject']);
         });
     }

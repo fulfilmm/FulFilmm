@@ -21,7 +21,7 @@
                     </ul>
                 </div>
                 <div class="col-auto float-right ml-auto">
-                    <form action="{{url("/search")}}" method="POST" class="navbar-form my-3 mx-3">
+                    <form action="{{route("piechart.filter")}}" method="GET" class="navbar-form my-3 mx-3">
                         {{csrf_field()}}
                         <div class="row">
                             <div class="form-group ml-3">
@@ -120,18 +120,18 @@
                         {{$statuses["Open"]}},
                         {{$statuses["Close"]}},
                         {{$statuses["Pending"]}},
-                        {{$statuses["Progress"]}},
+                        {{$statuses["In Progress"]}},
                         {{$statuses["Complete"]}},
-                        {{--{{$overdue}}--}}
+                        {{$statuses["Overdue"]}},
                     ],
                     backgroundColor: [
-                        '#5B7656FF',
-                        '#7c0aa5',
-                        '#0b43ee',
-                        '#f8f159',
-                        "#50d007",
-                        "#859446",
-                        // "#f30d3b",
+                        '#49d1b6',
+                        '#e84351',
+                        '#4e5450',
+                        '#f0ed4f',
+                        "#2333e8",
+                        "#18b820",
+                        "#000",
                     ],
                 }],
                 labels: [
@@ -141,7 +141,7 @@
                     'Progress',
                     'Complete',
                     'Close',
-                    // 'Overdue'
+                    'Overdue'
                 ]
             };
             var myDoughnutChart_2 = new Chart(ctx_2, {
