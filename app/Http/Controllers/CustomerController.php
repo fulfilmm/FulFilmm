@@ -85,7 +85,7 @@ class CustomerController extends Controller
       if($ticket_history!=null){
           $customer_ticket= ticket::with('ticket_status', 'ticket_priority')->where("customer_id",$ticket_history->customer_id)->get();
       }else{
-          $customer_ticket=null;
+          $customer_ticket=[];
       }
 
         $customer_invoice=Invoice::where('customer_id',$customer->id)->get();
