@@ -82,7 +82,12 @@ class CustomerController extends Controller
         $assign_ticket = assign_ticket::with('agent', 'dept')->get();
         $customer=Customer::with('company')->where('id',$id)->first();
         $ticket_history=ticket_sender::where('customer_id',$customer->id)->first();
-        $customer_ticket= ticket::with('ticket_status', 'ticket_priority')->where("customer_id",$ticket_history->customer_id)->get();
+      if($ticket_history!=null){
+          $customer_ticket= ticket::with('ticket_status', 'ticket_priority')->where("customer_id",$ticket_history->customer_id)->get();
+      }else{
+          $customer_ticket=null;
+      }
+
         $customer_invoice=Invoice::where('customer_id',$customer->id)->get();
         $customer_lead=leadModel::with("saleMan", "tags")->where("created_id",$customer->id)->get();
         $customer_deal=deal::with("customer_company","customer","employee")->where('contact',$customer->id)->get();
