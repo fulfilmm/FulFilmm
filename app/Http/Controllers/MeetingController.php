@@ -218,6 +218,7 @@ class MeetingController extends Controller
              $meeting_member->meeting_id = $meeting_id;
              $meeting_member->member_id = $value;
              $meeting_member->is_accept = 0;
+             $meeting_member->is_external=0;
              $meeting_member->save();
          }
      }
