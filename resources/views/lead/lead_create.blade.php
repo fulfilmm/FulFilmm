@@ -122,7 +122,7 @@
                     </textarea>
                        <div class="form-group mt-2">
                            <a class="btn btn-outline-info" data-toggle="collapse" data-target="#next_plan" aria-expanded="false" aria-controls="collapseExample" >
-                               <span for="">Next Plan</span>
+                               <span for="">Activity Schedule</span>
                                <i class="fa fa-chevron-circle-right"></i>
                                <i class="fa fa-chevron-circle-down"></i>
                            </a>

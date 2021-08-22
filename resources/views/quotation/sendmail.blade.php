@@ -7,7 +7,7 @@
             <div class=" card ">
                 <div class="card-header">
                     <div class="row">
-                        @php $company=\App\Models\MainCompany::where('ismaincompany',true)->first(); @endphp
+                        {{--@php $company=\App\Models\MainCompany::where('ismaincompany',true)->first(); @endphp--}}
                         <div class="col-md-4">
                             <h3>Quotation Send Mail</h3>
                         </div>

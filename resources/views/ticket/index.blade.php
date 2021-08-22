@@ -17,7 +17,8 @@
                     </div>
                     <div class="col-auto float-right ml-auto">
                         <a href="{{route('tickets.create')}}" class="btn add-btn" ><i class="fa fa-plus"></i> Add Ticket</a>
-                        <a href="{{route('inqueries.create')}}" class="btn add-btn" ><i class="fa fa-plus"></i> Add Inquery</a>
+                        {{--ပြန်ဖြတ်ထားတာ--}}
+                        {{--<a href="{{route('inqueries.create')}}" class="btn add-btn" ><i class="fa fa-plus"></i> Add Inquery</a>--}}
                     </div>
                 </div>
             </div>

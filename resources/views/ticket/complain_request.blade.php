@@ -29,6 +29,7 @@
                             <th>Product</th>
                             <th>Company</th>
                             <th>Is Open Ticket</th>
+                            <th>Complaint Date</th>
                             <th class="text-right">Actions</th>
                         </tr>
                         </thead>
@@ -44,6 +45,7 @@
                                <td>{{$request->complain_company->name ??''}}</td>
 
                                <td>{{$request->is_open==0?'No':'Yes'}}</td>
+                               <td>{{$request->created_at->toFormattedDateString()}}</td>
                                <td>
                                    <div class="dropdown dropdown-action">
                                        <a href="{{route('request_tickets.show',$request->id)}}" class="btn btn-primary btn-sm"><i class="la la-eye"></i></a>

@@ -348,7 +348,7 @@
                             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                             success:function(data){
                                 console.log(data);
-                                // $("#order_table").load(location.href + " #order_table>* ");
+                                window.location.href = "/invoices";
                             }
                         });
                         });
@@ -388,7 +388,7 @@
                             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                             success:function(data){
                                 console.log(data);
-                                // $("#order_table").load(location.href + " #order_table>* ");
+                                window.location.href = "/invoices";
                             }
                         });
                     });

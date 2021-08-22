@@ -56,7 +56,7 @@
                    <div class="col-12">
                        <div class="form-group">
                            <label for="">Company</label>
-                           <input type="text" class="form-control" readonly value="{{$complain->complain_company->name}}">
+                           <input type="text" class="form-control" readonly value="{{$complain->complain_company->name??''}}">
                        </div>
                    </div>
                    <div class="col-12">
@@ -96,7 +96,11 @@
                    </div>
                    <div class="col-12">
                        <div class="form-group">
+                           @if($complain->is_open==1)
+                               <a href="" class="btn btn-primary">Have Been Open Ticket</a>
+                               @else
                            <a href="{{route('openticket',$complain->id)}}" class="btn btn-primary">Open Ticket</a>
+                               @endif
                        </div>
                    </div>
                </div>

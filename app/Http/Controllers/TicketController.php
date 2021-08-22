@@ -97,8 +97,18 @@ class TicketController extends Controller
         $last_ticket = ticket::orderBy('id', 'desc')->first();
         if (isset($last_ticket)) {
             // Sum 1 + last id
-            $last_ticket->ticket_id++;
-            $ticket_id = $last_ticket->ticket_id;
+            $ischange=$last_ticket->ticket_id;
+            $ischange=explode("-", $ischange);
+            if($ischange[0]==$prefix){
+                $last_ticket->ticket_id++;
+                $ticket_id = $last_ticket->ticket_id;
+            }else{
+                $arr=[$prefix,$ischange[1]];
+                $pre=implode('-',$arr);
+                $pre ++;
+                $ticket_id=$pre;
+            }
+
         } else {
             $ticket_id = ($prefix ?: 'Ticket') . "-00001";
         }
@@ -134,6 +144,7 @@ class TicketController extends Controller
 
     public function store(Request $request)
     {
+//        dd($request->all());
         try {
             $this->validate($request, [
                 'files.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -358,7 +369,7 @@ class TicketController extends Controller
 
            if ($type == 'agent') {
                $emp = Employee::where('id', $assigned_id)->first();
-               $this->mailnoti($emp->name, $emp->email, 'You are Aassigned', $assign_ticket->ticket->ticket_id, $ticket_id);
+               $this->mailnoti($emp->email,$emp->name, 'You are Aassigned', $assign_ticket->ticket->ticket_id, $ticket_id);
            } elseif ($type == 'dept') {
                $employee = Employee::where('department_id', $assigned_id)->get();
                $email = [];
@@ -532,6 +543,7 @@ class TicketController extends Controller
         Mail::send('ticket.mailnoti', $details, function ($message) use ($details,$address) {
             $message->from($details['from'], $details['company']);
           if(is_array($address)){
+              dd('true');
               foreach ($address as $key=>$val){
                   $message->to($val);
               }

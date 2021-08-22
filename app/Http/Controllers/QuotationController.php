@@ -32,29 +32,10 @@ class QuotationController extends Controller
         return view("quotation.index",compact("all_quotation"));
     }
     public function create(){
-        $prefix=MainCompany::where('ismaincompany',true)->pluck('quotation_prefix','id')->first();
+
             $allcustomers = Customer::all();
             $products=product::with("category","taxes")->get();
-            $lastcustomer=customer::orderBy('id', 'desc')->first();
-
             $companies=Company::all();
-        $lastcompany=Company::orderBy('id', 'desc')->first();
-        if (isset($lastcompany)) {
-            // Sum 1 + last id
-            $lastcompany->company_id ++;
-            $company_id = $lastcompany->company_id;
-        } else {
-            $company_id=($prefix ? :'Quotation')."-00001";
-        }
-
-        if (isset($lastcustomer)) {
-            // Sum 1 + last id
-            $lastcustomer->customer_id ++;
-            $client_id = $lastcustomer->customer_id;
-        } else {
-            $client_id=" Client"."-00001";
-        }
-
         $Auth=Auth::guard('employee')->user()->name;
 //        Session::forget($Auth);
         $session_value=\Illuminate\Support\Str::random(10);
@@ -69,7 +50,7 @@ class QuotationController extends Controller
             for ($i=0;$i<count($orderline);$i++){
                 $grand_total=$grand_total+$orderline[$i]->total_amount;
         }
-        return view("quotation.create",compact("allcustomers","request_id","orderline",'grand_total',"client_id","companies","products"));
+        return view("quotation.create",compact("allcustomers","request_id","orderline",'grand_total',"companies","products"));
     }
     public function store(Request $request)
     {
@@ -80,13 +61,23 @@ class QuotationController extends Controller
             'term_and_condition' => 'required',
             'payment_term' => 'required',
         ]);
+        $prefix=MainCompany::where('ismaincompany',true)->pluck('quotation_prefix','id')->first();
         $last_quotation=Quotation::orderBy('id', 'desc')->first();
         if (isset($last_quotation)) {
             // Sum 1 + last id
-            $last_quotation->quotation_id ++;
-            $quotation_id = $last_quotation->quotation_id;
+            $ischange=$last_quotation->quotation_id;
+            $ischange=explode("-", $ischange);
+            if($ischange[0]==$prefix){
+                $last_quotation->quotation_id++;
+                $quotation_id = $last_quotation->quotation_id;
+            }else{
+                $arr=[$prefix,$ischange[1]];
+                $pre=implode('-',$arr);
+                $pre ++;
+                $quotation_id=$pre;
+            }
         } else {
-            $quotation_id="Quotation"."-0001";
+            $quotation_id=$prefix?'':"Quotation"."-0001";
         }
                 $quotation = new Quotation();
                 $quotation->customer_name = $request->customer;

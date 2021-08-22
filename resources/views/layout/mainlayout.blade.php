@@ -1,7 +1,8 @@
+@php $maincompany=\App\Models\MainCompany::where('ismaincompany',true)->first(); @endphp
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    @php $maincompany=\App\Models\MainCompany::where('ismaincompany',true)->first(); @endphp
+
     @include('layout.partials.head')
     @yield('styles')
 </head>

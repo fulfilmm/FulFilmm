@@ -1,6 +1,11 @@
 @extends('layout.mainlayout')
 @section('title','Invoices')
 @section('content')
+    <style>
+        #invoice_filter{
+            visibility: hidden;
+        }
+    </style>
             <!-- Page Content -->
             <div class="content container-fluid">
 
@@ -22,13 +27,19 @@
                 <!-- /Page Header -->
 
                 <!-- Search Filter -->
-                <form action="{{route('invoices.search')}}" method="POST" id="filter">
-                    @csrf
                 <div class="row filter-row">
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus">
+                            <div>
+                                <input class="form-control floating " type="text" id="filter_id" name='id' value="#">
+                            </div>
+                            <label class="focus-label">ID</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group form-focus">
                             <div >
-                                <input class="form-control floating " type="datetime-local" name="form_date">
+                                <input class="form-control floating " type="text" name="min" id="min">
                             </div>
                             <label class="focus-label">From</label>
                         </div>
@@ -36,33 +47,30 @@
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus">
                             <div>
-                                <input class="form-control floating " type="datetime-local" name="to_date">
+                                <input class="form-control floating " type="text" id="max" name="max">
                             </div>
                             <label class="focus-label">To</label>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
-                            <select class="select floating" name="status">
-                                <option>Select Status</option>
-                                <option>Pending</option>
-                                <option>Paid</option>
-                                <option>Partially Paid</option>
+                            <select class="select floating" id="filter_status">
+                                <option value="">All</option>
+                                @foreach($status as $key=>$val)
+                                    <option value="{{$val}}"> {{$val}} </option>
+                                @endforeach
                             </select>
                             <label class="focus-label">Status</label>
                         </div>
                     </div>
-                    <div class="col-sm-6 col-md-3">
-                        <button type="submit" href="#" class="btn btn-success btn-block"> Search </button>
-                    </div>
+
                 </div>
-                </form>
                     <!-- /Search Filter -->
 
                 <div class="row">
                     <div class="col-md-12">
                         <div class="table-responsive">
-                            <table class="table table-striped custom-table mb-0">
+                            <table class="table  mb-0" id="invoice">
                                 <thead>
                                     <tr>
                                         <th>#</th>
@@ -86,12 +94,11 @@
                                         <td>{{$invoice->grand_total}}</td>
                                         <td>
                                             <div class="dropdown action-label">
-                                                <a class="btn btn-white btn-sm btn-rounded "  href="#" data-toggle="modal" data-target="#change_status{{$invoice->id}}">
-                                                    {{$invoice->status}}
-                                                </a>
+                                                <a class="btn btn-white btn-sm btn-rounded " href="#" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o mr-1"></i>{{$invoice->status}}</a>
+                                                {{--<a class="btn btn-white btn-sm btn-rounded "  href="#" data-toggle="modal" data-target="#change_status{{$invoice->id}}"></a>--}}
                                             </div>
-                                            @include('invoice.inv_statuschange')
                                         </td>
+                                        @include('invoice.inv_statuschange')
                                         <td class="text-right">
                                             <div class="dropdown dropdown-action">
                                                 <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -115,7 +122,43 @@
             </div>
             <!-- /Page Content -->
             <script>
+                $(document).ready(function(){
+                    $.fn.dataTable.ext.search.push(
+                        function (settings, data, dataIndex) {
+                            var min = $('#min').datepicker("getDate");
+                            var max = $('#max').datepicker("getDate");
+                            var startDate = new Date(data[3]);
+                            if (min == null && max == null) { return true; }
+                            if (min == null && startDate <= max) { return true;}
+                            if(max == null && startDate >= min) {return true;}
+                            if (startDate <= max && startDate >= min) { return true; }
+                            return false;
+                        }
+                    );
 
+                    $("#min").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
+                    $("#max").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
+                    var table = $('#invoice').DataTable();
+
+                    // Event listener to the two range filtering inputs to redraw on input
+                    $('#min, #max').change(function () {
+                        table.draw();
+                    });
+                });
+                $(document).ready(function() {
+                    $('#filter_id').on('change', function () {
+                        var table = $('#invoice').DataTable();
+                        table.column(1).search($(this).val()).draw();
+
+                    });
+                });
+                $(document).ready(function() {
+                    $('#filter_status').on('change', function () {
+                        var table = $('#invoice').DataTable();
+                        table.column(6).search($(this).val()).draw();
+
+                    });
+                });
             </script>
 
 @endsection

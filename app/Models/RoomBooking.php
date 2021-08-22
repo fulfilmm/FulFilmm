@@ -9,6 +9,7 @@ class RoomBooking extends Model
 {
     use HasFactory;
     protected $fillable=['room_id','start_time','endtime','created_emp','subject'];
+
     public function bookroom(){
         return $this->belongsTo(Room::class,'room_id','id');
     }

@@ -139,10 +139,18 @@
                 </div>
             </div>
         </div>
-        <div class="submit-section">
+        <div class="submit-section my-3">
             <button type="submit" class="btn btn-primary submit-btn">Submit</button>
         </div>
     </form>
+            <div class="card-footer my-5">
+                <div class="row">
+                    <a href=""><i class="la la-facebook-official" style="font-size: 40px;"></i></a>
+                    <a href=""><i class="la la-linkedin" style="font-size: 40px;"></i></a>
+                    <a href=""><i class="la la-facebook-official" style="font-size: 40px;"></i></a>
+                    <a href=""><i class="la la-facebook-official" style="font-size: 40px;"></i></a>
+                </div>
+            </div>
         </div>
     </div>
     <script>

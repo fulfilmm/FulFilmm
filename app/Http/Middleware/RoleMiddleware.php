@@ -30,6 +30,6 @@ class RoleMiddleware
         if ($role->hasPermissionTo($requested_route_name, 'employee') || in_array($role->name, $this->authorized_roles)) {
             return $next($request);
         }
-        abort(403, "Sorry, You do not have enough position to perform this action!");
+        return redirect()->back()->with('error','Sorry, You do not have enough position to perform this action!');
     }
 }

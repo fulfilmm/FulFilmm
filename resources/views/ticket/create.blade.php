@@ -80,6 +80,7 @@
                             <div class="form-group">
                                 <label>Product <span class='text-danger'>*</span></label>
                                 <select name="product_id" id="" class="select">
+                                    <option value="">None</option>
                                     @foreach($data['product'] as $product)
                                         <option value="{{$product->id}}"{{old('product_id')==$product->id?'selected':''}}>{{$product->name}}</option>
                                     @endforeach
@@ -148,6 +149,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="form-group">
@@ -168,16 +170,20 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class=" form-group ">
-                                <label align="center">Upload your images</label>
-                                <input type="file" class="form-control"  id="files" name="files[]" multiple />
+                <div>
+                    <label align="center">Upload your images</label>
+                        <div id="inputFormRow">
+                            <div class="input-group mb-3">
+                                <input type="file" class="form-control"  id="files" name="files[]" />
                             </div>
-                            @error('files.*')
-                            <span class="text-danger">{{$message}}</span>
-                            @enderror
                         </div>
+                        <div id="newRow"></div>
+                      <div class="input-group">
+                        <button id="addRow" type="button" class="btn btn-white float-right">Add More Image</button>
+                      </div>
+                        @error('files.*')
+                        <span class="text-danger">{{$message}}</span>
+                        @enderror
                     </div>
                     <div class="submit-section">
                         <button type="submit" class="btn btn-primary submit-btn">Submit</button>
@@ -188,9 +194,22 @@
     </div>
 
 <script>
+    $("#addRow").click(function () {
+        var html = '';
+        html += '<div id="inputFormRow">';
+        html += '<div class="input-group mb-3">';
+        html += '<input type="file" class="form-control"  id="files" name="files[]"/>';
+        html += '<button id="removeRow" type="button" class="btn btn-danger"><i class="la la-close"></i></button>';
+        html += '</div>';
+        html += '</div>';
+
+        $('#newRow').append(html);
+    });
+    $(document).on('click', '#removeRow', function () {
+        $(this).closest('#inputFormRow').remove();
+    });
     $(document).ready(function() {
         $(document).on('click', '#customer_add', function () {
-
             // var customer_id=$("#customer_id").val();
             var customer_name =$("#customer_name").val();
             var customer_phone=$("#customer_phone").val();

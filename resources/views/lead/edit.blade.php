@@ -140,7 +140,7 @@
                                   <div class="col-md-8 col-12">
                                       <div class="col-12">
                                           <div class="form-group mt-3">
-                                              <label for="">Next Plan Description</label>
+                                              <label for="">Activity Schedule Description</label>
                                               <textarea name="next_plan_textarea" id="next_plan_textarea"  rows="6" class="form-control">
                                       @if($next_plan!=null)
                                                       {{$next_plan->description}}

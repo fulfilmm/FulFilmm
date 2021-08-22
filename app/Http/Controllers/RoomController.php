@@ -86,7 +86,7 @@ class RoomController extends Controller
         return view('room.booking',compact('data'));
     }
     public function booking_save(Request $request){
-        $booked_rooms=RoomBooking::where('start_time','<=',$request->start_time)->where('endtime','<=',$request->endtime)->get();
+        $booked_rooms=RoomBooking::where('start_time','<=',$request->start_time)->where('endtime','>=',$request->endtime)->get();
     $isvalid=true;
      if(!$booked_rooms->isEmpty()){
          foreach ($booked_rooms as $room){
@@ -96,7 +96,13 @@ class RoomController extends Controller
          }
      }
         if($isvalid){
-            RoomBooking::create($request->all());
+            $book=new RoomBooking();
+            $book->start_time=Carbon::parse($request->start_time);
+            $book->endtime=Carbon::parse($request->endtime);
+            $book->room_id=$request->room_id;
+            $book->created_emp=Auth::guard('employee')->user()->id;
+            $book->subject=$request->subject;
+            $book->save();
             return redirect()->back()->with('success','Your room booking successful');
         }else{
             return redirect()->back()->with('error','This room has been booked in your selected time! Please select another time');
@@ -120,7 +126,11 @@ class RoomController extends Controller
      */
     public function bookigCancel($id){
         $booking=RoomBooking::where('id',$id)->first();
-        $booking->delete();
-        return redirect()->back()->with('delete','Booking Canceled');
+        if($booking->created_emp==Auth::guard('employee')->user()->id){
+            $booking->delete();
+            return redirect()->back()->with('delete','Booking Canceled');
+        }else{
+            return redirect()->back()->with('error','You can not cancel this booking. Only the booker can cancel');
+        }
     }
 }

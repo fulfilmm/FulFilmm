@@ -77,8 +77,17 @@ class InvoiceController extends Controller
         $last_invoice=Invoice::orderBy('id', 'desc')->first();
         if (isset($last_invoice)) {
             // Sum 1 + last id
-            $last_invoice->invoice_id ++;
-            $invoice_id = $last_invoice->invoice_id;
+            $ischange=$last_invoice->invoice_id;
+            $ischange=explode("-", $ischange);
+            if($ischange[0]==$prefix){
+                $last_invoice->invoice_id++;
+                $invoice_id = $last_invoice->invoice_id;
+            }else{
+                $arr=[$prefix,$ischange[1]];
+                $pre=implode('-',$arr);
+                $pre ++;
+                $invoice_id=$pre;
+            }
         } else {
             $invoice_id=($prefix ? :'INV')."-0001";
         }
@@ -112,7 +121,7 @@ class InvoiceController extends Controller
 
     }
     public function sending_form($id){
-        $company=Company::where('user_company',1)->first();
+        $company=MainCompany::where('ismaincompany',true)->first();
 //        dd($company);
         $detail_inv=Invoice::with('customer')->where('id',$id)->first();
 //        dd($detail_inv);
@@ -133,7 +142,7 @@ class InvoiceController extends Controller
      */
     public function show($id)
     {
-        $company=Company::where('user_company',1)->first();
+        $company=MainCompany::where('ismaincompany',true)->first();
         $detail_inv=Invoice::with('customer')->where('id',$id)->first();
 //        dd($detail_inv);
         $invoic_item=invoice_item::with('product')->where("inv_id",$detail_inv->id)->get();
@@ -185,20 +194,23 @@ class InvoiceController extends Controller
 //        dd($request->all());
         $invoice=Invoice::with('customer')->where("id",$request->inv_id)->first();
         $invoic_item=invoice_item::with('product')->where("inv_id",$request->inv_id)->get();
-        $company=Company::where('user_company',1)->first();
-        $file = $request->attach;
-        $file_name = $file->getClientOriginalName();
-        $request->attach->move(public_path() . '/attach_file/', $file_name);
-        $details = [
+        $company=MainCompany::where('ismaincompany',true)->first();
+        if($request->attach!=null){
+            $file = $request->attach;
+            $file_name = $file->getClientOriginalName();
+            $request->attach->move(public_path() . '/attach_file/', $file_name);
+        }
+        $cc=$request->cc_mail!=null?explode(',',$request->cc_mail):null;
+        $details = array(
             'email' => $request->email,
             'subject' => 'Invoice Mail',
             'clientname' => $invoice->customer->name,
             'invoice'=>$invoice,
-            'cc' => $request->email_cc,
+            'cc' => $cc,
             'invoice_item'=>$invoic_item,
             'company'=>$company,
-            'attach' => public_path() . '/attach_file/' . $file_name,
-        ];
+            'attach' =>$request->attach!=null?public_path() . '/attach_file/' . $file_name:null,
+        );
         Mail::send('invoice.invoicemail', $details, function ($message) use ($details) {
             $message->from('cincin.com@gmail.com', 'Cloudark');
             $message->to($details['email']);
@@ -206,8 +218,12 @@ class InvoiceController extends Controller
             if ($details['cc'] != null) {
                 $message->cc($details['cc']);
             }
-            $message->attach($details['attach']);
+           if($details['attach']!=null){
+               $message->attach($details['attach']);
+           }
+
         });
+        return redirect()->back()->with('success','Invoice Email Sending Successful');
     }
     public function status_change(Request $request,$id){
         $invoice=Invoice::where("id",$id)->first();

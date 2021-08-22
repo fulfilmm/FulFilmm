@@ -45,7 +45,7 @@ class OwnershipMiddleware
                 return $next($request);
             }
             else {
-                abort(403, 'You do not have permission to access requested record!');
+                return redirect()->back()->with('error','You do not have permission to access requested record!');
             }
         } else{
             //routes do not need to check ownership

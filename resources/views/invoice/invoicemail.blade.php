@@ -130,14 +130,14 @@
                     <tr>
                         <td colspan="5">
                             <h5>Invoice From :</h5>
-                            {{$company->name}}<br />
-                            {{$company->address}}<br />
+                            <span style="margin-right: 20px;"> Company Name :</span><strong>{{$company->name}}</strong><br />
+                            <span style="margin-right: 20px;"> Company Address :</span><strong>{{$company->address}}</strong><br />
                         </td>
                         <td>
                             <h5>Invoice To :</h5>
-                            {{$invoice->customer->company->name}}<br />
-                            {{$invoice->customer->name}}<br />
-                            {{$invoice->customer->email}}
+                           <span style="margin-right: 20px;">Company:</span><strong>{{$invoice->customer->company->name}}</strong> <br />
+                            <span style="margin-right: 20px;">Name :</span><strong>{{$invoice->customer->name}}</strong><br />
+                            <span style="margin-right: 20px;">Email </span><strong>{{$invoice->customer->email}}</strong>
                         </td>
                     </tr>
                 </table>
@@ -145,17 +145,16 @@
         </tr>
 
         <tr class="heading">
-            <td>Payment Method</td>
+            <td style="min-width: 200px;">Payment Method</td>
+            <td></td>
+            <td>:</td>
             <td></td>
             <td></td>
             <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-
-        <tr class="details">
             <td>{{$invoice->payment_method}}</td>
+        </tr>
+        <tr>
+            <td></td>
             <td></td>
             <td></td>
             <td></td>
@@ -163,7 +162,6 @@
             <td></td>
             <td></td>
         </tr>
-
         <tr class="heading">
             <td>Item</td>
             <td>Quantity</td>
@@ -190,13 +188,13 @@
             <td></td>
             <td></td>
             <td></td>
-            <td></td>
-            <td>Total:{{$invoice->grand_total}}</td>
+            <th>Total:</th>
+            <td>{{$invoice->grand_total}}</td>
         </tr>
     </table>
     <table style="alignment: center" class="footer">
         <tr>
-            <td>Phone: {{$company->phone}} | Email : {{$company->email}} |Website : www.{{$company->web_link}} |
+            <td> {{$company->phone}} | Email : {{$company->email}} |Website : www.{{$company->web_link}} |
                 Facebook Page :  {{$company->facebook_page}} |
                 Linkedin :  {{$company->linkedin}}
             </td>

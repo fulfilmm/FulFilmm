@@ -147,7 +147,7 @@
                         <span>CRM</span>
                     </li>
                     <li class="submenu">
-                        <a href="#"><i class="la la-ticket"></i> <span> Ticket</span> <span
+                        <a href="#"><i class="la la-ticket"></i> <span>Ticketing System</span> <span
                                     class="menu-arrow"></span></a>
                         <ul style="display: none;">
 
@@ -158,9 +158,9 @@
                                        href="{{ route('followed.tickets') }}">My Follow Ticket</a></li>
                             @else
                                 <li><a class="{{ Request::is('tickets') ? 'active' : '' }}"
-                                       href="{{ route('tickets.index') }}">{{\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=="Agent"?'My Tickets':'All Ticket'}}</a></li>
+                                       href="{{ route('tickets.index') }}">Tickets</a></li>
                                 <li><a class="{{ Request::is('followed') ? 'active' : '' }}"
-                                       href="{{ route('request_tickets.index') }}">External Ticket Request</a></li>
+                                       href="{{ route('request_tickets.index') }}">Complaints</a></li>
                                 <li><a class="{{ Request::is('followed') ? 'active' : '' }}"
                                        href="{{ route('followed.tickets') }}">My Follow Ticket</a></li>
                                 <li><a class="{{ Request::is('cases.index') ? 'active' : '' }}"
@@ -189,16 +189,16 @@
 
                         </ul>
                     </li>
-                    <li class="submenu">
-                        <a href="#"><i class="la la-question-circle"></i> <span> InQuery</span> <span
-                                    class="menu-arrow"></span></a>
-                        <ul style="display: none;">
-                            <li><a class="{{ Request::is('inqueries.index') ? 'active' : '' }}"
-                                   href="{{ route('inqueries.index') }}">All InQuery</a></li>
-                            <li><a class="{{ Request::is('inqueries.create') ? 'active' : '' }}"
-                                   href="{{ route('inqueries.create') }}">InQuery Create</a></li>
-                        </ul>
-                    </li>
+                    {{--<li class="submenu">--}}
+                        {{--<a href="#"><i class="la la-question-circle"></i> <span> InQuery</span> <span--}}
+                                    {{--class="menu-arrow"></span></a>--}}
+                        {{--<ul style="display: none;">--}}
+                            {{--<li><a class="{{ Request::is('inqueries.index') ? 'active' : '' }}"--}}
+                                   {{--href="{{ route('inqueries.index') }}">All InQuery</a></li>--}}
+                            {{--<li><a class="{{ Request::is('inqueries.create') ? 'active' : '' }}"--}}
+                                   {{--href="{{ route('inqueries.create') }}">InQuery Create</a></li>--}}
+                        {{--</ul>--}}
+                    {{--</li>--}}
                     <li class="submenu">
                         <a href="#"><i class="la la-dollar"></i><span> Lead</span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">

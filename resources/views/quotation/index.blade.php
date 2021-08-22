@@ -16,7 +16,10 @@
                         </ul>
                     </div>
                 </div>
-                <a href="{{route('quotations.create')}}" class="btn btn-primary">Create</a>
+                <div class="col-auto float-right ml-auto my-2">
+                    <a href="{{route('quotations.create')}}" class="btn add-btn" ><i class="fa fa-plus"></i> Add Quotation</a>
+                </div>
+
             </div>
             <!-- /Page Header -->
 

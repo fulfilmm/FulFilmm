@@ -34,8 +34,8 @@
 										<div class="col-sm-6 m-b-20">
 											<img src="img/logo2.png" class="inv-logo" alt="">
 				 							<ul class="list-unstyled">
-												<li>{{$company->name ?? null}}</li>
-                                                <li>{{$company->address}},</li>
+												<li>{{$company->name ?? ''}}</li>
+                                                <li>{{$company->address??''}},</li>
 												<li>GST No:</li>
 											</ul>
 										</div>

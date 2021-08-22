@@ -22,10 +22,10 @@
                         <div class="card-body">
                             <div class="row my-3">
                                 <div class="col-sm-4 m-b-20">
-                                    <img src="{{url(asset("img/profiles/avatar-02.jpg"))}}" class="inv-logo avatar" alt="logo" >
+                                    <img src="{{$company!=null ? url(asset('/img/profiles/'.$company->logo)): url(asset('/img/profiles/avatar-01.jpg'))}}" class="inv-logo avatar" alt="logo" >
                                 </div>
                                 <div class="col-sm-2">
-                                    <h3>{{$company->name ?? null}}</h3>
+                                    <h3>{{$company->name ?? ''}}</h3>
                                     <strong>Address: <i> {{$company->address}}</i></strong>
                                 </div>
                                 <div class="col-sm-6 m-b-20">
@@ -39,29 +39,26 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-6 col-lg-7 col-xl-8 m-b-20">
+                                <div class="col-sm-6 col-lg-6 col-xl-6 m-b-20">
                                     <h5>Invoice to:</h5>
                                     <ul class="list-unstyled">
-                                        <li><h5><strong>{{$detail_inv->customer->name}}</strong></h5></li>
-                                        <li><span>{{$detail_inv->customer->company->name}}</span></li>
-                                        <li>{{$detail_inv->customer->address}}</li>
-                                        <li>Coosada, AL, 36020</li>
-                                        <li>United States</li>
-                                        <li>{{$detail_inv->customer->phone}}</li>
-                                        <li><a href="#">{{$detail_inv->customer->email}}</a></li>
+                                        <li><strong>Name&nbsp:&nbsp</strong><span>{{$detail_inv->customer->name}}</span></li>
+                                        <li><span><strong>Company&nbsp:&nbsp</strong>{{$detail_inv->customer->company->name}}</span></li>
+                                        <li><strong>Address&nbsp:&nbsp</strong>{{$detail_inv->customer->address}}</li>
+                                        <li><strong>Phone&nbsp:&nbsp</strong>{{$detail_inv->customer->phone}}</li>
+                                        <li><strong>Email&nbsp:&nbsp</strong><a href="#">{{$detail_inv->customer->email}}</a></li>
                                     </ul>
                                 </div>
-                                <div class="col-sm-6 col-lg-5 col-xl-4 m-b-20">
-                                    <input type="hidden" name="email" value="{{$detail_inv->customer->email}}">
-                                    <input type="hidden" name="inv_id" value="{{$detail_inv->id}}">
-                                    <div class="form-group">
-                                        <label for="cc">CC Email</label>
-                                        <input type="text" id="cc" class="form-control" name="cc_mail">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="">Attach File</label>
-                                        <input type="file" name="attach" class="form-control">
-                                    </div>
+                                <div class="col-sm-6 col-lg-6 col-xl-6 m-b-20">
+                                    <h5>Invoice From:</h5>
+                                    <ul class="list-unstyled">
+                                        <li><span>Company Name&nbsp:&nbsp</span><strong>{{$company->name??''}}</strong></li>
+                                        <li><span>{{$company->address?'Address :':''}}</span><strong>{{$company->address??''}}</strong></li>
+                                        <li><span>{{$company->phone?'Phone :':''}}</span><strong>{{$company->phone??''}}</strong></li>
+                                        <li><span>{{$company->email?'Email :':''}}</span><strong>{{$company->address??''}}</strong></li>
+                                        <li><span>{{$company->web_link?'Website :':''}}</span><strong>{{$company->web_link??''}}</strong></li>
+
+                                    </ul>
                                 </div>
                             </div>
                             <div class="table-responsive">
@@ -123,6 +120,18 @@
                                     <p class="text-muted">{{$detail_inv->other_information}}</p>
                                 </div>
                             </div>
+                            <div class="col-sm-6 col-lg-5 col-xl-4 m-b-20">
+                                <input type="hidden" name="email" value="{{$detail_inv->customer->email}}">
+                                <input type="hidden" name="inv_id" value="{{$detail_inv->id}}">
+                                <div class="form-group">
+                                    <label for="cc">CC Email</label>
+                                    <input type="text" id="cc" class="form-control" name="cc_mail">
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Attach File</label>
+                                    <input type="file" name="attach" class="form-control">
+                                </div>
+                            </div>
                             <div class="form-group text-center my-3">
                                 <button type="submit" class="btn btn-outline-info">Send</button>
                             </div>
@@ -133,18 +142,4 @@
         </div>
     </div>
     <!-- /Page Content -->
-    <div class="col-12">
-        <div class="row">
-            <div class="col-md-6 offset-md-3"><span><i class="la la-phone"></i> Phone: </span><span> <i> {{$company->phone}}</i> |</span>
-            <span><i class="la la-envelope"></i> Email : </span><span><i> {{$company->email}}</i> |</span>
-            <span><i class="la la-globe"></i> Website : </span><span><i> www.{{$company->web_link}}</i> </span>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4 offset-md-4">
-                <span><i class="la la-facebook"></i> Facebook Page : </span><span><i> {{$company->facebook_page}}</i> |</span>
-                <span><i class="la la-linkedin"></i> Linkedin : </span><span><i> {{$company->linkedin}}</i> </span>
-            </div>
-        </div>
-    </div>
 @endsection

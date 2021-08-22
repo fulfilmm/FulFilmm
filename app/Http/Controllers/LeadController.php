@@ -58,8 +58,17 @@ class LeadController extends Controller
             $lastlead = leadModel::orderBy('id', 'desc')->first();
         if (isset($lastlead)) {
             // Sum 1 + last id
-            $lastlead->lead_id++;
-            $lead_id = $lastlead->lead_id;
+            $ischange=$lastlead->lead_id;
+            $ischange=explode("-", $ischange);
+            if($ischange[0]==$prefix){
+                $lastlead->lead_id++;
+                $lead_id = $lastlead->lead_id;
+            }else{
+                $arr=[$prefix,$ischange[1]];
+                $pre=implode('-',$arr);
+                $pre ++;
+                $lead_id=$pre;
+            }
         } else {
             $lead_id =($prefix ? :'Lead') . "-0001";
         }
