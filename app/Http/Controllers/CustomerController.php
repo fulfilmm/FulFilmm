@@ -5,7 +5,14 @@ namespace App\Http\Controllers;
 use App\Exports\CustomerExport;
 use App\Http\Requests\CustomerRequest;
 use App\Imports\CustomerImport;
+use App\Models\assign_ticket;
 use App\Models\Customer;
+use App\Models\deal;
+use App\Models\Invoice;
+use App\Models\leadModel;
+use App\Models\Quotation;
+use App\Models\ticket;
+use App\Models\ticket_sender;
 use App\Repositories\Contracts\CompanyContract;
 use App\Repositories\Contracts\CustomerContract;
 use Exception;
@@ -72,7 +79,24 @@ class CustomerController extends Controller
      */
     public function show($id)
     {
-        //
+        $assign_ticket = assign_ticket::with('agent', 'dept')->get();
+        $customer=Customer::with('company')->where('id',$id)->first();
+        $ticket_history=ticket_sender::where('customer_id',$customer->id)->first();
+        $customer_ticket= ticket::with('ticket_status', 'ticket_priority')->where("customer_id",$ticket_history->customer_id)->get();
+        $customer_invoice=Invoice::where('customer_id',$customer->id)->get();
+        $customer_lead=leadModel::with("saleMan", "tags")->where("created_id",$customer->id)->get();
+        $customer_deal=deal::with("customer_company","customer","employee")->where('contact',$customer->id)->get();
+       $customer_quotation=Quotation::where('customer_name',$customer->id)->get();
+        $data=[
+            'customer'=>$customer,
+            'invoice'=>$customer_invoice,
+            'tickets'=>$customer_ticket,
+            'lead'=>$customer_lead,
+            'deal'=>$customer_deal,
+            'quotation'=>$customer_quotation
+        ];
+        $status_color = ['New' => '#49d1b6', 'Open' => '#e84351', 'Close' => '#4e5450', 'Pending' => '#f0ed4f', 'In Progress' => '#2333e8', 'Complete' => '#18b820', 'Overdue' => '#000'];
+        return view('customer.show',compact('data','assign_ticket','status_color'));
     }
 
     /**
