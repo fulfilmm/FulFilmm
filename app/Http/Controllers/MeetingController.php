@@ -93,8 +93,6 @@ class MeetingController extends Controller
        $meeting->agenda=$agender;
        $reciver_mail=[];
         $meeting_member=[];
-
-
 //       $meeting_member=[];
       foreach ($request->internal_members as $key=>$val){
           $emp=Employee::where('id',$val)->first();
@@ -186,12 +184,13 @@ class MeetingController extends Controller
 
         foreach ($receiver_emails as $key=>$item){
             $is_emp=Employee::where('email',$item)->first();
+            $externmember=ExternalMeetingMember::where('email',$item)->first();
 
             $agender=json_decode($meeting->agenda);
             $details = [
                 'email' =>$item,
                 'subject' => 'Meeting Invitation Mail',
-                'member_name' => $is_emp ?$is_emp->name :$item,
+                'member_name' => $is_emp ?$is_emp->name :$externmember->name,
                 'meeting_data'=>$meeting,
                 'agenda'=>$agender,
                 'our_emps'=>$members_name,
