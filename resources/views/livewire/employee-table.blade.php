@@ -26,7 +26,7 @@
         </thead>
         @foreach ($employees as $em)
             <tr>
-                <td>{{$em->name}}</td>
+                <td style="min-width: 200px"><img src="{{$em->profile_img!=null? url(asset('img/profiles/'.$em->profile_img)):url(asset('img/profiles/avatar-01.jpg'))}}" alt="" class="avatar chat-avatar-sm">{{$em->name}}</td>
                 <td>{{ $em->email }}</td>
                 <td>{{ $em->phone }}</td>
                 <td>{{ $em->work_phone }}</td>

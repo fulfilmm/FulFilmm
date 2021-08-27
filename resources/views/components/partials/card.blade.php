@@ -2,8 +2,9 @@
 <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
     <div class="profile-widget">
         <div class="profile-img">
-            <a href="{{route( $route.'.show', $id)}}" class="avatar"><img
-                    src="{{$image ?? 'img/profiles/avatar-02.jpg'}}" alt=""></a>
+            <a href="{{route( $route.'.show', $id)}}" class="avatar text-center">
+                <img src="{{$image ??''}}" alt="Add profile" width="80px" height="80px" style="font-size: 8px;">
+            </a>
         </div>
         <div class="dropdown profile-action">
             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"

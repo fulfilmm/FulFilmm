@@ -16,9 +16,12 @@ class CreateApprovalCommentsTable extends Migration
         Schema::create('approval_comments', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('approval_id')->unsigned();
+            $table->foreign('approval_id')->references('id')->on('approvalrequests')->onDelete('cascade');
             $table->text('cmt_text');
-            $table->bigInteger('emp_id');
+            $table->bigInteger('emp_id')->unsigned();
+            $table->foreign('emp_id')->references('id')->on('employees')->onDelete('cascade');
             $table->text('doc')->nullable();
+            $table->index('approval_id');
             $table->timestamps();
         });
     }

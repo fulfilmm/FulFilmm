@@ -24,6 +24,8 @@ class CreateMeetingsTable extends Migration
             $table->string('link_id')->nullable();
             $table->string('password')->nullable();
             $table->bigInteger('meeting_creater')->unsigned();
+            $table->foreign('meeting_creater')->references('id')->on('employees')->onDelete('cascade');
+            $table->index(['id','meeting_creater']);
             $table->timestamps();
         });
     }

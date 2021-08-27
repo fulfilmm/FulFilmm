@@ -28,6 +28,7 @@ class CreateLeadModelsTable extends Migration
             $table->bigInteger("tags_id")->unsigned();
             $table->foreign("tags_id")->references("id")->on("tags_industries")->onDelete("cascade");
             $table->string("organization_name")->nullable();
+            $table->index(['sale_man_id','created_id','is_qualified']);
             $table->timestamps();
         });
     }

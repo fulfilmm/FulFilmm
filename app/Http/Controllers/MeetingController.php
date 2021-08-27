@@ -9,6 +9,7 @@ use App\Models\Meeting;
 use App\Models\Meetingmember;
 use App\Models\Meetingminutes;
 use App\Models\MinutesAssign;
+use App\Models\Room;
 use App\Models\RoomBooking;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -55,12 +56,9 @@ class MeetingController extends Controller
     public function create()
     {
         $employees=Employee::all()->pluck('name','id')->all();
-        $booked_room=RoomBooking::with('bookroom')->where('created_emp',Auth::guard('employee')->user()->id)->get();
-        $all_booking=[];
-        foreach ($booked_room as $room){
-            array_push($all_booking,$room->bookroom);
-        }
-        $data=['employees'=>$employees,'rooms'=>$all_booking];
+        $room=Room::all()->pluck('room_no','id')->all();
+
+        $data=['employees'=>$employees,'rooms'=>$room];
         return view('meeting.create',compact('data'));
     }
 

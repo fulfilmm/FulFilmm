@@ -7,7 +7,10 @@
                 route="customers"
                 id="{{$employee->id}}"
                 title="{{$employee->name}}"
-                subtitle="{{$employee->email}}">
+                subtitle="{{$employee->email}}"
+                route='employees'
+                id="{{$employee->id}}"
+            image="{{asset('img/profiles/'.$employee->profile_img)}}">
 
             </x-partials.card>
             @empty

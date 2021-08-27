@@ -75,13 +75,11 @@
                                        <label for="room_no">Room No(Room Name) <span class="text-danger">*</span></label>
                                        <select id="room_no" name="room_no" class="form-control select" >
                                            <option value="">Choose Your Booking Room</option>
-                                          @foreach($data['rooms'] as $room)
-                                           <option value="{{$room->id}}">{{$room->room_no}}</option>
-                                              @endforeach
+                                          @foreach($data['rooms'] as $key=>$val)
+                                           <option value="{{$key}}">{{$val}}</option>
+                                           @endforeach
                                        </select>
-
                                    </div>
-
                                </div>
                            </div>
 
@@ -180,7 +178,7 @@
                 }else {
 
                     $('#visual_input').remove();
-                    $('#realtive_field').append('<div class="col-md-12" id="for_real"><div class="form-group"><label for="room_no">Room No(Room Name) <span class="text-danger">*</span></label><select id="room_no" name="room_no" class="form-control select" ><option value="">Choose Your Booking Room</option>@foreach($data['rooms'] as $room)<option value="{{$room->id}}">{{$room->room_no}}</option>@endforeach</select></div></div>');
+                    $('#realtive_field').append('<div class="col-md-12" id="for_real"><div class="form-group"><label for="room_no">Room No(Room Name) <span class="text-danger">*</span></label><select id="room_no" name="room_no" class="form-control select" ><option value="">Choose Your Booking Room</option>@foreach($data['rooms'] as $key=>$val)<option value="{{$key}}">{{$val}}</option>@endforeach</select></div></div>');
                 }
             });
         });

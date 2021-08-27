@@ -20,6 +20,7 @@ class CreateTicketsTable extends Migration
             $table->string("ticket_id")->unique();
             $table->bigInteger("customer_id")->unsigned();
             $table->foreign("customer_id")->references("id")->on("ticket_senders")->onDelete("cascade");
+            $table->index(['customer_id','created_emp_id','id']);
             $table->text("message");
             $table->string("title");
             $table->bigInteger("status")->unsigned();

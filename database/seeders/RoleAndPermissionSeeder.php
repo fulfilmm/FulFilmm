@@ -9,13 +9,13 @@ class RoleAndPermissionSeeder extends Seeder
 {
     private $roles_and_permission = [
         'Employee' => [
-            'resources' => [
-                'employees', 'activities', 'assignments', 'assignment_tasks', 'activity_tasks', 'comments', 'customers', 'companies', 'projects', 'project_tasks'
+            'resources' => ['activities', 'assignments', 'assignment_tasks', 'activity_tasks', 'comments', 'customers', 'companies', 'projects', 'project_tasks'
             ],
             'others' => [
                 'assignment_tasks.toggle',
                 'activity_tasks.toggle',
                 'project_tasks.toggle',
+                'employees.show',
             ]
         ],
         'Manager' => [
@@ -43,12 +43,13 @@ class RoleAndPermissionSeeder extends Seeder
                 'project_tasks.toggle',
                 'assignments.changeStatus',
                 'projects.accept_proposal',
-                'projects.status_update'
+                'projects.status_update',
+                'piechart'
             ]
         ],
         'Agent' => [
             'resources' => [
-                'employees','tickets','activities', 'assignments', 'assignment_tasks', 'activity_tasks', 'comments', 'customers', 'companies', 'departments', 'groups', 'roles', 'permissions', 'projects', 'project_tasks'
+                'tickets','activities', 'assignments', 'assignment_tasks', 'activity_tasks', 'comments', 'customers', 'companies', 'departments', 'groups', 'roles', 'permissions', 'projects', 'project_tasks'
             ],
             'others' => [
                 'activities.acknowledge',
@@ -57,7 +58,8 @@ class RoleAndPermissionSeeder extends Seeder
                 'project_tasks.toggle',
                 'assignments.changeStatus',
                 'projects.accept_proposal',
-                'projects.status_update'
+                'projects.status_update',
+                'employees.show',
             ]
         ]
     ];

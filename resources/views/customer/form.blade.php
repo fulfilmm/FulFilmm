@@ -1,12 +1,12 @@
 <x-forms.basic.input name="name" title="Name" value="{{$record->name ?? old('name')}}" required></x-forms.basic.input>
 <x-forms.basic.input name="phone" type="tel" title="Phone" value="{{$record->phone ?? old('phone')}}" required></x-forms.basic.input>
 <x-forms.basic.input name="email" type="email" title="Email" value="{{$record->email ?? old('email')}}" required></x-forms.basic.input>
-
+<x-forms.basic.input name="password" title="Password" type="password" value="" required></x-forms.basic.input>
 <div class="form-group row">
     <label class="col-form-label col-md-2">Customer's Company</label>
     <div class="col-md-8">
         <select class="form-control" id="company_id" name="company_id">
-            <option disabled selected>Choose Customer's Current Company</option>
+            <option disabled selected>Choose Company</option>
 
             @foreach ($companies as $key => $option)
                 <option value="{{$key}}" {{$key===($record->company_id?? old('company_id'))?'selected':''}}>{{$option}}</option>

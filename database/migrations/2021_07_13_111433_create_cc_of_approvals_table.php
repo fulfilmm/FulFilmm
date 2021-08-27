@@ -16,7 +16,10 @@ class CreateCcOfApprovalsTable extends Migration
         Schema::create('cc_of_approvals', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('approval_id')->unsigned();
+            $table->foreign('approval_id')->references('id')->on('approvalrequests')->onDelete('cascade');
             $table->bigInteger('emp_id')->unsigned();
+            $table->foreign('emp_id')->references('id')->on('employees')->onDelete('cascade');
+            $table->index(['approval_id','emp_id']);
             $table->timestamps();
         });
     }

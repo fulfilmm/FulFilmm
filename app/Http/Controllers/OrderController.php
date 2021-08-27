@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\invoice_item;
 use Illuminate\Http\Request;
 
-class InvoiceItemController extends Controller
+class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -35,18 +34,7 @@ class InvoiceItemController extends Controller
      */
     public function store(Request $request)
     {
-        $items=new invoice_item();
-        $items->product_id=$request->product_id;
-        $items->description=$request->description;
-        $items->quantity=$request->quantity;
-        $items->tax_id=$request->tax_id;
-        $items->discount=$request->discount;
-        $items->discount_type=$request->discount_type;
-        $items->unit_price=$request->unit_price;
-        $items->currency_unit=$request->currency_unit;
-        $items->total=$request->total;
-        $items->creation_id=$request->invoice_id;
-        $items->save();
+        //
     }
 
     /**
@@ -91,8 +79,6 @@ class InvoiceItemController extends Controller
      */
     public function destroy($id)
     {
-        $invoice_item=invoice_item::where('id',$id)->first();
-        $invoice_item->delete();
-        return redirect()->back()->with('success','Item remove success');
+        //
     }
 }

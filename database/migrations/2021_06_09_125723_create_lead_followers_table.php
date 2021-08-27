@@ -19,6 +19,7 @@ class CreateLeadFollowersTable extends Migration
             $table->foreign("follower_id")->references("id")->on("employees")->onDelete("cascade");
             $table->bigInteger("lead_id")->unsigned();
             $table->foreign("lead_id")->references("id")->on("lead_models")->onDelete("cascade");
+            $table->index('lead_id');
             $table->timestamps();
         });
     }

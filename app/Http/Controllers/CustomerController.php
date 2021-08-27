@@ -15,6 +15,7 @@ use App\Models\ticket;
 use App\Models\ticket_sender;
 use App\Repositories\Contracts\CompanyContract;
 use App\Repositories\Contracts\CustomerContract;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -92,13 +93,28 @@ class CustomerController extends Controller
         $customer_lead=leadModel::with("saleMan", "tags")->where("created_id",$id)->get();
         $customer_deal=deal::with("customer_company","customer","employee")->where('contact',$id)->get();
        $customer_quotation=Quotation::where('customer_name',$customer->id)->get();
-        $data=[
+      $paid_total=0;
+      $overdue=0;
+      $open_unpaid=0;
+       foreach ($customer_invoice as $invoice){
+           if($invoice->status=='Paid'){
+               $paid_total=$paid_total+$invoice->grand_total;
+           }elseif ($invoice->status=='Unpaid'&& Carbon::parse($invoice->due_date) > Carbon::now()){
+               $overdue=$overdue+$invoice->grand_total;
+           }elseif($invoice->status=='Unpaid'){
+               $open_unpaid=$open_unpaid+$invoice->grand_total;
+           }
+       }
+       $data=[
             'customer'=>$customer,
             'invoice'=>$customer_invoice,
             'tickets'=>$customer_ticket,
             'lead'=>$customer_lead,
             'deal'=>$customer_deal,
-            'quotation'=>$customer_quotation
+            'quotation'=>$customer_quotation,
+           'paid_total'=>$paid_total,
+           'overdue'=>$overdue,
+           'open'=>$open_unpaid
         ];
         $status_color = ['New' => '#49d1b6', 'Open' => '#e84351', 'Close' => '#4e5450', 'Pending' => '#f0ed4f', 'In Progress' => '#2333e8', 'Complete' => '#18b820', 'Overdue' => '#000'];
         return view('customer.show',compact('data','assign_ticket','status_color'));

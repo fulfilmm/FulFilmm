@@ -22,6 +22,7 @@ class CreateRoomBookingsTable extends Migration
             $table->bigInteger('created_emp')->unsigned();
             $table->foreign('created_emp')->references('id')->on('employees')->onDelete('cascade');
             $table->text('subject');
+            $table->index(['id','room_id']);
             $table->timestamps();
         });
     }

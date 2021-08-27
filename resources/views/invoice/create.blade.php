@@ -146,10 +146,11 @@
                                                         <td>
                                                             <div class="row">
                                                                 <a data-toggle="modal" href="#edit{{$order->id}}" id="call_full_form" class="btn btn-primary btn-sm mr-1"><i class="fa fa-edit"></i></a><br>
-                                                                <a class="btn btn-danger btn-sm" href="{{route('orders.destroy',$order->id)}}" ><i class="fa fa-trash-o "></i></a>
+                                                                <a class="btn btn-danger btn-sm" data-toggle="modal" href="#remove{{$order->id}}" ><i class="fa fa-trash-o "></i></a>
                                                             </div>
                                                     </tr>
                                                     @include('invoice.itemsedit')
+                                                    @include('invoice.item_remove')
                                                 @endforeach
                                                 <tr>
                                                     <td>

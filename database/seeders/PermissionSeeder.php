@@ -16,7 +16,7 @@ class PermissionSeeder extends Seeder
         'activities','activity_tasks', 'comments', 'companies', 'customers', 'departments',
         'employees','roles', 'permissions', 'assignments', 'assignment_tasks', 'projects','tickets','cases','priorities',
         'leads','deals','quotations','invoices','invoice_items','approvals','meetings','minutes','inqueries','products','orders', 'groups','project_tasks',
-        'companysettings','senders'
+        'companysettings','senders','rooms',
     ];
     public function run()
     {
@@ -87,6 +87,9 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'companysetting.setprefix', 'display_name' => 'Update Prefix Setting', "guard_name" => 'employee']);
         Permission::create(['name' => 'emailsetting', 'display_name' => 'Email Server setting', "guard_name" => 'employee']);
         Permission::create(['name' => 'mail.setting', 'display_name' => 'Update Email Server setting', "guard_name" => 'employee']);
+        Permission::create(['name' => 'booking', 'display_name' => 'Room Booking index', "guard_name" => 'employee']);
+        Permission::create(['name' => 'savebooking', 'display_name' => 'Room Booking store', "guard_name" => 'employee']);
+        Permission::create(['name' => 'cancel', 'display_name' => 'Room Booking cancel', "guard_name" => 'employee']);
     }
 
     private function createResourcePermissions($resource)

@@ -18,6 +18,7 @@ class CreateInvoicesTable extends Migration
             $table->string('title');
             $table->string('invoice_id');
             $table->bigInteger('customer_id')->unsigned();
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
             $table->string('email');
             $table->text('customer_address');
             $table->text('billing_address');
@@ -27,6 +28,7 @@ class CreateInvoicesTable extends Migration
             $table->string('payment_method');
             $table->text('other_information')->nullable();
             $table->double('grand_total');
+            $table->index(['id','customer_id']);
             $table->timestamps();
         });
     }

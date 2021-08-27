@@ -22,6 +22,9 @@ class CreateAssignTicketsTable extends Migration
             $table->bigInteger('dept_id')->unsigned()->nullable();
             $table->foreign("dept_id")->references("id")->on("departments")->onDelete('cascade');
             $table->string("type_of_assign");
+            $table->bigInteger('group_id')->unsigned()->nullable();
+            $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
+            $table->index(['agent_id','ticket_id','dept_id','group_id']);
             $table->timestamps();
         });
     }

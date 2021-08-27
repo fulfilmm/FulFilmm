@@ -36,6 +36,8 @@ class CreateDealsTable extends Migration
             $table->string("lost_reason")->nullable();
             $table->text("description")->nullable();
             $table->bigInteger("created_id")->unsigned();
+            $table->foreign('created_id')->references('id')->on('employees')->onDelete('cascade');
+            $table->index(['created_id','assign_to','contact','org_name','id']);
             $table->timestamps();
         });
     }

@@ -27,7 +27,7 @@ class EmployeeRequest extends FormRequest
             'department_id' => 'required',
             'name' => 'required',
             'role_id' => 'required',
-            'password' => 'required',
+//            'password' => 'required',
             'email' => 'required',
             'can_login' => 'nullable',
             'can_post_assignments' => 'nullable',

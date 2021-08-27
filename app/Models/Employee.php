@@ -6,9 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class Employee extends Authenticatable
+class Employee extends Authenticatable implements JWTSubject
 {
+
     use HasFactory, SoftDeletes;
     use HasRoles;
 
@@ -25,7 +27,20 @@ class Employee extends Authenticatable
         'work_phone', 'can_login','can_post_assignments', 'password', 'join_date'
     ];
 
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
 
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 
     //relations
     public function department_name()

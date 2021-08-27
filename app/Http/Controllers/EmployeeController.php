@@ -6,6 +6,7 @@ use App\Http\Requests\EmployeeRequest;
 use App\Models\Department;
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\EmployeeExport;
 use App\Imports\EmployeeImport;
@@ -78,12 +79,24 @@ class EmployeeController extends Controller
      */
     public function store(EmployeeRequest $request)
     {
-        $this->validate($request,[
-            'email'=>'unique:employees'
-        ]);
         $data  = collect($request->validated())->except('role_id')->toArray();
-
-        $employee = Employee::create($data);
+//dd($data);
+        $employee = new Employee();
+        $employee->name=$data['name'];
+        $employee->email=$data['email'];
+        $employee->phone=$data['phone'];
+        $employee->work_phone=$data['work_phone'];
+        $employee->join_date=$data['join_date'];
+        $employee->password=Hash::make($data['password']);
+        $employee->department_id=$data['department_id'];
+        $employee->can_login=$data['can_login'];
+        $employee->can_post_assignments=$data['can_post_assignments'];
+        if($request->profile_img!=null){
+            $name = $request->profile_img->getClientOriginalName();
+            $request->profile_img->move(public_path() . '/img/profiles', $name);
+            $employee->profile_img = $name;
+        }
+        $employee->save();
         $employee->assignRole($request->role_id);
         return redirect('employees')->with('success', __('alert.create_success'));
     }
@@ -126,12 +139,28 @@ class EmployeeController extends Controller
      */
     public function update(EmployeeRequest $request, Employee $employee)
     {
+//        dd($employee);
         $data  = collect($request->validated())->except('role_id')->toArray();
         $data['can_login'] =  $data['can_login'] ?? "0";
-        $data['can_post_assignment'] =  $data['can_post_assignment'] ?? "0";
-        $employee->update($data);
-        $employee->syncRoles($request->role_id);
-        return redirect('employees')->with('success', __('alert.update_success'));
+        $data['can_post_assignment'] =  $data['can_post_assignments'] ?? "0";
+
+        $employee->name=$data['name'];
+        $employee->email=$data['email'];
+        $employee->phone=$data['phone'];
+        $employee->work_phone=$data['work_phone'];
+        $employee->join_date=$data['join_date'];
+        $employee->department_id=$data['department_id'];
+        $employee->can_login=$data['can_login'];
+        $employee->can_post_assignments=$data['can_post_assignment'];
+        if($request->profile_img!=null){
+            $name = $request->profile_img->getClientOriginalName();
+            $request->profile_img->move(public_path() . '/img/profiles', $name);
+            $employee->profile_img = $name;
+        }
+            $employee->update();
+            $employee->syncRoles($request->role_id);
+            return redirect('employees')->with('success', __('alert.update_success'));
+
     }
 
     /**

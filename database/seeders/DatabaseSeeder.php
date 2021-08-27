@@ -100,7 +100,7 @@ class DatabaseSeeder extends Seeder
 
 
 
-        Employee::factory(10)->create();
+        Employee::factory(1)->create();
         // \App\Models\User::factory(10)->create();
         $superadmin->assignRole('Super Admin');
         $ticketagent->assignRole('Agent');

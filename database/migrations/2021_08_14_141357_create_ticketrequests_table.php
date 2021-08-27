@@ -27,6 +27,7 @@ class CreateTicketrequestsTable extends Migration
             $table->text('image')->nullable();
             $table->tinyInteger('is_open')->default(0);
             $table->text('attach_file')->nullable();
+            $table->index('id');
             $table->timestamps();
         });
     }

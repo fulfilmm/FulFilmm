@@ -91,6 +91,7 @@ class InvoiceController extends Controller
         } else {
             $invoice_id=($prefix ? :'INV')."-0001";
         }
+        dd($invoice_id);
         $newInvoice=new Invoice();
         $newInvoice->title=$request->title;
         $newInvoice->invoice_id=$invoice_id;

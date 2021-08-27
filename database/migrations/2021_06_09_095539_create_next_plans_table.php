@@ -21,6 +21,7 @@ class CreateNextPlansTable extends Migration
             $table->dateTime("to_date");
             $table->dateTime("from_date");
             $table->tinyInteger("work_done");
+            $table->index('lead_id');
             $table->timestamps();
         });
     }

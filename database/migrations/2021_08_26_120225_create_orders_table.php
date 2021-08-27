@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTicketSendersTable extends Migration
+class CreateOrdersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateTicketSendersTable extends Migration
      */
     public function up()
     {
-        Schema::create('ticket_senders', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->double("phone");
-            $table->bigInteger('customer_id')->unsigned()->nullable();
-            $table->index('customer_id');
+            $table->string('order_id');
+            $table->bigInteger('customer_id')->unsigned();
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
+            $table->double('total_amount');
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ class CreateTicketSendersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ticket_senders');
+        Schema::dropIfExists('orders');
     }
 }

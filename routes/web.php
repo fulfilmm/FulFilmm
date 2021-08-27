@@ -31,6 +31,8 @@ use App\Http\Controllers\TicketSender;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProjectTaskController;
 use App\Http\Controllers\SettingsController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\Login\EmployeeAuthController as AuthController;
 use App\Http\Controllers\CommentController;
@@ -48,10 +50,7 @@ use App\Http\Controllers\RoleController;
 |
 */
 
-Route::resource('rooms',RoomController::class);
-Route::get('booking',[RoomController::class,'booking'])->name('booking');
-Route::post('savebooking',[RoomController::class,'booking_save'])->name('savebooking');
-Route::get('booking/cancel/{id}',[RoomController::class,'bookigCancel'])->name('cancel');
+
 
 Route::get('/', [HomeController::class, 'index'])->middleware(['auth:employee']);
 
@@ -87,8 +86,8 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::resource('cases',CaseTypeController::class);
     Route::resource('priorities',PriorityController::class);
     Route::post('priority/change/{id}',[TicketController::class,'priority_change'])->name('priority.change');
-    Route::resource('inqueries',InqueryController::class);
-    Route::get('convert/lead/{id}',[InqueryController::class,'convert_lead'])->name('convert.lead');
+//    Route::resource('inqueries',InqueryController::class);
+//    Route::get('convert/lead/{id}',[InqueryController::class,'convert_lead'])->name('convert.lead');
     Route::resource('request_tickets',RequestTicket::class);
     Route::get('open/ticket/{id}',[RequestTicket::class,'openTicket'])->name('openticket');
 
@@ -134,6 +133,11 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::post('minutes/assign',[MinutesController::class,'assign_minutes'])->name('assign.minutes');
     Route::post('complete/minutes',[MinutesController::class,'complete'])->name('complete.minutes');
     Route::get('filter/minute/{id}',[MinutesController::class,'filter'])->name('filter.minutes');
+
+    Route::resource('rooms',RoomController::class);
+    Route::get('booking',[RoomController::class,'booking'])->name('booking');
+    Route::post('savebooking',[RoomController::class,'booking_save'])->name('savebooking');
+    Route::get('booking/cancel/{id}',[RoomController::class,'bookigCancel'])->name('cancel');
 
     //Setting routes
     Route::resource('companysettings',CompanySetting::class);
@@ -222,5 +226,6 @@ Route::get('test',function (){
 //    for ($i=0;$i<count($orders);$i++){
 //        $total=$total+$orders[$i]->total_amount;
 //    }
+    dd(auth('api')->factory()->getTTL() * 60);
    return view('test');
 });

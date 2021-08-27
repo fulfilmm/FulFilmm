@@ -19,8 +19,9 @@ class CreateTicketCommentsTable extends Migration
             $table->foreign("ticket_id")->references('id')->on('tickets')->onDelete('cascade');
             $table->bigInteger('user_id')->unsigned();
             $table->foreign("user_id")->references('id')->on('employees')->onDelete('cascade');
-            $table->text('comment');
+            $table->text('comment')->nullable();
             $table->text('document_file')->nullable();
+            $table->index('ticket_id');
             $table->timestamps();
         });
     }

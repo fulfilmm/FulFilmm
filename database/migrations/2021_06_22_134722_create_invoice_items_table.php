@@ -18,7 +18,7 @@ class CreateInvoiceItemsTable extends Migration
             $table->bigInteger("product_id")->unsigned();
             $table->text('description')->nullable();
             $table->integer('quantity');
-            $table->bigInteger("tax_id")->unsigned();
+            $table->integer("tax_id");
             $table->string('discount');
             $table->string("discount_type");
             $table->double('unit_price');
@@ -27,6 +27,7 @@ class CreateInvoiceItemsTable extends Migration
             $table->bigInteger('inv_id')->unsigned()->nullable();
             $table->foreign("inv_id")->references('id')->on('invoices')->onDelete("cascade");
             $table->string("creation_id");
+            $table->index(['id','inv_id']);
             $table->timestamps();
         });
     }

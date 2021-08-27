@@ -17,10 +17,15 @@ class CreateMinutesAssignsTable extends Migration
             $table->id();
             $table->string('assign_type');
             $table->bigInteger('dept_id')->unsigned()->nullable();
+            $table->foreign('dept_id')->references('id')->on('departments')->onDelete('cascade');
             $table->bigInteger('emp_id')->unsigned()->nullable();
+            $table->foreign('emp_id')->references('id')->on('employees')->onDelete('cascade');
             $table->bigInteger('group_id')->unsigned()->nullable();
-            $table->bigInteger('minutes_id');
+            $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
+            $table->bigInteger('minutes_id')->unsigned();
+            $table->foreign('minutes_id')->references('id')->on('meetingminutes')->onDelete('cascade');
             $table->timestamp('due_date');
+            $table->index(['dept_id','emp_id','group_id','minutes_id']);
             $table->timestamps();
         });
     }

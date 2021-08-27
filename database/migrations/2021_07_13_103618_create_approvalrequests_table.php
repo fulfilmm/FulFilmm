@@ -22,8 +22,12 @@ class CreateApprovalrequestsTable extends Migration
             $table->text('content');
             $table->text('doc_file')->nullable();
             $table->bigInteger('approved_id')->unsigned();
+            $table->foreign('approved_id')->references('id')->on('employees')->onDelete('cascade');
             $table->bigInteger('secondary_approved')->unsigned()->nullable();
+            $table->foreign('secondary_approved')->references('id')->on('employees')->onDelete('cascade');
             $table->bigInteger('emp_id')->unsigned();
+            $table->foreign('emp_id')->references('id')->on('employees')->onDelete('cascade');
+            $table->index(['id','approved_id','secondary_approved']);
             $table->timestamps();
         });
     }

@@ -18,6 +18,7 @@ class CreateCountdownsTable extends Migration
             $table->bigInteger("ticket_id")->unsigned();
             $table->foreign("ticket_id")->references("id")->on('tickets')->onDelete('cascade');
             $table->dateTime("endtime");
+            $table->index('ticket_id');
             $table->timestamps();
         });
     }
