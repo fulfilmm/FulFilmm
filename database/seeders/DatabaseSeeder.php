@@ -18,9 +18,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Department::factory()
-            ->times(5)
-            ->create();
+        Department::create(['name'=>'Sale Department']);
+        Department::create(['name'=>'Customer Sevice Department']);
+        Department::create(['name'=>'Human Resource Management Department']);
+        Department::create(['name'=>'Finance Department']);
+        Department::create(['name'=>'Administration']);
+        Department::create(['name'=>'Marketing Department']);
 
         $superadmin = Employee::updateOrCreate(
             ['email' => 'admin@gmail.com'],

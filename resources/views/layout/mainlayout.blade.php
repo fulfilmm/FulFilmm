@@ -8,7 +8,7 @@
 </head>
 
 <body>
-@if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
+@if(\Illuminate\Support\Facades\Auth::check())
     @include('layout.partials.nav')
 
     @include('layout.partials.header')

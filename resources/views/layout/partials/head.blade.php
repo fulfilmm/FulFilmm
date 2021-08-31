@@ -86,6 +86,7 @@
         <link rel="stylesheet" href="{{url(asset("plugins/summernote/dist/summernote-bs4.css"))}}">
         {{--<script src="https://unpkg.com/location-picker/dist/location-picker.min.js"></script>--}}
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="{{url(asset('css/offcavas.css'))}}">
         <!-- Main CSS -->
         <link rel="stylesheet" href="{{url(asset("css/style.css"))}}">
         <script src="{{asset("js/jquery-3.2.1.min.js")}}"></script>

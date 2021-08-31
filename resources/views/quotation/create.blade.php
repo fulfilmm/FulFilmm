@@ -96,7 +96,7 @@
                         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab" style="overflow: auto">
                             <table class="table">
                                 <thead>
-                                <th scope="col">Product</th>
+                                <th scope="col" style="min-width: 150px;">Product</th>
                                 <th>Description</th>
                                 <th>Quantity</th>
                                 <th>Unit Price</th>
@@ -236,33 +236,10 @@
                                     </tr>
                                 @endforeach
                                 <tr>
-                                    <td style="min-width: 150px;">
-                                        <input type="hidden" id="form_id" value="{{$request_id[0]}}">
-                                        <select name="" id="product" class="form-control">
-                                            <option value="">Select Product</option>
-                                            @foreach($products as $product)
-                                                <option value="{{$product->id}}">{{$product->name}}</option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                    <td style="min-width: 150px;">
-                                        <input type="text" name="description" id="order_description" class="form-control">
-                                    </td>
                                     <td>
-                                        <input type="number" name="quantity" id="quantity" class="form-control " value="0">
-                                    </td>
-                                    <td style="min-width: 150px;">
-                                        <input type="number" id="price" class="form-control " value="0">
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control" name="tax" id="product_tax">
-                                    </td>
-                                    <td style="min-width: 150px;">
-                                        <input type="number" name="total" id="total" class="form-control" value="0">
-                                    </td>
-                                    <td><input type="text" class="form-control" id="unit"></td>
-                                    <td>
-                                        <button type="button" class="btn btn-outline-danger ml-2 text-sm" id="add"><i class="fa fa-plus"></i></button>
+                                        <div class="bs-offset-main bs-canvas-anim">
+                                            <button class="btn btn-primary" type="button" data-toggle="canvas" data-target="#bs-canvas-left" aria-expanded="false" aria-controls="bs-canvas-right">Add Item</button>
+                                        </div>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -283,18 +260,64 @@
                                     <td><input class="form-control" type="text" id="grand_total" value="{{$grand_total}}"></td>
                                 </tr>
                             </table>
+                            <div id="bs-canvas-left" class="bs-canvas bs-canvas-anim bs-canvas-left position-fixed  h-100" style="background-color: #95c5ed">
+                                <header class="bs-canvas-header p-3 bg-primary overflow-auto">
+                                    <button type="button" class="bs-canvas-close float-right close" aria-label="Close"><span aria-hidden="true" class="text-light">&times;</span></button>
+                                    <h4 class="d-inline-block text-light mb-0 float-left">Add Item</h4>
+                                </header>
+                                <div class="bs-canvas-content px-3 py-5">
 
+                                    <input type="hidden" id="form_id" value="{{$request_id[0]}}">
+                                    <div class="form-group">
+                                        <label for="product">Product Name</label>
+                                        <select name="" id="product" class="form-control">
+                                            <option value="">Select Product</option>
+                                            @foreach($products as $product)
+                                                <option value="{{$product->id}}">{{$product->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-goup">
+                                        <label for="order_description">
+                                            Description
+                                        </label>
+                                        <input type="text" name="description" id="order_description" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="quantity">Quantity</label>
+                                        <input type="number" name="quantity" id="quantity" class="form-control " value="0">
+                                    </div>
 
-                    </div>
+                                    <div class="form-group">
+                                        <label for="price">Price</label><input type="number" id="price" class="form-control " value="0">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="product_tax">Tax(%)</label><input type="text" class="form-control" name="tax" id="product_tax">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="total">Total</label><input type="number" name="total" id="total" class="form-control" value="0">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="unit">Currency Unit</label><input type="text" class="form-control" id="unit">
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-outline-danger ml-2 text-sm  btn-sm" id="add">Add Item</button>
+                                    </div>
+                                </div>
+
+                            </div>
                         <label for="term_and_condition" class="mt-3">Terms and Condition</label>
                         <div class="term">
                             <div class="input-group my-3">
                                 <textarea  class="form-control " name="term_condition" id="term_and_condition" placeholder="Write terms and conditions .."></textarea><br>
                             </div>
                         </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>
+
         <div class="modal custom-modal rounded" id="add_user">
             <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
@@ -345,18 +368,6 @@
 
             });
             //product select function
-            $(document).ready(function() {
-                $('#product').select2({
-                        "language": {
-                        },
-                        escapeMarkup: function (markup) {
-                            return markup;
-                        }
-                    }
-
-                );
-
-            });
             //order line function
             $(document).ready(function() {
                 $(document).on('click', '#add', function () {
@@ -382,7 +393,7 @@
                         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                         success:function(data){
                             console.log(data);
-                            $("#home").load(location.href + " #home>* ");
+                            window.location.href = "/quotations/create";
                             var alltotal=[];
                             $('.total').each(function(){
                                 alltotal.push(this.value);

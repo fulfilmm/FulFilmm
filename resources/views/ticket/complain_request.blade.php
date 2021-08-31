@@ -2,7 +2,6 @@
 @section('title','Complains Request')
 @section('content')
     <div class="content container-fluid">
-
         <!-- Page Header -->
         <div class="page-header">
             <div class="row">
@@ -26,7 +25,6 @@
                             <th>Email</th>
                             <th>Phone</th>
                             <th>Address</th>
-                            <th>Product</th>
                             <th>Company</th>
                             <th>Is Open Ticket</th>
                             <th>Complaint Date</th>
@@ -41,7 +39,6 @@
                                <td>{{$request->email}}</td>
                                <td>{{$request->phone}}</td>
                                <td>{{$request->address??''}}</td>
-                               <td><img src="{{url(asset("/product_picture/".$request->compalin_product->image))}}" class="mr-2"  alt="product picture" width="40px" height="40px;">{{$request->compalin_product->name}}</td>
                                <td>{{$request->complain_company->name ??''}}</td>
 
                                <td>{{$request->is_open==0?'No':'Yes'}}</td>

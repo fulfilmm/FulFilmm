@@ -54,7 +54,6 @@ class RequestTicket extends Controller
             'files.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'attach_file' => 'mimes:pdf,xlsx,doc,docx,jpg,jpeg,ppt,bip',
             'description'=>'required',
-            'product_id' =>'required',
             'phone'=>'required',
             'email'=>'required',
             'name'=>'required'

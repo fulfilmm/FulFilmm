@@ -11,6 +11,8 @@
                         <ul style="display: none;">
                             <li class="{{ Request::is('index') ? 'active' : '' }}"><a href="{{ url('/') }}">
                                     Dashboard</a></li>
+                            <li class="{{ Request::is('index') ? 'active' : '' }}"><a href="{{ url('/') }}">
+                                    Sale Dashboard</a></li>
                         </ul>
                     </li>
                     <li class="submenu">

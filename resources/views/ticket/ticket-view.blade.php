@@ -240,7 +240,6 @@
                             </div>
                         </div>
                     </div>
-                    <input type="text" class="form-control">
                     <div class="chat-footer">
 
                         <div class="message-bar">

@@ -19,7 +19,8 @@ class EmployeeController extends Controller
     }
     public function index()
     {
-        return view('employee.data.lists');
+        $employees = Employee::paginate(20);
+        return response()->json(['employees'=>$employees]);
     }
 
     public function card(){

@@ -28,8 +28,9 @@ class LeadController extends Controller
         }
         $followers=lead_follower::with('user')->get();
 //        dd($followers);
-
-        return view("lead.lead", compact("all_leads",'followers'));
+        $allemployees = Employee::all()->pluck('name', 'id')->all();
+        $allcustomers = Customer::all()->pluck('name', 'id')->all();
+        return view("lead.lead", compact("all_leads",'followers','allemployees','allcustomers'));
     }
 
     public function my_followed(){
@@ -102,22 +103,21 @@ class LeadController extends Controller
             $lead->sale_man_id = $request->sale_man;
             $lead->tags_id = $request->tags;
             $lead->description = $request->description;
+            $lead->type=$request->type;
             $lead->save();
-            if($request->to_date!=null){
-            $this->next_plan($request->next_plan_textarea,$request->to_date,$request->from_date);
-            }
             return redirect("/leads")->with("message", "Succssful");
 
     }
-    public function next_plan($description,$to_date,$from_date){
+    public function activity_schedule(Request $request){
         $lead=leadModel::orderBy('id','desc')->first();
         $next_plan=new next_plan();
-        $next_plan->description=$description;
-        $next_plan->to_date=Carbon::create($to_date);
-        $next_plan->from_date=Carbon::create($from_date);
+        $next_plan->description=$request->description;
+        $next_plan->to_date=Carbon::create($request->end_date);
+        $next_plan->from_date=Carbon::create($request->start_date);
         $next_plan->lead_id=$lead->id;
         $next_plan->work_done=0;
         $next_plan->save();
+        return redirect(route('leads.show',$request->lead_id))->with('success','Activity Schedule Add Success');
     }
 
     /**
@@ -132,7 +132,7 @@ class LeadController extends Controller
         $lead = leadModel::with("customer", "saleMan", "tags")->where('id', $id)->first();
         $comments=lead_comment::with("user")->where("lead_id",$id)->get();
         $followers=lead_follower::with("user")->where("lead_id",$id)->get();
-        $next_plan=next_plan::where("lead_id",$id)->first();
+        $next_plan=next_plan::where("lead_id",$id)->get();
         return view("lead.lead_view", compact("lead","comments","allemps","followers","next_plan"));
     }
 
@@ -177,28 +177,10 @@ class LeadController extends Controller
         $lead->tags_id = $request->tags;
         $lead->description = $request->description;
         $lead->update();
-        $this->update_next_plan($id,$request->from_date,$request->to_date,$request->next_plan_textarea);
 
         return redirect(route('leads.show',$id))->with("message", "Succssful");
     }
-    public function update_next_plan($id,$from_date,$to_date,$description){
-    $next_plan=next_plan::where("lead_id",$id)->first();
-    if($next_plan!=null){
-        $next_plan->from_date=$from_date;
-        $next_plan->to_date=$to_date;
-        $next_plan->description=$description;
-        $next_plan->update();
 
-    }else{
-        $new_next_plan=new next_plan();
-        $new_next_plan->from_date=$from_date;
-        $new_next_plan->to_date=$to_date;
-        $new_next_plan->description=$description;
-        $new_next_plan->lead_id=$id;
-        $new_next_plan->work_done=0;
-        $new_next_plan->save();
-    }
-}
     /**
      * Remove the specified resource from storage.
      *
@@ -260,9 +242,14 @@ class LeadController extends Controller
         return redirect()->back();
     }
     public function work_done($id){
-        $lead=next_plan::where("lead_id",$id)->first();
+        $lead=next_plan::where("id",$id)->first();
         $lead->work_done=1;
         $lead->update();
         return redirect()->back()->with("message","Congratulations your next plan completed");
+    }
+    public function delete_schedule($id){
+        $schedule=next_plan::where('id',$id)->first();
+        $schedule->delete();
+        return redirect()->back()->with('success','Activity Schedule Delete Successful');
     }
 }

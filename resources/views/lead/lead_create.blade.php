@@ -117,39 +117,17 @@
                                    <label class="form-check-label" for="flexSwitchCheckDefault">Qualified</label>
                                </div>
                            </div>
-                       </div>
-                       <textarea name="description" id="description"  rows="5" style="width:100%;" required>
-                    </textarea>
-                       <div class="form-group mt-2">
-                           <a class="btn btn-outline-info" data-toggle="collapse" data-target="#next_plan" aria-expanded="false" aria-controls="collapseExample" >
-                               <span for="">Activity Schedule</span>
-                               <i class="fa fa-chevron-circle-right"></i>
-                               <i class="fa fa-chevron-circle-down"></i>
-                           </a>
-                           <div class="sub-menu collapse  mt-3" id="next_plan">
-                             <div class="col-12">
-                                 <div class="row my-3">
-                                     <div class="col-md-6">
-                                         <div class="form-group ">
-                                             <label for="">Description</label>
-                                             <textarea name="next_plan_textarea" id="next_plan_textarea"  rows="7" style="width: 100%;"></textarea>
-                                         </div>
-                                     </div>
-                                     <div class="col-md-6">
-                                         <div class="form-group">
-                                             <label for="">From Date</label>
-                                             <input type="date" class="form-control" name="from_date">
-                                         </div>
-                                         <div class="form-group">
-                                             <label for="">To Date</label>
-                                             <input type="datetime-local" class="form-control" name="to_date">
-                                         </div>
-                                     </div>
-                                 </div>
-                             </div>
+                           <div class="col-md-4 col-xl-4 col-12">
+                                   <input type="radio" name="type" value="1" checked>
+                               <label>Lead</label>
+                               <input type="radio" name="type" value="0" class="custom-radio mr-2 ml-5"><label for="">Inquery</label>
+
                            </div>
                        </div>
-                       <div class="form-group text-center">
+
+                       <textarea name="description" id="description"  rows="10" style="width:100%;" required>
+                    </textarea>
+                       <div class="form-group text-center mt-4">
                            <button type="submit " class="btn btn-primary">Submit</button>
                        </div>
                    </form>
@@ -199,10 +177,8 @@
     <!-- /Page Wrapper -->
 {{--    <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>--}}
         <script>
-            // CKEDITOR.replace( 'description' );
-            // CKEDITOR.replace( 'next_plan_textarea',{
-            //     height:100
-            // } );
+            ClassicEditor
+                .create( document.querySelector( '#description' ) );
 
             $(document).ready(function() {
                 $('#customer_company').select2();

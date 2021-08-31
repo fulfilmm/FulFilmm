@@ -19,7 +19,7 @@ class CreateTicketrequestsTable extends Migration
             $table->string('email');
             $table->string('phone');
             $table->text('address')->nullable();
-            $table->bigInteger('product_id')->unsigned();
+            $table->bigInteger('product_id')->unsigned()->nullable();
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->bigInteger('company_id')->unsigned()->nullable();
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');

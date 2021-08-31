@@ -2,7 +2,7 @@
 
     <!-- Logo -->
     <div class="header-left">
-        <a href="{{url('/')}}" class="logo">
+        <a href="{{url('companysettings/create')}}" class="logo">
             <img src="{{$maincompany!=null ? url(asset('/img/profiles/'.$maincompany->logo)): url(asset('/img/profiles/avatar-01.jpg'))}}" width="40" height="40" alt="">
         </a>
     </div>

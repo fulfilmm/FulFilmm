@@ -12,7 +12,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DepartmentController;
-use App\Http\Controllers\InqueryController;
+//use App\Http\Controllers\InqueryController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\InvoiceItemController;
 use App\Http\Controllers\LeadController;
@@ -207,9 +207,9 @@ Route::put('roles/assign-permission/{id}', [RoleController::class, 'assignPermis
 //list routes
 Route::get('companies-card', [CompanyController::class, 'card'])->name('companies.cards');
 Route::resource('request_tickets',RequestTicket::class)->only('create','store');
-;
-Route::resource('inqueries',InqueryController::class)->only('create','store');
-
+//Route::resource('inqueries',InqueryController::class)->only('create','store');
+Route::post('lead/activity/schedule',[LeadController::class,'activity_schedule'])->name('activity.schedule');
+Route::delete('activity/delete/{id}',[LeadController::class,'delete_schedule'])->name('delete_schedule');
 
 
 Route::middleware(['meeting_view_relative_emp','auth:employee', 'authorize', 'ownership'])->group(function () {
@@ -226,6 +226,6 @@ Route::get('test',function (){
 //    for ($i=0;$i<count($orders);$i++){
 //        $total=$total+$orders[$i]->total_amount;
 //    }
-    dd(auth('api')->factory()->getTTL() * 60);
+//    dd(auth('api')->factory()->getTTL() * 60);
    return view('test');
 });

@@ -1,16 +1,12 @@
 @extends('layout.mainlayout')
 @section('title','Leads')
 @section('content')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
     <style>
-        a[aria-expanded=true] .fa-chevron-circle-right {
-            display: none;
-        }
-        a[aria-expanded=false] .fa-chevron-circle-down {
-            display: none;
+        #lead_filter{
+            visibility: hidden;
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
-
     <!-- Page Content -->
     <div class="content container-fluid">
 
@@ -57,9 +53,68 @@
         </div>
         <!-- /Page Header -->
 
-        <div class="row">
-            @include('lead.lead_table')
+        <!-- Search Filter -->
+        <div class="row filter-row">
+            <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+                <div class="form-group form-focus select-focus">
+                    <input type="text" class="form-control floating" id="lead_id" placeholder="All" value="#">
+                    <label class="focus-label">Lead ID</label>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+                <div class="form-group form-focus select-focus">
+                    <label class="focus-label">Sale Man</label>
+                    <select name="emp_name" class="form-control floating" id="sale_man">
+                        <option value="">All</option>
+                        @foreach($allemployees as $key=>$val)
+                            <option value="{{$val}}">{{$val}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+                <div class="form-group form-focus select-focus">
+                    <select class="select floating" id="customer_name">
+                        <option value="">All</option>
+                        @foreach($allcustomers as $key=>$val)
+                            <option value="{{$val}}">{{$val}}</option>
+                        @endforeach
+
+                    </select>
+                    <label class="focus-label">Customer</label>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+                <div class="form-group form-focus select-focus">
+                    <select class="select floating" id="priority">
+                        <option value="">All</option>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+                    <label class="focus-label">Priority</label>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+                <div class="form-group form-focus">
+                    <div>
+                        <input type="text" id="min" class="form-control floating " name="min">
+                    </div>
+                    <label class="focus-label">From</label>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+                <div class="form-group form-focus">
+                    <div>
+                        <input type="text" class="form-control floating " id="max" name="max">
+                    </div>
+                    <label class="focus-label">To</label>
+                </div>
+            </div>
+
         </div>
+        <!-- /Search Filter -->
+        @include('lead.lead_table')
     </div>
     <!-- /Page Content -->
 
@@ -95,13 +150,13 @@
             var table = $('#lead').DataTable();
             table.column(2).search($(this).val()).draw();
         });
-        $('#saleMan').on('change', function() {
+        $('#sale_man').on('change', function() {
             var table = $('#lead').DataTable();
-            table.column(2).search($(this).val()).draw();
+            table.column(6).search($(this).val()).draw();
         });
-        $('#industry').on('change', function() {
+        $('#priority').on('change', function() {
             var table = $('#lead').DataTable();
-            table.column(10).search($(this).val()).draw();
+            table.column(7).search($(this).val()).draw();
         });
 
         $(document).ready(function(){
@@ -109,7 +164,7 @@
                 function (settings, data, dataIndex) {
                     var min = $('#min').datepicker("getDate");
                     var max = $('#max').datepicker("getDate");
-                    var startDate = new Date(data[11]);
+                    var startDate = new Date(data[10]);
                     if (min == null && max == null) { return true; }
                     if (min == null && startDate <= max) { return true;}
                     if(max == null && startDate >= min) {return true;}

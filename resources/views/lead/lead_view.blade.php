@@ -7,8 +7,9 @@
             height: 300px;
             overflow: scroll;
         }
-        .next_plan_content{
-            height: 400px;
+
+        .next_plan_content {
+            height: 600px;
             overflow: scroll;
         }
     </style>
@@ -43,10 +44,12 @@
         <!-- /Page Header -->
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Lead Detail</a>
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+                   aria-selected="true">Lead Detail</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Next Plan</a>
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                   aria-controls="profile" aria-selected="false">Activity Schedule</a>
             </li>
         </ul>
         <div class="row">
@@ -96,7 +99,7 @@
                                 </div>
                                 <div class=" col-3">
                                     <div class="row">
-                                        <button class="btn btn-primary col-8" type="submit" style="font-size: 20px;"><i class="fa fa-paper-plane"></i></button>
+                                        <button class="btn btn-primary col-8" type="submit" style="font-size: 20px;">Add Note</button>
                                     </div>
                                 </div>
                             </div>
@@ -105,91 +108,138 @@
                 </div>
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                     <div class="card next_plan_content">
-                        <div class="card-body">
-                            <div class="project-title">
-                                <h4 class="card-title">Description</h4>
+                        <div class="card-header">
+                            <div class="bs-offset-main bs-canvas-anim">
+                                <button class="btn btn-primary" type="button" data-toggle="canvas"
+                                        data-target="#bs-canvas-left" aria-expanded="false"
+                                        aria-controls="bs-canvas-right">Add New
+                                </button>
                             </div>
-                            @if($next_plan!=null)
-                                {!!$next_plan->description!!}
-                            @else
-                                This lead does not have next plan.
-                            @endif
                         </div>
-                        @if($next_plan!=null)
-                            <div class="card-footer">
-                                Duration Date : <strong>  {{\Carbon\Carbon::parse($next_plan->from_date)->format('d-m-Y')}}</strong>  To  <strong>{{\Carbon\Carbon::parse($next_plan->to_date)->format('d-m-Y')}}</strong>
-                                @if($next_plan->work_done!=1)
-                                    @if(\Carbon\Carbon::now()>$next_plan->to_date)
-                                        <button class="btn btn-primary float-right">Overdue Date</button>
-                                    @else
-                                        <a href="{{route('workdone',$lead->id)}}" class="btn btn-primary float-right">Done</a>
-                                    @endif
-                                @else
-                                    <button class="btn btn-primary float-right">Complete Next Plan</button>
-                                @endif
-                            </div>
-                        @endif
+                        <div class="card-body">
+                            @foreach($next_plan as $activity)
+                                <div class="row border rounded my-1">
+                                    <div class="col-md-12 border-bottom my-1">
+                                        <div class="float-left">
+                                            <span class="badge badge-primary">  {{\Carbon\Carbon::parse($activity->from_date)->format('d-m-Y')}}</span>
+                                            To
+                                            <span class="badge badge-danger">{{\Carbon\Carbon::parse($activity->to_date)->format('d-m-Y h:m:a')}}</span>
+                                        </div>
+                                        <a href="{{route('delete_schedule',$activity->id)}}" class="float-right"><i class="fa fa-close"></i></a>
+                                    </div>
+                                    <div class="col-md-9 my-2">{!!$activity->description!!}</div>
 
+                                    <div class="col-md-3 my-2">
+                                        @if($activity->work_done!=1)
+                                            @if(\Carbon\Carbon::now()>$activity->to_date)
+                                                <button class="btn btn-danger float-right">Overdue Date</button>
+                                            @else
+                                                <a href="{{route('workdone',$activity->id)}}"
+                                                   class="btn btn-primary float-right">Done</a>
+                                            @endif
+                                        @else
+                                            <button class="btn btn-success float-right"><i
+                                                        class="la la-check-circle-o"></i> Complete
+                                            </button>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endforeach
+
+                        </div>
                     </div>
                 </div>
             </div>
+            <div id="bs-canvas-left" class="bs-canvas bs-canvas-anim bs-canvas-left position-fixed bg-light h-100"
+         style="max-width: 250px">
+        <header class="bs-canvas-header p-3 bg-primary overflow-auto">
+            <button type="button" class="bs-canvas-close float-right close" aria-label="Close"><span aria-hidden="true"
+                                                                                                     class="text-light">&times;</span>
+            </button>
+            <h4 class="d-inline-block text-light mb-0 float-left">Add Activity Schedule</h4>
+        </header>
+        <div class="bs-canvas-content px-3 py-5">
+            <form action="{{route('activity.schedule')}}" method="post">
+                @csrf
+                <input type="hidden" name="lead_id" value="{{$lead->id}}">
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea name="description" id="description" cols="30" rows="5" class="form-control"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="start_date">Start Date</label>
+                    <input type="date" class="form-control" id="start_date" name="start_date">
+                </div>
+                <div class="form-group">
+                    <label for="end_date">End Date</label>
+                    <input type="datetime-local" name="end_date" id="end_date" class="form-control">
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-outline-danger ml-2 text-sm  btn-sm" id="add">Add Item</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
             <div class="col-lg-4 col-xl-4">
-                <div class="card-body col-md-12">
-                    <h6 class="card-title">Lead details</h6>
-                    <table class="col-12 table table-striped table-border" >
-                        <tbody>
-                        <tr>
-                            <td>Lead ID:</td>
-                            <td class="text-right">{{$lead->lead_id}}</td>
-                        </tr>
-                        <tr>
-                            <td>Sale Person:</td>
-                            <td class="text-right">{{$lead->saleMan->name}}</td>
-                        </tr>
-                        <tr>
-                            <td>Customer:</td>
-                            <td class="text-right">{{$lead->customer->name}}</td>
-                        </tr>
+        <div class="card-body col-md-12">
+            <h6 class="card-title">Lead details</h6>
+            <table class="col-12 table table-striped table-border">
+                <tbody>
+                <tr>
+                    <td>Lead ID:</td>
+                    <td class="text-right">{{$lead->lead_id}}</td>
+                </tr>
+                <tr>
+                    <td>Sale Person:</td>
+                    <td class="text-right">{{$lead->saleMan->name}}</td>
+                </tr>
+                <tr>
+                    <td>Customer:</td>
+                    <td class="text-right">{{$lead->customer->name}}</td>
+                </tr>
 
-                        <tr>
-                            <td>Email:</td>
-                            <td class="text-right">{{$lead->customer->email}}</td>
-                        </tr>
-                        <tr>
-                            <td>Contact Phone:</td>
-                            <td class="text-right">{{$lead->customer->phone}}</td>
-                        </tr>
-                        <tr>
-                            <td>Priority:</td>
-                            <td class="text-right">
-                                {{$lead->priority}}
-                            </td>
-                        </tr>
+                <tr>
+                    <td>Email:</td>
+                    <td class="text-right">{{$lead->customer->email}}</td>
+                </tr>
+                <tr>
+                    <td>Contact Phone:</td>
+                    <td class="text-right">{{$lead->customer->phone}}</td>
+                </tr>
+                <tr>
+                    <td>Priority:</td>
+                    <td class="text-right">
+                        {{$lead->priority}}
+                    </td>
+                </tr>
 
-                        <tr>
-                            <td>Status:</td>
-                            <td class="text-right">
-                                @if($lead->is_qualified==1)
-                                    Qualified
-                                @else
-                                    Unqualified
-                                @endif
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="project-members task-followers">
-                    <span class="followers-title">Followers</span>
-                    @foreach($followers as $follower)
-                        <a href="#" data-toggle="tooltip" title="{{$follower->user->name}}" class="avatar">
-                            <img src="img/profiles/avatar-09.jpg" alt="">
-                        </a>
-                    @endforeach
-                    <a href="#" class="followers-add" data-toggle="modal" data-target="#add_followers"><i class="material-icons">add</i></a>
-                    <a href="#" class="followers-add ml-2" data-toggle="modal" data-target="#remove_followers"><i class="la la-trash"> </i></a>
-                </div>
-            </div>
+                <tr>
+                    <td>Status:</td>
+                    <td class="text-right">
+                        @if($lead->is_qualified==1)
+                            Qualified
+                        @else
+                            Unqualified
+                        @endif
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="project-members task-followers">
+            <span class="followers-title">Followers</span>
+            @foreach($followers as $follower)
+                <a href="#" data-toggle="tooltip" title="{{$follower->user->name}}" class="avatar">
+                    <img src="img/profiles/avatar-09.jpg" alt="">
+                </a>
+            @endforeach
+            <a href="#" class="followers-add" data-toggle="modal" data-target="#add_followers"><i
+                        class="material-icons">add</i></a>
+            <a href="#" class="followers-add ml-2" data-toggle="modal" data-target="#remove_followers"><i
+                        class="la la-trash"> </i></a>
+        </div>
+    </div>
         </div>
     </div>
     <!-- /Page Content -->
@@ -244,7 +294,7 @@
                                     @foreach($followers as $follower)
                                         @if($follower->user->id==$emp->id)
                                             <option value="{{$emp->id}}">{{$emp->name}}</option>
-                                            @endif
+                                        @endif
 
                                     @endforeach
                                 @endforeach
@@ -264,8 +314,8 @@
 
     <script>
         $("#review").rating({
-            "value":$("#prioriyt").val(),
-            "stars":3,
+            "value": $("#prioriyt").val(),
+            "stars": 3,
             "click": function (e) {
                 console.log(e);
                 $("#starsInput").val(e.stars);
