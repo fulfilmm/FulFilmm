@@ -21,6 +21,7 @@ class CreateTicketSendersTable extends Migration
             $table->index('customer_id');
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

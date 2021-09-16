@@ -20,7 +20,6 @@
                 <!-- /Page Header -->
                 <div class="row">
                     <div class="col-sm-12">
-                        <form>
                             <div class="row">
                                 <div class="col-sm-6 col-md-3">
                                     <div class="form-group">
@@ -60,7 +59,7 @@
                                         <label for="client_id">Client <span class="text-danger">*</span></label>
                                         <select class="select" id="client_id">
                                           @foreach($allcustomers as $client)
-                                            <option value="{{$client->id}}">{{$client->name}}</option>
+                                            <option value="{{$client->id}}" {{isset($order_data)?($client->id==$order_data->customer_id?'selected':''):''}}>{{$client->name}}</option>
                                             @endforeach
                                         </select>
 
@@ -228,7 +227,6 @@
                                 <button class="btn btn-primary submit-btn m-r-10" type="button" id="saveAndsend">Save & Send</button>
                                 <button class="btn btn-primary submit-btn" type="button" id="save">Save</button>
                             </div>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -389,7 +387,7 @@
                             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                             success:function(data){
                                 console.log(data);
-                                window.location.href = "/invoices";
+                                // window.location.href = "/invoices";
                             }
                         });
                     });

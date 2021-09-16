@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Orderline;
+use App\Models\QuotationItem;
 use Illuminate\Http\Request;
 
 class OrderlineController extends Controller
@@ -35,7 +35,7 @@ class OrderlineController extends Controller
      */
     public function store(Request $request)
     {
-        $order_line=new Orderline();
+        $order_line=new QuotationItem();
         $order_line->product_id=$request-> product_id;
         $order_line->description=$request->description;
         $order_line->quantity=$request->quantity;
@@ -77,7 +77,7 @@ class OrderlineController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $order_line=Orderline::where("id",$id)->first();
+        $order_line=QuotationItem::where("id",$id)->first();
         $order_line->product_id=$request-> product_id;
         $order_line->description=$request->description;
         $order_line->quantity=$request->quantity;
@@ -95,8 +95,8 @@ class OrderlineController extends Controller
      */
     public function destroy($id)
     {
-        $orderline=Orderline::where("id",$id)->first();
+        $orderline=QuotationItem::where("id",$id)->first();
         $orderline->delete();
-        return redirect()->back();
+        return redirect()->back()->with('success','Order Item remove success');
     }
 }

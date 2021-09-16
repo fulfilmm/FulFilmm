@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth\Login;
 
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,6 +22,7 @@ class EmployeeAuthController extends LoginController
 
     protected function guard()
     {
+
         return Auth::guard('employee');
     }
 
@@ -42,6 +42,6 @@ class EmployeeAuthController extends LoginController
     protected function loggedOut(Request $request)
     {
         //
-        return redirect('/employees/login');
+        return redirect('/login');
     }
 }

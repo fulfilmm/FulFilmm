@@ -1,13 +1,10 @@
-
 @extends('layout.mainlayout')
-@section('title', 'Employee')
 @section('content')
+    <!-- Page Wrapper -->
 
-<div class="content container-fluid">
+    <!-- Page Content -->
 
-</div>
+    <!-- /Page Content -->
+
+    <!-- /Page Wrapper -->
 @endsection
-@push('scripts')
-<script>
-</script>
-@endpush

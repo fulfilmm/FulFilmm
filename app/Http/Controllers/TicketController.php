@@ -28,7 +28,7 @@ use Illuminate\Validation\ValidationException;
 
 class TicketController extends Controller
 {
-    protected $status_color = ['New' => '#49d1b6', 'Open' => '#e84351', 'Close' => '#4e5450', 'Pending' => '#f0ed4f', 'In Progress' => '#2333e8', 'Complete' => '#18b820', 'Overdue' => '#000'];
+    protected $status_color = ['New' => '#49d1b6', 'Open' => '#f2b611', 'Close' => '#4e5450', 'Pending' => '#145402', 'In Progress' => '#2333e8', 'Complete' => '#18b820', 'Overdue' => '#f02416'];
 
 //query select
     public function __construct()
@@ -435,12 +435,12 @@ class TicketController extends Controller
             $countdownCreate->ticket_id = $ticket_id;
             $countdownCreate->endtime = \Carbon\Carbon::now("Asia/Yangon")->addHour($ticket_info->ticket_priority->hours)->addMinutes($ticket_info->ticket_priority->minutes)->addSeconds($ticket_info->ticket_priority->seconds);
             $countdownCreate->save();
-            $solveTime = new solved_time();
-            $solveTime->ticket_id = $ticket_info->id;
-            $solveTime->startedTime = Carbon::now();
-            $solveTime->agent_id = $agent_id;
-            $solveTime->priority = $ticket_info->priority;
-            $solveTime->save();
+//            $solveTime = new solved_time();
+//            $solveTime->ticket_id = $ticket_info->id;
+//            $solveTime->startedTime = Carbon::now();
+//            $solveTime->agent_id = $agent_id;
+//            $solveTime->priority = $ticket_info->priority;
+//            $solveTime->save();
         }
     }
 

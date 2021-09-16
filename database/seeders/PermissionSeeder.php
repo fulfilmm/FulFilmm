@@ -62,10 +62,10 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'deals.status_change', 'display_name' => "Can change sale stage in Deal", 'guard_name' => 'employee']);
         Permission::create(['name' => 'add_new_customer', 'display_name' => "Can add new customer while deal create", 'guard_name' => 'employee']);
         Permission::create(['name' => 'company_create', 'display_name' => "Can add new company while deal create", 'guard_name' => 'employee']);
-        //quotation
-        Permission::create(['name' => 'quotations.discard', 'display_name' => "Cancel quotation", 'guard_name' => 'employee']);
-        Permission::create(['name' => 'quotation.sendemail', 'display_name' => "Can go to the quotation email create page", 'guard_name' => 'employee']);
-        Permission::create(['name' => 'quotations.mail', 'display_name' => "Can send to customer the quotation email", 'guard_name' => 'employee']);
+        //quotation.blade.php
+        Permission::create(['name' => 'quotations.discard', 'display_name' => "Cancel quotation.blade.php", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'quotation.blade.php.sendemail', 'display_name' => "Can go to the quotation.blade.php email create page", 'guard_name' => 'employee']);
+        Permission::create(['name' => 'quotations.mail', 'display_name' => "Can send to customer the quotation.blade.php email", 'guard_name' => 'employee']);
         //invoice
         Permission::create(['name' => 'invoices.search', 'display_name' => "Can Search invoices", 'guard_name' => 'employee']);
         Permission::create(['name' => 'invoice.sendmail', 'display_name' => "Can go to invoices email preparation view page", 'guard_name' => 'employee']);

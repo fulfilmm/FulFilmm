@@ -14,7 +14,7 @@
                                     <div class="row">
                                         <div class="col-md-9 col-12">
                                     <label for="full_form_name" >Deal Name</label>
-                                    <input type="text" id="full_form_name" name="deal_name" class="form-control ">
+                                    <input type="text" id="full_form_name" name="deal_name" value="{{old('deal_name')}}" class="form-control ">
                                         </div>
                                     </div>
                                 </div>

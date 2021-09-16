@@ -2,14 +2,12 @@
 {{--<script src="{{asset('js/jquery-3.2.1.min.js')}}"></script>--}}
 
 <!-- Sweet Alert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
-{{--<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>--}}
-
-<script src="{{url(asset('js/offcavas.js'))}}"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <!-- Bootstrap Core JS -->
 <script src="{{asset('js/popper.min.js')}}"></script>
 <script src="{{asset('js/bootstrap.min.js')}}"></script>
+<script src="{{url(asset('js/offcavas.js'))}}"></script>
 
 <!-- Slimscroll JS -->
 <script src="{{asset('js/jquery.slimscroll.min.js')}}"></script>
@@ -18,7 +16,6 @@
 
 <script src="{{asset('js/jquery-ui.min.js')}}"></script>
 <script src="{{asset('js/jquery.ui.touch-punch.min.js')}}"></script>
-
 
 <!-- Datetimepicker JS -->
 <script src="{{asset('js/moment.min.js')}}"></script>

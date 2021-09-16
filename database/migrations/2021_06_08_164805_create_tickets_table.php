@@ -36,6 +36,7 @@ class CreateTicketsTable extends Migration
             $table->tinyInteger("isassign")->default(1);
             $table->text('tag')->nullable();
             $table->string('source');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

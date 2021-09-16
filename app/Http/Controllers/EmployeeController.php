@@ -109,7 +109,7 @@ class EmployeeController extends Controller
      */
     public function show(Employee $employee)
     {
-        dd($employee);
+        return view('employee.show');
     }
 
     /**

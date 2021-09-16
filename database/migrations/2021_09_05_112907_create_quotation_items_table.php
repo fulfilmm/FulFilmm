@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOrderlinesTable extends Migration
+class CreateQuotationItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateOrderlinesTable extends Migration
      */
     public function up()
     {
-        Schema::create('orderlines', function (Blueprint $table) {
+        Schema::create('quotation_items', function (Blueprint $table) {
             $table->id();
             $table->bigInteger("product_id")->unsigned();
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
@@ -35,6 +35,6 @@ class CreateOrderlinesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('orderlines');
+        Schema::dropIfExists('quotation_items');
     }
 }

@@ -26,6 +26,7 @@ class CreateCustomersTable extends Migration
             $table->string('linkedin')->nullable();
             $table->dateTime('dob')->nullable();
             $table->string('report_to')->nullable();
+            $table->rememberToken();
             $table->foreignId('company_id');
             $table->softDeletes();
             $table->timestamps();

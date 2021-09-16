@@ -20,6 +20,7 @@ class CreateTicketFollowersTable extends Migration
             $table->bigInteger("emp_id")->unsigned();
             $table->foreign("emp_id")->references("id")->on("employees")->onDelete("cascade");
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

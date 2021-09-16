@@ -1,0 +1,4 @@
+127.0.0.1 - - [07/Sep/2021:16:53:06 +0630] "GET / HTTP/1.1" 403 493 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"
+127.0.0.1 - - [07/Sep/2021:16:53:06 +0630] "GET /favicon.ico HTTP/1.1" 403 492 "http://voffice.com/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"
+127.0.0.1 - - [07/Sep/2021:16:53:08 +0630] "GET / HTTP/1.1" 403 492 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"
+127.0.0.1 - - [07/Sep/2021:16:53:08 +0630] "GET /favicon.ico HTTP/1.1" 403 492 "http://voffice.com/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"

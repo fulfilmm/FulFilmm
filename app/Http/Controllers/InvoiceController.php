@@ -1,24 +1,16 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Models\Company;
 use App\Models\Customer;
 use App\Models\Invoice;
-use App\Models\invoice_item;
+use App\Models\OrderItem;
 use App\Models\MainCompany;
 use App\Models\product;
-use App\Models\products_tax;
 use Carbon\Carbon;
-use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Str;
-use function PHPUnit\Framework\isEmpty;
-
 class InvoiceController extends Controller
 {
     /**
@@ -26,7 +18,7 @@ class InvoiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public  $status=['Paid','Unpaid','Pending','Cancel'];
+    public  $status=['Paid','Unpaid','Pending','Cancel','Draft','Sent'];
     public function index()
     {
         $allinv=Invoice::with('customer')->get();
@@ -55,7 +47,7 @@ class InvoiceController extends Controller
             $request_id=Session::get($Auth);
         }
 //        $generate_id=Str::uuid();
-        $orderline=invoice_item::with('product')->where('creation_id',$request_id)->get();
+        $orderline=OrderItem::with('product')->where('creation_id',$request_id)->get();
 //        dd($orderline);
         $grand_total=0;
         for ($i=0;$i<count($orderline);$i++){
@@ -75,7 +67,8 @@ class InvoiceController extends Controller
     {
         $prefix=MainCompany::where('ismaincompany',true)->pluck('invoice_prefix','id')->first();
         $last_invoice=Invoice::orderBy('id', 'desc')->first();
-        if (isset($last_invoice)) {
+
+        if ($last_invoice!=null) {
             // Sum 1 + last id
             $ischange=$last_invoice->invoice_id;
             $ischange=explode("-", $ischange);
@@ -85,13 +78,13 @@ class InvoiceController extends Controller
             }else{
                 $arr=[$prefix,$ischange[1]];
                 $pre=implode('-',$arr);
+
                 $pre ++;
                 $invoice_id=$pre;
             }
         } else {
             $invoice_id=($prefix ? :'INV')."-0001";
         }
-        dd($invoice_id);
         $newInvoice=new Invoice();
         $newInvoice->title=$request->title;
         $newInvoice->invoice_id=$invoice_id;
@@ -108,7 +101,7 @@ class InvoiceController extends Controller
         $newInvoice->save();
         $Auth=Auth::guard('employee')->user()->name;
         $request_id=Session::get($Auth);
-        $confirm_order_item=invoice_item::where("creation_id",$request_id)->get();
+        $confirm_order_item=OrderItem::where("creation_id",$request_id)->get();
         foreach ($confirm_order_item as $item){
             $item->inv_id=$newInvoice->id;
             $item->update();
@@ -126,8 +119,8 @@ class InvoiceController extends Controller
 //        dd($company);
         $detail_inv=Invoice::with('customer')->where('id',$id)->first();
 //        dd($detail_inv);
-        $invoice_item=invoice_item::with('product')->where("inv_id",$id)->get();
-//        dd($invoice_item);
+        $invoice_item=orderItem::with('product')->where("inv_id",$id)->get();
+//        dd($orderItem);
         $grand_total=0;
           for ($i=0;$i<count($invoice_item);$i++){
               $grand_total=$grand_total+$invoice_item[$i]->total;
@@ -146,7 +139,7 @@ class InvoiceController extends Controller
         $company=MainCompany::where('ismaincompany',true)->first();
         $detail_inv=Invoice::with('customer')->where('id',$id)->first();
 //        dd($detail_inv);
-        $invoic_item=invoice_item::with('product')->where("inv_id",$detail_inv->id)->get();
+        $invoic_item=OrderItem::with('product')->where("inv_id",$detail_inv->id)->get();
         $grand_total=0;
         for ($i=0;$i<count($invoic_item);$i++){
             $grand_total=$grand_total+$invoic_item[$i]->total;
@@ -194,7 +187,7 @@ class InvoiceController extends Controller
 //        dd(env('MAIL_PORT'));
 //        dd($request->all());
         $invoice=Invoice::with('customer')->where("id",$request->inv_id)->first();
-        $invoic_item=invoice_item::with('product')->where("inv_id",$request->inv_id)->get();
+        $invoic_item=orderItem::with('product')->where("inv_id",$request->inv_id)->get();
         $company=MainCompany::where('ismaincompany',true)->first();
         if($request->attach!=null){
             $file = $request->attach;
@@ -208,7 +201,7 @@ class InvoiceController extends Controller
             'clientname' => $invoice->customer->name,
             'invoice'=>$invoice,
             'cc' => $cc,
-            'invoice_item'=>$invoic_item,
+            'orderItem'=>$invoic_item,
             'company'=>$company,
             'attach' =>$request->attach!=null?public_path() . '/attach_file/' . $file_name:null,
         );

@@ -23,6 +23,7 @@ class CreateTicketCommentsTable extends Migration
             $table->text('document_file')->nullable();
             $table->index('ticket_id');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

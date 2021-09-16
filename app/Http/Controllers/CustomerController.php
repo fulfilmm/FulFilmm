@@ -67,7 +67,6 @@ class CustomerController extends Controller
      */
     public function store(CustomerRequest $request)
     {
-        //
         $this->customerContract->create($request->all());
         return redirect()->route('customers.index')->with('success', __('alert.create_success'));
     }
@@ -111,7 +110,7 @@ class CustomerController extends Controller
             'tickets'=>$customer_ticket,
             'lead'=>$customer_lead,
             'deal'=>$customer_deal,
-            'quotation'=>$customer_quotation,
+            'quotation.blade.php'=>$customer_quotation,
            'paid_total'=>$paid_total,
            'overdue'=>$overdue,
            'open'=>$open_unpaid

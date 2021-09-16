@@ -1,0 +1,4 @@
+[Tue Sep 07 16:53:06.438974 2021] [authz_core:error] [pid 6471] [client 127.0.0.1:45990] AH01630: client denied by server configuration: /home/cinpu/Downloads/vOffice/index.php
+[Tue Sep 07 16:53:06.464495 2021] [authz_core:error] [pid 6471] [client 127.0.0.1:45990] AH01630: client denied by server configuration: /home/cinpu/Downloads/vOffice/index.php, referer: http://voffice.com/
+[Tue Sep 07 16:53:08.671861 2021] [authz_core:error] [pid 6471] [client 127.0.0.1:45990] AH01630: client denied by server configuration: /home/cinpu/Downloads/vOffice/index.php
+[Tue Sep 07 16:53:08.699271 2021] [authz_core:error] [pid 6471] [client 127.0.0.1:45990] AH01630: client denied by server configuration: /home/cinpu/Downloads/vOffice/index.php, referer: http://voffice.com/

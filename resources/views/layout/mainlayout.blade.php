@@ -2,15 +2,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     @include('layout.partials.head')
     @yield('styles')
 </head>
 
 <body>
-@if(\Illuminate\Support\Facades\Auth::check())
-    @include('layout.partials.nav')
-
+@if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
+       @include('layout.partials.nav')
     @include('layout.partials.header')
 <!-- Page Wrapper -->
 <div class="page-wrapper">

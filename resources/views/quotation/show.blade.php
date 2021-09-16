@@ -27,7 +27,7 @@
         <!-- /Page Header -->
         <!-- Content Starts -->
 
-        <form action="{{url("quotation/create")}}" method="POST" >
+        <form action="{{url("quotation.blade.php")}}" method="POST" >
             {{csrf_field()}}
             <a href="{{route('quotations.edit',$quotation->id)}}" class="btn btn-outline-primary" >Edit</a>
             <a href="{{route('quotations.create')}}" class="btn btn-outline-success" id="discard">Create</a>

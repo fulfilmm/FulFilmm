@@ -21,6 +21,7 @@ class CreatePrioritiesTable extends Migration
             $table->integer("minutes");
             $table->integer("seconds");
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

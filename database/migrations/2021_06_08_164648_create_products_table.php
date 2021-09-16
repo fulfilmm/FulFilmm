@@ -31,6 +31,8 @@ class CreateProductsTable extends Migration
             $table->tinyInteger("enable");
             $table->text("image")->nullable();
             $table->string("currency_unit");
+            $table->double('third_party_cost')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

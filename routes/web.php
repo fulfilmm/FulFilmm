@@ -5,8 +5,10 @@ use App\Http\Controllers\ActivityTaskController;
 use App\Http\Controllers\ApprovalController;
 use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\AssignmentTaskController;
+use App\Http\Controllers\Auth\Login\CustomerAuth;
 use App\Http\Controllers\CaseTypeController;
 use App\Http\Controllers\CompanySetting;
+use App\Http\Controllers\CustomerProtal;
 use App\Http\Controllers\DealController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\CompanyController;
@@ -25,14 +27,14 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\RequestTicket;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\SaleOrderController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\TicketPieChartReport;
 use App\Http\Controllers\TicketSender;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProjectTaskController;
 use App\Http\Controllers\SettingsController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\Login\EmployeeAuthController as AuthController;
 use App\Http\Controllers\CommentController;
@@ -53,13 +55,17 @@ use App\Http\Controllers\RoleController;
 
 
 Route::get('/', [HomeController::class, 'index'])->middleware(['auth:employee']);
-
+Route::get('login', [AuthController::class, 'showLoginForm'])->name('show.login');
 Route::namespace('Auth\Login')->prefix('employees')->as('employees.')->group(function () {
-    Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('login', [AuthController::class, 'login'])->name('emplogin');
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+
 });
 
+Route::namespace('Auth\Login')->prefix('customer')->as('customers.')->group(function () {
+    Route::post('login', [CustomerAuth::class, 'login'])->name('customerlogin');
+    Route::post('logout', [CustomerAuth::class, 'logout'])->name('logout');
+});
 Route::get('settings', [SettingsController::class, 'settings'])->name('settings.settings')->middleware(['auth:employee']);
 Route::post('update-profile', [SettingsController::class, 'updateProfile'])->name('settings.profile-update')->middleware(['auth:employee']);
 
@@ -106,17 +112,17 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::post("/deal/status/change",[DealController::class,'sale_stage_change'])->name('deals.status_change');
     Route::post("/deal/company/create",[DealController::class,'company_create'])->name('company_create');
 
-   //quotation route
+   //quotation.blade.php route
     Route::resource('quotations',QuotationController::class);
     Route::post('discard',[QuotationController::class,'discard'])->name('quotations.discard');
-    Route::resource('orders',OrderlineController::class)->only('store','update','destroy');
+    Route::resource('orders',OrderlineController::class);
     Route::post("add/new/customer",[DealController::class,'add_newcustomer'])->name('add_new_customer');
-    Route::get('/quotations/sendemail/{id}',[QuotationController::class,'sendEmail'])->name('quotation.sendemail');
+    Route::get('/quotations/sendemail/{id}',[QuotationController::class,'sendEmail'])->name('quotation.blade.php.sendemail');
     Route::post('/quotations/sendmail',[QuotationController::class,'email'])->name('quotations.mail');
   //invoice
     Route::resource("invoices",InvoiceController::class);
     Route::post("/invoices/search",[InvoiceController::class,'search'])->name('invoices.search');
-    Route::resource("invoice_items",InvoiceItemController::class);
+//    Route::resource("invoice_items",InvoiceItemController::class);
     Route::get("invoice/sendmail/{id}",[InvoiceController::class,'sending_form'])->name('invoice.sendmail');
     Route::post("invoice/mail/send",[InvoiceController::class,'email'])->name('send');
     Route::post('invoice/status/{id}',[InvoiceController::class,'status_change'])->name('invoice.statuschange');
@@ -220,6 +226,10 @@ Route::middleware(['meeting_view_relative_emp','auth:employee', 'authorize', 'ow
     Route::resource('approvals',ApprovalController::class)->only('show');
 });
 
+Route::resource("invoice_items",InvoiceItemController::class);
+Route::get('add/revenue',[TransactionController::class,'addrevenue'])->name('income.create');
+Route::post('add/revenue',[TransactionController::class,'store_revenue'])->name('income.store');
+
 Route::get('test',function (){
 //    $orders=\App\Models\Orderline::with('product')->get();
 //    $total=0;
@@ -228,4 +238,15 @@ Route::get('test',function (){
 //    }
 //    dd(auth('api')->factory()->getTTL() * 60);
    return view('test');
+})->name('test');
+Route::middleware(['auth:customer'])->group(function () {
+   Route::get('customer/home/',[CustomerProtal::class,'home'])->name('home');
+    Route::resource('saleorders',SaleOrderController::class);
+    Route::get('order/to/invoice/{id}',[SaleOrderController::class,'generate_invoice'])->name('generate_inv');
+    Route::post('order/comment',[SaleOrderController::class,'comment'])->name('orders.comment');
+    Route::get('order/comment/{id}',[SaleOrderController::class,'comment_delete'])->name('order_comment.delete');
+    Route::get('order/{status}/{id}',[SaleOrderController::class,'status_change'])->name('order.status');
+    Route::post('order/assign/{id}',[SaleOrderController::class,'assign'])->name('order.assign');
+    Route::get('customer/quotation',[CustomerProtal::class,'quotation'])->name('customer.quotation');
+    Route::get('customer/dashboard',[CustomerProtal::class,'dashboard'])->name('customer.invoice');
 });

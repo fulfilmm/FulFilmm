@@ -16,7 +16,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products=product::with('taxes','category')->get();
+        $products=product::with('taxes','category')->paginate(10);
         return view("product.index",compact("products"));
     }
 

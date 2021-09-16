@@ -20,7 +20,17 @@ class CreateOrdersTable extends Migration
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
             $table->double('total_amount');
             $table->string('status')->nullable();
-            $table->text('description')->nullable();
+            $table->text('comment')->nullable();
+            $table->string('phone');
+            $table->string('email');
+            $table->text('address');
+            $table->string('payment_method');
+            $table->string('payment_term');
+            $table->dateTime('order_date');
+            $table->bigInteger('quotation_id')->unsigned()->nullable();
+            $table->string('shipping_type')->nullable();
+            $table->string('shipping_address')->nullable();
+            $table->string('billing_address')->nullable();
             $table->timestamps();
         });
     }

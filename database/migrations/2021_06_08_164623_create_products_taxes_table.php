@@ -18,6 +18,7 @@ class CreateProductsTaxesTable extends Migration
             $table->string("name");
             $table->integer("rate");
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

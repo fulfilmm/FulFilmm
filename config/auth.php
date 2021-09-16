@@ -40,10 +40,13 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-
         'employee' => [
             'driver' => 'session',
             'provider' => 'employee',
+        ],
+        'customer' => [
+            'driver' => 'session',
+            'provider' => 'customer',
         ],
         'api' => [
             'driver' => 'jwt',
@@ -76,6 +79,10 @@ return [
         'employee' => [
             'driver' => 'eloquent',
             'model' => App\Models\Employee::class,
+        ],
+        'customer' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Customer::class,
         ],
 
         // 'users' => [

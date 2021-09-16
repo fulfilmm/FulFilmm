@@ -241,7 +241,7 @@
         $("#type").change(function () {
             var val = $(this).val();
             if (val == "dept") {
-                $("#assign_to").html("@foreach($data['depts'] as $dept)<option value='{{$dept->id}}'>{{$dept->name}}</option> @endforeach");
+                $("#assign_to").html("@foreach($data['depts'] as $dept)<option value='{{$dept->id}}' {{old('assign_id')==$dept->id?'selected':''}}>{{$dept->name}}</option> @endforeach");
             } else if (val == "agent") {
                 $("#assign_to").html(" @foreach($data['all_emp'] as $agent)@if($agent->role->name=='Agent')<option value='{{$agent->id}}'>{{$agent->name}}</option> @endif @endforeach");
             }else if(val=='group'){

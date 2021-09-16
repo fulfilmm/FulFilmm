@@ -17,6 +17,7 @@ class CreateTagsIndustriesTable extends Migration
             $table->id();
             $table->string("tag_industry");
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -9,6 +9,7 @@ use App\Models\MainCompany;
 use App\Models\Orderline;
 use App\Models\product;
 use App\Models\Quotation;
+use App\Models\QuotationItem;
 use App\Repositories\Contracts\CompanyContract;
 use App\Repositories\Contracts\CustomerContract;
 use Illuminate\Http\Request;
@@ -29,7 +30,7 @@ class QuotationController extends Controller
     }
     public function index(){
         $all_quotation=Quotation::with("customer","sale_person")->get();
-        return view("quotation.index",compact("all_quotation"));
+        return view("quotation.blade.php.index",compact("all_quotation"));
     }
     public function create(){
 
@@ -45,12 +46,12 @@ class QuotationController extends Controller
         }else{
             $request_id=Session::get($Auth);
         }
-            $orderline=Orderline::with('product')->where("quotation_id",$request_id)->get();
+            $orderline=QuotationItem::with('product')->where("quotation_id",$request_id)->get();
             $grand_total=0;
             for ($i=0;$i<count($orderline);$i++){
                 $grand_total=$grand_total+$orderline[$i]->total_amount;
         }
-        return view("quotation.create",compact("allcustomers","request_id","orderline",'grand_total',"companies","products"));
+        return view("quotation.blade.php.create",compact("allcustomers","request_id","orderline",'grand_total',"companies","products"));
     }
     public function store(Request $request)
     {
@@ -101,7 +102,7 @@ class QuotationController extends Controller
 
     }
     public function discard(Request $request){
-        $orders=Orderline::where("quotation_id",$request->quotation_id)->get();
+        $orders=QuotationItem::where("quotation_id",$request->quotation_id)->get();
         foreach ($orders as $order){
             $order->delete();
         }
@@ -109,23 +110,23 @@ class QuotationController extends Controller
 
     public function show($id){
         $quotation=Quotation::with("customer","sale_person")->where('id',$id)->first();
-        $orderline=Orderline::with('product')->where("quotation_id",$quotation->quotation_id)->get();
+        $orderline=QuotationItem::with('product')->where("quotation_id",$quotation->quotation_id)->get();
         $grand_total=0;
         for ($i=0;$i<count($orderline);$i++){
             $grand_total=$grand_total+$orderline[$i]->total_amount;
         }
         $company=company::where("id",$quotation->company_id)->first();
-        return view("quotation.show",compact("quotation","company","orderline",'grand_total'));
+        return view("quotation.blade.php.show",compact("quotation","company","orderline",'grand_total'));
     }
     public function sendEmail($quotation_id){
         $quotation=Quotation::with("customer","sale_person")->where('quotation_id',$quotation_id)->first();
-        $orderline=Orderline::with('product')->where("quotation_id",$quotation->quotation_id)->get();
+        $orderline=QuotationItem::with('product')->where("quotation_id",$quotation->quotation_id)->get();
         $grand_total=0;
         for ($i=0;$i<count($orderline);$i++){
             $grand_total=$grand_total+$orderline[$i]->total_amount;
         }
         $company=Company::userCompanyName() ?? null;
-        return view("quotation.sendmail",compact("quotation","company","orderline",'grand_total'));
+        return view("quotation.blade.php.sendmail",compact("quotation","company","orderline",'grand_total'));
     }
     public function email(Request $request){
 //        dd(env('MAIL_PORT'));
@@ -152,7 +153,7 @@ class QuotationController extends Controller
             'orders'=>$orderline,
             'attach'=>$request->attach!=null?public_path().'/attach_file/'.$file_name:'',
         ];
-        Mail::send('quotation.mail', $details, function ($message) use ($details) {
+        Mail::send('quotation.blade.php.mail', $details, function ($message) use ($details) {
             $message->from('siyincin@gmail.com', 'Cloudark');
             $message->to($details['email']);
             $message->subject($details['subject']);
@@ -174,7 +175,7 @@ class QuotationController extends Controller
         $allcustomers=Customer::all();
         $payterm=["Immediate Payment","15 Days","15 Days","30 Days","45 Days","2 Months",
             "End Of Following Month","30% Now,Balance 60 Days"];
-        return view("quotation.edit",compact("allcustomers",'payterm',"companies","products","quotation"));
+        return view("quotation.blade.php.edit",compact("allcustomers",'payterm',"companies","products","quotation"));
     }
     public function update(Request $request,$id){
 //        dd($request->all());

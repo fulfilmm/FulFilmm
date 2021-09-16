@@ -110,7 +110,7 @@ class CustomerController extends Controller
             'tickets'=>$customer_ticket,
             'lead'=>$customer_lead,
             'deal'=>$customer_deal,
-            'quotation'=>$customer_quotation,
+            'quotation.blade.php'=>$customer_quotation,
             'paid_total'=>$paid_total,
             'overdue'=>$overdue,
             'open'=>$open_unpaid

@@ -1,7 +1,7 @@
 <?php
 namespace App\Repositories\Contracts;
 /**
- * Interface RepositoryContract.
+ * CommonData RepositoryContract.
  */
 interface RepositoryContract
 {
