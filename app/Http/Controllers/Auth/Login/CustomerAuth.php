@@ -61,5 +61,29 @@ class CustomerAuth extends Controller
         //
         return redirect('/login');
     }
+    protected function authenticated(Request $request, $user)
+    {
 
+//        $this->redirectTo=Auth::guard('employee')->user()->role->name=='Agent'?'tickets':'/';
+        if ($user->can_login) {
+            return redirect()->intended($this->redirectPath());
+        }else{
+            return $this->logout($request)->withErrors(['email' => 'This user account is not authorized to Login']);
+        }
+
+    }
+    protected function sendLoginResponse(Request $request)
+    {
+        $request->session()->regenerate();
+
+        $this->clearLoginAttempts($request);
+
+        if ($response = $this->authenticated($request, $this->guard()->user())) {
+            return $response;
+        }
+
+        return $request->wantsJson()
+            ? new JsonResponse([], 204)
+            : redirect()->intended($this->redirectPath());
+    }
 }

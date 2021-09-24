@@ -192,7 +192,7 @@
                                                         order_id:order_id,
                                                     },
                                                     type:'PUT',
-                                                    url:"{{route('orders.update',$order->id)}}",
+                                                    url:"{{route('quotation_items.update',$order->id)}}",
                                                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                                                     success:function(data){
                                                         console.log(data);
@@ -334,7 +334,7 @@
                             quotation_id:quotation_id,
                         },
                         type:'POST',
-                        url:"{{route('orders.store')}}",
+                        url:"{{route('quotation_items.store')}}",
                         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                         success:function(data){
                             console.log(data);

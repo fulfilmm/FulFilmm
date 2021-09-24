@@ -24,6 +24,7 @@ class CreateMeetingminutesTable extends Migration
             $table->tinyInteger('is_complete');
             $table->index(['id','meeting_id']);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

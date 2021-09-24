@@ -2,22 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Activity;
+
 use App\Models\assign_ticket;
-use App\Models\Assignment;
 use App\Models\countdown;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Group;
-use App\Models\priority;
-use App\Models\Project;
 use App\Models\status;
 use App\Models\ticket;
 use App\Models\ticket_follower;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
+use App\Notifications\AlertNotification;
 use Illuminate\Support\Facades\Auth;
-use PhpParser\Node\Expr\Assign;
+use Illuminate\Support\Facades\Notification;
 
 class HomeController extends Controller
 {
@@ -28,7 +24,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-//        $this->middleware('auth');
+        $this->middleware('auth');
     }
 
     /**
@@ -72,10 +68,10 @@ class HomeController extends Controller
 
           $items = [
 //            'projects' => Project::count(),
-              'my_assignments' => Assignment::whereHas('assigned_employees', function ($query) use ($id) {
-                  $query->where('employee_id', $id);
-              })->count(),
-              'my_activities' => Activity::where('employee_id', $id)->count(),
+//              'my_assignments' => Assignment::whereHas('assigned_employees', function ($query) use ($id) {
+//                  $query->where('employee_id', $id);
+//              })->count(),
+//              'my_activities' => Activity::where('employee_id', $id)->count(),
               'my_groups' => Group::whereHas('employees', function ($query) use ($id) {
                   $query->where('employee_id', $id);
               })->count(),
@@ -142,4 +138,5 @@ class HomeController extends Controller
         return $all_percentage;
 
     }
+
 }

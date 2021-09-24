@@ -5,7 +5,7 @@
 <head>
 
 	<meta charset="utf-8" />
-	<title> Login |Employee Dashboard</title>
+	<title> Login </title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- CSRF Token -->
 	<meta name="csrf-token" content="yLUyjD9WW8ILTF5XMcNtgTQv0gKB8AsRb0U4czo8">
@@ -21,7 +21,9 @@
 	<!-- Icons Css -->
 	<link href="{{url(asset('css/logincss/icon.min.css'))}}" rel="stylesheet" type="text/css"/>
 	<!-- App Css-->
-	<link href="{{url(asset('css/logincss/app.css'))}}" id="app-style" rel="stylesheet" type="text/css"/>  </head>
+	<link href="{{url(asset('css/logincss/app.css'))}}" id="app-style" rel="stylesheet" type="text/css"/>
+	<link rel="stylesheet" href="{{url("css/line-awesome.min.css")}}">
+</head>
 
 
 <body>
@@ -65,10 +67,9 @@
 												</div>
 											</div>
 										</div>
-
 										<div class="input-group auth-pass-inputgroup ">
 											<input type="password" name="password" class="form-control  " id="userpassword"  placeholder="Enter password" aria-label="Password" aria-describedby="password-addon">
-											<span class="btn btn-light" type="button" id="password-addon"><i class="fa fa-eye"></i></span>
+											<span class="btn btn-light" type="button" id="password-addon"><i class="la la-eye"></i></span>
 										</div>
 										@error('password')
 										<strong>{{ $message }}</strong>

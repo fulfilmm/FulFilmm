@@ -25,6 +25,7 @@ class CreateMeetingmembersTable extends Migration
             $table->tinyInteger('is_external')->default(0);
             $table->text('employee_remark')->nullable();
             $table->index(['meeting_id','id']);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

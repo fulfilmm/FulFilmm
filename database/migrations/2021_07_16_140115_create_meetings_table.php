@@ -26,6 +26,7 @@ class CreateMeetingsTable extends Migration
             $table->bigInteger('meeting_creater')->unsigned();
             $table->foreign('meeting_creater')->references('id')->on('employees')->onDelete('cascade');
             $table->index(['id','meeting_creater']);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

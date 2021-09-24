@@ -29,16 +29,6 @@
                                 </div>
                                 <div class="col-sm-6 col-md-3">
                                     <div class="form-group">
-                                        <label for="status">Status</label>
-                                        <select name="status" id="status" class="select">
-                                            @foreach($status as $key=>$val)
-                                            <option value="{{$val}}">{{$val}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-3">
-                                    <div class="form-group">
                                         <label for="payment">Payment Type</label>
                                         <select name="" id="payment" class="select">
                                             <option value="Cash">Cash</option>
@@ -48,12 +38,8 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-sm-6 col-md-3">
-                                    <div class="form-group">
-                                        <label for="invoice_id">Create Form ID</label>
-                                        <input type="text" id="invoice_id" class="form-control" value="{{$request_id[0]}}" readonly>
-                                    </div>
-                                </div>
+                                        <input type="hidden" id="invoice_id" class="form-control" value="{{$request_id[0]}}" readonly>
+
                                 <div class="col-sm-6 col-md-3">
                                     <div class="form-group">
                                         <label for="client_id">Client <span class="text-danger">*</span></label>
@@ -87,16 +73,22 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-6 col-md-6">
+                                <div class="col-sm-3 col-md-3">
                                     <div class="form-group">
                                         <label for="client_address">Client Address</label>
-                                        <textarea class="form-control" rows="3" id="client_address"></textarea>
+                                        <input type="text" class="form-control" id="client_address">
                                     </div>
                                 </div>
-                                <div class="col-sm-6 col-md-6">
+                                <div class="col-sm-3 col-md-3">
                                     <div class="form-group">
                                         <label for="bill_address">Billing Address</label>
-                                        <textarea class="form-control" rows="3" id="bill_address"></textarea>
+                                        <input type="text" class="form-control" rows="3" id="bill_address">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Other Information</label>
+                                        <textarea class="form-control" id="more_info"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -148,7 +140,7 @@
                                                                 <a class="btn btn-danger btn-sm" data-toggle="modal" href="#remove{{$order->id}}" ><i class="fa fa-trash-o "></i></a>
                                                             </div>
                                                     </tr>
-                                                    @include('invoice.itemsedit')
+                                                    {{--@include('invoice.itemsedit')--}}
                                                     @include('invoice.item_remove')
                                                 @endforeach
                                                 <tr>
@@ -211,14 +203,6 @@
                                                     <td></td>
                                                 </tr>
                                         </table>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label>Other Information</label>
-                                                <textarea class="form-control" id="more_info"></textarea>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -387,7 +371,7 @@
                             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                             success:function(data){
                                 console.log(data);
-                                // window.location.href = "/invoices";
+                                window.location.href = "/invoices";
                             }
                         });
                     });

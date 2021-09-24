@@ -86,38 +86,17 @@ class LeadController extends Controller
      */
     public function store(Request $request)
     {
-//        dd($request->all());
-
-            $lead = new leadModel();
-            $lead->lead_id = $request->lead_id;
-            $lead->title = $request->lead_title;
-            $lead->created_id=Auth::guard('employee')->user()->id;
-            $lead->customer_id = $request->customer_id;
-            $lead->priority = $request->priority;
-            $lead->organization_name=$request->org_name;
-            if ($request->qualified =="on") {
-                $lead->is_qualified = 1;
-            } else {
-                $lead->is_qualified = 0;
-            }
-            $lead->sale_man_id = $request->sale_man;
-            $lead->tags_id = $request->tags;
-            $lead->description = $request->description;
-            $lead->type=$request->type;
-            $lead->save();
-            return redirect("/leads")->with("message", "Succssful");
-
+//
     }
     public function activity_schedule(Request $request){
-        $lead=leadModel::orderBy('id','desc')->first();
         $next_plan=new next_plan();
         $next_plan->description=$request->description;
-        $next_plan->to_date=Carbon::create($request->end_date);
+        $next_plan->to_date=Carbon::create($request->end_date.''.$request->time);
         $next_plan->from_date=Carbon::create($request->start_date);
-        $next_plan->lead_id=$lead->id;
+        $next_plan->contact_id=$request->lead_id;
         $next_plan->work_done=0;
         $next_plan->save();
-        return redirect(route('leads.show',$request->lead_id))->with('success','Activity Schedule Add Success');
+        return redirect(route('customers.show',$request->lead_id))->with('success','Activity Schedule Add Success');
     }
 
     /**
@@ -126,15 +105,7 @@ class LeadController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        $allemps=Employee::all();
-        $lead = leadModel::with("customer", "saleMan", "tags")->where('id', $id)->first();
-        $comments=lead_comment::with("user")->where("lead_id",$id)->get();
-        $followers=lead_follower::with("user")->where("lead_id",$id)->get();
-        $next_plan=next_plan::where("lead_id",$id)->get();
-        return view("lead.lead_view", compact("lead","comments","allemps","followers","next_plan"));
-    }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -142,16 +113,6 @@ class LeadController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        $allemployees = Employee::all()->pluck('name', 'id')->all();
-        $allcustomers = Customer::all()->pluck('name', 'id')->all();
-        $tags = tags_industry::all();
-        $last_tag = tags_industry::orderBy('id', 'desc')->first();
-        $lead=leadModel::where("id",$id)->first();
-        $next_plan=next_plan::where("lead_id",$id)->first();
-        return view("lead.edit", compact( "allemployees", "allcustomers", "tags", "last_tag","lead","next_plan"));
-    }
 
     /**
      * Update the specified resource in storage.
@@ -160,26 +121,7 @@ class LeadController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-//        dd($request->all());
-        $lead = leadModel::where("id",$id)->first();
-        $lead->lead_id = $request->lead_id;
-        $lead->title = $request->lead_title;
-        $lead->customer_id = $request->customer_id;
-        $lead->priority = $request->priority;
-        if ($request->qualified == 'on') {
-            $lead->is_qualified = 1;
-        } else {
-            $lead->is_qualified = 0;
-        }
-        $lead->sale_man_id = $request->sale_man;
-        $lead->tags_id = $request->tags;
-        $lead->description = $request->description;
-        $lead->update();
 
-        return redirect(route('leads.show',$id))->with("message", "Succssful");
-    }
 
     /**
      * Remove the specified resource from storage.
@@ -187,14 +129,9 @@ class LeadController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        $lead=leadModel::where("id",$id)->first();
-        $lead->delete();
-        return redirect()->back()->with("message","Delete $lead->title successful");
-    }
+
     public function qualified($id){
-        $lead=leadModel::where("id",$id)->first();
+        $lead=Customer::where("id",$id)->first();
         $lead->is_qualified=1;
         $lead->update();
         return redirect()->back();
@@ -211,7 +148,7 @@ class LeadController extends Controller
     }
     public function comment(Request $request){
         $comments = new lead_comment();
-        $comments->lead_id = $request->lead_id;
+        $comments->contact_id = $request->lead_id;
         $comments->user_id = Auth::guard('employee')->user()->id;
         $comments->comment = $request->comment;
         $comments->save();
@@ -224,10 +161,10 @@ class LeadController extends Controller
     }
     public function lead_follower(Request $request){
         for ($i = 0; $i < count($request->follower); $i++) {
-            $isfollowed=lead_follower::where("lead_id",$request->lead_id)->where("follower_id",$request->follower[$i])->first();
+            $isfollowed=lead_follower::where("contact_id",$request->lead_id)->where("follower_id",$request->follower[$i])->first();
             if($isfollowed==null){
                 $ticket_follower = new lead_follower();
-                $ticket_follower->lead_id = $request->lead_id;
+                $ticket_follower->contact_id = $request->lead_id;
                 $ticket_follower->follower_id = $request->follower[$i];
                 $ticket_follower->save();
             }

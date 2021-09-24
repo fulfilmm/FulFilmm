@@ -274,7 +274,7 @@
                         <div class="card-body">
                             <span class="dash-widget-icon"><i class="fa fa-file"></i></span>
                             <div class="dash-widget-info">
-                                <h3>{{$items['my_assignments']}}</h3>
+                                {{--<h3>{{$items['my_assignments']}}</h3>--}}
                                 <div class="row">
                                     <span>My Assignment</span>
                                 </div>
@@ -287,7 +287,7 @@
                         <div class="card-body">
                             <span class="dash-widget-icon"><i class="fa fa-file"></i></span>
                             <div class="dash-widget-info">
-                                <h3>{{$items['my_activities']}}</h3>
+                                {{--<h3>{{$items['my_activities']}}</h3>--}}
                                 <span>My Activities</span>
                             </div>
                         </div>

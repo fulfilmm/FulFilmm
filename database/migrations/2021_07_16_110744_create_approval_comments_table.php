@@ -23,6 +23,7 @@ class CreateApprovalCommentsTable extends Migration
             $table->text('doc')->nullable();
             $table->index('approval_id');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -12,6 +12,6 @@ class lead_comment extends Model
         return $this->belongsTo(Employee::class,'user_id','id');
     }
     public function lead(){
-        return $this->belongsTo(leadModel::class,'lead_id','id');
+        return $this->belongsTo(Customer::class,'contact_id','id');
     }
 }

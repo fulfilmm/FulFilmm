@@ -132,7 +132,7 @@
                                     <div class="col-md-3 my-2">
                                         @if($activity->work_done!=1)
                                             @if(\Carbon\Carbon::now()>$activity->to_date)
-                                                <button class="btn btn-danger float-right">Overdue Date</button>
+                                                <button class="btn btn-danger float-right bt">Overdue Date</button>
                                             @else
                                                 <a href="{{route('workdone',$activity->id)}}"
                                                    class="btn btn-primary float-right">Done</a>
@@ -242,73 +242,7 @@
     </div>
         </div>
     </div>
-    <!-- /Page Content -->
-    <div id="add_followers" class="modal custom-modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add Follower</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form action="{{route('leads.followed')}}" id="follower" method="POST">
-                    @csrf
-                    @method('POST')
-                    <div class="modal-body">
-                        <input type="hidden" name="lead_id" value="{{$lead->id}}">
-                        <div class="row">
-                            <select class="select" name="follower[]" multiple style="width: 100%">
-                                @foreach($allemps as $emp)
-                                    <option value="{{$emp->id}}">{{$emp->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Follow</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
-    <div id="remove_followers" class="modal custom-modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">UnFollow</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form action="{{route('unfollowed')}}" id="follower" method="POST">
-                    @csrf
-                    @method('POST')
-                    <div class="modal-body">
-                        <input type="hidden" name="lead_id" value="{{$lead->id}}">
-                        <div class="row">
-                            <select class="select" name="follower[]" multiple style="width: 100%">
-                                @foreach($allemps as $emp)
-                                    @foreach($followers as $follower)
-                                        @if($follower->user->id==$emp->id)
-                                            <option value="{{$emp->id}}">{{$emp->name}}</option>
-                                        @endif
-
-                                    @endforeach
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">UnFollow</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
     <!-- /Assign User Modal -->
 
 

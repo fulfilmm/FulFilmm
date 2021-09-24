@@ -22,6 +22,7 @@ class CreateSaleTargetsTable extends Migration
             $table->double('reach_sale')->nullable();
             $table->string('status')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

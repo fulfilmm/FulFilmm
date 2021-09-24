@@ -29,6 +29,7 @@ class CreateTicketrequestsTable extends Migration
             $table->text('attach_file')->nullable();
             $table->index('id');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

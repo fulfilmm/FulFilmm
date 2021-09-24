@@ -35,7 +35,7 @@ class InvoiceItemController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+//        dd($request->all());
         $items=new OrderItem();
         $items->product_id=$request->product_id;
         $items->description=$request->description;
@@ -49,6 +49,9 @@ class InvoiceItemController extends Controller
         $items->creation_id=$request->invoice_id;
         $items->state=1;
         $items->save();
+        return response()->json([
+            'Message'=>'Success'
+        ]);
     }
 
     /**

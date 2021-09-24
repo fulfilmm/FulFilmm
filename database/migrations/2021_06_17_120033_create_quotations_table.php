@@ -26,6 +26,7 @@ class CreateQuotationsTable extends Migration
             $table->double("grand_total");
             $table->string("payment_term");
             $table->index('id');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

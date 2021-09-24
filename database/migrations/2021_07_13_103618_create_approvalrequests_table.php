@@ -28,6 +28,7 @@ class CreateApprovalrequestsTable extends Migration
             $table->bigInteger('emp_id')->unsigned();
             $table->foreign('emp_id')->references('id')->on('employees')->onDelete('cascade');
             $table->index(['id','approved_id','secondary_approved']);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

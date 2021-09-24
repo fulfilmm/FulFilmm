@@ -25,6 +25,7 @@ class CreateEmailsettingsTable extends Migration
             $table->string('auth_domain');
             $table->boolean('isactive')->default(true);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

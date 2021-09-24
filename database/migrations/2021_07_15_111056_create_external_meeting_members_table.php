@@ -18,6 +18,7 @@ class CreateExternalMeetingMembersTable extends Migration
             $table->string('name');
             $table->string('email');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

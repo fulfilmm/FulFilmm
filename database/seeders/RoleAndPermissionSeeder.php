@@ -9,56 +9,29 @@ class RoleAndPermissionSeeder extends Seeder
 {
     private $roles_and_permission = [
         'Employee' => [
-            'resources' => ['activities', 'assignments', 'assignment_tasks', 'activity_tasks', 'comments', 'customers', 'companies', 'projects', 'project_tasks'
-            ],
+            'resources' => ['comments', 'customers', 'companies'],
             'others' => [
-                'assignment_tasks.toggle',
-                'activity_tasks.toggle',
-                'project_tasks.toggle',
                 'employees.show',
             ]
         ],
         'Manager' => [
             'resources' => [
-                'employees', 'activities', 'assignments', 'assignment_tasks', 'activity_tasks', 'comments', 'customers', 'companies', 'departments', 'groups', 'roles', 'permissions', 'projects', 'project_tasks'
-            ],
-            'others' => [
-                'activities.acknowledge',
-                'assignment_tasks.toggle',
-                'activity_tasks.toggle',
-                'project_tasks.toggle',
-                'assignments.changeStatus',
-                'projects.accept_proposal',
-                'projects.status_update'
-            ]
+                'employees','comments', 'customers', 'companies', 'departments', 'groups', 'roles', 'permissions'],
+
         ],
          'Ticket Admin' => [
             'resources' => [
-                'employees', 'tickets','cases','priorities','activities', 'assignments', 'assignment_tasks', 'activity_tasks', 'comments', 'customers', 'companies', 'departments', 'groups', 'roles', 'permissions', 'projects', 'project_tasks'
+                'employees', 'tickets','cases','priorities','comments', 'customers', 'companies', 'departments', 'groups', 'roles', 'permissions',
             ],
             'others' => [
-                'activities.acknowledge',
-                'assignment_tasks.toggle',
-                'activity_tasks.toggle',
-                'project_tasks.toggle',
-                'assignments.changeStatus',
-                'projects.accept_proposal',
-                'projects.status_update',
                 'piechart'
             ]
         ],
         'Agent' => [
             'resources' => [
-                'tickets','activities', 'assignments', 'assignment_tasks', 'activity_tasks', 'comments', 'customers', 'companies', 'departments', 'groups', 'roles', 'permissions', 'projects', 'project_tasks'
+                'tickets','comments', 'customers', 'companies', 'departments', 'groups', 'roles', 'permissions',
             ],
             'others' => [
-                'activities.acknowledge',
-                'assignment_tasks.toggle',
-                'activity_tasks.toggle',
-                'project_tasks.toggle',
-                'assignments.changeStatus',
-                'projects.accept_proposal',
-                'projects.status_update',
                 'employees.show',
             ]
         ]

@@ -27,11 +27,11 @@ class CustomerProtal extends Controller
     }
     public function dashboard(){
         $id=Auth::guard('customer')->user()->id;
-        $assign_ticket = assign_ticket::with('agent', 'dept')->get();
+//        $assign_ticket = assign_ticket::with('agent', 'dept')->get();
         $ticket_history=ticket_sender::where('customer_id',$id)->first();
 
         if($ticket_history==null){
-            $customer_ticket=[];
+            $customer_ticket=null;
         }else{
             $customer_ticket= ticket::where("customer_id",$ticket_history->customer_id)->count();
         }

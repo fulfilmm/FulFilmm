@@ -17,6 +17,7 @@ class CreateGroupsTable extends Migration
             $table->id();
             $table->string('name');
             $table->foreignId('created_by')->constrained('employees');
+            $table->string('type')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

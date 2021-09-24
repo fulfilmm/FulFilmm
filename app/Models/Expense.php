@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Expense extends Model
 {
     use HasFactory;
+    public function supplier(){
+        return $this->belongsTo(Customer::class,'vendor_id','id');
+    }
 }

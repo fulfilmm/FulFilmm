@@ -16,10 +16,9 @@ class CreateLeadFollowersTable extends Migration
         Schema::create('lead_followers', function (Blueprint $table) {
             $table->id();
             $table->bigInteger("follower_id")->unsigned();
-            $table->foreign("follower_id")->references("id")->on("employees")->onDelete("cascade");
-            $table->bigInteger("lead_id")->unsigned();
-            $table->foreign("lead_id")->references("id")->on("lead_models")->onDelete("cascade");
-            $table->index('lead_id');
+            $table->bigInteger("contact_id")->unsigned();
+            $table->index('contact_id');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

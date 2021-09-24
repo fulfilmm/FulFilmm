@@ -2,7 +2,7 @@
 {{--<script src="{{asset('js/jquery-3.2.1.min.js')}}"></script>--}}
 
 <!-- Sweet Alert -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+{{--<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>--}}
 
 <!-- Bootstrap Core JS -->
 <script src="{{asset('js/popper.min.js')}}"></script>

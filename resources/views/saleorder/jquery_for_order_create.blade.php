@@ -150,7 +150,7 @@
                             $('.'+key+'_err').text(value);
                         });
                     }
-                    window.location.href = "/saleorders";
+                    // window.location.href = "/saleorders";
                 }
             });
         });

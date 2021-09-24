@@ -30,7 +30,7 @@ class QuotationController extends Controller
     }
     public function index(){
         $all_quotation=Quotation::with("customer","sale_person")->get();
-        return view("quotation.blade.php.index",compact("all_quotation"));
+        return view("quotation.index",compact("all_quotation"));
     }
     public function create(){
 
@@ -51,7 +51,7 @@ class QuotationController extends Controller
             for ($i=0;$i<count($orderline);$i++){
                 $grand_total=$grand_total+$orderline[$i]->total_amount;
         }
-        return view("quotation.blade.php.create",compact("allcustomers","request_id","orderline",'grand_total',"companies","products"));
+        return view("quotation.create",compact("allcustomers","request_id","orderline",'grand_total',"companies","products"));
     }
     public function store(Request $request)
     {

@@ -24,6 +24,7 @@ class CreateRoomBookingsTable extends Migration
             $table->text('subject');
             $table->index(['id','room_id']);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -15,12 +15,11 @@ class CreateLeadCommentsTable extends Migration
     {
         Schema::create('lead_comments', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('lead_id')->unsigned();
+            $table->bigInteger('contact_id')->unsigned();
             $table->bigInteger('user_id')->unsigned();
-            $table->foreign("lead_id")->references('id')->on('lead_models')->onDelete('cascade');
-            $table->foreign("user_id")->references('id')->on('employees')->onDelete('cascade');
             $table->text('comment');
-            $table->index('lead_id');
+            $table->index('contact_id');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

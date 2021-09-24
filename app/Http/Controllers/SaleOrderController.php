@@ -33,7 +33,7 @@ class SaleOrderController extends Controller
         $allcustomers=Customer::all();
         $session_value=\Illuminate\Support\Str::random(10);
         if(Auth::guard('employee')->check()){
-            dd('emp');
+//            dd('emp');
             $Auth="order-".Auth::guard('employee')->user()->name;
         }elseif(Auth::guard('customer')->check()){
 

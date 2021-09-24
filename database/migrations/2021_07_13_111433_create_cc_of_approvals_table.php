@@ -20,6 +20,7 @@ class CreateCcOfApprovalsTable extends Migration
             $table->bigInteger('emp_id')->unsigned();
             $table->foreign('emp_id')->references('id')->on('employees')->onDelete('cascade');
             $table->index(['approval_id','emp_id']);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

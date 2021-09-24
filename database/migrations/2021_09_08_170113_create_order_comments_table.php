@@ -21,6 +21,7 @@ class CreateOrderCommentsTable extends Migration
             $table->text('comment_text');
             $table->text('document')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

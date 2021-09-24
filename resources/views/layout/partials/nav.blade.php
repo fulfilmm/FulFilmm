@@ -48,14 +48,14 @@
                                     class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             <li>
-                                <a href="#"><span> Customers</span> <span class="menu-arrow"></span></a>
+                                <a href="#"><span> Contact</span> <span class="menu-arrow"></span></a>
                                 <ul style="display: none;">
 
                                     <li><a class="{{ Request::is('customers') ? 'active' : '' }}"
-                                           href="{{ route('customers.index') }}">All Customers</a></li>
+                                           href="{{ route('customers.index') }}">Contacts</a></li>
 
                                     <li><a class="{{ Request::is('customers/create') ? 'active' : '' }}"
-                                           href="{{ route('customers.create') }}">Create Customer</a></li>
+                                           href="{{ route('customers.create') }}">Create Contact</a></li>
                                 </ul>
                             </li>
                             <li class="submenu">
@@ -104,9 +104,9 @@
                                 </ul>
                             </li>
 
-                            <li class="menu">
-                                <a href="{{route('activities.index')}}"><i class="la la-list-alt mr-2" style="font-size: 18px"></i><span>Activities</span></a>
-                            </li>
+                            {{--<li class="menu">--}}
+                                {{--<a href="{{route('activities.index')}}"><i class="la la-list-alt mr-2" style="font-size: 18px"></i><span>Activities</span></a>--}}
+                            {{--</li>--}}
                             <li class="submenu">
                                 <a href="#"><i class="la la-check-square-o mr-2"></i><span> Approval Request</span> <span
                                             class="menu-arrow"></span></a>
@@ -154,16 +154,7 @@
 
                                 </ul>
                             </li>
-                            <li class="menu">
-                                <a href="{{route('assignments.index')}}"></i>
-                                    <span>Assignments</span></a>
-                            </li>
-
-                            <li class="menu">
-                                <a class="{{ Request::is('projects') ? 'active' : '' }}"
-                                   href="{{ route('projects.index') }}"><span>Projects</span></a>
-                            </li>
-                        </ul>
+                                                    </ul>
 
                     </li>
 
@@ -199,7 +190,19 @@
                             {{--                            @endif--}}
                         </ul>
                     </li>
+                    <li class="submenu">
+                        <a href="#"><i class="la la-cube"></i> <span>Banking</span> <span
+                                    class="menu-arrow"></span></a>
+                        <ul style="display: none;">
 
+                            <li >
+                                <a href="{{route('accounts.index')}}"><i class="la la-bank mr-2" style="font-size: 18px"></i><span> Account</span> </a>
+                                <a href="{{route('transactions.index')}}"><i class="la la-cube mr-2" style="font-size: 18px"></i><span> Transaction</span> </a>
+                                <a href="{{route('revenue')}}"><i class="la la-cube mr-2" style="font-size: 18px"></i><span> Revenue</span> </a>
+                                <a href="{{route('expense')}}"><i class="la la-cube mr-2" style="font-size: 18px"></i><span> Expense</span> </a>
+                            </li>
+                        </ul>
+                    </li>
                     <li class="submenu">
                         <a href="#"><i class="la la-cube"></i> <span>CRM</span> <span
                                     class="menu-arrow"></span></a>
@@ -226,15 +229,6 @@
                                    {{--href="{{ route('inqueries.create') }}">InQuery Create</a></li>--}}
                         {{--</ul>--}}
                     {{--</li>--}}
-                    <li class="submenu">
-                        <a href="#"><i class="la la-dollar mr-2" style="font-size: 18px"></i><span> Lead</span> <span class="menu-arrow"></span></a>
-                        <ul style="display: none;">
-                            <li><a class="{{ Request::is('leads') ? 'active' : '' }}" href="{{ route('leads.index') }}">All
-                                    Leads</a></li>
-                            <li><a class="{{ Request::is('leads.myfollowed') ? 'active' : '' }}"
-                                   href="{{ route('leads.myfollowed') }}">Followed Lead</a></li>
-                        </ul>
-                    </li>
                     <li class="submenu">
                         <a href="#"><i class="fa fa-handshake-o mr-2" style="font-size: 18px"></i><span> Deal</span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">

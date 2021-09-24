@@ -12,6 +12,6 @@ class lead_follower extends Model
         return $this->belongsTo(Employee::class,'follower_id','id');
     }
     public function leads(){
-        return $this->belongsTo(leadModel::class,'lead_id','id');
+        return $this->belongsTo(Customer::class,'contact_id','id');
     }
 }

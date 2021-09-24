@@ -27,6 +27,7 @@ class CreateMinutesAssignsTable extends Migration
             $table->timestamp('due_date');
             $table->index(['dept_id','emp_id','group_id','minutes_id']);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

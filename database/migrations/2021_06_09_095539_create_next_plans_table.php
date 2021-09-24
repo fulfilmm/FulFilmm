@@ -15,14 +15,14 @@ class CreateNextPlansTable extends Migration
     {
         Schema::create('next_plans', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger("lead_id")->unsigned();
-            $table->foreign("lead_id")->references("id")->on("lead_models")->onDelete("cascade");
+            $table->bigInteger("contact_id")->unsigned();
             $table->text("description");
             $table->dateTime("to_date");
             $table->dateTime("from_date");
             $table->tinyInteger("work_done");
-            $table->index('lead_id');
+            $table->index('contact_id');
             $table->text('attach_file')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

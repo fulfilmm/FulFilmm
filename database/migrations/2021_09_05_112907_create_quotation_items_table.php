@@ -25,6 +25,7 @@ class CreateQuotationItemsTable extends Migration
             $table->integer("tax");
             $table->index('id','product_id');
             $table->timestamps();
+
         });
     }
 

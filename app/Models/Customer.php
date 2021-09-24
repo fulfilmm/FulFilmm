@@ -18,7 +18,11 @@ class Customer extends Authenticatable
         'remember_token',
     ];
     protected $fillable = [
-        'name', 'phone', 'email', 'company_id', 'address'
+        'name', 'phone', 'email', 'company_id',
+        'address','gender','emp_id','customer_type',
+        'password','profile','bio','can_login','facebook',
+        'linkedin','dob','report_to','position_of_report_to',
+        'priority','is_qualified','tags_id',''
     ];
 
 

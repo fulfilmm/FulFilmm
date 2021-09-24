@@ -5,20 +5,9 @@
     {{--<link rel="stylesheet" href="{{url(asset('css/invoice_css/element.css'))}}">--}}
     <link rel="stylesheet" href="{{url(asset('css/invoice_css/argon.css'))}}">
     <!-- Page Content -->
-    <div class="container-fluid" ">
+    <div class="content container-fluid">
     <!-- Page Header -->
-    <div class="page-header">
-        <div class="row align-items-center">
-            <div class="col">
-                <h3 class="page-title">Invoice</h3>
-                <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Invoice</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div id="header" class="">
+        <div id="header" class="">
         <div class=" content-layout">
             <div class="header-body">
                 <div class="row py-4 align-items-center">
@@ -32,22 +21,20 @@
                                     Actions
                                 </button>
                                 <div role="menu" class="dropdown-menu">
-                                    <div class="dropdown-divider"></div>
-                                    <a href="https://app.akaunting.com/142258/sales/invoices/1201302/print"
+                                    <a href="#"
                                        target="_blank" class="dropdown-item">
                                         Print
-                                    </a> <a href="https://app.akaunting.com/142258/sales/invoices/1201302/pdf"
+                                    </a> <a href="#"
                                             class="dropdown-item">
                                         Download PDF
                                     </a>
-                                    <div class="dropdown-divider"></div>
                                     <div class="dropdown-divider"></div>
                                     <button type="button" title="Delete" class="dropdown-item action-delete">
                                         Delete
                                     </button>
                                 </div>
                             </div>
-                            <a href="https://app.akaunting.com/142258/sales/invoices/create"
+                            <a href="{{route('invoices.create')}}"
                                class="btn btn-white btn-sm">
                                 Add New
                             </a></div>
@@ -59,7 +46,7 @@
     <div class="row" style="font-size: inherit !important;">
         <div class="col-md-2">
             Status
-            <br> <strong><span class="float-left"><span class="badge badge-primary">
+            <br> <strong><span class="float-left"><span class="text-dark badge badge-{{$detail_inv->status=='Paid'?'success':($detail_inv->status=='Partial'?'warning':($detail_inv->status=='Daft'?'white':'danger'))}}">
                        {{$detail_inv->status}}
                     </span></span></strong> <br><br></div>
         <div class="col-md-6">
@@ -69,175 +56,92 @@
                     </a></span></strong> <br><br></div>
         <div class="col-md-2">
             Amount due
-            <br> <strong><span class="float-left">
-                    157,500.00 K                </span></strong> <br><br></div>
+            <br>
+            <strong>
+                <span class="float-left" id="overdue_amount">{{$data['overdue_amount']}}</span></strong> <br><br></div>
         <div class="col-md-2">
             Due on
             <br> <strong><span class="float-left">
                     {{\Illuminate\Support\Carbon::parse($detail_inv->due_date)->toFormattedDateString()}}               </span></strong> <br><br></div>
     </div>
-    {{--</div>--}}
-    {{--<div class="col-auto float-right ml-auto">--}}
-    {{--<div class="btn-group btn-group-sm">--}}
 
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    <!-- /Page Header -->
-    {{--<div class="row">--}}
-    {{--<div class="col-md-12">--}}
-    {{--<div class="card">--}}
-    {{--<div class="card-body">--}}
-    {{--<div class="row">--}}
-    {{--<div class="col-sm-6 m-b-20">--}}
-    {{--<img src="img/logo2.png" class="inv-logo" alt="">--}}
-    {{--<ul class="list-unstyled">--}}
-    {{--<li>{{$company->name ?? ''}}</li>--}}
-    {{--<li>{{$company->address??''}},</li>--}}
-    {{--<li>GST No:</li>--}}
-    {{--</ul>--}}
-    {{--</div>--}}
-    {{--<div class="col-sm-6 m-b-20">--}}
-    {{--<div class="invoice-details">--}}
-    {{--<h3 class="text-uppercase">Invoice #</h3>--}}
-    {{--<ul class="list-unstyled">--}}
-    {{--<li>Date: <span></span></li>--}}
-    {{--<li>Due date: <span></span></li>--}}
-    {{--</ul>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--<div class="row">--}}
-    {{--<div class="col-sm-6 col-lg-7 col-xl-8 m-b-20">--}}
-    {{--<h5>Invoice to:</h5>--}}
-    {{--<ul class="list-unstyled">--}}
-    {{--<li><h5><strong></strong></h5></li>--}}
-    {{--<li><span></span></li>--}}
-    {{--<li></li>--}}
-    {{--<li>Coosada, AL, 36020</li>--}}
-    {{--<li>United States</li>--}}
-    {{--<li></li>--}}
-    {{--<li><a href="#"></a></li>--}}
-    {{--</ul>--}}
-    {{--</div>--}}
-    										{{--<div class="col-sm-6 col-lg-5 col-xl-4 m-b-20">--}}
-    											{{--<span class="text-muted">Payment Details:</span>--}}
-    											{{--<ul class="list-unstyled invoice-payment-details">--}}
-    												{{--<li><h5>Total Due: <span class="text-right">$8,750</span></h5></li>--}}
-    												{{--<li>Bank name: <span>Profit Bank Europe</span></li>--}}
-    												{{--<li>Country: <span>United Kingdom</span></li>--}}
-    												{{--<li>City: <span>London E1 8BF</span></li>--}}
-    												{{--<li>Address: <span>3 Goodman Street</span></li>--}}
-    												{{--<li>IBAN: <span>KFH37784028476740</span></li>--}}
-    												{{--<li>SWIFT code: <span>BPT4E</span></li>--}}
-    											{{--</ul>--}}
-    										{{--</div>--}}
-    {{--</div>--}}
-    {{--<div class="table-responsive">--}}
-    {{----}}
-    {{--</tbody>--}}
-    {{--</table>--}}
-    {{--</div>--}}
-    {{--<div>--}}
-    {{--<div class="row invoice-payment">--}}
-    {{--<div class="col-sm-7">--}}
-    {{--</div>--}}
-    {{--<div class="col-sm-5">--}}
-    {{--<div class="m-b-20">--}}
-    {{--<div class="table-responsive no-border">--}}
-    {{--<table class="table mb-0">--}}
-    {{--<tbody>--}}
-    {{--<tr>--}}
-    {{--<th>Total:</th>--}}
-    {{--<td class="text-right text-primary"><h5></h5></td>--}}
-    {{--</tr>--}}
-    {{--</tbody>--}}
-    {{--</table>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-   {{----}}
-    {{--</div>--}}
-
-    <div class="card">
-        <div class="card-body">
-            <div data-timeline-content="axis" data-timeline-axis-style="dashed" class="timeline timeline-one-side">
-                <div class="timeline-block"><span class="timeline-step badge-primary"><i class="la la-plus text-white"></i></span>
-                    <div class="timeline-content"><h2 class="font-weight-500">
-                            Create Invoice
-                        </h2>
-                        <small>
-                            Status:
-                        </small>
-                        <small>
-                            Created on {{$detail_inv->created_at->toFormattedDateString()}}
-                        </small>
-                        <div class="mt-3"><a href="https://app.akaunting.com/142258/sales/invoices/1201302/edit"
-                                             class="btn btn-primary btn-sm btn-alone header-button-top">
-                                Edit
-                            </a></div>
-                    </div>
-                </div>
-                <div class="timeline-block"><span class="timeline-step badge-danger"><i
-                                class="la la-envelope text-white"></i></span>
-                    <div class="timeline-content"><h2 class="font-weight-500">
-                            Send Invoice
-                        </h2>
-                        <small>
-                            Status:
-                        </small>
-                        <small>
-                            Not sent
-                        </small>
-                        <div class="mt-3"><a href="https://app.akaunting.com/142258/sales/invoices/1201302/sent"
-                                             class="btn btn-white btn-sm header-button-top">
-                                Mark Sent
-                            </a>
-                            <a href="{{route('invoice.sendmail',$detail_inv->id)}}"><button type="button"
-                                    class="el-tooltip btn btn-danger btn-sm btn-tooltip disabled header-button-top"
-                                    aria-describedby="el-tooltip-9140" tabindex="0">
-                                Send Email
-                            </button>
-                            </a>
-                            <a href="https://app.akaunting.com/142258/signed/invoices/1201302?signature=4b75ab08f681bfb43e37e90a7d50fcd207d2819ebe4d53671d59e93d7018998a"
-                               target="_blank" class="btn btn-white btn-sm header-button-top">
-                                Share
-                            </a></div>
-                    </div>
-                </div>
-                <div class="timeline-block"><span class="timeline-step badge-success"><i
-                                class="la la-money text-white"></i></span>
-                    <div class="timeline-content"><h2 class="font-weight-500">
-                            Get Paid
-                        </h2>
-                        <small>
-                            Status:
-                        </small>
-                        <small>
-                            Awaiting payment
-                        </small>
-                        <div class="mt-3"><a href="https://app.akaunting.com/142258/sales/invoices/1201302/paid"
-                                             class="btn btn-white btn-sm header-button-top">
-                                Mark Paid
-                            </a>
-                            <button id="button-payment" class="btn btn-success btn-sm header-button-bottom">
-                                Add Payment
-                            </button>
+   @if($data['overdue_amount']!=0)
+            <div class="card">
+                <div class="card-body">
+                    <div data-timeline-content="axis" data-timeline-axis-style="dashed" class="timeline timeline-one-side">
+                        <div class="timeline-block"><span class="timeline-step badge-primary"><i class="la la-plus text-white"></i></span>
+                            <div class="timeline-content"><h2 class="font-weight-500">
+                                    Create Invoice
+                                </h2>
+                                <small>
+                                    Status:
+                                </small>
+                                <small>
+                                    Created on {{$detail_inv->created_at->toFormattedDateString()}}
+                                </small>
+                                <div class="mt-3"><a href="{{route('invoices.edit',$detail_inv->id)}}"
+                                                     class="btn btn-primary btn-sm btn-alone header-button-top">
+                                        Edit
+                                    </a></div>
+                            </div>
+                        </div>
+                        <div class="timeline-block"><span class="timeline-step badge-danger"><i
+                                        class="la la-envelope text-white"></i></span>
+                            <div class="timeline-content"><h2 class="font-weight-500">
+                                    Send Invoice
+                                </h2>
+                                <small>
+                                    Status:
+                                </small>
+                                <small>
+                                    Not sent
+                                </small>
+                                <div class="mt-3"><a href="https://app.akaunting.com/142258/sales/invoices/1201302/sent"
+                                                     class="btn btn-white btn-sm header-button-top">
+                                        Mark Sent
+                                    </a>
+                                    <a href="{{route('invoice.sendmail',$detail_inv->id)}}"><button type="button"
+                                                                                                    class="el-tooltip btn btn-danger btn-sm btn-tooltip disabled header-button-top"
+                                                                                                    aria-describedby="el-tooltip-9140" tabindex="0">
+                                            Send Email
+                                        </button>
+                                    </a>
+                                    <a href="https://app.akaunting.com/142258/signed/invoices/1201302?signature=4b75ab08f681bfb43e37e90a7d50fcd207d2819ebe4d53671d59e93d7018998a"
+                                       target="_blank" class="btn btn-white btn-sm header-button-top">
+                                        Share
+                                    </a></div>
+                            </div>
+                        </div>
+                        <div class="timeline-block"><span class="timeline-step badge-success"><i
+                                        class="la la-money text-white"></i></span>
+                            <div class="timeline-content"><h2 class="font-weight-500">
+                                    Get Paid
+                                </h2>
+                                <small>
+                                    Status:
+                                </small>
+                                <small>
+                                    {{$detail_inv->status}}
+                                </small>
+                                <div class="mt-3">
+                                    <button id="button-payment" class="btn btn-success btn-sm header-button-bottom" data-toggle='modal' data-target='#add_payment'>
+                                        Add Payment
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="row">
+       @endif
+    <div class="row" id="printarea">
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
                     <div class="row pb-4 mx-0 card-header-border">
                         <div class="col-lg-12 mb-3">
                             <img class="avatar avatar-50 is-squared"
-                                 src="https://templates.iqonic.design/datum/laravel/public/images/logo-dark.png">
+                                 src="{{$company!=null ? url(asset('/img/profiles/'.$company->logo)): url(asset('/img/profiles/avatar-01.jpg'))}}">
                         </div>
                         <div class="col-lg-6">
                             <div class="text-left">
@@ -316,7 +220,7 @@
                                 </li>
                                 <li class="list-group-item">
                                     <div class="d-flex justify-content-end mb-2">
-                                        Total: <p class="ml-2 mb-0 font-weight-bold">{{$invoic_item[0]->currency_unit}}{{$grand_total}}</p>
+                                        Total: <p class="ml-2 mb-0 font-weight-bold">MMK : {{$detail_inv->grand_total}}</p>
                                     </div>
 
                                 </li>
@@ -384,36 +288,32 @@
                     <div id="accordion-transactions-header" data-toggle="collapse"
                          data-target="#accordion-transactions-body" aria-expanded="false"
                          aria-controls="accordion-transactions-body" class="card-header collapsed"><h4 class="mb-0">
-                            Transactions</h4></div>
+                            Transactions <i class="fa fa-chevron-down float-right"></i></h4></div>
                     <div id="accordion-transactions-body" aria-labelledby="accordion-transactions-header"
-                         class="hide collapse" style="">
+                         class=" collapse" style="">
                         <div class="table-responsive">
                             <table class="table table-flush table-hover">
                                 <thead class="thead-light">
                                 <tr class="row table-head-line">
-                                    <th class="col-xs-4 col-sm-3">
+                                    <th class="col-xs-5 col-sm-4">
                                         Date
                                     </th>
-                                    <th class="col-xs-4 col-sm-3">
+                                    <th class="col-xs-4 col-sm-4">
                                         Amount
                                     </th>
-                                    <th class="col-sm-3 d-none d-sm-block">
+                                    <th class="col-xs-3 col-sm-4 d-none d-sm-block">
                                         Account
-                                    </th>
-                                    <th class="col-xs-4 col-sm-3">
-                                        Actions
                                     </th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td colspan="4">
-                                        <div id="datatable-basic_info" role="status" aria-live="polite"
-                                             class="text-muted nr-py">
-                                            No records.
-                                        </div>
-                                    </td>
-                                </tr>
+                                @foreach($data['transaction'] as $transaction)
+                                      <tr class="row">
+                                          <td class="col-xs-4 col-sm-4">{{\Carbon\Carbon::parse($transaction->revenue->transaction_date)->toFormattedDateString()}}</td>
+                                          <td class="col-xs-4 col-sm-4">{{$transaction->revenue->amount}}</td>
+                                          <td class="col-xs-4 col-sm-4 d-none d-sm-block">{{$transaction->account->name}}</td>
+                                      </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -423,5 +323,158 @@
         </div>
     </div>
     </div>
+    <div class="modal fade" id="add_payment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Payment</h5>
+                        <button type="button" aria-hidden="true"  data-dismiss="modal" class="close">×</button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{{route('income.store')}}" accept-charset="UTF-8" id="transaction" role="form" novalidate="novalidate" enctype="multipart/form-data"
+                          class="form-loading-button needs-validation">
+                    @csrf
+                        <div class="card-body">
+                            <div class="row">
+                                <input type="hidden" name="type" value="Revenue">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="date">Date</label>
+                                        <input type="date" id="date" name="transaction_date" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="amount">Amount</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-money"></i></span>
+                                            </div>
+                                            <input type="text" class="form-control" id="amount" name="amount">
+                                            <div class="input-group-prepend">
+                                                <select name="currency" id="" class="select">
+                                                    <option value="MMK">MMK</option>
+                                                    <option value="USD">USD</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="account">Account</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-bank"></i></span>
+                                            </div>
+                                            <select name="account" id="account" class="form-control">
+                                                @foreach($data['account'] as $key=>$val)
+                                                    <option value="{{$key}}">{{$val}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="customer_id">Customer</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-user"></i></span>
+                                            </div>
+                                            <select name="customer_id" id="customer_id" class="form-control">
+                                                @foreach($data['customers'] as $customer)
+                                                    <option value="{{$customer->id}}">{{$customer->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="revenue_description">Description</label>
+                                        <textarea name="description" id="revenue_description" cols="30" rows="5" class="form-control">
+
+                                </textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" id="cat_div">
+                                    <div class="form-group">
+                                        <label for="category">Category</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-folder"></i></span>
+                                            </div>
+                                            <select name="category" id="category" class="form-control">
+                                                @foreach($data['category'] as $cat)
+                                                    <option value="{{$cat->name}}">{{$cat->name}}</option>
+                                                @endforeach
+                                            </select>
+                                            <div class="input-group-prepend">
+                                                <a href="" class="input-group-text" data-toggle='modal' data-target='#add_cat'><i
+                                                            class="fa fa-plus"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="payment_method">Payment Method</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-credit-card"></i></span>
+                                            </div>
+                                            <select name="payment_method" id="payment_method" class="form-control ">
+                                                @foreach($data['payment_method'] as $payment_method)
+                                                    <option value="{{$payment_method}}">{{$payment_method}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group"><label for="reference">Reference</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-file-text-o"></i></span>
+                                            </div>
+                                            <input type="text" class="form-control" name="reference" id="reference">
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="invoice_id" value="{{$detail_inv->id}}">
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <div class="row save-buttons">
+                                <div class="col-md-12"><a href="{{route('invoices.show',$detail_inv->id)}}"
+                                                          class="btn btn-outline-secondary">Cancel</a>
+                                    <button type="submit" class="btn btn-icon btn-success"><!----> <span
+                                                class="btn-inner--text">Save</span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    @include('transaction.add_category')
+        <script>
+        function printData()
+        {
+            var divToPrint=document.getElementById("printarea");
+            newWin= window.open("");
+            newWin.document.write(divToPrint.outerHTML);
+            newWin.print();
+            newWin.close();
+        }
+
+        $('#btn').on('click',function(){
+            printData();
+        })
+    </script>
+
     <!-- /Page Content -->
 @endsection

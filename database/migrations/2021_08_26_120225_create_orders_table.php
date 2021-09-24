@@ -32,6 +32,7 @@ class CreateOrdersTable extends Migration
             $table->string('shipping_address')->nullable();
             $table->string('billing_address')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

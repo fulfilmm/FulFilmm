@@ -68,5 +68,6 @@ class Kernel extends HttpKernel
         'authorize' => RoleMiddleware::class,
         'ownership' => OwnershipMiddleware::class,
         'meeting_view_relative_emp'=>meetingshowcontrol::class,
+        'custom_auth'=>\App\Http\Middleware\TwoguardMiddleware::class,
     ];
 }

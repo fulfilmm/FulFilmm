@@ -1,11 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Account;
 use App\Models\Customer;
 use App\Models\Invoice;
 use App\Models\OrderItem;
 use App\Models\MainCompany;
 use App\Models\product;
+use App\Models\Revenue;
+use App\Models\Transaction;
+use App\Models\TransactionCategory;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -70,21 +74,27 @@ class InvoiceController extends Controller
 
         if ($last_invoice!=null) {
             // Sum 1 + last id
-            $ischange=$last_invoice->invoice_id;
-            $ischange=explode("-", $ischange);
-            if($ischange[0]==$prefix){
-                $last_invoice->invoice_id++;
-                $invoice_id = $last_invoice->invoice_id;
-            }else{
-                $arr=[$prefix,$ischange[1]];
-                $pre=implode('-',$arr);
+           if($prefix!=null){
+               $ischange=$last_invoice->invoice_id;
+               $ischange=explode("-", $ischange);
+               if($ischange[0]==$prefix){
+                   $last_invoice->invoice_id++;
+                   $invoice_id = $last_invoice->invoice_id;
+               }else{
+                   $arr=[$prefix,$ischange[1]];
+                   $pre=implode('-',$arr);
 
-                $pre ++;
-                $invoice_id=$pre;
-            }
+                   $pre ++;
+                   $invoice_id=$pre;
+               }
+           }else{
+               $last_invoice->invoice_id++;
+               $invoice_id = $last_invoice->invoice_id;
+           }
         } else {
             $invoice_id=($prefix ? :'INV')."-0001";
         }
+
         $newInvoice=new Invoice();
         $newInvoice->title=$request->title;
         $newInvoice->invoice_id=$invoice_id;
@@ -96,7 +106,7 @@ class InvoiceController extends Controller
         $newInvoice->due_date=Carbon::createFromFormat('d/m/Y',$request->due_date);
         $newInvoice->other_information=$request->more_info;
         $newInvoice->grand_total=$request->inv_grand_total;
-        $newInvoice->status=$request->status;
+        $newInvoice->status="Daft";
         $newInvoice->payment_method=$request->payment_method;
         $newInvoice->save();
         $Auth=Auth::guard('employee')->user()->name;
@@ -140,11 +150,36 @@ class InvoiceController extends Controller
         $detail_inv=Invoice::with('customer')->where('id',$id)->first();
 //        dd($detail_inv);
         $invoic_item=OrderItem::with('product')->where("inv_id",$detail_inv->id)->get();
-        $grand_total=0;
-        for ($i=0;$i<count($invoic_item);$i++){
-            $grand_total=$grand_total+$invoic_item[$i]->total;
+        $account=Account::all()->pluck('name','id')->all();
+        $recurring=['No','Daily','Weekly','Monthly','Yearly'];
+        $payment_method=['Cash','eBanking','WaveMoney','KBZ Pay'];
+        $category=TransactionCategory::all();
+        $revenue=Revenue::where('invoice_id',$id)->get();
+        $transaction=[];
+        $overdue_amount=$detail_inv->grand_total;
+        foreach ($revenue as $tran){
+            $revenue_transaction=Transaction::with('revenue')->where('revenue_id',$tran->id)->first();
+            if($revenue!=null){
+                array_push($transaction,$revenue_transaction);
+                $overdue_amount=$revenue!=null?$overdue_amount-$revenue_transaction->revenue->amount:$detail_inv->grand_tota;
+            }
+
         }
-        return view('invoice.show',compact('detail_inv','invoic_item','company','grand_total'));
+        if($detail_inv->grand_total > $overdue_amount && $overdue_amount!=0){
+            $detail_inv->status='Partial';
+            $detail_inv->update();
+        }elseif($overdue_amount!=0 && Carbon::now()>$detail_inv->due_date){
+            $detail_inv->status='Overdue';
+            $detail_inv->update();
+        }else{
+            $detail_inv->status='Paid';
+            $detail_inv->update();
+        }
+        $transaction_amount=0;
+        $customer=Customer::orWhere('customer_type','Customer')->orWhere('customer_type','Lead')->orWhere('customer_type','Partner')->orWhere('customer_type','Inquery')->get();
+        $data=['overdue_amount'=>$overdue_amount,'transaction'=>$transaction,'customers'=>$customer,'account'=>$account,'recurring'=>$recurring,'payment_method'=>$payment_method,'category'=>$category];
+
+        return view('invoice.show',compact('detail_inv','invoic_item','company','data','transaction_amount'));
     }
 
     /**
@@ -155,7 +190,7 @@ class InvoiceController extends Controller
      */
     public function edit($id)
     {
-        //
+        dd($id);
     }
 
     /**

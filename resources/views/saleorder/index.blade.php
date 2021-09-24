@@ -1,4 +1,4 @@
-@extends('layout.mainlayout')
+@extends(\Illuminate\Support\Facades\Auth::guard('employee')->check()?'layout.mainlayout':'layouts.app')
 @section('title','Order View')
 @section('content')
     <div class="container-fluid">

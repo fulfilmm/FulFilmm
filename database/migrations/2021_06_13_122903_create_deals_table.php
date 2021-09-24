@@ -39,6 +39,7 @@ class CreateDealsTable extends Migration
             $table->foreign('created_id')->references('id')->on('employees')->onDelete('cascade');
             $table->index(['created_id','assign_to','contact','org_name','id']);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
