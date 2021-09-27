@@ -83,6 +83,7 @@ class DealController extends Controller
      */
     public function store(Request $request)
     {
+//        dd($request->all());
         $this->validate($request,[
            'name'=>'required',
            'amount'=>'required',
@@ -101,12 +102,12 @@ class DealController extends Controller
         $deal->name=$request->name;
         $deal->amount=$request->amount;
         $deal->unit=$request->unit;
-        $deal->org_name=$request->full_org;
+        $deal->org_name=$request->org_name;
         $deal->contact=$request->contact_name;
         $deal->close_date=$request->exp_date;
         $deal->pipeline=$request->pipeline;
         $deal->sale_stage=$request->sale_stage;
-        $deal->assign_to=$request->asign_to;
+        $deal->assign_to=$request->assign_to;
         $deal->lead_source=$request->lead_source;
         $deal->next_step=$request->next_step;
         $deal->type=$request->type;
