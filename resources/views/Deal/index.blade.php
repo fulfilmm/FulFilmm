@@ -22,27 +22,12 @@
                     <div class="view-icons">
                         <ul class="nav mb-3" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <a  id="profile-tab" data-toggle="tab" href="#kaban_view" role="tab" aria-controls="profile" aria-selected="false" class="list-view btn btn-link nav-link active"><i class="fa fa-trello "></i></a>
+                                <a  id="profile-tab" data-toggle="tab" href="#kaban_view" role="tab" aria-controls="profile" aria-selected="false" class="list-view btn btn-link nav-link active"><i class="fa fa-th "></i></a>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <a class="grid-view btn btn-link nav-link " id="home-tab" data-toggle="tab" href="#list_view" role="tab" aria-controls="home" aria-selected="true"><i class="fa fa-th"></i></a>
+                                <a class="grid-view btn btn-link nav-link " id="home-tab" data-toggle="tab" href="#list_view" role="tab" aria-controls="home" aria-selected="true"><i class="fa fa-list"></i></a>
                             </li>
 
-{{--                            <li class="nav-item" role="presentation">--}}
-{{--                                <a class="list-view btn btn-link nav-link"><i class="fa fa-history mr-2"></i>Sync</a>--}}
-{{--                            </li>--}}
-{{--                            <li class="nav-item" role="presentation">--}}
-{{--                                <div class="dropdown">--}}
-{{--                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--}}
-{{--                                        Sort By & View By--}}
-{{--                                    </button>--}}
-{{--                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">--}}
-{{--                                        <a class="dropdown-item" href="#">Action</a>--}}
-{{--                                        <a class="dropdown-item" href="#">Another action</a>--}}
-{{--                                        <a class="dropdown-item" href="#">Something else here</a>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </li>--}}
                         </ul>
                     </div>
                 </div>
@@ -50,13 +35,14 @@
             <!-- /Page Header -->
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade " id="list_view" role="tabpanel" aria-labelledby="home-tab">
-                    <table class="table">
+                    <table class="table" id="deal">
                         <thead>
                         <tr>
-                            <th>Deal Name</th>
+                            <th></th>
+                            <th>Name</th>
                             <th>Amount</th>
                             <th>Organization</th>
-                            <th>Expected Close Date</th>
+                            <th>Close Date</th>
                             <th>Sale Stage</th>
                             <th>Assign To</th>
                             <th>Action</th>
@@ -65,6 +51,7 @@
                         <tbody>
                         @foreach($alldeals as $deal)
                         <tr>
+                            <td><input type="checkbox"></td>
                             <td><a href="{{route('deals.show',$deal->id)}}">{{$deal->name}}</a></td>
                             <td>{{$deal->amount}} <strong class="float-right">{{$deal->unit}}</strong></td>
                             <td>{{$deal->customer_company->name}}</td>
@@ -689,4 +676,9 @@
                 </div>
             </div>
         </div>
+        <script>
+           $(document).ready(function () {
+               $('#deal').DataTable();
+           })
+        </script>
 @endsection

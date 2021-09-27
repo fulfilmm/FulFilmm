@@ -81,59 +81,41 @@ class DealController extends Controller
      */
     public function store(Request $request)
     {
-//        dd($request->all());
-        if($request->form_type=="quick"){
-            $this->quick_store($request->all());
-        }else{
-            $this->full_form($request->all());
+        $this->validate($request,[
+           'name'=>'required',
+           'amount'=>'required',
+           'unit'=>'required',
+           'org_name'=>'required',
+            'contact_name'=>'required',
+            'exp_date'=>'required',
+            'pipeline'=>'required',
+            'sale_stage'=>'required',
+            'assign_to'=>'required',
+            'lead_source'=>'required',
+            'probability'=>'required',
 
-        }
-   return redirect('deals');
-    }
-    public function quick_store($data){
+        ]);
         $deal=new deal();
-        $deal->name=$data['name'];
-        $deal->amount=$data['amount'];
-        $deal->unit=$data['currency'];
-        $deal->org_name=$data['org_name'];
-        $deal->close_date=Carbon::create($data['close_date']);
-        $deal->pipeline=$data['pipeline'];
-        $deal->sale_stage=$data['sale_stage'];
-        $deal->assign_to=$data['assign_to'];
-        $deal->lead_source=$data['lead_source'];
-        $deal->probability=$data['propability'];
+        $deal->name=$request->name;
+        $deal->amount=$request->amount;
+        $deal->unit=$request->unit;
+        $deal->org_name=$request->full_org;
+        $deal->contact=$request->contact_name;
+        $deal->close_date=$request->exp_date;
+        $deal->pipeline=$request->pipeline;
+        $deal->sale_stage=$request->sale_stage;
+        $deal->assign_to=$request->asign_to;
+        $deal->lead_source=$request->lead_source;
+        $deal->next_step=$request->next_step;
+        $deal->type=$request->type;
+        $deal->probability=$request->probability;
+        $deal->weighted_revenue=$request->weight_revenue;
+        $deal->lost_reason=$request->lost_reason;
+        $deal->description=$request->description;
         $deal->created_id=Auth::guard('employee')->user()->id;
         $deal->save();
-        return response()->json([
-           'success'=>'Create Sussful'
-        ]);
+   return redirect('deals')->with('success','Deal create success');
     }
-    public function full_form($data){
-        $deal=new deal();
-        $deal->name=$data['name'];
-        $deal->amount=$data['amount'];
-        $deal->unit=$data['unit'];
-        $deal->org_name=$data['full_org'];
-        $deal->contact=$data['contact'];
-        $deal->close_date=$data['exp_date'];
-        $deal->pipeline=$data['pipeline'];
-        $deal->sale_stage=$data['sale_stage'];
-        $deal->assign_to=$data['asign_to'];
-        $deal->lead_source=$data['lead_source'];
-        $deal->next_step=$data['next_step'];
-        $deal->type=$data['type'];
-        $deal->probability=$data['probability'];
-        $deal->weighted_revenue=$data['weight_revenue'];
-        $deal->weighed_revenue_unit=$data['revenue_unit'];
-        $deal->lost_reason=$data['lost_reason'];
-        $deal->description=$data['description'];
-        $deal->created_id=Auth::guard('employee')->user()->id;
-        $deal->save();
-        return response()->json([
-            'success'=>'Create Sussful'
-        ]);
-    }
-
 
     /**
      * Display the specified resource.

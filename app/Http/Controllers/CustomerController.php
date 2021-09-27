@@ -81,11 +81,12 @@ class CustomerController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return Exception
      */
     public function store(CustomerRequest $request)
     {
 //        dd($request->all());
+        $this->validate($request,['email'=>'unique:customers']);
         if ($request->canlogin == 'on') {
             $password = Str::random(8);
         } else {
@@ -119,7 +120,9 @@ class CustomerController extends Controller
             'company_id' => $request->company_id,
             'customer_type' => $request->customer_type,
         ];
-        $this->customerContract->create($data);
+        try{
+            $this->customerContract->create($data);
+
         if ($request->canlogin == 'on') {
             $details = array(
                 'email' => $request->email,
@@ -135,6 +138,9 @@ class CustomerController extends Controller
             });
         }
         return redirect()->route('customers.index')->with('success', __('alert.create_success'));
+        }catch (Exception $e){
+            return $e;
+        }
     }
 
     /**

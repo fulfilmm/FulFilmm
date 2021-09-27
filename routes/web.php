@@ -90,6 +90,10 @@ Route::middleware(['auth:employee'])->group(function () {
     Route::resource('saleorders', SaleOrderController::class);
     Route::post('add/category',[TransactionController::class,'add_category']);
 
+    Route::post("/deal/status/change", [DealController::class, 'sale_stage_change'])->name('deals.status_change');
+    Route::post("/deal/company/create", [DealController::class, 'company_create'])->name('company_create');
+
+
 });
 //Route::resource('saleorders', SaleOrderController::class)->middleware('auth:employee');
 
@@ -127,9 +131,6 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::get("/qualified/{id}", [LeadController::class, 'qualified'])->name("qualified");
 
     //deal route
-
-    Route::post("/deal/status/change", [DealController::class, 'sale_stage_change'])->name('deals.status_change');
-    Route::post("/deal/company/create", [DealController::class, 'company_create'])->name('company_create');
 
     //quotation.blade.php route
 

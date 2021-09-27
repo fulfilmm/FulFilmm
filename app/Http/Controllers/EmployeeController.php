@@ -87,10 +87,9 @@ class EmployeeController extends Controller
         $employee->phone=$data['phone'];
         $employee->work_phone=$data['work_phone'];
         $employee->join_date=$data['join_date'];
-        $employee->password=Hash::make($data['password']);
+        $employee->password=$request->password;
         $employee->department_id=$data['department_id'];
         $employee->can_login=$data['can_login'];
-        $employee->can_post_assignments=$data['can_post_assignments'];
         if($request->profile_img!=null){
             $name = $request->profile_img->getClientOriginalName();
             $request->profile_img->move(public_path() . '/img/profiles', $name);

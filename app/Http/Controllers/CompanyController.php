@@ -91,7 +91,7 @@ class CompanyController extends Controller
     public function show($id)
     {
         //
-        $record = $this->company_contract->getById($id);
+        $record = $this->company_contract->with('parentCompany')->getById($id);
         return view('company.show', compact('record'));
     }
 
