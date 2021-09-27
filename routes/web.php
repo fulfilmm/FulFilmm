@@ -73,13 +73,13 @@ Route::middleware(['auth:employee'])->group(function () {
     Route::post("/update/followed/", [LeadController::class, 'unfollower'])->name('unfollowed');
     Route::get('filter/minute/{id}', [MinutesController::class, 'filter'])->name('filter.minutes');
     Route::post('lead/activity/schedule', [LeadController::class, 'activity_schedule'])->name('activity.schedule');
-    Route::delete('activity/delete/{id}', [LeadController::class, 'delete_schedule'])->name('delete_schedule');
+    Route::get('activity/delete/{id}', [LeadController::class, 'delete_schedule'])->name('delete_schedule');
     Route::post('approval/post/comment/{id}', [CommentController::class, 'approval_cmt'])->name('approval_cmt');
     Route::get('approval/cmt/delete/{id}', [CommentController::class, 'delete_approval_cmt'])->name('approval_cmt.delete');
     Route::resource("invoice_items", InvoiceItemController::class);
     Route::post('discard', [QuotationController::class, 'discard'])->name('quotations.discard');
     Route::post("/tags/create", [LeadController::class, 'tag_add'])->name('tagadd');
-    Route::get("/workdone/{id}", [LeadController::class, 'work_done'])->name('workdone');
+    Route::get("/workdone/{id}", [LeadController::class, 'work_done'])->name('work.done');
     Route::post("/invoices/search", [InvoiceController::class, 'search'])->name('invoices.search');
     Route::post('complete/minutes', [MinutesController::class, 'complete'])->name('complete.minutes');
     Route::get('order/to/invoice/{id}', [SaleOrderController::class, 'generate_invoice'])->name('generate_inv');
@@ -245,3 +245,8 @@ Route::put('roles/assign-permission/{id}', [RoleController::class, 'assignPermis
 //list routes
 Route::get('companies-card', [CompanyController::class, 'card'])->name('companies.cards');
 Route::resource('request_tickets', RequestTicket::class)->only('create', 'store');
+
+//new
+Route::post('deal/schedule',[DealController::class,'schedule'])->name('deals.schedule');
+Route::post('deal/post/comment',[DealController::class,'comment'])->name('deals.comment');
+Route::get("deal/workdone/{id}", [DealController::class, 'workdone'])->name('schedule.done');

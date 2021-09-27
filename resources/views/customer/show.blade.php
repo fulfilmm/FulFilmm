@@ -205,21 +205,21 @@
                                     </table>
                                 </div>
                             </div>
-                            <div id="activity" class="tab-pane fade p-3">
+                            <div id="activity" class="tab-pane fade ">
                                 <div class="bs-offset-main bs-canvas-anim float-right">
-                                    <button class="btn btn-primary" type="button" data-toggle="canvas"
+                                    <button class="btn btn-primary btn-sm" type="button" data-toggle="canvas"
                                             data-target="#bs-canvas-left" aria-expanded="false"
                                             aria-controls="bs-canvas-right">Add New
                                     </button>
                                 </div>
-                                <h3 class="mb-3">Activity Schedule</h3>
+                                <h3>Activity Schedule</h3>
 
                                 <div class="iq-timeline0 m-0 d-flex align-items-center justify-content-between position-relative activity_schedule">
 
                                     <ul class="list-inline p-0 m-0">
                                         @foreach($data['activity_schedule'] as $activity)
                                         <li>
-                                            <div class="pt-3">
+                                            <div class="pt-0">
                                                 <p class="mb-0 text-muted font-weight-bold text-uppercase">{{\Carbon\Carbon::parse($activity->from_date)->toFormattedDateString()}} - {{\Carbon\Carbon::parse($activity->to_date)->toFormattedDateString()}}</p>
                                             </div>
                                         </li>
@@ -231,11 +231,12 @@
                                                 <div class="d-inline-block w-100">
                                                     <p>Probablemente, la bodega más sostenible de españa</p>
                                                 </div>
+                                                <a href="{{route('delete_schedule',$activity->id)}}" class="btn btn-danger btn-sm float-right">Delete</a>
                                                 @if($activity->work_done!=1)
                                                     @if(\Carbon\Carbon::now()>$activity->to_date)
-                                                        <a href="{{route('workdone',$activity->id)}}" class="btn btn-danger float-right btn-sm mr-3">Overdue Date</a>
+                                                        <a href="{{route('work.done',$activity->id)}}" class="btn btn-danger float-right btn-sm mr-3">Overdue Date</a>
                                                     @else
-                                                        <a href="{{route('workdone',$activity->id)}}"
+                                                        <a href="{{route('work.done',$activity->id)}}"
                                                            class="btn btn-primary float-right btn-sm mr-3">Done</a>
                                                     @endif
                                                 @else

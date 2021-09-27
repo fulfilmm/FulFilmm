@@ -20,29 +20,9 @@ class LeadController extends Controller
 {
     public function index()
     {
-        $auth=Auth::guard('employee')->user();
-        if ($auth->role->name=="Super Admin") {
-            $all_leads =leadModel::with("customer", "saleMan", "tags")->get();
-            }else{
-            $all_leads=leadModel::with("customer", "saleMan", "tags")->orWhere('created_id',Auth::guard('employee')->user()->id)->orWhere('sale_man_id',Auth::guard('employee')->user()->id)->get();
-        }
-        $followers=lead_follower::with('user')->get();
-//        dd($followers);
-        $allemployees = Employee::all()->pluck('name', 'id')->all();
-        $allcustomers = Customer::all()->pluck('name', 'id')->all();
-        return view("lead.lead", compact("all_leads",'followers','allemployees','allcustomers'));
+
     }
 
-    public function my_followed(){
-        $leads=lead_follower::where("follower_id",Auth::guard('employee')->user()->id)->get();
-        $all_leads=[];
-        foreach ($leads as $lead){
-            $followed_lead=leadModel::with("customer", "saleMan", "tags")->where('id',$lead->lead_id)->first();
-            array_push($all_leads,$followed_lead);
-        }
-        $followers=lead_follower::with('user')->get();
-        return view('lead.followed_lead',compact('all_leads','followers'));
-    }
 
     /**
      * Show the form for creating a new resource.

@@ -7,6 +7,8 @@ use App\Http\Requests\CustomerRequest;
 use App\Models\Company;
 use App\Models\Customer;
 use App\Models\deal;
+use App\Models\DealActivitySchedule;
+use App\Models\DealComment;
 use App\Models\Employee;
 use App\Models\product;
 use App\Models\products_category;
@@ -125,8 +127,10 @@ class DealController extends Controller
      */
     public function show($id)
     {
+        $comments=DealComment::with('user')->where('deal_id',$id)->get();
+        $schedules=DealActivitySchedule::where('deal_id',$id)->get();
         $deal=deal::with("customer_company","customer","employee",'created_person')->where("id",$id)->first();
-        return view("Deal.show",compact("deal"));
+        return view("Deal.show",compact("deal",'comments','schedules'));
     }
 
     /**
@@ -220,5 +224,29 @@ class DealController extends Controller
         return response()->json([
             'contact_create' => "success",
         ]);
+    }
+    public function comment(Request $request){
+        $comments=new DealComment();
+        $comments->deal_id = $request->deal_id;
+        $comments->user_id = Auth::guard('employee')->user()->id;
+        $comments->comment = $request->comment;
+        $comments->save();
+        return redirect()->back();
+    }
+    public function schedule(Request $request){
+        $schedule=new DealActivitySchedule();
+        $schedule->description=$request->description;
+        $schedule->to_date=Carbon::create($request->end_date.''.$request->time);
+        $schedule->from_date=Carbon::create($request->start_date);
+        $schedule->deal_id=$request->deal_id;
+        $schedule->work_done=0;
+        $schedule->save();
+        return redirect()->back();
+    }
+    public function workdone($id){
+        $lead=DealActivitySchedule::where("id",$id)->first();
+        $lead->work_done=1;
+        $lead->update();
+        return redirect()->back();
     }
 }
