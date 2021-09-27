@@ -108,6 +108,7 @@ class InvoiceController extends Controller
         $newInvoice->grand_total=$request->inv_grand_total;
         $newInvoice->status="Daft";
         $newInvoice->payment_method=$request->payment_method;
+        $newInvoice->emp_id=Auth::guard('employee')->user()->id;
         $newInvoice->save();
         $Auth=Auth::guard('employee')->user()->name;
         $request_id=Session::get($Auth);
