@@ -36,7 +36,7 @@ class QuotationController extends Controller
 
             $allcustomers = Customer::all();
             $products=product::with("category","taxes")->get();
-            $companies=Company::all();
+            $companies=Company::all()->pluck('name','id');
         $Auth=Auth::guard('employee')->user()->name;
 //        Session::forget($Auth);
         $session_value=\Illuminate\Support\Str::random(10);
@@ -64,21 +64,27 @@ class QuotationController extends Controller
         ]);
         $prefix=MainCompany::where('ismaincompany',true)->pluck('quotation_prefix','id')->first();
         $last_quotation=Quotation::orderBy('id', 'desc')->first();
-        if (isset($last_quotation)) {
+        if ($last_quotation!=null) {
             // Sum 1 + last id
-            $ischange=$last_quotation->quotation_id;
-            $ischange=explode("-", $ischange);
-            if($ischange[0]==$prefix){
+            if($prefix!=null){
+                $ischange=$last_quotation->quotation_id;
+                $ischange=explode("-", $ischange);
+                if($ischange[0]==$prefix){
+                    $last_quotation->invoice_id++;
+                    $quotation_id = $last_quotation->quotation_id;
+                }else{
+                    $arr=[$prefix,$ischange[1]];
+                    $pre=implode('-',$arr);
+
+                    $pre ++;
+                    $quotation_id=$pre;
+                }
+            }else{
                 $last_quotation->quotation_id++;
                 $quotation_id = $last_quotation->quotation_id;
-            }else{
-                $arr=[$prefix,$ischange[1]];
-                $pre=implode('-',$arr);
-                $pre ++;
-                $quotation_id=$pre;
             }
         } else {
-            $quotation_id=$prefix?'':"Quotation"."-0001";
+            $quotation_id=($prefix ? :'Quo')."-0001";
         }
                 $quotation = new Quotation();
                 $quotation->customer_name = $request->customer;
@@ -92,9 +98,9 @@ class QuotationController extends Controller
                 $quotation->save();
                 $auth=Auth::guard('employee')->user()->name;
                 $form_id=Session::get($auth);
-                $orderlines=Orderline::where("quotation_id",$form_id)->get();
+                $orderlines=QuotationItem::where("quotation_id",$form_id)->get();
                 foreach ($orderlines as $order){
-                    $order->quotation_id=$quotation_id;
+                    $order->quotation_id=$quotation->id;
                     $order->update();
                 }
                 Session::forget($auth);
@@ -102,6 +108,7 @@ class QuotationController extends Controller
 
     }
     public function discard(Request $request){
+//        dd($request->all());
         $orders=QuotationItem::where("quotation_id",$request->quotation_id)->get();
         foreach ($orders as $order){
             $order->delete();
@@ -109,24 +116,24 @@ class QuotationController extends Controller
     }
 
     public function show($id){
-        $quotation=Quotation::with("customer","sale_person")->where('id',$id)->first();
-        $orderline=QuotationItem::with('product')->where("quotation_id",$quotation->quotation_id)->get();
+        $quotation=Quotation::with("customer","sale_person")->where('id',$id)->firstOrFail();
+        $orderline=QuotationItem::with('product')->where("quotation_id",$quotation->id)->get();
         $grand_total=0;
         for ($i=0;$i<count($orderline);$i++){
             $grand_total=$grand_total+$orderline[$i]->total_amount;
         }
-        $company=company::where("id",$quotation->company_id)->first();
-        return view("quotation.blade.php.show",compact("quotation","company","orderline",'grand_total'));
+        $company=MainCompany::where('ismaincompany',true)->first();
+        return view("quotation.show",compact("quotation","company","orderline",'grand_total'));
     }
     public function sendEmail($quotation_id){
         $quotation=Quotation::with("customer","sale_person")->where('quotation_id',$quotation_id)->first();
-        $orderline=QuotationItem::with('product')->where("quotation_id",$quotation->quotation_id)->get();
+        $orderline=QuotationItem::with('product')->where("quotation_id",$quotation->id)->get();
         $grand_total=0;
         for ($i=0;$i<count($orderline);$i++){
             $grand_total=$grand_total+$orderline[$i]->total_amount;
         }
-        $company=Company::userCompanyName() ?? null;
-        return view("quotation.blade.php.sendmail",compact("quotation","company","orderline",'grand_total'));
+        $company=MainCompany::where('ismaincompany',true)->first();
+        return view("quotation.sendmail",compact("quotation","company","orderline",'grand_total'));
     }
     public function email(Request $request){
 //        dd(env('MAIL_PORT'));
@@ -137,7 +144,7 @@ class QuotationController extends Controller
           $request->attch->move(public_path() . '/attach_file/', $file_name);
       }
 
-        $orderline=Orderline::with('product')->where("quotation_id",$request->id)->get();
+        $orderline=QuotationItem::with('product')->where("quotation_id",$request->id)->get();
 
         $details=[
             'email'=>$request->email,
@@ -153,7 +160,7 @@ class QuotationController extends Controller
             'orders'=>$orderline,
             'attach'=>$request->attach!=null?public_path().'/attach_file/'.$file_name:'',
         ];
-        Mail::send('quotation.blade.php.mail', $details, function ($message) use ($details) {
+        Mail::send('quotation.mail', $details, function ($message) use ($details) {
             $message->from('siyincin@gmail.com', 'Cloudark');
             $message->to($details['email']);
             $message->subject($details['subject']);
@@ -175,7 +182,7 @@ class QuotationController extends Controller
         $allcustomers=Customer::all();
         $payterm=["Immediate Payment","15 Days","15 Days","30 Days","45 Days","2 Months",
             "End Of Following Month","30% Now,Balance 60 Days"];
-        return view("quotation.blade.php.edit",compact("allcustomers",'payterm',"companies","products","quotation"));
+        return view("quotation.edit",compact("allcustomers",'payterm',"companies","products","quotation"));
     }
     public function update(Request $request,$id){
 //        dd($request->all());

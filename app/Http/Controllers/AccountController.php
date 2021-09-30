@@ -59,7 +59,7 @@ class AccountController extends Controller
      */
     public function show($id)
     {
-        $account=Account::where('id',$id)->first();
+        $account=Account::where('id',$id)->firstOrFail();
         $transaction=Transaction::with('revenue','expense')->where('account_id',$id)->get();
         $incoming=0;$outgoing=0;
         foreach ($transaction as $tran){

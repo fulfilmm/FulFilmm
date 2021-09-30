@@ -69,6 +69,7 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
+//        dd($request->all());
         $prefix=MainCompany::where('ismaincompany',true)->pluck('invoice_prefix','id')->first();
         $last_invoice=Invoice::orderBy('id', 'desc')->first();
 
@@ -107,6 +108,8 @@ class InvoiceController extends Controller
         $newInvoice->other_information=$request->more_info;
         $newInvoice->grand_total=$request->inv_grand_total;
         $newInvoice->status="Daft";
+        $newInvoice->order_id=$request->order_id;
+        $newInvoice->send_email=isset($request->save_type)?1:0;
         $newInvoice->payment_method=$request->payment_method;
         $newInvoice->emp_id=Auth::guard('employee')->user()->id;
         $newInvoice->save();
@@ -148,8 +151,7 @@ class InvoiceController extends Controller
     public function show($id)
     {
         $company=MainCompany::where('ismaincompany',true)->first();
-        $detail_inv=Invoice::with('customer')->where('id',$id)->first();
-//        dd($detail_inv);
+        $detail_inv=Invoice::with('customer','employee')->where('id',$id)->firstOrFail();
         $invoic_item=OrderItem::with('product')->where("inv_id",$detail_inv->id)->get();
         $account=Account::all()->pluck('name','id')->all();
         $recurring=['No','Daily','Weekly','Monthly','Yearly'];
@@ -253,6 +255,8 @@ class InvoiceController extends Controller
            }
 
         });
+        $invoice->send_email=1;
+        $invoice->update();
         return redirect()->back()->with('success','Invoice Email Sending Successful');
     }
     public function status_change(Request $request,$id){

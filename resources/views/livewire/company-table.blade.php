@@ -20,7 +20,7 @@
                 <tbody>
                     @foreach ($companies as $company)
                         <tr>
-                            <td>{{$company->name}}</td>
+                            <td><img src="{{$company->logo}}" class="avatar avatar-sm" alt="">{{$company->name}}</td>
                             <td>{{$company->address}}</td>
                             <td>{{$company->email}}</td>
                             <td>{{$company->ceo_name}}</td>

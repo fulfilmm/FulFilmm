@@ -94,7 +94,7 @@
                             </thead>
                             <tbody>
                             @php
-                                $orderline=\App\Models\Orderline::with('product')->where("quotation_id",$quotation->quotation_id)->get();
+                                $orderline=\App\Models\QuotationItem::with('product')->where("quotation_id",$quotation->quotation_id)->get();
                                 $grand_total=0;
                                  for ($i=0;$i<count($orderline);$i++){
                                      $grand_total=$grand_total+$orderline[$i]->total_amount;
@@ -185,7 +185,7 @@
                                                         total:total,
                                                     },
                                                     type:'POST',
-                                                    url:"{{route("orders.update",$order->id)}}",
+                                                    url:"{{route("quotation_items.update",$order->id)}}",
                                                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                                                     success:function(data){
                                                         // console.log(data);
@@ -351,7 +351,7 @@
                         quotation_id:quotation_id,
                     },
                     type:'POST',
-                    url:"{{route('orders.store')}}",
+                    url:"{{route('quotation_items.store')}}",
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     success:function(data){
                         console.log(data);

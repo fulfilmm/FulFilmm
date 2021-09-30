@@ -221,7 +221,7 @@ class TicketController extends Controller
 
         $assign_ticket = assign_ticket::where("ticket_id", $id)->first();//2
 
-        $ticket = ticket::with("ticket_status", 'ticket_priority', 'sender_info', 'created_by')->where('id', $id)->first();//3
+        $ticket = ticket::with("ticket_status", 'ticket_priority', 'sender_info', 'created_by')->where('id', $id)->firstOrFail();//3
         $photos = json_decode($ticket->photo);
         $comment = ticket_comments::with("comment_user")->where("ticket_id", $id)->get();//4
         $ticket_followers = ticket_follower::with('ticket_followed')->where("ticket_id", $id)->get();//5

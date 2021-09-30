@@ -67,7 +67,6 @@ class TransactionController extends Controller
             'transaction_date' => 'required',
             'amount' => 'required',
             'account' => 'required',
-            'customer_id' => 'required',
             'category' => 'required',
             'payment_method' => 'required',
         ]);
@@ -105,8 +104,8 @@ class TransactionController extends Controller
      */
     public function show($id)
     {
+        $transaction=Transaction::with('expense','revenue','account')->where('id',$id)->firstOrFail();
         $company=MainCompany::where('ismaincompany',true)->first();
-        $transaction=Transaction::with('expense','revenue','account')->where('id',$id)->first();
         $customer=Customer::where('id',$transaction->type=='Revenue'?$transaction->revenue->customer_id:$transaction->expense->vendor_id)->first();
         $receiver=Employee::where('id',$transaction->type=='Revenue'?$transaction->revenue->emp_id:$transaction->expense->emp_id)->first();
         return view('transaction.show',compact('transaction','customer','receiver','company'));

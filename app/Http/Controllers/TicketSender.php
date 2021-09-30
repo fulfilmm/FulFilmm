@@ -50,7 +50,7 @@ class TicketSender extends Controller
     public function show($id)
     {
         $status_color=['New'=>'#49d1b6','Open'=>'#e84351','Close'=>'#4e5450','Pending'=>'#f0ed4f','Progress'=>'#2333e8','Complete'=>'#18b820'];
-        $sender_info=ticket_sender::where('id',$id);
+        $sender_info=ticket_sender::where('id',$id)->firstorFail();
         $ticket=ticket::with("ticket_status",'ticket_priority','sender_info','created_by')->where('customer_id',$id)->get();
         return view('ticket.senderdetail',compact('status_color','sender_info','ticket'));
     }

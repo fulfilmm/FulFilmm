@@ -16,7 +16,7 @@ class CreateExpensesTable extends Migration
         Schema::create('expenses', function (Blueprint $table) {
             $table->id();
             $table->double('amount');
-            $table->bigInteger('vendor_id')->unsigned();
+            $table->bigInteger('vendor_id')->unsigned()->nullable();
             $table->string('reference')->nullable();
             $table->string('recurring')->nullable();
             $table->string('payment_method');

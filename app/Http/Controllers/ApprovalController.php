@@ -129,7 +129,7 @@ class ApprovalController extends Controller
     public function show($id)
     {
         $auth=Auth::guard('employee')->user();
-        $details_approval=Approvalrequest::with('approver','secondary_approver','request_emp')->where('id',$id)->first();
+        $details_approval=Approvalrequest::with('approver','secondary_approver','request_emp')->where('id',$id)->firstOrFail();
         $is_cctome=Cc_of_approval::where('approval_id',$id)->where('emp_id',$auth->id)->first();
            $is_approver=false;
             if($details_approval->approver_id==$auth->id || $details_approval->secondary_approved==$auth->id ||$details_approval->emp_id==$auth->id){

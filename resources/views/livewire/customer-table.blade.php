@@ -14,6 +14,7 @@
                         <th>Phone No</th>
                         <th>Email</th>
                         <th>Company</th>
+                        <th>Type</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -24,6 +25,7 @@
                             <td>{{ $customer->phone }}</td>
                             <td>{{ $customer->email }}</td>
                             <td>{{ $customer->company->name }}</td>
+                            <td>{{$customer->customer_type}}</td>
                             <td style="display: flex">
                                 <a class="btn btn-success" href="{{route('customers.show',$customer->id)}}"><span class='fa fa-eye'></span></a>&nbsp;
                                 <a class="btn btn-success" href="{{route('customers.edit',$customer->id)}}"><span class='fa fa-edit'></span></a>&nbsp;

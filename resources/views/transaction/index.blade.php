@@ -51,7 +51,7 @@
                                     <a href="{{$transaction->revenue->invoice_id==null?route('transactions.show',$transaction->id):route('invoices.show',$transaction->revenue->invoice_id)}}">{{\Carbon\Carbon::parse($transaction->revenue->transaction_date)->toFormattedDateString()}}</a>
                                 </td>
                                 <td>{{number_format($transaction->revenue->amount)}}</td>
-                                <td>{{$transaction->type}}</td>
+                                <td><span class="badge" style="background-color: #72ff9e">{{$transaction->type}}</span></td>
                                 <td>{{$transaction->revenue->category}}</td>
                                 <td>{{$transaction->account->name}}</td>
                                 <td>{{$transaction->revenue->description}}</td>
@@ -63,7 +63,7 @@
                                     <a href="{{route('transactions.show',$transaction->id)}}">{{\Carbon\Carbon::parse($transaction->expense->transaction_date)->toFormattedDateString()}}</a>
                                 </td>
                                 <td>{{number_format($transaction->expense->amount)}}</td>
-                                <td>{{$transaction->type}}</td>
+                                <td><span class="badge" style="background-color: #ff4969">{{$transaction->type}}</span></td>
                                 <td>{{$transaction->expense->category}}</td>
                                 <td>{{$transaction->account->name}}</td>
                                 <td>{{$transaction->expense->description}}</td>

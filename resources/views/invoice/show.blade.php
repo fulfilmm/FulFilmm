@@ -1,8 +1,6 @@
 @extends('layout.mainlayout')
-@section('title','Invoice Detail ')
+@section('title',$detail_inv->invoice_id)
 @section('content')
-    {{--<link rel="stylesheet" href="{{url(asset('css/invoice_css/custom.css'))}}">--}}
-    {{--<link rel="stylesheet" href="{{url(asset('css/invoice_css/element.css'))}}">--}}
     <link rel="stylesheet" href="{{url(asset('css/invoice_css/argon.css'))}}">
     <!-- Page Content -->
     <div class="content container-fluid">
@@ -10,9 +8,9 @@
         <div id="header" class="">
         <div class=" content-layout">
             <div class="header-body">
-                <div class="row py-4 align-items-center">
-                    <div class="col-xs-12 col-sm-4 col-md-5 align-items-center"><h2
-                                class="d-inline-flex mb-0 long-texts">Invoice: {{$detail_inv->invoice_id}}</h2></div>
+                <div class="row  align-items-center">
+                    <div class="col-xs-12 col-sm-4 col-md-5 align-items-center">
+                        <h2 class="d-inline-flex mb-0 long-texts">Invoice: {{$detail_inv->invoice_id}}</h2></div>
                     <div class="col-xs-12 col-sm-8 col-md-7">
                         <div class="text-right">
                             <div class="dropup header-drop-top">
@@ -21,16 +19,10 @@
                                     Actions
                                 </button>
                                 <div role="menu" class="dropdown-menu">
-                                    <a href="#"
-                                       target="_blank" class="dropdown-item">
-                                        Print
-                                    </a> <a href="#"
-                                            class="dropdown-item">
-                                        Download PDF
-                                    </a>
+                                    <a href="" id="print" class="dropdown-item "  onclick="printContent('print_me');" ><i class="fa fa-print"></i> Print</a>
                                     <div class="dropdown-divider"></div>
                                     <button type="button" title="Delete" class="dropdown-item action-delete">
-                                        Delete
+                                       <i class="fa fa-trash"></i> Delete
                                     </button>
                                 </div>
                             </div>
@@ -43,7 +35,7 @@
             </div>
         </div>
     </div>
-    <div class="row" style="font-size: inherit !important;">
+    <div class="row mt-3" style="font-size: inherit !important;">
         <div class="col-md-2">
             Status
             <br> <strong><span class="float-left"><span class="text-dark badge badge-{{$detail_inv->status=='Paid'?'success':($detail_inv->status=='Partial'?'warning':($detail_inv->status=='Daft'?'white':'danger'))}}">
@@ -94,16 +86,16 @@
                                     Status:
                                 </small>
                                 <small>
-                                    Not sent
+                                    {{$detail_inv->send_email?'Sent':'Not sent'}}
                                 </small>
-                                <div class="mt-3"><a href="https://app.akaunting.com/142258/sales/invoices/1201302/sent"
+                                <div class="mt-3"><a href=""
                                                      class="btn btn-white btn-sm header-button-top">
                                         Mark Sent
                                     </a>
-                                    <a href="{{route('invoice.sendmail',$detail_inv->id)}}"><button type="button"
-                                                                                                    class="el-tooltip btn btn-danger btn-sm btn-tooltip disabled header-button-top"
+                                    <a href="{{route('invoice.sendmail',$detail_inv->id)}}">
+                                        <button type="button" class="el-tooltip btn btn-{{$detail_inv->send_email?'danger':'white'}} btn-sm btn-tooltip disabled header-button-top"
                                                                                                     aria-describedby="el-tooltip-9140" tabindex="0">
-                                            Send Email
+                                           <i class="fa fa-{{$detail_inv->send_email?'check-circle':''}} mr-2"></i>Send Email
                                         </button>
                                     </a>
                                     <a href="https://app.akaunting.com/142258/signed/invoices/1201302?signature=4b75ab08f681bfb43e37e90a7d50fcd207d2819ebe4d53671d59e93d7018998a"
@@ -134,22 +126,25 @@
                 </div>
             </div>
        @endif
-    <div class="row" id="printarea">
+    <div class="row" >
         <div class="col-lg-12">
-            <div class="card">
-                <div class="card-body">
+            <div class="card" >
+                <div class="card-body" id="print_me" style="padding-top: 50px;">
                     <div class="row pb-4 mx-0 card-header-border">
-                        <div class="col-lg-12 mb-3">
+                        <div class="col-lg-6 col-7 col-md-6 mb-3">
                             <img class="avatar avatar-50 is-squared"
                                  src="{{$company!=null ? url(asset('/img/profiles/'.$company->logo)): url(asset('/img/profiles/avatar-01.jpg'))}}">
+                            <span>{{$company->name}}</span><br><span>{{$company->email}}</span><br>
+                            <span>{{$company->phone}}</span><br>
+                            <span>{{$company->address}}</span>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-3 col-3">
                             <div class="text-left">
                                 <h5 class="font-weight-bold mb-2">Invoice number</h5>
-                                <p class="mb-0">{{$detail_inv->invoice_id}}</p>
+                                <b class="mb-0">{{$detail_inv->invoice_id}}</b>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-3 col-md-3">
                             <div class="text-right">
                                 <h5 class="font-weight-bold mb-2">Invoice Date</h5>
                                 <p class="mb-0">{{\Illuminate\Support\Carbon::parse($detail_inv->invoice_date)->toFormattedDateString()}}</p>
@@ -157,18 +152,16 @@
                         </div>
                     </div>
                     <div class="row pt-4 pb-5 mx-0">
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 col-6">
                             <div class="text-left">
                                 <h5 class="font-weight-bold mb-3">Invoice From</h5>
-                                <p class="mb-0 mb-1">Chris Wood</p>
-                                <p class="mb-0 mb-1">4183 Forest Avenue</p>
-                                <p class="mb-0 mb-1">New York</p>
-                                <p class="mb-0 mb-1">10011</p>
-                                <p class="mb-0 mb-2">USA</p>
-                                <p class="mb-0 mb-2">chris.wood@blueberry.com</p>
+                                <p class="mb-0 mb-1">{{$detail_inv->employee->name}}</p>
+                                <p class="mb-0 mb-1">{{$detail_inv->employee->address}}</p>
+                                <p class="mb-0 mb-1">{{$detail_inv->employee->phone}}</p>
+                                <p class="mb-0 mb-2">{{$detail_inv->employee->email}}</p>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 col-6">
                             <div class="text-right">
                                 <h5 class="font-weight-bold mb-3">Invoice To</h5>
                                 <p class="mb-0 mb-1">{{$detail_inv->customer->company->name}}</p>
@@ -244,10 +237,10 @@
             <div class="accordion">
                 <div class="card">
                     <div id="accordion-histories-header" data-toggle="collapse" data-target="#accordion-histories-body"
-                         aria-expanded="true" aria-controls="accordion-histories-body" class="card-header"><h4
-                                class="mb-0">Histories</h4></div>
+                         aria-expanded="false" aria-controls="accordion-histories-body" class="card-header"><h4
+                                class="mb-0">Histories<i class="fa fa-chevron-down float-right"></i></h4></div>
                     <div id="accordion-histories-body" aria-labelledby="accordion-histories-header"
-                         class="hide collapse show" style="">
+                         class="hide collapse" style="">
                         <div class="table-responsive">
                             <table class="table table-flush table-hover">
                                 <thead class="thead-light">
@@ -350,7 +343,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fa fa-money"></i></span>
                                             </div>
-                                            <input type="text" class="form-control" id="amount" name="amount">
+                                            <input type="text" class="form-control" id="amount" name="amount" value="{{$detail_inv->grand_total}}">
                                             <div class="input-group-prepend">
                                                 <select name="currency" id="" class="select">
                                                     <option value="MMK">MMK</option>
@@ -460,20 +453,23 @@
             </div>
         </div>
     </div>
+    <div id="print_me"  style="visibility: hidden">
     @include('transaction.add_category')
         <script>
-        function printData()
-        {
-            var divToPrint=document.getElementById("printarea");
-            newWin= window.open("");
-            newWin.document.write(divToPrint.outerHTML);
-            newWin.print();
-            newWin.close();
-        }
-
-        $('#btn').on('click',function(){
-            printData();
-        })
+            function printContent(el){
+                // document.title = ;
+                var restorepage = $('body').html();
+                $('#myTab').remove();
+                var printcontent = $('#' + el).clone();
+                printcontent.append('<div class="row" style="position: fixed;bottom: 110px; left: 50px" ><div class="row justify-content-between"> <div class="col-12 text-center"><span>{{$company->web_link}}</span></div></div></div>');
+                printcontent.append('<div class="row" style="position: fixed;bottom: 90px; left: 50px" ><div class="row justify-content-between"> <div class="col-12 text-center"><span>{{$company->email}}</span></div></div></div>');
+                printcontent.append('<div class="row" style="position: fixed;bottom: 70px; left: 50px" ><div class="row justify-content-between"> <div class="col-12 text-center"><span>{{$company->phone}}</span></div></div></div>');
+                printcontent.append('<div class="row" style="position: fixed;bottom: 50px; left: 50px" ><div class="row justify-content-between"> <div class="col-12 text-center"><span>{{$company->address}}</span></div></div></div>');
+                $('body').empty().html(printcontent);
+                $('.footer').hide();
+                window.print();
+                $('body').html(restorepage);
+            }
     </script>
 
     <!-- /Page Content -->

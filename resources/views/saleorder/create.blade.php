@@ -88,7 +88,7 @@
                                 <div class="col-md-12 mb-3">
                                     <label for="Text7" class="form-label font-weight-bold text-muted text-uppercase">Payment Method <span class="text-danger">*</span></label><br>
                                     <div class="form-group"  aria-label="Basic outlined example">
-                                        <input type="radio" name="payment_type" id="payment_type" value="Cash" class="mr-2"><label for="">Cash</label>
+                                        <input type="radio" name="payment_type" id="payment_type" value="Cash" class="mr-2" checked><label for="">Cash</label>
                                         <input type="radio" name="payment_type" id="payment_type" value="Mobile Banking" class="mr-2 ml-2"><label>Mobile Banking</label>
                                         <input type="radio" name="payment_type" id="payment_type" value="Bank Transfer" class="mr-2 ml-2"><label for="">Bank Transfer</label>
                                     </div>
@@ -107,11 +107,12 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12">
+                                    {{--@dd($data['quotation'])--}}
                                     <div class="form-group">
                                         <label for="quotation_id" class="font-weight-bold text-muted text-uppercase">Quotation ID</label>
                                         <select name="quotation_id" id="quotation_id" class="form-control">
                                             <option value="">None</option>
-                                            @foreach($data['quotation.blade.php'] as $key=>$val)
+                                            @foreach($data['quotation'] as $key=>$val)
                                             <option value="{{$key}}">{{$val}}</option>
                                                 @endforeach
                                         </select>

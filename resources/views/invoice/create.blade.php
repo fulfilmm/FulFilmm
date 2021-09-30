@@ -30,11 +30,11 @@
                                 <div class="col-sm-6 col-md-3">
                                     <div class="form-group">
                                         <label for="payment">Payment Type</label>
-                                        <select name="" id="payment" class="select">
-                                            <option value="Cash">Cash</option>
-                                            <option value="Bank">Bank</option>
-                                            <option value="KBZ Pay">KBZPay</option>
-                                            <option value="Cash">Wave Money</option>
+                                        <select name="" id="payment" class="form-control">
+                                            <option value="Cash" {{isset($order_data)?($order_data->payment_method=='Cash'?'selected':''):''}}>Cash</option>
+                                            <option value="Bank" {{isset($order_data)?($order_data->payment_method=='Bank'?'selected':''):''}}>Bank</option>
+                                            <option value="KBZ Pay" {{isset($order_data)?($order_data->payment_method=='KBZ Pay'?'selected':''):''}}>KBZPay</option>
+                                            <option value="Wave Money" {{isset($order_data)?($order_data->payment_method=='Wave Money'?'selected':''):''}}>Wave Money</option>
                                         </select>
                                     </div>
                                 </div>
@@ -43,7 +43,7 @@
                                 <div class="col-sm-6 col-md-3">
                                     <div class="form-group">
                                         <label for="client_id">Client <span class="text-danger">*</span></label>
-                                        <select class="select" id="client_id">
+                                        <select class="form-control" id="client_id">
                                           @foreach($allcustomers as $client)
                                             <option value="{{$client->id}}" {{isset($order_data)?($client->id==$order_data->customer_id?'selected':''):''}}>{{$client->name}}</option>
                                             @endforeach
@@ -54,7 +54,7 @@
                                 <div class="col-sm-6 col-md-3">
                                     <div class="form-group">
                                         <label for="client_email">Email</label>
-                                        <input class="form-control" type="email" id="client_email">
+                                        <input class="form-control" type="email" id="client_email" value="{{$order_data->email??''}}">
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-md-3">
@@ -76,16 +76,23 @@
                                 <div class="col-sm-3 col-md-3">
                                     <div class="form-group">
                                         <label for="client_address">Client Address</label>
-                                        <input type="text" class="form-control" id="client_address">
+                                        <input type="text" class="form-control" id="client_address" value="{{$order_data->address??''}}">
                                     </div>
                                 </div>
                                 <div class="col-sm-3 col-md-3">
                                     <div class="form-group">
                                         <label for="bill_address">Billing Address</label>
-                                        <input type="text" class="form-control" rows="3" id="bill_address">
+                                        <input type="text" class="form-control"  id="bill_address" value="{{isset($order_data)?$order_data->billing_address:''}}">
                                     </div>
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-sm-3 col-md-3">
+                                    <div class="form-group">
+                                        <label for="bill_address">Order ID</label>
+                                        <input type="text" class="form-control"   value="{{isset($order_data)?$order_data->order_id:''}}" readonly>
+                                        <input type="hidden" name="order_id" id="order_id" value="{{$order_data->id??''}}">
+                                    </div>
+                                </div>
+                                <div class="col-md-9">
                                     <div class="form-group">
                                         <label>Other Information</label>
                                         <textarea class="form-control" id="more_info"></textarea>
@@ -95,93 +102,126 @@
                             <div class="row">
                                 <div class="col-md-12 col-sm-12" id="order_table">
                                     <div class="table-responsive">
+                                        <div class="form-group">
+                                            <label for="">Search Products</label>
+                                            <select name="" id="product" class="form-control" style="min-width: 150px;">
+                                                <option value="">Select Product</option>
+                                                @foreach($products as $product)
+                                                    <option value="{{$product->id}}">{{$product->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                         <table class="table table-hover table-white">
                                                 <thead>
                                                 <th>Product</th>
-                                                <th>Description</th>
                                                 <th>Quantity</th>
                                                 <th>Unit Price</th>
                                                 <th>Taxes(%)</th>
-                                                <th>Discount Type</th>
+                                                <th>Type</th>
                                                 <th>Discount</th>
-                                                <th>Total(Include Tax)</th>
-                                                <th>Currency Unit</th>
+                                                <th>Total</th>
+                                                <th>Currency</th>
                                                 <th>Action</th>
                                                 </thead>
                                                 <tbody id="tbody">
                                                 @foreach($orderline as $order)
                                                     <tr>
-                                                        <td>
-                                                            <input type="hidden" id="order_id_{{$order->id}}" value="{{$order->id}}">
-                                                           {{$order->product->name}}
-                                                        </td>
-                                                        <td>
-                                                            {{$order->description}}
-                                                        </td>
-                                                        <td>
-                                                            {{$order->quantity}}
-                                                        </td>
-                                                        <td>{{$order->unit_price}}</td>
-                                                        <td>{{$order->tax_id}}</td>
-                                                        <td>
-                                                            {{$order->discount_type}}
-
-                                                        </td>
-                                                        <td>
-                                                            {{$order->discount}}
-                                                        </td>
-                                                        <td>
-                                                            {{$order->total}}
-                                                        </td>
-                                                        <td>{{$order->currency_unit}}
-                                                        <td>
+                                                        <td style="min-width: 200px;"><input type="hidden" id="order_id_{{$order->id}}" value="{{$order->id}}">
                                                             <div class="row">
-                                                                <a data-toggle="modal" href="#edit{{$order->id}}" id="call_full_form" class="btn btn-primary btn-sm mr-1"><i class="fa fa-edit"></i></a><br>
-                                                                <a class="btn btn-danger btn-sm" data-toggle="modal" href="#remove{{$order->id}}" ><i class="fa fa-trash-o "></i></a>
+                                                                <input type="hidden" name="product_id" id="product_{{$order->id}}" value="{{$order->product_id}}">
+                                                                <div class="col-md-4">
+                                                                    <img src="{{url(asset('product_picture/'.$order->product->image))}}"  alt="" width="40px" height="40px">
+                                                                </div>
+                                                                <div class="data-content">
+                                                                    <div>
+                                                                        <span class="font-weight-bold">{{$order->product->name}}</span>
+                                                                    </div>
+                                                                    <p class="m-0 mt-1">
+                                                                        {{$order->product->description}}
+                                                                    </p>
+                                                                </div>
                                                             </div>
-                                                    </tr>
-                                                    {{--@include('invoice.itemsedit')--}}
-                                                    @include('invoice.item_remove')
-                                                @endforeach
-                                                <tr>
-                                                    <td>
-                                                        <select name="" id="product" class="form-control" style="min-width: 150px;">
-                                                            <option value="">Select Product</option>
-                                                            @foreach($products as $product)
-                                                                <option value="{{$product->id}}">{{$product->name}}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" name="description" id="order_description" class="form-control" style="min-width: 200px;">
-                                                    </td>
-                                                    <td>
-                                                        <input type="number" name="quantity" id="quantity" class="form-control " value="0">
-                                                    </td>
-                                                    <td>
-                                                        <input type="number" id="price" class="form-control " value="0" style="min-width: 120px;">
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" class="form-control" name="tax" id="product_tax" >
-                                                    </td>
-                                                    <td>
-                                                        <select name="discount_type" id="discount_type" class="form-control">
-                                                            <option value="%">%</option>
-                                                            <option value="amount">Amount</option>
-                                                        </select>
-                                                    </td>
-                                                    <td>
-                                                        <input type="number" class="form-control" id="discount" value=0 style="min-width: 100px;">
-                                                    </td>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" name="quantity" id="quantity_{{$order->id}}" class="form-control update_item_{{$order->id}}" value=" {{$order->quantity}}">
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" id="price_{{$order->id}}" class="form-control update_item_{{$order->id}}" value="{{number_format($order->unit_price)}}" style="min-width: 120px;">
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="form-control update_item_{{$order->id}}" name="tax" id="product_tax_{{$order->id}}" value="{{$order->tax_id}}" >
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="form-control update_item_{{$order->id}}" name="discount_type" id="discount_type{{$order->id}}" value="{{$order->discount_type}}">
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="form-control update_item_{{$order->id}}" name="discount" id="discount_{{$order->id}}" value="{{$order->discount}}">
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" name="total" id="total_{{$order->id}}" class="form-control col-md-7 update_item_{{$order->id}}" value="{{number_format($order->total)}}" style="min-width: 100px;" >
+                                                        </td>
+                                                        <td><input type="text" class="form-control update_item_{{$order->id}}" id="unit_{{$order->id}}" value="{{$order->currency_unit}}"></td>
 
-                                                    <td>
-                                                        <input type="number" name="total" id="total" class="form-control col-md-7" value="0" style="min-width: 150px;">
-                                                    </td>
-                                                    <td><input type="text" class="form-control" id="unit"></td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-outline-danger ml-2 text-sm" id="add_item"><i class="fa fa-plus"></i></button>
-                                                    </td>
-                                                </tr>
+                                                        <td>
+                                                            <a class="btn btn-danger btn-sm" data-toggle="modal" href="#remove{{$order->id}}" ><i class="fa fa-trash-o "></i></a>
+                                                            @include('invoice.item_remove')
+                                                        </td>
+
+                                                    </tr>
+                                                    <script>
+                                                        $(document).on('change', 'input', function() {
+                                                            var quantity=$('#quantity_{{$order->id}}').val();
+                                                            var price=$('#price_{{$order->id}}').val();
+                                                            var total=quantity * price;
+                                                            var tax=$('#product_tax_{{$order->id}}').val();
+                                                            var tax_amount=tax / 100 * total;
+                                                            var include_tax=total + tax_amount;
+                                                            $('#total_{{$order->id}}').val(include_tax);
+
+                                                        });
+                                                        $(document).ready(function() {
+                                                            $(document).on('change', '.update_item_{{$order->id}}', function () {
+                                                                var product=$('#product_{{$order->id}}').val();
+                                                                var desc=$('#order_description_{{$order->id}}').val();
+                                                                var quantity=$('#quantity_{{$order->id}}').val();
+                                                                var price=$('#price_{{$order->id}}').val();
+                                                                var tax=$('#product_tax_{{$order->id}}').val();
+                                                                var unit=$('#unit_{{$order->id}}').val();
+                                                                var total=$('#total_{{$order->id}}').val();
+                                                                $.ajax({
+                                                                    data : {
+                                                                        "product_id":product,
+                                                                        'description':desc,
+                                                                        'quantity':quantity,
+                                                                        "tax_id":tax,
+                                                                        'unit_price':price,
+                                                                        "currency_unit":unit,
+                                                                        "total":total,
+                                                                    },
+                                                                    type:'PUT',
+                                                                    url:"{{route('invoice_items.update',$order->id)}}",
+                                                                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                                                                    success:function(data){
+                                                                        console.log(data);
+                                                                        $("#order_table").load(location.href + " #order_table>* ");
+                                                                        $("#grand_total_div").load(location.href + " #grand_total_div>* ");
+                                                                        var alltotal=[];
+                                                                        $('.total').each(function(){
+                                                                            alltotal.push(this.value);
+                                                                        });
+                                                                        var grand_total=0;
+                                                                        for (var i=0;i<alltotal.length;i++){
+                                                                            grand_total=parseFloat(grand_total)+parseFloat(alltotal[i]);
+                                                                        }
+                                                                        $('#grand_total').val(grand_total);
+
+                                                                    }
+                                                                });
+                                                            });
+                                                        });
+                                                    </script>
+                                                @endforeach
+
                                                 </tbody>
                                                 <tr>
 
@@ -191,16 +231,12 @@
                                                     <td></td>
                                                 </tr>
                                                 <tr>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <th>Grand Total</th>
-                                                    <td><input class="form-control" type="text" id="inv_grand_total" value="{{$grand_total}}" style="min-width: 150px"></td>
-                                                    <td></td>
-                                                    <td></td>
+                                                    <td colspan="5"></td>
+                                                    <th colspan="2" class="text-right"><span class="mt-5">Grand Total</span></th>
+                                                    <td colspan="2"><input class="form-control" type="text"  value="{{number_format($grand_total)}}" style="min-width: 100px">
+                                                        <input type="hidden" id="inv_grand_total" value="{{$grand_total}}">
+                                                    </td>
+
                                                 </tr>
                                         </table>
                                     </div>
@@ -215,7 +251,16 @@
                 </div>
             </div>
             <!-- /Page Content -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
+
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
             <script>
+                $(document).ready(function () {
+
+                        $('select').selectize({
+                        sortField: 'text'
+                    });
+                });
                 $(document).on('change', 'input', function() {
                     var quantity=$('#quantity').val();
                     var price=$('#price').val();
@@ -237,64 +282,48 @@
                 });
                 $(document).on('change','#product',function (){
                     var product_id=$("#product option:selected").val();
-                    // alert(product_id);
-                    @foreach($products as $product )
-                    var p_id={{$product->id}}
-                    if(p_id==product_id)
-                    {
-                        var tax = {{$product->taxes->rate}};
-                        $('#product_tax').val(tax);
-                        $('#price').val({{$product->sale_price}});
-                        $('#unit').val("{{$product->currency_unit}}");
-                    }
-                    @endforeach
-                });
-                $(document).ready(function() {
-                    $(document).on('click', '#add_item', function () {
-                        var invoice_id=$('#invoice_id').val();
-                        var product=$('#product option:selected').val();
-                        var desc=$('#order_description').val();
-                        var quantity=$('#quantity').val();
-                        var price=$('#price').val();
-                        var discount=$('#discount').val();
-                        var discount_type=$('#discount_type option:selected').val();
-                        var tax=$('#product_tax').val();
-                        var unit=$('#unit').val();
-                        var total=$('#total').val();
-                        $.ajax({
-                            data : {
-                                "product_id":product,
-                                'description':desc,
-                                'quantity':quantity,
-                                "tax_id":tax,
-                                'discount':discount,
-                                "discount_type":discount_type,
-                                'unit_price':price,
-                                "currency_unit":unit,
-                                "total":total,
-                                "invoice_id":invoice_id
+                    var invoice_id=$('#invoice_id').val();
+                    $.ajax({
+                        data : {
+                            "product_id":product_id,
+                            "invoice_id":invoice_id
 
-                            },
-                            type:'POST',
-                            url:"{{route('invoice_items.store')}}",
-                            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                            success:function(data){
-                                console.log(data);
-                                $("#order_table").load(location.href + " #order_table>* ");
-                                var alltotal=[];
-                                $('.total').each(function(){
-                                    alltotal.push(this.value);
-                                });
-                                var grand_total=0;
-                                for (var i=0;i<alltotal.length;i++){
-                                    grand_total=parseFloat(grand_total)+parseFloat(alltotal[i]);
-                                }
-                                $('#grand_total').val(grand_total);
-
+                        },
+                        type:'POST',
+                        url:"{{route('invoice_items.store')}}",
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        success:function(data){
+                            console.log(data);
+                            $("#order_table").load(location.href + " #order_table>* ");
+                            var alltotal=[];
+                            $('.total').each(function(){
+                                alltotal.push(this.value);
+                            });
+                            var grand_total=0;
+                            for (var i=0;i<alltotal.length;i++){
+                                grand_total=parseFloat(grand_total)+parseFloat(alltotal[i]);
                             }
-                        });
+                            $('#grand_total').val(grand_total);
+
+                        }
                     });
+
                 });
+                // $(document).ready(function() {
+                //     $(document).on('click', '#add_item', function () {
+                //
+                //         var product=$('#product option:selected').val();
+                //         var desc=$('#order_description').val();
+                //         var quantity=$('#quantity').val();
+                //         var price=$('#price').val();
+                //         var discount=$('#discount').val();
+                //         var discount_type=$('#discount_type option:selected').val();
+                //         var tax=$('#product_tax').val();
+                //         var unit=$('#unit').val();
+                //         var total=$('#total').val();
+                //
+                //     });
+                // });
                 //save and send
                 $(document).ready(function() {
                     $(document).on('click', '#saveAndsend', function () {
@@ -309,6 +338,7 @@
                             var payment=$('#payment option:selected').val();
                             var status=$('#status option:selected').val();
                             var title=$('#title').val();
+                            var order_id=$('#order_id').val();
                             var action_type='save_and_send';
                         $.ajax({
                             data : {
@@ -323,6 +353,7 @@
                                 'bill_address':bill_address,
                                 "save_type":action_type,
                                 'status':status,
+                                'order_id':order_id,
                                 'payment_method':payment
 
                             },
@@ -331,7 +362,7 @@
                             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                             success:function(data){
                                 console.log(data);
-                                window.location.href = "/invoices";
+                                // window.location.href = "/invoices";
                             }
                         });
                         });
@@ -351,8 +382,10 @@
                             var payment=$('#payment option:selected').val();
                             var status=$('#status option:selected').val();
                             var title=$('#title').val();
+                            var order_id=$('#order_id').val();
                         $.ajax({
                             data : {
+                                'order_id':order_id,
                                 'title':title,
                                 'client_id':client_id,
                                 'client_email':client_email,
@@ -371,7 +404,7 @@
                             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                             success:function(data){
                                 console.log(data);
-                                window.location.href = "/invoices";
+                                // window.location.href = "/invoices";
                             }
                         });
                     });

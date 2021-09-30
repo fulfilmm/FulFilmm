@@ -269,30 +269,33 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                    <div class="card dash-widget">
-                        <div class="card-body">
-                            <span class="dash-widget-icon"><i class="fa fa-file"></i></span>
-                            <div class="dash-widget-info">
-                                {{--<h3>{{$items['my_assignments']}}</h3>--}}
-                                <div class="row">
-                                    <span>My Assignment</span>
+               @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='CEO')
+                    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                        <div class="card dash-widget">
+                            <div class="card-body">
+                                <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
+                                <div class="dash-widget-info">
+                                    {{--<h3>{{$items['my_assignments']}}</h3>--}}
+                                    <div class="row">
+                                        <span>Total Employees</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                    <div class="card dash-widget">
-                        <div class="card-body">
-                            <span class="dash-widget-icon"><i class="fa fa-file"></i></span>
-                            <div class="dash-widget-info">
-                                {{--<h3>{{$items['my_activities']}}</h3>--}}
-                                <span>My Activities</span>
+                    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                        <div class="card dash-widget">
+                            <div class="card-body">
+                                <span class="dash-widget-icon"><i class="fa fa-file"></i></span>
+                                <div class="dash-widget-info">
+                                    {{--<h3>{{$items['my_activities']}}</h3>--}}
+                                    <span>Total Revenue</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+
+                @endif
 
                     <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                         <a href="{{route('tickets.index')}}">

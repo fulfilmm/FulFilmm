@@ -204,6 +204,30 @@
                         </ul>
                     </li>
                     <li class="submenu">
+                        <a href="#"><i class="la la-cube"></i> <span>Sale</span> <span
+                                    class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+                            <li class="submenu">
+                                <a href="#"><img src="{{url(asset('img/icon_image/invoice.png'))}}"  alt="" width="18px" height="18px" class="mr-1" ><span> Invoice</span> <span
+                                            class="menu-arrow"></span></a>
+                                <ul style="display: none;">
+                                    <li><a class="{{ Request::is('invoices') ? 'active' : '' }}"
+                                           href="{{ route('invoices.index') }}">All Invoice</a></li>
+                                </ul>
+                            </li>
+                            <li class="submenu">
+                                <a href="#"><img src="{{url(asset('img/icon_image/order24.png'))}}"  alt="" class="mr-1" width="18px" height="18px;"><span> Order</span> <span
+                                            class="menu-arrow"></span></a>
+                                <ul style="display: none;">
+                                    <li><a class="{{ Request::is('invoices') ? 'active' : '' }}"
+                                           href="{{ route('saleorders.index') }}">Orders</a></li>
+                                    <li><a class="{{ Request::is('invoices') ? 'active' : '' }}"
+                                           href="{{ route('saleorders.create') }}">Orders Create</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="submenu">
                         <a href="#"><i class="la la-cube"></i> <span>CRM</span> <span
                                     class="menu-arrow"></span></a>
                         <ul style="display: none;">
@@ -242,26 +266,6 @@
                         <ul style="display: none;">
                             <li><a class="{{ Request::is('quotations') ? 'active' : '' }}"
                                    href="{{ route('quotations.index') }}">All Quotation</a></li>
-                        </ul>
-                    </li>
-                    <li class="submenu">
-                        <a href="#"><img src="{{url(asset('img/icon_image/invoice.png'))}}"  alt="" width="18px" height="18px" class="mr-1" ><span> Invoice</span> <span
-                                    class="menu-arrow"></span></a>
-                        <ul style="display: none;">
-                            <li><a class="{{ Request::is('invoices') ? 'active' : '' }}"
-                                   href="{{ route('invoices.index') }}">All Invoice</a></li>
-                        </ul>
-                    </li>
-                            <li class="submenu">
-                                <a href="#"><img src="{{url(asset('img/icon_image/order24.png'))}}"  alt="" class="mr-1" width="18px" height="18px;"><span> Order</span> <span
-                                            class="menu-arrow"></span></a>
-                                <ul style="display: none;">
-                                    <li><a class="{{ Request::is('invoices') ? 'active' : '' }}"
-                                           href="{{ route('saleorders.index') }}">Orders</a></li>
-                                    <li><a class="{{ Request::is('invoices') ? 'active' : '' }}"
-                                           href="{{ route('saleorders.create') }}">Orders Create</a></li>
-                                </ul>
-                            </li>
                         </ul>
                     </li>
 

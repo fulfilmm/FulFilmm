@@ -8,7 +8,7 @@
     @include('layout.partials.breadcrumb',['header'=>'Company Create Form'])
     <!-- /Page Header -->
 
-                        <form action="{{route('companies.store')}}" method="POST">
+                        <form action="{{route('companies.store')}}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @include('company.form')
                             <div class="input-group-append">
@@ -18,4 +18,5 @@
                         </form>
                         {{-- {{dd($errors->all())}} --}}
                     </div>
+
 @endsection

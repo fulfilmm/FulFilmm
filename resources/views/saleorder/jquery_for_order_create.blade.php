@@ -2,7 +2,7 @@
     $(document).ready(function () {
         $('#delivery_address').hide();
         $('select').selectize({
-            sortField: 'text',
+            sortField: 'text'
         });
     });
     $(document).on('change', 'input', function() {
@@ -139,9 +139,13 @@
                 type:'POST',
                 url:"{{route('saleorders.store')}}",
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                success:function(data){
+                success:function(data) {
                     console.log(data);
-                    if($.isEmptyObject(data.error)){
+                    if(!$.isEmptyObject(data.orderempty)){
+                        alert(data.orderempty)
+                        window.location.href = "/saleorders";
+
+                }else if($.isEmptyObject(data.error)){
                         console.log(data);
                         alert(data.Success);
                     }else {
@@ -150,7 +154,7 @@
                             $('.'+key+'_err').text(value);
                         });
                     }
-                    // window.location.href = "/saleorders";
+                    window.location.href = "/saleorders";
                 }
             });
         });

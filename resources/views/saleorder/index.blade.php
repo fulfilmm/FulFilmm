@@ -22,7 +22,7 @@
                         <div class="d-flex flex-wrap align-items-center justify-content-between">
                             <div class="modal-product-search d-flex">
 
-                                <a href="{{route('saleorders.create')}}" class="btn btn-primary position-relative d-flex align-items-center justify-content-between">
+                                <a href="{{\Illuminate\Support\Facades\Auth::guard('customer')->check()?route('orders.create'):route('saleorders.create')}}" class="btn btn-primary position-relative d-flex align-items-center justify-content-between">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="mr-2" width="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                                     </svg>

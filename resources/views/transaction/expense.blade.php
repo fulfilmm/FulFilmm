@@ -67,6 +67,7 @@
                                         <span class="input-group-text"><i class="fa fa-user"></i></span>
                                     </div>
                                     <select name="customer_id" id="customer_id" class="form-control">
+                                        <option value="">None</option>
                                         @foreach($data['customers'] as $customer)
                                             <option value="{{$customer->id}}">{{$customer->name}}</option>
                                         @endforeach

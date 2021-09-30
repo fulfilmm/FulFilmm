@@ -13,6 +13,7 @@ use App\Models\Employee;
 use App\Models\product;
 use App\Models\products_category;
 use App\Models\products_tax;
+use App\Models\tags_industry;
 use App\Repositories\Contracts\CompanyContract;
 use App\Repositories\Contracts\CustomerContract;
 use Illuminate\Database\Eloquent\Model;
@@ -72,7 +73,9 @@ class DealController extends Controller
              $lastcat=products_category::orderBy('id', 'desc')->first();
             $products=product::with("category","taxes")->get();
             $lead_source=$this->lead_sources;
-        return  view("Deal.create",compact("products",'hasSetUp','companies','parent_companies',"taxes","lasttax","lastcat","allcat","lasttax","allemployees","allcustomers",'lead_source'));
+        $tags = tags_industry::all();
+        $last_tag = tags_industry::orderBy('id', 'desc')->first();
+        return  view("Deal.create",compact("products",'hasSetUp','companies','parent_companies',"taxes","lasttax","lastcat","allcat","lasttax","allemployees","allcustomers",'lead_source','tags','last_tag'));
     }
 
     /**
@@ -128,9 +131,9 @@ class DealController extends Controller
      */
     public function show($id)
     {
+        $deal=deal::with("customer_company","customer","employee",'created_person')->where("id",$id)->firstOrFail();
         $comments=DealComment::with('user')->where('deal_id',$id)->get();
         $schedules=DealActivitySchedule::where('deal_id',$id)->get();
-        $deal=deal::with("customer_company","customer","employee",'created_person')->where("id",$id)->first();
         return view("Deal.show",compact("deal",'comments','schedules'));
     }
 

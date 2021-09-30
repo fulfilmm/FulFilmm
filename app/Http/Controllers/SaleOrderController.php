@@ -19,12 +19,17 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use function PHPUnit\Framework\isEmpty;
 
 class SaleOrderController extends Controller
 {
     public  $status=['Paid','Unpaid','Pending','Cancel'];
     public function index(){
-        $orders=Order::with("customer")->paginate(10);
+        if(Auth::guard('customer')->check()){
+            $orders=Order::with("customer")->where('customer_id',Auth::guard('customer')->user()->id)->paginate(10);
+        }else{
+            $orders=Order::with("customer")->paginate(10);
+        }
 //        dd($orders);
         $data=['orders'=>$orders];
         return view('saleorder.index',compact('data'));
@@ -53,8 +58,14 @@ class SaleOrderController extends Controller
             $grand_total=$grand_total+$items[$i]->total;
         }
         $products=product::all();
-        $quotation=Quotation::all()->pluck('quotation_id','id')->all();
-        $data=['customer'=>$allcustomers,'items'=>$items,'grand_total'=>$grand_total,'id'=>$request_id,'product'=>$products,'quotation.blade.php'=>$quotation];
+        if(Auth::guard('customer')->check()){
+            $quotation=Quotation::all()->pluck('quotation_id','id')->where('customer_name',Auth::guard('customer')->user()->id)->all();
+        }else{
+            $quotation=Quotation::all()->pluck('quotation_id','id')->all();
+        }
+
+//          dd($quotation);
+        $data=['customer'=>$allcustomers,'items'=>$items,'grand_total'=>$grand_total,'id'=>$request_id,'product'=>$products,'quotation'=>$quotation];
         return view('saleorder.create',compact('data'));
     }
     public function store(Request $request){
@@ -99,10 +110,15 @@ class SaleOrderController extends Controller
             $order->billing_address=$request->billing_address;
             $order->status="New";
             $order->order_date = Carbon::create($request->order_date . '' . $request->time);
-            $order->save();
+
             $Auth="order-".Auth::guard('employee')->user()->name;
             $request_id=Session::get($Auth);
             $confirm_order_item=OrderItem::where("creation_id",$request_id)->get();
+            if($confirm_order_item->isEmpty()){
+                return response()->json(['orderempty'=>'Order Item Empty']);
+            }else{
+                $order->save();
+            }
             foreach ($confirm_order_item as $item){
                 $item->order_id=$order->id;
                 $item->update();
@@ -120,7 +136,7 @@ class SaleOrderController extends Controller
 
     }
     public function show($id){
-        $Order=Order::with('customer')->where('id',$id)->first();
+        $Order=Order::with('customer')->where('id',$id)->firstOrFail();
         $items=OrderItem::with('product','invoice')->where('order_id',$id)->get();
         $comments=order_comments::with('employee')->where('order_id',$id)->get();
         $employees=Employee::all()->pluck('name','id')->all();
@@ -148,6 +164,7 @@ class SaleOrderController extends Controller
         $ordered_items = OrderItem::where('order_id', $id)->get();
         if ($ordered_items[0]->inv_id == null) {
             $order_data = Order::where('id', $id)->first();
+//            dd($order_data);
             $allcustomers = Customer::all();
             $products = product::with("category", "taxes")->get();
             $Auth = Auth::guard('employee')->user()->name;
@@ -173,7 +190,7 @@ class SaleOrderController extends Controller
             }
             $status = $this->status;
 
-            return view('invoice.create', compact('request_id', 'allcustomers', 'products', 'orderline', 'grand_total', 'status', 'order_data'));
+            return view('invoice.create', compact('request_id', 'allcustomers', 'products', 'orderline', 'grand_total', 'order_data'));
 
         }else{
             return redirect()->back()->with('error','This order has been generated invoice');

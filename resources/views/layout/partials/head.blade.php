@@ -8,7 +8,7 @@
         <meta name="author" content="Dreamguys - Bootstrap Admin Template">
         <meta name="robots" content="noindex, nofollow">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>Dashboard - HRMS admin template</title>
+        <title>@yield('title')</title>
         <!-- Favicon -->
         <link rel="shortcut icon" type="image/x-icon" href="{{url(asset('img/favicon.png'))}}">
         <!-- Bootstrap CSS -->

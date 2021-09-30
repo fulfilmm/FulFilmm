@@ -21,40 +21,46 @@
         <!-- /Page Header -->
 
         <!-- Content Starts -->
-        <button class="btn btn-primary" type="button" id="save">Save</button>
-        <button class="btn btn-outline-primary" type="button" id="discard">Discard</button>
-        <hr>
-        <button type="button" class="btn btn-outline-primary"  id="send_email">SendByEmail</button>
-        <button class="btn btn-outline-primary" id="confirm">Confirm</button>
+        <div class="dropdown">
+            <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Action
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                <button class="dropdown-item" type="button" id="save">Save</button>
+                <button class="dropdown-item" type="button" id="discard">Discard</button>
+                <button type="button" class="dropdown-item"  id="send_email">SendByEmail</button>
+                <button class="dropdown-item" id="confirm">Confirm</button>
+            </div>
+        </div>
+
         <hr>
         <div class="card">
             <div class="col-12 mt-3">
                 {{--                    <input type="hidden" id="quotation_id" name="quotation_id" value="{{$quotation_id}}">--}}
                 <h3>NEW </h3>
-                <div class="row">
-                    <div class="col-md-1 offset-md-1">  <label for="">Customer</label></div>
+                <div class="row mb-3 ">
                     <div class="col-md-4">
-                        <div class="form-group">
-                            <select name="quo_customer" id="customer_name"  class="form-control">
-                                @foreach($allcustomers as $client)
-                                    <option value="{{$client->id}}">{{$client->name}}</option>
-                                @endforeach
-                                @error('quo_customer')
-                                {{-- <span class="invalid-feedback" role="alert"> --}}
-                                <strong class="text-danger">{{ $message }}</strong>
-                                {{-- </span> --}}
-                                @enderror
-                            </select>
+                        <div class="form-group" id="contact_div">
+                            <label for="">Customer</label>
+                            <div class="input-group">
+                                <select name="quo_customer" id="customer_name"  class="form-control">
+                                    @foreach($allcustomers as $client)
+                                        <option value="{{$client->id}}">{{$client->name}}</option>
+                                    @endforeach
+                                    @error('quo_customer')
+                                    {{-- <span class="invalid-feedback" role="alert"> --}}
+                                    <strong class="text-danger">{{ $message }}</strong>
+                                    {{-- </span> --}}
+                                    @enderror
+                                </select>
+                                <button data-toggle="modal" data-target="#add_contact"  class="btn btn-outline-dark"><i class="fa fa-plus"></i></button>
+                            </div>
+
                         </div>
                     </div>
-                    <div class="col-md-1">
-                        <div class="form-group">
-                            <a data-toggle="modal" href="#add_user"  class="btn btn-outline-dark"><i class="fa fa-plus"></i></a>
-                        </div>
-                    </div>
-                    <div class="col-md-1 ">  <label for="">Expiration</label></div>
                     <div class="col-md-4">
                         <div class="form-group">
+                            <label for="">Expiration</label>
                             <input type="date" class="form-control {{ $errors->has('exp_date') ? ' is-invalid' : '' }}" name="exp_date" id="exp" required>
                             @if ($errors->has('exp_date'))
                                 <span class="help-block">
@@ -63,10 +69,9 @@
                             @endif
                         </div>
                     </div>
-                    <div class="offset-md-7 col-md-1">
-                        <label for="">Payment Terms</label>
-                    </div>
                     <div class="col-md-4" >
+                        <div class="form-group">
+                            <label for="">Payment Terms</label>
                         <select name="pay_term" id="pay_term" class="form-control">
                             <option value="Immediate Payment">Immediate Payment</option>
                             <option value="15 Days">15 Days</option>
@@ -77,25 +82,29 @@
                             <option value="End Of Following Month">End Of Following Month</option>
                             <option value="30% Now,Balance 60 Days">30% Now,Balance 60 Days</option>
                         </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="description">Terms And Conditions</label>
+                            <textarea  class="form-control " name="term_condition" id="term_and_condition" placeholder="Write terms and conditions .."></textarea>
+                        </div>
                     </div>
                 </div>
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Order Line</a>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Optional Products</a>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Other Info</a>
-                    </li>
-                </ul>
-                <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab" style="overflow: auto">
+                    <div class="border-top" id="home" role="tabpanel" aria-labelledby="home-tab" style="overflow: auto">
+                        <div class="form-group">
+                            <label for="">Search Product</label>
+                            <input type="hidden" id="form_id" value="{{$request_id[0]}}">
+                            <select name="" id="product" class="form-control">
+                                <option value="">Select Product</option>
+                                @foreach($products as $product)
+                                    <option value="{{$product->id}}">{{$product->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <table class="table">
                             <thead>
                             <th scope="col" style="min-width: 150px;">Product</th>
-                            <th>Description</th>
                             <th>Quantity</th>
                             <th>Unit Price</th>
                             <th>Taxes(%)</th>
@@ -106,30 +115,30 @@
                             <tbody id="tbody">
                             @foreach($orderline as $order)
                                 <tr>
-                                    <td>
-                                        <input type="hidden" id="order_id_{{$order->id}}" value="{{$order->id}}">
-                                        <select name="" id="edit_product_{{$order->id}}" class="form-control update_order_{{$order->id}}">
-                                            <option value="">Select Product</option>
-                                            @foreach($products as $product)
-                                                @if($product->id==$order->product->id)
-                                                    <option value="{{$product->id}}" selected>{{$product->name}}</option>
-                                                @else
-                                                    <option value="{{$product->id}}">{{$product->name}}</option>
-                                                @endif
-                                            @endforeach
-                                        </select>
+                                    <td style="min-width: 200px;max-width: 400px"><input type="hidden" id="order_id_{{$order->id}}" value="{{$order->id}}">
+                                        <div class="row">
+                                            <input type="hidden" name="product_id" id="product_{{$order->id}}" value="{{$order->product_id}}">
+                                            <div class="col-md-4">
+                                                <img src="{{url(asset('product_picture/'.$order->product->image))}}"  alt="" width="40px" height="40px">
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div>
+                                                    <span class="font-weight-bold">{{$order->product->name}}</span>
+                                                </div>
+                                                <p class="m-0 mt-1">
+                                                    {{$order->product->description}}
+                                                </p>
+                                            </div>
+                                        </div>
                                     </td>
                                     <td>
-                                        <input type="text" name="description" id="edit_order_description_{{$order->id}}" class="form-control update_order_{{$order->id}}" value="{{$order->description}}">
+                                        <input type="text" name="hello" id="edit_quantity_{{$order->id}}" class="form-control update_order_{{$order->id}}" value="{{$order->quantity}}" >
                                     </td>
+                                    <td><input type="text" id="edit_price_{{$order->id}}" class="form-control update_order_{{$order->id}}" value="{{$order->price}}" ></td>
                                     <td>
-                                        <input type="text" name="hello" id="edit_quantity_{{$order->id}}" class="form-control update_order_{{$order->id}}" value="{{$order->quantity}}">
-                                    </td>
-                                    <td><input type="text" id="edit_price_{{$order->id}}" class="form-control update_order_{{$order->id}}" value="{{$order->price}}" readonly></td>
+                                        <div class="input-group"><input type="text" class="form-control update_order_{{$order->id}}" name="tax" id="edit_product_tax_{{$order->id}}" value="{{$order->tax==0?'No Tax':$order->tax}}"><span class="input-group-text">%</span></div></td>
                                     <td>
-                                        <div class="input-group"><input type="text" class="form-control update_order_{{$order->id}}" name="tax" id="edit_product_tax_{{$order->id}}" value="{{$order->tax}}" readonly><span class="input-group-text">%</span></div></td>
-                                    <td>
-                                        <input type="text" name="total" id="edit_total_{{$order->id}}" class="form-control update_order_{{$order->id}}" value="{{$order->total_amount}}" readonly>
+                                        <input type="text" name="total" id="edit_total_{{$order->id}}" class="form-control update_order_{{$order->id}}" value="{{$order->total_amount}}" >
                                     </td>
                                     <td><input type="text" class="form-control update_order_{{$order->id}}" id="edit" value="{{$order->product->currency_unit}}" readonly></td>
                                     <td>
@@ -179,8 +188,8 @@
                                                 var tax=$('#edit_product_tax_{{$order->id}}').val();
                                                 var total=$('#edit_total_{{$order->id}}').val();
                                                 var order_id=$('#order_id_{{$order->id}}').val();
-                                                var product=$('#edit_product_{{$order->id}} option:selected').val();
-                                                // alert(product);
+                                                var product=$('#product_{{$order->id}}').val();
+                                                alert(product);
                                                 $.ajax({
                                                     data : {
                                                         product_id:product,
@@ -213,27 +222,7 @@
                                         });
                                     </script>
                                 </tr>
-                                </tr>
                             @endforeach
-                            <tr>
-                                <td> <input type="hidden" id="form_id" value="{{$request_id[0]}}">
-                                    <select name="" id="product" class="form-control">
-                                        <option value="">Select Product</option>
-                                        @foreach($products as $product)
-                                            <option value="{{$product->id}}">{{$product->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                                <td>
-                                    <input type="text" name="description" id="order_description" class="form-control">
-                                </td>
-                                <td><input type="number" name="quantity" id="quantity" class="form-control " value="0"></td>
-                                <td><input type="number" id="price" class="form-control " value="0" readonly></td>
-                                <td><div class="input-group"><input type="text" class="form-control" name="tax" id="product_tax" readonly><span class="input-group-text">%</span></div></td>
-                                <td><input type="number" name="total" id="total" class="form-control" value="0" readonly></td>
-                                <td><input type="text" class="form-control" id="unit" readonly></td>
-                                <td><button type="button" class="btn btn-outline-danger ml-2 text-sm  btn-sm" id="add">Add Item</button></td>
-                            </tr>
                             </tbody>
                             <tr>
 
@@ -252,86 +241,28 @@
                                 <td><input class="form-control" type="text" id="grand_total" value="{{$grand_total}}"></td>
                             </tr>
                         </table>
-                        <label for="term_and_condition" class="mt-3">Terms and Condition</label>
-                        <div class="term">
-                            <div class="input-group my-3">
-                                <textarea  class="form-control " name="term_condition" id="term_and_condition" placeholder="Write terms and conditions .."></textarea><br>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="modal custom-modal rounded" id="add_user">
-            <div class="modal-dialog modal-xl" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Add Contact</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    </div>
-                    <div class="container " >
-                        <div class="modal-body">
-{{--                            @include('')--}}
-                        </div>
-                        <div class="modal-footer">
-                            <a href="#" data-dismiss="modal" class="btn">Close</a>
-                            <a href="#" id="add_contact" data-dismiss="modal" class="btn btn-primary">Add</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    @include('customer.quickcustomer')
+    @include('company.quickcompany')
         <!-- /Content End -->
 
     </div>
     <!-- /Page Content -->
     <!-- /Page Wrapper -->
     <script>
-            //price calculation function
-            $(document).on('change', 'input', function() {
-                var quantity=$('#quantity').val();
-                var price=$('#price').val();
-                var total=quantity * price;
-                var tax=$('#product_tax').val();
-                var tax_amount=tax / 100 * total;
-                var include_tax=total + tax_amount;
-                    $('#total').val(include_tax);
 
-            });
-            //customer select function
             $(document).ready(function() {
-                $('#customer_name').select2({
-                        "language": {
-                        },
-                        escapeMarkup: function (markup) {
-                            return markup;
-                        }
-                    }
-
-                );
-
-            });
-            //product select function
-            //order line function
-            $(document).ready(function() {
-                $(document).on('click', '#add', function () {
+                $(document).on('change', '#product', function () {
                     var quotation_id=$('#form_id').val();
                     var product=$('#product option:selected').val();
-                    var desc=$('#order_description').val();
-                    var quantity=$('#quantity').val();
-                    var price=$('#price').val();
-                    var tax=$('#product_tax').val();
-                    var total=$('#total').val();
                     $.ajax({
                         data : {
                             product_id:product,
-                            description:desc,
-                            quantity:quantity,
-                            price:price,
-                            tax:tax,
-                            total:total,
-                            quotation_id:quotation_id,
+                            quotation_id:quotation_id
                         },
                         type:'POST',
                         url:"{{route('quotation_items.store')}}",
@@ -353,71 +284,17 @@
                     });
                 });
             });
-            //new customer add ajax function
-            {{--$(document).ready(function() {--}}
-            {{--    $(document).on('click', '#add_contact', function () {--}}
 
-            {{--        var customer_id=$("#customer_id").val();--}}
-            {{--        var customer_name =$("#customer_name ").val();--}}
-            {{--        var customer_phone=$("#customer_phone").val();--}}
-            {{--        var customer_email=$("#customer_email").val();--}}
-            {{--        var customer_company=$("#customer_company").val();--}}
-            {{--        var customer_dept=$("#customer_dept").val();--}}
-            {{--        var customer_position=$("#customer_position option:selected").val();--}}
-            {{--        var customer_report_to=$("#customer_report_to").val();--}}
-            {{--        var customer_address=$("#customer_address").val();--}}
-            {{--        var customer_admin_company=$("#customer_admin_company").val();--}}
-            {{--        var type="ajax";--}}
-            {{--        $.ajax({--}}
-            {{--            data : {--}}
-            {{--                customer_id:customer_id,--}}
-            {{--                name:customer_name,--}}
-            {{--                phone:customer_phone,--}}
-            {{--                email:customer_email,--}}
-            {{--                company_id:customer_company,--}}
-            {{--                department:customer_dept,--}}
-            {{--                position:customer_position,--}}
-            {{--                report_to:customer_report_to,--}}
-            {{--                address:customer_address,--}}
-            {{--                admin_company:customer_admin_company,--}}
-            {{--                type:type--}}
-            {{--            },--}}
-            {{--            type:'POST',--}}
-            {{--            url:"{{url("client/customer/create/")}}",--}}
-            {{--            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},--}}
-            {{--            success:function(data){--}}
-            {{--                console.log(data);--}}
-            {{--                $("#contact_div").load(location.href + " #contact_div>* ");--}}
-
-            {{--            }--}}
-            {{--        });--}}
-            {{--    });--}}
-            {{--});--}}
-            //product price pass date ajax function
-            $(document).on('change','#product',function (){
-                var product_id=$("#product option:selected").val();
-                // alert(product_id);
-                @foreach($products as $product )
-                    var p_id={{$product->id}}
-                if(p_id==product_id)
-                {
-                    var tax = {{$product->taxes->rate}};
-                    $('#product_tax').val(tax);
-                    $('#price').val({{$product->sale_price}});
-                    $('#unit').val("{{$product->currency_unit}}");
-                }
-                @endforeach
-            });
          //store ajax function
             $(document).ready(function() {
                 $(document).on('click', '#save', function () {
-                    var quotation_id=$('#quotation_id').val();
+                    var quotation_id=$('#form_id').val();
                     var customer_id=$('#customer_name option:selected').val();
                     var exp=$('#exp').val();
                     var pay_term=$('#pay_term option:selected').val();
                     var grand_total=$('#grand_total').val();
-                    var term_condition=$('#term_and_condition').val();
-
+                    var term_condition=$("#term_and_condition").val();
+// alert(term_condition);
                     $.ajax({
                         data : {
                             quotation_id:quotation_id,
@@ -425,7 +302,7 @@
                             expiration:exp,
                             payment_term:pay_term,
                             grand_total:grand_total,
-                            term_and_condition:term_condition,
+                            term_and_condition:term_condition
                         },
                         type:'POST',
                         url:"{{route('quotations.store')}}",
@@ -452,7 +329,7 @@
              //Discard ajax code
             $(document).ready(function() {
                 $(document).on('click', '#discard', function () {
-                    var quotation_id=$('#quotation_id').val();
+                    var quotation_id=$('#form_id').val();
                     $.ajax({
                         data : {
                             quotation_id:quotation_id,
@@ -462,19 +339,19 @@
                         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                         success:function(data){
                             console.log(data);
-                            window.location.href = "/quotations";
+                            // window.location.href = "/quotations";
                         }
                     });
                 });
             });
             $(document).ready(function() {
                 $(document).on('click', '#send_email', function () {
-                    var quotation_id=$('#quotation_id').val();
+                    var quotation_id=$('#form_id').val();
                     var customer_id=$('#customer_name option:selected').val();
                     var exp=$('#exp').val();
                     var pay_term=$('#pay_term option:selected').val();
                     var grand_total=$('#grand_total').val();
-                    var term_condition=$('#term_and_condition').val();
+                    var term_condition=CKEDITOR.instances["term_and_condition"].getData();
                     var company=$('#customer_admin_company').val();
                     $.ajax({
                         data : {
@@ -508,5 +385,12 @@
                     });
                 });
             });
+            // ClassicEditor
+            //     .create(document.querySelector('#term_and_condition'));
+
+
+
+
+
     </script>
 @endsection

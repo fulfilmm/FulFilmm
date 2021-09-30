@@ -93,7 +93,7 @@ class RequestTicket extends Controller
      */
     public function show($id)
     {
-        $complain=ticketrequest::with('complain_company','compalin_product')->where('id',$id)->first();
+        $complain=ticketrequest::with('complain_company','compalin_product')->where('id',$id)->firstOrFail();
         $photos = json_decode($complain->image);
         return view('ticket.requestshow',compact('complain','photos'));
     }

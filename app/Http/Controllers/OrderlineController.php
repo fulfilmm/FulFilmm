@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\product;
 use App\Models\QuotationItem;
 use Illuminate\Http\Request;
 
@@ -35,13 +36,14 @@ class OrderlineController extends Controller
      */
     public function store(Request $request)
     {
+        $product=product::with('taxes')->where('id',$request->product_id)->first();
         $order_line=new QuotationItem();
         $order_line->product_id=$request-> product_id;
-        $order_line->description=$request->description;
-        $order_line->quantity=$request->quantity;
-        $order_line->price=$request->price;
-        $order_line->tax=$request->tax;
-        $order_line->total_amount=$request->total;
+        $order_line->description=$product->description;
+        $order_line->quantity=1;
+        $order_line->price=$product->sale_price;
+        $order_line->tax=$product->taxes->rate;
+        $order_line->total_amount=$product->sale_price;
         $order_line->quotation_id=$request->quotation_id;
         $order_line->save();
     }

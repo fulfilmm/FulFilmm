@@ -126,7 +126,7 @@
 
             </li>
 
-            <li class=" nav-item"><a href="http://rose.localhost/crm/projects"
+            <li class=" nav-item"><a href="{{route('orders.index')}}"
                                      class="menu-item "><img src="{{url(asset('img/icon_image/order24.png'))}}" alt=""
                                                              class="mr-1"><span class="menu-title">Order</span></a>
 

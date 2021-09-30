@@ -19,7 +19,7 @@
             </div>
         </div>
         <!-- /Page Header -->
-
+{{--@dd($record->logo)--}}
         <div class="card mb-0">
             <div class="card-body">
                 <div class="row">
@@ -28,7 +28,7 @@
                             <div class="profile-img-wrap">
                                 <div class="profile-img">
                                     <a href="">
-                                        <img src="img/profiles/avatar-19.jpg" alt="">
+                                        <img src="{{$record->logo}}" alt="">
                                     </a>
                                 </div>
                             </div>

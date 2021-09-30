@@ -11,6 +11,7 @@ use App\Repositories\Contracts\CompanyContract;
 use App\Repositories\Contracts\DepartmentContract;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
 class CompanyController extends Controller
@@ -78,7 +79,16 @@ class CompanyController extends Controller
     {
         //
 //        dd($request->all());
-        $this->company_contract->create($request->all());
+        $data=$request->all();
+        $path = '';
+        if ($request->file('logo')) {
+            $uploadedFile = $request->file('logo');
+            $path = Storage::url($uploadedFile->store('companylogo', ['disk' => 'public']));
+            $data['logo'] = $request->logo->getClientOriginalName();
+            $data['logo'] = $path;
+        }
+
+        $this->company_contract->create($data);
         return redirect()->route('companies.index')->with('success', __('alert.create_success'));
     }
 
@@ -119,8 +129,17 @@ class CompanyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-        $this->company_contract->updateById($id, $request->all());
+
+        $data=$request->all();
+        $path = '';
+        if ($request->file('logo')) {
+            $uploadedFile = $request->file('logo');
+            $path = Storage::url($uploadedFile->store('companylogo', ['disk' => 'public']));
+            $data['logo'] = $request->logo->getClientOriginalName();
+            $data['logo'] = $path;
+        }
+
+        $this->company_contract->updateById($id, $data);
         return redirect()->route('companies.index')->with('success', __('alert.update_success'));
     }
 

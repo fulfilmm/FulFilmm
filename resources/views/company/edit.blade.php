@@ -7,7 +7,7 @@
     @include('layout.partials.breadcrumb',['header'=>'Company Edit Form'])
     <!-- /Page Header -->
 
-                        <form action="{{route('companies.update',$record->id)}}" method="POST">
+                        <form action="{{route('companies.update',$record->id)}}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('put')
                             @include('company.form')

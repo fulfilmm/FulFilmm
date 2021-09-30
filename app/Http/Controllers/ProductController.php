@@ -81,7 +81,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product=product::with("taxes","category")->where("id",$id)->first();
+        $product=product::with("taxes","category")->where("id",$id)->firstOrFail();
         return view("product.show",compact("product"));
     }
 

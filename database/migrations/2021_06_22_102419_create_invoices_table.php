@@ -28,8 +28,11 @@ class CreateInvoicesTable extends Migration
             $table->string('payment_method');
             $table->text('other_information')->nullable();
             $table->double('grand_total');
+            $table->boolean('mark_sent')->default(false);
+            $table->boolean('send_email')->default(false);
             $table->bigInteger('emp_id');
             $table->index(['id','customer_id']);
+            $table->bigInteger('order_id')->unsigned()->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

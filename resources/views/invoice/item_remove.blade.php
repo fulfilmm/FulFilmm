@@ -8,7 +8,9 @@
             <form action="{{route('invoice_items.destroy',$order->id)}}" method="POST">
                @csrf
                 @method('delete')
-                <span class="text-center">Do You Want to remove this item?</span>
+                <div class="col-12">
+                    <span class="text-center">Do You Want to remove this item?</span>
+                </div>
                 <div class="form-group my-3 text-center">
                     <button type="submit" class="btn btn-danger">Delete</button>
                 </div>

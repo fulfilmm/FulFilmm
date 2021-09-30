@@ -145,7 +145,7 @@
                         <table border='0' cellpadding='0' cellspacing='0' role='presentation' style='vertical-align:top;' width='100%'>
                             <tr></tr>
                             <tr>
-                                <th style="font-size: 20px" >Orders</th></tr>
+                                <th style="font-size: 20px" >Items</th></tr>
                             <tr>
                                 <td align='left' style='font-size:0px;padding:10px 25px;word-break:break-word;'>
                                     <table border='0' cellpadding='0' cellspacing='0' style="cellpadding:0;cellspacing:0;color:#777777;font-family:'Oxygen', 'Helvetica Neue', helvetica, sans-serif;font-size:14px;line-height:21px;table-layout:auto;width:100%;" width='100%'>

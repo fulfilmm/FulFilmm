@@ -39,7 +39,7 @@
                     <div class="card mt-3">
                         <div class="card-header">Description</div>
                         <div class="card-body">
-                           <p>{{$deal->description}}</p>
+                           <p>{!! $deal->description !!}</p>
                         </div>
                         <div class="card-footer mb-3">
                             <strong>Notes : </strong><span>{{$deal->next_step}}</span>
@@ -125,13 +125,9 @@
                                             <div class="row " >
                                                 <div class="col-xl-9 col-md-9 col-9">
                                                     <input type="hidden" name="deal_id" value="{{$deal->id}}">
-                                                    <div class="form-group col-12" >
+                                                    <div class="input-group col-12" >
                                                         <input type="text" class="form-control" name="comment" style="border-color: black">
-                                                    </div>
-                                                </div>
-                                                <div class=" col-3">
-                                                    <div class="row">
-                                                        <button class="btn btn-primary col-8 btn-sm" type="submit" style="font-size: 20px;">Add Note</button>
+                                                        <button class="btn btn-outline-dark" type="submit" >Add Note</button>
                                                     </div>
                                                 </div>
                                             </div>

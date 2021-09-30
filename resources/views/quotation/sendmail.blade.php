@@ -9,7 +9,7 @@
                     <div class="row">
                         {{--@php $company=\App\Models\MainCompany::where('ismaincompany',true)->first(); @endphp--}}
                         <div class="col-md-4">
-                            <h3>Quotation Send Mail</h3>
+                            <h4>{{$quotation->quotation_id}} </h4>
                         </div>
                         <div class="col-md-8 col-6">
                             <div class="row">
@@ -26,7 +26,7 @@
                     </div>
                 </div>
                 <div class="col-12">
-                    <strong class="ml-5">ID :{{$quotation->quotation_id}} </strong>
+                    <strong class="ml-3"></strong>
                     <div class="row  mt-3">
                         <div class="col-md-2 col-3 offset-md-6  ">
                             <label for="">Expiration </label>

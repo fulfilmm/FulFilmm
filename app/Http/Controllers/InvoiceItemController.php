@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\OrderItem;
+use App\Models\product;
 use Illuminate\Http\Request;
 
 class InvoiceItemController extends Controller
@@ -36,16 +37,17 @@ class InvoiceItemController extends Controller
     public function store(Request $request)
     {
 //        dd($request->all());
+        $product=product::with('taxes')->where('id',$request->product_id)->first();
         $items=new OrderItem();
         $items->product_id=$request->product_id;
-        $items->description=$request->description;
-        $items->quantity=$request->quantity;
-        $items->tax_id=$request->tax_id;
-        $items->discount=$request->discount;
-        $items->discount_type=$request->discount_type;
-        $items->unit_price=$request->unit_price;
-        $items->currency_unit=$request->currency_unit;
-        $items->total=$request->total;
+        $items->description=$product->description;
+        $items->quantity=1;
+        $items->tax_id=$product->taxes->rate;
+        $items->discount=0;
+        $items->discount_type='%';
+        $items->unit_price=$product->sale_price;
+        $items->currency_unit=$product->currency_unit;
+        $items->total=$product->sale_price;
         $items->creation_id=$request->invoice_id;
         $items->state=1;
         $items->save();

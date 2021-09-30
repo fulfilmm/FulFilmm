@@ -2,7 +2,7 @@
 @section('title','Home')
 @section('cart')
     <li class="dropdown dropdown-user nav-item">
-        <a class="nav-link dropdown-user-link" href="{{route('saleorders.create')}}">
+        <a class="nav-link dropdown-user-link" href="{{route('orders.create')}}">
             <i class="fa fa-shopping-cart" style="font-size: 24px"></i>
         </a>
     </li>

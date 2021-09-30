@@ -76,7 +76,7 @@
                         <div class="col-md-4 col-12">
                             <div class="form-group">
                                 <label for="full_org">Organization <span class="text-danger"> * </span></label>
-                                <div class="input-group" id="full_org">
+                                <div class="input-group" id="company_div">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fa fa-money"></i></span>
                                     </div>
@@ -86,7 +86,7 @@
                                         @endforeach
                                     </select>
                                     <div class="input-group-prepend">
-                                        <button data-toggle="modal" href="#add_company"
+                                        <button type="button" data-toggle="modal" href="#add_new_company"
                                                 class="btn btn-outline-dark rounded"><i class="fa fa-plus"></i></button>
                                     </div>
                                 </div>
@@ -96,7 +96,7 @@
                             </div>
                         </div>
                         <div class="col-md-4 col-12">
-                            <div class="form-group" id="full_org_div">
+                            <div class="form-group" id="contact_div">
                                 <label for="full_contact">Contact Name <span class="text-danger"> * </span></label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
@@ -107,7 +107,7 @@
                                             <option value="{{$key}}">{{$value}}</option>
                                         @endforeach
                                     </select>
-                                    <button data-toggle="modal" href="#add_user" class="btn btn-outline-dark"><i
+                                    <button type="button" data-toggle="modal" href="#add_contact" class="btn btn-outline-dark"><i
                                                 class="fa fa-plus"></i></button>
                                 </div>
                                 @error('contact_name')
@@ -255,7 +255,8 @@
                     </div>
                 </div>
             </form>
-
+@include('company.quickcompany')
+            @include('customer.quickcustomer')
         </div>
         <script>
             $(document).ready(function () {

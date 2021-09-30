@@ -46,7 +46,9 @@ use App\Http\Controllers\RoleController;
 |
 */
 
-
+Route::get('/api/auth/login',function (){
+    return redirect('/');
+});
 Route::get('/', [HomeController::class, 'index'])->middleware(['auth:employee']);
 Route::get('login', [AuthController::class, 'showLoginForm'])->name('show.login');
 Route::namespace('Auth\Login')->prefix('employees')->as('employees.')->group(function () {
@@ -54,7 +56,7 @@ Route::namespace('Auth\Login')->prefix('employees')->as('employees.')->group(fun
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 });
-Route::resource('saleorders', SaleOrderController::class)->only('create','store')->middleware('custom_auth');
+//Route::resource('saleorders', SaleOrderController::class)->only('create','store')->middleware('custom_auth');
 
 Route::namespace('Auth\Login')->prefix('customer')->as('customers.')->group(function () {
     Route::post('login', [CustomerAuth::class, 'login'])->name('customerlogin');
@@ -92,6 +94,8 @@ Route::middleware(['auth:employee'])->group(function () {
 
     Route::post("/deal/status/change", [DealController::class, 'sale_stage_change'])->name('deals.status_change');
     Route::post("/deal/company/create", [DealController::class, 'company_create'])->name('company_create');
+    Route::get('/quotations/sendemail/{id}', [QuotationController::class, 'sendEmail'])->name('sendemail');
+    Route::post('/quotations/sendmail', [QuotationController::class, 'email'])->name('quotations.mail');
 
 
 });
@@ -136,8 +140,7 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
 
 
     Route::post("add/new/customer", [DealController::class, 'add_newcustomer'])->name('add_new_customer');
-    Route::get('/quotations/sendemail/{id}', [QuotationController::class, 'sendEmail'])->name('quotation.blade.php.sendemail');
-    Route::post('/quotations/sendmail', [QuotationController::class, 'email'])->name('quotations.mail');
+
     //invoice
     Route::get("invoice/sendmail/{id}", [InvoiceController::class, 'sending_form'])->name('invoice.sendmail');
     Route::post("invoice/mail/send", [InvoiceController::class, 'email'])->name('send');
@@ -224,8 +227,8 @@ Route::middleware(['auth:customer'])->group(function () {
     Route::get('customer/dashboard', [CustomerProtal::class, 'dashboard'])->name('customer.invoice');
     Route::get('customer/order', [CustomerProtal::class, 'dashboard'])->name('customer.orders');
     Route::get('customer/order/{id}', [CustomerProtal::class, 'dashboard'])->name('order.show');
+    Route::resource('orders', SaleOrderController::class);
 });
-
 
 Route::get('test', function () {
 //    $orders=\App\Models\Orderline::with('product')->get();

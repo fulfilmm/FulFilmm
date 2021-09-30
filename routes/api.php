@@ -23,7 +23,8 @@ use App\Http\Controllers\Auth\Login\EmployeeAuthController as AuthController;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::middleware(['api'])->prefix('auth')->group(function () {
+Route::middleware(['auth:api'])->prefix('auth')->group(function () {
+
     Route::resource('api_products',App\Http\Controllers\Api\ProductController::class);
     Route::resource('api_employees',\App\Http\Controllers\Api\EmployeeController::class);
     Route::post('logout',[ApiAuthController::class,'login'])->name('logout');
@@ -40,4 +41,5 @@ Route::middleware(['api'])->prefix('auth')->group(function () {
        return response()->json(['role'=>$aa]);
     });
 });
-Route::post('auth/login',[ApiAuthController::class,'login'])->name('login');
+Route::post('/auth/login',[ApiAuthController::class,'login'])->name('login');
+

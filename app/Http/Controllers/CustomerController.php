@@ -36,14 +36,17 @@ class CustomerController extends Controller
 {
     public $state = ['Yangon Division', 'Mandalay Division', 'Bago Division', 'Ayeyarwady Division', 'Tanintharyi Division', 'Magway Division', 'Sagaing Division', 'Kachin State', 'Kayah State', 'Kayin State', 'Chin State', 'Mon State', 'Rakhine State', 'Shan State'];
 
-    private $customerContract, $companyContract;
+    private $customerContract, $company_contract;
 
-    public function __construct(CustomerContract $customerContract, CompanyContract $companyContract)
+    public function __construct(CustomerContract $customerContract, CompanyContract $company_contract)
     {
         $this->customerContract = $customerContract;
-        $this->companyContract = $companyContract;
+        $this->company_contract = $company_contract;
 
     }
+
+
+
 
     /**
      * Display a listing of the resource.
@@ -73,8 +76,9 @@ class CustomerController extends Controller
         $state = $this->state;
         $tags = tags_industry::all();
         $last_tag = tags_industry::orderBy('id', 'desc')->first();
-        $companies = $this->companyContract->all()->pluck('name', 'id')->all();
-        return view('customer.create', compact('companies', 'state', 'last_tag', 'tags'));
+        $companies = $this->company_contract->all()->pluck('name', 'id')->all();
+        $parent_companies = $this->company_contract->parentCompanies()->pluck('name', 'id')->all();
+        return view('customer.create', compact('companies', 'state', 'last_tag', 'tags','parent_companies'));
     }
 
     /**
