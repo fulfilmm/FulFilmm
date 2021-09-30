@@ -40,14 +40,13 @@
         <link rel="stylesheet" href="{{url(asset('css/offcavas.css'))}}">
         <!-- Summernote CSS -->
         <link rel="stylesheet" href="{{url(asset("plugins/summernote/dist/summernote-bs4.css"))}}">
-        {{--<script type="text/javascript"src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5Jrp9PtHe0WapppUzxbIpMDWMAcV3qE4"></script>--}}
-        {{--<script src="https://unpkg.com/location-picker/dist/location-picker.min.js"></script>--}}
+
         <link rel="stylesheet" href="{{url(asset('css/jquery_ui.css'))}}">
         <link rel="stylesheet" href="{{url(asset('css/jquery.datetimepicker.css'))}}">
         {{--<!-- Main CSS -->--}}
         <link rel="stylesheet" href="{{url(asset("css/style.css"))}}">
         <script src="{{url(asset("js/jquery-3.2.1.min.js"))}}"></script>
-        {{--<script src="https://cdn.ckeditor.com/ckeditor5/29.0.0/classic/ckeditor.js"></script>--}}
+
 
 
     </head>

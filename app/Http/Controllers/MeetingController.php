@@ -205,7 +205,7 @@ class MeetingController extends Controller
      if($type=='external'){
          $meeting_member = new Meetingmember();
          $meeting_member->meeting_id = $meeting_id;
-         $meeting_member->exeternal_member_id = $members_id;
+         $meeting_member->external_member_id = $members_id;
          $meeting_member->is_accept = 0;
          $meeting_member->is_external=1;
          $meeting_member->save();
