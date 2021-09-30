@@ -127,7 +127,7 @@
                             <div class="col-md-6 col-12">
                                 <div class="form-group">
                                     <label for="target_date">Target Date <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="datetime-local" name="target_date" id="target_date" value="{{ old('target_date') }}">
+                                        <input class="form-control" type="text" name="target_date" id="target_date" value="{{ old('target_date') }}">
                                     @error('target_date')
                                     {{-- <span class="invalid-feedback" role="alert"> --}}
                                     <span class="text-danger">{{ $message }}</span>
@@ -201,12 +201,11 @@
         </div>
     </div>
     <!-- /Add Event Modal -->
+    <script>
+        jQuery(document).ready(function () {
+            'use strict';
 
-    <!-- Event Modal -->
-
-    <!-- /Event Modal -->
-
-    <!-- Add Category Modal-->
-    <!-- /Add Category Modal-->
-    <!-- /Page Wrapper -->
+            jQuery('#target_date').datetimepicker();
+        });
+    </script>
 @endsection

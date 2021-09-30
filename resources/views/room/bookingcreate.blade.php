@@ -25,11 +25,12 @@
                     </div>
                     <div class="form-group">
                         <label for="start_time">Start Time</label>
-                        <input type="datetime-local" id="start_time" class="form-control" min="{{\Carbon\Carbon::now()->format('Y-m-d')}}T06:30" name="start_time" required>
+
+                        <input type="text" id="start_time" class="form-control" min="{{\Carbon\Carbon::now()->format('Y-m-d')}}T06:30" name="start_time" required>
                     </div>
                     <div class="form-group">
                         <label for="end_time">End Time</label>
-                        <input type="datetime-local" id="end_time" class="form-control" min="{{\Carbon\Carbon::now()->format('Y-m-d')}}T06:30" name="endtime" required>
+                        <input type="text" id="end_time" class="form-control" min="{{\Carbon\Carbon::now()->format('Y-m-d')}}T06:30" name="endtime" required>
                     </div>
                     <div class="form-group">
                         <button class="btn btn-primary">Add</button>
@@ -39,3 +40,10 @@
         </div>
     </div>
 </div>
+<script>
+    jQuery(document).ready(function () {
+        'use strict';
+
+        jQuery('#start_time,#end_time').datetimepicker();
+    });
+</script>

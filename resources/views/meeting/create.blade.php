@@ -56,7 +56,7 @@
                            <div class="col-md-12">
                                <div class="form-group">
                                    <label for="date">Date  <span class="text-danger">*</span></label>
-                                   <input type="datetime-local" value="{{old('due_date')}}" name="due_date" class="form-control" id="date" required>
+                                   <input type="text" value="{{old('due_date')}}" name="due_date" class="form-control" id="date" required>
                                    @error('due_date')
                                    <span class="text-danger">{{$message}}</span>
                                    @enderror
@@ -125,6 +125,12 @@
     <!-- /Page Wrapper -->
     <script type="text/javascript">
         // add row
+
+        jQuery(document).ready(function () {
+            'use strict';
+
+            jQuery('#date').datetimepicker();
+        });
         $("#addRow").click(function () {
             var html = '';
             html += '<div id="inputFormRow">';

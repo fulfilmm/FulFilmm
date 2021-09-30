@@ -3,11 +3,12 @@
 
 <!-- Sweet Alert -->
 {{--<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>--}}
-
+{{--<script src="http://code.jquery.com/jquery-1.9.1.js"></script>--}}
+<script src="{{url(asset('js/jquery_ui1_11_0.js'))}}"></script>
 <!-- Bootstrap Core JS -->
 <script src="{{asset('js/popper.min.js')}}"></script>
 <script src="{{asset('js/bootstrap.min.js')}}"></script>
-<script src="{{url(asset('js/offcavas.js'))}}"></script>
+{{--<script src="{{url(asset('js/offcavas.js'))}}"></script>--}}
 
 <!-- Slimscroll JS -->
 <script src="{{asset('js/jquery.slimscroll.min.js')}}"></script>
@@ -25,6 +26,7 @@
 <script src="{{asset('js/jquery-ui.min.js')}}"></script>
 <script src="{{asset('js/fullcalendar.min.js')}}"></script>
 <script src="{{asset('js/jquery.fullcalendar.js')}}"></script>
+<script src="{{url(asset('js/jquery.datetimepicker.js'))}}"></script>
 
 <!-- Multiselect JS -->
 <script src="{{asset('js/multiselect.min.js')}}"></script>
