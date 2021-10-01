@@ -60,17 +60,14 @@
                                 <div class="col-sm-6 col-md-3">
                                     <div class="form-group">
                                         <label for="inv_date">Invoice date <span class="text-danger">*</span></label>
-                                        <div class="cal-icon">
                                             <input class="form-control " type="date" id="inv_date">
-                                        </div>
+
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-md-3">
                                     <div class="form-group">
                                         <label for="due_date">Due Date <span class="text-danger">*</span></label>
-                                        <div class="cal-icon">
-                                            <input  class="form-control" type="date" id="due_date">
-                                        </div>
+                                        <input  class="form-control" type="date" id="due_date">
                                     </div>
                                 </div>
                                 <div class="col-sm-3 col-md-3">
