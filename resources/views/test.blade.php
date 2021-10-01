@@ -16,9 +16,14 @@
     <script src="{{url(asset('js/imagecrop/jquery.SimpleCropper.js'))}}"></script>
 </head>
 <body>
-<div class="cropme" style="width: 10px;height: 10px">asdfas</div>
+<div  id='letter' class="letter" style="width: 10px;height: 10px">asdfas</div>
+
+
 <script>
-    $('.cropme').simpleCropper();
+    ClassicEditor.create($('#letter')[0],{
+        toolbar: [ 'heading','bold', 'italic', 'undo', 'redo', 'numberedList', 'bulletedList','insertTable','fontColor','fontfamily','fontsize']
+
+    });
 
 </script>
 </body>

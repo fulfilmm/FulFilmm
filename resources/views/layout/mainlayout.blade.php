@@ -1,10 +1,8 @@
 @php $maincompany=\App\Models\MainCompany::where('ismaincompany',true)->first(); @endphp
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    @include('layout.partials.head')
-    @yield('styles')
-</head>
+@include('layout.partials.head')
+@yield('styles')
 
 <body>
 @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())

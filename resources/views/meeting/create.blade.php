@@ -140,6 +140,7 @@
     <!-- /Page Content -->
 
     <!-- /Page Wrapper -->
+    x
     <script type="text/javascript">
         // add row
 
@@ -206,7 +207,10 @@
             });
         });
 
-        ClassicEditor
-            .create(document.querySelector('#letter'));
+        ClassicEditor.create($('#letter')[0],{
+            toolbar: [ 'heading','bold', 'italic', 'undo', 'redo', 'numberedList', 'bulletedList','insertTable','fontColor','fontfamily','fontsize']
+
+        });
+
     </script>
 @endsection

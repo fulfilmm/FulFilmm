@@ -4,6 +4,8 @@
 <!-- Sweet Alert -->
 {{--<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>--}}
 {{--<script src="http://code.jquery.com/jquery-1.9.1.js"></script>--}}
+{{--<script src="{{url(asset('js/ckeditor.js'))}}"></script>--}}
+
 <script src="{{url(asset('js/jquery_ui1_11_0.js'))}}"></script>
 <!-- Bootstrap Core JS -->
 <script src="{{asset('js/popper.min.js')}}"></script>
