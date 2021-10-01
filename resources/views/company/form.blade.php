@@ -100,7 +100,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label for="address">Address <span class="text-danger"> * </span></label>
-                    <textarea name="address" id="address" class="form-control" required></textarea>
+                    <textarea name="address" id="address" class="form-control" required>{{$record->address ?? old('address')}}</textarea>
                     @error('address')
                     <span role="alert">
             <p class="text-danger mt-3 mb-0">{{ $message }}</p>
