@@ -8,25 +8,49 @@
     <title>Meeting Invite Mail</title>
 </head>
 <body>
-Dear,{{$member_name}}<br>
-<p>I hope this email finds you well. I’m writing to invite you to a meeting on {{\Carbon\Carbon::parse($meeting_data->due_date)->toFormattedDateString()}} at {{date('h:i:s a', strtotime(\Carbon\Carbon::parse($meeting_data->due_date)))}} to discuss {{$meeting_data->title}}.</p>
-<p> The meeting will take place @if($meeting_data->meeting_type=="Real")at {{$meeting_data->meeting_room->address}},{{$meeting_data->meeting_room->room_no}} @else on {{$meeting_data->link_id}} and password is {{$meeting_data->password}} @endif. </p>
-<p>An agenda for the meeting is attached. The most important topics for discussion include:</p>
-<ol type="1">
-    @foreach($agenda as $key=>$val)
-        <li>{{$val}}</li>
-    @endforeach
-</ol>
-<h4>Meeting Members</h4>
+{!! $meeting_data->letter !!}
+<table style="border: 0;padding-top: 20px">
+    <tr>
+        <th style="text-align: left">Agenda</th>
+        <th style="text-align: left">Meeting Members</th>
+        <th ></th>
+    </tr>
+    <tr>
+        <td style="min-width: 400px;text-align: left;">
+            <ol type="1">
+            @foreach($agenda as $key=>$val)
+
+                   <li>{{$val}}</li>
+
+            @endforeach
+            </ol>
+        </td>
+        <td style="min-width: 400px;text-align: left">
             <ol type="1">
                 @foreach($our_emps as $key=>$val)
                     <li>{{$val}}</li>
                 @endforeach
 
-        </ol>
+            </ol>
+        </td>
+    </tr>
+</table>
+<div style="position: absolute;left: 200px;padding-top: 10px;border: black">
+    <ul>
+        <li>Date :{{\Carbon\Carbon::parse($meeting_data->due_date)->toFormattedDateString()}}</li>
+        <li>Time :{{date('h:i a', strtotime(\Carbon\Carbon::parse($meeting_data->due_date)))}}
+        @if($meeting_data->meeting_type=="Real")
+            <li>Address :{{$meeting_data->meeting_room->address}}</li>
+            <li>Room No :{{$meeting_data->meeting_room->room_no}}</li>
+        @else
+            <li>Link :{{$meeting_data->link_id}}</li>
+            <li>Password :{{$meeting_data->password}}</li>
+        @endif
+    </ul>
+</div>
 <div style="margin-left: 20px;">
-Invited By,<br>
-<strong >{{$meeting_data->emp->name}}</strong>
+    Invited By,<br>
+    <strong>{{$meeting_data->emp->name}}</strong>
 </div>
 </body>
 </html>

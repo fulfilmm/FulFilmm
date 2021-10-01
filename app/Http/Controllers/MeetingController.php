@@ -81,6 +81,7 @@ class MeetingController extends Controller
         $meeting->title=$request->title;
         $meeting->date_time=Carbon::create($request->due_date);
         $meeting->meeting_type=$request->meeting_type;
+        $meeting->letter=$request->letter;
         if($request->meeting_type=='Real'){
             $meeting->room_no=$request->room_no;
         }else{

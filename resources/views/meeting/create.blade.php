@@ -2,7 +2,18 @@
 @section('title','Meeting Create')
 @section('content')
     <!-- Page Wrapper -->
+    <style>
+        .ck-editor__editable {
+            min-height: 200px !important;
 
+        }
+        .ck-file-dialog-button{
+            display: none;
+        }
+        .ck-dropdown__button{
+            display: none;
+        }
+    </style>
     <!-- Page Content -->
     <div class="content container-fluid">
 
@@ -24,6 +35,12 @@
             <form action="{{route('meetings.store')}}" method="POST" class="mt-2">
               {{csrf_field()}}
                <div class="row">
+                   <div class="col-12">
+                       <div class="form-group">
+                           <label for="latter">Invitation Letter</label>
+                           <textarea name="letter" class="form-control" id="letter" cols="30" rows="10" style="height: 220px"></textarea>
+                       </div>
+                   </div>
                    <div class="col-md-6">
                        <div class="card">
                            <div class="col-12 mt-2">
@@ -189,6 +206,7 @@
             });
         });
 
-
+        ClassicEditor
+            .create(document.querySelector('#letter'));
     </script>
 @endsection

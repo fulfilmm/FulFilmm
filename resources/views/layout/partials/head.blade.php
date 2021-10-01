@@ -46,7 +46,7 @@
         {{--<!-- Main CSS -->--}}
         <link rel="stylesheet" href="{{url(asset("css/style.css"))}}">
         <script src="{{url(asset("js/jquery-3.2.1.min.js"))}}"></script>
-
+        <script src="{{url(asset('js/ckeditor.js'))}}"></script>
 
 
     </head>

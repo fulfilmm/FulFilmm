@@ -146,7 +146,7 @@
                                                             <input type="text" name="quantity" id="quantity_{{$order->id}}" class="form-control update_item_{{$order->id}}" value=" {{$order->quantity}}">
                                                         </td>
                                                         <td>
-                                                            <input type="text" id="price_{{$order->id}}" class="form-control update_item_{{$order->id}}" value="{{number_format($order->unit_price)}}" style="min-width: 120px;">
+                                                            <input type="text" id="price_{{$order->id}}" class="form-control update_item_{{$order->id}}" value="{{$order->unit_price}}" style="min-width: 120px;">
                                                         </td>
                                                         <td>
                                                             <input type="text" class="form-control update_item_{{$order->id}}" name="tax" id="product_tax_{{$order->id}}" value="{{$order->tax_id}}" >
@@ -165,61 +165,64 @@
                                                         <td>
                                                             <a class="btn btn-danger btn-sm" data-toggle="modal" href="#remove{{$order->id}}" ><i class="fa fa-trash-o "></i></a>
                                                             @include('invoice.item_remove')
+                                                            <script>
+                                                               $(document).ready(function () {
+                                                                   $('#order_table').on('change', '.update_item_{{$order->id}}', function() {
+                                                                       var quantity=$('#quantity_{{$order->id}}').val();
+                                                                       var price=$('#price_{{$order->id}}').val();
+                                                                       var total=quantity * price;
+                                                                       var tax=$('#product_tax_{{$order->id}}').val();
+                                                                       var tax_amount=tax / 100 * total;
+                                                                       var include_tax=total + tax_amount;
+                                                                       $('#total_{{$order->id}}').val(include_tax);
+
+                                                                   });
+                                                               });
+                                                                $(document).ready(function() {
+                                                                    $(document).on('change', '.update_item_{{$order->id}}', function () {
+                                                                        var product=$('#product_{{$order->id}}').val();
+                                                                        var desc=$('#order_description_{{$order->id}}').val();
+                                                                        var quantity=$('#quantity_{{$order->id}}').val();
+                                                                        var price=$('#price_{{$order->id}}').val();
+                                                                        var tax=$('#product_tax_{{$order->id}}').val();
+                                                                        var unit=$('#unit_{{$order->id}}').val();
+                                                                        var total=$('#total_{{$order->id}}').val();
+                                                                        $.ajax({
+                                                                            data : {
+                                                                                "product_id":product,
+                                                                                'description':desc,
+                                                                                'quantity':quantity,
+                                                                                "tax_id":tax,
+                                                                                'unit_price':price,
+                                                                                "currency_unit":unit,
+                                                                                "total":total,
+                                                                            },
+                                                                            type:'PUT',
+                                                                            url:"{{route('invoice_items.update',$order->id)}}",
+                                                                            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                                                                            success:function(data){
+                                                                                console.log(data);
+                                                                                $("#order_table").load(location.href + " #order_table>* ");
+                                                                                $("#grand_total_div").load(location.href + " #grand_total_div>* ");
+                                                                                var alltotal=[];
+                                                                                $('.total').each(function(){
+                                                                                    alltotal.push(this.value);
+                                                                                });
+                                                                                var grand_total=0;
+                                                                                for (var i=0;i<alltotal.length;i++){
+                                                                                    grand_total=parseFloat(grand_total)+parseFloat(alltotal[i]);
+                                                                                }
+                                                                                $('#grand_total').val(grand_total);
+
+                                                                            }
+                                                                        });
+                                                                    });
+                                                                });
+                                                            </script>
                                                         </td>
 
                                                     </tr>
-                                                    <script>
-                                                        $(document).on('change', 'input', function() {
-                                                            var quantity=$('#quantity_{{$order->id}}').val();
-                                                            var price=$('#price_{{$order->id}}').val();
-                                                            var total=quantity * price;
-                                                            var tax=$('#product_tax_{{$order->id}}').val();
-                                                            var tax_amount=tax / 100 * total;
-                                                            var include_tax=total + tax_amount;
-                                                            $('#total_{{$order->id}}').val(include_tax);
 
-                                                        });
-                                                        $(document).ready(function() {
-                                                            $(document).on('change', '.update_item_{{$order->id}}', function () {
-                                                                var product=$('#product_{{$order->id}}').val();
-                                                                var desc=$('#order_description_{{$order->id}}').val();
-                                                                var quantity=$('#quantity_{{$order->id}}').val();
-                                                                var price=$('#price_{{$order->id}}').val();
-                                                                var tax=$('#product_tax_{{$order->id}}').val();
-                                                                var unit=$('#unit_{{$order->id}}').val();
-                                                                var total=$('#total_{{$order->id}}').val();
-                                                                $.ajax({
-                                                                    data : {
-                                                                        "product_id":product,
-                                                                        'description':desc,
-                                                                        'quantity':quantity,
-                                                                        "tax_id":tax,
-                                                                        'unit_price':price,
-                                                                        "currency_unit":unit,
-                                                                        "total":total,
-                                                                    },
-                                                                    type:'PUT',
-                                                                    url:"{{route('invoice_items.update',$order->id)}}",
-                                                                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                                                                    success:function(data){
-                                                                        console.log(data);
-                                                                        $("#order_table").load(location.href + " #order_table>* ");
-                                                                        $("#grand_total_div").load(location.href + " #grand_total_div>* ");
-                                                                        var alltotal=[];
-                                                                        $('.total').each(function(){
-                                                                            alltotal.push(this.value);
-                                                                        });
-                                                                        var grand_total=0;
-                                                                        for (var i=0;i<alltotal.length;i++){
-                                                                            grand_total=parseFloat(grand_total)+parseFloat(alltotal[i]);
-                                                                        }
-                                                                        $('#grand_total').val(grand_total);
-
-                                                                    }
-                                                                });
-                                                            });
-                                                        });
-                                                    </script>
                                                 @endforeach
 
                                                 </tbody>
@@ -261,25 +264,6 @@
                         sortField: 'text'
                     });
                 });
-                $(document).on('change', 'input', function() {
-                    var quantity=$('#quantity').val();
-                    var price=$('#price').val();
-                    var total=quantity * price;
-                    var tax=$('#product_tax').val();
-                    var tax_amount=tax / 100 * total;
-                    var include_tax=total + tax_amount;
-                    var discount=$('#discount').val();
-                    var discount_type=$('#discount_type option:selected').val();
-                    var total_amount=0;
-                    if(discount_type=='amount') {
-                        total_amount = include_tax - discount;
-                    }else {
-                        var discount_amount = (discount / 100) * include_tax;
-                        total_amount=include_tax-discount_amount;
-                    }
-                    $('#total').val(total_amount);
-
-                });
                 $(document).on('change','#product',function (){
                     var product_id=$("#product option:selected").val();
                     var invoice_id=$('#invoice_id').val();
@@ -294,7 +278,7 @@
                         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                         success:function(data){
                             console.log(data);
-                            $("#order_table").load(location.href + " #order_table>* ");
+
                             var alltotal=[];
                             $('.total').each(function(){
                                 alltotal.push(this.value);
@@ -304,27 +288,12 @@
                                 grand_total=parseFloat(grand_total)+parseFloat(alltotal[i]);
                             }
                             $('#grand_total').val(grand_total);
+                            $("#order_table").load(location.href + " #order_table>* ");
 
                         }
                     });
 
                 });
-                // $(document).ready(function() {
-                //     $(document).on('click', '#add_item', function () {
-                //
-                //         var product=$('#product option:selected').val();
-                //         var desc=$('#order_description').val();
-                //         var quantity=$('#quantity').val();
-                //         var price=$('#price').val();
-                //         var discount=$('#discount').val();
-                //         var discount_type=$('#discount_type option:selected').val();
-                //         var tax=$('#product_tax').val();
-                //         var unit=$('#unit').val();
-                //         var total=$('#total').val();
-                //
-                //     });
-                // });
-                //save and send
                 $(document).ready(function() {
                     $(document).on('click', '#saveAndsend', function () {
                             var client_id=$('#client_id').val();
