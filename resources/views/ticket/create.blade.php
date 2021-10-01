@@ -251,8 +251,10 @@
             }
         });
     });
-    ClassicEditor
-        .create( document.querySelector( '#description' ) );
+
+    ClassicEditor.create($('#description')[0], {
+        toolbar: ['heading', 'bold', 'italic', 'undo', 'redo', 'numberedList', 'bulletedList', 'insertTable', 'fontColor', 'fontfamily', 'fontsize']
+    });
 
 </script>
 @endsection

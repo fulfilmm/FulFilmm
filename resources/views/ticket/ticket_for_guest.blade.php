@@ -201,7 +201,10 @@
                 }
             });
 
-            ClassicEditor
-                .create(document.querySelector('#guest_description'));
+
+            ClassicEditor.create($('#guest_description')[0],{
+                toolbar: [ 'heading','bold', 'italic', 'undo', 'redo', 'numberedList', 'bulletedList','insertTable','fontColor','fontfamily','fontsize']
+
+            });
         </script>
 @endsection

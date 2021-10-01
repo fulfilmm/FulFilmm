@@ -245,12 +245,10 @@
                 </div>
             </div>
         </div>
-
-    @include('customer.quickcustomer')
-    @include('company.quickcompany')
         <!-- /Content End -->
 
     </div>
+    @include('customer.quickcustomer')
     <!-- /Page Content -->
     <!-- /Page Wrapper -->
     <script>
@@ -368,7 +366,7 @@
                         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                         success:function(data){
                             console.log(data);
-                            // window.location.href = "/quotations/sendemail/{";
+                            window.location.href = "/quotations/sendemail/";
                         },
                         error: function (err) {
                             if (err.status == 422) { // when status code is 422, it's a validation issue
@@ -387,10 +385,5 @@
             });
             // ClassicEditor
             //     .create(document.querySelector('#term_and_condition'));
-
-
-
-
-
     </script>
 @endsection

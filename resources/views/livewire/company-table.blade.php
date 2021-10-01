@@ -30,7 +30,7 @@
                                 <form action="{{route('companies.destroy',$company->id)}}" id="del-company{{$company->id}}" method="POST">
                                     @method('delete')
                                     @csrf
-                                    <a class="btn btn-danger" href="#" onclick="deleteRecord({{$company->id}})"><span class='fa fa-trash'></span></a>
+                                    <button class="btn btn-danger" type="submit" onclick="deleteRecord({{$company->id}})"><span class='fa fa-trash'></span></button>
                                 </form>
                             </td>
                         </tr>

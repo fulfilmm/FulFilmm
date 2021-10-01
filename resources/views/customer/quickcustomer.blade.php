@@ -46,10 +46,9 @@
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="company_id"
-                                       class="form-label font-weight-bold text-muted text-uppercase">Company
+                                <label for="company_id" class="form-label font-weight-bold text-muted text-uppercase">Company
                                     Name<span class="text-danger">*</span></label>
-                                <div class="input-group" id="company_div">
+                                <div class="input-group company_field" id="company_div">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fa fa-building"></i></span>
                                     </div>
@@ -123,38 +122,8 @@
         </div>
     </div>
 </div>
+@include('company.quickcompany')
 <script>
-    $(document).ready(function () {
-        $(document).on('click', '#new_company', function () {
-// alert('hello');
-            var name = $('#company_name').val();
-
-            var type = $('#business_type option:selected').val();
-            var phone = $('#company_phone').val();
-            var email = $('#email').val();
-            var ceo_name = $('#company_ceo_name').val();
-            var company_registry = $('#company_registry').val();
-            var address = $('#company_address').val();
-            $.ajax({
-                type: 'POST',
-                data: {
-                    name: name,
-                    business_type: type,
-                    phone: phone,
-                    email: email,
-                    ceo_name: ceo_name,
-                    company_registry: company_registry,
-                    address: address
-                },
-                url: "{{route('companies.store')}}",
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                success: function (data) {
-                    console.log(data);
-                    $("#company_div").load(location.href + " #company_div>* ");
-                }
-            });
-        });
-    });
     $(document).ready(function () {
         $(document).on('click', '#new_contact', function () {
 // alert('hello');
@@ -182,7 +151,8 @@
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 success: function (data) {
                     console.log(data);
-                    $("#contact_div").load(location.href + " #contact_div>* ");
+                    $(".company_field").load(location.href + " .company_field>* ");
+                    $("#deal_com").load(location.href + " #deal_com>* ");
                 }
             });
         });
