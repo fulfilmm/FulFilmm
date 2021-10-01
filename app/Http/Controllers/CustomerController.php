@@ -210,7 +210,7 @@ class CustomerController extends Controller
         $tags = tags_industry::all();
         $last_tag = tags_industry::orderBy('id', 'desc')->first();
         $record = $this->customerContract->getById($id);
-        $companies = $this->companyContract->all()->pluck('name', 'id')->all();
+        $companies = $this->company_contract->all()->pluck('name', 'id')->all();
         $state = $this->state;
         return view('customer.edit', compact('record', 'companies', 'state', 'tags', 'last_tag'));
     }

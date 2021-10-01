@@ -130,7 +130,6 @@
             var name = $('#contact_name').val();
             var gender = $('input[name="gender"]:checked').val();
             var company_id = $('#contact_company_id option:selected').val();
-            alert(company_id);
             var email = $('#contact_email').val();
             var phone = $('#contact_phone').val();
             var type = $('#customer_type option:selected').val();
@@ -151,8 +150,7 @@
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 success: function (data) {
                     console.log(data);
-                    $(".company_field").load(location.href + " .company_field>* ");
-                    $("#deal_com").load(location.href + " #deal_com>* ");
+                    $("#contact_div").load(location.href + "#contact_div>* ");
                 }
             });
         });

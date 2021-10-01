@@ -10,7 +10,7 @@
 <!-- Bootstrap Core JS -->
 <script src="{{asset('js/popper.min.js')}}"></script>
 <script src="{{asset('js/bootstrap.min.js')}}"></script>
-{{--<script src="{{url(asset('js/offcavas.js'))}}"></script>--}}
+<script src="{{url(asset('js/offcavas.js'))}}"></script>
 
 <!-- Slimscroll JS -->
 <script src="{{asset('js/jquery.slimscroll.min.js')}}"></script>

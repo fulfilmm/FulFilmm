@@ -39,8 +39,8 @@
                 {{--                    <input type="hidden" id="quotation_id" name="quotation_id" value="{{$quotation_id}}">--}}
                 <h3>NEW </h3>
                 <div class="row mb-3 ">
-                    <div class="col-md-4">
-                        <div class="form-group" id="contact_div">
+                    <div class="col-md-4" id="contact_div">
+                        <div class="form-group" >
                             <label for="">Customer</label>
                             <div class="input-group">
                                 <select name="quo_customer" id="customer_name"  class="form-control">
@@ -246,7 +246,6 @@
             </div>
         </div>
         <!-- /Content End -->
-
     </div>
     @include('customer.quickcustomer')
     <!-- /Page Content -->
