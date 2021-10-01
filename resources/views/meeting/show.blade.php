@@ -362,15 +362,16 @@
                         <div class="project-members task-followers">
                             <span class="followers-title">Meeting Member</span>
                             @foreach($emp_members as $member)
+
                                 @if($member->is_external==0)
                                     <a class="avatar" href="#" data-toggle="tooltip"
                                        title="{{$member->emp_member->name}}">
-                                        <img alt="" src="img/profiles/avatar-16.jpg">
+                                        <img src="{{$member->emp_member->profile_img!=null? url(asset('img/profiles/'.$member->emp_member->profile_img)):url(asset('img/profiles/avatar-01.jpg'))}}" alt="" class="avatar chat-avatar-sm">
                                     </a>
                                 @else
                                     <a class="avatar" href="#" data-toggle="tooltip"
                                        title="{{$member->external->name}}">
-                                        <img alt="" src="img/profiles/avatar-16.jpg">
+                                        <img alt="" src="{{url(asset('img/icon_image/guest.png'))}}">
                                     </a>
                                 @endif
                             @endforeach

@@ -133,6 +133,7 @@ class MeetingController extends Controller
         $members=$meeting->guest_member ? json_decode($meeting->guest_member) :null;
         $agenda=json_decode($meeting->agenda);
         $emp_members=Meetingmember::with('emp_member','external')->where('meeting_id',$id)->get();
+//        dd($emp_members);
         $minutes=Meetingminutes::where('meeting_id',$id)->get();
         $all_emp=Employee::all();
         $depts=Department::all();

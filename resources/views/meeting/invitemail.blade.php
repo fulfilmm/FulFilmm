@@ -48,9 +48,5 @@
         @endif
     </ul>
 </div>
-<div style="margin-left: 20px;">
-    Invited By,<br>
-    <strong>{{$meeting_data->emp->name}}</strong>
-</div>
 </body>
 </html>
