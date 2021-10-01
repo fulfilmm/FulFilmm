@@ -87,7 +87,7 @@ class SaleOrderController extends Controller
 
         if ($last_order!=null) {
             // Sum 1 + last id
-            $last_order->invoice_id++;
+            $last_order->order_id++;
                 $order_id = $last_order->order_id;
         } else {
             $order_id='ORD'."-0001";

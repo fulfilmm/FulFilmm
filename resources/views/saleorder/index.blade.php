@@ -61,14 +61,14 @@
                                     <table class="table data-table mb-0">
                                         <thead class="table-color-heading">
                                         <tr class="text-light">
-                                            <th scope="col" class="w-01 pr-0">
-                                                <div class="d-flex justify-content-start align-items-end mb-1">
-                                                    <div class="custom-control custom-checkbox custom-control-inline">
-                                                        <input type="checkbox" class="custom-control-input m-0" id="customCheck">
-                                                        <label class="custom-control-label" for="customCheck"></label>
-                                                    </div>
-                                                </div>
-                                            </th>
+                                            {{--<th scope="col" class="w-01 pr-0">--}}
+                                                {{--<div class="d-flex justify-content-start align-items-end mb-1">--}}
+                                                    {{--<div class="custom-control custom-checkbox custom-control-inline">--}}
+                                                        {{--<input type="checkbox" class="custom-control-input m-0" id="customCheck">--}}
+                                                        {{--<label class="custom-control-label" for="customCheck"></label>--}}
+                                                    {{--</div>--}}
+                                                {{--</div>--}}
+                                            {{--</th>--}}
                                             <th scope="col">
                                                 <label class="text-muted m-0" for="text1">ID</label>
 
@@ -103,12 +103,12 @@
                                         <tbody>
                                         @foreach($data['orders'] as $order)
                                         <tr class="white-space-no-wrap">
-                                            <td class="pr-0">
-                                                <div class="custom-control custom-checkbox custom-control-inline">
-                                                    <input type="checkbox" class="custom-control-input m-0" id="customCheck1">
-                                                    <label class="custom-control-label" for="customCheck1"></label>
-                                                </div>
-                                            </td>
+                                            {{--<td class="pr-0">--}}
+                                                {{--<div class="custom-control custom-checkbox custom-control-inline">--}}
+                                                    {{--<input type="checkbox" class="custom-control-input m-0" id="customCheck1">--}}
+                                                    {{--<label class="custom-control-label" for="customCheck1"></label>--}}
+                                                {{--</div>--}}
+                                            {{--</td>--}}
                                             <td>
                                                 {{$order->order_id}}
                                             </td>
@@ -134,11 +134,11 @@
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                                         </svg>
                                                     </a>
-                                                    <a class="" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="#">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="text-secondary" width="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                                        </svg>
-                                                    </a>
+                                                    {{--<a class="" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="#">--}}
+                                                        {{--<svg xmlns="http://www.w3.org/2000/svg" class="text-secondary" width="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">--}}
+                                                            {{--<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />--}}
+                                                        {{--</svg>--}}
+                                                    {{--</a>--}}
                                                 </div>
                                             </td>
                                         </tr>

@@ -11,7 +11,7 @@
                     <div class="col-sm-12">
                         <h3 class="page-title">Quotation</h3>
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{url("home")}}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
                             <li class="breadcrumb-item active">Quotation</li>
                         </ul>
                     </div>

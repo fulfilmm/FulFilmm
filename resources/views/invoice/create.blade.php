@@ -61,7 +61,7 @@
                                     <div class="form-group">
                                         <label for="inv_date">Invoice date <span class="text-danger">*</span></label>
                                         <div class="cal-icon">
-                                            <input class="form-control datetimepicker" type="text" id="inv_date">
+                                            <input class="form-control " type="date" id="inv_date">
                                         </div>
                                     </div>
                                 </div>
@@ -69,7 +69,7 @@
                                     <div class="form-group">
                                         <label for="due_date">Due Date <span class="text-danger">*</span></label>
                                         <div class="cal-icon">
-                                            <input class="form-control datetimepicker" type="text" id="due_date">
+                                            <input  class="form-control" type="date" id="due_date">
                                         </div>
                                     </div>
                                 </div>
