@@ -118,7 +118,6 @@ class DealController extends Controller
         $deal->next_step=$request->next_step;
         $deal->type=$request->type;
         $deal->probability=$request->probability;
-        $deal->weighted_revenue=$request->weight_revenue;
         $deal->lost_reason=$request->lost_reason;
         $deal->description=$request->description;
         $deal->created_id=Auth::guard('employee')->user()->id;
@@ -149,24 +148,14 @@ class DealController extends Controller
     public function edit($id)
     {
         $deal=deal::where('id',$id)->first();
-        $hasSetUp = $this->company_contract->isUserCompany();
         $parent_companies = $this->company_contract->parentCompanies()->pluck('name', 'id')->all();
         $allemployees = employee::all();
-        $allcustomers = Customer::all();
+        $allcustomers = Customer::all()->pluck('name', 'id')->all();
         $companies=Company::all()->pluck('name', 'id')->all();
-        $taxes=products_tax::all();
-        $lasttax=products_tax::orderBy('id', 'desc')->first();
-        $allcat=products_category::all();
-        $lastcat=products_category::orderBy('id', 'desc')->first();
-        $products=product::with("category","taxes")->get();
-        $sale_stage=['New','Qualifying','Requirement Gathering','Value Position','Negotiation','Closed Won','Closed Lost','Dormant','Ready To CLose'];
-        $lead_sources=["Cold Call","Referral","Word of mouth","Website","Trade Show","Conference","Direct Mail",
-                        "Public Relation","Partner","Employee","Self Generated","Existing Customer","Facebook"];
-        $lost_reason=["Price","Authority","Timing","Missing Feature","Usability","Unknown","No need"];
+        $lead_source=$this->lead_sources;
         
-        return  view("Deal.edit",compact('hasSetUp','parent_companies',"products","deal",
-            "taxes","lasttax","lastcat","allcat","lasttax","allemployees",
-            "companies","allcustomers",'sale_stage','lead_sources','lost_reason'));
+        return  view("Deal.edit",compact('parent_companies',"deal", "allemployees",
+            "companies","allcustomers",'lead_source'));
 
     }
 
@@ -180,11 +169,12 @@ class DealController extends Controller
     public function update(Request $request,$id)
     {
 //        dd($id);
+        $customer=Customer::where('id',$request->contact_name)->first();
         $deal=deal::where("id",$id)->first();
-        $deal->name=$request->deal_name;
+        $deal->name=$request->name;
         $deal->amount=$request->amount;
         $deal->unit=$request->unit;
-        $deal->org_name=$request->org_name;
+        $deal->org_name=$customer->company_id;
         $deal->contact=$request->contact_name;
         $deal->close_date=$request->exp_date;
         $deal->pipeline=$request->pipeline;
@@ -193,9 +183,7 @@ class DealController extends Controller
         $deal->lead_source=$request->lead_source;
         $deal->next_step=$request->next_step;
         $deal->type=$request->type;
-        $deal->probability=$request->probality;
-        $deal->weighted_revenue=$request->revenue;
-        $deal->weighed_revenue_unit=$request->revenue_unit;
+        $deal->probability=$request->probability;
         $deal->lost_reason=$request->lost_reason;
         $deal->description=$request->description;
         $deal->update();

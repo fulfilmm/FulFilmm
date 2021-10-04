@@ -24,4 +24,5 @@ public function employee(){
 public function created_person(){
     return $this->belongsTo(Employee::class,'created_id','id');
 }
+
 }

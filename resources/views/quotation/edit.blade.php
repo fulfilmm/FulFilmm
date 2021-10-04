@@ -12,7 +12,8 @@
                 <div class="col-sm-12">
                     <h3 class="page-title">Quotation</h3>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{url("home")}}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{url("/")}}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('quotations.index')}}">Quotations</a></li>
                         <li class="breadcrumb-item active">Edit</li>
                     </ul>
                 </div>
@@ -47,7 +48,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="">Expiration</label>
-                            <input type="date" class="form-control {{ $errors->has('exp_date') ? ' is-invalid' : '' }}" name="exp_date" id="exp" required>
+                            <input type="date" class="form-control {{ $errors->has('exp_date') ? ' is-invalid' : '' }}" name="exp_date" id="exp" value="{{\Carbon\Carbon::parse($quotation->exp_date)->format('Y-m-d')}}" required>
                             <span class="help-block">
                                         <strong class="text-danger text-center expiration_err"></strong>
                                         </span>
@@ -75,7 +76,7 @@
                                 <select name="deal_id" id="deal_id"  class="form-control">
                                     <option value="">None</option>
                                     @foreach($deals as $deal)
-                                        <option value="{{$deal->id}}">{{$deal->deal_id}}</option>
+                                        <option value="{{$deal->id}}" {{$quotation->deal_id==$deal->id?'selected':''}}>{{$deal->deal_id}}</option>
                                     @endforeach
 
                                     <strong class="text-danger client_err"></strong>
@@ -87,7 +88,7 @@
                     <div class="col-md-8">
                         <div class="form-group">
                             <label for="description">Terms And Conditions</label>
-                            <textarea  class="form-control " name="term_condition" id="term_and_condition" placeholder="Write terms and conditions .."></textarea>
+                            <textarea  class="form-control " name="term_condition" id="term_and_condition" placeholder="Write terms and conditions ..">{{$quotation->terms_conditions}}</textarea>
                         </div>
                         <span class="help-block">
                                         <strong class="text-danger text-center term_and_condition_err"></strong>

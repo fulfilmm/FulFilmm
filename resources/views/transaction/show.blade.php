@@ -2,7 +2,7 @@
 @section('title','Account')
 @section('content')
     <div class="content container-fluid">
-        <button type="button" id="btn" class="btn btn-outline-dark float-right"><i class="fa fa-print mr-2"></i>Print</button>
+        <a href="" id="print" onclick="printContent('print_me');" class="btn btn-outline-dark float-right"><i class="fa fa-print mr-2"></i>Print</a>
         <div class="row" style="font-size: inherit !important;">
             <div class="col-4 col-lg-3">
                 Account
@@ -18,7 +18,7 @@
             <div class="col-4 col-lg-2">
                 Customer
                 <br> <strong><span class="float-left long-texts mwpx-300 transaction-head-text">
-                                           {{$customer->name}}
+                                           {{$customer->name??''}}
                                     </span></strong> <br><br></div>
             <div class="col-4 col-lg-2">
                 Amount
@@ -31,7 +31,7 @@
         </div>
         <div class="card show-card"
              style="padding: 0px 15px; border-radius: 0px; box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 16px;">
-            <div class="card-body show-card-body my-3" id="printarea" >
+            <div class="card-body show-card-body my-3 mx-5" id="print_me" >
                 <table class="border-bottom-1">
                     <tbody>
                     <tr>
@@ -115,6 +115,7 @@
                                                    {{$transaction->type=="Revenue"?$transaction->revenue->description:$transaction->expense->description}}
                                                 </p></td>
                                         </tr>
+
                                         <tr>
                                             <td style="padding-top: 45px; padding-bottom: 0px;"><h2 style="font-size: 16px;">
                                                     {{$transaction->type=="Revenue"?'Paid By':'Paid To'}}
@@ -122,20 +123,20 @@
                                         </tr>
                                         <tr>
                                             <td style="padding-bottom: 5px; padding-top: 0px; font-size: 14px;">
-                                                <strong>{{$customer->name}}</strong><br></td>
+                                                <strong>{{$customer->name??''}}</strong><br></td>
                                         </tr>
                                        @if($transaction->type=="Expense")
                                            <tr>
                                                <td style="padding-bottom: 5px; padding-top: 0px; font-size: 14px;"><p
-                                                           style="margin: 0px; padding: 0px; font-size: 14px;">{{$customer->phone}}</p></td>
+                                                           style="margin: 0px; padding: 0px; font-size: 14px;">{{$customer->phone??''}}</p></td>
                                            </tr>
                                            <tr>
                                                <td style="padding-bottom: 5px; padding-top: 0px; font-size: 14px;"><p
-                                                           style="margin: 0px; padding: 0px; font-size: 14px;">{{$customer->email}}</p></td>
+                                                           style="margin: 0px; padding: 0px; font-size: 14px;">{{$customer->email??''}}</p></td>
                                            </tr>
                                            <tr>
                                                <td style="padding-bottom: 0px; padding-top: 0px; font-size: 14px;"><p
-                                                           style="margin: 0px; padding: 0px; font-size: 14px;">{{$customer->address}}</p></td>
+                                                           style="margin: 0px; padding: 0px; font-size: 14px;">{{$customer->address??''}}</p></td>
                                            </tr>
                                            @endif
 
@@ -152,7 +153,7 @@
                     </div>
                     <div class="col-md-6" style="padding-top: 30px;padding-bottom: 30px;">
                         <div class="col-md-6">
-                            <div class="card bg-{{$transaction->type=="Revenue"?'success':'danger'}} border-0">
+                            <div class="card border-1" style="background-color: {{$transaction->type=="Revenue"?'green':'red'}}">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col"><h5 class="text-uppercase mb-0 text-white">Amount</h5>
@@ -165,21 +166,24 @@
                     </div>
                 </div>
             </div>
+            <div id="print_me"  style="visibility: hidden">
         </div>
 
     </div>
-    <script>
-        function printData()
-        {
-            var divToPrint=document.getElementById("printarea");
-            newWin= window.open("");
-            newWin.document.write(divToPrint.outerHTML);
-            newWin.print();
-            newWin.close();
-        }
-
-        $('#btn').on('click',function(){
-            printData();
-        })
-    </script>
+        <script>
+            function printContent(el){
+                // document.title = ;
+                var restorepage = $('body').html();
+                $('#myTab').remove();
+                var printcontent = $('#' + el).clone();
+                printcontent.append('<div class="row" style="position: fixed;bottom: 110px; left: 50px" ><div class="row justify-content-between"> <div class="col-12 text-center"><span>{{$company->web_link}}</span></div></div></div>');
+                printcontent.append('<div class="row" style="position: fixed;bottom: 90px; left: 50px" ><div class="row justify-content-between"> <div class="col-12 text-center"><span>{{$company->email}}</span></div></div></div>');
+                printcontent.append('<div class="row" style="position: fixed;bottom: 70px; left: 50px" ><div class="row justify-content-between"> <div class="col-12 text-center"><span>{{$company->phone}}</span></div></div></div>');
+                printcontent.append('<div class="row" style="position: fixed;bottom: 50px; left: 50px" ><div class="row justify-content-between"> <div class="col-12 text-center"><span>{{$company->address}}</span></div></div></div>');
+                $('body').empty().html(printcontent);
+                $('.footer').hide();
+                window.print();
+                $('body').html(restorepage);
+            }
+        </script>
 @endsection

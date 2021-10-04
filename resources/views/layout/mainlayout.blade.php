@@ -16,7 +16,8 @@
 @else
     @yield('content')`
 @endif
-    @include('layout.partials.footer-scripts')
+
+@include('layout.partials.footer-scripts')
 
     @stack('scripts')
 

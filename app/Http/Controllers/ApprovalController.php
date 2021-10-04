@@ -128,7 +128,6 @@ class ApprovalController extends Controller
      */
     public function show($id)
     {
-        $auth=Auth::guard('employee')->user();
         $details_approval=Approvalrequest::with('approver','secondary_approver','request_emp')->where('id',$id)->firstOrFail();
         $status=$this->approval_status;
         $doc_files=json_decode($details_approval->doc_file);

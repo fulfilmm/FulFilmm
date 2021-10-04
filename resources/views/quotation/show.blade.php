@@ -17,8 +17,8 @@
                 <div class="col-sm-12">
                     <h3 class="page-title">{{$quotation->quotation_id}}</h3>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="">Home</a></li>
-                        <li class="breadcrumb-item"><a href="">Quotation</a></li>
+                        <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('quotations.index')}}">Quotation</a></li>
                         <li class="breadcrumb-item active">View</li>
                     </ul>
                 </div>

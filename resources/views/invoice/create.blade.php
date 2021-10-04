@@ -97,10 +97,10 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-12 col-sm-12" id="order_table">
+                                <div class="col-md-12 col-sm-12" >
                                     <div class="table-responsive">
                                         <div class="form-group">
-                                            <label for="">Search Products</label>
+                                            <label for="">Add Item</label>
                                             <select name="" id="product" class="form-control" style="min-width: 150px;">
                                                 <option value="">Select Product</option>
                                                 @foreach($products as $product)
@@ -108,7 +108,7 @@
                                                 @endforeach
                                             </select>
                                         </div>
-                                        <table class="table table-hover table-white">
+                                        <table class="table table-hover table-white" id="order_table">
                                                 <thead>
                                                 <th>Product</th>
                                                 <th>Quantity</th>
@@ -160,23 +160,23 @@
                                                         <td><input type="text" class="form-control update_item_{{$order->id}}" id="unit_{{$order->id}}" value="{{$order->currency_unit}}"></td>
 
                                                         <td>
-                                                            <a class="btn btn-danger btn-sm" data-toggle="modal" href="#remove{{$order->id}}" ><i class="fa fa-trash-o "></i></a>
+                                                            <button type="button" class="btn btn-danger btn-sm"  id="remove{{$order->id}}" ><i class="fa fa-trash-o "></i></button>
                                                             @include('invoice.item_remove')
                                                             <script>
                                                                $(document).ready(function () {
-                                                                   $('#order_table').on('change', '.update_item_{{$order->id}}', function() {
+                                                                   $(".update_item_{{$order->id}}").keyup(function(){
                                                                        var quantity=$('#quantity_{{$order->id}}').val();
                                                                        var price=$('#price_{{$order->id}}').val();
+
                                                                        var total=quantity * price;
                                                                        var tax=$('#product_tax_{{$order->id}}').val();
                                                                        var tax_amount=tax / 100 * total;
                                                                        var include_tax=total + tax_amount;
                                                                        $('#total_{{$order->id}}').val(include_tax);
-
                                                                    });
                                                                });
                                                                 $(document).ready(function() {
-                                                                    $(document).on('change', '.update_item_{{$order->id}}', function () {
+                                                                    $(".update_item_{{$order->id}}").keyup(function(){
                                                                         var product=$('#product_{{$order->id}}').val();
                                                                         var desc=$('#order_description_{{$order->id}}').val();
                                                                         var quantity=$('#quantity_{{$order->id}}').val();
@@ -199,8 +199,6 @@
                                                                             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                                                                             success:function(data){
                                                                                 console.log(data);
-                                                                                $("#order_table").load(location.href + " #order_table>* ");
-                                                                                $("#grand_total_div").load(location.href + " #grand_total_div>* ");
                                                                                 var alltotal=[];
                                                                                 $('.total').each(function(){
                                                                                     alltotal.push(this.value);
@@ -210,6 +208,8 @@
                                                                                     grand_total=parseFloat(grand_total)+parseFloat(alltotal[i]);
                                                                                 }
                                                                                 $('#grand_total').val(grand_total);
+                                                                                $("#order_table").load(location.href + " #order_table>* ");
+                                                                                $("#grand_total_div").load(location.href + " #grand_total_div>* ");
 
                                                                             }
                                                                         });
@@ -233,8 +233,8 @@
                                                 <tr>
                                                     <td colspan="5"></td>
                                                     <th colspan="2" class="text-right"><span class="mt-5">Grand Total</span></th>
-                                                    <td colspan="2"><input class="form-control" type="text"  value="{{number_format($grand_total)}}" style="min-width: 100px">
-                                                        <input type="hidden" id="inv_grand_total" value="{{$grand_total}}">
+                                                    <td colspan="2" id="inv_grand_total"><input class="form-control" type="text"  value="{{number_format($grand_total)}}" style="min-width: 100px">
+                                                        <input type="hidden"  value="{{$grand_total}}">
                                                     </td>
 
                                                 </tr>
@@ -255,12 +255,12 @@
 
             {{--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />--}}
             <script>
-                $(document).ready(function () {
-
-                        $('select').selectize({
-                        sortField: 'text'
-                    });
-                });
+                // $(document).ready(function () {
+                //
+                //         $('select').selectize({
+                //         sortField: 'text'
+                //     });
+                // });
                 $(document).on('change','#product',function (){
                     var product_id=$("#product option:selected").val();
                     var invoice_id=$('#invoice_id').val();
@@ -275,7 +275,6 @@
                         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                         success:function(data){
                             console.log(data);
-
                             var alltotal=[];
                             $('.total').each(function(){
                                 alltotal.push(this.value);
@@ -284,7 +283,7 @@
                             for (var i=0;i<alltotal.length;i++){
                                 grand_total=parseFloat(grand_total)+parseFloat(alltotal[i]);
                             }
-                            $('#grand_total').val(grand_total);
+
                             $("#order_table").load(location.href + " #order_table>* ");
 
                         }

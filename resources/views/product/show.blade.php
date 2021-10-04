@@ -41,7 +41,7 @@
                 <div class="col-sm-12">
                     <h3 class="page-title">Product</h3>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{url("/home")}}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{url("/")}}">Dashboard</a></li>
                         <li class="breadcrumb-item active"><a href="{{url("/products")}}">Product</a></li>
                         <li class="breadcrumb-item active">Details</li>
                     </ul>

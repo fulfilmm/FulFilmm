@@ -92,8 +92,8 @@ class TransactionController extends Controller
         $new_expense->save();
         $this->transaction_add($request->account,$request->type,$new_expense->id,null);
         $this->account_update($request->amount,$request->account,$request->type);
-
-        return redirect()->back();
+        $last_tran=Transaction::orderBy('id', 'desc')->first();
+        return redirect(route('transactions.show',$last_tran->id))->with('success','Add New Expense Successful');
     }
 
     /**
@@ -186,7 +186,12 @@ class TransactionController extends Controller
         $new_revenue->save();
         $this->transaction_add($request->account,$request->type,null,$new_revenue->id);
         $this->account_update($request->amount,$request->account,$request->type);
-        return redirect()->back();
+       if(isset($request->invoice_id)){
+           return redirect(route('invoices.show',$request->invoice_id))->with('success','Add New Revenue Successful');
+       }else{
+           $last_tran=Transaction::orderBy('id', 'desc')->first();
+           return redirect(route('transactions.show',$last_tran->id))->with('success','Add New Revenue Successful');
+       }
     }
     public function transaction_add($account_id,$type,$expense_id,$revenue_id){
         $transaction=new Transaction();

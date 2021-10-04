@@ -197,11 +197,14 @@ class SaleOrderController extends Controller
         }
     }
     public function comment(Request $request){
-        $order_comment=new order_comments();
-        $order_comment->order_id=$request->order_id;
-        $order_comment->emp_id=Auth::guard('employee')->user()->id;
-        $order_comment->comment_text=$request->comment_text;
-        $order_comment->save();
+        if($request->comment_text!=null){
+            $order_comment=new order_comments();
+            $order_comment->order_id=$request->order_id;
+            $order_comment->emp_id=Auth::guard('employee')->user()->id;
+            $order_comment->comment_text=$request->comment_text;
+            $order_comment->save();
+        }
+
         return redirect()->back();
     }
     public function comment_delete($id){

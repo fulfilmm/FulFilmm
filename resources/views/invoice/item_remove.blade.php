@@ -1,20 +1,24 @@
-<div class="modal custom-modal rounded" id="remove{{$order->id}}">
-    <div class="modal-dialog modal-sm " role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Remove Item</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            </div>
-            <form action="{{route('invoice_items.destroy',$order->id)}}" method="POST">
-               @csrf
-                @method('delete')
-                <div class="col-12">
-                    <span class="text-center">Do You Want to remove this item?</span>
-                </div>
-                <div class="form-group my-3 text-center">
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+<script>
+    $(document).on('click','#remove{{$order->id}}',function () {
+        $.ajax({
+            type:'DELETE',
+            url:"{{route('invoice_items.destroy',$order->id)}}",
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success:function(data){
+                console.log(data);
+                var alltotal=[];
+                $('.total').each(function(){
+                    alltotal.push(this.value);
+                });
+                var grand_total=0;
+                for (var i=0;i<alltotal.length;i++){
+                    grand_total=parseFloat(grand_total)+parseFloat(alltotal[i]);
+                }
+                $('#grand_total').val(grand_total);
+                $("#order_table").load(location.href + " #order_table>* ");
+                $("#grand_total_div").load(location.href + " #grand_total_div>* ");
+
+            }
+        });
+    });
+</script>

@@ -30,7 +30,7 @@ class QuotationController extends Controller
         $this->companyContract = $companyContract;
     }
     public function index(){
-        $all_quotation=Quotation::with("customer","sale_person")->get();
+        $all_quotation=Quotation::with("customer","sale_person",'deal')->get();
         return view("quotation.index",compact("all_quotation"));
     }
     public function create(){
@@ -92,6 +92,7 @@ class QuotationController extends Controller
                 $quotation = new Quotation();
                 $quotation->customer_name = $request->customer;
                 $quotation->quotation_id = $quotation_id;
+                $quotation->deal_id=$request->deal_id;
                 $quotation->exp_date = $request->expiration;
                 $quotation->sale_person_id = Auth::guard('employee')->user()->id;
                 $quotation->terms_conditions = $request->term_and_condition;

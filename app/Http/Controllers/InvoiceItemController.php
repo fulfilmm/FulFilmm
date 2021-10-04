@@ -97,6 +97,9 @@ class InvoiceItemController extends Controller
         $items->currency_unit=$request->currency_unit;
         $items->total=$request->total;
         $items->update();
+        return response()->json([
+            'Message'=>'Success'
+        ]);
     }
 
     /**
@@ -109,6 +112,6 @@ class InvoiceItemController extends Controller
     {
         $invoice_item=OrderItem::where('id',$id)->first();
         $invoice_item->delete();
-        return redirect()->back()->with('success','Item remove success');
+        return response()->json(['Delete'=>"Delete Success"]);
     }
 }

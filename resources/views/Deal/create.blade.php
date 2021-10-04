@@ -197,7 +197,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4 col-12">
+                        <div class="col-md-4 col-12" id="reason">
                             <div class="form-group">
                                 <label for="lost_reason">Lost Reason</label>
                                 <div class="input-group">
@@ -230,6 +230,22 @@
             @include('customer.quickcustomer')
         </div>
         <script>
+            $(document).ready(function () {
+                var sale_stage=$('#full_sale_stage option:selected').val();
+                if(sale_stage=="Lost"){
+                    $('#reason').show();
+                }else {
+                    $('#reason').hide();
+                }
+                $('#full_sale_stage').on('change',function () {
+                    var sale_stage=$('#full_sale_stage option:selected').val();
+                    if(sale_stage=="Lost"){
+                        $('#reason').show();
+                    }else {
+                        $('#reason').hide();
+                    }
+                })
+            });
             ClassicEditor
                 .create(document.querySelector('#description'));
         </script>

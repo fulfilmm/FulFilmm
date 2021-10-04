@@ -137,8 +137,7 @@
                             <div class="table-responsive" id="order_table">
                                 <table class="table table-hover table-white">
                                     <thead>
-                                    <th>Product</th>
-                                    <th>Description</th>
+                                    <th colspan="2">Product</th>
                                     <th>Quantity</th>
                                     <th>Unit Price</th>
                                     <th>Taxes(%)</th>
@@ -149,7 +148,7 @@
                                     <tbody id="tbody">
                                     @foreach($data['items'] as $order)
                                         <tr>
-                                            <td><input type="hidden" id="order_id_{{$order->id}}" value="{{$order->id}}">
+                                            <td colspan="2"><input type="hidden" id="order_id_{{$order->id}}" value="{{$order->id}}">
                                               <div class="row">
                                                   <input type="hidden" name="product_id" id="product_{{$order->id}}" value="{{$order->product_id}}">
                                                   <div class="col-md-4">
@@ -166,9 +165,6 @@
                                               </div>
                                             </td>
                                             <td>
-                                                <input type="text" name="description" id="order_description_{{$order->id}}" class="form-control update_item_{{$order->id}}" value="{{$order->description}}" style="min-width: 200px;">
-                                            </td>
-                                            <td>
                                                 <input type="text" name="quantity" id="quantity_{{$order->id}}" class="form-control update_item_{{$order->id}}" value=" {{$order->quantity}}">
                                             </td>
                                             <td>
@@ -183,15 +179,17 @@
                                             <td><input type="text" class="form-control update_item_{{$order->id}}" id="unit_{{$order->id}}" value="{{$order->currency_unit}}"></td>
 
                                             <td>
-                                                <a class="btn btn-danger btn-sm" data-toggle="modal" href="#remove{{$order->id}}" ><i class="fa fa-trash-o "></i></a>
+                                                <button type="button" class="btn btn-danger btn-sm"  id="remove{{$order->id}}" ><i class="fa fa-trash-o "></i></button>
+                                                @include('saleorder.item_edit_jquery')
                                             </td>
+
                                         </tr>
 
-                                        @include('saleorder.item_edit_jquery')
-                                        @include('invoice.item_remove')
+
+
                                     @endforeach
                                     <tr>
-                                        <td>
+                                        <td colspan="2">
                                             <input type="hidden" id="creation_id" value="{{$data['id'][0]}}">
                                             <select name="" class="form-control" id="product" style="width: 200px" >
                                                 <option value="">Search Product</option>
@@ -200,9 +198,7 @@
                                                 @endforeach
                                             </select>
                                         </td>
-                                        <td>
-                                            <input type="text" name="description" id="order_description" class="form-control" style="min-width: 200px;">
-                                        </td>
+
                                         <td>
                                             <input type="text" name="quantity" id="quantity" class="form-control " value="0">
                                         </td>
