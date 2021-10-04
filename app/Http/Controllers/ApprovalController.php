@@ -130,22 +130,11 @@ class ApprovalController extends Controller
     {
         $auth=Auth::guard('employee')->user();
         $details_approval=Approvalrequest::with('approver','secondary_approver','request_emp')->where('id',$id)->firstOrFail();
-        $is_cctome=Cc_of_approval::where('approval_id',$id)->where('emp_id',$auth->id)->first();
-           $is_approver=false;
-            if($details_approval->approver_id==$auth->id || $details_approval->secondary_approved==$auth->id ||$details_approval->emp_id==$auth->id){
-                $is_approver=true;
-            }
         $status=$this->approval_status;
         $doc_files=json_decode($details_approval->doc_file);
         $all_cmt=approval_comment::with('cmt_user')->where('approval_id',$id)->get();;
-        if($is_approver==true || $is_cctome!=null)
-        {
-            return view('approval.show',compact('details_approval','status','doc_files','all_cmt'));
-        }
 
-        else{
-            return redirect()->back();
-        }
+            return view('approval.show',compact('details_approval','status','doc_files','all_cmt'));
     }
 
     /**
