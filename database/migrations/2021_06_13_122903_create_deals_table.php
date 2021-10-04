@@ -16,6 +16,7 @@ class CreateDealsTable extends Migration
         Schema::create('deals', function (Blueprint $table) {
             $table->id();
             $table->string("name");
+            $table->string('deal_id');
             $table->double("amount");
             $table->string("unit");
             $table->bigInteger("org_name")->unsigned();
@@ -31,8 +32,6 @@ class CreateDealsTable extends Migration
             $table->text("next_step")->nullable();
             $table->string("type")->nullable();
             $table->integer("probability");
-            $table->double("weighted_revenue")->nullable();
-            $table->string("weighed_revenue_unit")->nullable();
             $table->string("lost_reason")->nullable();
             $table->text("description")->nullable();
             $table->bigInteger("created_id")->unsigned();

@@ -328,7 +328,7 @@
                             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                             success:function(data){
                                 console.log(data);
-                                // window.location.href = "/invoices";
+                                window.location=data.url;
                             }
                         });
                         });
@@ -369,8 +369,15 @@
                             url:"{{route('invoices.store')}}",
                             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                             success:function(data){
-                                console.log(data);
-                                // window.location.href = "/invoices";
+                                console.log(data.errors);
+                                // window.location.href = data.url;
+                            },
+                            error:function (data) {
+                                $.each(data.errors,function (key,value){
+                                    console.log(key);
+                                    $('.'+key+'_err').text(value);
+                                });
+
                             }
                         });
                     });

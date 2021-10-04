@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title>A simple, clean, and responsive HTML invoice template</title>
 
     <style>
@@ -96,8 +96,9 @@
         .invoice-box.rtl table tr td:nth-child(2) {
             text-align: left;
         }
-        .footer{
-            padding-left:200px ;
+
+        .footer {
+            padding-left: 200px;
             padding-top: 100px;
             font-size: 10px;
         }
@@ -112,12 +113,20 @@
                 <table>
                     <tr>
                         <td class="title">
-                            <img src="https://www.sparksuite.com/images/logo.png" style="width: 100%; max-width: 300px" />
-                        </td>
+                            <img src="{{$company!=null ? url(asset('/img/profiles/'.$company->logo)): url(asset('/img/profiles/avatar-01.jpg'))}}"
+                                 style="width: 100%; max-width: 300px"/>
 
+                        </td>
                         <td>
-                            Invoice #: {{$invoice->invoice_id}}<br />
-                            Created: {{\Illuminate\Support\Carbon::parse($invoice->invoice_date)->toFormattedDateString()}}<br />
+                            <span>{{$company->name??''}}</span><br>
+                            <span>{{$company->phone??''}}</span><br>
+                            <span>{{$company->address??''}}</span><br>
+                            <span>{{$company->email??''}}</span>
+                        </td>
+                        <td style="float: right">
+                            Invoice #: {{$invoice->invoice_id}}<br/>
+                            Created: {{\Illuminate\Support\Carbon::parse($invoice->invoice_date)->toFormattedDateString()}}
+                            <br/>
                             Due: {{\Illuminate\Support\Carbon::parse($invoice->due_date)->toFormattedDateString()}}
                         </td>
                     </tr>
@@ -125,19 +134,24 @@
             </td>
         </tr>
         <tr class="information">
-            <td colspan="7">
+            <td colspan="9">
                 <table>
                     <tr>
-                        <td colspan="5">
+                        <td colspan="9">
                             <h5>Invoice From :</h5>
-                            <span style="margin-right: 20px;"> Company Name :</span><strong>{{$company->name}}</strong><br />
-                            <span style="margin-right: 20px;"> Company Address :</span><strong>{{$company->address}}</strong><br />
+                            <span style="margin-right: 20px;"> Name :</span><strong>{{$invoice->employee->name}}</strong><br/>
+                            <span style="margin-right: 20px;"> Email :</span><strong>{{$invoice->employee->email}}</strong><br/>
+                            <span style="margin-right: 20px;"> Phone :</span><strong>{{$invoice->employee->phone}}</strong><br/>
+                            <span style="margin-right: 20px;">Address :</span><strong>{{$invoice->employee->address}}</strong><br/>
                         </td>
-                        <td>
+                        <td style="float: right;">
                             <h5>Invoice To :</h5>
-                           <span style="margin-right: 20px;">Company:</span><strong>{{$invoice->customer->company->name}}</strong> <br />
-                            <span style="margin-right: 20px;">Name :</span><strong>{{$invoice->customer->name}}</strong><br />
-                            <span style="margin-right: 20px;">Email </span><strong>{{$invoice->customer->email}}</strong>
+                            <span style="margin-right: 20px;">Company:</span><strong>{{$invoice->customer->company->name}}</strong>
+                            <br/>
+                            <span style="margin-right: 20px;">Name :</span><strong>{{$invoice->customer->name}}</strong><br/>
+                            <span style="margin-right: 20px;">Email : </span><strong>{{$invoice->customer->email}}</strong><br>
+                            <span style="margin-right: 20px;">Phone :</span><strong>{{$invoice->customer->phone}}</strong><br>
+                            <span style="margin-right: 20px;">Address :</span><strong>{{$invoice->customer->address}}</strong>
                         </td>
                     </tr>
                 </table>
@@ -169,9 +183,9 @@
             <td>Tax(%)</td>
             <td>Discount</td>
             <td style="min-width: 150px;">Discount Type</td>
-            <td>Total </td>
+            <td>Total</td>
         </tr>
-        @foreach($invoice_item as $item)
+        @foreach($orderItem as $item)
             <tr class="item">
                 <td>{{$item->product->name}}</td>
                 <td>{{$item->quantity}}</td>
@@ -192,14 +206,16 @@
             <td>{{$invoice->grand_total}}</td>
         </tr>
     </table>
-    <table style="alignment: center" class="footer">
+    <table style="alignment: left" class="footer">
         <tr>
-            <td> {{$company->phone}} | Email : {{$company->email}} |Website : www.{{$company->web_link}} |
-                Facebook Page :  {{$company->facebook_page}} |
-                Linkedin :  {{$company->linkedin}}
+            <td><span>Website : {{$company->web_link??'https://....'}}</span> |
+                <span>Email : {{$company->email??'@gmail.com'}}</span> <br>
+                <span>Facebook Page : {{$company->facebook_page??'www.facebook.com/...'}}</span> |
+                <span>Linkedin : {{$company->linkedin??'www.linkedin.com/...'}}</span> <br>
+                <span>Phone :{{$company->phone??'09*********'}}</span> |
+                <span>Address : {{$company->address??'......'}}</span> <br>
             </td>
         </tr>
-
     </table>
 </div>
 </body>

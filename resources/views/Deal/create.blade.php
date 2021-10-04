@@ -44,7 +44,7 @@
                         </div>
                         <div class="col-md-4 col-12">
                             <div class="form-group">
-                                <label for="full_form_amount">Amount <span class="text-danger"> * </span></label>
+                                <label for="full_form_amount">Weighted Amount <span class="text-danger"> * </span></label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fa fa-money"></i></span>
@@ -74,40 +74,22 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4 col-12">
-                            <div class="form-group" id="contact_div">
+                        <div class="col-md-4 col-12" >
+                            <div class="form-group" >
                                 <label for="full_contact">Contact Name <span class="text-danger"> * </span></label>
-                                <div class="input-group">
+                                <div class="input-group"id="contact_div">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fa fa-user"></i></span>
                                     </div>
-                                    <select name="contact_name" id="full_contact" class="form-control">
+                                    <select name="contact_name"  id="full_contact" class="form-control">
                                         @foreach($allcustomers as $key=>$value)
-                                            <option value="{{$key}}">{{$value}}</option>
+                                            <option value="{{$key}}" {{$last_customer->id==$key?'selected':''}}>{{$value}}</option>
                                         @endforeach
                                     </select>
                                     <button type="button" data-toggle="modal" href="#add_contact" class="btn btn-outline-dark"><i
                                                 class="fa fa-plus"></i></button>
                                 </div>
                                 @error('contact_name')
-                                <span class="text-danger">{{$message}}</span>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-12">
-                            <div class="form-group">
-                                <label for="full_org">Organization <span class="text-danger"> * </span></label>
-                                <div class="input-group" id="deal_com">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fa fa-money"></i></span>
-                                    </div>
-                                    <select name="org_name" class="form-control">
-                                        @foreach($companies as $key=>$value)
-                                            <option value="{{$key}}">{{$value}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                @error('org_name')
                                 <span class="text-danger">{{$message}}</span>
                                 @enderror
                             </div>
@@ -215,20 +197,12 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-md-4 col-12">
-                            <div class="form-group">
-                                <label for="weight_revenue">Weighted Revenue</label>
-                                <div class="input-group">
-                                    <input type="number" name="revenue" id="weight_revenue" class="form-control">
-                                </div>
-                            </div>
-                        </div>
                         <div class="col-md-4 col-12">
                             <div class="form-group">
                                 <label for="lost_reason">Lost Reason</label>
                                 <div class="input-group">
                                     <select name="lose_reason" id="lost_reason" class="select">
+                                        <option value="">None</option>
                                         <option value="Price">Price</option>
                                         <option value="Authority">Authority</option>
                                         <option value="Timing">Timing</option>

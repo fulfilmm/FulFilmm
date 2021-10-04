@@ -23,6 +23,7 @@
                                         <input type="text" name="name" class="form-control" id="contact_name"
                                                placeholder="Enter Full Name" required>
                                     </div>
+                                    <span class="text-danger name_err"></span>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
@@ -71,9 +72,7 @@
                                     <input type="text" class="form-control" id="contact_email" name="email"
                                            placeholder="Enter Email" required>
                                 </div>
-                                @error('email')
-                                <span class="offset-md-3 text-danger" role="alert">{{ $message }}</span>
-                                @enderror
+                                <span class="offset-md-3 email_err text-danger" role="alert"></span>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="phone"
@@ -150,7 +149,16 @@
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 success: function (data) {
                     console.log(data);
-                    $("#contact_div").load(location.href + "#contact_div>* ");
+                    $("#contact_div").load(location.href + " #contact_div>* ");
+                },
+                error: function(xhr, status, error)
+                {
+                    swal("Error", "You have some validation errors in add contact!",'error');
+                    $.each(xhr.responseJSON.errors, function (key, item)
+                    {
+                        $('.'+key+'_err').text(item);
+                    });
+
                 }
             });
         });

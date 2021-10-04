@@ -69,6 +69,16 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request,[
+           'title'=>'required',
+            'client_id'=>'required',
+            'client_email'=>'required',
+            'inv_date'=>'required',
+            'due_date'=>'required',
+            'client_address'=>'required',
+            'bill_address'=>'required',
+            'payment_method'=>'required',
+        ]);
 //        dd($request->all());
         $prefix=MainCompany::where('ismaincompany',true)->pluck('invoice_prefix','id')->first();
         $last_invoice=Invoice::orderBy('id', 'desc')->first();
@@ -95,7 +105,7 @@ class InvoiceController extends Controller
         } else {
             $invoice_id=($prefix ? :'INV')."-0001";
         }
-
+//dd($invoice_id);
         $newInvoice=new Invoice();
         $newInvoice->title=$request->title;
         $newInvoice->invoice_id=$invoice_id;
@@ -103,8 +113,8 @@ class InvoiceController extends Controller
         $newInvoice->email=$request->client_email;
         $newInvoice->customer_address=$request->client_address;
         $newInvoice->billing_address=$request->bill_address;
-        $newInvoice->invoice_date=Carbon::createFromFormat('d/m/Y',$request->inv_date);
-        $newInvoice->due_date=Carbon::createFromFormat('d/m/Y',$request->due_date);
+        $newInvoice->invoice_date=Carbon::create($request->inv_date);
+        $newInvoice->due_date=Carbon::create($request->due_date);
         $newInvoice->other_information=$request->more_info;
         $newInvoice->grand_total=$request->inv_grand_total;
         $newInvoice->status="Daft";
@@ -123,8 +133,13 @@ class InvoiceController extends Controller
         Session::forget($Auth);
         if(isset($request->save_type)){
            $this->sending_form($newInvoice->id);
+           return response()->json([
+              'url'=>url('invoice/sendmail/'.$newInvoice->id)
+           ]);
         }else{
-            return redirect('invoices');
+            return response()->json([
+                'url'=>url('invoice/'.$newInvoice->id)
+            ]);
         }
 
     }
@@ -133,8 +148,8 @@ class InvoiceController extends Controller
 //        dd($company);
         $detail_inv=Invoice::with('customer')->where('id',$id)->first();
 //        dd($detail_inv);
-        $invoice_item=orderItem::with('product')->where("inv_id",$id)->get();
-//        dd($orderItem);
+        $invoice_item=OrderItem::with('product')->where("inv_id",$id)->get();
+//        dd($invoice_item);
         $grand_total=0;
           for ($i=0;$i<count($invoice_item);$i++){
               $grand_total=$grand_total+$invoice_item[$i]->total;
@@ -218,14 +233,14 @@ class InvoiceController extends Controller
     {
         $invoice=Invoice::where("id",$id)->first();
         $invoice->delete();
-        return redirect()->back();
+        return redirect(route('invoices.index'))->with('success','Delete Success');
     }
     public function email(Request $request)
     {
 //        dd(env('MAIL_PORT'));
 //        dd($request->all());
-        $invoice=Invoice::with('customer')->where("id",$request->inv_id)->first();
-        $invoic_item=orderItem::with('product')->where("inv_id",$request->inv_id)->get();
+        $invoice=Invoice::with('customer','employee')->where("id",$request->inv_id)->first();
+        $invoice_item=OrderItem::with('product')->where("inv_id",$request->inv_id)->get();
         $company=MainCompany::where('ismaincompany',true)->first();
         if($request->attach!=null){
             $file = $request->attach;
@@ -239,7 +254,7 @@ class InvoiceController extends Controller
             'clientname' => $invoice->customer->name,
             'invoice'=>$invoice,
             'cc' => $cc,
-            'orderItem'=>$invoic_item,
+            'orderItem'=>$invoice_item,
             'company'=>$company,
             'attach' =>$request->attach!=null?public_path() . '/attach_file/' . $file_name:null,
         );
@@ -257,7 +272,7 @@ class InvoiceController extends Controller
         });
         $invoice->send_email=1;
         $invoice->update();
-        return redirect()->back()->with('success','Invoice Email Sending Successful');
+        return redirect(route('invoices.show',$invoice->id))->with('success','Invoice Email Sending Successful');
     }
     public function status_change(Request $request,$id){
         $invoice=Invoice::where("id",$id)->first();

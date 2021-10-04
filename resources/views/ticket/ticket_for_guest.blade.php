@@ -203,7 +203,7 @@
 
 
             ClassicEditor.create($('#guest_description')[0],{
-                toolbar: [ 'heading','bold', 'italic', 'undo', 'redo', 'numberedList', 'bulletedList','insertTable','fontColor','fontfamily','fontsize']
+                toolbar: [ 'heading','bold', 'italic', 'undo', 'redo', 'numberedList', 'bulletedList','insertTable']
 
             });
         </script>

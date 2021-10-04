@@ -32,7 +32,7 @@
                                 <form action="{{route('customers.destroy',$customer->id)}}" id="del-customer{{$customer->id}}" method="POST">
                                     @method('delete')
                                     @csrf
-                                    <a class="btn btn-danger" href="#" onclick="deleteRecord({{$customer->id}})"><span class='fa fa-trash'></span></a>
+                                    <button class="btn btn-danger" type="submit" onclick="deleteRecord({{$customer->id}})"><span class='fa fa-trash'></span></button>
                                 </form>
                             </td>
                         </tr>

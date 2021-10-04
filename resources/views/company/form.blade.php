@@ -40,9 +40,9 @@
                     </div>
                     <select name="business_type" class="form-control">
                         <option value="IT">Information Technology</option>
+                        <option value="Courier">Courier</option>
                         <option value="Trading">Trading</option>
                         <option value="Service">Service</option>
-                        <option value="Delivery Service">Delivery Service</option>
                     </select>
                 </div>
             </div>

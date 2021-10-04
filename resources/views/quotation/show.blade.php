@@ -32,7 +32,7 @@
             <button id="print" class="btn btn-outline-danger float-right ml-2" onclick="printContent('print_me');" ><i class="fa fa-print"></i> Print</button>
             <a href="{{route('quotations.edit',$quotation->id)}}" class="btn btn-outline-primary float-right" >Edit</a>
             <a href="{{url("/quotations/sendemail/$quotation->quotation_id")}}" class="btn btn-outline-primary" id="send_email">SendByEmail</a>
-            <button class="btn btn-outline-primary" id="confirm">Confirm</button>
+            @if(!$quotation->is_confirm)<a href="{{url('quotations/confirm/'.$quotation->id)}}" class="btn btn-outline-primary" id="confirm">Confirm</a>@else <button class="btn btn-success">Status :Confirmed</button>@endif
             <hr>
             <div class="card" >
                 <div class="col-12" id="print_me">

@@ -21,7 +21,7 @@
                                 <div role="menu" class="dropdown-menu">
                                     <a href="" id="print" class="dropdown-item "  onclick="printContent('print_me');" ><i class="fa fa-print"></i> Print</a>
                                     <div class="dropdown-divider"></div>
-                                    <button type="button" title="Delete" class="dropdown-item action-delete">
+                                    <button type="button" title="Delete" data-toggle="modal" data-target="#delete{{$detail_inv->id}}" class="dropdown-item action-delete">
                                        <i class="fa fa-trash"></i> Delete
                                     </button>
                                 </div>
@@ -450,6 +450,28 @@
                         </div>
                     </form>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal custom-modal fade" id="delete{{$detail_inv->id}}">
+        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                       &times;
+                    </button>
+                </div>
+                <form action="{{route('invoices.destroy',$detail_inv->id)}}" method="POST">
+                    @csrf
+                    @method('delete')
+                    <div class="modal-body">
+                        <strong>Do you want to Delete Approval {{$detail_inv->invoice_id}}?</strong>
+                    </div>
+                    <div class="modal-footer text-center">
+                        <button type="button"class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success ">Yes</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

@@ -47,11 +47,8 @@
                                     @foreach($allcustomers as $client)
                                         <option value="{{$client->id}}">{{$client->name}}</option>
                                     @endforeach
-                                    @error('quo_customer')
-                                    {{-- <span class="invalid-feedback" role="alert"> --}}
-                                    <strong class="text-danger">{{ $message }}</strong>
-                                    {{-- </span> --}}
-                                    @enderror
+
+                                    <strong class="text-danger client_err"></strong>
                                 </select>
                                 <button data-toggle="modal" data-target="#add_contact"  class="btn btn-outline-dark"><i class="fa fa-plus"></i></button>
                             </div>
@@ -62,11 +59,9 @@
                         <div class="form-group">
                             <label for="">Expiration</label>
                             <input type="date" class="form-control {{ $errors->has('exp_date') ? ' is-invalid' : '' }}" name="exp_date" id="exp" required>
-                            @if ($errors->has('exp_date'))
                                 <span class="help-block">
-                                        <strong class="text-danger text-center">{{ $errors->first('exp_date') }}</strong>
+                                        <strong class="text-danger text-center expiration_err"></strong>
                                         </span>
-                            @endif
                         </div>
                     </div>
                     <div class="col-md-4" >
@@ -84,11 +79,30 @@
                         </select>
                         </div>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-4" id="contact_div">
+                        <div class="form-group" >
+                            <label for="">Deal ID</label>
+                            <div class="input-group">
+                                <select name="deal_id" id="deal_id"  class="form-control">
+                                    <option value="">None</option>
+                                    @foreach($deals as $deal)
+                                        <option value="{{$deal->id}}">{{$deal->deal_id}}</option>
+                                    @endforeach
+
+                                    <strong class="text-danger client_err"></strong>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-8">
                         <div class="form-group">
                             <label for="description">Terms And Conditions</label>
                             <textarea  class="form-control " name="term_condition" id="term_and_condition" placeholder="Write terms and conditions .."></textarea>
                         </div>
+                        <span class="help-block">
+                                        <strong class="text-danger text-center term_and_condition_err"></strong>
+                                        </span>
                     </div>
                 </div>
                     <div class="border-top" id="home" role="tabpanel" aria-labelledby="home-tab" style="overflow: auto">
@@ -251,6 +265,21 @@
     <!-- /Page Content -->
     <!-- /Page Wrapper -->
     <script>
+        $(window).bind('beforeunload', function(){
+            var quotation_id=$('#form_id').val();
+            $.ajax({
+                data : {
+                    quotation_id:quotation_id,
+                },
+                type:'POST',
+                url:"{{route('quotations.discard')}}",
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                success:function(data){
+                    console.log(data);
+                }
+            });
+            return 'Are you sure you want to leave?All item will be lost!';
+        });
 
             $(document).ready(function() {
                 $(document).on('change', '#product', function () {
@@ -283,6 +312,49 @@
             });
 
          //store ajax function
+        $(document).ready(function() {
+            $(document).on('click', '#confirm', function () {
+                var quotation_id=$('#form_id').val();
+                var customer_id=$('#customer_name option:selected').val();
+                var exp=$('#exp').val();
+                var pay_term=$('#pay_term option:selected').val();
+                var grand_total=$('#grand_total').val();
+                var deal_id=$('#deal_id option:selected').val();
+                var term_condition=$("#term_and_condition").val();
+// alert(term_condition);
+                $.ajax({
+                    data : {
+                        quotation_id:quotation_id,
+                        customer:customer_id,
+                        expiration:exp,
+                        payment_term:pay_term,
+                        grand_total:grand_total,
+                        term_and_condition:term_condition,
+                        deal_id:deal_id,
+                        confirm:1
+                    },
+                    type:'POST',
+                    url:"{{route('quotations.store')}}",
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    success:function(data){
+                        console.log(data);
+                        window.location.href = "/quotations";
+                    },
+                    error: function (err) {
+                        if (err.status == 422) { // when status code is 422, it's a validation issue
+                            console.log(err.responseJSON);
+                            $('#success_message').fadeIn().html(err.responseJSON.message);
+                            // you can loop through the errors object and show it to the user
+                            console.warn(err.responseJSON.errors);
+                            // display errors on each form field
+                            $.each(err.responseJSON.errors, function (i, error) {
+                                $('.' + i + '_err').text(error);
+                            });
+                        }
+                    }
+                });
+            });
+        });
             $(document).ready(function() {
                 $(document).on('click', '#save', function () {
                     var quotation_id=$('#form_id').val();
@@ -290,6 +362,7 @@
                     var exp=$('#exp').val();
                     var pay_term=$('#pay_term option:selected').val();
                     var grand_total=$('#grand_total').val();
+                    var deal_id=$('#deal_id option:selected').val();
                     var term_condition=$("#term_and_condition").val();
 // alert(term_condition);
                     $.ajax({
@@ -299,7 +372,8 @@
                             expiration:exp,
                             payment_term:pay_term,
                             grand_total:grand_total,
-                            term_and_condition:term_condition
+                            term_and_condition:term_condition,
+                            deal_id:deal_id
                         },
                         type:'POST',
                         url:"{{route('quotations.store')}}",
@@ -316,7 +390,7 @@
                                 console.warn(err.responseJSON.errors);
                                 // display errors on each form field
                                 $.each(err.responseJSON.errors, function (i, error) {
-                                   alert(error);
+                                    $('.' + i + '_err').text(error);
                                 });
                             }
                         }
@@ -336,7 +410,7 @@
                         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                         success:function(data){
                             console.log(data);
-                            // window.location.href = "/quotations";
+                            window.location.href = "/quotations";
                         }
                     });
                 });
@@ -348,8 +422,8 @@
                     var exp=$('#exp').val();
                     var pay_term=$('#pay_term option:selected').val();
                     var grand_total=$('#grand_total').val();
-                    var term_condition=CKEDITOR.instances["term_and_condition"].getData();
-                    var company=$('#customer_admin_company').val();
+                    var term_condition=$("#term_and_condition").val();
+                    var deal_id=$('#deal_id option:selected').val();
                     $.ajax({
                         data : {
                             quotation_id:quotation_id,
@@ -358,14 +432,16 @@
                             payment_term:pay_term,
                             grand_total:grand_total,
                             term_and_condition:term_condition,
-                            admin_company:company,
+                            deal_id:deal_id,
+                            send_email:'saveandsend',
+                            confirm:1
                         },
                         type:'POST',
                         url:"{{route('quotations.store')}}",
                         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                         success:function(data){
                             console.log(data);
-                            // window.location.href = "/quotations/sendemail/";
+                            window.location.href =data.url;
                         },
                         error: function (err) {
                             if (err.status == 422) { // when status code is 422, it's a validation issue

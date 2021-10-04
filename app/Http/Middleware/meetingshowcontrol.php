@@ -39,7 +39,9 @@ class meetingshowcontrol
         }elseif (isset($request->approval)){
             $approvals=Approvalrequest::where('emp_id',$current_user->id)->where('id',$request->approval)->first();
             $cc_approvals=Cc_of_approval::where('emp_id',$current_user->id)->where('approval_id',$request->approval)->first();
-            if($approvals==null && $cc_approvals==null){
+            $approver=Approvalrequest::where('approved_id',$current_user->id)->where('id',$request->approval)->first();
+            $second_approver=Approvalrequest::where('secondary_approved',$current_user->id)->where('id',$request->approval)->first();
+            if($approvals==null && $cc_approvals==null && $approver==null && $second_approver==null){
 
                 return redirect()->back()->with('error','You do not have permission to access requested record!');
             }else{

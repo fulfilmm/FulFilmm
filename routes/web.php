@@ -96,6 +96,7 @@ Route::middleware(['auth:employee'])->group(function () {
     Route::post("/deal/company/create", [DealController::class, 'company_create'])->name('company_create');
     Route::get('/quotations/sendemail/{id}', [QuotationController::class, 'sendEmail'])->name('sendemail');
     Route::post('/quotations/sendmail', [QuotationController::class, 'email'])->name('quotations.mail');
+    Route::get('/quotations/confirm/{id}', [QuotationController::class, 'confirm'])->name('quotations.confirm');
 
 
 });

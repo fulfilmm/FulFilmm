@@ -25,6 +25,7 @@ class CreateQuotationsTable extends Migration
             $table->text("terms_conditions");
             $table->double("grand_total");
             $table->string("payment_term");
+            $table->bigInteger('deal_id')->unsigned()->nullable();
             $table->index('id');
             $table->softDeletes();
             $table->timestamps();

@@ -62,20 +62,13 @@ class DealController extends Controller
      */
     public function create()
     {
-            $hasSetUp = $this->company_contract->isUserCompany();
             $allemployees = employee::all();
             $allcustomers = Customer::all()->pluck('name', 'id')->all();
             $parent_companies=Company::all()->pluck('name', 'id')->all();
             $companies=Company::all()->pluck('name', 'id')->all();
-            $taxes=products_tax::all();
-            $lasttax=products_tax::orderBy('id', 'desc')->first();
-            $allcat=products_category::all();
-             $lastcat=products_category::orderBy('id', 'desc')->first();
-            $products=product::with("category","taxes")->get();
             $lead_source=$this->lead_sources;
-        $tags = tags_industry::all();
-        $last_tag = tags_industry::orderBy('id', 'desc')->first();
-        return  view("Deal.create",compact("products",'hasSetUp','companies','parent_companies',"taxes","lasttax","lastcat","allcat","lasttax","allemployees","allcustomers",'lead_source','tags','last_tag'));
+        $last_customer = Customer::orderBy('id', 'desc')->first();
+        return  view("Deal.create",compact('companies','parent_companies',"allemployees","allcustomers",'lead_source','last_customer'));
     }
 
     /**
@@ -91,7 +84,6 @@ class DealController extends Controller
            'name'=>'required',
            'amount'=>'required',
            'unit'=>'required',
-           'org_name'=>'required',
             'contact_name'=>'required',
             'exp_date'=>'required',
             'pipeline'=>'required',
@@ -101,11 +93,22 @@ class DealController extends Controller
             'probability'=>'required',
 
         ]);
+        $last_deal=deal::orderBy('id', 'desc')->first();
+
+        if ($last_deal!=null) {
+            // Sum 1 + last id
+                    $last_deal->deal_id++;
+                    $deal_id = $last_deal->deal_id;
+        } else {
+            $deal_id='Deal'."-0001";
+        }
+        $customer=Customer::where('id',$request->contact_name)->first();
         $deal=new deal();
+        $deal->deal_id=$deal_id;
         $deal->name=$request->name;
         $deal->amount=$request->amount;
         $deal->unit=$request->unit;
-        $deal->org_name=$request->org_name;
+        $deal->org_name=$customer->company_id;
         $deal->contact=$request->contact_name;
         $deal->close_date=$request->exp_date;
         $deal->pipeline=$request->pipeline;

@@ -15,7 +15,7 @@
                 <!-- /Page Header -->
 
         <div class="row ">
-            <div class="col-md-10 offset-md-1">
+            <div class="col-md-12 ">
                 <div class="card">
                     <form action="{{route('send')}}" method="POST" enctype="multipart/form-data">
                         @csrf
