@@ -93,6 +93,7 @@ class AccountController extends Controller
      */
     public function update(Request $request, $id)
     {
+//        dd($request->all());
         $account=Account::where('id',$id)->first();
          $account->name=$request->name;
          $account->number=$request->number;
@@ -101,7 +102,7 @@ class AccountController extends Controller
          $account->bank_name=$request->bank_name;
          $account->bank_phone=$request->bank_phone;
          $account->bank_address=$request->bank_address;
-         $account->enabled=$request->enable;
+         $account->enabled=$request->enable??0;
          $account->update();
         return redirect(route('accounts.show',$account->id));
     }
@@ -114,6 +115,14 @@ class AccountController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $account=Account::where('id',$id)->first();
+        $account->delete();
+        return redirect()->back()->with('success','Account Delete Success');
+    }
+    public function enable(Request $request,$id){
+        $account=Account::where('id',$id)->first();
+        $account->enabled=$request->enable;
+        $account->update();
+        return response()->json(['Account'=>$request->enable==1?'Enabled':'Disabled']);
     }
 }

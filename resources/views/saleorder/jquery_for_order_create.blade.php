@@ -1,9 +1,8 @@
 <script>
-    $(document).ready(function () {
-        $('#delivery_address').hide();
-        $('select').selectize({
-            sortField: 'text'
-        });
+    jQuery(document).ready(function () {
+        'use strict';
+
+        jQuery('#order_date').datetimepicker();
     });
     $(document).on('change', 'input', function () {
         var quantity = $('#quantity').val();
@@ -15,18 +14,30 @@
         $('#total').val(include_tax);
 
     });
+    $(document).ready(function () {
 
-
-    $(document).on('change', '.shipping_type', function () {
         var type = $("input[name='shipping_type']:checked").val();
         if (type == 'pickup') {
             $('#delivery_address').hide();
 
-        } else if (type == 'delivery') {
-            $('#delivery_address').show();
         }
+        $(document).on('change', '.shipping_type', function () {
+            var type = $("input[name='shipping_type']:checked").val();
+            if (type == 'pickup') {
+                $('#delivery_address').hide();
+
+            } else if (type == 'delivery') {
+                $('#delivery_address').show();
+            }
+        });
     });
     $(document).on('change', '#customer_id', function () {
+        $('#product').select2({
+            "language": {},
+            escapeMarkup: function (markup) {
+                return markup;
+            }
+        });
         var customer_id = $("#customer_id option:selected").val();
         // alert(product_id);
                 @foreach($data['customer'] as $customer )
@@ -36,6 +47,7 @@
             $('#phone').val({{$customer->phone}});
             $('#email').val("{{$customer->email}}");
             $('#address').val("{{$customer->address}}");
+            $('#billing_address').val("{{$customer->address}}");
         }
         @endforeach
     });

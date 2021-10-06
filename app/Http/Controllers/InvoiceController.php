@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Models\Account;
 use App\Models\Customer;
 use App\Models\Invoice;
+use App\Models\InvoiceHistory;
+use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\MainCompany;
 use App\Models\product;
@@ -41,7 +43,9 @@ class InvoiceController extends Controller
         $allcustomers = Customer::all();
         $products=product::with("category","taxes")->get();
         $Auth=Auth::guard('employee')->user()->name;
-
+//        Session::forget('data-'.Auth::guard('employee')->user()->id);
+        $data=Session::get('data-'.Auth::guard('employee')->user()->id);
+//        dd($data);
 //        Session::forget($Auth);
         $session_value=\Illuminate\Support\Str::random(10);
         if(!Session::has($Auth)){
@@ -58,7 +62,7 @@ class InvoiceController extends Controller
             $grand_total=$grand_total+$orderline[$i]->total;
         }
         $status=$this->status;
-        return view('invoice.create',compact('request_id','allcustomers','products','orderline','grand_total','status'));
+        return view('invoice.create',compact('request_id','allcustomers','products','orderline','grand_total','status','data'));
     }
 
     /**
@@ -130,7 +134,19 @@ class InvoiceController extends Controller
             $item->inv_id=$newInvoice->id;
             $item->update();
         }
+        if(isset($request->order_id)){
+            $order_item=OrderItem::where('order_id',$request->order_id)->get();
+            $grand_total=0;
+            for ($i=0;$i<count($order_item);$i++){
+                $grand_total=$grand_total+$order_item[$i]->total;
+            }
+            $order=Order::where('id',$request->order_id)->first();
+            $order->total_amount=$grand_total;
+            $order->update();
+        }
         Session::forget($Auth);
+        Session::forget('data-'.Auth::guard('employee')->user()->id);
+        $this->add_history($newInvoice->id,'Daft','Add'.$invoice_id);
         if(isset($request->save_type)){
            $this->sending_form($newInvoice->id);
            return response()->json([
@@ -138,7 +154,7 @@ class InvoiceController extends Controller
            ]);
         }else{
             return response()->json([
-                'url'=>url('invoice/'.$newInvoice->id)
+                'url'=>url('invoices/'.$newInvoice->id)
             ]);
         }
 
@@ -168,11 +184,12 @@ class InvoiceController extends Controller
         $company=MainCompany::where('ismaincompany',true)->first();
         $detail_inv=Invoice::with('customer','employee')->where('id',$id)->firstOrFail();
         $invoic_item=OrderItem::with('product')->where("inv_id",$detail_inv->id)->get();
-        $account=Account::all()->pluck('name','id')->all();
+        $account=Account::where('enabled',1)->get();
         $recurring=['No','Daily','Weekly','Monthly','Yearly'];
         $payment_method=['Cash','eBanking','WaveMoney','KBZ Pay'];
         $category=TransactionCategory::all();
         $revenue=Revenue::where('invoice_id',$id)->get();
+        $history=InvoiceHistory::where('invoice_id',$id)->get();
         $transaction=[];
         $overdue_amount=$detail_inv->grand_total;
         foreach ($revenue as $tran){
@@ -186,18 +203,21 @@ class InvoiceController extends Controller
         if($detail_inv->grand_total > $overdue_amount && $overdue_amount!=0){
             $detail_inv->status='Partial';
             $detail_inv->update();
+            $this->add_history($id,'Partial','Change Status '.$detail_inv->invoice_id);
         }elseif($overdue_amount!=0 && Carbon::now()>$detail_inv->due_date){
             $detail_inv->status='Overdue';
             $detail_inv->update();
+            $this->add_history($id,'Overdue','Change Status '.$detail_inv->invoice_id);
         }else{
             $detail_inv->status='Paid';
             $detail_inv->update();
+            $this->add_history($id,'Paid','Change Status '.$detail_inv->invoice_id);
         }
         $transaction_amount=0;
         $customer=Customer::orWhere('customer_type','Customer')->orWhere('customer_type','Lead')->orWhere('customer_type','Partner')->orWhere('customer_type','Inquery')->get();
         $data=['overdue_amount'=>$overdue_amount,'transaction'=>$transaction,'customers'=>$customer,'account'=>$account,'recurring'=>$recurring,'payment_method'=>$payment_method,'category'=>$category];
 
-        return view('invoice.show',compact('detail_inv','invoic_item','company','data','transaction_amount'));
+        return view('invoice.show',compact('detail_inv','invoic_item','company','data','transaction_amount','history'));
     }
 
     /**
@@ -272,6 +292,7 @@ class InvoiceController extends Controller
         });
         $invoice->send_email=1;
         $invoice->update();
+        $this->add_history($invoice->id,'Send Mail','Sending email to customer');
         return redirect(route('invoices.show',$invoice->id))->with('success','Invoice Email Sending Successful');
     }
     public function status_change(Request $request,$id){
@@ -280,15 +301,15 @@ class InvoiceController extends Controller
         $invoice->update();
         return redirect()->back();
     }
-    public function search(Request $request){
-//        dd('hello');
-        $start_date=Carbon::create($request->form_date);
-        $end_date=Carbon::create($request->to_date);
-        if($request->status=="Select Status" && $request->form_date!=null || $request->to_date!=null){
-            $allinv=Invoice::with('customer')->whereBetween('created_at',[$start_date,$end_date])->get();
-        }else{
-
-        }
+    public function add_history($id,$status,$desc){
+       $old_state=InvoiceHistory::where('invoice_id',$id)->where('status',$status)->first();
+       if($old_state==null){
+           $history=new InvoiceHistory();
+           $history->invoice_id=$id;
+           $history->status=$status;
+           $history->description=$desc;
+           $history->save();
+       }
 
     }
 }

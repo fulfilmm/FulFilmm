@@ -11,4 +11,7 @@ class Order extends Model
     public function customer(){
         return $this->belongsTo(Customer::class,'customer_id','id');
     }
+    public function quotation(){
+        return $this->belongsTo(Quotation::class,'quotation_id','id');
+    }
 }

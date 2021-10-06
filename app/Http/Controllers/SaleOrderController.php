@@ -59,9 +59,23 @@ class SaleOrderController extends Controller
         }
         $products=product::all();
         if(Auth::guard('customer')->check()){
-            $quotation=Quotation::all()->pluck('quotation_id','id')->where('customer_name',Auth::guard('customer')->user()->id)->all();
+            $quotations=Quotation::where('is_confirm',1)->where('customer_name',Auth::guard('customer')->user()->id)->get();
+          $quotation=[];
+            foreach ($quotations as $quo){
+                $is_exist=Order::where('quotation_id',$quo->id)->first();
+                if($is_exist==null){
+                    array_push($quotation,$quo);
+                }
+            }
         }else{
-            $quotation=Quotation::all()->pluck('quotation_id','id')->all();
+            $quotations=Quotation::where('is_confirm',1)->get();
+            $quotation=[];
+            foreach ($quotations as $quo){
+                $is_exist=Order::where('quotation_id',$quo->id)->first();
+                if($is_exist==null){
+                    array_push($quotation,$quo);
+                }
+            }
         }
 
 //          dd($quotation);
@@ -80,7 +94,6 @@ class SaleOrderController extends Controller
             'payment_method'=>'required',
             'payment_term'=>'required',
             'order_date'=>'required',
-            'time'=>'required',
             'billing_address'=>'required',
         ]);
         $last_order=Order::orderBy('id', 'desc')->first();
@@ -109,7 +122,7 @@ class SaleOrderController extends Controller
             $order->shipping_address=$request->shipping_address;
             $order->billing_address=$request->billing_address;
             $order->status="New";
-            $order->order_date = Carbon::create($request->order_date . '' . $request->time);
+            $order->order_date = Carbon::create($request->order_date);
 
             $Auth="order-".Auth::guard('employee')->user()->name;
             $request_id=Session::get($Auth);
@@ -136,7 +149,7 @@ class SaleOrderController extends Controller
 
     }
     public function show($id){
-        $Order=Order::with('customer')->where('id',$id)->firstOrFail();
+        $Order=Order::with('customer','quotation')->where('id',$id)->firstOrFail();
         $items=OrderItem::with('product','invoice')->where('order_id',$id)->get();
         $comments=order_comments::with('employee')->where('order_id',$id)->get();
         $employees=Employee::all()->pluck('name','id')->all();
@@ -161,40 +174,49 @@ class SaleOrderController extends Controller
     }
     public function generate_invoice($id)
     {
-        $ordered_items = OrderItem::where('order_id', $id)->get();
-        if ($ordered_items[0]->inv_id == null) {
-            $order_data = Order::where('id', $id)->first();
+        $order_data = Order::where('id', $id)->first();
+
+        if ($order_data->status=='Confirm'){
+            $ordered_items = OrderItem::where('order_id', $id)->get();
+            if($ordered_items!=null){
+                if($ordered_items[0]->inv_id == null) {
+
 //            dd($order_data);
-            $allcustomers = Customer::all();
-            $products = product::with("category", "taxes")->get();
-            $Auth = Auth::guard('employee')->user()->name;
+                    $allcustomers = Customer::all();
+                    $products = product::with("category", "taxes")->get();
+                    $Auth = Auth::guard('employee')->user()->name;
 
 //        Session::forget($Auth);
-            $session_value = \Illuminate\Support\Str::random(10);
-            if (!Session::has($Auth)) {
-                Session::push("$Auth", $session_value);
-                $request_id = Session::get($Auth);
-            } else {
-                $request_id = Session::get($Auth);
-            }
-            foreach ($ordered_items as $item) {
-                $item->creation_id = $request_id[0];
-                $item->update();
-            }
+                    $session_value = \Illuminate\Support\Str::random(10);
+                    if (!Session::has($Auth)) {
+                        Session::push("$Auth", $session_value);
+                        $request_id = Session::get($Auth);
+                    } else {
+                        $request_id = Session::get($Auth);
+                    }
+                    foreach ($ordered_items as $item) {
+                        $item->creation_id = $request_id[0];
+                        $item->update();
+                    }
 //        $generate_id=Str::uuid();
-            $orderline = OrderItem::with('product')->where('creation_id', $request_id)->get();
+                    $orderline = OrderItem::with('product')->where('order_id', $id)->get();
 //        dd($orderline);
-            $grand_total = 0;
-            for ($i = 0; $i < count($orderline); $i++) {
-                $grand_total = $grand_total + $orderline[$i]->total;
+                    $grand_total = 0;
+                    for ($i = 0; $i < count($orderline); $i++) {
+                        $grand_total = $grand_total + $orderline[$i]->total;
+                    }
+                    return view('invoice.create', compact('request_id', 'allcustomers', 'products', 'orderline', 'grand_total', 'order_data'));
+
+                }else{
+                    return redirect()->back()->with('error','This order has been generated invoice');
+                }
+            }else{
+                return redirect()->back()->with('error','This order does not have any item!');
             }
-            $status = $this->status;
-
-            return view('invoice.create', compact('request_id', 'allcustomers', 'products', 'orderline', 'grand_total', 'order_data'));
-
         }else{
-            return redirect()->back()->with('error','This order has been generated invoice');
+            return redirect()->back()->with('error','This order has not been confirmed!');
         }
+
     }
     public function comment(Request $request){
         if($request->comment_text!=null){

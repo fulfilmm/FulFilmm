@@ -54,9 +54,40 @@
                                 </td>
                                 <td>
                                     <div class="custom-control custom-switch">
-                                        <input type="checkbox" class="custom-control-input" id="customSwitch1" name="enable" checked>
-                                        <label class="custom-control-label" for="customSwitch1"></label>
+                                        <input type="checkbox" class="custom-control-input" id="enabled_{{$acc->id}}" name="enable" {{$acc->enabled==1?'checked':''}}>
+                                        <label class="custom-control-label" for="enabled_{{$acc->id}}"></label>
                                     </div>
+                                    <script>
+                                        $(document).ready(function () {
+                                            $('#enabled_{{$acc->id}}').on('click',function (event) {
+                                                if($(this).prop("checked") == true){
+                                                   var enable=1;
+                                                }
+                                                else if($(this).prop("checked") == false){
+                                                 var enable=0;
+                                                }
+                                                $.ajax({
+                                                    data: {
+                                                        "enable": enable
+                                                    },
+                                                    type: 'POST',
+                                                    url: "{{route('account.enable',$acc->id)}}",
+                                                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                                                    success: function (data) {
+                                                        console.log(data);
+                                                        swal({
+                                                                title: "Account",
+                                                                text: 'This account is '+data.Account,
+                                                                type: "success"
+                                                            }
+                                                        ).then(function(){
+                                                            location.reload();
+                                                        });
+                                                    }
+                                                });
+                                            });
+                                        });
+                                    </script>
                                 </td>
                                 <td>
                                     <div class="dropdown">
@@ -64,11 +95,30 @@
                                             <i class="fa fa-ellipsis-h text-muted"></i>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                            <a href="" class="dropdown-item">Edit</a>
+                                            <a href="{{route('accounts.edit',$acc->id)}}" class="dropdown-item">Edit</a>
                                             <div class="dropdown-divider"></div>
-                                            <button type="button" title="Delete" class="dropdown-item action-delete">
-                                                Delete
-                                            </button>
+                                            <a href="" class="dropdown-item " data-toggle="modal" data-target="#delete_{{$acc->id}}"><i class="la la-trash mr-2"></i>Delete</a>
+                                        </div>
+                                    </div>
+                                    <div id="delete_{{$acc->id}}" class="modal custom-modal fade" role="dialog">
+                                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Add Approval</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="{{route('accounts.destroy',$acc->id)}}" method="POST" >
+                                                        @csrf
+                                                        @method('delete')
+                                                        <span class="text-danger">Are you sure delete this account?</span>
+                                                        <button type="button" class="btn btn-primary btn-sm">No</button>
+                                                        <button type="submit" class="btn btn-danger btn-sm">Yes</button>
+                                                    </form>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </td>
@@ -95,6 +145,7 @@
             </div>
         </footer>
     </div>
+
         <script>
             $(document).ready(function() {
                 $('#account').DataTable();

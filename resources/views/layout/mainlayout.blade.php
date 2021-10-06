@@ -18,6 +18,9 @@
 @endif
 
 @include('layout.partials.footer-scripts')
+<script>
+    @yield('script')
+</script>
 
     @stack('scripts')
 

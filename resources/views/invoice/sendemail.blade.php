@@ -21,10 +21,10 @@
                         @csrf
                         <div class="card-body">
                             <div class="row my-3">
-                                <div class="col-sm-4 m-b-20">
-                                    <img src="{{$company!=null ? url(asset('/img/profiles/'.$company->logo)): url(asset('/img/profiles/avatar-01.jpg'))}}" class="inv-logo avatar" alt="logo" >
+                                <div class="col-sm-4 col-md-2 m-b-20">
+                                    <img src="{{$company!=null ? url(asset('/img/profiles/'.$company->logo)): url(asset('/img/profiles/avatar-01.jpg'))}}" class="inv-logo" alt="logo" >
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-2 col-md-4">
                                     <h3>{{$company->name ?? ''}}</h3>
                                     <strong>Address: <i> {{$company->address}}</i></strong>
                                 </div>

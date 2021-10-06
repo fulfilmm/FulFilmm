@@ -78,7 +78,7 @@
                                     class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             <li class="submenu">
-                                <a href="#"><span> Employees</span> <span class="menu-arrow"></span></a>
+                                <a href="#"><i class="la la-users mr-2" style="font-size: 18px;"></i><span> Employees</span> <span class="menu-arrow"></span></a>
                                 <ul style="display: none;">
 
                                     <li><a class="{{ Request::is('employees') ? 'active' : '' }}"
@@ -208,11 +208,24 @@
                                     class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             <li class="submenu">
+                                <a href="#"><i class="la la-cube mr-2" style="font-size: 18px"></i><span> Product</span> <span class="menu-arrow"></span></a>
+                                <ul style="display: none;">
+
+                                    <li><a class="{{ Request::is('products') ? 'active' : '' }}" href="{{url('/products')}}">All
+                                            Products</a></li>
+                                    <li><a class="{{ Request::is('products') ? 'active' : '' }}" href="{{url('/products/create')}}">
+                                            Product Create</a></li>
+
+                                </ul>
+                            </li>
+                            <li class="submenu">
                                 <a href="#"><img src="{{url(asset('img/icon_image/invoice.png'))}}"  alt="" width="18px" height="18px" class="mr-1" ><span> Invoice</span> <span
                                             class="menu-arrow"></span></a>
                                 <ul style="display: none;">
                                     <li><a class="{{ Request::is('invoices') ? 'active' : '' }}"
                                            href="{{ route('invoices.index') }}">All Invoice</a></li>
+                                    <li><a class="{{ Request::is('invoices') ? 'active' : '' }}"
+                                           href="{{ route('invoices.create') }}">Invoice Create</a></li>
                                 </ul>
                             </li>
                             <li class="submenu">
@@ -220,7 +233,7 @@
                                             class="menu-arrow"></span></a>
                                 <ul style="display: none;">
                                     <li><a class="{{ Request::is('invoices') ? 'active' : '' }}"
-                                           href="{{ route('saleorders.index') }}">Orders</a></li>
+                                           href="{{ route('saleorders.index') }}">All Orders</a></li>
                                     <li><a class="{{ Request::is('invoices') ? 'active' : '' }}"
                                            href="{{ route('saleorders.create') }}">Orders Create</a></li>
                                 </ul>
@@ -231,33 +244,14 @@
                         <a href="#"><i class="la la-cube"></i> <span>CRM</span> <span
                                     class="menu-arrow"></span></a>
                         <ul style="display: none;">
-
-                    <li class="submenu">
-                        <a href="#"><i class="la la-cube mr-2" style="font-size: 18px"></i><span> Product</span> <span class="menu-arrow"></span></a>
-                        <ul style="display: none;">
-
-                            <li><a class="{{ Request::is('products') ? 'active' : '' }}" href="{{url('/products')}}">All
-                                    Products</a></li>
-                            {{--                            <li><a class="{{ Request::is('cases') ? 'active' : '' }}" href="{{ route('cases.index') }}">All Cases</a></li>--}}
-                            {{--                            <li><a class="{{ Request::is('priority') ? 'active' : '' }}" href="{{ route('priorities.index') }}">All Priority</a></li>--}}
-
-                        </ul>
-                    </li>
-                    {{--<li class="submenu">--}}
-                        {{--<a href="#"><i class="la la-question-circle"></i> <span> InQuery</span> <span--}}
-                                    {{--class="menu-arrow"></span></a>--}}
-                        {{--<ul style="display: none;">--}}
-                            {{--<li><a class="{{ Request::is('inqueries.index') ? 'active' : '' }}"--}}
-                                   {{--href="{{ route('inqueries.index') }}">All InQuery</a></li>--}}
-                            {{--<li><a class="{{ Request::is('inqueries.create') ? 'active' : '' }}"--}}
-                                   {{--href="{{ route('inqueries.create') }}">InQuery Create</a></li>--}}
-                        {{--</ul>--}}
-                    {{--</li>--}}
+                        <a href="{{route('leads.index')}}"><i class="la la-question-circle mr-2"></i> <span>All Leads</span></a>
                     <li class="submenu">
                         <a href="#"><i class="fa fa-handshake-o mr-2" style="font-size: 18px"></i><span> Deal</span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             <li><a class="{{ Request::is('deals') ? 'active' : '' }}" href="{{ route('deals.index') }}">All
                                     Deals</a></li>
+                            <li><a class="{{ Request::is('deals') ? 'active' : '' }}" href="{{ route('deals.create') }}">
+                                    Deal Create</a></li>
                         </ul>
                     </li>
                     <li class="submenu">
@@ -265,7 +259,9 @@
                                     class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             <li><a class="{{ Request::is('quotations') ? 'active' : '' }}"
-                                   href="{{ route('quotations.index') }}">All Quotation</a></li>
+                                   href="{{ route('quotations.index') }}">All Quotations</a></li>
+                            <li><a class="{{ Request::is('quotations') ? 'active' : '' }}"
+                                   href="{{ route('quotations.create') }}">Quotation Create</a></li>
                         </ul>
                     </li>
 

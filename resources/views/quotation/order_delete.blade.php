@@ -1,27 +1,23 @@
-<div class="modal fade" id="delete{{$order->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Cancel Order</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="{{route('quotation_items.destroy',$order->id)}}" method="POST">
-                @csrf
-                @method('DELETE')
-                <div class="modal-body">
-                    <div class="text-center">
-                                                <span>
-                                                    Are you sure cancel this order?
-                                              </span>
-                    </div>
-                </div>
-                <div class="text-center">
-                    <button class="btn btn-outline-primary">Cancel</button>
-                    <button type="submit" class="btn btn-danger  my-2">Delete</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+<script>
+    $(document).on('click','#remove{{$order->id}}',function () {
+        $.ajax({
+            type:'delete',
+            url:"{{route('quotation_items.destroy',$order->id)}}",
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success:function(data){
+                console.log(data);
+                var alltotal=[];
+                $('.total').each(function(){
+                    alltotal.push(this.value);
+                });
+                var grand_total=0;
+                for (var i=0;i<alltotal.length;i++){
+                    grand_total=parseFloat(grand_total)+parseFloat(alltotal[i]);
+                }
+                $('#grand_total').val(grand_total);
+                $("#home").load(location.href + " #home>* ");
+
+            }
+        });
+    });
+</script>

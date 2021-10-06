@@ -1,9 +1,9 @@
 @extends(\Illuminate\Support\Facades\Auth::guard('employee')->check()?'layout.mainlayout':'layouts.app')
 @section('title','Order Create')
 @section('content')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
+    {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>--}}
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
+    {{--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />--}}
     <!-- Page Content -->
     @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
         <div class="content container-fluid">
@@ -30,7 +30,7 @@
                                 @csrf
                                 <div class="col-md-12 mb-3">
                                     <label for="Text1" class="form-label font-weight-bold text-muted text-uppercase">Customer <span class="text-danger">*</span></label>
-                                    <select name="customer_id" class="form-control" id="customer_id" required>
+                                    <select name="customer_id" class="select form-control" id="customer_id" required>
                                         <option value="">Choose Customer</option>
                                         @foreach($data['customer'] as $customer)
                                             @if(\Illuminate\Support\Facades\Auth::guard('customer')->check()&& \Illuminate\Support\Facades\Auth::guard('customer')->user()->id==$customer->id)
@@ -75,15 +75,10 @@
                         <div class="col-lg-6">
                             <h5 class="font-weight-bold pb-3">Order Details</h5>
                             <div class="row g-3">
-                                <div class="col-md-6 mb-3">
+                                <div class="col-md-12 mb-3">
                                     <label for="order_date" class="form-label font-weight-bold text-muted text-uppercase">Date <span class="text-danger">*</span></label>
-                                    <input type="date" class="form-control" id="order_date" placeholder="DD MM YYYY" required>
+                                    <input type="text" class="form-control" id="order_date" placeholder="DD MM YYYY" required>
                                     <span class="text-danger order_date_err"></span>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="time" class="form-label font-weight-bold text-muted text-uppercase">Time <span class="text-danger">*</span></label>
-                                    <input type="time" class="form-control" id="time" placeholder="00:00" required>
-                                    <span class="text-danger time_err"></span>
                                 </div>
                                 <div class="col-md-12 mb-3">
                                     <label for="Text7" class="form-label font-weight-bold text-muted text-uppercase">Payment Method <span class="text-danger">*</span></label><br>
@@ -112,8 +107,8 @@
                                         <label for="quotation_id" class="font-weight-bold text-muted text-uppercase">Quotation ID</label>
                                         <select name="quotation_id" id="quotation_id" class="form-control">
                                             <option value="">None</option>
-                                            @foreach($data['quotation'] as $key=>$val)
-                                            <option value="{{$key}}">{{$val}}</option>
+                                            @foreach($data['quotation'] as $quotation)
+                                            <option value="{{$quotation->id}}">#{{$quotation->quotation_id}}</option>
                                                 @endforeach
                                         </select>
                                     </div>
@@ -184,9 +179,6 @@
                                             </td>
 
                                         </tr>
-
-
-
                                     @endforeach
                                     <tr>
                                         <td colspan="2">

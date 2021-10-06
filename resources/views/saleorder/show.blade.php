@@ -7,7 +7,7 @@
                 <div class="col-sm-12">
                     <h3 class="page-title">Order</h3>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{url('/')}}">Order</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('saleorders.index')}}">Order</a></li>
                         <li class="breadcrumb-item active">Order Details</li>
                     </ul>
                 </div>
@@ -18,19 +18,16 @@
 
                 <div class="d-flex justify-content-between float-right ">
                     <div class="dropdown mr-1">
-                        <a class="btn btn-outline-info btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="btn btn-{{$data["Order"]->status=='Confirm'?'success':($data["Order"]->status=='Cancel'?'danger':'info')}} btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {{$data["Order"]->status??''}}
                         </a>
 
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-
-                            @if($data['Order']->status??'Cancel'!="Cancel")
                                 <a class="dropdown-item" href="{{url('order/Pending/'.$data["Order"]->id ??'')}}">Pending</a>
                                 <a class="dropdown-item" href="{{url('order/Confirm/'.$data["Order"]->id ??'')}}">Confirm</a>
-                            @endif
-                            @if($data['Order']->status??'Confirm'!="Confirm")
+
                             <a class="dropdown-item" href="{{url('order/Cancel/'.$data["Order"]->id??'')}}">Cancel</a>
-                                @endif
+
                         </div>
                     </div>
 
@@ -84,12 +81,16 @@
                                     </tr>
                                     <tr class="white-space-no-wrap">
                                         <td class="text-muted pl-0">
-                                            Invoice
+                                            Quotation ID
                                         </td>
                                         <td class="text-primary">
-                                            {{--<a href="{{route('invoices.show',$data['items'][0]->inv_id)}}">--}}
-                                           {{--{{$data['items'][0]->inv_id!=null?$data['items'][0]->invoice->invoice_id:'None'}}--}}
-                                            {{--</a>--}}
+                                            @if($data['Order']->quotation_id!=null)
+                                                <a href="{{route('quotations.show',$data['Order']->quotation->id)}}">
+                                                    {{$data["Order"]->quotation->quotation_id}}
+                                                </a>
+                                                @else
+                                                None
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr class="white-space-no-wrap">

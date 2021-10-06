@@ -98,6 +98,7 @@ Route::middleware(['auth:employee'])->group(function () {
     Route::post('/quotations/sendmail', [QuotationController::class, 'email'])->name('quotations.mail');
     Route::get('/quotations/confirm/{id}', [QuotationController::class, 'confirm'])->name('quotations.confirm');
     Route::get('quotations/delete/{id}',[QuotationController::class,'destroy']);
+    Route::post('account/enable/{id}',[AccountController::class,'enable'])->name('account.enable');
 
 
 });

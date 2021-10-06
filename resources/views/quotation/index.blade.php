@@ -31,6 +31,7 @@
                     <th>Customer</th>
                     <th>Sale Person</th>
                     <th>Payment Term</th>
+                    <th>Confirm</th>
                     <th>Deal ID</th>
                     <th>Total</th>
                     <th>Action</th>
@@ -44,6 +45,7 @@
                             <td>{{$quotation->customer->name}}</td>
                             <td>{{$quotation->sale_person->name}}</td>
                             <td>{{$quotation->payment_term}}</td>
+                            <td>{{$quotation->is_confirm==1?'Yes':'No'}}</td>
                             <td>@if(isset($quotation->deal_id))<a href="{{route('deals.show',$quotation->deal->id)}}">{{$quotation->deal->deal_id}}</a>@else N/A @endif</td>
                             <td>{{$quotation->grand_total}}</td>
                             <td class="text-center">

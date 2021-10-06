@@ -41,8 +41,13 @@
             <br> <strong><span class="float-left"><span class="text-dark badge badge-{{$detail_inv->status=='Paid'?'success':($detail_inv->status=='Partial'?'warning':($detail_inv->status=='Daft'?'white':'danger'))}}">
                        {{$detail_inv->status}}
                     </span></span></strong> <br><br></div>
-        <div class="col-md-6">
+        <div class="col-md-3">
             Customer
+            <br> <strong><span class="float-left"><a href="https://app.akaunting.com/142258/sales/customers/1005081">
+                      {{$detail_inv->customer->name}}
+                    </a></span></strong> <br><br></div>
+        <div class="col-md-3">
+            Order ID
             <br> <strong><span class="float-left"><a href="https://app.akaunting.com/142258/sales/customers/1005081">
                       {{$detail_inv->customer->name}}
                     </a></span></strong> <br><br></div>
@@ -257,17 +262,20 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr class="row align-items-center border-top-1 tr-py">
-                                    <td class="col-xs-4 col-sm-3">
-                                        08 Sep 2021
-                                    </td>
-                                    <td class="col-xs-4 col-sm-3 text-left">
-                                        Draft
-                                    </td>
-                                    <td class="col-xs-4 col-sm-6 text-left long-texts">
-                                        INV-00009 added!
-                                    </td>
-                                </tr>
+                                @foreach($history as $hist)
+                                    <tr class="row align-items-center border-top-1 tr-py">
+                                        <td class="col-xs-4 col-sm-3">
+                                            {{\Carbon\Carbon::parse($hist->created_at)->toFormattedDateString()}}
+                                        </td>
+                                        <td class="col-xs-4 col-sm-3 text-left">
+                                            {{$hist->status}}
+                                        </td>
+                                        <td class="col-xs-4 col-sm-6 text-left long-texts">
+                                            {{$hist->description}}
+                                        </td>
+                                    </tr>
+
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -343,7 +351,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fa fa-money"></i></span>
                                             </div>
-                                            <input type="text" class="form-control" id="amount" name="amount" value="{{$detail_inv->grand_total}}">
+                                            <input type="text" class="form-control" id="amount" name="amount" value="{{$data['overdue_amount']}}">
                                             <div class="input-group-prepend">
                                                 <select name="currency" id="" class="select">
                                                     <option value="MMK">MMK</option>
@@ -361,8 +369,8 @@
                                                 <span class="input-group-text"><i class="fa fa-bank"></i></span>
                                             </div>
                                             <select name="account" id="account" class="form-control">
-                                                @foreach($data['account'] as $key=>$val)
-                                                    <option value="{{$key}}">{{$val}}</option>
+                                                @foreach($data['account'] as $account)
+                                                    <option value="{{$account->id}}">{{$account->name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -377,7 +385,7 @@
                                             </div>
                                             <select name="customer_id" id="customer_id" class="form-control">
                                                 @foreach($data['customers'] as $customer)
-                                                    <option value="{{$customer->id}}">{{$customer->name}}</option>
+                                                    <option value="{{$customer->id}}" {{$customer->id==$detail_inv->customer->id?'selected':''}}>{{$customer->name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -400,7 +408,7 @@
                                             </div>
                                             <select name="category" id="category" class="form-control">
                                                 @foreach($data['category'] as $cat)
-                                                    <option value="{{$cat->name}}">{{$cat->name}}</option>
+                                                    <option value="{{$cat->name}} {{$cat->name==' Invoice'?'selected':''}}">{{$cat->name}}</option>
                                                 @endforeach
                                             </select>
                                             <div class="input-group-prepend">

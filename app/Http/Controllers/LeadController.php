@@ -20,7 +20,8 @@ class LeadController extends Controller
 {
     public function index()
     {
-
+        $customers=Customer::where('customer_type','Lead')->get();
+        return view('customer.lead',compact('customers'));
     }
 
 

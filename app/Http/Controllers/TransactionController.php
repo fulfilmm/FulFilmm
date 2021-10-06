@@ -35,7 +35,7 @@ class TransactionController extends Controller
      */
     public function expense()
     {
-        $account=Account::all()->pluck('name','id')->all();
+        $account=Account::where('enabled',1)->all();
         $recurring=['No','Daily','Weekly','Monthly','Yearly'];
         $payment_method=['Cash','eBanking','WaveMoney','KBZ Pay'];
         $category=TransactionCategory::all();
@@ -143,7 +143,7 @@ class TransactionController extends Controller
     }
 
     public function addrevenue()
-    {  $account=Account::all()->pluck('name','id')->all();
+    {  $account=Account::where('enabled',1)->get();
         $recurring=['No','Daily','Weekly','Monthly','Yearly'];
         $payment_method=['Cash','eBanking','WaveMoney','KBZ Pay'];
         $category=TransactionCategory::all();

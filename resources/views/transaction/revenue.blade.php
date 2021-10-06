@@ -52,8 +52,8 @@
                                         <span class="input-group-text"><i class="fa fa-bank"></i></span>
                                     </div>
                                     <select name="account" id="account" class="form-control">
-                                        @foreach($data['account'] as $key=>$val)
-                                            <option value="{{$key}}">{{$val}}</option>
+                                        @foreach($data['account'] as $account)
+                                            <option value="{{$account->id}}">{{$account->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>

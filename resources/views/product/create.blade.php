@@ -112,7 +112,7 @@
                 </div>
                 <div class="form-group col-md-4 col-12 ">
                     <label for="">Sale Price</label>
-                    <input type="number" class="form-control " min="0" name="sale_price" oninput="validity.valid||(value='');" required>
+                    <input type="number" class="form-control " min="0"  name="sale_price" oninput="validity.valid||(value='');" required>
                 </div>
                 <div class="form-group col-md-4 col-12">
                     <label for="">Purchase Price</label>
