@@ -35,7 +35,7 @@ class TransactionController extends Controller
      */
     public function expense()
     {
-        $account=Account::where('enabled',1)->all();
+        $account=Account::where('enabled',1)->get();
         $recurring=['No','Daily','Weekly','Monthly','Yearly'];
         $payment_method=['Cash','eBanking','WaveMoney','KBZ Pay'];
         $category=TransactionCategory::all();
