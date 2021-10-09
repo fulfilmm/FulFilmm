@@ -63,7 +63,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fa fa-envelope"></i></span>
                                         </div>
-                                        <x-forms.basic.input name="company_email" type="email" value="{{old('email')}}"
+                                        <x-forms.basic.input name="email" type="email" value="{{old('email')}}"
                                                              icon="" title="Email"
                                                              required></x-forms.basic.input>
                                     </div>
