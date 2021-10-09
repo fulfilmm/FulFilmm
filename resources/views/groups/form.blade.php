@@ -7,7 +7,7 @@
 
 </div>
 <div class="form-group row">
-    <label class="col-form-label col-md-2">Type</label>
+    <label class="col-form-label col-md-2">Tag</label>
     <div class="col-md-10 w-50">
         <x-forms.basic.input name="type" value="{{$group->type ?? ''}}" title="type" required></x-forms.basic.input>
     </div>

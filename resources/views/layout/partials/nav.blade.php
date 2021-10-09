@@ -37,6 +37,8 @@
 
                                 </ul>
                             </li>
+                            <li><a class="{{ Request::is('taxes') ? 'active' : '' }}"
+                                   href="{{ route('taxes') }}">Tax Setting</a></li>
                         </ul>
                     </li>
 
@@ -196,6 +198,7 @@
                         <ul style="display: none;">
 
                             <li >
+                                <a href="{{route('transaction.category')}}"><i class="la la-cube mr-2" style="font-size: 18px"></i><span> Category</span> </a>
                                 <a href="{{route('accounts.index')}}"><i class="la la-bank mr-2" style="font-size: 18px"></i><span> Account</span> </a>
                                 <a href="{{route('transactions.index')}}"><i class="la la-cube mr-2" style="font-size: 18px"></i><span> Transaction</span> </a>
                                 <a href="{{route('revenue')}}"><i class="la la-cube mr-2" style="font-size: 18px"></i><span> Revenue</span> </a>
@@ -210,7 +213,7 @@
                             <li class="submenu">
                                 <a href="#"><i class="la la-cube mr-2" style="font-size: 18px"></i><span> Product</span> <span class="menu-arrow"></span></a>
                                 <ul style="display: none;">
-
+                                    <li><a class="{{ Request::is('category') ? 'active' : '' }}" href="{{route('category')}}">Products Category</a></li>
                                     <li><a class="{{ Request::is('products') ? 'active' : '' }}" href="{{url('/products')}}">All
                                             Products</a></li>
                                     <li><a class="{{ Request::is('products') ? 'active' : '' }}" href="{{url('/products/create')}}">

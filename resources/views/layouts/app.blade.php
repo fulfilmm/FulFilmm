@@ -16,8 +16,7 @@
     <!-- BEGIN: Vendor CSS-->
     <link media="all" type="text/css" rel="stylesheet"
           href="http://rose.localhost/focus/app_end-ltr.css?id=192844a53499763dfa62">
-    <link media="all" type="text/css" rel="stylesheet"
-          href="http://rose.localhost/core/app-assets/css-ltr/core/menu/menu-types/vertical-menu-modern.css">
+    <link media="all" type="text/css" rel="stylesheet" href="http://rose.localhost/core/app-assets/css-ltr/core/menu/menu-types/vertical-menu-modern.css">
     <!-- END: Vendor CSS-->
     <link rel="stylesheet" href="{{url(asset('css/font-awesome.min.css'))}}">
 

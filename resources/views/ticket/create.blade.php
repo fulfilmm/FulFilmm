@@ -50,19 +50,18 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-9 col-sm-5 col-md-5" id="client">
+                        <div class="col-12 col-sm-6 col-md-6" id="client">
                             <div class="form-group">
                                 <label>Client <span class="text-danger">*</span></label>
-                                <select class="form-control" name="client">
-                                    @foreach($data['client'] as $client)
-                                        <option value="{{$client->id}}" {{isset($complain)?($complain->email==$client->email?'selected':''):(old('client')==$client->id?'selected':'')}}>{{$client->name}}</option>
-                                    @endforeach
-                                </select>
+                                <div class="input-group">
+                                    <select class="form-control" name="client">
+                                        @foreach($data['client'] as $client)
+                                            <option value="{{$client->id}}" {{isset($complain)?($complain->email==$client->email?'selected':''):(old('client')==$client->id?'selected':'')}}>{{$client->name}}</option>
+                                        @endforeach
+                                    </select>
+                                    <button class="btn btn-white" type="button" data-toggle="modal" href="#add_contact" ><i class="la la-plus"></i></button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group col-md-1 col-1 col-sm-1">
-                            <label for="">Add</label>
-                            <button class="btn btn-white" type="button" data-toggle="modal" href="#add_user" ><i class="la la-plus"></i></button>
                         </div>
                     </div>
                     <div class="row">
@@ -190,7 +189,7 @@
                     </div>
                 </form>
         </div>
-        @include('Deal.add_customer')
+        @include('customer.quickcustomer')
     </div>
 
 <script>

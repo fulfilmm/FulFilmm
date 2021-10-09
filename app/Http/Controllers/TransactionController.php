@@ -69,6 +69,7 @@ class TransactionController extends Controller
             'account' => 'required',
             'category' => 'required',
             'payment_method' => 'required',
+            'attachment'=>'mimes:pdf,xlsx,doc,docx,jpg,jpeg,ppt,bip|max:2048',
         ]);
         $new_expense = new Expense();
         $new_expense->vendor_id = $request->customer_id;
@@ -162,6 +163,7 @@ class TransactionController extends Controller
             'customer_id' => 'required',
             'category' => 'required',
             'payment_method' => 'required',
+            'attachment'=>'mimes:pdf,xlsx,doc,docx,jpg,jpeg,ppt,bip'
         ]);
         $new_revenue = new Revenue();
         $new_revenue->customer_id = $request->customer_id;
@@ -206,6 +208,23 @@ class TransactionController extends Controller
         return response()->json([
            'Success'=>'New Category Add Success'
         ]);
+    }
+    public function category(){
+        $category=TransactionCategory::all();
+        return view('transaction.category',compact('category'));
+    }
+    public function update_cat(Request $request,$id){
+//        dd($id);
+        $category=TransactionCategory::where('id',$id)->first();
+        $category->name=$request->cat_name;
+        $category->update();
+        return redirect()->back();
+    }
+    public function delete_cat($id){
+//        dd($id);
+        $category=TransactionCategory::where('id',$id)->first();
+        $category->delete();
+        return redirect()->back();
     }
     public function account_update($amount, $id,$type)
     {

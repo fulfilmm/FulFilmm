@@ -34,9 +34,9 @@
                                         <option value="">Choose Customer</option>
                                         @foreach($data['customer'] as $customer)
                                             @if(\Illuminate\Support\Facades\Auth::guard('customer')->check()&& \Illuminate\Support\Facades\Auth::guard('customer')->user()->id==$customer->id)
-                                                <option value="{{$customer->id}}">{{$customer->name}}</option>
+                                                <option value="{{$customer->id}}" >{{$customer->name}}</option>
                                                 @else
-                                        <option value="{{$customer->id}}">{{$customer->name}}</option>
+                                        <option value="{{$customer->id}}" {{$session_data!=null?($session_data[0]['customer_id']==$customer->id ?'selected':''):''}}>{{$customer->name}}</option>
                                                 @endif
                                             @endforeach
                                     </select>
@@ -44,32 +44,32 @@
                                 </div>
                                 <div class="col-md-12 mb-3">
                                     <label for="phone" class="form-label font-weight-bold text-muted text-uppercase">Phone <span class="text-danger">*</span></label>
-                                    <input type="text"  class="form-control" id="phone" name="phone" placeholder="Enter Phone" required>
+                                    <input type="text"  class="form-control" id="phone" name="phone" placeholder="Enter Phone" value="{{$session_data[0]['phone']??''}}" required>
                                     <span class="text-danger phone_err"></span>
                                 </div>
                                 <div class="col-md-12 mb-3">
                                     <label for="email" class="form-label font-weight-bold text-muted text-uppercase">Email <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email" required>
+                                    <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email" value="{{$session_data[0]['email']??''}}" required>
                                     <span class="text-danger email_err"></span>
                                 </div>
                                 <div class="col-md-12 mb-3">
                                     <label for="address" class="form-label font-weight-bold text-muted text-uppercase">Address <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="address" id="address" placeholder="Enter Address" required>
+                                    <input type="text" class="form-control" name="address" id="address" placeholder="Enter Address" value="{{$session_data[0]['address']??''}}" required>
                                     <span class="text-danger address_err"></span>
                                 </div>
                             <div class="col-md-12 mb-3">
                                 <label for="email" class="form-label font-weight-bold text-muted text-uppercase">Billing Address <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="billing_address" name="billing_address" placeholder="Enter Billing Address" required>
+                                <input type="text" class="form-control" id="billing_address" name="billing_address" placeholder="Enter Billing Address" value="{{$session_data[0]['billing_address']??''}}" required>
                                 <span class="text-danger email_err"></span>
                             </div>
                             <div class="form-group col-12">
                                 <label for="" class="form-label font-weight-bold text-muted text-uppercase">Shipping Type</label><br>
-                               <input type="radio" class="shipping_type" name="shipping_type" value="pickup" checked> <label for="shipping_address" class="ml-2 mr-3">Pick Up</label>
-                                <input type="radio" class="shipping_type" name="shipping_type" value="delivery"><label for="shipping_address" class="ml-2 mr-3">Delivery</label>
+                               <input type="radio" class="shipping_type" name="shipping_type" value="pickup" {{$session_data!=null?($session_data[0]['shipping_type']=='pickup'?'checked':''):'checked'}}> <label for="shipping_address" class="ml-2 mr-3">Pick Up</label>
+                                <input type="radio" class="shipping_type" name="shipping_type" value="delivery" {{$session_data!=null?($session_data[0]['shipping_type']=='delivery'?'checked':''):''}}><label for="shipping_address" class="ml-2 mr-3">Delivery</label>
                             </div>
                             <div class="form-group col-12" id="delivery_address">
                                 <label for='' class='form-label font-weight-bold text-muted text-uppercase'>Shipping Address</label>
-                                <input type='text' class='form-control' name='shipping_address' id='shipping_address' placeholder='Shipping Address'>
+                                <input type='text' class='form-control' name='shipping_address' id='shipping_address' placeholder='Shipping Address' value="{{$session_data[0]['shipping_address']??''}}">
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -77,15 +77,15 @@
                             <div class="row g-3">
                                 <div class="col-md-12 mb-3">
                                     <label for="order_date" class="form-label font-weight-bold text-muted text-uppercase">Date <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="order_date" placeholder="DD MM YYYY" required>
+                                    <input type="text" class="form-control" id="order_date" placeholder="DD MM YYYY" value="{{$session_data[0]['order_date']??''}}" required>
                                     <span class="text-danger order_date_err"></span>
                                 </div>
                                 <div class="col-md-12 mb-3">
                                     <label for="Text7" class="form-label font-weight-bold text-muted text-uppercase">Payment Method <span class="text-danger">*</span></label><br>
                                     <div class="form-group"  aria-label="Basic outlined example">
-                                        <input type="radio" name="payment_type" id="payment_type" value="Cash" class="mr-2" checked><label for="">Cash</label>
-                                        <input type="radio" name="payment_type" id="payment_type" value="Mobile Banking" class="mr-2 ml-2"><label>Mobile Banking</label>
-                                        <input type="radio" name="payment_type" id="payment_type" value="Bank Transfer" class="mr-2 ml-2"><label for="">Bank Transfer</label>
+                                        <input type="radio" name="payment_type" id="payment_type" value="Cash" class="mr-2" {{$session_data!=null?($session_data[0]['payment_method']=='Cash'?'checked':''):'checked'}}><label for="">Cash</label>
+                                        <input type="radio" name="payment_type" id="payment_type" value="Mobile Banking" class="mr-2 ml-2" {{$session_data!=null?($session_data[0]['payment_method']=='Mobile Banking'?'checked':''):''}}><label>Mobile Banking</label>
+                                        <input type="radio" name="payment_type" id="payment_type" value="Bank Transfer" class="mr-2 ml-2" {{$session_data!=null?($session_data[0]['payment_method']=='Bank Transfer'?'checked':''):''}}><label for="">Bank Transfer</label>
                                     </div>
                                     <span class="text-danger payment_type_err"></span>
                                 </div>
@@ -93,9 +93,9 @@
                                     <label for="Text7" class="form-label font-weight-bold text-muted text-uppercase">Payment Term <span class="text-danger">*</span></label><br>
                                     <div class="form-group"  aria-label="Basic outlined example">
                                         <select class="form-control" name="payment_term" id="payment_term" required>
-                                            <option value="COD - Cash on delivery">COD - Cash on delivery</option>
-                                            <option value="Payment seven days after invoice date">Payment seven days after invoice date</option>
-                                            <option value="EOM - End of month">EOM - End of month</option>
+                                            <option value="COD - Cash on delivery" {{$session_data!=null?($session_data[0]['payment_term']=='COD - Cash on delivery'?'selected':''):''}}>COD - Cash on delivery</option>
+                                            <option value="Payment seven days after invoice date" {{$session_data!=null?($session_data[0]['payment_term']=='Payment seven days after invoice date'?'selected':''):''}}>Payment seven days after invoice date</option>
+                                            <option value="EOM - End of month" {{$session_data!=null?($session_data[0]['payment_term']=='EOM - End of month'?'selected':''):''}}>EOM - End of month</option>
 
                                         </select>
                                         <span class="text-danger payment_term_err"></span>
@@ -108,14 +108,14 @@
                                         <select name="quotation_id" id="quotation_id" class="form-control">
                                             <option value="">None</option>
                                             @foreach($data['quotation'] as $quotation)
-                                            <option value="{{$quotation->id}}">#{{$quotation->quotation_id}}</option>
+                                            <option value="{{$quotation->id}}" {{$session_data!=null?($session_data[0]['quotation_id']==$quotation->id?'selected':''):''}}>#{{$quotation->quotation_id}}</option>
                                                 @endforeach
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-12 mb-3">
                                     <label for="comment" class="form-label font-weight-bold text-muted text-uppercase">Remark</label>
-                                    <textarea type="text" class="form-control" id="comment" name="comment" rows="2.5" placeholder="Enter your comment"></textarea>
+                                    <textarea type="text" class="form-control" id="comment" name="comment" rows="2.5" placeholder="Enter your comment">{{$session_data[0]['comment']??''}}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -129,100 +129,146 @@
                             <h5 class="font-weight-bold mb-3">Order Items</h5>
                         </li>
                         <li class="list-group-item p-0">
-                            <div class="table-responsive" id="order_table">
-                                <table class="table table-hover table-white">
-                                    <thead>
-                                    <th colspan="2">Product</th>
-                                    <th>Quantity</th>
-                                    <th>Unit Price</th>
-                                    <th>Taxes(%)</th>
-                                    <th>Total(Include Tax)</th>
-                                    <th>Currency Unit</th>
-                                    <th>Action</th>
-                                    </thead>
-                                    <tbody id="tbody">
-                                    @foreach($data['items'] as $order)
-                                        <tr>
-                                            <td colspan="2"><input type="hidden" id="order_id_{{$order->id}}" value="{{$order->id}}">
-                                              <div class="row">
-                                                  <input type="hidden" name="product_id" id="product_{{$order->id}}" value="{{$order->product_id}}">
-                                                  <div class="col-md-4">
-                                                      <img src="{{url(asset('product_picture/'.$order->product->image))}}"  alt="" width="40px" height="40px">
-                                                  </div>
-                                                  <div class="data-content">
-                                                      <div>
-                                                          <span class="font-weight-bold">{{$order->product->name}}</span>
-                                                      </div>
-                                                      <p class="m-0 mt-1">
-                                                          {{$order->product->description}}
-                                                      </p>
-                                                  </div>
-                                              </div>
-                                            </td>
-                                            <td>
-                                                <input type="text" name="quantity" id="quantity_{{$order->id}}" class="form-control update_item_{{$order->id}}" value=" {{$order->quantity}}">
-                                            </td>
-                                            <td>
-                                                <input type="text" id="price_{{$order->id}}" class="form-control update_item_{{$order->id}}" value="{{$order->unit_price}}" style="min-width: 120px;">
-                                            </td>
-                                            <td>
-                                                <input type="text" class="form-control update_item_{{$order->id}}" name="tax" id="product_tax_{{$order->id}}" value="{{$order->tax_id}}" >
-                                            </td>
-                                            <td>
-                                                <input type="text" name="total" id="total_{{$order->id}}" class="form-control col-md-7 update_item_{{$order->id}}" value="{{$order->total}}" style="min-width: 150px;" >
-                                            </td>
-                                            <td><input type="text" class="form-control update_item_{{$order->id}}" id="unit_{{$order->id}}" value="{{$order->currency_unit}}"></td>
+                            <div class="row">
+                                <input type="hidden" id="creation_id" value="{{$data['id'][0]}}">
+                                <div class="col-md-12 col-sm-12" >
+                                    <div class="table-responsive">
+                                        @if(!isset($order_data))
+                                            <div class="form-group">
+                                                <label for="">Add Item</label>
+                                                <select name="" id="product" class="form-control" style="min-width: 150px;">
+                                                    <option value="">Select Product</option>
+                                                    @foreach($data['product'] as $product)
+                                                        <option value="{{$product->id}}">{{$product->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        @endif
+                                        <table class="table table-hover table-white" id="order_table">
+                                            <thead>
+                                            <th>Product</th>
+                                            <th>Quantity</th>
+                                            <th>Unit Price</th>
+                                            <th>Taxes(%)</th>
+                                            <th>Total</th>
+                                            <th>Currency</th>
+                                            <th>Action</th>
+                                            </thead>
+                                            <tbody id="tbody">
+                                            @foreach($data['items'] as $order)
+                                                <tr>
+                                                    <td style="min-width: 200px;">
+                                                        <input type="hidden" id="order_id_{{$order->id}}" value="{{$order->id}}">
+                                                        <div class="row">
+                                                            <input type="hidden" name="product_id" id="product_{{$order->id}}" value="{{$order->product_id}}">
+                                                            <div class="col-md-4">
+                                                                <img src="{{url(asset('product_picture/'.$order->product->image))}}"  alt="" width="40px" height="40px">
+                                                            </div>
+                                                            <div class="col-8">
+                                                                <div>
+                                                                    <span class="font-weight-bold">{{$order->product->name}}</span>
+                                                                </div>
+                                                                <p class="m-0 mt-1">
+                                                                    {{$order->product->description}}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" name="quantity" id="quantity_{{$order->id}}" class="form-control update_item_{{$order->id}}" value="{{$order->quantity}}" {{isset($order_data)?'readonly':''}}>
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" id="price_{{$order->id}}" class="form-control update_item_{{$order->id}}" value="{{$order->unit_price}}" min="0" oninput="validity.valid||(value='');"  style="min-width: 120px;">
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" class="form-control update_item_{{$order->id}}" name="tax" id="product_tax_{{$order->id}}" value="{{$order->tax_id}}"  min="0" oninput="validity.valid||(value='');">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" name="total" id="total_{{$order->id}}" class="form-control col-md-7 update_item_{{$order->id}}" value="{{number_format($order->total)}}" style="min-width: 100px;" >
+                                                    </td>
+                                                    <td><input type="text" class="form-control update_item_{{$order->id}}" id="unit_{{$order->id}}" value="{{$order->currency_unit}}"></td>
 
-                                            <td>
-                                                <button type="button" class="btn btn-danger btn-sm"  id="remove{{$order->id}}" ><i class="fa fa-trash-o "></i></button>
-                                                @include('saleorder.item_edit_jquery')
-                                            </td>
+                                                    <td>
+                                                        @if(!isset($order_data))
+                                                            <button type="button" class="btn btn-danger btn-sm"  id="remove{{$order->id}}" ><i class="fa fa-trash-o "></i></button>
+                                                            @include('invoice.item_remove')
+                                                        @endif
+                                                    </td>
 
-                                        </tr>
-                                    @endforeach
-                                    <tr>
-                                        <td colspan="2">
-                                            <input type="hidden" id="creation_id" value="{{$data['id'][0]}}">
-                                            <select name="" class="form-control" id="product" style="width: 200px" >
-                                                <option value="">Search Product</option>
-                                                @foreach($data['product'] as $product)
-                                                    <option value="{{$product->id}}">{{$product->name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </td>
+                                                </tr>
+                                                <script>
+                                                    $(document).ready(function () {
+                                                        $(".update_item_{{$order->id}}").keyup(function(){
+                                                            var quantity=$('#quantity_{{$order->id}}').val();
+                                                            var price=$('#price_{{$order->id}}').val();
 
-                                        <td>
-                                            <input type="text" name="quantity" id="quantity" class="form-control " value="0">
-                                        </td>
-                                        <td>
-                                            <input type="text" id="price" class="form-control " value="0" style="min-width: 120px;">
-                                        </td>
-                                        <td>
-                                            <input type="text" class="form-control" name="tax" id="product_tax"  >
-                                        </td>
-                                        <td>
-                                            <input type="text" name="total" id="total" class="form-control col-md-7" value="0" style="min-width: 150px;" >
-                                        </td>
-                                        <td><input type="text" class="form-control" id="unit"></td>
-                                        <td>
-                                            <button type="button" class="btn btn-outline-danger ml-2 text-sm" id="add_item"><i class="fa fa-plus"></i></button>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                    <tr>
+                                                            var total=quantity * price;
+                                                            var tax=$('#product_tax_{{$order->id}}').val();
+                                                            var tax_amount=tax / 100 * total;
+                                                            var include_tax=total + tax_amount;
+                                                            $('#total_{{$order->id}}').val(include_tax);
+                                                        });
+                                                    });
+                                                    $(document).ready(function() {
+                                                        $(".update_item_{{$order->id}}").keyup(function(){
+                                                            var product=$('#product_{{$order->id}}').val();
+                                                            var desc=$('#order_description_{{$order->id}}').val();
+                                                            var quantity=$('#quantity_{{$order->id}}').val();
+                                                            var price=$('#price_{{$order->id}}').val();
+                                                            var tax=$('#product_tax_{{$order->id}}').val();
+                                                            var unit=$('#unit_{{$order->id}}').val();
+                                                            var total=$('#total_{{$order->id}}').val();
+                                                            $.ajax({
+                                                                data : {
+                                                                    "product_id":product,
+                                                                    'description':desc,
+                                                                    'quantity':quantity,
+                                                                    "tax_id":tax,
+                                                                    'unit_price':price,
+                                                                    "currency_unit":unit,
+                                                                    "total":total,
+                                                                },
+                                                                type:'PUT',
+                                                                url:"{{route('invoice_items.update',$order->id)}}",
+                                                                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                                                                success:function(data){
+                                                                    console.log(data);
+                                                                    var alltotal=[];
+                                                                    $('.total').each(function(){
+                                                                        alltotal.push(this.value);
+                                                                    });
+                                                                    var grand_total=0;
+                                                                    for (var i=0;i<alltotal.length;i++){
+                                                                        grand_total=parseFloat(grand_total)+parseFloat(alltotal[i]);
+                                                                    }
+                                                                    $('#grand_total').val(grand_total);
+                                                                    // $("#order_table").load(location.href + " #order_table>* ");
+                                                                    $("#grand_total_div").load(location.href + " #grand_total_div>* ");
 
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                </table>
+                                                                }
+                                                            });
+                                                        });
+                                                    });
+                                                </script>
+                                            @endforeach
+
+                                            </tbody>
+                                            <tr>
+
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </li>
                         <li class="list-group-item p-3">
                             <div class="d-flex justify-content-end align-items-center" id="grand_total_div">
                                 <input class="form-control" type="hidden" id="grand_total" value="{{$data['grand_total']}}" style="min-width: 150px" readonly>
-                               <span>Total:</span> <p class="ml-2 mb-0 mr-5 font-weight-bold"> {{$data['grand_total']}}</p>
+                               <span>Total:</span> <p class="ml-2 mb-0 mr-5 font-weight-bold"> {{number_format($data['grand_total'])}} MMK</p>
                             </div>
                         </li>
                         <li class="list-group-item p-3">

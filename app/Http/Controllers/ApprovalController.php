@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\approval_comment;
 use App\Models\Approvalrequest;
 use App\Models\Cc_of_approval;
+use App\Models\Customer;
 use App\Models\Employee;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -21,7 +22,7 @@ class ApprovalController extends Controller
      protected $approval_status=['Approve','Reject','Pending'];
     public function index()
     {
-        $all_emp=Employee::all();
+
         $auth=Auth::guard('employee')->user();
         $approvals=Approvalrequest::with('approver','secondary_approver','request_emp')->where('emp_id',$auth->id)->get();
         $cc_approvals=Cc_of_approval::where('emp_id',$auth->id)->get();
@@ -30,7 +31,7 @@ class ApprovalController extends Controller
             $approval_request=Approvalrequest::with('approver','secondary_approver','request_emp')->where('id',$cc_approval->approval_id)->first();
             array_push($cc,$approval_request);
         }
-        return  view('approval.index',compact('all_emp','approvals','cc'));
+        return  view('approval.index',compact('approvals','cc'));
     }
     public function request_to_me(){
         $auth=Auth::guard('employee')->user();
@@ -45,7 +46,9 @@ class ApprovalController extends Controller
      */
     public function create()
     {
-        //
+        $all_emp=Employee::all();
+        $customer=Customer::all();
+        return view('approval.create',compact('all_emp','customer'));
     }
 
     /**
@@ -56,8 +59,9 @@ class ApprovalController extends Controller
      */
     public function store(Request $request)
     {
+//        dd($request->all());
         $this->validate($request, [
-            'doc_file.*' => 'mimes:pdf,xlsx,doc,docx,jpg,jpeg,ppt,bip',
+            'doc_file.*' => 'mimes:pdf,xlsx,doc,docx,jpg,jpeg,ppt,bip,png|max:2048',
             'description'=>'required',
             'title'=>'required',
             'target_date'=>'required',
@@ -77,6 +81,17 @@ class ApprovalController extends Controller
         $approval->target_date=Carbon::create($request->target_date);
         $approval->content=$request->description;
         $approval->approved_id=$request->approve_id;
+        $approval->from_date=$request->from??null;
+        $approval->to_date=$request->to_date??null;
+        $approval->type=$request->type;
+        $approval->amount=$request->type=='Procurement'?$request->procurement_amount:($request->type=='Business Trip'?$request->budget:($request->type=='Payment'?$request->payment_amount:null));
+        $approval->location=$request->location??'';
+        $approval->contact_id=$request->type=='Payment'?$request->contact:$request->supplier;
+        $approval->quantity=$request->quantity??'';
+        if($request->members!=null){
+            $trip_member=json_encode($request->members);
+        }
+        $approval->trip_members=$trip_member??null;
         $approval->emp_id=Auth::guard('employee')->user()->id;
         if($request->hasfile('doc_file')) {
             foreach ($request->file('doc_file') as $doc_file) {
@@ -111,7 +126,7 @@ class ApprovalController extends Controller
                     'app_id'=>$approval->approval_id,
                 ];
                 Mail::send('approval.cc_email_noti', $details, function ($message) use ($details) {
-                    $message->from('ma.sa.kitaite@gmail.com', 'Cloudark');
+                    $message->from('sinyincinpu@gmail.com', 'Cloudark');
                     $message->to($details['email']);
                     $message->subject($details['subject']);
                 });
@@ -128,7 +143,8 @@ class ApprovalController extends Controller
      */
     public function show($id)
     {
-        $details_approval=Approvalrequest::with('approver','secondary_approver','request_emp')->where('id',$id)->firstOrFail();
+        $details_approval=Approvalrequest::with('approver','secondary_approver','request_emp','contact')->where('id',$id)->firstOrFail();
+//      dd($details_approval);
         $status=$this->approval_status;
         $doc_files=json_decode($details_approval->doc_file);
         $all_cmt=approval_comment::with('cmt_user')->where('approval_id',$id)->get();;

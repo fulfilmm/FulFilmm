@@ -156,52 +156,8 @@
             </div>
         </form>
     </div>
-    <div id="add" class="modal custom-modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-md">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add New Tax</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                        <div class="form-group">
-                            <label>Tax Name</label>
-                            <input type="text" id="p_tax" class="form-control" name="tax" >
-                        </div>
-                    <label>Tax Rate</label>
-                        <div class="input-group">
 
-                            <input type="number" id="rate" class="form-control" name="rate">
-                            <button type="button" class="btn btn-white">%</button>
-                        </div>
-                    </div>
-                <div class="form-group text-center">
-                    <button  id="tax_create" data-dismiss="modal" class="btn btn-primary">Add</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="cat_add" class="modal custom-modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-sm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add New Category</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group ">
-                        <label>Category Name</label>
-                        <input type="text" id="cat_name" class="form-control" name="cat_name" >
-                    </div>
-                    <button   id="cat_create" data-dismiss="modal" class="btn btn-primary float-right">Add</button>
-                </div>
-            </div>
-        </div>
-    </div>
+@include('product.catadd')
     <!-- /Page Content -->
     <!-- /Page Wrapper -->
     <script>
@@ -233,39 +189,6 @@
 
             );
 
-        });
-
-        $(document).ready(function() {
-            $(document).on('click', '#tax_create', function () {
-                var name=$("#p_tax").val();
-                var rate=$("#rate").val();
-                $.ajax({
-                    type:'POST',
-                    data : {name:name,p_rate:rate},
-                    url:'/tax/create',
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    success:function(data){
-                        console.log(data);
-                        $("#tax_div").load(location.href + " #tax_div>* ");
-                    }
-                });
-            });
-        });
-
-        $(document).ready(function() {
-            $(document).on('click', '#cat_create', function () {
-                var name=$("#cat_name").val();
-                $.ajax({
-                    type:'POST',
-                    data : {name:name},
-                    url:'/cat/create',
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    success:function(data){
-                        console.log(data);
-                        $("#cat_div").load(location.href + " #cat_div>* ");
-                    }
-                });
-            });
         });
 
     </script>

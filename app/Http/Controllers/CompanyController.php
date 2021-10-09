@@ -78,7 +78,7 @@ class CompanyController extends Controller
     public function store(CompanyRequest $request)
     {
         //
-//        dd($request->all());
+        dd($request->all());
         $data=$request->all();
         $path = '';
         if ($request->file('logo')) {

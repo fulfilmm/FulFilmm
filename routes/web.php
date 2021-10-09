@@ -99,6 +99,14 @@ Route::middleware(['auth:employee'])->group(function () {
     Route::get('/quotations/confirm/{id}', [QuotationController::class, 'confirm'])->name('quotations.confirm');
     Route::get('quotations/delete/{id}',[QuotationController::class,'destroy']);
     Route::post('account/enable/{id}',[AccountController::class,'enable'])->name('account.enable');
+    Route::get('product/category',[ProductController::class,'category_index'])->name('category');
+    Route::get('product/category/delete/{id}',[ProductController::class,'category_delete'])->name('category.delete');
+    Route::post('product/category/update/{id}',[ProductController::class,'category_update'])->name('category.update');
+    Route::get('product/tax/delete/{id}',[ProductController::class,'tax_delete'])->name('taxes.delete');
+    Route::get('product/tax/',[ProductController::class,'tax_index'])->name('taxes');
+    Route::get('transaction/category/',[TransactionController::class,'category'])->name('transaction.category');
+    Route::post('category/transaction/update/{id}',[TransactionController::class,'update_cat'])->name('transaction_category.update');
+    Route::get('category/transaction/delete/{id}',[TransactionController::class,'delete_cat'])->name('transaction_category.delete');
 
 
 });
@@ -243,8 +251,8 @@ Route::get('test', function () {
     return view('test');
 })->name('test');
 
-Route::get('send', [HomeController::class,'sendNotification']);
-Route::get('piect/search', [TicketPieChartReport::class, 'filter'])->name('piechart.filter');
+//Route::get('send', [HomeController::class,'sendNotification']);
+//Route::get('piect/search', [TicketPieChartReport::class, 'filter'])->name('piechart.filter');
 //list routes post
 Route::put('roles/assign-permission/{id}', [RoleController::class, 'assignPermission'])->name('roles.assignPermission');
 

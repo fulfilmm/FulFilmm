@@ -14,22 +14,32 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-12 mb-3">
 
-                <div class="d-flex justify-content-between float-right ">
+            <div class="col-lg-12 mb-3">
+                <div class="d-flex justify-content-between float-left ">
+
                     <div class="dropdown mr-1">
-                        <a class="btn btn-{{$data["Order"]->status=='Confirm'?'success':($data["Order"]->status=='Cancel'?'danger':'info')}} btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {{$data["Order"]->status??''}}
+                        <a class="btn btn-outline-{{$data["Order"]->status=='Confirm'?'success':($data["Order"]->status=='Cancel'?'danger':'info')}} btn-sm btn-rounded  dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-dot-circle-o mr-1 text-{{$data["Order"]->status=='Confirm'?'success':($data["Order"]->status=='Cancel'?'danger':'info')}}"></i> {{$data["Order"]->status??''}}
                         </a>
 
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <a class="dropdown-item" href="{{url('order/Pending/'.$data["Order"]->id ??'')}}">Pending</a>
-                                <a class="dropdown-item" href="{{url('order/Confirm/'.$data["Order"]->id ??'')}}">Confirm</a>
+                        <div class="dropdown-menu rounded bg-cyan" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="{{url('order/Pending/'.$data["Order"]->id ??'')}}"><i class="fa fa-dot-circle-o mr-1 text-primary"></i>Pending</a>
+                            <a class="dropdown-item" href="{{url('order/Confirm/'.$data["Order"]->id ??'')}}"><i class="fa fa-dot-circle-o mr-1 text-success"></i>Confirm</a>
 
-                            <a class="dropdown-item" href="{{url('order/Cancel/'.$data["Order"]->id??'')}}">Cancel</a>
+                            <a class="dropdown-item" href="{{url('order/Cancel/'.$data["Order"]->id??'')}}"><i class="fa fa-dot-circle-o mr-1 text-danger"></i>Cancel</a>
 
                         </div>
                     </div>
+                    <div class="bs-offset-main bs-canvas-anim">
+                        <button class="btn btn-primary btn-sm rounded-circle float-left" type="button" data-toggle="canvas"
+                                data-target="#bs-canvas-left" aria-expanded="false"
+                                aria-controls="bs-canvas-right"><i class="fa fa-comment"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between float-right ">
+
 
                     <a class="btn btn-primary btn-sm mr-1" href="{{route('generate_inv',$data["Order"]->id??'')}}">
                         <svg xmlns="http://www.w3.org/2000/svg" class="mr-2" width="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -39,20 +49,21 @@
                     </a>
                     <div class="bs-offset-main bs-canvas-anim">
                         <button class="btn btn-primary btn-sm" type="button" data-toggle="canvas"
-                                data-target="#bs-canvas-left" aria-expanded="false"
+                                data-target="#bs-canvas-right" aria-expanded="false"
                                 aria-controls="bs-canvas-right">Assign
                         </button>
                     </div>
                 </div>
             </div>
         </div>
+        <input type="hidden" id="order_id" value="{{$data['Order']->id}}">
         <div class="row">
-            <div class="col-lg-4">
+            <div class="col-lg-6" id="refreshDiv">
                 <div class="card">
                     <ul class="list-group list-group-flush mr-1 ml-1">
                         <li class="list-group-item p-3">
                             <h5 class="font-weight-bold pb-2">Order Info</h5>
-                            <div class="table-responsive">
+                            <div class="table-responsive" >
                                 <table class="table table-borderless mb-0">
                                     <tbody>
                                     <tr class="white-space-no-wrap">
@@ -123,10 +134,30 @@
                                             </p>
                                         </td>
                                     </tr>
+                                    <tr class="white-space-no-wrap">
+                                        <td class="text-muted pl-0">
+                                            Total Cost
+                                        </td>
+                                        <td>
+                                            <p class="mb-0 text-danger font-weight-bold d-flex justify-content-start align-items-center">
+                                                {{number_format($data['grand_total'])}} MMK
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+
+
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <ul class="list-group list-group-flush mr-1 ml-1">
                         <li class="list-group-item p-3">
                             <h5 class="font-weight-bold pb-2">Customer Details</h5>
                             <div class="table-responsive">
@@ -164,156 +195,177 @@
                                             {{$data['Order']->address}}
                                         </td>
                                     </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-lg-8">
-                <div class="card" style="overflow: scroll;height: 550px">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item p-3">
-                            <h5 class="font-weight-bold">Order Items</h5>
-                        </li>
-                        <li class="list-group-item p-0">
-                            <div class="table-responsive">
-                                <table class="table mb-0">
-                                    <thead>
-                                    <tr class="text-muted">
-                                        <th scope="col">Product</th>
-                                        <th scope="col" class="text-right">Quantity</th>
-                                        <th scope="col" class="text-right">Price</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach($data['items'] as $item)
-                                    <tr>
+                                    <tr class="white-space-no-wrap">
+                                        <td class="text-muted pl-0">
+                                            Billing Address
+                                        </td>
                                         <td>
-                                            <div class="active-project-1 d-flex align-items-center mt-0 ">
-                                                <div class="h-avatar is-medium">
-                                                    <img src="{{url(asset('product_picture/'.$item->product->image))}}" class="avatar rounded" alt="">
-                                                </div>
-                                                <div class="data-content">
-                                                    <div>
-                                                        <span class="font-weight-bold">{{$item->product->name}}</span>
-                                                    </div>
-                                                    <p class="m-0 mt-1">
-                                                       {{$item->product->description}}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="text-right">
-                                            {{$item->quantity}}
-                                        </td>
-                                        <td class="text-right">
-                                           {{$item->total}}
+                                            {{$data['Order']->address}}
                                         </td>
                                     </tr>
-                                        @endforeach
+                                    <tr class="white-space-no-wrap">
+                                        <td class="text-muted pl-0">
+                                            Shipment Type
+                                        </td>
+                                        <td>
+                                            {{$data['Order']->address}}
+                                        </td>
+                                    </tr>
+                                    <tr class="white-space-no-wrap">
+                                        <td class="text-muted pl-0">
+                                            Shipping Address
+                                        </td>
+                                        <td>
+                                            {{$data['Order']->address}}
+                                        </td>
+                                    </tr>
                                     </tbody>
                                 </table>
-                            </div>
-                        </li>
-                        <li class="list-group-item p-3">
-                            <div class="d-flex justify-content-end">
-                                Total: <p class="ml-2 mb-0 font-weight-bold">{{$data['Order']->total_amount}}</p>
                             </div>
                         </li>
                     </ul>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4 card" style="overflow: scroll;height:400px;">
-                <div class="chat-contents task-chat-contents">
-                    <div class="chat-content-wrap">
-                        <div class="chat-wrap-inner">
-                            <div class="chat-box">
-                                <div class="chats" id="cmt">
-                                    @foreach($data['comments'] as $cmt)
-                                        <div class="chat chat-left">
-                                            <div class="nav float-right custom-menu">
-                                                <a href="{{route('order_comment.delete',$cmt->id)}}"
-                                                   class="followers-add" data-toggle="tooltip"
-                                                   data-placement="bottom"><i class="la la-trash-o"></i></a>
-                                            </div>
-                                            <div class="chat-avatar">
-                                                <a href="#" class="avatar">
-                                                    <img src="{{url(asset('img/profiles/avatar-02.jpg'))}}" alt="">
-                                                </a>
-                                            </div>
-                                            <div class="chat-body">
-                                                <div class="chat-bubble">
-                                                    <div class="chat-content">
-                                                        <span class="task-chat-user">{{$cmt->employee->name}}</span>
-                                                        <span class="chat-time">{{$cmt->created_at->toFormattedDateString()}} at {{date('h:i a', strtotime($cmt->created_at))}}</span>
-                                                        <p>{{$cmt->comment_text}}</p>
-                                                    </div>
-                                                </div>
-                                                @if($cmt->document!=null)
-                                                    <ul class="attach-list">
-                                                        <li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a
-                                                                    href="{{url(asset('ticket_attach/'.$cmt->document_file))}}"
-                                                                    download="">{{$cmt->document_file}}</a></li>
-                                                    </ul>
-                                                @endif
-                                            </div>
-
-                                        </div>
+            <div class="col-lg-12">
+                <div class="table-responsive">
+                   @if(!$data['Order']->status=='Confirm')
+                        @if(!isset($order_data))
+                            <div class="form-group">
+                                <label for="">Add Item</label>
+                                <select name="" id="product" class="form-control" style="min-width: 150px;">
+                                    <option value="">Select Product</option>
+                                    @foreach($data['product'] as $product)
+                                        <option value="{{$product->id}}">{{$product->name}}</option>
                                     @endforeach
-                                </div>
+                                </select>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="chat-footer">
-                    <div class="message-bar">
-                        <div class="message-inner">
-                            <form action="{{route('orders.comment')}}" method="POST" enctype="multipart/form-data">
-                                {{csrf_field()}}
-                                <div class="message-area">
-                                    <input type="hidden" name="order_id" value="{{$data['Order']->id}}">
-                                    <div class="input-group col-12">
-                                        <input type="text" class="form-control" name="comment_text"
-                                               placeholder="Add Note...">
-                                        <span class="input-group-append">
-                                        <button class="btn btn-primary" type="submit"><i class="la la-plus"></i></button>
-                                    </span>
+                        @endif
+                       @endif
+                    <table class="table table-hover table-white" id="order_table">
+                        <thead>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Unit Price</th>
+                        <th>Taxes(%)</th>
+                        <th>Total</th>
+                        <th>Currency</th>
+                        <th>Action</th>
+                        </thead>
+                        <tbody id="tbody">
+                        <input type="hidden" id="creation_id" value="{{$data['items'][0]->creation_id??$data['Order']->id}}">
+                        @foreach($data['items'] as $order)
+                            <tr>
+                                <td style="min-width: 200px;">
+
+                                    <input type="hidden" id="order_id_{{$order->id}}" value="{{$order->id}}">
+                                    <div class="row">
+                                        <input type="hidden" name="product_id" id="product_{{$order->id}}" value="{{$order->product_id}}">
+                                        <div class="col-md-4">
+                                            <img src="{{url(asset('product_picture/'.$order->product->image))}}"  alt="" width="40px" height="40px">
+                                        </div>
+                                        <div class="col-8">
+                                            <div>
+                                                <span class="font-weight-bold">{{$order->product->name}}</span>
+                                            </div>
+                                            <p class="m-0 mt-1">
+                                                {{$order->product->description}}
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+                                </td>
+                                <td>
+                                    <input type="number" name="quantity" id="quantity_{{$order->id}}" class="form-control update_item_{{$order->id}}" value="{{$order->quantity}}" {{isset($order_data)?'readonly':''}} {{$data['Order']->status=='Confirm'?'readonly':''}} >
+                                </td>
+                                <td>
+                                    <input type="number" id="price_{{$order->id}}" class="form-control update_item_{{$order->id}}" value="{{$order->unit_price}}" min="0" oninput="validity.valid||(value='');"  style="min-width: 120px;" {{$data['Order']->status=='Confirm'?'readonly':''}}>
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control update_item_{{$order->id}}" name="tax" id="product_tax_{{$order->id}}" value="{{$order->tax_id}}"  min="0" oninput="validity.valid||(value='');" {{$data['Order']->status=='Confirm'?'readonly':''}}>
+                                </td>
+                                <td>
+                                    <input type="text" name="total" id="total_{{$order->id}}" class="form-control col-md-7 update_item_{{$order->id}}" value="{{number_format($order->total)}}" style="min-width: 100px;" {{$data['Order']->status=='Confirm'?'readonly':''}} >
+                                </td>
+                                <td><input type="text" class="form-control update_item_{{$order->id}}" id="unit_{{$order->id}}" value="{{$order->currency_unit}}" {{$data['Order']->status=='Confirm'?'readonly':''}}></td>
+
+                                <td>
+                                    @if(!$data['Order']->status=='Confirm')
+                                        @if(!isset($order_data))
+                                            <button type="button" class="btn btn-danger btn-sm"  id="remove{{$order->id}}" ><i class="fa fa-trash-o "></i></button>
+                                            @include('invoice.item_remove')
+                                        @endif
+                                        @endif
+                                </td>
+
+                            </tr>
+                            <script>
+                                $(document).ready(function () {
+                                    $(".update_item_{{$order->id}}").keyup(function(){
+                                        var quantity=$('#quantity_{{$order->id}}').val();
+                                        var price=$('#price_{{$order->id}}').val();
+
+                                        var total=quantity * price;
+                                        var tax=$('#product_tax_{{$order->id}}').val();
+                                        var tax_amount=tax / 100 * total;
+                                        var include_tax=total + tax_amount;
+                                        $('#total_{{$order->id}}').val(include_tax);
+                                    });
+                                });
+                                $(document).ready(function() {
+                                    $(".update_item_{{$order->id}}").keyup(function(){
+                                        var product=$('#product_{{$order->id}}').val();
+                                        var desc=$('#order_description_{{$order->id}}').val();
+                                        var quantity=$('#quantity_{{$order->id}}').val();
+                                        var price=$('#price_{{$order->id}}').val();
+                                        var tax=$('#product_tax_{{$order->id}}').val();
+                                        var unit=$('#unit_{{$order->id}}').val();
+                                        var total=$('#total_{{$order->id}}').val();
+                                        $.ajax({
+                                            data : {
+                                                "product_id":product,
+                                                'description':desc,
+                                                'quantity':quantity,
+                                                "tax_id":tax,
+                                                'unit_price':price,
+                                                "currency_unit":unit,
+                                                "total":total,
+                                            },
+                                            type:'PUT',
+                                            url:"{{route('invoice_items.update',$order->id)}}",
+                                            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                                            success:function(data){
+                                                console.log(data);
+                                                var alltotal=[];
+                                                $('.total').each(function(){
+                                                    alltotal.push(this.value);
+                                                });
+                                                var grand_total=0;
+                                                for (var i=0;i<alltotal.length;i++){
+                                                    grand_total=parseFloat(grand_total)+parseFloat(alltotal[i]);
+                                                }
+                                                $('#grand_total').val(grand_total);
+                                                $("#refreshDiv").load(location.href + " #refreshDiv>* ");
+
+
+                                            }
+                                        });
+                                    });
+                                });
+                            </script>
+                        @endforeach
+
+                        </tbody>
+                        <tr>
+
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
                 </div>
-            </div>
-            <div class="col-md-8 card">
-                <h5 class="font-weight-bold mt-3">Billing And Delivery Details</h5>
-                <div class="border rounded-sm">
-                   <div class="form-group">
-                       <label for="" class="form-label text-muted text-uppercase ml-2 mt-1">Billing Address</label>
-                       <p class="ml-3 mb-1">{{$data['Order']->billing_address}}</p>
-                   </div>
-                </div>
-                <div class="border rounded-sm my-1">
-                    <div class="form-group">
-                        <label for="" class="form-label text-muted text-uppercase ml-2 mt-1">Shipment Type</label>
-                        <p class="ml-3">{{$data['Order']->shipping_type}}</p>
-                    </div>
-                </div>
-                @if($data['Order']->shipping_address!=null)
-                <div class="border rounded-sm my-1">
-                    <div class="form-group">
-                        <label for="" class="form-label text-muted text-uppercase ml-2 mt-1">Shipping Address</label>
-                        <p class="ml-3">{{$data['Order']->shipping_address}}</p>
-                    </div>
-                </div>
-                @endif
             </div>
         </div>
-        <div id="bs-canvas-left" class="bs-canvas bs-canvas-anim bs-canvas-right position-fixed  h-100 mt-5"
+        <div id="bs-canvas-right" class="bs-canvas bs-canvas-anim bs-canvas-right position-fixed  h-100 mt-5"
              style="max-width: 350px;background-color:#d7dbe0">
             <header class="bs-canvas-header p-3 overflow-auto">
                 <button type="button" class="bs-canvas-close float-left close " aria-label="Close"><span aria-hidden="true"
@@ -372,8 +424,99 @@
                         }
                     });
                 });
+                $(document).ready(function () {
+                    $(document).on('change','#product',function (){
+                        var creation_id = $('#creation_id').val();
+                        var order_id=$('#order_id').val();
+                        var product = $('#product option:selected').val();
+                        var grand_total=$('#grand_total').val();
+                        $.ajax({
+                            data: {
+                                "product_id":product,
+                                "invoice_id":creation_id,
+                                'order_id':order_id,
+                                'grand_total':grand_total,
+
+                            },
+                            type: 'POST',
+                            url: "{{route('invoice_items.store')}}",
+                            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                            success: function (data) {
+                                console.log(data);
+                                $("#order_table").load(location.href + " #order_table>* ");
+                                $("#grand_total_div").load(location.href + " #grand_total_div>* ");
+                                var alltotal = [];
+                                $('.total').each(function () {
+                                    alltotal.push(this.value);
+                                });
+                                var grand_total = 0;
+                                for (var i = 0; i < alltotal.length; i++) {
+                                    grand_total = parseFloat(grand_total) + parseFloat(alltotal[i]);
+                                }
+                                $('#grand_total').val(grand_total);
+                                location.reload();
+
+                            }
+                        });
+                    });
+                });
             </script>
 
+        </div>
+        <div id="bs-canvas-left" class="bs-canvas bs-canvas-anim bs-canvas-left position-fixed  h-100 mt-5"
+             style="max-width: 350px;background-color:#d7dbe0">
+            <header class="bs-canvas-header p-3 overflow-auto">
+                <button type="button" class="bs-canvas-close float-right close " aria-label="Close"><span aria-hidden="true"
+                                                                                                         class="text-dark">&times;</span>
+                </button>
+                <h4 class="d-inline-block text-dark mb-0 float-left ml-5">Comments</h4>
+            </header>
+            <div class="bs-canvas-content px-3 py-2">
+                @foreach($data['comments'] as $cmt)
+                    <div class="chat chat-left">
+                        <div class="nav float-right custom-menu">
+                            <a href="{{route('order_comment.delete',$cmt->id)}}"
+                               class="followers-add" data-toggle="tooltip"
+                               data-placement="bottom"><i class="la la-trash-o"></i></a>
+                        </div>
+                        <div class="chat-avatar">
+                            <a href="#" class="avatar">
+                                <img src="{{url(asset('img/profiles/avatar-02.jpg'))}}" alt="">
+                            </a>
+                        </div>
+                        <div class="chat-body">
+                            <div class="chat-bubble">
+                                <div class="chat-content">
+                                    <span class="task-chat-user">{{$cmt->employee->name}}</span>
+                                    <span class="chat-time">{{$cmt->created_at->toFormattedDateString()}} at {{date('h:i a', strtotime($cmt->created_at))}}</span>
+                                    <p>{{$cmt->comment_text}}</p>
+                                </div>
+                            </div>
+                            @if($cmt->document!=null)
+                                <ul class="attach-list">
+                                    <li class="pdf-file"><i class="fa fa-file-pdf-o"></i> <a
+                                                href="{{url(asset('ticket_attach/'.$cmt->document_file))}}"
+                                                download="">{{$cmt->document_file}}</a></li>
+                                </ul>
+                            @endif
+                        </div>
+
+                    </div>
+                @endforeach
+                    <form action="{{route('orders.comment')}}" method="POST" enctype="multipart/form-data">
+                        {{csrf_field()}}
+                        <div class="message-area">
+                            <input type="hidden" name="order_id" value="{{$data['Order']->id}}">
+                            <div class="input-group col-12">
+                                <input type="text" class="form-control" name="comment_text"
+                                       placeholder="Add Note...">
+                                <span class="input-group-append">
+                                        <button class="btn btn-primary" type="submit"><i class="la la-plus"></i></button>
+                                    </span>
+                            </div>
+                        </div>
+                    </form>
+            </div>
         </div>
     </div>
     @endsection

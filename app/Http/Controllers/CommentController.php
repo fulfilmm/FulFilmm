@@ -58,9 +58,6 @@ class CommentController extends Controller
         $data['file'] = $path;
         // dd($data);
 
-        if (isset($request->activity_id)) ActivityComment::create($data);
-        if (isset($request->assignment_id)) AssignmentComment::create($data);
-        if (isset($request->project_task_id)) ProjectTaskComment::create($data);
 
         return redirect()->back()->with('success', __('alert.create_success'));
     }

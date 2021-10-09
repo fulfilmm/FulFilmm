@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\product;
 use Illuminate\Http\Request;
@@ -39,20 +40,25 @@ class InvoiceItemController extends Controller
     public function store(Request $request)
     {
 //        dd($request->all());
-
-        $invoice_data=['title'=>$request->title, "client_id"=>$request->client_id,
-            'client_email'=>$request->client_email,
-            'inv_date'=>$request->inv_date,
-            "due_date"=>$request->due_date,
-            'client_address'=>$request->client_address,
-            "more_info"=>$request->more_info,
-            'bill_address'=>$request->bill_address,
-            'status'=>$request->status,
-            'order_id'=>$request->order_id,
-            'payment_method'=>$request->payment];
         $Auth=Auth::guard('employee')->user()->id;
-        if(!Session::has($Auth)){
-            Session::push("data-".$Auth,$invoice_data);
+        if($request->type=='invoice'){
+            if(!Session::has("data-".$Auth)){
+                Session::push("data-".$Auth,$request->all());
+            }
+//            dd('invoice');
+        }else if ($request->type=='order'){
+            if(Auth::guard('customer')->check()){
+//                dd('customer');
+                $customer=Auth::guard('customer')->user()->id;
+                if(!Session::has("order-".$customer)){
+                    Session::push("order-".$customer,$request->all());
+                }
+            }else{
+//                dd('employee');
+                if(!Session::has("order-".$Auth)){
+                    Session::push("order-".$Auth,$request->all());
+                }
+            }
         }
         $product=product::with('taxes')->where('id',$request->product_id)->first();
         $items=new OrderItem();
@@ -66,8 +72,14 @@ class InvoiceItemController extends Controller
         $items->currency_unit=$product->currency_unit;
         $items->total=$product->sale_price;
         $items->creation_id=$request->invoice_id;
+        $items->order_id=$request->order_id??null;
         $items->state=1;
         $items->save();
+//        if($request->order_id!=null){
+//            $order=Order::where('id',$request->order_id)->first();
+//            $order->total_amount=$request->grand_total+$product->sale_price;
+//            $order->update();
+//        }
         return response()->json([
             'Message'=>'Success'
         ]);
@@ -114,6 +126,11 @@ class InvoiceItemController extends Controller
         $items->currency_unit=$request->currency_unit;
         $items->total=$request->total;
         $items->update();
+//        if($items->order_id!=null){
+//            $order=Order::where('id',$items->order_id)->first();
+//            $order->total_amount=$request->grand_total+$request->total;
+//            $order->update();
+//        }
         return response()->json([
             'Message'=>'Success'
         ]);
@@ -125,7 +142,7 @@ class InvoiceItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
         $invoice_item=OrderItem::where('id',$id)->first();
         $invoice_item->delete();

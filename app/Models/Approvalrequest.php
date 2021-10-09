@@ -20,5 +20,8 @@ class Approvalrequest extends Model
     public function cc(){
         return $this->hasMany(Cc_of_approval::class);
     }
+    public function contact(){
+        return $this->belongsTo(Customer::class,'contact_id','id');
+    }
 
 }

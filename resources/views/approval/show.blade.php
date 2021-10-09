@@ -6,6 +6,7 @@
     <!-- Page Content -->
     <div class="content container-fluid">
         <!-- Page Header -->
+
         <div class="chat-main-row mt-4">
             <div class="chat-main-wrapper">
                 <div class="col-lg-8 message-view task-view">
@@ -22,6 +23,21 @@
                                         <span>{{\Carbon\Carbon::parse($details_approval->target_date)->toFormattedDateString()}} </span>
                                     </div>
                                 </div>
+                                <div class="float-right">
+                                    <span>Status: </span>
+                                    <div class="nav-item dropdown dropdown-action btn btn-outline-white border btn-sm rounded-pill">
+                                        <a href="" class="dropdown-toggle rounded-pill" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-{{$details_approval->state=='Approve'?'success':($details_approval->state=='Reject'?'danger':($details_approval->state=='Pending'?'primary':'secondary'))}}"></i> {{$details_approval->state ? :"New"}}</a>
+                                        @if($details_approval->approved_id == \Illuminate\Support\Facades\Auth::guard('employee')->user()->id||$details_approval->secondary_approved==\Illuminate\Support\Facades\Auth::guard('employee')->user()->id)
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#add-category">Change Status</a>
+                                            </div>
+                                        @else
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item">You Doesn't not have permission to Change Status</a>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
                                 <a class="task-chat profile-rightbar float-right" id="task_chat" href="#task_window"><i class="fa fa fa-comment"></i></a>
                             </div>
                         </div>
@@ -31,37 +47,89 @@
                                     <div class="chat-box">
                                         <div class="task-wrapper">
                                             <div class="card">
+                                                <div class="card-header">
+                                                    Approval Details
+                                                </div>
+                                                <div class="card-body">
+                                                    <table>
+                                                        <tr style="padding-top: 20px">
+                                                            <td style="min-width: 150px" class="text-muted">Approval Type</td>
+                                                            <td>: {{$details_approval->type}}</td>
+                                                        </tr>
+                                                        <tr style="padding-top: 20px">
+                                                            <td style="min-width: 150px" class="text-muted">Approval Title</td>
+                                                            <td>: {{$details_approval->title}}</td>
+                                                        </tr>
+                                                       @if($details_approval->type=='Business Trip')
+
+                                                            <tr style="padding-top: 20px">
+                                                                <td style="min-width: 150px" class="text-muted">Period Date</td>
+                                                                <td>: {{\Carbon\Carbon::parse($details_approval->from_date)->toFormattedDateString()}} - {{\Carbon\Carbon::parse($details_approval->to_date)->toFormattedDateString()}} </td>
+
+                                                            </tr>
+                                                            <tr style="padding-top: 20px">
+                                                                <td style="min-width: 150px" class="text-muted">Location</td>
+                                                                <td>: {{$details_approval->location}} </td>
+
+                                                            </tr>
+                                                            <tr style="padding-top: 20px">
+                                                                <td style="min-width: 150px" class="text-muted">Budget</td>
+                                                                <td>: {{$details_approval->amount}} MMK</td>
+
+                                                            </tr>
+                                                            <tr style="padding-top: 20px">
+                                                                @php
+                                                                    $members=json_decode($details_approval->trip_members);
+                                                                @endphp
+                                                                <td style="min-width: 150px" class="text-muted">Trip Member</td>
+                                                                <td>: @foreach($members as $member) {{trim($member,',')}}, @endforeach</td>
+
+                                                            </tr>
+                                                           @elseif($details_approval->type=='Payment')
+                                                            <tr style="padding-top: 20px">
+                                                                <td style="min-width: 150px" class="text-muted">Contact</td>
+                                                                <td>: {{$details_approval->contact->name}} </td>
+
+                                                            </tr>
+                                                            <tr style="padding-top: 20px">
+                                                                <td style="min-width: 150px" class="text-muted">Amount</td>
+                                                                <td>: {{$details_approval->amount}} MMK</td>
+
+                                                            </tr>
+                                                        @elseif($details_approval->type=='Procurement')
+                                                            <tr style="padding-top: 20px">
+                                                                <td style="min-width: 150px" class="text-muted">Contact</td>
+                                                                <td>: {{$details_approval->contact->name??'N/A'}} </td>
+
+                                                            </tr>
+                                                            <tr style="padding-top: 20px">
+                                                                <td style="min-width: 150px" class="text-muted">Quantity</td>
+                                                                <td>: {{$details_approval->quantity}} </td>
+
+                                                            </tr>
+                                                            <tr style="padding-top: 20px">
+                                                                <td style="min-width: 150px" class="text-muted">Amount</td>
+                                                                <td>: {{$details_approval->amount}} MMK</td>
+
+                                                            </tr>
+                                                           @endif
+                                                        <tr>
+                                                           <td class="text-muted" style="min-width: 150px">Requester Name</td>
+                                                            <td> : {{$details_approval->request_emp->name}}</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="card">
                                                 <div class="card-body">
                                                     <div class="project-title">
                                                         <div class="m-b-20">
-                                                            <span class="h5 card-title ">{{$details_approval->title}}</span>
-                                                            <div class="float-right">
-                                                                <span>Status: </span>
-                                                                    <div class="nav-item dropdown dropdown-action badge badge-warning">
-                                                                        <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{$details_approval->state ? :"N/A"}}</a>
-                                                                        @if($details_approval->approved_id == \Illuminate\Support\Facades\Auth::guard('employee')->user()->id||$details_approval->secondary_approved==\Illuminate\Support\Facades\Auth::guard('employee')->user()->id)
-                                                                        <div class="dropdown-menu">
-                                                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#add-category">Change Status</a>
-                                                                        </div>
-                                                                        @else
-                                                                            <div class="dropdown-menu">
-                                                                                <a class="dropdown-item">You Doesn't not have permission to Change Status</a>
-                                                                            </div>
-                                                                            @endif
-                                                                    </div>
-                                                            </div>
+                                                            <span class="h5 card-title ">Description</span>
+
                                                         </div>
-
-
                                                     </div>
+
                                                     <p>{{$details_approval->content}} </p>
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel elit neque. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum sollicitudin libero vitae est consectetur, a molestie tortor consectetur. Aenean tincidunt interdum ipsum, id pellentesque diam suscipit ut. Vivamus massa mi, fermentum eget neque eget, imperdiet tristique lectus. Proin at purus ut sem pellentesque tempor sit amet ut lectus. Sed orci augue, placerat et pretium ac, hendrerit in felis. Integer scelerisque libero non metus commodo, et hendrerit diam aliquet. Proin tincidunt porttitor ligula, a tincidunt orci pellentesque nec. Ut ultricies maximus nulla id consequat. Fusce eu consequat mi, eu euismod ligula. Aliquam porttitor neque id massa porttitor, a pretium velit vehicula. Morbi volutpat tincidunt urna, vel ullamcorper ligula fermentum at. </p>
-                                                </div>
-                                                <div class="card-footer">
-                                                    <div class="text-center">
-                                                        <span class="m-l-15 text-muted">Requested by:</span>
-                                                        <span><a href="#">{{$details_approval->request_emp->name}}</a></span>
-                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="card">
@@ -177,6 +245,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 
     <!-- Add Category Modal-->

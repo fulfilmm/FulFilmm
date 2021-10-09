@@ -95,7 +95,7 @@ class ProductController extends Controller
     {
         $taxes=products_tax::all();
         $allcat=products_category::all();
-        $product=product::with("category","taxes")->where("id",$id)->first();
+        $product=product::with("category","taxes")->where("id",$id)->firstOrFail();
         return view("product.edit",compact("taxes","product","allcat"));
     }
 
@@ -108,7 +108,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $product=product::where("id",$id)->first();
+        $product=product::where("id",$id)->firstOrFail();
         $product->name=$request->name;
         $product->tax=$request->tax;
         $product->description=$request->description;
@@ -140,7 +140,7 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $product=product::where("id",$id)->first();
+        $product=product::where("id",$id)->firstOrFail();
         $product->delete();
         return redirect()->back()->with("delete","Delete $product->name successful");
     }
@@ -153,6 +153,18 @@ class ProductController extends Controller
             'tax' => "success",
         ]);
     }
+    public function tax_index(){
+        $taxes=products_tax::all();
+
+        return view('settings.tax',compact('taxes'));
+    }
+    public function tax_delete($id){
+//        dd($id);
+        $tax=products_tax::where('id',$id)->first();
+        $tax->delete();
+        return redirect()->back();
+    }
+
     public function category(Request $request){
         $cat=new products_category();
         $cat->name=$request->name;
@@ -160,6 +172,22 @@ class ProductController extends Controller
         return response()->json([
             'tax' => "success",
         ]);
+    }
+    public function category_index(){
+        $category=products_category::all();
+        return view('product.category',compact('category'));
+    }
+    public function category_update(Request $request,$id){
+//        dd($request->all());
+        $cat=products_category::where('id',$id)->first();
+        $cat->name=$request->cat_name;
+        $cat->update();
+        return redirect()->back();
+    }
+    public function category_delete($id){
+        $cat=products_category::where('id',$id)->first();
+        $cat->delete();
+        return redirect()->back();
     }
     public function duplicate($id){
         $product=product::where("id",$id)->first();

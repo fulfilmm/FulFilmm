@@ -238,7 +238,6 @@
                                                     <td colspan="5"></td>
                                                     <th colspan="2" class="text-right"><span class="mt-5">Grand Total</span></th>
                                                     <td colspan="2" id="grand_total_div">
-                                                        <script src="{{url(asset("js/jquery-3.2.1.min.js"))}}"></script>
                                                         <input class="form-control" type="text"  value="{{number_format($grand_total)}}" style="min-width: 100px">
                                                         <input type="hidden" id="inv_grand_total" value="{{$grand_total}}">
                                                     </td>
@@ -298,7 +297,8 @@ $(document).on('change','#product',function (event){
             'bill_address':bill_address,
             'status':status,
             'order_id':order_id,
-            'payment_method':payment
+            'payment_method':payment,
+            'type':'invoice'
 
         },
         type:'POST',
@@ -316,7 +316,7 @@ $(document).on('change','#product',function (event){
                 grand_total=parseFloat(grand_total)+parseFloat(alltotal[i]);
             }
 
-            location.reload();
+            // location.reload();
         }
     });
 

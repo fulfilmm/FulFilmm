@@ -31,6 +31,7 @@ class CompanyRequest extends FormRequest
             // 'phone' => 'required',
             // 'ceo_name' => 'required|max:32',
             // 'company_registry' => 'required',
+            'logo' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }
 }

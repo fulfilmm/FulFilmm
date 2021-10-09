@@ -28,6 +28,14 @@ class CreateApprovalrequestsTable extends Migration
             $table->bigInteger('emp_id')->unsigned();
             $table->foreign('emp_id')->references('id')->on('employees')->onDelete('cascade');
             $table->index(['id','approved_id','secondary_approved']);
+            $table->dateTime('from_date')->nullable();
+            $table->string('type');
+            $table->dateTime('to_date')->nullable();
+            $table->double('amount')->nullable();
+            $table->text('location')->nullable();
+            $table->bigInteger('contact_id')->unsigned()->nullable();
+            $table->text('trip_members')->nullable();
+            $table->string('quantity')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

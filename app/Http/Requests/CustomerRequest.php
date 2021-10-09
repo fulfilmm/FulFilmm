@@ -27,7 +27,8 @@ class CustomerRequest extends FormRequest
             'name' => 'required',
             'phone' => 'required',
             'email' => 'required',
-            'company_id' => 'required'
+            'company_id' => 'required',
+            'profile_img' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }
 

@@ -17,6 +17,12 @@ use function GuzzleHttp\Promise\all;
 class MinutesController extends Controller
 {
     public function store(Request $request){
+
+        $this->validate($request,[
+            'record_no'=>'required',
+            'minutes'=>'required',
+            'attach_file'=>'max:10240',
+        ]);
 //        dd($request->all());
         $minutes=new Meetingminutes();
         $minutes->meeting_id=$request->meeting_id;

@@ -77,10 +77,15 @@ class SaleOrderController extends Controller
                 }
             }
         }
+       if(Auth::guard('customer')->check()){
+           $session_data=Session::get("order-".Auth::guard('customer')->user()->id);
+       }else{
+           $session_data=Session::forget("order-".Auth::guard('employee')->user()->id);
+       }
 
-//          dd($quotation);
+//          dd($session_data);
         $data=['customer'=>$allcustomers,'items'=>$items,'grand_total'=>$grand_total,'id'=>$request_id,'product'=>$products,'quotation'=>$quotation];
-        return view('saleorder.create',compact('data'));
+        return view('saleorder.create',compact('data','session_data'));
     }
     public function store(Request $request){
 //dd($request->all());
@@ -151,13 +156,19 @@ class SaleOrderController extends Controller
     public function show($id){
         $Order=Order::with('customer','quotation')->where('id',$id)->firstOrFail();
         $items=OrderItem::with('product','invoice')->where('order_id',$id)->get();
+//        dd($orderline);
+        $grand_total=0;
+        for ($i=0;$i<count($items);$i++){
+            $grand_total=$grand_total+$items[$i]->total;
+        }
         $comments=order_comments::with('employee')->where('order_id',$id)->get();
         $employees=Employee::all()->pluck('name','id')->all();
         $depts=Department::all()->pluck('name','id')->all();
         $groups=Group::all()->pluck('name','id')->all();
+        $product=product::all();
         $assign_info=order_assign::with('employee','department','group')->where('order_id',$id)->first();
 //        dd($assign_info);
-        $data=['Order'=>$Order,'items'=>$items,'comments'=>$comments,'emp'=>$employees,'dept'=>$depts,'group'=>$groups,'assign_info'=>$assign_info];
+        $data=['grand_total'=>$grand_total,'product'=>$product,'Order'=>$Order,'items'=>$items,'comments'=>$comments,'emp'=>$employees,'dept'=>$depts,'group'=>$groups,'assign_info'=>$assign_info];
         return view('saleorder.show',compact('data'));
     }
     public function destroy($id){
@@ -235,8 +246,15 @@ class SaleOrderController extends Controller
         return redirect()->back();
     }
     public function status_change($status,$id){
+        $items=OrderItem::with('product','invoice')->where('order_id',$id)->get();
+//        dd($orderline);
+        $grand_total=0;
+        for ($i=0;$i<count($items);$i++){
+            $grand_total=$grand_total+$items[$i]->total;
+        }
         $status_change=Order::with('customer')->where('id',$id)->first();
         $status_change->status=$status;
+        $status_change->total_amount=$grand_total;
         $status_change->update();
         $company = MainCompany::where('ismaincompany', 1)->first();
         $details = [

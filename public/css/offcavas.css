@@ -9,7 +9,7 @@
 }
 
 .bs-canvas {
-    top: 0;
+    top: 10px;
     width: 0;
     z-index: 1110;
     overflow-x: hidden;
@@ -22,7 +22,7 @@
 
 .bs-canvas-right {
     right: 0;
-    top: 0;
+    top: 10px;
 }
 
 .bs-canvas-anim {

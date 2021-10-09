@@ -97,6 +97,7 @@
                                     <option value="Partner">Partner</option>
                                     <option value="Competitor">Competitor</option>
                                     <option value="Supplier">Supplier</option>
+                                    <option value="Courier">Courier</option>
                                 </select>
                             </div>
                             <div class="col-md-6 mb-3">
