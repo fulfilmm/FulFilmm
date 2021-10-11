@@ -108,30 +108,32 @@
                                         <p class="mb-0 ">{{$data['customer']->customer_type}}</p>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td class="p-0">
-                                        <p class="mb-0 text-muted">Total Invoice</p>
-                                    </td>
-                                    <td>
-                                        <p class="mb-0 ">{{count($data['invoice'])}}</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="p-0">
-                                        <p class="mb-0 text-muted">Total ticket</p>
-                                    </td>
-                                    <td>
-                                        <p class="mb-0 ">{{count($data['tickets'])}}</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="p-0">
-                                        <p class="mb-0 text-muted">Total Deal</p>
-                                    </td>
-                                    <td>
-                                        <p class="mb-0 ">{{count($data['deal'])}}</p>
-                                    </td>
-                                </tr>
+                              @if($data['customer']->status=='Qualified' && $data['customer']->customer_type=='Lead')
+                                    <tr>
+                                        <td class="p-0">
+                                            <p class="mb-0 text-muted">Total Invoice</p>
+                                        </td>
+                                        <td>
+                                            <p class="mb-0 ">{{count($data['invoice'])}}</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-0">
+                                            <p class="mb-0 text-muted">Total ticket</p>
+                                        </td>
+                                        <td>
+                                            <p class="mb-0 ">{{count($data['tickets'])}}</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-0">
+                                            <p class="mb-0 text-muted">Total Deal</p>
+                                        </td>
+                                        <td>
+                                            <p class="mb-0 ">{{count($data['deal'])}}</p>
+                                        </td>
+                                    </tr>
+                                  @endif
                             </table>
                         </li>
                     </ul>
@@ -162,13 +164,14 @@
                 <div class="card">
                     <div class="card-body p-0">
                         <ul class="nav tab-nav-pane nav-tabs pt-2 mb-0">
-                            <li class="pb-2 mb-0 nav-item"><a data-toggle="tab" class="font-weight-bold text-uppercase px-5 py-2 active" href="#invoice">Invoice</a></li>
-                            <li class="pb-2 mb-0 nav-item"><a data-toggle="tab" class="font-weight-bold text-uppercase px-5 py-2" href="#activity">Activity Schedule</a></li>
+                            @if($data['customer']->status=='Qualified' && $data['customer']->customer_type=='Lead')
+                            <li class="pb-2 mb-0 nav-item"><a data-toggle="tab" class="font-weight-bold text-uppercase px-5 py-2 {{$data['customer']->status=='Qualified' && $data['customer']->customer_type=='Lead'?'active':''}}" href="#invoice">Invoice</a></li>
+                            @endif
+                            <li class="pb-2 mb-0 nav-item"><a data-toggle="tab" class="font-weight-bold text-uppercase px-5 py-2" {{$data['customer']->status=='Qualified' && $data['customer']->customer_type=='Lead'?'':'active'}} href="#activity">Activity Schedule</a></li>
                             <li class="pb-2 mb-0 nav-item"><a data-toggle="tab" class="font-weight-bold text-uppercase px-5 py-2" href="#comment">Comment </a></li>
                         </ul>
-
-                        <div class="tab-content">
-                            <div id="invoice" class="tab-pane fade show active">
+                        <div class="tab-content col-12">
+                            <div id="invoice" class="tab-pane fade show {{$data['customer']->status=='Qualified' && $data['customer']->customer_type=='Lead'?'active':''}} ">
                                 <div class="d-flex justify-content-between align-items-center p-3">
                                     <h5>Invoice List</h5>
                                 </div>
@@ -205,7 +208,7 @@
                                     </table>
                                 </div>
                             </div>
-                            <div id="activity" class="tab-pane fade ">
+                            <div id="activity" class="tab-pane fade show {{$data['customer']->status=='Qualified' && $data['customer']->customer_type=='Lead'?'':'active'}} ">
                                 <div class="bs-offset-main bs-canvas-anim float-right">
                                     <button class="btn btn-primary btn-sm" type="button" data-toggle="canvas"
                                             data-target="#bs-canvas-left" aria-expanded="false"
@@ -321,11 +324,6 @@
                             <input type="date" name="end_date" id="end_date" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label for="time">End Time</label>
-                            <input type="time" class="form-control" id="time" name="time">
-                        </div>
-                        
-                        <div class="form-group">
                             <button type="submit" class="btn btn-outline-danger ml-2 text-sm  btn-md" id="add">Add Item</button>
                         </div>
                     </form>
@@ -403,4 +401,11 @@
             </div>
         </div>
     </div>
+    <script>
+        jQuery(document).ready(function () {
+            'use strict';
+
+            jQuery('#end_date').datetimepicker();
+        });
+    </script>
 @endsection

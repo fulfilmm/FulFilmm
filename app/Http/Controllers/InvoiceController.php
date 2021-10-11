@@ -40,7 +40,7 @@ class InvoiceController extends Controller
     public function create()
     {
 
-        $allcustomers = Customer::all();
+        $allcustomers =Customer::where('customer_type','Lead')->where('status','Qualified')->get();
         $products=product::with("category","taxes")->get();
         $Auth=Auth::guard('employee')->user()->name;
 //        Session::forget('data-'.Auth::guard('employee')->user()->id);

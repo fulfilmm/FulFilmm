@@ -82,12 +82,10 @@
                                         <span class="input-group-text"><i class="fa fa-user"></i></span>
                                     </div>
                                     <select name="contact_name"  id="full_contact" class="form-control">
-                                        @foreach($allcustomers as $key=>$value)
-                                            <option value="{{$key}}" {{$last_customer->id==$key?'selected':''}}>{{$value}}</option>
+                                        @foreach($allcustomers as $customer)
+                                            <option value="{{$customer->id}}" {{$last_customer->id==$customer->id?'selected':''}}>{{$customer->name}}</option>
                                         @endforeach
                                     </select>
-                                    <button type="button" data-toggle="modal" href="#add_contact" class="btn btn-outline-dark"><i
-                                                class="fa fa-plus"></i></button>
                                 </div>
                                 @error('contact_name')
                                 <span class="text-danger">{{$message}}</span>
@@ -226,8 +224,6 @@
                     </div>
                 </div>
             </form>
-
-            @include('customer.quickcustomer')
         </div>
         <script>
             $(document).ready(function () {

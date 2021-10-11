@@ -42,8 +42,6 @@
 
                                     <strong class="text-danger client_err"></strong>
                                 </select>
-                                <button data-toggle="modal" data-target="#add_contact" class="btn btn-outline-dark"><i
-                                            class="fa fa-plus"></i></button>
                             </div>
 
                         </div>
@@ -281,6 +279,7 @@
         // };
 
         // window.onbeforeunload = closeWindow;
+
         $(document).ready(function () {
             $(document).on('change', '#product', function (event) {
                 event.preventDefault();
@@ -472,6 +471,11 @@
                 });
             });
         });
+        $(document).ready(function () {
+            $('#customer_name').select2();
+            $('#deal_id').select2();
+            $('#pay_term').select2();
+        })
         // ClassicEditor
         //     .create(document.querySelector('#term_and_condition'));
     </script>

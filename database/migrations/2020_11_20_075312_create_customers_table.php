@@ -36,6 +36,10 @@ class CreateCustomersTable extends Migration
             $table->foreign('tags_id')->references('id')->on('tags_industries');
             $table->bigInteger("emp_id")->unsigned();
             $table->foreign('emp_id')->references('id')->on('employees');
+            $table->string('department')->nullable();
+            $table->string('position')->nullable();
+            $table->string('status')->nullable();
+            $table->string('lead_title')->nullable();
             $table->string('customer_type');
             $table->rememberToken();
             $table->foreignId('company_id');

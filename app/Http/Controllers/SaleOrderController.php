@@ -35,7 +35,7 @@ class SaleOrderController extends Controller
         return view('saleorder.index',compact('data'));
     }
     public function create(){
-        $allcustomers=Customer::all();
+        $allcustomers=Customer::where('customer_type','Lead')->where('status','Qualified')->get();
         $session_value=\Illuminate\Support\Str::random(10);
         if(Auth::guard('employee')->check()){
 //            dd('emp');

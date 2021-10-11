@@ -25,12 +25,6 @@
 						</div>
 					</div>
 					<div class="form-group row">
-						<label class="col-lg-3 col-form-label">Lead prefix</label>
-						<div class="col-lg-9">
-							<input type="text" name="lead_prefix" value="{{$company->lead_prefix??''}}" class="form-control">
-						</div>
-					</div>
-					<div class="form-group row">
 						<label class="col-lg-3 col-form-label">Ticket prefix</label>
 						<div class="col-lg-9">
 							<input type="text" name="ticket_prefix" value="{{$company->ticket_prefix??''}}" class="form-control">

@@ -100,7 +100,7 @@
                                 <div class="col-md-12 col-sm-12" >
                                     <div class="table-responsive">
                                        @if(!isset($order_data))
-                                            <div class="form-group">
+                                            <div class="form-group col-md-4">
                                                 <label for="">Add Item</label>
                                                 <select name="" id="product" class="form-control" style="min-width: 150px;">
                                                     <option value="">Select Product</option>
@@ -261,12 +261,10 @@
 @endsection
 @section('script')
 
-// $(document).ready(function () {
-//
-//         $('select').selectize({
-//         sortField: 'text'
-//     });
-// });
+$(document).ready(function () {
+
+    $('select').select2();
+});
 $(document).on('change','#product',function (event){
     var product_id=$("#product option:selected").val();
     var invoice_id=$('#invoice_id').val();

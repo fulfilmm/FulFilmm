@@ -30,7 +30,6 @@ class CreateMainCompaniesTable extends Migration
             $table->string('invoice_prefix')->nullable();
             $table->string('ticket_prefix')->nullable();
             $table->string('quotation_prefix')->nullable();
-            $table->string('lead_prefix')->nullable();
             $table->text('logo');
             $table->boolean('ismaincompany')->default(true);
             $table->timestamps();

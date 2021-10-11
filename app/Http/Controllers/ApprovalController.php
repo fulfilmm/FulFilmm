@@ -105,6 +105,44 @@ class ApprovalController extends Controller
             $approval->secondary_approved=$request->secondary_id;
         }
         $approval->save();
+        $approver=Employee::where('id',$request->approve_id)->first();
+        if($approver!=null){
+            $details = [
+                'from'=>Auth::guard('employee')->user()->email,
+                'email' => $approver->email,
+                'subject' => 'Approval Request',
+                'request_name' =>ucfirst(Auth::guard('employee')->user()->name),
+                'approver_name'=>$approver->name,
+                'to_name'=>ucfirst($approver->name),
+                'id'=>$approval->id,
+                'app_id'=>$approval->approval_id,
+            ];
+            Mail::send('approval.cc_email_noti', $details, function ($message) use ($details) {
+                $message->from('sinyincinpu@gmail.com', 'Cloudark');
+                $message->to($details['email']);
+                $message->subject($details['subject']);
+            });
+        }
+        $secondary_approver=Employee::where('id',$request->$request->secondary_id)->first();
+        if($approver!=null){
+            $details = [
+                'from'=>Auth::guard('employee')->user()->email,
+                'email' => $secondary_approver->email,
+                'subject' => 'Approval Request',
+                'request_name' =>ucfirst(Auth::guard('employee')->user()->name),
+                'approver_name'=>$secondary_approver->name,
+                'to_name'=>ucfirst($secondary_approver->name),
+                'id'=>$approval->id,
+                'app_id'=>$approval->approval_id,
+                'type'=>'First Approver'
+            ];
+            Mail::send('approval.cc_email_noti', $details, function ($message) use ($details) {
+                $message->from('sinyincinpu@gmail.com', 'Cloudark');
+                $message->to($details['email']);
+                $message->subject($details['subject']);
+            });
+        }
+
         if(isset($request->cc)){
             $approval=Approvalrequest::orderBy('id', 'desc')->first();
             foreach ($request->cc as $value)
@@ -124,6 +162,7 @@ class ApprovalController extends Controller
                     'to_name'=>ucfirst($emp->name),
                     'id'=>$approval->id,
                     'app_id'=>$approval->approval_id,
+                    'type'=>'Approver'
                 ];
                 Mail::send('approval.cc_email_noti', $details, function ($message) use ($details) {
                     $message->from('sinyincinpu@gmail.com', 'Cloudark');

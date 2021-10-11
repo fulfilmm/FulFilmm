@@ -5,7 +5,7 @@
     <x-partials.card route="customers"  id="{{$customer->id}}" title="{{$customer->name}}"  subtitle="{{$customer->email}}">  </x-partials.card>
     @empty
     <div class="col-12 text-center">
-        <span class="text-center">@lang('messages.no-item-pls-add', ['name' => 'customer'])</span> 
+        <span class="text-center">@lang('messages.no-item-pls-add', ['name' => 'Contact'])</span>
     </div>
     @endforelse
 </div>

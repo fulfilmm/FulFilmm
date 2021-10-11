@@ -1,8 +1,8 @@
 <div class="row">
-    <div class="col-md-3 mb-3">
+    <div class="col-md-4 mb-3">
         <div class="card-body rounded bg-light">
             <div class="d-flex justify-content-center mt-5">
-                <div class="text-center my-2">
+                <div class="text-center">
                     <input type="file" id="file1" accept="image/*" name="profile_img"
                            class="offset-md-1" onchange="loadFile(event)"
                            style="display:none"/>
@@ -12,7 +12,7 @@
                          width="100px" height="100px;" alt=""><br>
                 </div>
             </div>
-            <div class="d-flex justify-content-center mt-2 mb-5">
+            <div class="d-flex justify-content-center mt-2 mb-3">
                 <p class="mb-0 text-muted font-weight-bold">Upload Image</p>
             </div>
         </div>
@@ -22,7 +22,7 @@
                       placeholder="Enter Bio"></textarea>
         </div>
     </div>
-    <div class="col-md-9">
+    <div class="col-md-8">
         <div class="row g-3 date-icon-set-modal">
             <div class="col-md-6 mb-3">
                 <div class="form-group">
@@ -84,7 +84,8 @@
                             <option value="{{$key}}">{{$val}}</option>
                         @endforeach
                     </select>
-                    <button type="button" data-toggle="modal" data-target="#add_new_company" class="btn btn-white"><i class="fa fa-plus"></i></button>
+                    <button type="button" data-toggle="modal" data-target="#add_new_company" class="btn btn-white"><i
+                                class="fa fa-plus"></i></button>
                 </div>
             </div>
             <div class="col-md-6 mb-3">
@@ -175,9 +176,12 @@
                            placeholder="Enter linkedin link">
                 </div>
             </div>
-            <div class="col-md-6 mb-3" id="refesh_div">
-                <label for="customer_type"
-                       class="form-label font-weight-bold text-muted text-uppercase">
+        </div>
+    </div>
+</div>
+        <div class="row">
+            <div class="col-md-4 mb-3" id="refesh_div">
+                <label for="customer_type" class="form-label font-weight-bold text-muted text-uppercase">
                     Type</label>
                 <select name="customer_type" id="customer_type" class="form-control">
                     <option value="Customer">Customer</option>
@@ -189,92 +193,136 @@
                     <option value="Courier">Courier</option>
                 </select>
             </div>
-            <div class="col-md-6 mb-3">
-
-            </div>
-            <div class="col-md-6 mb-3" id="priority">
-
-            </div>
-            <div class="col-md-6 mb-3" id="tag_industry">
-
-            </div>
-            <div class="col-md-6 mb-3">
-                <input type="checkbox" name="canlogin" id="canlogin"><label for="canlogin"
-                                                                            class="ml-1">Can
-                    login</label>
-            </div>
-        </div>
-    </div>
-</div>
-<div id="industry_add" class="modal custom-modal fade" data-backdrop="true" tabindex="-1"
-     role="dialog" style="overflow:hidden">
-    <div class="modal-dialog modal-dialog modal-sm modal-dialog-centered">
-        <div class="modal-content ">
-            <div class="modal-header">
-                <h5 class="modal-title">Add New Industry</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
+            <div class="col-md-4 mb-3">
                 <div class="form-group">
-                    <label for="tags">Tags</label>
-                    <input type="text" id="tags" class="form-control" name="tags">
+                    <label for="dept" class="form-label font-weight-bold text-muted text-uppercase">Department</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-users"></i></span>
+                        </div>
+                    <input type="text" id="dept" name="department" class="form-control" placeholder="Enter Contact Department">
+                    </div>
                 </div>
-                <button type="button" data-dismiss="modal" id="tags_create"
-                        class="btn btn-primary float-right">Save
-                </button>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="form-group">
+                    <label for="position" class="form-label font-weight-bold text-muted text-uppercase">Position</label>
+                    <input type="text" id="position" name="position" class="form-control" placeholder="Enter Contact Position">
+                </div>
+            </div>
+            <div class="col-md-4 mb-3" id="title">
+                <label for='title'
+                       class='form-label font-weight-bold text-muted text-uppercase pro_label'>Title </label>
+                <div class='input-group' id='priority_field'>
+                    <div class='input-group-prepend'>
+                        <span class='input-group-text'><i class='fa fa-arrow-circle-down'></i>
+                        </span>
+                    </div>
+                    <input type='text' class='form-control' name='title'></div>
+            </div>
+            <div class="col-md-4 mb-3" id="priority">
+                <label for="Text6"
+                       class="form-label font-weight-bold text-muted text-uppercase pro_label">Priority</label>
+                <div class="input-group" id="priority_field">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-arrow-circle-down"></i></span>
+                    </div>
+                    <select name="priority" id="priority_type" class="form-control">
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3" id="tag_industry">
+                <label for="Text6" class="form-label font-weight-bold text-muted text-uppercase pro_label">Industry</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-tag"></i></span>
+                    </div>
+                    <select name="tag_industry" id="industry" class="form-control">
+                        @foreach($tags as $tag)
+                            @if($tag->id==$last_tag->id)
+                                <option value="{{$tag->id}}" selected>{{$tag->tag_industry}}</option>
+                            @else
+                                <option value="{{$tag->id}}">{{$tag->tag_industry}}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                    <div class="input-group-prepend">
+                        <a href="" class="input-group-text" data-toggle='modal' data-target='#industry_add'><i
+                                    class="fa fa-plus"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3" id="status">
+                <label for="Text6" class="form-label font-weight-bold text-muted text-uppercase pro_label">Status</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="fa fa-user-secret"></i>
+                    </span>
+                    </div>
+                    <select name="status" id="status" class="form-control">
+                        <option value="New">New</option>
+                        <option value="Qualified">Qualified</option>
+                        <option value="Unqualified">Unqualified</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div id="industry_add" class="modal custom-modal fade" data-backdrop="true" tabindex="-1"
+             role="dialog" style="overflow:hidden">
+            <div class="modal-dialog modal-dialog modal-sm modal-dialog-centered">
+                <div class="modal-content ">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add New Industry</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="tags">Tags</label>
+                            <input type="text" id="tags" class="form-control" name="tags">
+                        </div>
+                        <button type="button" data-dismiss="modal" id="tags_create"
+                                class="btn btn-primary float-right">Save
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-<script>
-    var loadFile = function (event) {
-        var reader = new FileReader();
-        reader.onload = function () {
-            var output = document.getElementById('output');
-            output.src = reader.result;
-        };
-        reader.readAsDataURL(event.target.files[0]);
-    };
+        <script>
+            var loadFile = function (event) {
+                var reader = new FileReader();
+                reader.onload = function () {
+                    var output = document.getElementById('output');
+                    output.src = reader.result;
+                };
+                reader.readAsDataURL(event.target.files[0]);
+            };
 
-    function openSelect(file) {
-        $(file).trigger('click');
-    }
-    $(document).ready(function () {
-        $('#customer_type').on('change', function () {
-            var customer_type = $('#customer_type option:selected').val();
-            if (customer_type == "Lead") {
-                $('#priority').append('<label for="Text6" class="form-label font-weight-bold text-muted text-uppercase pro_label" >Priority</label>\n' +
-                    '                                 <div class="input-group" id="priority_field"><div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-arrow-circle-down"></i></span></div><select name="priority" id="priority_type" class="form-control"><option value="High">High</option><option value="Medium">Medium</option><option value="Low">Low</option></select></div>');
-                $('#tag_industry').append('<label for="Text6" class="form-label font-weight-bold text-muted text-uppercase pro_label" >Industry</label>\n' +
-                    '                                <div class="input-group" id="tag"><div class="input-group">\n' +
-                    '                                            <div class="input-group-prepend">\n' +
-                    '                                                <span class="input-group-text"><i class="fa fa-tag"></i></span>\n' +
-                    '                                            </div> <select name="tag_industry" id="industry" class="form-control"> @foreach($tags as $tag) @if($tag->id==$last_tag->id)<option value="{{$tag->id}}" selected>{{$tag->tag_industry}}</option> @else <option value="{{$tag->id}}">{{$tag->tag_industry}}</option> @endif @endforeach <select><div class="input-group-prepend">\n' +
-                    '                                                <a href="" class="input-group-text" data-toggle=\'modal\' data-target=\'#industry_add\'><i class="fa fa-plus"></i></a>\n' +
-                    '                                            </div></div></div>');
-            } else {
-                $('.pro_label').remove();
-                $('#priority_field').remove();
-                $('#tag').remove();
-
+            function openSelect(file) {
+                $(file).trigger('click');
             }
-        })
-    });
-    $(document).ready(function () {
-        $(document).on('click', '#tags_create', function () {
-            var tags = $("#tags").val();
-            $.ajax({
-                type: 'POST',
-                data: {tag_industry: tags},
-                url: '/tags/create',
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                success: function (data) {
-                    console.log(data);
-                    window.location.href = "/customers/create";
-                }
+
+            $(document).ready(function () {
+                $(document).on('click', '#tags_create', function () {
+                    var tags = $("#tags").val();
+                    $.ajax({
+                        type: 'POST',
+                        data: {tag_industry: tags},
+                        url: '/tags/create',
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        success: function (data) {
+                            console.log(data);
+
+                            $("#tag_industry").load(location.href + " #tag_industry>* ");
+                        }
+                    });
+                });
             });
-        });
-    });
-</script>
+        </script>

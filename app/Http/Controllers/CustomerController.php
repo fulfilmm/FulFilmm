@@ -64,7 +64,10 @@ class CustomerController extends Controller
         $customers = Customer::paginate(20);
         return view('customer.data.cards', compact('customers'));
     }
-
+    public function qualified_contact(){
+        $customers = Customer::where('customer_type','Lead')->where('status','Qualified')->paginate(20);
+        return view('customer.qualifiedContact', compact('customers'));
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -91,11 +94,6 @@ class CustomerController extends Controller
     {
 //        dd($request->all());
         $this->validate($request,['email'=>'unique:customers']);
-        if ($request->canlogin == 'on') {
-            $password = Str::random(8);
-        } else {
-            $password = null;
-        }
         if (isset($request->profile_img)) {
             if ($request->profile_img != null) {
                 $name = $request->profile_img->getClientOriginalName();
@@ -111,8 +109,7 @@ class CustomerController extends Controller
             'email' => $request->email,
             'gender' => $request->gender,
             'address' => $request->address,
-            'password' => $password != null ? Hash::make($password) : null,
-            'can_login' => $request->canlogin == 'on' ? 1 : 0,
+            'can_login' => 0,
             'facebook' => $request->facebook,
             'linkedin' => $request->linkedin,
             'dob' => $request->dob,
@@ -123,24 +120,14 @@ class CustomerController extends Controller
             "emp_id" => Auth::guard('employee')->user()->id,
             'company_id' => $request->company_id,
             'customer_type' => $request->customer_type,
+            'department'=>$request->department,
+            'position'=>$request->position??null,
+            'status'=>$request->status,
+            'lead_title'=>$request->title
+
         ];
         try{
             $this->customerContract->create($data);
-
-        if ($request->canlogin == 'on') {
-            $details = array(
-                'email' => $request->email,
-                'subject' => 'Customer Login Access',
-                'clientname' => $request->name,
-                'password' => $password,
-            );
-            Mail::send('customerprotal.login_access', $details, function ($message) use ($details) {
-                $message->from('cincin.com@gmail.com', 'Cloudark');
-                $message->to($details['email']);
-                $message->subject($details['subject']);
-
-            });
-        }
         return redirect()->route('customers.index')->with('success', __('alert.create_success'));
         }catch (Exception $e){
             return $e;
@@ -260,6 +247,10 @@ class CustomerController extends Controller
                 "emp_id" => Auth::guard('employee')->user()->id,
                 'company_id' => $request->company_id,
                 'customer_type' => $request->customer_type,
+                'department'=>$request->department,
+                'position'=>$request->position??null,
+                'status'=>$request->status,
+                'lead_title'=>$request->title
             ];
             if ($request->canlogin == 'on') {
                 $details = array(
@@ -295,6 +286,11 @@ class CustomerController extends Controller
                 "emp_id" => Auth::guard('employee')->user()->id,
                 'company_id' => $request->company_id,
                 'customer_type' => $request->customer_type,
+                'department'=>$request->department,
+                'position'=>$request->position??null,
+                'status'=>$request->status,
+                'lead_title'=>$request->title
+
             ];
         }
 

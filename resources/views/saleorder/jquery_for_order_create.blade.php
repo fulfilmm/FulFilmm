@@ -3,6 +3,10 @@
         'use strict';
 
         jQuery('#order_date').datetimepicker();
+        $('#customer_id').select2();
+        $('#product').select2();
+        $('#quotation_id').select2();
+        $('#payment_term').select2();
     });
     $(document).ready(function () {
 

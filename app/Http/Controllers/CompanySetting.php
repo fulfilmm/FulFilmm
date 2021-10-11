@@ -116,7 +116,6 @@ class CompanySetting extends Controller
         }else {
             $prefix->invoice_prefix = $request->invoice_prefix;
             $prefix->ticket_prefix = $request->ticket_prefix;
-            $prefix->lead_prefix = $request->lead_prefix;
             $prefix->quotation_prefix = $request->quotation_prefix;
             $prefix->update();
             return redirect('/')->with('success', 'Prefix Setting Up Successful');

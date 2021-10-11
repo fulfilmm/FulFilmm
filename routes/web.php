@@ -107,6 +107,7 @@ Route::middleware(['auth:employee'])->group(function () {
     Route::get('transaction/category/',[TransactionController::class,'category'])->name('transaction.category');
     Route::post('category/transaction/update/{id}',[TransactionController::class,'update_cat'])->name('transaction_category.update');
     Route::get('category/transaction/delete/{id}',[TransactionController::class,'delete_cat'])->name('transaction_category.delete');
+    Route::get('/contact/qualified/',[CustomerController::class,'qualified_contact'])->name('qualified_contact');
 
 
 });

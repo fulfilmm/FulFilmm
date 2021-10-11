@@ -32,8 +32,8 @@
                                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#add-category">Change Status</a>
                                             </div>
                                         @else
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item">You Doesn't not have permission to Change Status</a>
+                                            <div class="dropdown-menu rounded-pill">
+                                                <span class="dropdown-item  text-danger">Approver and Secondary Approver only can change status !</span>
                                             </div>
                                         @endif
                                     </div>

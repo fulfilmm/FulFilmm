@@ -42,7 +42,7 @@
                     @foreach($all_quotation as $quotation)
                         <tr>
                             <td><a href="{{route('quotations.show',$quotation->id)}}">#{{$quotation->quotation_id}}</a></td>
-                            <td>{{$quotation->customer->name}}</td>
+                            <td>{{$quotation->customer->name??''}}</td>
                             <td>{{$quotation->sale_person->name}}</td>
                             <td>{{$quotation->payment_term}}</td>
                             <td>{{$quotation->is_confirm==1?'Yes':'No'}}</td>

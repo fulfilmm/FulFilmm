@@ -72,7 +72,7 @@ class LeadController extends Controller
     public function activity_schedule(Request $request){
         $next_plan=new next_plan();
         $next_plan->description=$request->description;
-        $next_plan->to_date=Carbon::create($request->end_date.''.$request->time);
+        $next_plan->to_date=Carbon::create($request->end_date);
         $next_plan->from_date=Carbon::create($request->start_date);
         $next_plan->contact_id=$request->lead_id;
         $next_plan->work_done=0;

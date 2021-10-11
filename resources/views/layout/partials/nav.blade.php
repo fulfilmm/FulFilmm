@@ -46,7 +46,7 @@
                     <li class="submenu">
 
                     <li class="submenu">
-                        <a href="#"><i class="la la-group"></i> <span>Client</span> <span
+                        <a href="#"><i class="la la-group"></i> <span>Contact</span> <span
                                     class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             <li>
@@ -221,6 +221,7 @@
 
                                 </ul>
                             </li>
+                            <li><a class="{{ Request::is('qualified_contact') ? 'active' : '' }}" href="{{ route('qualified_contact') }}"><i class="fa fa-users mr-1" style="font-size: 18px;"></i> Customer</a></li>
                             <li class="submenu">
                                 <a href="#"><img src="{{url(asset('img/icon_image/invoice.png'))}}"  alt="" width="18px" height="18px" class="mr-1" ><span> Invoice</span> <span
                                             class="menu-arrow"></span></a>

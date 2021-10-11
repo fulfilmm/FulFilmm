@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-header">
-        <h4 class="card-title mb-0 d-inline">Customers</h4>
+        <h4 class="card-title mb-0 d-inline">Contacts</h4>
         <div class="float-right">
             <input type="text" wire:model="search_key">
         </div>

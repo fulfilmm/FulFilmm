@@ -39,7 +39,7 @@
                     @foreach($taxes as $tax)
                         <tr>
                             <td><i class="fa fa-bars mr-3"></i>{{$tax->name}}</td>
-                            <td>{{$tax->rate}}</td>
+                            <td>{{$tax->rate}} %</td>
                             <td>
                                 <a href="{{route('taxes.delete',$tax->id)}}" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
                             </td>

@@ -40,7 +40,7 @@ class QuotationController extends Controller
     public function create()
     {
 
-        $allcustomers = Customer::all();
+        $allcustomers =Customer::where('customer_type','Lead')->where('status','Qualified')->get();
         $products = product::with("category", "taxes")->get();
         $companies = Company::all()->pluck('name', 'id');
         $Auth = Auth::guard('employee')->user()->name;

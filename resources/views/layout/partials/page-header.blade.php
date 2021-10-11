@@ -15,11 +15,11 @@
 <div class="page-header">
     <div class="row align-items-center mb-3">
         <div class="col">
-            @include('layout.partials.breadcrumb',['header'=> ucfirst($route).'Table'])
+            @include('layout.partials.breadcrumb',['header'=> ucfirst($name)])
         </div>
         <div class="col-auto float-right ml-auto">
             <a href="{{route($route.'.create')}}" class="btn add-btn"><i class="fa fa-plus"></i>
-                Add {{ucfirst($route)}}</a>
+                Add {{ucfirst($name)}}</a>
             <div class="view-icons">
                 @if($card === true)
                     <a href="{{route($route.'.cards')}}" class="grid-view btn btn-link"><i class="fa fa-th"></i></a>
