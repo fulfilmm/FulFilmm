@@ -29,6 +29,7 @@ class CreateDealsTable extends Migration
             $table->string("pipeline");
             $table->string("sale_stage");
             $table->string("lead_source");
+            $table->string('lead_title');
             $table->text("next_step")->nullable();
             $table->string("type")->nullable();
             $table->integer("probability");

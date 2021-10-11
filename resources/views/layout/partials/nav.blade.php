@@ -42,37 +42,28 @@
                         </ul>
                     </li>
 
+                    <li>
+                        <a href="#"><i class="fa fa-th-list" style="font-size: 18px;"></i><span> Contact</span> <span class="menu-arrow"></span></a>
+                        <ul style="display: none;">
 
-                    <li class="submenu">
+                            <li><a class="{{ Request::is('customers') ? 'active' : '' }}"
+                                   href="{{ route('customers.index') }}">Contacts</a></li>
 
+                            <li><a class="{{ Request::is('customers/create') ? 'active' : '' }}"
+                                   href="{{ route('customers.create') }}">Create Contact</a></li>
+                        </ul>
+                    </li>
                     <li class="submenu">
-                        <a href="#"><i class="la la-group"></i> <span>Contact</span> <span
+                        <a href="#"><i class="fa fa-building" style="font-size: 18px;"></i><span> Company</span> <span
                                     class="menu-arrow"></span></a>
                         <ul style="display: none;">
-                            <li>
-                                <a href="#"><span> Contact</span> <span class="menu-arrow"></span></a>
-                                <ul style="display: none;">
 
-                                    <li><a class="{{ Request::is('customers') ? 'active' : '' }}"
-                                           href="{{ route('customers.index') }}">Contacts</a></li>
+                            <li><a class="{{ Request::is('companies') ? 'active' : '' }}"
+                                   href="{{ route('companies.index') }}">All Companies</a></li>
 
-                                    <li><a class="{{ Request::is('customers/create') ? 'active' : '' }}"
-                                           href="{{ route('customers.create') }}">Create Contact</a></li>
-                                </ul>
-                            </li>
-                            <li class="submenu">
-                                <a href="#"><span> Company</span> <span
-                                            class="menu-arrow"></span></a>
-                                <ul style="display: none;">
+                            <li><a class="{{ Request::is('companies/create') ? 'active' : '' }}"
+                                   href="{{ route('companies.create') }}">Create Company</a></li>
 
-                                    <li><a class="{{ Request::is('companies') ? 'active' : '' }}"
-                                           href="{{ route('companies.index') }}">All Companies</a></li>
-
-                                    <li><a class="{{ Request::is('companies/create') ? 'active' : '' }}"
-                                           href="{{ route('companies.create') }}">Create Company</a></li>
-
-                                </ul>
-                            </li>
                         </ul>
                     </li>
                     <li class="submenu">

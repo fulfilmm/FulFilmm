@@ -77,15 +77,29 @@
                         <div class="col-md-4 col-12" >
                             <div class="form-group" >
                                 <label for="full_contact">Contact Name <span class="text-danger"> * </span></label>
-                                <div class="input-group"id="contact_div">
+                                <div class="input-group" id="contact_div">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fa fa-user"></i></span>
                                     </div>
                                     <select name="contact_name"  id="full_contact" class="form-control">
                                         @foreach($allcustomers as $customer)
-                                            <option value="{{$customer->id}}" {{$last_customer->id==$customer->id?'selected':''}}>{{$customer->name}}</option>
+                                            <option value="{{$customer->id}}">{{$customer->name}}</option>
                                         @endforeach
                                     </select>
+                                </div>
+                                @error('contact_name')
+                                <span class="text-danger">{{$message}}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-12" >
+                            <div class="form-group" >
+                                <label for="full_contact">Lead Title<span class="text-danger"> * </span></label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-user"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" name="lead_title" id="lead_title">
                                 </div>
                                 @error('contact_name')
                                 <span class="text-danger">{{$message}}</span>
@@ -119,7 +133,7 @@
                         <div class="col-md-4 col-12">
                             <label for="full_pipeline">Pipeline <span class="text-danger"> * </span></label>
                             <div class="input-group">
-                                <select name="pipeline" id="full_pipeline" class="select col-md-10" style="width: 85%">
+                                <select name="pipeline" id="full_pipeline" class="form-control" >
                                     <option value="Standard">Standard</option>
                                 </select>
                             </div>
@@ -131,7 +145,7 @@
                             <div class="form-group">
                                 <label for="full_sale_stage">Sale Stage <span class="text-danger"> * </span></label>
                                 <div class="input-group">
-                                    <select name="sale_stage" id="full_sale_stage" class="select " style="width: 85%">
+                                    <select name="sale_stage" id="full_sale_stage" class="form-control" style="width: 100%">
                                         <option value="New">New</option>
                                         <option value="Qualified">Qualified</option>
                                         <option value="Quotation">Quatation</option>
@@ -149,7 +163,7 @@
                             <div class="form-group">
                                 <label for="full_assign_to">Assign Staff</label>
                                 <div class="input-group">
-                                    <select name="assign_to" id="full_assign_to" class="select">
+                                    <select name="assign_to" id="full_assign_to" class="form-control">
                                         @foreach($allemployees as $emp)
                                             <option value="{{$emp->id}}">{{$emp->name}}</option>
                                         @endforeach
@@ -164,7 +178,7 @@
                             <div class="form-group">
                                 <label for="full_lead_source">Lead Source</label>
                                 <div class="input-group">
-                                    <select name="lead_source" id="full_lead_source" class="select">
+                                    <select name="lead_source" id="full_lead_source" class="form-control">
                                         @foreach($lead_source as $key=>$val)
                                             <option value="{{$val}}">{{$val}}</option>
                                         @endforeach
@@ -188,7 +202,7 @@
                             <div class="form-group">
                                 <label for="full_type">Type</label>
                                 <div class="input-group">
-                                    <select name="type" id="full_type" class="select">
+                                    <select name="type" id="full_type" class="form-control">
                                         <option value="Existing Business">Existing Business</option>
                                         <option value="New Business">New Business</option>
                                     </select>
@@ -199,7 +213,7 @@
                             <div class="form-group">
                                 <label for="lost_reason">Lost Reason</label>
                                 <div class="input-group">
-                                    <select name="lose_reason" id="lost_reason" class="select">
+                                    <select name="lose_reason" id="lost_reason" class="form-control select">
                                         <option value="">None</option>
                                         <option value="Price">Price</option>
                                         <option value="Authority">Authority</option>
@@ -225,6 +239,7 @@
                 </div>
             </form>
         </div>
+    </div>
         <script>
             $(document).ready(function () {
                 var sale_stage=$('#full_sale_stage option:selected').val();
@@ -242,7 +257,31 @@
                     }
                 })
             });
-            ClassicEditor
-                .create(document.querySelector('#description'));
+            $(document).ready(function () {
+                var selet_contact=$('#full_contact option:selected').val();
+               @foreach($allcustomers as $customer)
+                    if(selet_contact=={{$customer->id}}){
+                        var lead_title="{{$customer->lead_title}}";
+                        $('#lead_title').val(lead_title);
+               }
+                @endforeach
+                $('#full_contact').on('change',function () {
+                    var selet_contact=$('#full_contact option:selected').val();
+                    @foreach($allcustomers as $customer)
+                    if(selet_contact=={{$customer->id}}){
+                        var lead_title="{{$customer->lead_title}}";
+                        $('#lead_title').val(lead_title);
+                    }
+                    @endforeach
+                })
+            });
+
+            ClassicEditor.create($('#description')[0], {
+                toolbar: ['heading', 'bold', 'italic', 'undo', 'redo', 'numberedList', 'bulletedList', 'insertTable']
+            });
+            $(document).ready(function () {
+                $('select').select2();
+            });
+
         </script>
 @endsection
