@@ -7,7 +7,7 @@
 @section('content')
     <div class="content container-fluid">
         <!-- Page Header -->
-        @include('layout.partials.page-header', ['route' => 'departments', 'import' => true, 'export' => false, 'card' => false, 'list' => true])
+        @include('layout.partials.page-header', ['route' => 'departments','name'=>'Department', 'import' => true, 'export' => false, 'card' => false, 'list' => true])
 
         <div class="row">
             <div class="col-12">
