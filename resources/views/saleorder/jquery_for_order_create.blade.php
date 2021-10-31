@@ -1,13 +1,5 @@
 <script>
-    jQuery(document).ready(function () {
-        'use strict';
 
-        jQuery('#order_date').datetimepicker();
-        $('#customer_id').select2();
-        $('#product').select2();
-        $('#quotation_id').select2();
-        $('#payment_term').select2();
-    });
     $(document).ready(function () {
 
         var type = $("input[name='shipping_type']:checked").val();
@@ -38,9 +30,40 @@
         }
         @endforeach
     });
+    $('input').keyup( function () {
+        var tax=$('#tax option:selected').val();
+        @foreach($data['taxes'] as $tax)
+        if(tax=="{{$tax->id}}")
+            var tax_rate={{$tax->rate}};
+                @endforeach
 
+        var total = $('#total').val();
+        var tax_amount=total*(tax_rate/100);
+        var tax_include=total-tax_amount;
+        var discount = $('#discount').val();
+        var grand =tax_include-discount;
+        $('#grand_total').val(grand);
+        $('#tax_amount').val(tax_amount);
+    });
+    $(document).on('change','#tax',function () {
+        var tax=$('#tax option:selected').val();
+        @foreach($data['taxes'] as $tax)
+        if(tax=="{{$tax->id}}")
+            var tax_rate={{$tax->rate}};
+                @endforeach
+
+        var total = $('#total').val();
+        var tax_amount=total*(tax_rate/100);
+        var tax_include=total-tax_amount;
+        var discount = $('#discount').val();
+        var grand =tax_include-discount;
+        $('#grand_total').val(grand);
+        $('#tax_amount').val(tax_amount);
+    });
     $(document).ready(function () {
-        $(document).on('change','#product',function (){
+        $(document).on('click','#add_item',function (){
+            var order_id=$('#order_id').val();
+            alert(order_id);
             var creation_id = $('#creation_id').val();
             var product = $('#product option:selected').val();
             var customer_id = $('#customer_id').val();
@@ -55,13 +78,16 @@
             var shipping_type = $("input[name='shipping_type']:checked").val();
             var shipping_address = $('#shipping_address').val();
             var quotation_id = $('#quotation_id option:selected').val();
+            var variant_id=$('#variant option:selected').val();
             var phone = $('#phone').val();
             // alert(creation_id);
             $.ajax({
                 data: {
+                    'variant_id':variant_id,
                     "product_id":product,
                     "invoice_id":creation_id,
                     'phone': phone,
+                    'order_id':order_id,
                     'customer_id': customer_id,
                     'email': email,
                     'order_date': order_date,
@@ -93,7 +119,7 @@
                         grand_total = parseFloat(grand_total) + parseFloat(alltotal[i]);
                     }
                     $('#grand_total').val(grand_total);
-                    location.reload();
+                    // location.reload();
 
                 }
             });
@@ -115,8 +141,16 @@
             var shipping_address = $('#shipping_address').val();
             var quotation_id = $('#quotation_id option:selected').val();
             var phone = $('#phone').val();
+            var discount=$('#discount').val();
+            var total=$('#total').val();
+            var tax_id=$('#tax option:selected').val();
+            var tax_amount=$('#tax_amount').val()
             $.ajax({
                 data: {
+                    'discount':discount,
+                    'total':total,
+                    'tax_id':tax_id,
+                    'tax_amount':tax_amount,
                     'phone': phone,
                     'customer_id': customer_id,
                     'email': email,
@@ -156,4 +190,18 @@
             });
         });
     });
+    var product = document.querySelector('#product');
+    var variant = document.querySelector('#variant');
+    var options2 = variant.querySelectorAll('option');
+    // alert(product)
+    function giveSelection(selValue) {
+        variant.innerHTML = '';
+        for(var i = 0; i < options2.length; i++) {
+            if(options2[i].dataset.option === selValue) {
+                variant.appendChild(options2[i]);
+            }
+        }
+    }
+
+    giveSelection(product.value);
 </script>

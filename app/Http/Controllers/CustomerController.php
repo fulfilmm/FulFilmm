@@ -166,7 +166,8 @@ class CustomerController extends Controller
                 $open_unpaid = $open_unpaid + $invoice->grand_total;
             }
         }
-        $next_plan = next_plan::where("contact_id", $id)->get();
+        $next_plan = next_plan::where("contact_id", $id)->orderBy('id', 'desc')->get();
+//        var_dump($next_plan);
         $data = [
             'customer' => $customer,
             'invoice' => $customer_invoice,
@@ -327,6 +328,23 @@ class CustomerController extends Controller
         }
 
     }
-
+    public function ChangeContactType(Request $request){
+//        dd($request->all());
+        foreach ($request->customer_id as $customer_id){
+            $customer=Customer::where('id',$customer_id)->first();
+           if(isset($request->status)){
+//               dd('true');
+               $customer->status=$request->action_Type;
+           }else{
+//               dd('false');
+               $customer->customer_type=$request->action_Type;
+           }
+            $customer->update();
+        }
+    }
+    public function supplier(){
+        $suppliers=Customer::where('customer_type','Supplier')->get();
+        return view('customer.supplier',compact('suppliers'));
+    }
 
 }

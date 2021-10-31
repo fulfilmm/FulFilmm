@@ -123,8 +123,8 @@ class ApprovalController extends Controller
                 $message->subject($details['subject']);
             });
         }
-        $secondary_approver=Employee::where('id',$request->$request->secondary_id)->first();
-        if($approver!=null){
+        $secondary_approver=Employee::where('id',$request->secondary_id)->first();
+        if($secondary_approver!=null){
             $details = [
                 'from'=>Auth::guard('employee')->user()->email,
                 'email' => $secondary_approver->email,

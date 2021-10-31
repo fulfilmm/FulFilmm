@@ -44,7 +44,10 @@
         <link rel="stylesheet" href="{{url(asset('css/jquery_ui.css'))}}">
         <link rel="stylesheet" href="{{url(asset('css/jquery.datetimepicker.css'))}}">
         {{--<!-- Main CSS -->--}}
-        <link rel="stylesheet" href="{{url(asset("css/style.css"))}}">
+        @php
+            $active_theme=\App\Models\ThemeSetting::where('active',1)->first();
+        @endphp
+        <link rel="stylesheet" href="{{url(asset("css/theme/$active_theme->link"))}}">
         <script src="{{url(asset("js/jquery-3.2.1.min.js"))}}"></script>
         {{--<script src="https://cdn.ckeditor.com/ckeditor5/22.0.0/classic/ckeditor.js"></script>--}}
         <script src="{{asset('/js/ckeditor.js')}}"></script>

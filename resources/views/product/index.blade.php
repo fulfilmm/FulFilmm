@@ -2,7 +2,6 @@
 @section("title","Products")
 @section("content")
     <!-- Page Wrapper -->
-
     <!-- Page Content -->
     <div class="content container-fluid">
 
@@ -26,7 +25,7 @@
 
         <div class="col-md-12">
             <div class="table-responsive">
-                <div class="bg-gradient-blue">
+                <div class="bg-gradient-primary">
                     <div class="row">
                         <div class="ml-2 my-3 col-md-4 col-8">
                             <div class="input-group">
@@ -52,27 +51,25 @@
                     <tr>
                         <th><input type="checkbox" name="all" id="checkall"></th>
                         <th>Name</th>
-                        <th>Category</th>
-                        <th>Sale Price</th>
-                        <th>Purchase Price</th>
+                        <th>MainCategory</th>
+                        <th>Sub Category</th>
                         <th>Enabled</th>
                         <th>Action</th>
                     </tr>
                     </thead>
                     <tbody>
+                    {{--@dd($products)--}}
                     @foreach($products as $product)
                         <tr>
                             <td>
                                 <input type="checkbox" name="product[]" value="{{$product->id}}" class="single">
                             </td>
                             <td><a href="{{route("products.show",$product->id)}}">
-                                    <img src="{{url(asset("/product_picture/$product->image"))}}" class="border rounded" alt="product picture" width="40px" height="40px;">
                                     <span class="ml-3">{{$product->name}}</span></a></td>
-                            <td>{{$product->category->name}}</td>
+                            <td>{{$product->category->name??''}}</td>
                             <td>
-                                {{$product->sale_price}} {{$product->currency_unit}}
+                                {{$product->sub_cat->name??''}}
                             </td>
-                            <td>{{$product->purchase_price}} {{$product->currency_unit}}</td>
                             <td>@if($product->enable==1)
                                     Enable
                                 @else
@@ -120,6 +117,7 @@
                     @endforeach
                     </tbody>
                 </table>
+                {{--{{$products->link()}}--}}
             </div>
         </div>
     </div>

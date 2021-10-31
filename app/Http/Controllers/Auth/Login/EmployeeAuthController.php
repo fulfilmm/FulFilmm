@@ -19,7 +19,9 @@ class EmployeeAuthController extends LoginController
     {
         return view('employee.login');
     }
-
+    public function employeelogin(){
+        return view('employee.employeelogin');
+    }
     protected function guard()
     {
 

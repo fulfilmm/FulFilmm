@@ -21,6 +21,10 @@
             <a href="{{route($route.'.create')}}" class="btn add-btn"><i class="fa fa-plus"></i>
                 Add {{ucfirst($name)}}</a>
             <div class="view-icons">
+                @if($import === true)
+                    <a href="{{route($route.'.import')}}" data-toggle="modal" data-target="#import"
+                       class="btn btn-white rounded mr-3">Import</a>
+                @endif
                 @if($card === true)
                     <a href="{{route($route.'.cards')}}" class="grid-view btn btn-link"><i class="fa fa-th"></i></a>
                 @endif
@@ -33,10 +37,7 @@
     </div>
     <div class="row align-items-center">
         <div class="col-auto float-right ml-auto">
-            @if($import === true)
-                <a href="{{route($route.'.import')}}" data-toggle="modal" data-target="#import"
-                   class="btn btn-primary rounded mr-3">Import</a>
-            @endif
+
             @if($export === true)
                 <a href="{{route($route.'.export')}}" data-toggle="modal" data-target="#export"
                    class="btn btn-primary rounded mr-3">Export</a>

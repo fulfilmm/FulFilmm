@@ -18,7 +18,8 @@ class CreateOrdersTable extends Migration
             $table->string('order_id');
             $table->bigInteger('customer_id')->unsigned();
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
-            $table->double('total_amount');
+            $table->double('total');
+            $table->double('grand_total');
             $table->string('status')->nullable();
             $table->text('comment')->nullable();
             $table->string('phone');
@@ -27,6 +28,9 @@ class CreateOrdersTable extends Migration
             $table->string('payment_method');
             $table->string('payment_term');
             $table->dateTime('order_date');
+            $table->bigInteger('tax_id')->unsigned();
+            $table->double('discount')->nullable();
+            $table->double('tax_amount')->nullable();
             $table->bigInteger('quotation_id')->unsigned()->nullable();
             $table->string('shipping_type')->nullable();
             $table->string('shipping_address')->nullable();

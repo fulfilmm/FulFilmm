@@ -32,11 +32,15 @@
                         </div>
                     </div>
                     <div class="bs-offset-main bs-canvas-anim">
-                        <button class="btn btn-primary btn-sm rounded-circle float-left" type="button" data-toggle="canvas"
+                        <button class="btn btn-primary btn-sm rounded-circle float-left mr-2" type="button" data-toggle="canvas"
                                 data-target="#bs-canvas-left" aria-expanded="false"
                                 aria-controls="bs-canvas-right"><i class="fa fa-comment"></i>
                         </button>
                     </div>
+                    <a href="{{route('saleorders.edit',$data['Order']->id)}}">
+                    <button class="btn btn-primary btn-sm rounded-circle float-left" type="button" ><i class="fa fa-edit"></i>
+                    </button>
+                    </a>
                 </div>
                 <div class="d-flex justify-content-between float-right ">
 
@@ -243,25 +247,21 @@
                        @endif
                     <table class="table table-hover table-white" id="order_table">
                         <thead>
-                        <th>Product</th>
+                        <th colspan="3">Product</th>
                         <th>Quantity</th>
                         <th>Unit Price</th>
-                        <th>Taxes(%)</th>
                         <th>Total</th>
-                        <th>Currency</th>
-                        <th>Action</th>
                         </thead>
                         <tbody id="tbody">
                         <input type="hidden" id="creation_id" value="{{$data['items'][0]->creation_id??$data['Order']->id}}">
                         @foreach($data['items'] as $order)
                             <tr>
-                                <td style="min-width: 200px;">
+                                <td style="min-width: 200px;" colspan="3">
 
                                     <input type="hidden" id="order_id_{{$order->id}}" value="{{$order->id}}">
                                     <div class="row">
-                                        <input type="hidden" name="product_id" id="product_{{$order->id}}" value="{{$order->product_id}}">
                                         <div class="col-md-4">
-                                            <img src="{{url(asset('product_picture/'.$order->product->image))}}"  alt="" width="40px" height="40px">
+                                            <img src="{{url(asset('product_picture/'.$order->variant->image))}}"  alt="" width="40px" height="40px">
                                         </div>
                                         <div class="col-8">
                                             <div>
@@ -274,83 +274,14 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <input type="number" name="quantity" id="quantity_{{$order->id}}" class="form-control update_item_{{$order->id}}" value="{{$order->quantity}}" {{isset($order_data)?'readonly':''}} {{$data['Order']->status=='Confirm'?'readonly':''}} >
+                                    {{$order->quantity}}
                                 </td>
                                 <td>
-                                    <input type="number" id="price_{{$order->id}}" class="form-control update_item_{{$order->id}}" value="{{$order->unit_price}}" min="0" oninput="validity.valid||(value='');"  style="min-width: 120px;" {{$data['Order']->status=='Confirm'?'readonly':''}}>
+                                    {{$order->unit_price}}
                                 </td>
                                 <td>
-                                    <input type="number" class="form-control update_item_{{$order->id}}" name="tax" id="product_tax_{{$order->id}}" value="{{$order->tax_id}}"  min="0" oninput="validity.valid||(value='');" {{$data['Order']->status=='Confirm'?'readonly':''}}>
-                                </td>
-                                <td>
-                                    <input type="text" name="total" id="total_{{$order->id}}" class="form-control col-md-7 update_item_{{$order->id}}" value="{{number_format($order->total)}}" style="min-width: 100px;" {{$data['Order']->status=='Confirm'?'readonly':''}} >
-                                </td>
-                                <td><input type="text" class="form-control update_item_{{$order->id}}" id="unit_{{$order->id}}" value="{{$order->currency_unit}}" {{$data['Order']->status=='Confirm'?'readonly':''}}></td>
-
-                                <td>
-                                    @if(!$data['Order']->status=='Confirm')
-                                        @if(!isset($order_data))
-                                            <button type="button" class="btn btn-danger btn-sm"  id="remove{{$order->id}}" ><i class="fa fa-trash-o "></i></button>
-                                            @include('invoice.item_remove')
-                                        @endif
-                                        @endif
-                                </td>
-
+                                    {{number_format($order->total)}}</td>
                             </tr>
-                            <script>
-                                $(document).ready(function () {
-                                    $(".update_item_{{$order->id}}").keyup(function(){
-                                        var quantity=$('#quantity_{{$order->id}}').val();
-                                        var price=$('#price_{{$order->id}}').val();
-
-                                        var total=quantity * price;
-                                        var tax=$('#product_tax_{{$order->id}}').val();
-                                        var tax_amount=tax / 100 * total;
-                                        var include_tax=total + tax_amount;
-                                        $('#total_{{$order->id}}').val(include_tax);
-                                    });
-                                });
-                                $(document).ready(function() {
-                                    $(".update_item_{{$order->id}}").keyup(function(){
-                                        var product=$('#product_{{$order->id}}').val();
-                                        var desc=$('#order_description_{{$order->id}}').val();
-                                        var quantity=$('#quantity_{{$order->id}}').val();
-                                        var price=$('#price_{{$order->id}}').val();
-                                        var tax=$('#product_tax_{{$order->id}}').val();
-                                        var unit=$('#unit_{{$order->id}}').val();
-                                        var total=$('#total_{{$order->id}}').val();
-                                        $.ajax({
-                                            data : {
-                                                "product_id":product,
-                                                'description':desc,
-                                                'quantity':quantity,
-                                                "tax_id":tax,
-                                                'unit_price':price,
-                                                "currency_unit":unit,
-                                                "total":total,
-                                            },
-                                            type:'PUT',
-                                            url:"{{route('invoice_items.update',$order->id)}}",
-                                            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                                            success:function(data){
-                                                console.log(data);
-                                                var alltotal=[];
-                                                $('.total').each(function(){
-                                                    alltotal.push(this.value);
-                                                });
-                                                var grand_total=0;
-                                                for (var i=0;i<alltotal.length;i++){
-                                                    grand_total=parseFloat(grand_total)+parseFloat(alltotal[i]);
-                                                }
-                                                $('#grand_total').val(grand_total);
-                                                $("#refreshDiv").load(location.href + " #refreshDiv>* ");
-
-
-                                            }
-                                        });
-                                    });
-                                });
-                            </script>
                         @endforeach
 
                         </tbody>
@@ -359,7 +290,37 @@
                             <td></td>
                             <td></td>
                             <td></td>
+
+                        </tr>
+                        <tr>
+                            <td colspan="2"></td>
+                            <th colspan="2" class="text-right"><span class="mt-5">Total</span></th>
+                            <td id="" colspan="2"><input class="form-control" type="text" id="total" value="{{$data['Order']->total}}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"></td>
+                            <th colspan="2" class="text-right"><span class="mt-5">Discount</span></th>
+
+                            <td id="discount_div" colspan="2"><input class="form-control" type="text" id="discount" value="{{$data['Order']->discount}}" ></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"></td>
+                            <th colspan="2" class="text-right"><span class="mt-5">Tax</span></th>
+                            <td id="tax" colspan="2">
+                                <input type="text" class="form-control" id="tax" value="{{$data['Order']->tax_amount}} ({{$data['Order']->tax->name}} {{$data['Order']->tax->rate}}%)">
+                                <input type="hidden" id="tax_amount" name="tax_mount">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2"></td>
+                            <th colspan="2" class="text-right"><span class="mt-5">Grand Total</span></th>
+                            <td colspan="2" id="grand_total_div">
+                                <input class="form-control" type="text" id="grand_total" value="{{$data['Order']->grand_total}}">
+                            </td>
                             <td></td>
+
                         </tr>
                     </table>
                 </div>

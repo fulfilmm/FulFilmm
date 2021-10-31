@@ -40,10 +40,10 @@
                    <div class="col-md-4 my-5 mx-5">
                        <img src="{{$company!=null ? url(asset('/img/profiles/'.$company->logo)): url(asset('/img/profiles/avatar-01.jpg'))}}" width="40" height="40" alt="">
 
-                       <span>{{$company->name}}</span><br><br>
-                       <span>{{$company->email}}</span><br>
-                       <span>{{$company->phone}}</span><br>
-                       <span>{{$company->address}}</span>
+                       <span>{{$company->name??''}}</span><br><br>
+                       <span>{{$company->email??''}}</span><br>
+                       <span>{{$company->phone??''}}</span><br>
+                       <span>{{$company->address??''}}</span>
                    </div>
                    <div class="col-md-2 my-5">
                        <input type="hidden" id="quotation_id" name="quotation_id" value="{{$quotation->id}}">
@@ -74,8 +74,16 @@
                             <tbody id="tbody">
                             @foreach($orderline as $order)
                                 <tr>
-                                    <td style="min-width: 120px">
-                                        <img src="{{url(asset('product_picture/'.$order->product->image))}}"  alt="" width="40px" height="40px"><span>{{$order->product->name}}</span>
+                                    <td style="min-width: 400px">
+                                       <div class="row">
+                                           <div class="col-md-2">
+                                               <img src="{{url(asset('product_picture/'.$order->variant->image))}}"  alt="" width="40px" height="40px">
+                                           </div>
+                                           <div class="col-md-10">
+                                               <h4>{{$order->product->name}}</h4>
+                                               <p>{{$order->variant->size??''}}{{$order->variant->color?','.$order->variant->color:''}}{{$order->variant->other?','.$order->variant->other:''}}</p>
+                                           </div>
+                                       </div>
                                     </td>
                                     <td>{{$order->description}}</td>
                                     <td>{{$order->quantity}}</td>
@@ -91,9 +99,24 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
+                                <th colspan="2">Discount</th>
+
+                                <td>{{$quotation->discount}}</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <th colspan="2">Tax (Rate %)</th>
+                                <td>{{$quotation->tax->name}} ({{$quotation->tax->rate}} %)</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                                 <th colspan="2">Grand Total</th>
 
-                                <td>{{$grand_total}}</td>
+                                <td>{{$quotation->grand_total}}</td>
                             </tr>
                         </table>
                     </div>
@@ -117,10 +140,10 @@
             var restorepage = $('body').html();
             $('#myTab').remove();
             var printcontent = $('#' + el).clone();
-            printcontent.append('<div class="row" style="position: fixed;bottom: 110px; left: 50px" ><div class="row justify-content-between"> <div class="col-12 text-center"><span>{{$company->web_link}}</span></div></div></div>');
-            printcontent.append('<div class="row" style="position: fixed;bottom: 90px; left: 50px" ><div class="row justify-content-between"> <div class="col-12 text-center"><span>{{$company->email}}</span></div></div></div>');
-            printcontent.append('<div class="row" style="position: fixed;bottom: 70px; left: 50px" ><div class="row justify-content-between"> <div class="col-12 text-center"><span>{{$company->phone}}</span></div></div></div>');
-            printcontent.append('<div class="row" style="position: fixed;bottom: 50px; left: 50px" ><div class="row justify-content-between"> <div class="col-12 text-center"><span>{{$company->address}}</span></div></div></div>');
+            printcontent.append('<div class="row" style="position: fixed;bottom: 110px; left: 50px" ><div class="row justify-content-between"> <div class="col-12 text-center"><span>{{$company->web_link??''}}</span></div></div></div>');
+            printcontent.append('<div class="row" style="position: fixed;bottom: 90px; left: 50px" ><div class="row justify-content-between"> <div class="col-12 text-center"><span>{{$company->email??""}}</span></div></div></div>');
+            printcontent.append('<div class="row" style="position: fixed;bottom: 70px; left: 50px" ><div class="row justify-content-between"> <div class="col-12 text-center"><span>{{$company->phone??''}}</span></div></div></div>');
+            printcontent.append('<div class="row" style="position: fixed;bottom: 50px; left: 50px" ><div class="row justify-content-between"> <div class="col-12 text-center"><span>{{$company->address??""}}</span></div></div></div>');
             $('body').empty().html(printcontent);
             window.print();
             $('body').html(restorepage);

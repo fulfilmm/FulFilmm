@@ -78,6 +78,7 @@
                                                                           href="http://rose.localhost/crm/user/profile"><i
                                         class="fa fa-user"></i> Edit Profile</a>
                             <div class="dropdown-divider"></div>
+                            <a href="{{route('customers.changepassword')}}" class="dropdown-item">Password Change</a>
                             <form id="logout-form" action="{{route('customers.logout')}}" method="POST">
                                 @csrf
                                 <button class="dropdown-item"><i

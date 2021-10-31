@@ -4,11 +4,11 @@
     <style>
         .scroll {
             /*width: 300px;*/
-            height: 450px;
+            height: 550px;
             overflow: scroll;
         }
         .activity_schedule{
-            height: 500px;
+            min-height: 630px;
             overflow: scroll;
         }
 
@@ -161,16 +161,16 @@
                 </div>
             </div>
             <div class="col-lg-8">
-                <div class="card">
+                <div class="card" style="height: 630px">
                     <div class="card-body p-0">
-                        <ul class="nav tab-nav-pane nav-tabs pt-2 mb-0">
+                        <ul class="nav tab-nav-pane nav-tabs pt-2 mb-0" id="mytab">
                             @if($data['customer']->status=='Qualified' && $data['customer']->customer_type=='Lead')
                             <li class="pb-2 mb-0 nav-item"><a data-toggle="tab" class="font-weight-bold text-uppercase px-5 py-2 {{$data['customer']->status=='Qualified' && $data['customer']->customer_type=='Lead'?'active':''}}" href="#invoice">Invoice</a></li>
                             @endif
                             <li class="pb-2 mb-0 nav-item"><a data-toggle="tab" class="font-weight-bold text-uppercase px-5 py-2" {{$data['customer']->status=='Qualified' && $data['customer']->customer_type=='Lead'?'':'active'}} href="#activity">Activity Schedule</a></li>
-                            <li class="pb-2 mb-0 nav-item"><a data-toggle="tab" class="font-weight-bold text-uppercase px-5 py-2" href="#comment">Comment </a></li>
+                            <li class="pb-2 mb-0 nav-item"><a data-toggle="tab" class="font-weight-bold text-uppercase px-5 py-2" href="#comment">Notes</a></li>
                         </ul>
-                        <div class="tab-content col-12">
+                        <div class="tab-content col-12" >
                             <div id="invoice" class="tab-pane fade show {{$data['customer']->status=='Qualified' && $data['customer']->customer_type=='Lead'?'active':''}} ">
                                 <div class="d-flex justify-content-between align-items-center p-3">
                                     <h5>Invoice List</h5>
@@ -208,35 +208,36 @@
                                     </table>
                                 </div>
                             </div>
-                            <div id="activity" class="tab-pane fade show {{$data['customer']->status=='Qualified' && $data['customer']->customer_type=='Lead'?'':'active'}} ">
+                            <div id="activity" class="tab-pane fade show {{$data['customer']->status=='Qualified' && $data['customer']->customer_type=='Lead'?'':'active'}} scroll">
                                 <div class="bs-offset-main bs-canvas-anim float-right">
                                     <button class="btn btn-primary btn-sm" type="button" data-toggle="canvas"
-                                            data-target="#bs-canvas-left" aria-expanded="false"
+                                            data-target="#activity_schedule" aria-expanded="false"
                                             aria-controls="bs-canvas-right">Add New
                                     </button>
                                 </div>
                                 <h3>Activity Schedule</h3>
 
-                                <div class="iq-timeline0 m-0 d-flex align-items-center justify-content-between position-relative activity_schedule">
+                                <div class="iq-timeline0 m-0 d-flex align-items-center justify-content-between position-relative activity_schedule" style="overflow: auto">
 
                                     <ul class="list-inline p-0 m-0">
                                         @foreach($data['activity_schedule'] as $activity)
                                         <li>
-                                            <div class="pt-0">
-                                                <p class="mb-0 text-muted font-weight-bold text-uppercase">{{\Carbon\Carbon::parse($activity->from_date)->toFormattedDateString()}} - {{\Carbon\Carbon::parse($activity->to_date)->toFormattedDateString()}}</p>
+                                            <div class="timeline-dots timeline-dot1 border-primary text-primary pt-1"></div>
+                                            <div class="pt-3">
+                                                <p class="mb-0 text-muted font-weight-bold text-uppercase">{{\Carbon\Carbon::parse($activity->date_time)->toFormattedDateString()}}   {{date('h:i a', strtotime($activity->date_time))}}</p>
                                             </div>
                                         </li>
                                         <li>
-                                            <div class="timeline-dots timeline-dot1 border-primary text-primary"></div>
+
 
                                             <div class="d-inline-block w-100">
-                                                <p class="mb-0">{{$activity->description}}</p>
                                                 <div class="d-inline-block w-100">
-                                                    <p>Probablemente, la bodega más sostenible de españa</p>
+                                                    <p></p>
+                                                    <p class="mb-0">{{$activity->description}}</p>
                                                 </div>
                                                 <a href="{{route('delete_schedule',$activity->id)}}" class="btn btn-danger btn-sm float-right">Delete</a>
                                                 @if($activity->work_done!=1)
-                                                    @if(\Carbon\Carbon::now()>$activity->to_date)
+                                                    @if(\Carbon\Carbon::now()>$activity->date_time)
                                                         <a href="{{route('work.done',$activity->id)}}" class="btn btn-danger float-right btn-sm mr-3">Overdue Date</a>
                                                     @else
                                                         <a href="{{route('work.done',$activity->id)}}"
@@ -249,11 +250,12 @@
                                                 @endif
                                             </div>
                                         </li>
+
                                             @endforeach
                                     </ul>
                                 </div>
                             </div>
-                            <div id="comment" class="tab-pane fade p-3">
+                            <div id="comment" class="tab-pane fade p-3" >
                                 <div class="card ">
                                     <div class="card-body scroll">
                                         <ul class="files-list">
@@ -261,7 +263,7 @@
                                                 <div class="chat chat-left">
                                                     <div class="chat-avatar">
                                                         <a href="profile" class="avatar">
-                                                            <img src="img/profiles/avatar-02.jpg" alt="">
+                                                            <img src="{{$comment->user->profile_img!=null? url(asset('img/profiles/'.$comment->user->profile_img)):url(asset('img/profiles/avatar-01.jpg'))}}" alt="" class="avatar chat-avatar-sm">
                                                         </a>
                                                     </div>
                                                     <div class="chat-body">
@@ -277,18 +279,15 @@
                                             @endforeach
                                         </ul>
                                     </div>
-                                    <form method="POST" action="{{url("/lead/post/comment")}}" class="mt-2">
+                                    <hr>
+                                    <form method="POST" action="{{url("/lead/post/comment")}}" >
                                         {{csrf_field()}}
                                         <div class="row">
-                                            <div class="col-xl-9 col-md-9 col-9">
                                                 <input type="hidden" name="lead_id" value="{{$data['customer']->id}}">
-                                                <div class="form-group col-12">
-                                                    <input type="text" class="form-control" name="comment">
-                                                </div>
-                                            </div>
-                                            <div class=" col-3">
-                                                <div class="row">
-                                                    <button class="btn btn-primary col-8 btn-sm" type="submit" style="font-size: 20px;">Add Note</button>
+                                            <div class="col-12">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" name="comment" style="background-color: #c3c8cb">
+                                                    <button class="btn btn-primary " type="submit">Add Note</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -299,8 +298,8 @@
                     </div>
                 </div>
             </div>
-            <div id="bs-canvas-left" class="bs-canvas bs-canvas-anim bs-canvas-right position-fixed bg-light h-100"
-                 style="max-width: 300px">
+            <div id="activity_schedule" class="bs-canvas bs-canvas-anim bs-canvas-right position-fixed bg-light h-100"
+                 style="max-width: 300px;margin-top: 50px;">
                 <header class="bs-canvas-header p-3 bg-primary overflow-auto">
                     <button type="button" class="bs-canvas-close float-left close" aria-label="Close"><span aria-hidden="true"
                                                                                                              class="text-dark">&times;</span>
@@ -316,11 +315,60 @@
                             <textarea name="description" id="description" cols="30" rows="2" class="form-control"></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="start_date">Start Date</label>
-                            <input type="date" class="form-control" id="start_date" name="start_date">
+                            <label for="type">Type</label>
+                            <select name="type" id="type" class="form-control">
+                                <option value="Cold Calling">Cold Calling</option>
+                                <option value="Phone Call">Phone Call</option>
+                                <option value="Follow Up">Follow Up</option>
+                                <option value="Meeting">Meeting</option>
+                                <option value="Entertainment">Entertainment</option>
+                                <option value="Event">Event</option>
+                                <option value="Visit">Visit</option>
+                            </select>
+
                         </div>
                         <div class="form-group">
-                            <label for="end_date">End Date</label>
+                            <label for="date_time">Date Time</label>
+                            <input type="text" name="date_time" id="date_time" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-outline-danger ml-2 text-sm  btn-md" id="add">Add Item</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+            <div id="assign" class="bs-canvas bs-canvas-anim bs-canvas-right position-fixed bg-light h-100"
+                 style="max-width: 300px;margin-top: 50px;">
+                <header class="bs-canvas-header p-3 bg-primary overflow-auto">
+                    <button type="button" class="bs-canvas-close float-left close" aria-label="Close"><span aria-hidden="true"
+                                                                                                            class="text-dark">&times;</span>
+                    </button>
+                    <strong class="d-inline-block text-light mb-0  ml-2 float-left">Add Activity Schedule</strong>
+                </header>
+                <div class="bs-canvas-content px-3 py-5">
+                    <form action="{{route('activity.schedule')}}" method="post">
+                        @csrf
+                        <input type="hidden" name="lead_id" value="{{$data['customer']->id}}">
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea name="description" id="description" cols="30" rows="2" class="form-control"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="type">Type</label>
+                            <select name="type" id="type" class="form-control">
+                                <option value="Cold Calling">Cold Calling</option>
+                                <option value="Phone Call">Phone Call</option>
+                                <option value="Follow Up">Follow Up</option>
+                                <option value="Meeting">Meeting</option>
+                                <option value="Entertainment">Entertainment</option>
+                                <option value="Event">Event</option>
+                                <option value="Visit">Visit</option>
+                            </select>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="end_date">Date Time</label>
                             <input type="text" name="end_date" id="end_date" class="form-control">
                         </div>
                         <div class="form-group">
@@ -405,7 +453,16 @@
         jQuery(document).ready(function () {
             'use strict';
 
-            jQuery('#end_date').datetimepicker();
+            jQuery('#date_time').datetimepicker();
+        });
+        $(document).ready(function(){
+            $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+                localStorage.setItem('activeTab', $(e.target).attr('href'));
+            });
+            var activeTab = localStorage.getItem('activeTab');
+            if(activeTab){
+                $('#mytab a[href="' + activeTab + '"]').tab('show');
+            }
         });
     </script>
 @endsection

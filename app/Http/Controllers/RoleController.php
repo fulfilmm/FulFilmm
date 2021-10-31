@@ -52,10 +52,11 @@ class RoleController extends Controller
     public function show(Role $role)
     {
         //
-        $permissions = Permission::all()->pluck('display_name', 'name');
+        $permissions = Permission::all();
+        $type = Permission::all()->pluck('type', 'id');
         $hasPermissions = $role->permissions->pluck('name');
-        // dd($permissions);
-        return view('role.show', compact('role', 'permissions', 'hasPermissions'));
+//         dd($permissions);
+        return view('role.show', compact('role', 'permissions', 'hasPermissions','type'));
     }
 
     public function assignPermission($id, Request $req)

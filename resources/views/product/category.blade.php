@@ -1,5 +1,5 @@
 @extends("layout.mainlayout")
-@section("title","Cases Type")
+@section("title","Product Category")
 @section("content")
     <!-- Page Content -->
     <div class="content container-fluid">
@@ -31,13 +31,18 @@
                     <thead>
                     <tr>
                         <th scope="col">Category Name</th>
+                        <th scope="col">Category Type</th>
+                        <th scope="col">Parent Category</th>
                         <th scope="col">Action</th>
                     </tr>
                     </thead>
                     <tbody>
+                    {{--@dd($category)--}}
                     @foreach($category as $cat)
                         <tr>
-                            <td><i class="fa fa-bars mr-3"></i>{{$cat->name}}
+                            <td><i class="fa fa-bars mr-3"></i>{{$cat->name}}</td>
+                            <td>{{$cat->parent==1?'Main Category':'Sub Category'}}</td>
+                            <td>{{$cat->main->name ??'N/A'}}</td>
                             <td>
                                 <a href="" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#cat_update{{$cat->id}}" data-whatever="@getbootstrap"><i class="fa fa-edit"></i></a>
                                 <a href="{{route('category.delete',$cat->id)}}" class="btn btn-danger btn-sm" ><i class="fa fa-trash text-white"></i></a>

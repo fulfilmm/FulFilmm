@@ -14,4 +14,7 @@ class Order extends Model
     public function quotation(){
         return $this->belongsTo(Quotation::class,'quotation_id','id');
     }
+    public function tax(){
+        return $this->belongsTo(products_tax::class,'tax_id','id');
+    }
 }

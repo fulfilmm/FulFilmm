@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\product;
+use App\Models\ProductVariations;
 use App\Models\QuotationItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -51,14 +52,14 @@ class OrderlineController extends Controller
         if(!Session::has($Auth)){
             Session::push("quotation-".$Auth,$form_data);
         }
-        $product = product::with('taxes')->where('id', $request->product_id)->first();
+        $variant=ProductVariations::with('product')->where('id',$request->variant_id)->first();
         $order_line = new QuotationItem();
         $order_line->product_id = $request->product_id;
-        $order_line->description = $product->description;
+        $order_line->variant_id=$request->variant_id;
+        $order_line->description = $variant->description;
         $order_line->quantity = 1;
-        $order_line->price = $product->sale_price;
-        $order_line->tax = $product->taxes->rate;
-        $order_line->total_amount = $product->sale_price;
+        $order_line->price = $variant->price;
+        $order_line->total_amount = $variant->price;
         $order_line->quotation_id = $request->quotation_id;
         $order_line->save();
         return response()->json(['message' => 'New Item Add Success']);
@@ -97,10 +98,8 @@ class OrderlineController extends Controller
     {
         $order_line = QuotationItem::where("id", $id)->first();
         $order_line->product_id = $request->product_id;
-        $order_line->description = $request->description;
         $order_line->quantity = $request->quantity;
         $order_line->price = $request->price;
-        $order_line->tax = $request->tax;
         $order_line->total_amount = $request->total;
         $order_line->update();
     }

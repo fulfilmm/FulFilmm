@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\product;
+use App\Models\ProductVariations;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -61,16 +62,14 @@ class InvoiceItemController extends Controller
             }
         }
         $product=product::with('taxes')->where('id',$request->product_id)->first();
+        $variant=ProductVariations::where('id',$request->variant_id)->first();
         $items=new OrderItem();
         $items->product_id=$request->product_id;
-        $items->description=$product->description;
+        $items->description=$variant->description;
         $items->quantity=1;
-        $items->tax_id=$product->taxes->rate;
-        $items->discount=0;
-        $items->discount_type='%';
-        $items->unit_price=$product->sale_price;
-        $items->currency_unit=$product->currency_unit;
-        $items->total=$product->sale_price;
+        $items->unit_price=$variant->price;
+        $items->variant_id=$request->variant_id;
+        $items->total=$variant->price;
         $items->creation_id=$request->invoice_id;
         $items->order_id=$request->order_id??null;
         $items->state=1;
@@ -119,11 +118,8 @@ class InvoiceItemController extends Controller
 //        dd($request->all());
         $items=OrderItem::where('id',$id)->first();
         $items->product_id=$request->product_id;
-        $items->description=$request->description;
         $items->quantity=$request->quantity;
-        $items->tax_id=$request->tax_id;
         $items->unit_price=$request->unit_price;
-        $items->currency_unit=$request->currency_unit;
         $items->total=$request->total;
         $items->update();
 //        if($items->order_id!=null){

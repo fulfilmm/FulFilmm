@@ -8,8 +8,8 @@
 }
 
 .pace .pace-progress {
-    background: -webkit-gradient(linear, left top, right top, color-stop(20%, #5156be), color-stop(40%, #2ab57d), color-stop(60%, #4ba6ef), color-stop(80%, #ffbf53), to(#fd625e));
-    background: linear-gradient(to right, #5156be 20%, #2ab57d 40%, #4ba6ef 60%, #ffbf53 80%, #fd625e 100%);
+    background: -webkit-gradient(linear, left top, right top, color-stop(20%, #ff7748), color-stop(40%, #2ab57d), color-stop(60%, #4ba6ef), color-stop(80%, #ffbf53), to(#fd625e));
+    background: linear-gradient(to right, #ff7748 20%, #2ab57d 40%, #4ba6ef 60%, #ffbf53 80%, #fd625e 100%);
     position: fixed;
     z-index: 2000;
     top: 0;
@@ -30,7 +30,7 @@
     right: 0;
     width: 150px;
     height: 150px;
-    background: #5156be;
+    background: #ff7748;
     -webkit-transition: -webkit-transform .3s;
     transition: -webkit-transform .3s;
     transition: transform .3s;

@@ -26,7 +26,7 @@
                                 </div>
                                 <div class="col-sm-2 col-md-4">
                                     <h3>{{$company->name ?? ''}}</h3>
-                                    <strong>Address: <i> {{$company->address}}</i></strong>
+                                    <strong>Address: <i> {{$company->address??''}}</i></strong>
                                 </div>
                                 <div class="col-sm-6 m-b-20">
                                     <div class="invoice-details">
@@ -53,10 +53,10 @@
                                     <h5>Invoice From:</h5>
                                     <ul class="list-unstyled">
                                         <li><span>Company Name&nbsp:&nbsp</span><strong>{{$company->name??''}}</strong></li>
-                                        <li><span>{{$company->address?'Address :':''}}</span><strong>{{$company->address??''}}</strong></li>
-                                        <li><span>{{$company->phone?'Phone :':''}}</span><strong>{{$company->phone??''}}</strong></li>
-                                        <li><span>{{$company->email?'Email :':''}}</span><strong>{{$company->address??''}}</strong></li>
-                                        <li><span>{{$company->web_link?'Website :':''}}</span><strong>{{$company->web_link??''}}</strong></li>
+                                        <li><span>{{isset($company->address)?'Address :':''}}</span><strong>{{$company->address??''}}</strong></li>
+                                        <li><span>{{isset($company->phone)?'Phone :':''}}</span><strong>{{$company->phone??''}}</strong></li>
+                                        <li><span>{{isset($company->email)?'Email :':''}}</span><strong>{{$company->address??''}}</strong></li>
+                                        <li><span>{{isset($company->web_link)?'Website :':''}}</span><strong>{{$company->web_link??''}}</strong></li>
 
                                     </ul>
                                 </div>
@@ -78,21 +78,24 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($invoice_item as $item)
-                                        <tr>
-                                            {{--                                                    @dd($item->tax)--}}
-                                            <td>{{$item->id}}</td>
-                                            <td>{{$item->product->name}}</td>
-                                            <td class="d-none d-sm-table-cell">{{$item->description}}</td>
-                                            <td>{{$item->unit_price}}
-                                            <td>{{$item->tax_id}}%</td>
-                                            <td>{{$item->discount}}</td>
-                                            <td>{{$item->discount_type}}</td>
-                                            <td>{{$item->quantity}}</td>
-                                            <td class="text-right">{{$item->total}}</td>
-                                            <td class="text-right">{{$item->currency_unit}}</td>
-                                        </tr>
-                                    @endforeach
+
+                                  @if($invoice_item!=[])
+                                      @foreach($invoice_item as $item)
+                                          <tr>
+                                              {{--                                                    @dd($item->tax)--}}
+                                              <td>{{$item->id??''}}</td>
+                                              <td>{{$item->product->name??''}}</td>
+                                              <td class="d-none d-sm-table-cell">{{$item->description??''}}</td>
+                                              <td>{{$item->unit_price??''}}
+                                              <td>{{$item->tax_id??''}}%</td>
+                                              <td>{{$item->discount??''}}</td>
+                                              <td>{{$item->discount_type??''}}</td>
+                                              <td>{{$item->quantity??''}}</td>
+                                              <td class="text-right">{{$item->total??''}}</td>
+                                              <td class="text-right">{{$item->currency_unit??''}}</td>
+                                          </tr>
+                                      @endforeach
+                                      @endif
                                     </tbody>
                                 </table>
                             </div>

@@ -6,7 +6,7 @@
 <div class="content container-fluid">
 
     <!-- Page Header -->
-    @include('layout.partials.page-header', ['route' => 'employees','name'=>'Employee', 'import' => true, 'export' => false, 'card' => true, 'list' => true])
+    @include('layout.partials.page-header', ['route' => 'employees','name'=>'Employee', 'import' => true, 'export' => true, 'card' => true, 'list' => true])
     @yield('data')
 
 </div>

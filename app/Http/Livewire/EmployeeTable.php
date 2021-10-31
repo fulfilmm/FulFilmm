@@ -19,13 +19,12 @@ class EmployeeTable extends Component
 
     public function render()
     {
-
         return view('livewire.employee-table', [
             'employees' => Employee::where('name', 'like', "%$this->search_key%")
             ->with(['department' => function($q) {
                 $q->withTrashed();
             }])
-            ->paginate(10)
+            ->paginate(20)
             ]);
         }
     }

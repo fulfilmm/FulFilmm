@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\leadactivityschedulemail;
 use App\Models\Company;
 use App\Models\Customer;
 use App\Models\Employee;
@@ -15,6 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class LeadController extends Controller
 {
@@ -32,31 +34,8 @@ class LeadController extends Controller
      */
     public function create()
     {
-        $prefix=MainCompany::where('ismaincompany',true)->pluck('lead_prefix','id')->first();
-            $allemployees = Employee::all()->pluck('name', 'id')->all();
-            $allcustomers = Customer::all()->pluck('name', 'id')->all();
-//            dd($allcustomers);
-            $companies=company::all()->pluck('name', 'id')->all();
-            $lastlead = leadModel::orderBy('id', 'desc')->first();
-        if (isset($lastlead)) {
-            // Sum 1 + last id
-            $ischange=$lastlead->lead_id;
-            $ischange=explode("-", $ischange);
-            if($ischange[0]==$prefix){
-                $lastlead->lead_id++;
-                $lead_id = $lastlead->lead_id;
-            }else{
-                $arr=[$prefix,$ischange[1]];
-                $pre=implode('-',$arr);
-                $pre ++;
-                $lead_id=$pre;
-            }
-        } else {
-            $lead_id =($prefix ? :'Lead') . "-0001";
-        }
-        $tags = tags_industry::all();
-        $last_tag = tags_industry::orderBy('id', 'desc')->first();
-        return view("lead.lead_create", compact("lead_id","companies","allemployees","allcustomers", "tags", "last_tag"));
+
+        return view();
     }
 
     /**
@@ -72,11 +51,32 @@ class LeadController extends Controller
     public function activity_schedule(Request $request){
         $next_plan=new next_plan();
         $next_plan->description=$request->description;
-        $next_plan->to_date=Carbon::create($request->end_date);
-        $next_plan->from_date=Carbon::create($request->start_date);
+        $next_plan->type=$request->type;
+        $next_plan->date_time=Carbon::create($request->date_time);
         $next_plan->contact_id=$request->lead_id;
         $next_plan->work_done=0;
         $next_plan->save();
+
+        $followers=lead_follower::with('user','leads')->where('contact_id',$request->lead_id)->get();
+
+        if(!$followers->isEmpty()) {
+
+            foreach ($followers as $follower) {
+                $details = array(
+                    'email' => $follower->user->email,
+                    'subject' => 'Activity schedule Notification',
+                    'lead_name' => $follower->leads->name,
+                    'lead_id'=>$request->lead_id,
+                    'type' => $request->type,
+                    'follower_name'=>$follower->user->name,
+                    'desc' => $request->description,
+                    'date' => $request->date_time,
+                );
+                $emailJobs = new leadactivityschedulemail($details);
+                $this->dispatch($emailJobs);
+
+            }
+        }
         return redirect(route('customers.show',$request->lead_id))->with('success','Activity Schedule Add Success');
     }
 
@@ -111,9 +111,9 @@ class LeadController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function qualified($id){
+    public function qualified(Request $request,$id){
         $lead=Customer::where("id",$id)->first();
-        $lead->is_qualified=1;
+        $lead->status=$request->status;
         $lead->update();
         return redirect()->back();
     }

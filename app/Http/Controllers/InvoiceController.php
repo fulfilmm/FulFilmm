@@ -9,6 +9,8 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\MainCompany;
 use App\Models\product;
+use App\Models\products_tax;
+use App\Models\ProductVariations;
 use App\Models\Revenue;
 use App\Models\Transaction;
 use App\Models\TransactionCategory;
@@ -39,9 +41,10 @@ class InvoiceController extends Controller
      */
     public function create()
     {
-
         $allcustomers =Customer::where('customer_type','Lead')->where('status','Qualified')->get();
-        $products=product::with("category","taxes")->get();
+        $products =product::all();
+        $variants=ProductVariations::with('product')->get();
+        $taxes=products_tax::all();
         $Auth=Auth::guard('employee')->user()->name;
 //        Session::forget('data-'.Auth::guard('employee')->user()->id);
         $data=Session::get('data-'.Auth::guard('employee')->user()->id);
@@ -55,14 +58,14 @@ class InvoiceController extends Controller
             $request_id=Session::get($Auth);
         }
 //        $generate_id=Str::uuid();
-        $orderline=OrderItem::with('product')->where('creation_id',$request_id)->get();
+        $orderline=OrderItem::with('product','variant')->where('creation_id',$request_id)->get();
 //        dd($orderline);
         $grand_total=0;
         for ($i=0;$i<count($orderline);$i++){
             $grand_total=$grand_total+$orderline[$i]->total;
         }
         $status=$this->status;
-        return view('invoice.create',compact('request_id','allcustomers','products','orderline','grand_total','status','data'));
+        return view('invoice.create',compact('request_id','allcustomers','products','orderline','grand_total','status','data','variants','taxes'));
     }
 
     /**
@@ -125,11 +128,16 @@ class InvoiceController extends Controller
         $newInvoice->order_id=$request->order_id;
         $newInvoice->send_email=isset($request->save_type)?1:0;
         $newInvoice->payment_method=$request->payment_method;
+        $newInvoice->tax_id=$request->tax_id;
+        $newInvoice->total=$request->total;
+        $newInvoice->discount=$request->discount;
+        $newInvoice->tax_amount=$request->tax_amount;
         $newInvoice->emp_id=Auth::guard('employee')->user()->id;
-        $newInvoice->save();
         $Auth=Auth::guard('employee')->user()->name;
         $request_id=Session::get($Auth);
         $confirm_order_item=OrderItem::where("creation_id",$request_id)->get();
+        if(count($confirm_order_item)!=0){
+            $newInvoice->save();
         foreach ($confirm_order_item as $item){
             $item->inv_id=$newInvoice->id;
             $item->update();
@@ -157,6 +165,11 @@ class InvoiceController extends Controller
                 'url'=>url('invoices/'.$newInvoice->id)
             ]);
         }
+        }else{
+            return response()->json([
+                'orderempty'=>'Empty Item',
+            ]);
+        }
 
     }
     public function sending_form($id){
@@ -182,7 +195,7 @@ class InvoiceController extends Controller
     public function show($id)
     {
         $company=MainCompany::where('ismaincompany',true)->first();
-        $detail_inv=Invoice::with('customer','employee')->where('id',$id)->firstOrFail();
+        $detail_inv=Invoice::with('customer','employee','tax','order')->where('id',$id)->firstOrFail();
         $invoic_item=OrderItem::with('product')->where("inv_id",$detail_inv->id)->get();
         $account=Account::where('enabled',1)->get();
         $recurring=['No','Daily','Weekly','Monthly','Yearly'];
@@ -278,18 +291,8 @@ class InvoiceController extends Controller
             'company'=>$company,
             'attach' =>$request->attach!=null?public_path() . '/attach_file/' . $file_name:null,
         );
-        Mail::send('invoice.invoicemail', $details, function ($message) use ($details) {
-            $message->from('cincin.com@gmail.com', 'Cloudark');
-            $message->to($details['email']);
-            $message->subject($details['subject']);
-            if ($details['cc'] != null) {
-                $message->cc($details['cc']);
-            }
-           if($details['attach']!=null){
-               $message->attach($details['attach']);
-           }
-
-        });
+        $emailJobs = new leadactivityschedulemail($details);
+        $this->dispatch($emailJobs);
         $invoice->send_email=1;
         $invoice->update();
         $this->add_history($invoice->id,'Send Mail','Sending email to customer');

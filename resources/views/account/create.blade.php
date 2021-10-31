@@ -19,7 +19,7 @@
                   id="account" role="form" novalidate="novalidate" enctype="multipart/form-data"
                   class="form-loading-button">
                 @csrf
-                <input type="hidden" name="company_id" value="{{$company->id}}">
+                <input type="hidden" name="company_id" value="{{$company->id??''}}">
                 <div class="card-body">
                     <div class="row">
                         <div class="form-group col-md-6 required">

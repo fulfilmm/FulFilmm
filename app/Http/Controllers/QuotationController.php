@@ -9,6 +9,8 @@ use App\Models\Employee;
 use App\Models\MainCompany;
 use App\Models\Orderline;
 use App\Models\product;
+use App\Models\products_tax;
+use App\Models\ProductVariations;
 use App\Models\Quotation;
 use App\Models\QuotationItem;
 use App\Repositories\Contracts\CompanyContract;
@@ -41,7 +43,9 @@ class QuotationController extends Controller
     {
 
         $allcustomers =Customer::where('customer_type','Lead')->where('status','Qualified')->get();
-        $products = product::with("category", "taxes")->get();
+        $products =product::all();
+        $variants=ProductVariations::with('product')->get();
+        $taxes=products_tax::all();
         $companies = Company::all()->pluck('name', 'id');
         $Auth = Auth::guard('employee')->user()->name;
 //        Session::forget($Auth);
@@ -53,13 +57,13 @@ class QuotationController extends Controller
             $request_id = Session::get($Auth);
         }
         $data = Session::get("quotation-" . Auth::guard('employee')->user()->id);
-        $orderline = QuotationItem::with('product')->where("quotation_id", $request_id)->get();
+        $orderline = QuotationItem::with('product','variant')->where("quotation_id", $request_id)->get();
         $grand_total = 0;
         for ($i = 0; $i < count($orderline); $i++) {
             $grand_total = $grand_total + $orderline[$i]->total_amount;
         }
         $deals = deal::where('sale_stage', 'Qualified')->get();
-        return view("quotation.create", compact('deals', "allcustomers", "request_id", "orderline", 'grand_total', "companies", "products", 'data'));
+        return view("quotation.create", compact('deals', "allcustomers", "request_id", "orderline", 'grand_total', "companies", "products", 'data','variants','taxes'));
     }
 
     public function store(Request $request)
@@ -106,6 +110,8 @@ class QuotationController extends Controller
         $quotation->grand_total = $request->grand_total;
         $quotation->payment_term = $request->payment_term;
         $quotation->is_confirm = isset($request->confirm) ? 1 : 0;
+        $quotation->tax_id=$request->tax_id;
+        $quotation->discount=$request->discount;
         $quotation->save();
         if (isset($request->deal_id)) {
             $deal = deal::where('id', $request->deal_id)->first();
@@ -143,7 +149,7 @@ class QuotationController extends Controller
 
     public function show($id)
     {
-        $quotation = Quotation::with("customer", "sale_person")->where('id', $id)->firstOrFail();
+        $quotation = Quotation::with("customer", "sale_person",'tax')->where('id', $id)->firstOrFail();
         $orderline = QuotationItem::with('product')->where("quotation_id", $quotation->id)->get();
         $grand_total = 0;
         for ($i = 0; $i < count($orderline); $i++) {

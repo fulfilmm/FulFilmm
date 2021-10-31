@@ -214,20 +214,13 @@
                 <label for='title'
                        class='form-label font-weight-bold text-muted text-uppercase pro_label'>Title </label>
                 <div class='input-group' id='priority_field'>
-                    <div class='input-group-prepend'>
-                        <span class='input-group-text'><i class='fa fa-arrow-circle-down'></i>
-                        </span>
-                    </div>
                     <input type='text' class='form-control' name='title'></div>
             </div>
             <div class="col-md-4 mb-3" id="priority">
                 <label for="Text6"
                        class="form-label font-weight-bold text-muted text-uppercase pro_label">Priority</label>
                 <div class="input-group" id="priority_field">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fa fa-arrow-circle-down"></i></span>
-                    </div>
-                    <select name="priority" id="priority_type" class="form-control">
+                    <select name="priority" id="priority_type" class="form-control" style="width: 100%">
                         <option value="High">High</option>
                         <option value="Medium">Medium</option>
                         <option value="Low">Low</option>
@@ -237,10 +230,7 @@
             <div class="col-md-4 mb-3" id="tag_industry">
                 <label for="Text6" class="form-label font-weight-bold text-muted text-uppercase pro_label">Industry</label>
                 <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fa fa-tag"></i></span>
-                    </div>
-                    <select name="tag_industry" id="industry" class="form-control">
+                    <select name="tag_industry" id="industry" class="form-control" style="width: 80%">
                         @foreach($tags as $tag)
                             @if($tag->id==$last_tag->id)
                                 <option value="{{$tag->id}}" selected>{{$tag->tag_industry}}</option>
@@ -258,12 +248,7 @@
             <div class="col-md-4 mb-3" id="status">
                 <label for="Text6" class="form-label font-weight-bold text-muted text-uppercase pro_label">Status</label>
                 <div class="input-group">
-                    <div class="input-group-prepend">
-                    <span class="input-group-text">
-                        <i class="fa fa-user-secret"></i>
-                    </span>
-                    </div>
-                    <select name="status" id="status" class="form-control">
+                    <select name="status" id="status" class="form-control" style="width:100% ;">
                         <option value="New">New</option>
                         <option value="Qualified">Qualified</option>
                         <option value="Unqualified">Unqualified</option>

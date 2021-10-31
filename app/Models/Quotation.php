@@ -17,4 +17,8 @@ class Quotation extends Model
     public function deal(){
         return $this->belongsTo(deal::class,'deal_id','id');
     }
+    public function tax(){
+        return $this->belongsTo(products_tax::class,'tax_id','id');
+    }
+
 }

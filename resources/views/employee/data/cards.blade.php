@@ -1,5 +1,9 @@
 @extends('employee.index')
-
+<style>
+    svg{
+        height: 20px;
+    }
+</style>
 @section('data')
     <div class="row staff-grid-row">
         @forelse($employees as $employee)
@@ -15,10 +19,14 @@
             </x-partials.card>
             @empty
             <div class="col-12 text-center">
-                <span class="text-center">@lang('messages.no-item-pls-add', ['name' => 'employee'])</span> 
+                <span class="text-center">@lang('messages.no-item-pls-add', ['name' => 'employee'])</span>
             </div>
             @endforelse
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-end">
+            {{$employees->links()}}
+                </ul>
+            </nav>
     </div>
-    {{$employees->links()}}
 
 @endsection

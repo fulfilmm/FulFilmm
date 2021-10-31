@@ -69,7 +69,7 @@
                         $("#minutelist{{$minute->id}}").load(location.href + " #minutelist{{$minute->id}}>* ");
                         $("#view{{$minute->id}}").load(location.href + " #view{{$minute->id}}>* ");
                     }else {
-                        alert(data.error_msg);
+                        swal('Empty Item',data.error_msg,'error');
                     }
                 }
             });

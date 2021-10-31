@@ -6,7 +6,10 @@ use App\Models\case_type;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\priority;
+use App\Models\products_category;
+use App\Models\products_tax;
 use App\Models\status;
+use App\Models\ThemeSetting;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -18,13 +21,23 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        ThemeSetting::create(['name'=>'White','link'=>'style.css','active'=>1]);
+        ThemeSetting::create(['name'=>'Dark','link'=>'darkstyle.css','active'=>0]);
+        ThemeSetting::create(['name'=>'Blue','link'=>'bluestyle.css','active'=>0]);
+        ThemeSetting::create(['name'=>'Purple','link'=>'purplestyle.css','active'=>0]);
+        ThemeSetting::create(['name'=>'Orange','link'=>'orangestyle.css','active'=>0]);
+        ThemeSetting::create(['name'=>'Maroon','link'=>'maroonstyle.css','active'=>0]);
+        products_tax::create(['name'=>'Tax Free','rate'=>0]);
+        products_tax::create(['name'=>'Personal Income Tax','rate'=>5]);
         Department::create(['name'=>'Sale Department']);
         Department::create(['name'=>'Customer Sevice Department']);
         Department::create(['name'=>'Human Resource Management Department']);
         Department::create(['name'=>'Finance Department']);
         Department::create(['name'=>'Administration']);
         Department::create(['name'=>'Marketing Department']);
-
+        products_category::create(['name'=>'Electronic','parent'=>1]);
+        products_category::create(['name'=>'Beauty','parent'=>1]);
+        products_category::create(['name'=>'Clothes','parent'=>1]);
         $superadmin = Employee::updateOrCreate(
             ['email' => 'admin@gmail.com'],
             [
@@ -103,7 +116,7 @@ class DatabaseSeeder extends Seeder
 
 
 
-        Employee::factory(1)->create();
+        Employee::factory(100)->create();
         // \App\Models\User::factory(10)->create();
         $superadmin->assignRole('Super Admin');
         $ticketagent->assignRole('Agent');

@@ -14,4 +14,7 @@ class OrderItem extends Model
     public function invoice(){
         return $this->belongsTo(Invoice::class,'inv_id','id');
     }
+    public function variant(){
+        return $this->belongsTo(ProductVariations::class,'variant_id','id');
+    }
 }

@@ -19,6 +19,8 @@
                         <a href="#"><i class="la la-cogs"></i> <span> Settings</span> <span
                                     class="menu-arrow"></span></a>
                         <ul style="display: none;">
+                            <li><a class="{{ Request::is('theme.setting') ? 'active' : '' }}"
+                                   href="{{ route('theme.setting') }}">Theme Color</a></li>
                             <li><a class="{{ Request::is('companysettings') ? 'active' : '' }}"
                                    href="{{ route('companysettings.create') }}">Company Settings</a></li>
                             <li><a class="{{ Request::is('companysettings') ? 'active' : '' }}"
@@ -67,6 +69,16 @@
                         </ul>
                     </li>
                     <li class="submenu">
+                        <a href="#"><i class="la la-calendar" style="font-size: 18px;"></i><span> Activity</span> <span class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+
+                            <li><a class="{{ Request::is('activity.index') ? 'active' : '' }}"
+                                   href="{{ route('activity.index') }}">Sale Activity</a></li>
+
+                        </ul>
+                    </li>
+
+                    <li class="submenu">
                         <a href="#"><i class="la la-group"></i> <span> HRM</span> <span
                                     class="menu-arrow"></span></a>
                         <ul style="display: none;">
@@ -97,9 +109,6 @@
                                 </ul>
                             </li>
 
-                            {{--<li class="menu">--}}
-                                {{--<a href="{{route('activities.index')}}"><i class="la la-list-alt mr-2" style="font-size: 18px"></i><span>Activities</span></a>--}}
-                            {{--</li>--}}
                             <li class="submenu">
                                 <a href="#"><i class="la la-check-square-o mr-2"></i><span> Approval Request</span> <span
                                             class="menu-arrow"></span></a>
@@ -198,9 +207,12 @@
                         </ul>
                     </li>
                     <li class="submenu">
-                        <a href="#"><i class="la la-cube"></i> <span>Sale</span> <span
+                        <a href="#"><i class="la la-puzzle-piece"></i> <span> Stock Managements</span> <span
                                     class="menu-arrow"></span></a>
+
                         <ul style="display: none;">
+                            <li><a class="{{ Request::is('warehouses.index') ? 'active' : '' }}"
+                                   href="{{ route('warehouses.index') }}"><i class="fa fa-home mr-2" style="font-size: 18px"></i>Warehouse</a></li>
                             <li class="submenu">
                                 <a href="#"><i class="la la-cube mr-2" style="font-size: 18px"></i><span> Product</span> <span class="menu-arrow"></span></a>
                                 <ul style="display: none;">
@@ -212,6 +224,38 @@
 
                                 </ul>
                             </li>
+                            <li class="submenu">
+                                <a href="#"><i class="la la-cube mr-2" style="font-size: 18px"></i><span>Supplier</span> <span class="menu-arrow"></span></a>
+                                <ul style="display: none;">
+                                    <li><a class="{{ Request::is('suppliers') ? 'active' : '' }}" href="{{route('suppliers')}}">All Suppliers</a></li>
+                                    <li><a class="{{ Request::is('customers.create') ? 'active' : '' }}" href="{{route('customers.create')}}">
+                                            Supplier Create</a></li>
+
+                                </ul>
+                            </li>
+                            <li class="submenu">
+                                <a href="#"><i class="la la-cube mr-2" style="font-size: 18px"></i><span>Stock Transaction</span> <span class="menu-arrow"></span></a>
+                                <ul style="display: none;">
+                                    <li><a class="{{ Request::is('stocks') ? 'active' : '' }}"
+                                           href="{{ route('stocks') }}">Stocks</a></li>
+                                    <li><a class="{{ Request::is('stocks.index') ? 'active' : '' }}" href="{{route('stocks.index')}}">Stock Transaction</a></li>
+                                    <li><a class="{{ Request::is('showstockin') ? 'active' : '' }}" href="{{route('showstockin')}}">
+                                            Stock In</a></li>
+                                    <li><a class="{{ Request::is('showstockout') ? 'active' : '' }}" href="{{route('showstockout')}}">
+                                            Stock Out</a></li>
+
+                                </ul>
+                            </li>
+                            <li><a class="{{ Request::is('warehouses.index') ? 'active' : '' }}"
+                                   href="{{ route('transfer.index') }}"><i class="fa fa-home mr-2" style="font-size: 18px"></i>Stock Transfer</a></li>
+                        </ul>
+
+                    </li>
+                    <li class="submenu">
+                        <a href="#"><i class="la la-cube"></i> <span>Sale</span> <span
+                                    class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+
                             <li><a class="{{ Request::is('qualified_contact') ? 'active' : '' }}" href="{{ route('qualified_contact') }}"><i class="fa fa-users mr-1" style="font-size: 18px;"></i> Customer</a></li>
                             <li class="submenu">
                                 <a href="#"><img src="{{url(asset('img/icon_image/invoice.png'))}}"  alt="" width="18px" height="18px" class="mr-1" ><span> Invoice</span> <span

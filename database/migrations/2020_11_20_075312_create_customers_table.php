@@ -31,7 +31,6 @@ class CreateCustomersTable extends Migration
             $table->string('report_to')->nullable();
             $table->string('position_of_report_to')->nullable();
             $table->string("priority")->nullable()->nullable();
-            $table->tinyInteger("is_qualified")->default(0);
             $table->bigInteger("tags_id")->unsigned()->nullable();
             $table->foreign('tags_id')->references('id')->on('tags_industries');
             $table->bigInteger("emp_id")->unsigned();

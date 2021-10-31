@@ -30,7 +30,7 @@ class CustomerAuth extends Controller
 //           dd();
            return redirect(route('home'));
        } else {
-           return redirect()->back()->with('error','These credentials do not match our records.');
+           return redirect()->back()->with('errors','These credentials do not match our records.');
        }
 
 //       dd('here');

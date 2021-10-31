@@ -58,4 +58,7 @@ class CustomerProtal extends Controller
         ];
         return view('customerprotal.dashboard',compact('data'));
     }
+    public function change_password(){
+        return view('customerprotal.changepassword');
+    }
 }

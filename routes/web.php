@@ -22,7 +22,10 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\RequestTicket;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\SaleActivityController;
 use App\Http\Controllers\SaleOrderController;
+use App\Http\Controllers\StockTransactionController;
+use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\TicketPieChartReport;
 use App\Http\Controllers\TicketSender;
@@ -51,6 +54,7 @@ Route::get('/api/auth/login',function (){
 });
 Route::get('/', [HomeController::class, 'index'])->middleware(['auth:employee']);
 Route::get('login', [AuthController::class, 'showLoginForm'])->name('show.login');
+Route::get('employee/login',[AuthController::class,'employeelogin']);
 Route::namespace('Auth\Login')->prefix('employees')->as('employees.')->group(function () {
     Route::post('login', [AuthController::class, 'login'])->name('emplogin');
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
@@ -58,9 +62,9 @@ Route::namespace('Auth\Login')->prefix('employees')->as('employees.')->group(fun
 });
 //Route::resource('saleorders', SaleOrderController::class)->only('create','store')->middleware('custom_auth');
 
-Route::namespace('Auth\Login')->prefix('customer')->as('customers.')->group(function () {
-    Route::post('login', [CustomerAuth::class, 'login'])->name('customerlogin');
-    Route::post('logout', [CustomerAuth::class, 'logout'])->name('logout');
+Route::namespace('Auth\Login')->group(function () {
+    Route::post('login', [CustomerAuth::class, 'login'])->name('customers.customerlogin');
+    Route::post('logout', [CustomerAuth::class, 'logout'])->name('customers.logout');
 });
 Route::get('settings', [SettingsController::class, 'settings'])->name('settings.settings')->middleware(['auth:employee']);
 Route::post('update-profile', [SettingsController::class, 'updateProfile'])->name('settings.profile-update')->middleware(['auth:employee']);
@@ -108,6 +112,13 @@ Route::middleware(['auth:employee'])->group(function () {
     Route::post('category/transaction/update/{id}',[TransactionController::class,'update_cat'])->name('transaction_category.update');
     Route::get('category/transaction/delete/{id}',[TransactionController::class,'delete_cat'])->name('transaction_category.delete');
     Route::get('/contact/qualified/',[CustomerController::class,'qualified_contact'])->name('qualified_contact');
+    Route::post('change/contact/type',[CustomerController::class,'ChangeContactType'])->name('changeContct');
+    Route::post('deal/post/comment',[DealController::class,'comment'])->name('deals.comment');
+    Route::get("deal/workdone/{id}", [DealController::class, 'workdone'])->name('schedule.done');
+    Route::resource('warehouses',WarehouseController::class);
+    Route::get('suppliers',[CustomerController::class,'supplier'])->name('suppliers');
+    Route::get('theme/color',[SettingsController::class,'theme_setting'])->name('theme.setting');
+    Route::post('theme/color',[SettingsController::class,'theme_color'])->name('theme.color');
 
 
 });
@@ -221,6 +232,16 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::get('employees-card', [EmployeeController::class, 'card'])->name('employees.cards');
     Route::get('departments-card', [DepartmentController::class, 'card'])->name('departments.cards');
 
+    Route::post('deal/schedule',[DealController::class,'schedule'])->name('deals.schedule');
+    Route::get('sale/activity',[SaleActivityController::class,'index'])->name('activity.index');
+    Route::get('sale/activity/create',[SaleActivityController::class,'create'])->name('activity.create');
+    Route::post('sale/activity/create',[SaleActivityController::class,'store'])->name('activity.store');
+    Route::get('sale/activity/show/{id}',[SaleActivityController::class,'show'])->name('activity.show');
+    Route::post('sale/activity/comment',[SaleActivityController::class,'post_comment'])->name('activity.comment');
+    Route::post('sale/activity/addfollower',[SaleActivityController::class,'follower'])->name('activity.addfollowed');
+    Route::post('sale/activity/unfollow',[SaleActivityController::class,'unfollower'])->name('activity.unfollowed');
+    Route::get('activity/read/{id}',[SaleActivityController::class,'read'])->name('read');
+
 });
 
 //Route::resource('inqueries',InqueryController::class)->only('create','store');
@@ -237,6 +258,7 @@ Route::middleware(['auth:customer'])->group(function () {
     Route::get('customer/home/', [CustomerProtal::class, 'home'])->name('home');
     Route::get('customer/quotation', [CustomerProtal::class, 'quotation'])->name('customer.quotation');
     Route::get('customer/dashboard', [CustomerProtal::class, 'dashboard'])->name('customer.invoice');
+    Route::get('customer/password/change/',[CustomerProtal::class,'change_password'])->name('customers.changepassword');
     Route::get('customer/order', [CustomerProtal::class, 'dashboard'])->name('customer.orders');
     Route::get('customer/order/{id}', [CustomerProtal::class, 'dashboard'])->name('order.show');
     Route::resource('orders', SaleOrderController::class);
@@ -262,6 +284,12 @@ Route::get('companies-card', [CompanyController::class, 'card'])->name('companie
 Route::resource('request_tickets', RequestTicket::class)->only('create', 'store');
 
 //new
-Route::post('deal/schedule',[DealController::class,'schedule'])->name('deals.schedule');
-Route::post('deal/post/comment',[DealController::class,'comment'])->name('deals.comment');
-Route::get("deal/workdone/{id}", [DealController::class, 'workdone'])->name('schedule.done');
+Route::get('stockin',[StockTransactionController::class,'stockin_form'])->name('showstockin');
+Route::post('stockin',[StockTransactionController::class,'stock_in'])->name('stockin');
+Route::get('stockout',[StockTransactionController::class,'stockout_form'])->name('showstockout');
+Route::post('stockout',[StockTransactionController::class,'stockout'])->name('stockout');
+Route::get('stocks/index',[StockTransactionController::class,'index'])->name('stocks.index');
+Route::get('stock/transfer',[StockTransactionController::class,'transfer'])->name('show.transfer');
+Route::post('transfer',[StockTransactionController::class,'stock_transfer'])->name('stocks.transfer');
+Route::get('transfer/index',[StockTransactionController::class,'transfer_record'])->name('transfer.index');
+Route::get('stocks',[StockTransactionController::class,'stock'])->name('stocks');

@@ -41,15 +41,20 @@
             <br> <strong><span class="float-left"><span class="text-dark badge badge-{{$detail_inv->status=='Paid'?'success':($detail_inv->status=='Partial'?'warning':($detail_inv->status=='Daft'?'white':'danger'))}}">
                        {{$detail_inv->status}}
                     </span></span></strong> <br><br></div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             Customer
-            <br> <strong><span class="float-left"><a href="https://app.akaunting.com/142258/sales/customers/1005081">
+            <br> <strong><span class="float-left"><a href="{{route('customers.show',$detail_inv->customer->id)}}">
                       {{$detail_inv->customer->name}}
                     </a></span></strong> <br><br></div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             Order ID
             <br> <strong><span class="float-left"><a href="https://app.akaunting.com/142258/sales/customers/1005081">
-                      {{$detail_inv->customer->name}}
+                      {{$detail_inv->order->order_id??"None"}}
+                    </a></span></strong> <br><br></div>
+        <div class="col-md-2">
+            Tax
+            <br> <strong><span class="float-left"><a href="https://app.akaunting.com/142258/sales/customers/1005081">
+                      {{$detail_inv->tax->name??"None"}}({{$detail_inv->tax->rate??0}}%)
                     </a></span></strong> <br><br></div>
         <div class="col-md-2">
             Amount due
@@ -217,8 +222,26 @@
                                     </div>
                                 </li>
                                 <li class="list-group-item">
+                                    <div class="d-flex justify-content-end">
+                                        Total: <p class="ml-2 mb-0 font-weight-bold">  {{$detail_inv->total}} MMK </p>
+                                    </div>
+
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="d-flex justify-content-end ">
+                                        Discount: <p class="ml-2 mb-0 font-weight-bold">  {{$detail_inv->discount}} MMK</p>
+                                    </div>
+
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="d-flex justify-content-end ">
+                                        Tax: <p class="ml-2 mb-0 font-weight-bold"> {{$detail_inv->tax_amount}} MMK </p>
+                                    </div>
+
+                                </li>
+                                <li class="list-group-item">
                                     <div class="d-flex justify-content-end mb-2">
-                                        Total: <p class="ml-2 mb-0 font-weight-bold">MMK : {{$detail_inv->grand_total}}</p>
+                                        Grand Total: <p class="ml-2 mb-0 font-weight-bold">  {{$detail_inv->grand_total}} MMK</p>
                                     </div>
 
                                 </li>

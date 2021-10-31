@@ -45,7 +45,7 @@
 									<h5 class="mb-0">Welcome Back !</h5>
 									{{--<p class="text-muted mt-2">Sign in to continue to {{$maincompany->name}}.</p>--}}
 								</div>
-								<form  method="POST">
+								<form  method="POST" action="{{route('customers.customerlogin')}}">
 									@csrf
 									<div class="mb-3">
 										<label for="username" class="form-label">Email</label>
@@ -87,36 +87,30 @@
 
 									</div>
 									<div class="mb-3">
-										<button class="btn btn-primary w-100 waves-effect waves-light mb-2" type="submit" formaction="{{  route('employees.emplogin') }}">Login As Employee</button>
-										<button class="btn btn-primary w-100 waves-effect waves-light" type="submit" formaction="{{route('customers.customerlogin')}}">Login As Customer</button>
+										<button class="btn btn-primary w-100 waves-effect waves-light" type="submit" formaction="">Login</button>
 									</div>
 								</form>
 
-								{{--<div class="mt-4 pt-2 text-center">--}}
-									{{--<div class="signin-other-title">--}}
-										{{--<h5 class="font-size-14 mb-3 text-muted fw-medium">- Sign in as -</h5>--}}
-									{{--</div>--}}
+								<div class="mt-4 pt-2 text-center">
 
-									{{--<ul class="list-inline mb-0">--}}
-										{{--<li class="list-inline-item">--}}
-											{{--<a href="">Employee</a>--}}
-										{{--</li>--}}
-										{{--<li class="list-inline-item">--}}
-											{{--<a href="javascript:void()" class="social-list-item bg-info text-white border-info">--}}
-												{{--<i class="mdi mdi-twitter"></i>--}}
-											{{--</a>--}}
-										{{--</li>--}}
-										{{--<li class="list-inline-item">--}}
-											{{--<a href="javascript:void()" class="social-list-item bg-danger text-white border-danger">--}}
-												{{--<i class="mdi mdi-google"></i>--}}
-											{{--</a>--}}
-										{{--</li>--}}
-									{{--</ul>--}}
-								{{--</div>--}}
-
-								{{--<div class="mt-5 text-center">--}}
-									{{--<p class="text-muted mb-0">Go to<a href="http://minia-light.laravel.themesbrand.com/register" class="text-primary fw-semibold"> Employee Login </a> </p>--}}
-								{{--</div>--}}
+									<ul class="list-inline mb-0">
+										<li class="list-inline-item">
+											<a href="javascript:void()" class="social-list-item bg-info text-white border-info">
+												<b style="font-size: 18px">f</b>
+											</a>
+										</li>
+										<li class="list-inline-item">
+											<a href="javascript:void()" class="social-list-item bg-info text-white border-info">
+												<i class="la la-twitter"></i>
+											</a>
+										</li>
+										<li class="list-inline-item">
+											<a href="javascript:void()" class="social-list-item bg-danger text-white border-danger">
+												<i class="la la-google"></i>
+											</a>
+										</li>
+									</ul>
+								</div>
 							</div>
 							{{--<div class="mt-4 mt-md-5 text-center">--}}
 								{{--<p class="mb-0">© <script>--}}

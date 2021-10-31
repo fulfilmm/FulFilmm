@@ -1,5 +1,5 @@
 @extends('layout.mainlayout')
-@section('title','Add Revenue')
+@section('title',isset($revenue)?'Revenue':(isset($expense)?'Expense':'Transaction'))
 @section('content')
     <div class="container-fluid">
         <div class="page-header my-3">

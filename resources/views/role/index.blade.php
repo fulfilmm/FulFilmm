@@ -8,7 +8,7 @@
 <div class="content container-fluid">
 
     <!-- Page Header -->
-    @include('layout.partials.page-header', ['route' => 'roles', 'import' => false, 'export' => false, 'card' => false, 'list' => true])
+    @include('layout.partials.page-header', ['route' => 'roles','name'=>'roles', 'import' => false, 'export' => false, 'card' => false, 'list' => true])
     <div class="row">
         <div class="col-12">
             <head>

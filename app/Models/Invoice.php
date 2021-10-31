@@ -14,4 +14,10 @@ class Invoice extends Model
     public function employee(){
         return $this->belongsTo(Employee::class,'emp_id','id');
     }
+    public function tax(){
+        return $this->belongsTo(products_tax::class,'tax_id','id');
+    }
+    public function order(){
+        return $this->belongsTo(Order::class,'order_id','id');
+    }
 }

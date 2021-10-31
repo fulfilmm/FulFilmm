@@ -14,4 +14,10 @@ class product extends Model
     public function category(){
         return $this->belongsTo(products_category::class,'cat_id','id');
     }
+    public function sub_cat(){
+        return $this->belongsTo(products_category::class,'sub_cat_id','id');
+    }
+    public function variants(){
+        return $this->hasOne(ProductVariations::class);
+    }
 }

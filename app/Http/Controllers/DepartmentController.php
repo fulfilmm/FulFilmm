@@ -107,7 +107,7 @@ class DepartmentController extends Controller
      */
     public function destroy($id)
     {
-        //
+//        dd($id);
         $this->department_contract->deleteById($id);
         return redirect()->route('departments.index')->with('success', __('alert.delete_success'));
     }

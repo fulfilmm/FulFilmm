@@ -28,6 +28,10 @@ class CreateInvoicesTable extends Migration
             $table->string('payment_method');
             $table->text('other_information')->nullable();
             $table->double('grand_total');
+            $table->double('discount')->nullable();
+            $table->bigInteger('tax_id')->unsigned();
+            $table->double('total');
+            $table->double('tax_amount')->nullable();
             $table->boolean('mark_sent')->default(false);
             $table->boolean('send_email')->default(false);
             $table->bigInteger('emp_id');

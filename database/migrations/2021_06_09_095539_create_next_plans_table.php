@@ -17,8 +17,8 @@ class CreateNextPlansTable extends Migration
             $table->id();
             $table->bigInteger("contact_id")->unsigned();
             $table->text("description");
-            $table->dateTime("to_date");
-            $table->dateTime("from_date");
+            $table->string('type');
+            $table->dateTime("date_time");
             $table->tinyInteger("work_done");
             $table->index('contact_id');
             $table->text('attach_file')->nullable();

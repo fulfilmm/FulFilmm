@@ -67,9 +67,6 @@
                         <div class="form-group">
                             <label for="approver" class="control-label">Approver Name <span class="text-danger">*</span></label>
                             <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fa fa-user-secret"></i></span>
-                                </div>
                                 <select class="form-control" name="approve_id" id="approver">
                                     @foreach($all_emp as $emp)
                                         @if($emp->role->name=='Manager'||$emp->role->name=='CEO')
@@ -85,9 +82,6 @@
                         <div class="form-group">
                             <label for="secondary" class="control-label">Secondary Request Name(Optional)</label>
                             <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fa fa-user-secret"></i></span>
-                                </div>
                             <select class="form-control" name="secondary_id" id="secondary">
                                 <option disabled selected>Select Secondary Approver</option>
                                 @foreach($all_emp as $emp)
@@ -103,9 +97,6 @@
                         <div class="form-group">
                             <label for="type" class="control-label">Approval Type <span class="text-danger">*</span></label>
                             <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fa fa-th-list"></i></span>
-                                </div>
                             <select class="form-control" name="type" id="type">
                                 <option value="General Approval">General Approval</option>
                                 <option value="Business Trip">Business Trip</option>
