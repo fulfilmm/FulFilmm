@@ -79,7 +79,7 @@ class ProductController extends Controller
         $product->save();
         for ($i=0;$i<count($request->field_count);$i++){
             $variation=new ProductVariations();
-            $image = $request->picture[$i];
+            $image = $request->picture[$i]??null;
             if($image!=null) {
                 $name = $image->getClientOriginalName();
                 $request->picture[$i]->move(public_path().'/product_picture/', $name);
