@@ -82,7 +82,7 @@ class ProductController extends Controller
             $image = $request->picture[$i];
             if($image!=null) {
                 $name = $image->getClientOriginalName();
-                $request->picture[$i]->move(public_path() . '/product_picture/', $name);
+                $request->picture[$i]->move(public_path().'/product_picture/', $name);
                 $variation->image = $name;
             }
             $variation->product_id=$product->id;
