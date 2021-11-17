@@ -87,7 +87,6 @@ class PermissionSeeder extends Seeder
         Permission::create(['name'=>'stocks.index','display_name'=>'Stock Transaction Index','type'=>'Stocks','guard_name'=>'employee']);
         Permission::create(['name'=>'show.transfer','display_name'=>'Stocks Transfer Form','type'=>'Stocks','guard_name'=>'employee']);
         Permission::create(['name'=>'stocks.transfer','display_name'=>'Stocks Transfer','type'=>'Stocks','guard_name'=>'employee']);
-        Permission::create(['name'=>'transfer.index','display_name'=>'Stock Transfer Record','type'=>'Stocks','guard_name'=>'employee']);
         Permission::create(['name'=>'stocks','display_name'=>'Stock Balance','type'=>'Stocks','guard_name'=>'employee']);
         Permission::create(['name'=>'saletargets.index','display_name'=>'Sale target index','type'=>'saletargets','guard_name'=>'employee']);
         Permission::create(['name'=>'saletargets.create','display_name'=>'Sale target create','type'=>'saletargets','guard_name'=>'employee']);
