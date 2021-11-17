@@ -374,7 +374,7 @@
                         y:{{$data['quotation']}}
                     }, {
                         name: 'Qualified',
-                        y:1
+                        y:{{$data['still_qualified']}}
                     },
                     ]
                 }]
