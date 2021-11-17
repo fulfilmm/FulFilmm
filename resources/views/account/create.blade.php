@@ -81,8 +81,7 @@
                                         <i class="fa fa-balance-scale"></i>
                                     </span>
                                 </div>
-                                <input data-name="bank_phone" placeholder="Enter Starting Balance" name="opening_balance" type="text" id="starting_balance" class="form-control">
-                                <input type="hidden" name="balance" id="balance">
+                                <input data-name="bank_phone" placeholder="Enter Starting Balance" name="balance" type="text" id="starting_balance" class="form-control">
                             </div> <!---->
                         </div>
                         <div class="form-group col-md-12">
@@ -115,11 +114,7 @@
     </div>
     <script>
         $(document).ready(function () {
-            $('#starting_balance').on('change',function () {
-                var open_balance=$('#starting_balance').val();
-                $('#balance').val(open_balance);
-            })
-
-        })
+            $('select').select2();
+        });
     </script>
 @endsection

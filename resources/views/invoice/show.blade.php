@@ -144,9 +144,9 @@
                         <div class="col-lg-6 col-7 col-md-6 mb-3">
                             <img class="avatar avatar-50 is-squared"
                                  src="{{$company!=null ? url(asset('/img/profiles/'.$company->logo)): url(asset('/img/profiles/avatar-01.jpg'))}}">
-                            <span>{{$company->name}}</span><br><span>{{$company->email}}</span><br>
-                            <span>{{$company->phone}}</span><br>
-                            <span>{{$company->address}}</span>
+                            <span>{{$company->name??''}}</span><br><span>{{$company->email??''}}</span><br>
+                            <span>{{$company->phone??''}}</span><br>
+                            <span>{{$company->address??''}}</span>
                         </div>
                         <div class="col-lg-3 col-3">
                             <div class="text-left">
@@ -194,9 +194,6 @@
                                                 <th>ITEM</th>
                                                 <th class="d-none d-sm-table-cell">DESCRIPTION</th>
                                                 <th>UNIT COST</th>
-                                                <th>Tax(%)</th>
-                                                <th>Discount</th>
-                                                <th>Discount Type</th>
                                                 <th>QUANTITY</th>
                                                 <th class="text-right">TOTAL</th>
                                                 <th></th>
@@ -209,12 +206,8 @@
                                                     <td>{{$item->product->name}}</td>
                                                     <td class="d-none d-sm-table-cell">{{$item->description}}</td>
                                                     <td>{{$item->unit_price}}
-                                                    <td>{{$item->tax_id}}%</td>
-                                                    <td>{{$item->discount}}</td>
-                                                    <td>{{$item->discount_type}}</td>
                                                     <td>{{$item->quantity}}</td>
                                                     <td class="text-right">{{$item->total}}</td>
-                                                    <td class="text-right">{{$item->currency_unit}}</td>
                                                 </tr>
                                         @endforeach
                                             </tbody>
@@ -388,10 +381,10 @@
                                     <div class="form-group">
                                         <label for="account">Account</label>
                                         <div class="input-group">
-                                            <div class="input-group-prepend">
+                                            <div class="input-group-prepend" style="width: 12%">
                                                 <span class="input-group-text"><i class="fa fa-bank"></i></span>
                                             </div>
-                                            <select name="account" id="account" class="form-control">
+                                            <select name="account" id="account" class="form-control" style="width: 83%">
                                                 @foreach($data['account'] as $account)
                                                     <option value="{{$account->id}}">{{$account->name}}</option>
                                                 @endforeach
@@ -403,10 +396,10 @@
                                     <div class="form-group">
                                         <label for="customer_id">Customer</label>
                                         <div class="input-group">
-                                            <div class="input-group-prepend">
+                                            <div class="input-group-prepend" style="width: 12%;">
                                                 <span class="input-group-text"><i class="fa fa-user"></i></span>
                                             </div>
-                                            <select name="customer_id" id="customer_id" class="form-control">
+                                            <select name="customer_id" id="customer_id" class="form-control" style="width: 83%;">
                                                 @foreach($data['customers'] as $customer)
                                                     <option value="{{$customer->id}}" {{$customer->id==$detail_inv->customer->id?'selected':''}}>{{$customer->name}}</option>
                                                 @endforeach
@@ -426,15 +419,15 @@
                                     <div class="form-group">
                                         <label for="category">Category</label>
                                         <div class="input-group">
-                                            <div class="input-group-prepend">
+                                            <div class="input-group-prepend" style="width: 10%">
                                                 <span class="input-group-text"><i class="fa fa-folder"></i></span>
                                             </div>
-                                            <select name="category" id="category" class="form-control">
+                                            <select name="category" id="category" class="form-control " style="width: 80%" >
                                                 @foreach($data['category'] as $cat)
                                                     <option value="{{$cat->name}} {{$cat->name==' Invoice'?'selected':''}}">{{$cat->name}}</option>
                                                 @endforeach
                                             </select>
-                                            <div class="input-group-prepend">
+                                            <div class="input-group-prepend" style="width: 10%">
                                                 <a href="" class="input-group-text" data-toggle='modal' data-target='#add_cat'><i
                                                             class="fa fa-plus"></i></a>
                                             </div>
@@ -514,10 +507,10 @@
                 var restorepage = $('body').html();
                 $('#myTab').remove();
                 var printcontent = $('#' + el).clone();
-                printcontent.append('<div class="row" style="position: fixed;bottom: 110px; left: 50px" ><div class="row justify-content-between"> <div class="col-12 text-center"><span>{{$company->web_link}}</span></div></div></div>');
-                printcontent.append('<div class="row" style="position: fixed;bottom: 90px; left: 50px" ><div class="row justify-content-between"> <div class="col-12 text-center"><span>{{$company->email}}</span></div></div></div>');
-                printcontent.append('<div class="row" style="position: fixed;bottom: 70px; left: 50px" ><div class="row justify-content-between"> <div class="col-12 text-center"><span>{{$company->phone}}</span></div></div></div>');
-                printcontent.append('<div class="row" style="position: fixed;bottom: 50px; left: 50px" ><div class="row justify-content-between"> <div class="col-12 text-center"><span>{{$company->address}}</span></div></div></div>');
+                printcontent.append('<div class="row" style="position: fixed;bottom: 110px; left: 50px" ><div class="row justify-content-between"> <div class="col-12 text-center"><span>{{$company->web_link??''}}</span></div></div></div>');
+                printcontent.append('<div class="row" style="position: fixed;bottom: 90px; left: 50px" ><div class="row justify-content-between"> <div class="col-12 text-center"><span>{{$company->email??''}}</span></div></div></div>');
+                printcontent.append('<div class="row" style="position: fixed;bottom: 70px; left: 50px" ><div class="row justify-content-between"> <div class="col-12 text-center"><span>{{$company->phone??''}}</span></div></div></div>');
+                printcontent.append('<div class="row" style="position: fixed;bottom: 50px; left: 50px" ><div class="row justify-content-between"> <div class="col-12 text-center"><span>{{$company->address??''}}</span></div></div></div>');
                 $('body').empty().html(printcontent);
                 $('.footer').hide();
                 window.print();

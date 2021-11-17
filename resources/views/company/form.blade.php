@@ -35,9 +35,6 @@
                 <label for="business_type">Type <span class="text-danger"> * </span></label>
 
                 <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fa fa-building"></i></span>
-                    </div>
                     <select name="business_type" class="form-control">
                         <option value="IT">Information Technology</option>
                         <option value="Courier">Courier</option>
@@ -175,9 +172,6 @@
         <div class="form-group">
             <label for="phone">Parent</label>
             <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fa fa-link"></i></span>
-                </div>
         @include('forms.select',['name'=>'parent_company', 'title'=>'Parent Company', 'placeHolder' => "Choose Parent Company", 'options' => $parent_companies, 'value' => $record->parent_companies ?? ''])
     </div>
         </div>
@@ -198,7 +192,9 @@
     function openSelect(file) {
         $(file).trigger('click');
     }
-
+    $(document).ready(function () {
+        $('select').select2();
+    });
 </script>
 
 

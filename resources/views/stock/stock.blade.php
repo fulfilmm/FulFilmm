@@ -21,10 +21,14 @@
                 <table class="table " id="stock">
                     <thead>
                     <tr>
+                        <th>Product Code</th>
                         <th>Product </th>
                         <th>Variants</th>
                         <th>Warehouse</th>
                         <td>Stock Balance</td>
+                        <td>Available Stock</td>
+                        <td>Alert Qty</td>
+                        <td>Last Updated</td>
                     </tr>
 
                     </thead>
@@ -32,10 +36,14 @@
                     {{--@dd($stocks)--}}
                     @foreach($stocks as $stock)
                         <tr>
+                            <td>{{$stock->variant->product_code}}</td>
                             <td>{{$stock->product_name}}</td>
                             <td>{{$stock->variant->size??''}}{{$stock->variant->color?','.$stock->variant->color:''}}{{$stock->variant->other?','.$stock->variant->other:''}}</td>
-                            <td>{{$stock->warehouse->name}}</td>
+                            <td><a href="{{route('warehouses.show',$stock->warehouse->id)}}">{{$stock->warehouse->name}}</a></td>
                             <td>{{$stock->stock_balance}}</td>
+                            <td>{{$stock->available}}</td>
+                            <td>{{$stock->alert_qty}}</td>
+                            <td>{{\Carbon\Carbon::parse($stock->updated_at)->toFormattedDateString()}}</td>
                         </tr>
                     @endforeach
                     </tbody>

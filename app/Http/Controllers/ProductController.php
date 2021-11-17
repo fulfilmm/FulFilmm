@@ -27,7 +27,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products=product::with('taxes','category','sub_cat')->paginate(10);
+        $products=product::with('taxes','category','sub_cat')->paginate(1);
         return view("product.index",compact("products"));
     }
 
@@ -89,18 +89,16 @@ class ProductController extends Controller
             $variation->description=$request->description[$i];
             $variation->price=$request->price[$i];
             $variation->purchase_price=$request->purchase_price[$i];
-            $variation->qty=$request->qty[$i];
             $variation->warehouse_id=$request->warehouse_id[$i];
             $variation->product_code=$request->product_code[$i];
 //           $variation->barcode=$request->barcode[$i];
             $variation->discount_rate=$request->discount_rate[$i];
-            $variation->alert_qty=$request->alert_qty[$i];
             $variation->size=$request->size[$i];
             $variation->color=$request->color[$i];
             $variation->other=$request->other[$i];
             $variation->exp_date=Carbon::create($request->exp_date[$i]);
             $variation->save();
-            $data=['qty'=>$request->qty[$i],'warehouse_id'=>$request->warehouse_id[$i],'supplier_id'=>$request->supplier_id,'variantion_id'=>$variation->id];
+            $data=['qty'=>$request->qty[$i],'warehouse_id'=>$request->warehouse_id[$i],'supplier_id'=>$request->supplier_id,'variantion_id'=>$variation->id,'alert_qty'=>$request->alert_qty[$i]];
             $this->stockin($data);
         }
         return redirect("/products")->with("message","Product Create Success");

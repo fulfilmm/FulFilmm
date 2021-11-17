@@ -27,6 +27,8 @@ class CreateQuotationsTable extends Migration
             $table->string("payment_term");
             $table->double('discount')->nullable();
             $table->bigInteger('tax_id')->unsigned();
+            $table->double('total');
+            $table->double('tax_amount');
             $table->bigInteger('deal_id')->unsigned()->nullable();
             $table->index('id');
             $table->softDeletes();

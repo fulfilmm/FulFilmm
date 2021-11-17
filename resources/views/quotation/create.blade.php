@@ -196,10 +196,7 @@
                                         var quantity = $('#edit_quantity_{{$order->id}}').val();
                                         var price = $('#edit_price_{{$order->id}}').val();
                                         var total = quantity * price;
-                                        var tax = $('#edit_product_tax_{{$order->id}}').val();
-                                        var tax_amount = tax / 100 * total;
-                                        var include_tax = total + tax_amount;
-                                        $('#edit_total_{{$order->id}}').val(include_tax);
+                                        $('#edit_total_{{$order->id}}').val(total);
                                     });
                                     $(document).ready(function () {
                                         $(".update_order_{{$order->id}}").keyup(function () {
@@ -261,11 +258,16 @@
                             <th>Tax</th>
 
                             <td id="tax" colspan="2">
-                                <select name="" id="tax" class="form-control">
-                                    @foreach($taxes as $tax)
-                                        <option value="{{$tax->id}}">{{$tax->name}} ({{$tax->rate}} %)</option>
-                                        @endforeach
-                                </select></td>
+                               <div class="input-group">
+                                   <input type="number" id="tax_amount" class="form-control">
+                                   <select name="" id="tax" class="form-control">
+                                       @foreach($taxes as $tax)
+                                           <option value="{{$tax->id}}">{{$tax->name}} ({{$tax->rate}} %)</option>
+                                       @endforeach
+                                   </select>
+                               </div>
+                            </td>
+
                         </tr>
                         {{--<tr>--}}
                             {{--<td></td>--}}
@@ -292,17 +294,23 @@
     </div>
     <!-- /Content End -->
     </div>
-    @include('customer.quickcustomer')
     <!-- /Page Content -->
     <!-- /Page Wrapper -->
     <script>
         $('input').keyup( function () {
-            var discount = $('#discount').val();
             var tax=$('#tax option:selected').val();
-            var total = $('#total').val();
-            var grand =total-discount;
-            $('#grand_total').val(grand);
+            @foreach($taxes as $tax)
+            if(tax=="{{$tax->id}}")
+                var tax_rate={{$tax->rate}};
+                    @endforeach
 
+            var total = $('#total').val();
+            var tax_amount=total*(tax_rate/100);
+            var tax_include=(total-0)+tax_amount;
+            var discount = $('#discount').val();
+            var grand =tax_include-discount;
+            $('#grand_total').val(grand);
+            $('#tax_amount').val(tax_amount);
         });
         $(document).on('change','#tax',function () {
             var tax=$('#tax option:selected').val();
@@ -313,10 +321,11 @@
 
             var total = $('#total').val();
             var tax_amount=total*(tax_rate/100);
-            var tax_include=total-tax_amount;
+            var tax_include=(total-0)+tax_amount;
             var discount = $('#discount').val();
             var grand =tax_include-discount;
             $('#grand_total').val(grand);
+            $('#tax_amount').val(tax_amount);
         });
         // window.onbeforeunload = function(event) {
         //     alert('message');
@@ -361,7 +370,8 @@
                         payment_term: pay_term,
                         grand_total: grand_total,
                         term_and_condition: term_condition,
-                        deal_id: deal_id
+                        deal_id: deal_id,
+
                     },
                     type: 'POST',
                     url: "{{route('quotation_items.store')}}",
@@ -397,6 +407,8 @@
                 var term_condition = $("#term_and_condition").val();
                 var tax_id=$('#tax option:selected').val();
                 var discount=$('#discount').val();
+                var tax_amount=$('#tax_amount').val();
+                var total=$('#total').val();
 // alert(term_condition);
                 $.ajax({
                     data: {
@@ -409,7 +421,9 @@
                         grand_total: grand_total,
                         term_and_condition: term_condition,
                         deal_id: deal_id,
-                        confirm: 1
+                        confirm: 1,
+                        total:total,
+                        tax_amount:tax_amount
                     },
                     type: 'POST',
                     url: "{{route('quotations.store')}}",
@@ -444,6 +458,8 @@
                 var term_condition = $("#term_and_condition").val();
                 var tax_id=$('#tax option:selected').val();
                 var discount=$('#discount').val();
+                var tax_amount=$('#tax_amount').val();
+                var total=$('#total').val();
 // alert(term_condition);
                 $.ajax({
                     data: {
@@ -455,7 +471,9 @@
                         payment_term: pay_term,
                         grand_total: grand_total,
                         term_and_condition: term_condition,
-                        deal_id: deal_id
+                        deal_id: deal_id,
+                        total:total,
+                        tax_amount:tax_amount
                     },
                     type: 'POST',
                     url: "{{route('quotations.store')}}",
@@ -508,6 +526,8 @@
                 var deal_id = $('#deal_id option:selected').val();
                 var tax_id=$('#tax option:selected').val();
                 var discount=$('#discount').val();
+                var tax_amount=$('#tax_amount').val();
+                var total=$('#total').val();
                 $.ajax({
                     data: {
                         tax_id:tax_id,
@@ -520,7 +540,9 @@
                         term_and_condition: term_condition,
                         deal_id: deal_id,
                         send_email: 'saveandsend',
-                        confirm: 1
+                        confirm: 1,
+                        total:total,
+                        tax_amount:tax_amount
                     },
                     type: 'POST',
                     url: "{{route('quotations.store')}}",

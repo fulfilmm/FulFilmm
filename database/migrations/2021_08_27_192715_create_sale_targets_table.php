@@ -19,8 +19,7 @@ class CreateSaleTargetsTable extends Migration
             $table->foreign('emp_id')->references('id')->on('employees')->onDelete('cascade');
             $table->double('target_sale');
             $table->string('month');
-            $table->double('reach_sale')->nullable();
-            $table->string('status')->nullable();
+            $table->double('year');
             $table->timestamps();
             $table->softDeletes();
         });

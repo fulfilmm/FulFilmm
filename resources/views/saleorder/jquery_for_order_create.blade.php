@@ -39,7 +39,7 @@
 
         var total = $('#total').val();
         var tax_amount=total*(tax_rate/100);
-        var tax_include=total-tax_amount;
+        var tax_include=(total-0)+tax_amount;
         var discount = $('#discount').val();
         var grand =tax_include-discount;
         $('#grand_total').val(grand);
@@ -63,7 +63,6 @@
     $(document).ready(function () {
         $(document).on('click','#add_item',function (){
             var order_id=$('#order_id').val();
-            alert(order_id);
             var creation_id = $('#creation_id').val();
             var product = $('#product option:selected').val();
             var customer_id = $('#customer_id').val();
@@ -119,7 +118,7 @@
                         grand_total = parseFloat(grand_total) + parseFloat(alltotal[i]);
                     }
                     $('#grand_total').val(grand_total);
-                    // location.reload();
+                    location.reload();
 
                 }
             });

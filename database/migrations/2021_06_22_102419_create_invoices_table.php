@@ -34,7 +34,7 @@ class CreateInvoicesTable extends Migration
             $table->double('tax_amount')->nullable();
             $table->boolean('mark_sent')->default(false);
             $table->boolean('send_email')->default(false);
-            $table->bigInteger('emp_id');
+            $table->bigInteger('emp_id')->unsigned();
             $table->index(['id','customer_id']);
             $table->bigInteger('order_id')->unsigned()->nullable();
             $table->softDeletes();

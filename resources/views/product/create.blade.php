@@ -354,7 +354,6 @@
                                     <input type="file" accept="image/*" name="picture[]"  class=" offset-md-1" onchange="loadFile(event)" >
                                 </div>
                             </div>
-                            <div class="col-12 border-bottom"></div>
                         </div>
                     </div>
                 </div>
@@ -460,7 +459,7 @@
                 }
             }
 
-            giveSelection(sel1.value);
+            giveSelection(sel1);
         $(document).ready(function () {
 
             $('#product_tax').select2({

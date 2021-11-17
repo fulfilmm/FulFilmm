@@ -212,6 +212,7 @@
                                                                         $('#grand_total').val(grand_total);
                                                                         // $("#order_table").load(location.href + " #order_table>* ");
                                                                         $("#grand_total_div").load(location.href + " #grand_total_div>* ");
+                                                                        $("#total_div").load(location.href + " #total_div>* ");
 
                                                                     }
                                                                 });
@@ -231,7 +232,7 @@
                                             <tr>
                                                 <td colspan="2"></td>
                                                 <th colspan="2" class="text-right"><span class="mt-5">Total</span></th>
-                                                <td id="" colspan="2"><input class="form-control" type="text" id="total" value="{{$grand_total}}">
+                                                <td id="total_div" colspan="2"><input class="form-control" type="number" id="total" value="{{$grand_total}}">
                                                 </td>
                                             </tr>
                                             <tr>
@@ -291,7 +292,7 @@ $('input').keyup( function () {
 
     var total = $('#total').val();
     var tax_amount=total*(tax_rate/100);
-    var tax_include=total-tax_amount;
+    var tax_include=(total-0)+tax_amount;
     var discount = $('#discount').val();
     var grand =tax_include-discount;
     $('#grand_total').val(grand);
@@ -304,9 +305,9 @@ $(document).on('change','#tax',function () {
         var tax_rate={{$tax->rate}};
             @endforeach
 
-    var total = $('#total').val();
+    var total =document.getElementById('total').value;
     var tax_amount=total*(tax_rate/100);
-    var tax_include=total-tax_amount;
+    var tax_include=(total-0)+tax_amount;
     var discount = $('#discount').val();
     var grand =tax_include-discount;
     $('#grand_total').val(grand);

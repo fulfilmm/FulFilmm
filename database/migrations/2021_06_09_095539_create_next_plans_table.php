@@ -22,6 +22,7 @@ class CreateNextPlansTable extends Migration
             $table->tinyInteger("work_done");
             $table->index('contact_id');
             $table->text('attach_file')->nullable();
+            $table->bigInteger('emp_id')->unsigned();
             $table->softDeletes();
             $table->timestamps();
         });

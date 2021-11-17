@@ -3,20 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\leadactivityschedulemail;
-use App\Models\Company;
+
 use App\Models\Customer;
-use App\Models\Employee;
+
 use App\Models\lead_comment;
 use App\Models\lead_follower;
-use App\Models\leadModel;
-use App\Models\MainCompany;
+
+
 use App\Models\next_plan;
 use App\Models\tags_industry;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
+
 
 class LeadController extends Controller
 {
@@ -55,6 +55,7 @@ class LeadController extends Controller
         $next_plan->date_time=Carbon::create($request->date_time);
         $next_plan->contact_id=$request->lead_id;
         $next_plan->work_done=0;
+        $next_plan->emp_id=Auth::guard('employee')->user()->id;
         $next_plan->save();
 
         $followers=lead_follower::with('user','leads')->where('contact_id',$request->lead_id)->get();

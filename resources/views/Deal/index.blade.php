@@ -2,7 +2,11 @@
 @section('title','All Deals')
 @section('content')
 
-
+    <style>
+        .kanban-list{
+            min-height: 500px;
+        }
+    </style>
         <!-- Page Content -->
         <div class="content container-fluid">
 
@@ -39,10 +43,10 @@
                         <thead>
                         <tr>
                             <th></th>
-                            <th>Name</th>
+                            <th>Contact Name</th>
                             <th>Amount</th>
                             <th>Organization</th>
-                            <th>Close Date</th>
+                            <th>Created Date</th>
                             <th>Sale Stage</th>
                             <th>Assign To</th>
                             <th>Action</th>
@@ -52,12 +56,12 @@
                         @foreach($alldeals as $deal)
                         <tr>
                             <td><input type="checkbox"></td>
-                            <td><a href="{{route('deals.show',$deal->id)}}">{{$deal->name}}</a></td>
-                            <td>{{$deal->amount}} <strong class="float-right">{{$deal->unit}}</strong></td>
+                            <td><a href="{{route('deals.show',$deal->id)}}">{{$deal->customer->name}}</a></td>
+                            <td>{{$deal->amount}} <strong>{{$deal->unit}}</strong></td>
                             <td>{{$deal->customer_company->name}}</td>
-                            <td>{{$deal->close_date}}</td>
+                            <td>{{$deal->created_at->toFormattedDateString()}}</td>
                             <td>{{$deal->sale_stage}}</td>
-                            <td>{{$deal->employee->name}}</td>
+                            <td>{{$deal->employee->name??'N/A'}}</td>
                             <td>
                                 <a href="#" class="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-ellipsis-v ml-2 mt-2" style="font-size: 18px;"></i></a>
                                 <div class="dropdown-menu">
@@ -72,77 +76,12 @@
                     </table>
                 </div>
                 <div class="tab-pane fade show active" id="kaban_view" role="tabpanel" aria-labelledby="home-tab">
-                    <div class="row board-view-header">
-{{--                        <div class="col-4">--}}
-{{--                            <div class="pro-teams">--}}
-{{--                                <div class="pro-team-lead">--}}
-{{--                                    <h4>Lead</h4>--}}
-{{--                                    <div class="avatar-group">--}}
-{{--                                        <div class="avatar">--}}
-{{--                                            <img class="avatar-img rounded-circle border border-white" alt="User Image" src="img/profiles/avatar-11.jpg">--}}
-{{--                                        </div>--}}
-{{--                                        <div class="avatar">--}}
-{{--                                            <img class="avatar-img rounded-circle border border-white" alt="User Image" src="img/profiles/avatar-01.jpg">--}}
-{{--                                        </div>--}}
-{{--                                        <div class="avatar">--}}
-{{--                                            <img class="avatar-img rounded-circle border border-white" alt="User Image" src="img/profiles/avatar-16.jpg">--}}
-{{--                                        </div>--}}
-{{--                                        <div class="avatar">--}}
-{{--                                            <a href="" class="avatar-title rounded-circle border border-white" data-toggle="modal" data-target="#assign_leader"><i class="fa fa-plus"></i></a>--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                                <div class="pro-team-members">--}}
-{{--                                    <h4>Team</h4>--}}
-{{--                                    <div class="avatar-group">--}}
-{{--                                        <div class="avatar">--}}
-{{--                                            <img class="avatar-img rounded-circle border border-white" alt="User Image" src="img/profiles/avatar-02.jpg">--}}
-{{--                                        </div>--}}
-{{--                                        <div class="avatar">--}}
-{{--                                            <img class="avatar-img rounded-circle border border-white" alt="User Image" src="img/profiles/avatar-09.jpg">--}}
-{{--                                        </div>--}}
-{{--                                        <div class="avatar">--}}
-{{--                                            <img class="avatar-img rounded-circle border border-white" alt="User Image" src="img/profiles/avatar-12.jpg">--}}
-{{--                                        </div>--}}
-{{--                                        <div class="avatar">--}}
-{{--                                            <a href="" class="avatar-title rounded-circle border border-white" data-toggle="modal" data-target="#assign_user"><i class="fa fa-plus"></i></a>--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                        <div class="col-8 text-right">--}}
-{{--                            <a href="#" class="btn btn-white float-right ml-2" data-toggle="modal" data-target="#add_task_board"><i class="fa fa-plus"></i> Create List</a>--}}
-{{--                            <a href="project-view" class="btn btn-white float-right" title="View Board"><i class="fa fa-link"></i></a>--}}
-{{--                        </div>--}}
-{{--                        <div class="col-12">--}}
-{{--                            <div class="pro-progress">--}}
-{{--                                <div class="pro-progress-bar">--}}
-{{--                                    <h4>Progress</h4>--}}
-{{--                                    <div class="progress">--}}
-{{--                                        <div class="progress-bar bg-success" role="progressbar" style="width: 20%"></div>--}}
-{{--                                    </div>--}}
-{{--                                    <span>20%</span>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-                    </div>
-
-                    <div class="kanban-board card mb-0">
+                    <div class="kanban-board card mb-0 col-12">
                         <div class="card-body">
                             <div class="kanban-cont">
-                                <div class="kanban-list kanban-info">
+                                <div class="kanban-list kanban-purple">
                                     <div class="kanban-header">
                                         <span class="status-title">New</span>
-{{--                                        <div class="dropdown kanban-action">--}}
-{{--                                            <a href="" data-toggle="dropdown">--}}
-{{--                                                <i class="fa fa-ellipsis-v"></i>--}}
-{{--                                            </a>--}}
-{{--                                            <div class="dropdown-menu dropdown-menu-right">--}}
-{{--                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_board">Edit</a>--}}
-{{--                                                <a class="dropdown-item" href="#">Delete</a>--}}
-{{--                                            </div>--}}
-{{--                                        </div>--}}
                                     </div>
                                     <div class="kanban-wrap">
                                         @foreach($alldeals as $deal)
@@ -157,43 +96,11 @@
                                                                 </a>
                                                                 <div class="dropdown-menu dropdown-menu-right">
                                                                     <a class="dropdown-item" href="{{route('deals.edit',$deal->id)}}">Edit</a>
-                                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_modal{{$deal->id}}">Change Stage</a>
+                                                                    <a class="dropdown-item" href="{{route('deals.status_change',['Qualified',$deal->id])}}">Qualified</a>
                                                                     <a class="dropdown-item" href="{{route('deals.show',$deal->id)}}">Detail View</a>
                                                                     <a class="dropdown-item" data-toggle="modal" data-target="#delete_deal{{$deal->id}}">Delete</a>
                                                                 </div>
-                                                                <div id="edit_task_modal{{$deal->id}}" class="modal custom-modal fade" role="dialog">
-                                                                    <div class="modal-dialog">
-                                                                        <div class="modal-content">
-                                                                            <div class="modal-header">
-                                                                                <h4 class="modal-title">Deal Sale Stage Change</h4>
-                                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                            </div>
-                                                                            <div class="modal-body">
-                                                                                <form action="{{route("deals.status_change")}}" method="POST">
-                                                                                    @method('POST')
-                                                                                    @csrf
-                                                                                    <div class="form-group">
-                                                                                        <input type="hidden" name="deal_id" class="form-control" value="{{$deal->id}}">
-                                                                                    </div>
-                                                                                    <div class="form-group">
-                                                                                        <label for="sale_stage">Sale Stage</label>
-                                                                                        <select name="sale_stage" id="sale_stage" class="form-control">
-                                                                                            <option value="New">New</option>
-                                                                                            <option value="Qualified">Qualified</option>
-                                                                                            <option value="Quotation">Quatation</option>
-                                                                                            <option value="Invoicing">Invoicing</option>
-                                                                                            <option value="Win">Negotiation </option>
-                                                                                            <option value="Lost">Lost</option>
-                                                                                        </select>
-                                                                                    </div>
-                                                                                    <div class="submit-section text-center">
-                                                                                        <button class="btn btn-primary submit-btn">Submit</button>
-                                                                                    </div>
-                                                                                </form>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+
                                                             </div>
                                                         </div>
                                                         <div class="task-board-body">
@@ -209,7 +116,7 @@
                                                                 </span>
                                                                 <span class="task-users">
                                                                     <img src="{{url(asset('img/profiles/avatar-12.jpg'))}}" class="task-avatar" width="24" height="24" alt="">
-                                                                    <span>{{$deal->employee->name}}</span>
+                                                                    <span>{{$deal->employee->name??''}}</span>
                                                                 </span>
                                                             </div>
                                                         </div>
@@ -220,18 +127,10 @@
                                         @endforeach
                                     </div>
                                 </div>
-                                <div class="kanban-list kanban-danger">
+                                <div class="kanban-list kanban-success">
                                     <div class="kanban-header">
                                         <span class="status-title">Qualified</span>
-{{--                                        <div class="dropdown kanban-action">--}}
-{{--                                            <a href="" data-toggle="dropdown">--}}
-{{--                                                <i class="fa fa-ellipsis-v"></i>--}}
-{{--                                            </a>--}}
-{{--                                            <div class="dropdown-menu dropdown-menu-right">--}}
-{{--                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_board">Edit</a>--}}
-{{--                                                <a class="dropdown-item" href="#">Delete</a>--}}
-{{--                                            </div>--}}
-{{--                                        </div>--}}
+
                                     </div>
                                     <div class="kanban-wrap">
                                         @foreach($alldeals as $deal)
@@ -246,44 +145,11 @@
                                                                 </a>
                                                                 <div class="dropdown-menu dropdown-menu-right">
                                                                     <a class="dropdown-item" href="{{route('deals.edit',$deal->id)}}">Edit</a>
-                                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_modal{{$deal->id}}">Change Stage</a>
-                                                                    <a class="dropdown-item" href="{{route('deals.show',$deal->id)}}">Detail View</a>
+                                                                    <a class="dropdown-item" href="{{route('deals.status_change',['Quotation',$deal->id])}}">Quotation</a>                                                                    <a class="dropdown-item" href="{{route('deals.show',$deal->id)}}">Detail View</a>
                                                                     <a class="dropdown-item" data-toggle="modal" data-target="#delete_deal{{$deal->id}}">Delete</a>
 
                                                                 </div>
                                                                 @include('Deal.delete')
-                                                                <div id="edit_task_modal{{$deal->id}}" class="modal custom-modal fade" role="dialog">
-                                                                    <div class="modal-dialog">
-                                                                        <div class="modal-content">
-                                                                            <div class="modal-header">
-                                                                                <h4 class="modal-title">Deal Sale Stage Change</h4>
-                                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                            </div>
-                                                                            <div class="modal-body">
-                                                                                <form action="{{url("deal/status/change")}}" method="POST">
-                                                                                    {{csrf_field()}}
-                                                                                    <div class="form-group">
-                                                                                        <input type="hidden" name="deal_id" class="form-control" value="{{$deal->id}}">
-                                                                                    </div>
-                                                                                    <div class="form-group">
-                                                                                        <label>Sale Stage</label>
-                                                                                        <select name="sale_stage" id="sale_stage" class="form-control">
-                                                                                            <option value="New">New</option>
-                                                                                            <option value="Qualified">Qualified</option>
-                                                                                            <option value="Quotation">Quatation</option>
-                                                                                            <option value="Invoicing">Invoicing</option>
-                                                                                            <option value="Win">Negotiation </option>
-                                                                                            <option value="Lost">Lost</option>
-                                                                                        </select>
-                                                                                    </div>
-                                                                                    <div class="submit-section text-center">
-                                                                                        <button class="btn btn-primary submit-btn">Submit</button>
-                                                                                    </div>
-                                                                                </form>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
                                                             </div>
                                                         </div>
                                                         <div class="task-board-body">
@@ -298,7 +164,7 @@
                                                     </span>
                                                                 <span class="task-users">
                                                         <img src="{{url(asset('img/profiles/avatar-12.jpg'))}}" alt="" class="task-avatar" width="24" height="24">
-                                                            <span>{{$deal->employee->name}}</span>
+                                                            <span>{{$deal->employee->name??''}}</span>
                                                     </span>
                                                             </div>
                                                         </div>
@@ -309,20 +175,11 @@
                                     </div>
 
                                 </div>
-                                <div class="kanban-list kanban-success">
+                                <div class="kanban-list kanban-warning">
                                     <div class="kanban-header">
                                     <span class="status-title">Quotation</span>
-{{--                                        <div class="dropdown kanban-action">--}}
-{{--                                            <a href="" data-toggle="dropdown">--}}
-{{--                                                <i class="fa fa-ellipsis-v"></i>--}}
-{{--                                            </a>--}}
-{{--                                            <div class="dropdown-menu dropdown-menu-right">--}}
-{{--                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_board">Edit</a>--}}
-{{--                                                <a class="dropdown-item" href="#">Delete</a>--}}
-{{--                                            </div>--}}
-{{--                                        </div>--}}
                                     </div>
-                                    <div class="kanban-wrap ks-empty">
+                                    <div class="kanban-wrap">
                                         @foreach($alldeals as $deal)
                                             @if($deal->sale_stage=="Quotation")
                                                 <div class="card panel">
@@ -335,44 +192,11 @@
                                                                 </a>
                                                                 <div class="dropdown-menu dropdown-menu-right">
                                                                     <a class="dropdown-item" href="{{route('deals.edit',$deal->id)}}">Edit</a>
-                                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_modal{{$deal->id}}">Change Stage</a>
-                                                                    <a class="dropdown-item" href="{{route('deals.show',$deal->id)}}">Detail View</a>
+                                                                    <a class="dropdown-item" href="{{route('deals.status_change',['Invoicing',$deal->id])}}">Invoicing</a>                                                                    <a class="dropdown-item" href="{{route('deals.show',$deal->id)}}">Detail View</a>
                                                                     <a class="dropdown-item" data-toggle="modal" data-target="#delete_deal{{$deal->id}}">Delete</a>
 
                                                                 </div>
                                                                 @include('Deal.delete')
-                                                                <div id="edit_task_modal{{$deal->id}}" class="modal custom-modal fade" role="dialog">
-                                                                    <div class="modal-dialog">
-                                                                        <div class="modal-content">
-                                                                            <div class="modal-header">
-                                                                                <h4 class="modal-title">Deal Sale Stage Change</h4>
-                                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                            </div>
-                                                                            <div class="modal-body">
-                                                                                <form action="{{url("deal/status/change")}}" method="POST">
-                                                                                    {{csrf_field()}}
-                                                                                    <div class="form-group">
-                                                                                        <input type="hidden" name="deal_id" class="form-control" value="{{$deal->id}}">
-                                                                                    </div>
-                                                                                    <div class="form-group">
-                                                                                        <label>Sale Stage</label>
-                                                                                        <select name="sale_stage" id="sale_stage" class="form-control">
-                                                                                            <option value="New">New</option>
-                                                                                            <option value="Qualified">Qualified</option>
-                                                                                            <option value="Quotation">Quatation</option>
-                                                                                            <option value="Invoicing">Invoicing</option>
-                                                                                            <option value="Win">Negotiation </option>
-                                                                                            <option value="Lost">Lost</option>
-                                                                                        </select>
-                                                                                    </div>
-                                                                                    <div class="submit-section text-center">
-                                                                                        <button class="btn btn-primary submit-btn">Submit</button>
-                                                                                    </div>
-                                                                                </form>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
                                                             </div>
                                                         </div>
                                                         <div class="task-board-body">
@@ -388,7 +212,7 @@
                                                     </span>
                                                                 <span class="task-users">
                                                         <img src="{{url(asset('img/profiles/avatar-12.jpg'))}}" alt="" class="task-avatar" width="24" height="24">
-                                                            <span>{{$deal->employee->name}}</span>
+                                                            <span>{{$deal->employee->name??''}}</span>
                                                     </span>
                                                             </div>
                                                         </div>
@@ -400,18 +224,9 @@
                                     </div>
 
                                 </div>
-                                <div class="kanban-list kanban-warning">
+                                <div class="kanban-list kanban-info">
                                     <div class="kanban-header">
                                         <span class="status-title">Invoicing</span>
-{{--                                        <div class="dropdown kanban-action">--}}
-{{--                                            <a href="" data-toggle="dropdown">--}}
-{{--                                                <i class="fa fa-ellipsis-v"></i>--}}
-{{--                                            </a>--}}
-{{--                                            <div class="dropdown-menu dropdown-menu-right">--}}
-{{--                                                <a class="dropdown-item" href="#">Edit</a>--}}
-{{--                                                <a class="dropdown-item" href="#">Delete</a>--}}
-{{--                                            </div>--}}
-{{--                                        </div>--}}
                                     </div>
                                     <div class="kanban-wrap">
                                         @foreach($alldeals as $deal)
@@ -426,43 +241,13 @@
                                                                 </a>
                                                                 <div class="dropdown-menu dropdown-menu-right">
                                                                     <a class="dropdown-item" href="{{route('deals.edit',$deal->id)}}">Edit</a>
-                                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_modal{{$deal->id}}">Change Stage</a>
+                                                                    <a class="dropdown-item" href="{{route('deals.status_change',['Win',$deal->id])}}">Win</a>
+                                                                    <a class="dropdown-item" href="{{route('deals.status_change',['Lost',$deal->id])}}">Lost</a>
                                                                     <a class="dropdown-item" href="{{route('deals.show',$deal->id)}}">Detail View</a>
                                                                     <a class="dropdown-item" data-toggle="modal" data-target="#delete_deal{{$deal->id}}">Delete</a>
                                                                 </div>
                                                                 @include('Deal.delete')
-                                                                <div id="edit_task_modal{{$deal->id}}" class="modal custom-modal fade" role="dialog">
-                                                                    <div class="modal-dialog">
-                                                                        <div class="modal-content">
-                                                                            <div class="modal-header">
-                                                                                <h4 class="modal-title">Deal Sale Stage Change</h4>
-                                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                            </div>
-                                                                            <div class="modal-body">
-                                                                                <form action="{{url("deal/status/change")}}" method="POST">
-                                                                                    {{csrf_field()}}
-                                                                                    <div class="form-group">
-                                                                                        <input type="hidden" name="deal_id" class="form-control" value="{{$deal->id}}">
-                                                                                    </div>
-                                                                                    <div class="form-group">
-                                                                                        <label>Sale Stage</label>
-                                                                                        <select name="sale_stage" id="sale_stage" class="form-control">
-                                                                                            <option value="New">New</option>
-                                                                                            <option value="Qualified">Qualified</option>
-                                                                                            <option value="Quotation">Quatation</option>
-                                                                                            <option value="Invoicing">Invoicing</option>
-                                                                                            <option value="Win">Negotiation </option>
-                                                                                            <option value="Lost">Lost</option>
-                                                                                        </select>
-                                                                                    </div>
-                                                                                    <div class="submit-section text-center">
-                                                                                        <button class="btn btn-primary submit-btn">Submit</button>
-                                                                                    </div>
-                                                                                </form>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+
                                                             </div>
                                                         </div>
                                                         <div class="task-board-body">
@@ -478,7 +263,7 @@
                                                     </span>
                                                                 <span class="task-users">
                                                         <img src="{{url(asset('img/profiles/avatar-12.jpg'))}}" alt="" class="task-avatar" width="24" height="24">
-                                                            <span>{{$deal->employee->name}}</span>
+                                                            <span>{{$deal->employee->name??''}}</span>
                                                     </span>
                                                             </div>
                                                         </div>
@@ -489,19 +274,9 @@
                                     </div>
 
                                 </div>
-
-                                <div class="kanban-list kanban-purple">
+                                <div class="kanban-list kanban-success">
                                     <div class="kanban-header">
                                         <span class="status-title">Win</span>
-{{--                                        <div class="dropdown kanban-action">--}}
-{{--                                            <a href="" data-toggle="dropdown">--}}
-{{--                                                <i class="fa fa-ellipsis-v"></i>--}}
-{{--                                            </a>--}}
-{{--                                            <div class="dropdown-menu dropdown-menu-right">--}}
-{{--                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_board">Edit</a>--}}
-{{--                                                <a class="dropdown-item" href="#">Delete</a>--}}
-{{--                                            </div>--}}
-{{--                                        </div>--}}
                                     </div>
                                     <div class="kanban-wrap">
                                         @foreach($alldeals as $deal)
@@ -516,44 +291,11 @@
                                                                 </a>
                                                                 <div class="dropdown-menu dropdown-menu-right">
                                                                     <a class="dropdown-item" href="{{route('deals.edit',$deal->id)}}">Edit</a>
-                                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_modal{{$deal->id}}">Change Stage</a>
                                                                     <a class="dropdown-item" href="{{route('deals.show',$deal->id)}}">Detail View</a>
                                                                     <a class="dropdown-item" data-toggle="modal" data-target="#delete_deal{{$deal->id}}">Delete</a>
 
                                                                 </div>
                                                                 @include('Deal.delete')
-                                                                <div id="edit_task_modal{{$deal->id}}" class="modal custom-modal fade" role="dialog">
-                                                                    <div class="modal-dialog">
-                                                                        <div class="modal-content">
-                                                                            <div class="modal-header">
-                                                                                <h4 class="modal-title">Deal Sale Stage Change</h4>
-                                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                            </div>
-                                                                            <div class="modal-body">
-                                                                                <form action="{{url("deal/status/change")}}" method="POST">
-                                                                                    {{csrf_field()}}
-                                                                                    <div class="form-group">
-                                                                                        <input type="hidden" name="deal_id" class="form-control" value="{{$deal->id}}">
-                                                                                    </div>
-                                                                                    <div class="form-group">
-                                                                                        <label>Sale Stage</label>
-                                                                                        <select name="sale_stage" id="sale_stage" class="form-control">
-                                                                                            <option value="New">New</option>
-                                                                                            <option value="Qualified">Qualified</option>
-                                                                                            <option value="Quotation">Quatation</option>
-                                                                                            <option value="Invoicing">Invoicing</option>
-                                                                                            <option value="Win">Negotiation </option>
-                                                                                            <option value="Lost">Lost</option>
-                                                                                        </select>
-                                                                                    </div>
-                                                                                    <div class="submit-section text-center">
-                                                                                        <button class="btn btn-primary submit-btn">Submit</button>
-                                                                                    </div>
-                                                                                </form>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
                                                             </div>
                                                         </div>
                                                         <div class="task-board-body">
@@ -569,7 +311,7 @@
                                                     </span>
                                                                 <span class="task-users">
                                                         <img src="{{url(asset('img/profiles/avatar-12.jpg'))}}" alt="" class="task-avatar" width="24" height="24">
-                                                            <span>{{$deal->employee->name}}</span>
+                                                            <span>{{$deal->employee->name??''}}</span>
                                                     </span>
                                                             </div>
                                                         </div>
@@ -579,19 +321,9 @@
                                         @endforeach
                                     </div>
                                 </div>
-
-                                <div class="kanban-list kanban-primary">
+                                <div class="kanban-list kanban-danger">
                                     <div class="kanban-header">
                                         <span class="status-title">Lost</span>
-{{--                                        <div class="dropdown kanban-action">--}}
-{{--                                            <a href="" data-toggle="dropdown">--}}
-{{--                                                <i class="fa fa-ellipsis-v"></i>--}}
-{{--                                            </a>--}}
-{{--                                            <div class="dropdown-menu dropdown-menu-right">--}}
-{{--                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_board">Edit</a>--}}
-{{--                                                <a class="dropdown-item" href="#">Delete</a>--}}
-{{--                                            </div>--}}
-{{--                                        </div>--}}
                                     </div>
                                     <div class="kanban-wrap">
                                         @foreach($alldeals as $deal)
@@ -606,43 +338,42 @@
                                                                 </a>
                                                                 <div class="dropdown-menu dropdown-menu-right">
                                                                     <a class="dropdown-item" href="{{route('deals.edit',$deal->id)}}">Edit</a>
-                                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_task_modal{{$deal->id}}">Change Stage</a>
                                                                     <a class="dropdown-item" href="{{route('deals.show',$deal->id)}}">Detail View</a>
                                                                     <a class="dropdown-item" data-toggle="modal" data-target="#delete_deal{{$deal->id}}">Delete</a>
                                                                 </div>
                                                                 @include('Deal.delete')
-                                                                <div id="edit_task_modal{{$deal->id}}" class="modal custom-modal fade" role="dialog">
-                                                                    <div class="modal-dialog">
-                                                                        <div class="modal-content">
-                                                                            <div class="modal-header">
-                                                                                <h4 class="modal-title">Deal Sale Stage Change</h4>
-                                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                            </div>
-                                                                            <div class="modal-body">
-                                                                                <form action="{{url("deal/status/change")}}" method="POST">
-                                                                                    {{csrf_field()}}
-                                                                                    <div class="form-group">
-                                                                                        <input type="hidden" name="deal_id" class="form-control" value="{{$deal->id}}">
-                                                                                    </div>
-                                                                                    <div class="form-group">
-                                                                                        <label>Sale Stage</label>
-                                                                                        <select name="sale_stage" id="sale_stage" class="form-control">
-                                                                                            <option value="New">New</option>
-                                                                                            <option value="Qualified">Qualified</option>
-                                                                                            <option value="Quotation">Quatation</option>
-                                                                                            <option value="Invoicing">Invoicing</option>
-                                                                                            <option value="Win">Win</option>
-                                                                                            <option value="Lost">Lost</option>
-                                                                                        </select>
-                                                                                    </div>
-                                                                                    <div class="submit-section text-center">
-                                                                                        <button class="btn btn-primary submit-btn">Submit</button>
-                                                                                    </div>
-                                                                                </form>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+                                                                {{--<div id="edit_task_modal{{$deal->id}}" class="modal custom-modal fade" role="dialog">--}}
+                                                                    {{--<div class="modal-dialog">--}}
+                                                                        {{--<div class="modal-content">--}}
+                                                                            {{--<div class="modal-header">--}}
+                                                                                {{--<h4 class="modal-title">Deal Sale Stage Change</h4>--}}
+                                                                                {{--<button type="button" class="close" data-dismiss="modal">&times;</button>--}}
+                                                                            {{--</div>--}}
+                                                                            {{--<div class="modal-body">--}}
+                                                                                {{--<form action="{{url("deal/status/change")}}" method="POST">--}}
+                                                                                    {{--{{csrf_field()}}--}}
+                                                                                    {{--<div class="form-group">--}}
+                                                                                        {{--<input type="hidden" name="deal_id" class="form-control" value="{{$deal->id}}">--}}
+                                                                                    {{--</div>--}}
+                                                                                    {{--<div class="form-group">--}}
+                                                                                        {{--<label>Sale Stage</label>--}}
+                                                                                        {{--<select name="sale_stage" id="sale_stage" class="form-control">--}}
+                                                                                            {{--<option value="New">New</option>--}}
+                                                                                            {{--<option value="Qualified">Qualified</option>--}}
+                                                                                            {{--<option value="Quotation">Quatation</option>--}}
+                                                                                            {{--<option value="Invoicing">Invoicing</option>--}}
+                                                                                            {{--<option value="Win">Win</option>--}}
+                                                                                            {{--<option value="Lost">Lost</option>--}}
+                                                                                        {{--</select>--}}
+                                                                                    {{--</div>--}}
+                                                                                    {{--<div class="submit-section text-center">--}}
+                                                                                        {{--<button class="btn btn-primary submit-btn">Submit</button>--}}
+                                                                                    {{--</div>--}}
+                                                                                {{--</form>--}}
+                                                                            {{--</div>--}}
+                                                                        {{--</div>--}}
+                                                                    {{--</div>--}}
+                                                                {{--</div>--}}
                                                             </div>
                                                         </div>
                                                         <div class="task-board-body">
@@ -658,7 +389,7 @@
                                                     </span>
                                                                 <span class="task-users">
                                                                     <img src="{{url(asset('img/profiles/avatar-12.jpg'))}}" alt="" class="task-avatar" width="24" height="24">
-                                                                <span>{{$deal->employee->name}}</span>
+                                                                <span>{{$deal->employee->name??''}}</span>
                                                             </span>
                                                             </div>
                                                         </div>
@@ -669,7 +400,6 @@
                                     </div>
 
                                 </div>
-
                             </div>
                         </div>
                     </div>

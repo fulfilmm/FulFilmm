@@ -5,7 +5,6 @@
 @endsection
 
 @section('data')
-
 <div class="row">
     <div class="col-12">
         <livewire:employee-table />

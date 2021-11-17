@@ -338,6 +338,9 @@
     </div>
     </div>
     <script>
+        $(document).ready(function () {
+            $('select').select2();
+        });
         var loadFile = function (event) {
             var reader = new FileReader();
             reader.onload = function () {

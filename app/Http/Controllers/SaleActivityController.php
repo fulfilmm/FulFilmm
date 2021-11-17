@@ -56,7 +56,7 @@ class SaleActivityController extends Controller
         if ($request->hasfile('attachment')) {
             foreach ($request->file('attachment') as $attach) {
                 $name = $attach->getClientOriginalName();
-                $attach->move(public_path() . '/attach_file/', $name,);
+                $attach->move(public_path().'/attach_file/', $name,);
                 $data[]=$name;
 
             }
@@ -131,7 +131,8 @@ class SaleActivityController extends Controller
         $addfollow->save();
     }
     public function show($id){
-        $activity=SaleActivity::with('report','employee','customer')->where('id',$id)->firstOrFail();
+        $activity=SaleActivity::with('report','employee','customer')->where('id',$id)->first();
+//        dd($activity);
         $followers=SaleActivityFollower::with('employee')->where('activity_id',$id)->get();
         $comments=SaleActivityComment::with('user')->where('saleactivity_id',$id)->get();
         $creater_comments=[];
@@ -148,13 +149,12 @@ class SaleActivityController extends Controller
             }
         }
         $emps=Employee::all();
-        $activities=SaleActivity::with('employee')->get();
+
         $unreach_activity=[];
-        foreach ($activities as $activity) {
+
             if (Auth::guard('employee')->user()->id == $activity->report_to && $activity->status==0) {
                 array_push($unreach_activity,$activity);
             }
-        }
         $unfollowed_emps=[];
         foreach ($emps as $emp){
             $is_followed=SaleActivityFollower::where('emp_id',$emp->id)->where('activity_id',$id)->first();
@@ -166,6 +166,7 @@ class SaleActivityController extends Controller
         return view('activity.show',compact('activity','followers','comments','unfollowed_emps','unreach_activity','reportto_cmts','creater_comments','folloer_cmt','files'));
     }
     public function post_comment(Request $request){
+//        dd($request->all());
         $comment=new SaleActivityComment();
         $comment->comment=$request->comment;
         $comment->saleactivity_id=$request->activity_id;
@@ -174,6 +175,7 @@ class SaleActivityController extends Controller
         return redirect()->back();
     }
     public function read($id){
+//        dd($id);
         $activity=SaleActivity::where('id',$id)->first();
         $activity->status=1;
         $activity->update();

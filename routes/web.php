@@ -11,6 +11,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\ExpenseClaimController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\InvoiceItemController;
 use App\Http\Controllers\LeadController;
@@ -20,10 +21,12 @@ use App\Http\Controllers\OrderlineController;
 use App\Http\Controllers\PriorityController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\QuotationController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RequestTicket;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\SaleActivityController;
 use App\Http\Controllers\SaleOrderController;
+use App\Http\Controllers\SaleTargetController;
 use App\Http\Controllers\StockTransactionController;
 use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\TicketController;
@@ -96,7 +99,7 @@ Route::middleware(['auth:employee'])->group(function () {
     Route::resource('saleorders', SaleOrderController::class);
     Route::post('add/category',[TransactionController::class,'add_category']);
 
-    Route::post("/deal/status/change", [DealController::class, 'sale_stage_change'])->name('deals.status_change');
+    Route::get("/deal/change/{status}/{id}", [DealController::class, 'sale_stage_change'])->name('deals.status_change');
     Route::post("/deal/company/create", [DealController::class, 'company_create'])->name('company_create');
     Route::get('/quotations/sendemail/{id}', [QuotationController::class, 'sendEmail'])->name('sendemail');
     Route::post('/quotations/sendmail', [QuotationController::class, 'email'])->name('quotations.mail');
@@ -241,7 +244,29 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::post('sale/activity/addfollower',[SaleActivityController::class,'follower'])->name('activity.addfollowed');
     Route::post('sale/activity/unfollow',[SaleActivityController::class,'unfollower'])->name('activity.unfollowed');
     Route::get('activity/read/{id}',[SaleActivityController::class,'read'])->name('read');
-
+    //stock
+    Route::get('stockin',[StockTransactionController::class,'stockin_form'])->name('showstockin');
+    Route::post('stockin',[StockTransactionController::class,'stock_in'])->name('stockin');
+    Route::get('stockout',[StockTransactionController::class,'stockout_form'])->name('showstockout');
+    Route::post('stockout',[StockTransactionController::class,'stockout'])->name('stockout');
+    Route::get('stocks/index',[StockTransactionController::class,'index'])->name('stocks.index');
+    Route::get('stock/transfer',[StockTransactionController::class,'transfer'])->name('show.transfer');
+    Route::post('transfer',[StockTransactionController::class,'stock_transfer'])->name('stocks.transfer');
+    Route::get('transfer/index',[StockTransactionController::class,'transfer_record'])->name('transfer.index');
+    Route::get('stocks',[StockTransactionController::class,'stock'])->name('stocks');
+    //sale dashboard
+    Route::resource('saletargets',SaleTargetController::class);
+    Route::get('sale/dashboard',[SaleTargetController::class,'index'])->name('sale.dashboard');
+    Route::get('sale/performance',[ReportController::class,'SalePerformance'])->name('report.saleprformance');
+    Route::get('sale/dashbord/search',[SaleTargetController::class,'search'])->name('search.saledashboard');
+    //finance
+    Route::resource('expenseclaims',ExpenseClaimController::class);
+    Route::get('expenseclaims/status/{status}/{id}',[ExpenseClaimController::class,'status'])->name('exp_claim.status');
+    Route::get('expclaims/cash/claim/{id}',[ExpenseClaimController::class,'CashClaim'])->name('cash.claim');
+    Route::post('expenseclaims/comment/{id}',[ExpenseClaimController::class,'comment'])->name('exp_claim.comment');
+    Route::get('expenseclaims/comment/delete/{id}',[ExpenseClaimController::class,'commentDelete'])->name('exp_claim.comment_delete');
+    Route::get('add/permission',[RoleController::class,'permission_create'])->name('permission.create');
+    Route::post('add/permission',[RoleController::class,'permission_store'])->name('permission.store');
 });
 
 //Route::resource('inqueries',InqueryController::class)->only('create','store');
@@ -262,6 +287,7 @@ Route::middleware(['auth:customer'])->group(function () {
     Route::get('customer/order', [CustomerProtal::class, 'dashboard'])->name('customer.orders');
     Route::get('customer/order/{id}', [CustomerProtal::class, 'dashboard'])->name('order.show');
     Route::resource('orders', SaleOrderController::class);
+
 });
 
 Route::get('test', function () {
@@ -284,12 +310,3 @@ Route::get('companies-card', [CompanyController::class, 'card'])->name('companie
 Route::resource('request_tickets', RequestTicket::class)->only('create', 'store');
 
 //new
-Route::get('stockin',[StockTransactionController::class,'stockin_form'])->name('showstockin');
-Route::post('stockin',[StockTransactionController::class,'stock_in'])->name('stockin');
-Route::get('stockout',[StockTransactionController::class,'stockout_form'])->name('showstockout');
-Route::post('stockout',[StockTransactionController::class,'stockout'])->name('stockout');
-Route::get('stocks/index',[StockTransactionController::class,'index'])->name('stocks.index');
-Route::get('stock/transfer',[StockTransactionController::class,'transfer'])->name('show.transfer');
-Route::post('transfer',[StockTransactionController::class,'stock_transfer'])->name('stocks.transfer');
-Route::get('transfer/index',[StockTransactionController::class,'transfer_record'])->name('transfer.index');
-Route::get('stocks',[StockTransactionController::class,'stock'])->name('stocks');

@@ -30,7 +30,7 @@ class CustomerAuth extends Controller
 //           dd();
            return redirect(route('home'));
        } else {
-           return redirect()->back()->with('errors','These credentials do not match our records.');
+           return $this->logout($request)->withErrors(['email' => 'Incorrect email and password!']);
        }
 
 //       dd('here');

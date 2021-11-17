@@ -25,6 +25,8 @@ trait StockTrait
             $new_stock->variant_id=$request['variantion_id'];
             $new_stock->warehouse_id=$request['warehouse_id'];
             $new_stock->stock_balance=$request['qty'];
+            $new_stock->available=$request['qty'];
+            $new_stock->alert_qty=$request['alert_qty'];
             $new_stock->save();
         }else{
             $stock->stock_balance=$stock->stock_balance + $request['qty'];

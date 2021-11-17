@@ -3,6 +3,7 @@
     svg{
         height: 20px;
     }
+
 </style>
 @section('data')
     <div class="row staff-grid-row">

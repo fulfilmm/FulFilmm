@@ -34,7 +34,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fa fa-money"></i></span>
                                     </div>
-                                    <input type="text" class="form-control" id="amount" name="amount">
+                                    <input type="text" class="form-control" id="amount" name="amount" value="{{$exp_claim->total??''}}">
                                     <div class="input-group-prepend">
                                         <select name="currency" id="" class="select">
                                             <option value="MMK">MMK</option>
@@ -78,8 +78,8 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="revenue_description">Description</label>
-                                <textarea name="description" id="revenue_description" cols="30" rows="5" class="form-control">
-
+                                <textarea name="description" id="desc" cols="30" rows="5" class="form-control">
+                                   {!! $exp_claim->description??'' !!}
                                 </textarea>
                             </div>
                         </div>
@@ -165,5 +165,14 @@
         </div>
 
     </div>
-    @include('transaction.add_category')
+    {{--@include('transaction.add_category')--}}
+    <script>
+        ClassicEditor.create($('#desc')[0], {
+            toolbar: ['heading', 'bold', 'italic', 'undo', 'redo', 'numberedList', 'bulletedList', 'insertTable']
+        });
+        $(document).ready(function () {
+            $('select').select2();
+        });
+    </script>
+
 @endsection

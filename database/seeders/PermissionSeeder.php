@@ -15,7 +15,7 @@ class PermissionSeeder extends Seeder
     protected $permissions = [
         'approvals','cases','comments','companysettings', 'companies', 'customers','deals','departments',
         'employees','groups','invoices','leads','meetings','minutes',
-        'products','permissions','priorities','quotations','quotation_items','roles','rooms','senders','tickets','accounts'
+        'products','permissions','priorities','quotations','quotation_items','roles','rooms','senders','tickets','accounts','expenseclaims'
     ];
     public function run()
     {
@@ -76,6 +76,34 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'activity.comment', 'display_name' => 'Post Comment in activity','type'=>'activity', "guard_name" => 'employee']);
         Permission::create(['name' => 'activity.addfollowed', 'display_name' => 'Add follower in activity','type'=>'activity', "guard_name" => 'employee']);
         Permission::create(['name' => 'activity.unfollowed', 'display_name' => 'Remove follower in activity','type'=>'activity', "guard_name" => 'employee']);
+        Permission::create(['name'=>'transfer.index','display_name'=>'Stock Transfer Record','type'=>'Stocks','guard_name'=>'employee']);
+        Permission::create(['name'=>'stocks','display_name'=>'Stock','type'=>'Stocks','guard_name'=>'employee']);
+        Permission::create(['name'=>'permission.store','display_name'=>'Permission Store','type'=>'permissions','guard_name'=>'employee']);
+        Permission::create(['name'=>'permission.create','display_name'=>'Permission Create','type'=>'permissions','guard_name'=>'employee']);
+        Permission::create(['name'=>'showstockin','display_name'=>'Stock In Create Form','type'=>'Stocks','guard_name'=>'employee']);
+        Permission::create(['name'=>'stockin','display_name'=>'Stock In store','type'=>'Stocks','guard_name'=>'employee']);
+        Permission::create(['name'=>'showstockout','display_name'=>'Stock Out From','type'=>'Stocks','guard_name'=>'employee']);
+        Permission::create(['name'=>'stockout','display_name'=>'Stock Out','type'=>'Stocks','guard_name'=>'employee']);
+        Permission::create(['name'=>'stocks.index','display_name'=>'Stock Transaction Index','type'=>'Stocks','guard_name'=>'employee']);
+        Permission::create(['name'=>'show.transfer','display_name'=>'Stocks Transfer Form','type'=>'Stocks','guard_name'=>'employee']);
+        Permission::create(['name'=>'stocks.transfer','display_name'=>'Stocks Transfer','type'=>'Stocks','guard_name'=>'employee']);
+        Permission::create(['name'=>'transfer.index','display_name'=>'Stock Transfer Record','type'=>'Stocks','guard_name'=>'employee']);
+        Permission::create(['name'=>'stocks','display_name'=>'Stock Balance','type'=>'Stocks','guard_name'=>'employee']);
+        Permission::create(['name'=>'saletargets.index','display_name'=>'Sale target index','type'=>'saletargets','guard_name'=>'employee']);
+        Permission::create(['name'=>'saletargets.create','display_name'=>'Sale target create','type'=>'saletargets','guard_name'=>'employee']);
+        Permission::create(['name'=>'saletargets.store','display_name'=>'Sale target store','type'=>'saletargets','guard_name'=>'employee']);
+        Permission::create(['name'=>'saletargets.edit','display_name'=>'Sale target edit','type'=>'saletargets','guard_name'=>'employee']);
+        Permission::create(['name'=>'saletargets.update','display_name'=>'Sale target update','type'=>'saletargets','guard_name'=>'employee']);
+        Permission::create(['name'=>'saletargets.show','display_name'=>'Sale target show','type'=>'saletargets','guard_name'=>'employee']);
+        Permission::create(['name'=>'saletargets.destory','display_name'=>'Sale target destory','type'=>'saletargets','guard_name'=>'employee']);
+        Permission::create(['name'=>'sale.dashboard','display_name'=>'Sale Dashboard','type'=>'Sale','guard_name'=>'employee']);
+        Permission::create(['name'=>'search.saledashboard','display_name'=>'Sale Dashboard filter','type'=>'Sale','guard_name'=>'employee']);
+        Permission::create(['name'=>'report.saleprformance','display_name'=>'Sale Person report','type'=>'Sale','guard_name'=>'employee']);
+        Permission::create(['name'=>'exp_claim.status','display_name'=>'Expense Claim Status Change','type'=>'expenseclaims','guard_name'=>'employee']);
+        Permission::create(['name'=>'cash.claim','display_name'=>'Expense Claim Cash status Change','type'=>'expenseclaims','guard_name'=>'employee']);
+        Permission::create(['name'=>'exp_claim.comment','display_name'=>'Expense Claim comment','type'=>'expenseclaims','guard_name'=>'employee']);
+        Permission::create(['name'=>'exp_claim.comment_delete','display_name'=>'Expense Claim comment delete','type'=>'expenseclaims','guard_name'=>'employee']);
+
     }
 
     private function createResourcePermissions($resource)

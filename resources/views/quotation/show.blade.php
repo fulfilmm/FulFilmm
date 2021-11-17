@@ -68,7 +68,6 @@
                             <th>Description</th>
                             <th>Quantity</th>
                             <th>Price</th>
-                            <th>Taxes(%)</th>
                             <th>Total</th>
                             </thead>
                             <tbody id="tbody">
@@ -88,7 +87,6 @@
                                     <td>{{$order->description}}</td>
                                     <td>{{$order->quantity}}</td>
                                     <td>{{$order->price}}</td>
-                                    <td>{{$order->tax}}%</td>
                                     <td>{{$order->total_amount}}
                                         <input type="hidden" class="total" value="{{$order->total_amount}}">
                                     </td>
@@ -98,6 +96,12 @@
                             <tr>
                                 <td></td>
                                 <td></td>
+                                <th colspan="2">Total</th>
+
+                                <td>{{$quotation->total}}</td>
+                            </tr>
+                            <tr>
+                                <td></td>
                                 <td></td>
                                 <th colspan="2">Discount</th>
 
@@ -106,12 +110,10 @@
                             <tr>
                                 <td></td>
                                 <td></td>
-                                <td></td>
                                 <th colspan="2">Tax (Rate %)</th>
-                                <td>{{$quotation->tax->name}} ({{$quotation->tax->rate}} %)</td>
+                                <td>{{$quotation->tax_amount}} ({{$quotation->tax->rate}} %)</td>
                             </tr>
                             <tr>
-                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <th colspan="2">Grand Total</th>

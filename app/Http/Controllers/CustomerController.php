@@ -12,9 +12,9 @@ use App\Models\Employee;
 use App\Models\Invoice;
 use App\Models\lead_comment;
 use App\Models\lead_follower;
-use App\Models\leadModel;
 use App\Models\next_plan;
 use App\Models\Quotation;
+use App\Models\SalePipelineRecord;
 use App\Models\tags_industry;
 use App\Models\ticket;
 use App\Models\ticket_sender;
@@ -22,15 +22,13 @@ use App\Repositories\Contracts\CompanyContract;
 use App\Repositories\Contracts\CustomerContract;
 use Carbon\Carbon;
 use Exception;
-use Faker\Core\Number;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
-use function Livewire\str;
+
 use Maatwebsite\Excel\Facades\Excel;
-use phpDocumentor\Reflection\Types\Integer;
 
 class CustomerController extends Controller
 {
@@ -128,6 +126,34 @@ class CustomerController extends Controller
         ];
         try{
             $this->customerContract->create($data);
+            if($request->customer_type=='Lead'){
+                $customer=Customer::orderBy('id', 'desc')->first();
+                $last_deal=deal::orderBy('id', 'desc')->first();
+
+                if ($last_deal!=null) {
+                    // Sum 1 + last id
+                    $last_deal->deal_id++;
+                    $deal_id = $last_deal->deal_id;
+                } else {
+                    $deal_id='Deal'."-0001";
+                }
+                $deal=new deal();
+                $deal->deal_id=$deal_id;
+                $deal->amount=0;
+                $deal->unit="MMK";
+                $deal->org_name=$request->company_id;
+                $deal->contact=$customer->id;
+                $deal->sale_stage=$request->status;
+                $deal->lead_title=$request->title;
+                $deal->created_id=Auth::guard('employee')->user()->id;
+                $deal->save();
+                $deal_record=new SalePipelineRecord();
+                $deal_record->state=$request->status;
+                $deal_record->deal_id=$deal->id;
+                $deal_record->emp_id=Auth::guard('employee')->user()->id;
+                $deal_record->save();
+
+            }
         return redirect()->route('customers.index')->with('success', __('alert.create_success'));
         }catch (Exception $e){
             return $e;

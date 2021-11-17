@@ -15,7 +15,7 @@ class CreateDealsTable extends Migration
     {
         Schema::create('deals', function (Blueprint $table) {
             $table->id();
-            $table->string("name");
+            $table->string("name")->nullable();
             $table->string('deal_id');
             $table->double("amount");
             $table->string("unit");
@@ -23,16 +23,16 @@ class CreateDealsTable extends Migration
             $table->foreign("org_name")->references("id")->on("companies")->onDelete("cascade");
             $table->bigInteger("contact")->unsigned()->nullable();
             $table->foreign("contact")->references("id")->on("customers")->onDelete("cascade");
-            $table->bigInteger("assign_to")->unsigned();
+            $table->bigInteger("assign_to")->unsigned()->nullable();
             $table->foreign("assign_to")->references("id")->on("employees")->onDelete("cascade");
-            $table->timestamp("close_date");
-            $table->string("pipeline");
+            $table->timestamp("close_date")->nullable();
+            $table->string("pipeline")->nullable();
             $table->string("sale_stage");
-            $table->string("lead_source");
+            $table->string("lead_source")->nullable();
             $table->string('lead_title');
             $table->text("next_step")->nullable();
             $table->string("type")->nullable();
-            $table->integer("probability");
+            $table->integer("probability")->nullable();
             $table->string("lost_reason")->nullable();
             $table->text("description")->nullable();
             $table->bigInteger("created_id")->unsigned();

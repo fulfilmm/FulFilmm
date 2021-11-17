@@ -19,12 +19,10 @@ class CreateProductVariationsTable extends Migration
             $table->text('description')->nullable();
             $table->double('price')->default(0.0)->nullable();
             $table->double('purchase_price')->default(0.0)->nullable();
-            $table->double('qty')->default(0)->nullable();
             $table->bigInteger('warehouse_id')->unsigned()->nullable();
             $table->string('product_code')->nullable();
             $table->string('barcode')->nullable();
             $table->double('discount_rate')->nullable();
-            $table->double('alert_qty')->default(0);
             $table->dateTime('exp_date')->nullable();
             $table->text('image')->nullable();
             $table->string('size')->nullable();

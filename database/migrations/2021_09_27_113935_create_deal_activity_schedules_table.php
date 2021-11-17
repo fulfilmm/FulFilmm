@@ -17,8 +17,11 @@ class CreateDealActivitySchedulesTable extends Migration
             $table->id();
             $table->bigInteger("deal_id")->unsigned();
             $table->text("description");
-            $table->dateTime("to_date");
-            $table->dateTime("from_date");
+            $table->dateTime("to_date")->nullable();
+            $table->dateTime("from_date")->nullable();
+            $table->string('type');
+            $table->dateTime('meeting_time')->nullable();
+            $table->bigInteger('emp_id')->unsigned();
             $table->tinyInteger("work_done");
             $table->index('deal_id');
             $table->text('attach_file')->nullable();

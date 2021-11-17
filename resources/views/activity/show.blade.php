@@ -1,5 +1,10 @@
 @extends('layout.mainlayout')
 @section('noti_section')
+    <style>
+        #commentbox{
+            height: 760px;
+        }
+    </style>
     <li class="nav-item dropdown">
         <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
             <i class="fa fa-bell-o"></i> <span class="badge badge-pill">@if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->id==$activity->emp_id){{count($unreach_activity)+count($reportto_cmts)+count($folloer_cmt)}} @else {{count($unreach_activity)+count($creater_comments)+count($folloer_cmt)}} @endif</span>
@@ -13,7 +18,7 @@
                 <ul class="notification-list">
                     @foreach($unreach_activity as $alert)
                         <li class="notification-message">
-                            <a href="{{route('read',$alert->id)}}">
+                            <a href="{{route('activity.show',$alert->id)}}">
                                 <div class="media">
                                     <div class="media-body">
                                         <p class="noti-details">Add new activity <span
@@ -106,7 +111,9 @@
         </div>
         <!-- /Page Header -->
         <div class="my-2">
-            <span>Report To :</span><span class="badge badge-primary">{{$activity->report->name}}</span>
+            {{--@dd($activity)--}}
+            <span class="btn btn-primary btn-sm">Report To :{{$activity->report->name}}</span>
+            <a href="{{route('read',$activity->id)}}" class="btn btn-{{$activity->status==0?'warning':'success'}} btn-sm ml-2"><i class="fa fa-{{$activity->status==0?'close':'check'}} mr-2"></i>{{$activity->status==0?'Un':''}}Aknowledge</a>
         </div>
         <div class="row">
 
@@ -179,9 +186,9 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card" style="max-height: 600px;">
+                <div class="card" id="commentbox">
                     <div class="card-header">Comment
-                        <div class="card-body" style="overflow: scroll" >
+                        <div class="card-body" style="overflow: scroll;max-height: 600px">
                             <ul class="files-list">
                                 @foreach($comments as $comment)
                                     <div class="chat chat-left">

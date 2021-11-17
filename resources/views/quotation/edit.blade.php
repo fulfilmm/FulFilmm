@@ -111,9 +111,7 @@
                         <th scope="col" style="min-width: 150px;">Product</th>
                         <th>Quantity</th>
                         <th>Unit Price</th>
-                        <th>Taxes(%)</th>
                         <th>Total(Include Tax)</th>
-                        <th>Currency Unit</th>
                         <th>Action</th>
                         </thead>
                         <tbody id="tbody">
@@ -140,11 +138,8 @@
                                 </td>
                                 <td><input type="text" id="edit_price_{{$order->id}}" class="form-control update_order_{{$order->id}}" value="{{$order->price}}" ></td>
                                 <td>
-                                    <div class="input-group"><input type="text" class="form-control update_order_{{$order->id}}" name="tax" id="edit_product_tax_{{$order->id}}" value="{{$order->tax==0?'No Tax':$order->tax}}"><span class="input-group-text">%</span></div></td>
-                                <td>
                                     <input type="text" name="total" id="edit_total_{{$order->id}}" class="form-control update_order_{{$order->id}}" value="{{$order->total_amount}}" >
                                 </td>
-                                <td><input type="text" class="form-control update_order_{{$order->id}}" id="edit" value="{{$order->product->currency_unit}}" readonly></td>
                                 <td>
                                     <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete{{$order->id}}" href="#" ><i class="fa fa-trash-o "></i></a>
                                     @include('quotation.order_delete')
@@ -152,73 +147,57 @@
 
                                 <script>
                                     //order update
-                                    $(document).on('change', 'input', function() {
-                                        var quantity=$('#edit_quantity_{{$order->id}}').val();
-                                        var price=$('#edit_price_{{$order->id}}').val();
-                                        var total=quantity * price;
-                                        var tax=$('#edit_product_tax_{{$order->id}}').val();
-                                        var tax_amount=tax / 100 * total;
-                                        var include_tax=total + tax_amount;
-                                        $('#edit_total_{{$order->id}}').val(include_tax);
+                                    $('.update_order_{{$order->id}}').keyup( function () {
+                                        var quantity = $('#edit_quantity_{{$order->id}}').val();
+                                        var price = $('#edit_price_{{$order->id}}').val();
+                                        var total = quantity * price;
+                                        $('#edit_total_{{$order->id}}').val(total);
 
                                     });
-                                    $(document).on('change','#edit_product_{{$order->id}}',function (){
-                                        var product_id=$("#edit_product_{{$order->id}} option:selected").val();
-                                                @foreach($products as $product )
-                                        var p_id={{$product->id}}
-                                        if(p_id==product_id)
-                                        {
-                                            var tax = {{$product->taxes->rate}};
-                                            var price = {{$product->sale_price}};
-                                            $('#edit_product_tax_{{$order->id}}').val(tax);
-                                            $('#edit_price_{{$order->id}}').val(price);
+                                    $(document).on('change', '#edit_product_{{$order->id}}', function () {
+                                        var product_id = $("#edit_product_{{$order->id}} option:selected").val();
+                                                @foreach($variants as $product )
+                                        var p_id ={{$product->id}}
+                                        if (p_id == product_id) {
+                                            var edit_price = {{$product->price}};
+                                            $('#edit_price_{{$order->id}}').val(edit_price);
                                         }
                                                 @endforeach
-                                        var quantity=$('#edit_quantity_{{$order->id}}').val();
-                                        var price=$('#edit_price_{{$order->id}}').val();
-                                        var total=quantity * price;
-                                        var tax=$('#edit_product_tax_{{$order->id}}').val();
-                                        var tax_amount=tax / 100 * total;
-                                        var include_tax=total + tax_amount;
-                                        $('#edit_total_{{$order->id}}').val(include_tax);
+                                        var quantity = $('#edit_quantity_{{$order->id}}').val();
+                                        var price = $('#edit_price_{{$order->id}}').val();
+                                        var total = quantity * price;
+                                        $('#edit_total_{{$order->id}}').val(total);
                                     });
-                                    $(document).ready(function() {
-                                        $(document).on('change', ".update_order_{{$order->id}}", function () {
+                                    $(document).ready(function () {
+                                        $(".update_order_{{$order->id}}").keyup(function () {
                                             // alert("hello");
-
-                                            var desc=$('#edit_order_description_{{$order->id}}').val();
-                                            var quantity=$('#edit_quantity_{{$order->id}}').val();
-                                            var price=$('#edit_price_{{$order->id}}').val();
-                                            var tax=$('#edit_product_tax_{{$order->id}}').val();
-                                            var total=$('#edit_total_{{$order->id}}').val();
-                                            var order_id=$('#order_id_{{$order->id}}').val();
-                                            var product=$('#product_{{$order->id}}').val();
-                                            alert(product);
+                                            var quantity = $('#edit_quantity_{{$order->id}}').val();
+                                            var price = $('#edit_price_{{$order->id}}').val();
+                                            var total = $('#edit_total_{{$order->id}}').val();
+                                            var order_id = $('#order_id_{{$order->id}}').val();
+                                            var product = $('#product_{{$order->id}}').val();
                                             $.ajax({
-                                                data : {
-                                                    product_id:product,
-                                                    description:desc,
-                                                    quantity:quantity,
-                                                    price:price,
-                                                    tax:tax,
-                                                    total:total,
-                                                    order_id:order_id,
+                                                data: {
+                                                    product_id: product,
+                                                    quantity: quantity,
+                                                    price: price,
+                                                    total: total,
+                                                    order_id: order_id
                                                 },
-                                                type:'PUT',
-                                                url:"{{route('quotation_items.update',$order->id)}}",
+                                                type: 'PUT',
+                                                url: "{{route('quotation_items.update',$order->id)}}",
                                                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                                                success:function(data){
+                                                success: function (data) {
                                                     console.log(data);
-                                                    $("#home").load(location.href + " #home>* ");
-                                                    var alltotal=[];
-                                                    $('.total').each(function(){
+                                                    var alltotal = [];
+                                                    $('.total').each(function () {
                                                         alltotal.push(this.value);
                                                     });
-                                                    var grand_total=0;
-                                                    for (var i=0;i<alltotal.length;i++){
-                                                        grand_total=parseFloat(grand_total)+parseFloat(alltotal[i]);
+                                                    var grand_total = 0;
+                                                    for (var i = 0; i < alltotal.length; i++) {
+                                                        grand_total = parseFloat(grand_total) + parseFloat(alltotal[i]);
                                                     }
-                                                    $('#grand_total').val(grand_total);
+                                                    $('#total').val(grand_total);
 
                                                 }
                                             });
@@ -229,20 +208,52 @@
                         @endforeach
                         </tbody>
                         <tr>
+                            <td></td>
+                            <td></td>
 
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <th>Total</th>
+
+                            <td id="" colspan="2"><input class="form-control" type="text" id="total" value="{{$grand_total}}">
+                            </td>
                         </tr>
                         <tr>
                             <td></td>
                             <td></td>
+                            <th>Discount</th>
+                            <td id="discount_div" colspan="2"><input class="form-control" type="text" id="discount" value="{{$quotation->discount}}" ></td>
+                        </tr>
+                        <tr>
                             <td></td>
                             <td></td>
+                            <th>Tax</th>
+
+                            <td id="tax" colspan="2">
+                                <div class="input-group">
+                                    <input type="number" id="tax_amount" class="form-control">
+                                    <select name="" id="tax" class="form-control">
+                                        @foreach($taxes as $tax)
+                                            <option value="{{$tax->id}}" {{$tax->id==$quotation->tax_id?'selected':''}}>{{$tax->name}} ({{$tax->rate}} %)</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                        </tr>
+                        {{--<tr>--}}
+                        {{--<td></td>--}}
+                        {{--<td></td>--}}
+                        {{--<td></td>--}}
+                        {{--<th>Discount</th>--}}
+
+                        {{--<td id="grand_total_div"><input class="form-control" type="text" id="grand_total" value="{{$grand_total}}"></td>--}}
+                        {{--</tr>--}}
+
+                        <tr>
+                            <td></td>
+                            <td></td>
+
                             <th>Grand Total</th>
 
-                            <td><input class="form-control" type="text" id="grand_total" value="{{$grand_total}}"></td>
+                            <td id="" colspan="2"><input class="form-control" type="text" id="grand_total" value="{{$grand_total}}">
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -254,11 +265,55 @@
     </div>
     <!-- /Content End -->
     </div>
-    @include('customer.quickcustomer')
     <!-- /Page Content -->
     <!-- /Page Wrapper -->
     <script>
+        $(document).ready(function () {
+            var tax=$('#tax option:selected').val();
+            @foreach($taxes as $tax)
+            if(tax=="{{$tax->id}}")
+                var tax_rate={{$tax->rate}};
+                    @endforeach
 
+            var total = $('#total').val();
+            var tax_amount=total*(tax_rate/100);
+            var tax_include=(total-0)+tax_amount;
+            var discount = $('#discount').val();
+            var grand =tax_include-discount;
+            $('#grand_total').val(grand);
+            $('#tax_amount').val(tax_amount);
+        });
+        $('input').keyup( function () {
+            var tax=$('#tax option:selected').val();
+            @foreach($taxes as $tax)
+            if(tax=="{{$tax->id}}")
+                var tax_rate={{$tax->rate}};
+                    @endforeach
+
+            var total = $('#total').val();
+            var tax_amount=total*(tax_rate/100);
+            var tax_include=(total-0)+tax_amount;
+            var discount = $('#discount').val();
+            var grand =tax_include-discount;
+            $('#grand_total').val(grand);
+            $('#tax_amount').val(tax_amount);
+
+        });
+        $(document).on('change','#tax',function () {
+            var tax=$('#tax option:selected').val();
+            @foreach($taxes as $tax)
+            if(tax=="{{$tax->id}}")
+                var tax_rate={{$tax->rate}};
+                    @endforeach
+
+            var total = $('#total').val();
+            var tax_amount=total*(tax_rate/100);
+            var tax_include=(total-0)+tax_amount;
+            var discount = $('#discount').val();
+            var grand =tax_include-discount;
+            $('#grand_total').val(grand);
+            $('#tax_amount').val(tax_amount);
+        });
         $(document).ready(function() {
             $(document).on('change', '#product', function () {
                 var quotation_id=$('#form_id').val();
@@ -300,6 +355,10 @@
                 var grand_total=$('#grand_total').val();
                 var deal_id=$('#deal_id option:selected').val();
                 var term_condition=$("#term_and_condition").val();
+                var tax_id=$('#tax option:selected').val();
+                var discount=$('#discount').val();
+                var total=$('#total').val();
+                var tax_amount=$('#tax_amount').val();
 // alert(term_condition);
                 $.ajax({
                     data : {
@@ -309,7 +368,11 @@
                         payment_term:pay_term,
                         grand_total:grand_total,
                         term_and_condition:term_condition,
-                        deal_id:deal_id
+                        deal_id:deal_id,
+                        tax_id:tax_id,
+                        discount:discount,
+                        total:total,
+                        tax_amount:tax_amount
                     },
                     type:'PUT',
                     url:"{{route('quotations.update',$quotation->id)}}",

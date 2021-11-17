@@ -39,6 +39,7 @@ class RoleController extends Controller
     public function store(Request $req)
     {
         //
+//        dd($req);
         Role::create(['name' => $req->name, 'guard_name' => 'employee']);
         return redirect('roles')->with('success', __('alert.create_success'));
     }
@@ -54,13 +55,14 @@ class RoleController extends Controller
         //
         $permissions = Permission::all();
         $type = Permission::all()->pluck('type', 'id');
-        $hasPermissions = $role->permissions->pluck('name');
-//         dd($permissions);
+        $hasPermissions = $role->permissions->pluck('id');
+//         dd($hasPermissions);
         return view('role.show', compact('role', 'permissions', 'hasPermissions','type'));
     }
 
     public function assignPermission($id, Request $req)
     {
+//        dd($req);
         $role = Role::find($req->id);
         $role->givePermissionTo($req->permissions);
 
@@ -104,5 +106,12 @@ class RoleController extends Controller
         //
         $role->delete();
         return redirect('roles')->with('success', __('alert.delete_success'));
+    }
+    public function permission_create(){
+        return view('permission.permissionadd');
+    }
+    public function permission_store(Request $request){
+        Permission::create($request->all());
+        return  redirect()->back();
     }
 }

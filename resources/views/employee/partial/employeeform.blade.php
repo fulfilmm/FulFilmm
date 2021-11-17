@@ -113,6 +113,9 @@
     function openSelect(file) {
         $(file).trigger('click');
     }
+    $(document).ready(function () {
+        $('select').select2();
+    });
 </script>
 {{-- {{dd($errors->all())}} --}}
 

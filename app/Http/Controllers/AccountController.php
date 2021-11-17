@@ -44,10 +44,20 @@ class AccountController extends Controller
             'name'=>'required',
             'number'=>'required',
             'currency'=>'required',
-            'company_id'=>'required'
 
         ]);
-        Account::create($request->all());
+        $account=new Account();
+        $account->name=$request->name;
+        $account->number=$request->number;
+        $account->currency=$request->currency;
+        $account->company_id=$request->company_id;
+        $account->bank_address=$request->bank_address;
+        $account->balance=$request->balance;
+        $account->opening_balance=$request->balance;
+        $account->enabled=$request->enable??0;
+        $account->bank_name=$request->bank_name;
+        $account->bank_phone=$request->bank_phone;
+        $account->save();
         return redirect(route('accounts.index'))->with('success','New Account Create Success');
     }
 

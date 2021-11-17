@@ -52,7 +52,7 @@
                     <li class="nav-item">
                         @php $j=$i+1; @endphp
                         <a class="nav-link {{$i==0?'active':""}}" id="home-tab" data-toggle="tab" href="#variant_{{$variantions[$i]->id}}"
-                           role="tab" aria-controls="home" aria-selected="true">{{"Variant ".$j}}</a>
+                           role="tab" aria-controls="home" aria-selected="true">{{$variantions[$i]->product_code}}</a>
                     </li>
                 @endfor
             </ul>

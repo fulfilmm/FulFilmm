@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProductVariations;
+use App\Models\Stock;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
 
@@ -19,10 +20,10 @@ class WarehouseController extends Controller
 
         $warehouse_qty=[];
         foreach ($warehouses as $warehouse){
-            $total_quantiy=ProductVariations::where('warehouse_id',$warehouse->id)->get();
+            $total_quantiy=Stock::where('warehouse_id',$warehouse->id)->get();
             $total=0;
             foreach ($total_quantiy as $qty){
-                    $total=$total+$qty->qty;
+                    $total=$total+$qty->stock_balance;
             }
             $warehouse_qty[$warehouse->id]=$total;
         }
@@ -61,7 +62,9 @@ class WarehouseController extends Controller
      */
     public function show($id)
     {
-        //
+        $warehouse=Warehouse::where('id',$id)->firstorFail();
+        $stocks=Stock::with('warehouse','variant')->where('warehouse_id',$id)->get();
+        return view('warehouse.show',compact('warehouse','stocks'));
     }
 
     /**

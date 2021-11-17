@@ -15,7 +15,6 @@
     </style>
     <!-- Page Content -->
     <link rel="stylesheet" href="{{url(asset('customercss/customershow.css'))}}">
-     {{--<link rel="stylesheet" href="https://templates.iqonic.design/datum/laravel/public/css/custom.css">--}}
     <div class="content container">
             <div class="col-lg-12 mb-3 d-flex justify-content-between">
                 <h4 class="font-weight-bold d-flex align-items-center">Customer View</h4>

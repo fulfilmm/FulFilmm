@@ -13,6 +13,7 @@ use App\Models\Employee;
 use App\Models\product;
 use App\Models\products_category;
 use App\Models\products_tax;
+use App\Models\SalePipelineRecord;
 use App\Models\tags_industry;
 use App\Repositories\Contracts\CompanyContract;
 use App\Repositories\Contracts\CustomerContract;
@@ -37,7 +38,7 @@ class DealController extends Controller
     { $authenticate_user =Auth::guard('employee')->user();
         if ($authenticate_user->role->name=="Employee" || $authenticate_user->role->name=="TicketAdmin") {
             $alldeals=[];
-            $assigned_deal=deal::with("customer_company","customer","employee")->where("assign_to",$authenticate_user->employee->id)->get();
+            $assigned_deal=deal::with("customer_company","customer","employee")->where("assign_to",$authenticate_user->id)->get();
             foreach ($assigned_deal as $deal){
                 if($deal->created_id!=$authenticate_user->id){
                     array_push($alldeals,$deal);
@@ -116,12 +117,18 @@ class DealController extends Controller
         $deal->assign_to=$request->assign_to;
         $deal->lead_source=$request->lead_source;
         $deal->next_step=$request->next_step;
+        $deal->lead_title=$request->lead_title;
         $deal->type=$request->type;
         $deal->probability=$request->probability;
         $deal->lost_reason=$request->lost_reason;
         $deal->description=$request->description;
         $deal->created_id=Auth::guard('employee')->user()->id;
         $deal->save();
+        $deal_record=new SalePipelineRecord();
+        $deal_record->state=$request->sale_stage;;
+        $deal_record->deal_id=$deal->id;
+        $deal_record->emp_id=Auth::guard('employee')->user()->id;
+        $deal_record->save();
    return redirect('deals')->with('success','Deal create success');
     }
 
@@ -202,10 +209,15 @@ class DealController extends Controller
         $deal->delete();
         return redirect()->back();
     }
-    public function sale_stage_change(Request $request){
-        $deal=deal::where("id",$request->deal_id)->first();
-        $deal->sale_stage=$request->sale_stage;
+    public function sale_stage_change($status,$id){
+        $deal=deal::where("id",$id)->first();
+        $deal->sale_stage=$status;
         $deal->update();
+        $deal_record=new SalePipelineRecord();
+        $deal_record->state=$status;
+        $deal_record->deal_id=$deal->id;
+        $deal_record->emp_id=$deal->created_id;
+        $deal_record->save();
         return redirect()->back();
     }
     public function company_create(CompanyRequest $request){
@@ -234,6 +246,9 @@ class DealController extends Controller
         $schedule->to_date=Carbon::create($request->end_date.''.$request->time);
         $schedule->from_date=Carbon::create($request->start_date);
         $schedule->deal_id=$request->deal_id;
+        $schedule->emp_id=Auth::guard('employee')->user()->id;
+        $schedule->type=$request->type;
+        $schedule->meeting_time=Carbon::create($request->meeting_time.''.$request->time);
         $schedule->work_done=0;
         $schedule->save();
         return redirect()->back();

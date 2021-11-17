@@ -226,8 +226,6 @@
                     </div>
                 </div>
             </form>
-
-            @include('customer.quickcustomer')
         </div>
         <script>
             $(document).ready(function () {
@@ -248,5 +246,8 @@
             });
             ClassicEditor
                 .create(document.querySelector('#description'));
+            $(document).ready(function () {
+                $('select').select2();
+            });
         </script>
 @endsection

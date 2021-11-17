@@ -59,7 +59,7 @@
                                             <option value="{{$client->id}}" {{isset($complain)?($complain->email==$client->email?'selected':''):(old('client')==$client->id?'selected':'')}}>{{$client->name}}</option>
                                         @endforeach
                                     </select>
-                                    <button class="btn btn-white" type="button" data-toggle="modal" href="#add_contact" ><i class="la la-plus"></i></button>
+                                    {{--<button class="btn btn-white" type="button" data-toggle="modal" href="#add_contact" ><i class="la la-plus"></i></button>--}}
                                 </div>
                             </div>
                         </div>
@@ -68,7 +68,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Priority <span class="text-danger">*</span></label>
-                                <select class="select" name="priority">
+                                <select class="form-control" name="priority">
                                     @foreach($data['priority'] as $priority)
                                         <option value="{{$priority->id}}" {{old('priority')==$priority->id?'selected':''}}>{{$priority->priority}}</option>
                                     @endforeach
@@ -78,7 +78,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Product <span class='text-danger'>*</span></label>
-                                <select name="product_id" id="" class="select">
+                                <select name="product_id" id="" class="form-control">
                                     <option value="">None</option>
                                     @foreach($data['product'] as $product)
                                         <option value="{{$product->id}}"{{old('product_id')==$product->id?'selected':''}}>{{$product->name}}</option>
@@ -91,7 +91,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Assign Type<span class="text-danger">*</span></label>
-                                <select class="select" id="type" name="assignType">
+                                <select class="form-control" id="type" name="assignType">
                                     <option value="item0">Unassign</option>
                                     <option value="dept">Department</option>
                                     <option value="group">Group</option>
@@ -105,7 +105,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Add Followers</label>
-                                <select name="follower[]" id="follower" class="select" multiple>
+                                <select name="follower[]" id="follower" class="form-control" multiple>
                                     @foreach($data['all_emp'] as $agent)
                                         <option value="{{$agent->id}}" >{{$agent->name}}</option>
                                     @endforeach
@@ -118,7 +118,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="">Assign To <span class="text-danger">*</span>  </label>
-                                <select name="assign_id" id="assign_to" class="select">
+                                <select name="assign_id" id="assign_to" class="form-control">
                                     <option></option>
                                 </select>
                                 @error('assign_id')
@@ -129,7 +129,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="source">Source</label>
-                               <select class='select' name="source" id="source">
+                               <select class='form-control' name="source" id="source">
                                     <option value="Phone">Phone</option>
                                     <option value="Email">Email</option>
                                     <option value="Web Messager">Web Messager</option>
@@ -189,10 +189,13 @@
                     </div>
                 </form>
         </div>
-        @include('customer.quickcustomer')
+        {{--@include('customer.quickcustomer')--}}
     </div>
 
 <script>
+    $(document).ready(function () {
+        $('select').select2();
+    });
     $("#addRow").click(function () {
         var html = '';
         html += '<div id="inputFormRow">';

@@ -1,8 +1,6 @@
-<script>
-    $(document).ready(function () {
-        $('select').select2();
-    });
-</script>
+
+
+
 <script src="{{url(asset('js/swalalert.js'))}}"></script>
 <script src="{{url(asset('js/jquery_ui1_11_0.js'))}}"></script>
 <!-- Bootstrap Core JS -->
@@ -48,7 +46,9 @@
 
     <script src="{{asset('js/style.js')}}"></script>
 <script>
+
     $(document).ready(function(){
+        $('select').select();
         // Read value on page load
         $("#result b").html($("#customRange").val());
 

@@ -66,25 +66,39 @@
                                         <ul class="list-inline p-0 m-0">
                                             @foreach($schedules as $activity)
                                                 <li>
-                                                    <div class="pt-3">
-                                                        <p class="mb-0 text-muted font-weight-bold text-uppercase">{{\Carbon\Carbon::parse($activity->from_date)->toFormattedDateString()}} - {{\Carbon\Carbon::parse($activity->to_date)->toFormattedDateString()}}</p>
+                                                    <div class="pt-5">
+
+                                                        <h5>{{$activity->type}}</h5>
+                                                        <div class="timeline-dots timeline-dot1 border-primary text-primary mt-5"></div>
+                                                        @if($activity->type=='Meeting')
+
+                                                            <p class="mb-0 text-muted font-weight-bold text-uppercase">{{\Carbon\Carbon::parse($activity->meeting_time)->toFormattedDateString()}} {{date('h:i a', strtotime($activity->meeting_time))}}</p>
+                                                            @else
+                                                            <p class="mb-0 text-muted font-weight-bold text-uppercase">{{\Carbon\Carbon::parse($activity->from_date)->toFormattedDateString()}} - {{\Carbon\Carbon::parse($activity->to_date)->toFormattedDateString()}}</p>
+                                                            @endif
                                                     </div>
                                                 </li>
                                                 <li>
-                                                    <div class="timeline-dots timeline-dot1 border-primary text-primary"></div>
-
                                                     <div class="d-inline-block w-100">
-                                                        <p class="mb-0">{{$activity->description}}</p>
                                                         <div class="d-inline-block w-100">
-                                                            <p>Probablemente, la bodega más sostenible de españa</p>
+                                                            <p>{{$activity->description}}</p>
                                                         </div>
                                                         @if($activity->work_done!=1)
-                                                            @if(\Carbon\Carbon::now()>$activity->to_date)
-                                                                <a href="{{route('schedule.done',$activity->id)}}" class="btn btn-danger float-right btn-sm mr-3">Overdue Date</a>
-                                                            @else
-                                                                <a href="{{route('schedule.done',$activity->id)}}"
-                                                                   class="btn btn-primary float-right btn-sm mr-3">Done</a>
-                                                            @endif
+                                                           @if($activity->type=="Meeting")
+                                                                @if(\Carbon\Carbon::now()>$activity->meeting_time)
+                                                                    <a href="{{route('schedule.done',$activity->id)}}" class="btn btn-danger float-right btn-sm mr-3">Overdue Date</a>
+                                                                @else
+                                                                    <a href="{{route('schedule.done',$activity->id)}}"
+                                                                       class="btn btn-primary float-right btn-sm mr-3">Done</a>
+                                                                @endif
+                                                               @else
+                                                                @if(\Carbon\Carbon::now()>$activity->to_date)
+                                                                    <a href="{{route('schedule.done',$activity->id)}}" class="btn btn-danger float-right btn-sm mr-3">Overdue Date</a>
+                                                                @else
+                                                                    <a href="{{route('schedule.done',$activity->id)}}"
+                                                                       class="btn btn-primary float-right btn-sm mr-3">Done</a>
+                                                                @endif
+                                                               @endif
                                                         @else
                                                             <button class="btn btn-success float-right btn-sm mr-3"><i
                                                                         class="la la-check-circle-o"></i> Complete
@@ -146,10 +160,10 @@
                         <div class="navbar">
                             <div class="task-assign">
                                 <span class="assign-title">Assigned to </span>
-                                <a href="#" data-toggle="tooltip" data-placement="bottom" title="{{$deal->employee->name}}" class="avatar">
-                                    <img src="{{$deal->employee->profile_img!=null? url(asset('img/profiles/'.$deal->employee->profile_img)):url(asset('img/profiles/avatar-01.jpg'))}}" alt="" class="avatar avatar-sm"></a>
+                                <a href="#" data-toggle="tooltip" data-placement="bottom" title="{{$deal->employee->name??''}}" class="avatar">
+                                    <img src="{{$deal->assign_to!=null? url(asset('img/profiles/'.$deal->employee->profile_img)):url(asset('img/profiles/avatar-01.jpg'))}}" alt="" class="avatar avatar-sm"></a>
 {{--                                            <a href="#" class="followers-add" title="Reassign" data-toggle="modal" data-target="#assignee"><i class="la la-arrow-right"></i></a>--}}
-                                <span class="mt-3">{{$deal->employee->name}}</span>
+                                <span class="mt-3">{{$deal->employee->name??''}}</span>
                             </div>
                             <ul class="nav float-right custom-menu">
                                 <li class="nav-item dropdown dropdown-action">
@@ -271,15 +285,31 @@
                     <textarea name="description" id="description" cols="30" rows="2" class="form-control"></textarea>
                 </div>
                 <div class="form-group">
+                    <label for="act_type">Schedule Type</label>
+                    <select name="type" id="act_type" class="form-control" >
+                        <option value="Cold Calling">Cold Calling</option>
+                        <option value="Phone Call">Phone Call</option>
+                        <option value="Follow Up">Follow Up</option>
+                        <option value="Meeting">Meeting</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Event">Event</option>
+                        <option value="Visit">Visit</option>
+                    </select>
+                </div>
+                <div class="form-group" id="start_date_div">
                     <label for="start_date">Start Date</label>
                     <input type="date" class="form-control" id="start_date" name="start_date">
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="end_date_div">
                     <label for="end_date">End Date</label>
                     <input type="date" name="end_date" id="end_date" class="form-control">
                 </div>
+                <div class="form-group" id="meeting_time">
+                    <label>Meeting Date </label>
+                    <input type="date" class="form-control" name="meeting_time">
+                </div>
                 <div class="form-group">
-                    <label for="time">End Time</label>
+                    <label for="time" id="time_label">End Time</label>
                     <input type="time" class="form-control" id="time" name="time">
                 </div>
 
@@ -290,5 +320,24 @@
         </div>
 
     </div>
+    <script>
+       $(document).ready(function () {
+           $('#meeting_time').hide();
+           $(document).on('change','#act_type',function () {
+               var type=$(this).val();
+               if(type=='Meeting'){
+                   $('#start_date_div').hide();
+                   $('#end_date_div').hide();
+                   $('#time_label').html('Time');
+                   $('#meeting_time').show();
+               }else {
+                   $('#start_date_div').show();
+                   $('#end_date_div').show();
+                   $('#time_label').html('End Time')
+                   $('#meeting_time').hide();
+               }
+           });
+       })
+    </script>
     <!-- /Page Wrapper -->
 @endsection

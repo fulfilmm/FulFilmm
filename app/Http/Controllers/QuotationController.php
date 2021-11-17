@@ -105,12 +105,14 @@ class QuotationController extends Controller
         $quotation->quotation_id = $quotation_id;
         $quotation->deal_id = $request->deal_id;
         $quotation->exp_date = $request->expiration;
-        $quotation->sale_person_id = Auth::guard('employee')->user()->id;
+        $quotation->sale_person_id= Auth::guard('employee')->user()->id;
         $quotation->terms_conditions = $request->term_and_condition;
         $quotation->grand_total = $request->grand_total;
         $quotation->payment_term = $request->payment_term;
         $quotation->is_confirm = isset($request->confirm) ? 1 : 0;
         $quotation->tax_id=$request->tax_id;
+        $quotation->total=$request->total;
+        $quotation->tax_amount=$request->tax_amount;
         $quotation->discount=$request->discount;
         $quotation->save();
         if (isset($request->deal_id)) {
@@ -228,7 +230,9 @@ class QuotationController extends Controller
         $payterm = ["Immediate Payment", "15 Days", "15 Days", "30 Days", "45 Days", "2 Months",
             "End Of Following Month", "30% Now,Balance 60 Days"];
         $deals = deal::where('sale_stage', 'Qualified')->get();
-        return view("quotation.edit", compact('grand_total', 'deals', "allcustomers", 'payterm', "companies", "products", "quotation", 'orderline'));
+        $variants=ProductVariations::with('product')->get();
+        $taxes=products_tax::all();
+        return view("quotation.edit", compact('grand_total', 'deals', "allcustomers", 'payterm', "companies", "products", "quotation", 'orderline','variants','taxes'));
     }
 
     public function update(Request $request, $id)
@@ -236,10 +240,17 @@ class QuotationController extends Controller
 //        dd($request->all());
         $quotation = Quotation::where("id", $id)->first();
         $quotation->customer_name = $request->customer;
+        $quotation->deal_id = $request->deal_id;
         $quotation->exp_date = $request->expiration;
+        $quotation->sale_person_id = Auth::guard('employee')->user()->id;
         $quotation->terms_conditions = $request->term_and_condition;
         $quotation->grand_total = $request->grand_total;
         $quotation->payment_term = $request->payment_term;
+        $quotation->is_confirm = isset($request->confirm) ? 1 : 0;
+        $quotation->tax_id=$request->tax_id;
+        $quotation->discount=$request->discount;
+        $quotation->total=$request->total;
+        $quotation->tax_amount=$request->tax_amount;
         $quotation->update();
         return response()->json([
             'tags' => "success",

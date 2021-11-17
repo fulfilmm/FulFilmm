@@ -51,6 +51,17 @@
         <script src="{{url(asset("js/jquery-3.2.1.min.js"))}}"></script>
         {{--<script src="https://cdn.ckeditor.com/ckeditor5/22.0.0/classic/ckeditor.js"></script>--}}
         <script src="{{asset('/js/ckeditor.js')}}"></script>
+        <script src="{{url(asset('js/http_cdnjs.cloudflare.com_ajax_libs_Chart.js_2.7.3_Chart.js'))}}"></script>
 
+        <script src="{{url(asset('js/http_code.highcharts.com_highcharts.src.js'))}}"></script>
+
+        <script src="{{url(asset('js/chart_exporting.js'))}}"></script>
+        <script src="{{url(asset('js/http_code.highcharts.com_modules_export-data.js'))}}"></script>
+        {{--<style>--}}
+            {{--svg{--}}
+                {{--height: 20px;--}}
+            {{--}--}}
+
+        {{--</style>--}}
 
     </head>

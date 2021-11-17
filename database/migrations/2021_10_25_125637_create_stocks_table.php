@@ -17,6 +17,8 @@ class CreateStocksTable extends Migration
             $table->id();
             $table->string('product_name');
             $table->double('stock_balance');
+            $table->double('available');
+            $table->double('alert_qty')->default(0)->nullable();
             $table->bigInteger('variant_id')->unsigned();
             $table->bigInteger('warehouse_id')->unsigned();
             $table->timestamps();

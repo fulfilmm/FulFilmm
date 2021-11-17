@@ -21,7 +21,7 @@
                     </ul>
                 </div>
                 <div class="col-auto float-right ml-auto">
-                    <form action="{{route("piechart.filter")}}" method="GET" class="navbar-form my-3 mx-3">
+                    {{--<form action="{{route("piechart.filter")}}" method="GET" class="navbar-form my-3 mx-3">--}}
                         {{csrf_field()}}
                         <div class="row">
                             <div class="form-group ml-3">
@@ -42,7 +42,7 @@
             </div>
         </div>
         <!-- /Page Header -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js"></script>
+
         <div class="row">
             <div class="col-md-4 offset-md-1 col-10 offset-1 text-center">
                 <div class="card-header-pills">

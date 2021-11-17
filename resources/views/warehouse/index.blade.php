@@ -50,6 +50,7 @@
                             <td>
                                 <a href="" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#stock{{$warehouse->id}}" data-whatever="@getbootstrap"><i class="fa fa-edit"></i></a>
                                 <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete{{$warehouse->id}}"><i class="fa fa-trash text-white"></i></a>
+                                <a href="{{route('warehouses.show',$warehouse->id)}}" class="btn btn-white btn-sm"><i class="fa fa-eye"></i></a>
                             </td>
                         </tr>
                         @include('warehouse.edit')

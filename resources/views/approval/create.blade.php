@@ -305,6 +305,9 @@
                     $('#procurement').hide();
                 }
             })
-        })
+        });
+        $(document).ready(function () {
+            $('select').select2();
+        });
     </script>
 @endsection

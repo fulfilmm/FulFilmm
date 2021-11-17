@@ -13,7 +13,7 @@
                 <ul class="notification-list">
                     @foreach($unreach_activity as $alert)
                         <li class="notification-message">
-                            <a href="{{route('read',$alert->id)}}">
+                            <a href="{{route('activity.show',$alert->id)}}">
                                 <div class="media">
                                     <div class="media-body">
                                         <p class="noti-details">Add new activity <span

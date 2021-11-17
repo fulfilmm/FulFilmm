@@ -1,3 +1,4 @@
+
 <div class="main-wrapper">
     <div class="sidebar" id="sidebar">
         <div class="sidebar-inner slimscroll">
@@ -9,9 +10,9 @@
                     <li class="submenu"><a href="#"><i class="la la-dashboard"></i> <span> Dashboard</span> <span
                                     class="menu-arrow"></span></a>
                         <ul style="display: none;">
-                            <li class="{{ Request::is('index') ? 'active' : '' }}"><a href="{{ url('/') }}">
+                            <li ><a href="{{ url('/') }}" class="{{ Request::is('/') ? 'active' : '' }}" style="text-decoration: none">
                                     Dashboard</a></li>
-                            <li class="{{ Request::is('index') ? 'active' : '' }}"><a href="{{ url('/') }}">
+                            <li ><a class="{{ Request::is('sale/dashboard') ? 'active' : '' }}" href="{{ route('sale.dashboard') }}" style="text-decoration: none">
                                     Sale Dashboard</a></li>
                         </ul>
                     </li>
@@ -19,40 +20,42 @@
                         <a href="#"><i class="la la-cogs"></i> <span> Settings</span> <span
                                     class="menu-arrow"></span></a>
                         <ul style="display: none;">
-                            <li><a class="{{ Request::is('theme.setting') ? 'active' : '' }}"
-                                   href="{{ route('theme.setting') }}">Theme Color</a></li>
-                            <li><a class="{{ Request::is('companysettings') ? 'active' : '' }}"
-                                   href="{{ route('companysettings.create') }}">Company Settings</a></li>
-                            <li><a class="{{ Request::is('companysettings') ? 'active' : '' }}"
-                                   href="{{ route('companysettings.prefix') }}">Prefix Settings</a></li>
-                            <li><a class="{{ Request::is('emailsetting') ? 'active' : '' }}"
-                                   href="{{ route('emailsetting') }}">Email Settings</a></li>
+                            <li><a class="{{ Request::is('theme/color') ? 'active' : '' }}"
+                                   href="{{ route('theme.setting') }}" style="text-decoration: none">Theme Color</a></li>
+                            <li><a class="{{ Request::is('companysettings/create') ? 'active' : '' }}"
+                                   href="{{ route('companysettings.create') }}" style="text-decoration: none">Company Settings</a></li>
+                            <li><a class="{{ Request::is('setting/prefix') ? 'active' : '' }}"
+                                   href="{{ route('companysettings.prefix') }}" style="text-decoration: none">Prefix Settings</a></li>
+                            <li><a class="{{ Request::is('setting/email') ? 'active' : '' }}"
+                                   href="{{ route('emailsetting') }}" style="text-decoration: none">Email Settings</a></li>
+                            <li><a class="{{ Request::is('add/permission') ? 'active' : '' }}"
+                                   href="{{ route('permission.create') }}" style="text-decoration: none">Add Permission</a></li>
                             <li class="submenu">
                                 <a href="#"> <span> Roles</span> <span class="menu-arrow"></span></a>
                                 <ul style="display: none;">
 
-                                    <li><a class="{{ Request::is('roles') ? 'active' : '' }}" href="{{ route('roles.index') }}">All
+                                    <li><a class="{{ Request::is('roles') ? 'active' : '' }}" href="{{ route('roles.index') }}" style="text-decoration: none">All
                                             Roles</a></li>
 
                                     <li><a class="{{ Request::is('roles/create') ? 'active' : '' }}"
-                                           href="{{ route('roles.create') }}">Create Role</a></li>
+                                           href="{{ route('roles.create') }}" style="text-decoration: none">Create Role</a></li>
 
                                 </ul>
                             </li>
-                            <li><a class="{{ Request::is('taxes') ? 'active' : '' }}"
-                                   href="{{ route('taxes') }}">Tax Setting</a></li>
+                            <li><a class="{{ Request::is('product/tax') ? 'active' : '' }}"
+                                   href="{{ route('taxes') }}" style="text-decoration: none">Tax Setting</a></li>
                         </ul>
                     </li>
 
-                    <li>
+                    <li class="submenu">
                         <a href="#"><i class="fa fa-th-list" style="font-size: 18px;"></i><span> Contact</span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
 
                             <li><a class="{{ Request::is('customers') ? 'active' : '' }}"
-                                   href="{{ route('customers.index') }}">Contacts</a></li>
+                                   href="{{ route('customers.index') }}" style="text-decoration: none;">Contacts</a></li>
 
                             <li><a class="{{ Request::is('customers/create') ? 'active' : '' }}"
-                                   href="{{ route('customers.create') }}">Create Contact</a></li>
+                                   href="{{ route('customers.create') }}" style="text-decoration: none">Create Contact</a></li>
                         </ul>
                     </li>
                     <li class="submenu">
@@ -61,10 +64,10 @@
                         <ul style="display: none;">
 
                             <li><a class="{{ Request::is('companies') ? 'active' : '' }}"
-                                   href="{{ route('companies.index') }}">All Companies</a></li>
+                                   href="{{ route('companies.index') }}" style="text-decoration: none">All Companies</a></li>
 
                             <li><a class="{{ Request::is('companies/create') ? 'active' : '' }}"
-                                   href="{{ route('companies.create') }}">Create Company</a></li>
+                                   href="{{ route('companies.create') }}" style="text-decoration: none">Create Company</a></li>
 
                         </ul>
                     </li>
@@ -72,8 +75,8 @@
                         <a href="#"><i class="la la-calendar" style="font-size: 18px;"></i><span> Activity</span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
 
-                            <li><a class="{{ Request::is('activity.index') ? 'active' : '' }}"
-                                   href="{{ route('activity.index') }}">Sale Activity</a></li>
+                            <li><a class="{{ Request::is('sale/activity') ? 'active' : '' }}"
+                                   href="{{ route('activity.index') }}" style="text-decoration: none">Sale Activity</a></li>
 
                         </ul>
                     </li>
@@ -83,14 +86,14 @@
                                     class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             <li class="submenu">
-                                <a href="#"><i class="la la-users mr-2" style="font-size: 18px;"></i><span> Employees</span> <span class="menu-arrow"></span></a>
+                                <a href="#" ><i class="la la-users mr-2" style="font-size: 18px;"></i><span> Employees</span> <span class="menu-arrow"></span></a>
                                 <ul style="display: none;">
 
                                     <li><a class="{{ Request::is('employees') ? 'active' : '' }}"
-                                           href="{{ route('employees.index') }}">All Employees</a></li>
+                                           href="{{ route('employees.index') }}" style="text-decoration: none">All Employees</a></li>
 
                                     <li><a class="{{ Request::is('employees/create') ? 'active' : '' }}"
-                                           href="{{ route('employees.create') }}">Create Employee</a></li>
+                                           href="{{ route('employees.create') }}" style="text-decoration: none">Create Employee</a></li>
 
                                 </ul>
                             </li>
@@ -101,10 +104,23 @@
                                 <ul style="display: none;">
 
                                     <li><a class="{{ Request::is('departments') ? 'active' : '' }}"
-                                           href="{{ route('departments.index') }}">All Departments</a></li>
+                                           href="{{ route('departments.index') }}" style="text-decoration: none">All Departments</a></li>
 
                                     <li><a class="{{ Request::is('departments/create') ? 'active' : '' }}"
-                                           href="{{ route('departments.create') }}">Create Department</a></li>
+                                           href="{{ route('departments.create') }}" style="text-decoration: none">Create Department</a></li>
+
+                                </ul>
+                            </li>
+                            <li class="submenu">
+                                <a href="#"><i class="la la-building mr-2" style="font-size: 18px;"></i> <span> Expense Claim</span> <span
+                                            class="menu-arrow"></span></a>
+                                <ul style="display: none;">
+
+                                    <li><a class="{{ Request::is('expenseclaims') ? 'active' : '' }}"
+                                           href="{{ route('expenseclaims.index') }}" style="text-decoration: none">All Expense Claim</a></li>
+
+                                    <li><a class="{{ Request::is('expenseclaims/create') ? 'active' : '' }}"
+                                           href="{{ route('expenseclaims.create') }}" style="text-decoration: none">Submit Expense Claim</a></li>
 
                                 </ul>
                             </li>
@@ -114,9 +130,9 @@
                                             class="menu-arrow"></span></a>
                                 <ul style="display: none;">
                                     <li><a class="{{ Request::is('approvals') ? 'active' : '' }}"
-                                           href="{{ route('approvals.index') }}">My Approval </a></li>
-                                    <li><a class="{{ Request::is('request.me') ? 'active' : '' }}"
-                                           href="{{ route('request.me') }}">Requests Me </a></li>
+                                           href="{{ route('approvals.index') }}" style="text-decoration: none">My Approval </a></li>
+                                    <li><a class="{{ Request::is('approvals/request/me') ? 'active' : '' }}"
+                                           href="{{ route('request.me') }}" style="text-decoration: none">Requests Me </a></li>
                                 </ul>
                             </li>
                             <li class="submenu">
@@ -125,11 +141,11 @@
                                 <ul style="display: none;">
 
                                     <li><a class="{{ Request::is('groups') ? 'active' : '' }}"
-                                           href="{{ route('groups.index') }}">All Groups</a></li>
+                                           href="{{ route('groups.index') }}" style="text-decoration: none">All Groups</a></li>
 
                                     @if(\Auth::guard('employee')->user()->role->name === 'Manager' ||  \Auth::guard('employee')->user()->role->name === 'CEO')
                                         <li><a class="{{ Request::is('groups/create') ? 'active' : '' }}"
-                                               href="{{ route('groups.create') }}">Create Groups</a></li>
+                                               href="{{ route('groups.create') }}" style="text-decoration: none">Create Groups</a></li>
                                     @endif
                                 </ul>
                             </li>
@@ -137,8 +153,8 @@
                                 <a href="#"><i class="la la-th mr-2" style="font-size: 18px"></i><span> Room</span> <span class="menu-arrow"></span></a>
                                 <ul style="display: none;">
 
-                                    <li><a class="{{ Request::is('rooms') ? 'active' : '' }}" href="{{route('rooms.index')}}">Rooms</a></li>
-                                    <li><a class="{{ Request::is('booking') ? 'active' : '' }}" href="{{route('booking')}}">Room Booking</a></li>
+                                    <li><a class="{{ Request::is('rooms') ? 'active' : '' }}" href="{{route('rooms.index')}}" style="text-decoration: none">Rooms</a></li>
+                                    <li><a class="{{ Request::is('booking') ? 'active' : '' }}" href="{{route('booking')}}" style="text-decoration: none">Room Booking</a></li>
                                     {{--                            <li><a class="{{ Request::is('cases') ? 'active' : '' }}" href="{{ route('cases.index') }}">All Cases</a></li>--}}
                                     {{--                            <li><a class="{{ Request::is('priority') ? 'active' : '' }}" href="{{ route('priorities.index') }}">All Priority</a></li>--}}
 
@@ -150,9 +166,9 @@
                                 <ul style="display: none;">
 
                                     <li><a class="{{ Request::is('meetings') ? 'active' : '' }}"
-                                           href="{{ route('meetings.index') }}">Meeting</a></li>
-                                    <li><a class="{{ Request::is('meetings.create') ? 'active' : '' }}"
-                                           href="{{ route('meetings.create') }}">Meeting Create</a></li>
+                                           href="{{ route('meetings.index') }}" style="text-decoration: none">Meeting</a></li>
+                                    <li><a class="{{ Request::is('meetings/create') ? 'active' : '' }}"
+                                           href="{{ route('meetings.create') }}" style="text-decoration: none">Meeting Create</a></li>
 
                                 </ul>
                             </li>
@@ -167,24 +183,24 @@
                         <ul style="display: none;">
                             @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Employee')
                                 <li><a class="{{ Request::is('tickets') ? 'active' : '' }}"
-                                       href="{{ route('tickets.index') }}">My Created Ticket</a></li>
+                                       href="{{ route('tickets.index') }}"> style="text-decoration: none" My Created Ticket</a></li>
                                 <li><a class="{{ Request::is('followed') ? 'active' : '' }}"
-                                       href="{{ route('followed.tickets') }}">My Follow Ticket</a></li>
+                                       href="{{ route('followed.tickets') }}" style="text-decoration: none">My Follow Ticket</a></li>
                             @else
                                 <li><a class="{{ Request::is('tickets') ? 'active' : '' }}"
-                                       href="{{ route('tickets.index') }}">Tickets</a></li>
-                                <li><a class="{{ Request::is('followed') ? 'active' : '' }}"
-                                       href="{{ route('request_tickets.index') }}">Complaints</a></li>
-                                <li><a class="{{ Request::is('followed') ? 'active' : '' }}"
-                                       href="{{ route('followed.tickets') }}">My Follow Ticket</a></li>
-                                <li><a class="{{ Request::is('cases.index') ? 'active' : '' }}"
-                                       href="{{ route('cases.index') }}">All Cases</a></li>
+                                       href="{{ route('tickets.index') }}" style="text-decoration: none">Tickets</a></li>
+                                <li><a class="{{ Request::is('request_tickets') ? 'active' : '' }}"
+                                       href="{{ route('request_tickets.index') }}" style="text-decoration: none">Complaints</a></li>
+                                <li><a class="{{ Request::is('followed/ticket') ? 'active' : '' }}"
+                                       href="{{ route('followed.tickets') }}" style="text-decoration: none">My Follow Ticket</a></li>
+                                <li><a class="{{ Request::is('cases') ? 'active' : '' }}"
+                                       href="{{ route('cases.index') }}" style="text-decoration: none">All Cases</a></li>
                                 <li><a class="{{ Request::is('priorities') ? 'active' : '' }}"
-                                       href="{{ route('priorities.index') }}">All Priority</a></li>
+                                       href="{{ route('priorities.index') }}" style="text-decoration: none">All Priority</a></li>
                                 <li><a class="{{ Request::is('piechart/report') ? 'active' : '' }}"
-                                       href="{{ url('piechart/report') }}">Pie Chart Report</a></li>
+                                       href="{{ url('piechart/report') }}" style="text-decoration: none">Pie Chart Report</a></li>
                                 <li><a class="{{ Request::is('senders') ? 'active' : '' }}"
-                                       href="{{route('senders.index')}}">Sender Information</a></li>
+                                       href="{{route('senders.index')}}" style="text-decoration: none">Sender Information</a></li>
                             @endif
 
                             {{--                            @if(\Auth::guard('employee')->user()->role->name === 'Manager' ||  \Auth::guard('employee')->user()->role->name === 'CEO')--}}
@@ -198,28 +214,29 @@
                         <ul style="display: none;">
 
                             <li >
-                                <a href="{{route('transaction.category')}}"><i class="la la-cube mr-2" style="font-size: 18px"></i><span> Category</span> </a>
-                                <a href="{{route('accounts.index')}}"><i class="la la-bank mr-2" style="font-size: 18px"></i><span> Account</span> </a>
-                                <a href="{{route('transactions.index')}}"><i class="la la-cube mr-2" style="font-size: 18px"></i><span> Transaction</span> </a>
-                                <a href="{{route('revenue')}}"><i class="la la-cube mr-2" style="font-size: 18px"></i><span> Revenue</span> </a>
-                                <a href="{{route('expense')}}"><i class="la la-cube mr-2" style="font-size: 18px"></i><span> Expense</span> </a>
+                                <a class="{{ Request::is('transaction/category') ? 'active' : '' }}" href="{{route('transaction.category')}}" style="text-decoration: none"><i class="la la-cube mr-2" style="font-size: 18px"></i><span> Category</span> </a>
+                                <a class="{{ Request::is('accounts') ? 'active' : '' }}" href="{{route('accounts.index')}}" style="text-decoration: none"><i class="la la-bank mr-2" style="font-size: 18px"></i><span> Account</span> </a>
+                                <a class="{{ Request::is('transactions') ? 'active' : '' }}" href="{{route('transactions.index')}}" style="text-decoration: none"><i class="la la-cube mr-2" style="font-size: 18px"></i><span> Transaction</span> </a>
+                                <a class="{{ Request::is('revenue') ? 'active' : '' }}" href="{{route('revenue')}}" style="text-decoration: none"><i class="la la-cube mr-2" style="font-size: 18px"></i><span> Revenue</span> </a>
+                                <a class="{{ Request::is('expense') ? 'active' : '' }}" href="{{route('expense')}}" style="text-decoration: none"><i class="la la-cube mr-2" style="font-size: 18px"></i><span> Expense</span> </a>
                             </li>
                         </ul>
+
                     </li>
                     <li class="submenu">
                         <a href="#"><i class="la la-puzzle-piece"></i> <span> Stock Managements</span> <span
                                     class="menu-arrow"></span></a>
 
                         <ul style="display: none;">
-                            <li><a class="{{ Request::is('warehouses.index') ? 'active' : '' }}"
-                                   href="{{ route('warehouses.index') }}"><i class="fa fa-home mr-2" style="font-size: 18px"></i>Warehouse</a></li>
+                            <li><a class="{{ Request::is('warehouses') ? 'active' : '' }}"
+                                   href="{{ route('warehouses.index') }}" style="text-decoration: none"><i class="fa fa-home mr-2" style="font-size: 18px"></i>Warehouse</a></li>
                             <li class="submenu">
                                 <a href="#"><i class="la la-cube mr-2" style="font-size: 18px"></i><span> Product</span> <span class="menu-arrow"></span></a>
                                 <ul style="display: none;">
-                                    <li><a class="{{ Request::is('category') ? 'active' : '' }}" href="{{route('category')}}">Products Category</a></li>
-                                    <li><a class="{{ Request::is('products') ? 'active' : '' }}" href="{{url('/products')}}">All
+                                    <li><a class="{{ Request::is('product/category') ? 'active' : '' }}" href="{{route('category')}}" style="text-decoration: none">Products Category</a></li>
+                                    <li><a class="{{ Request::is('products') ? 'active' : '' }}" href="{{url('/products')}}" style="text-decoration: none">All
                                             Products</a></li>
-                                    <li><a class="{{ Request::is('products') ? 'active' : '' }}" href="{{url('/products/create')}}">
+                                    <li><a class="{{ Request::is('products/create') ? 'active' : '' }}" href="{{url('/products/create')}}" style="text-decoration: none">
                                             Product Create</a></li>
 
                                 </ul>
@@ -227,8 +244,8 @@
                             <li class="submenu">
                                 <a href="#"><i class="la la-cube mr-2" style="font-size: 18px"></i><span>Supplier</span> <span class="menu-arrow"></span></a>
                                 <ul style="display: none;">
-                                    <li><a class="{{ Request::is('suppliers') ? 'active' : '' }}" href="{{route('suppliers')}}">All Suppliers</a></li>
-                                    <li><a class="{{ Request::is('customers.create') ? 'active' : '' }}" href="{{route('customers.create')}}">
+                                    <li><a class="{{ Request::is('suppliers') ? 'active' : '' }}" href="{{route('suppliers')}}" style="text-decoration: none">All Suppliers</a></li>
+                                    <li><a class="{{ Request::is('customers/create') ? 'active' : '' }}" href="{{route('customers.create')}}" style="text-decoration: none">
                                             Supplier Create</a></li>
 
                                 </ul>
@@ -237,17 +254,17 @@
                                 <a href="#"><i class="la la-cube mr-2" style="font-size: 18px"></i><span>Stock Transaction</span> <span class="menu-arrow"></span></a>
                                 <ul style="display: none;">
                                     <li><a class="{{ Request::is('stocks') ? 'active' : '' }}"
-                                           href="{{ route('stocks') }}">Stocks</a></li>
-                                    <li><a class="{{ Request::is('stocks.index') ? 'active' : '' }}" href="{{route('stocks.index')}}">Stock Transaction</a></li>
-                                    <li><a class="{{ Request::is('showstockin') ? 'active' : '' }}" href="{{route('showstockin')}}">
+                                           href="{{ route('stocks') }}" style="text-decoration: none">Stocks</a></li>
+                                    <li><a class="{{ Request::is('stocks/index') ? 'active' : '' }}" href="{{route('stocks.index')}}" style="text-decoration: none">Stock Transaction</a></li>
+                                    <li><a class="{{ Request::is('stockin') ? 'active' : '' }}" href="{{route('showstockin')}}" style="text-decoration: none">
                                             Stock In</a></li>
-                                    <li><a class="{{ Request::is('showstockout') ? 'active' : '' }}" href="{{route('showstockout')}}">
+                                    <li><a class="{{ Request::is('stockout') ? 'active' : '' }}" href="{{route('showstockout')}}" style="text-decoration: none">
                                             Stock Out</a></li>
 
                                 </ul>
                             </li>
-                            <li><a class="{{ Request::is('warehouses.index') ? 'active' : '' }}"
-                                   href="{{ route('transfer.index') }}"><i class="fa fa-home mr-2" style="font-size: 18px"></i>Stock Transfer</a></li>
+                            <li><a class="{{ Request::is('transfer/index') ? 'active' : '' }}"
+                                   href="{{ route('transfer.index') }}" style="text-decoration: none"><i class="fa fa-home mr-2" style="font-size: 18px"></i>Stock Transfer</a></li>
                         </ul>
 
                     </li>
@@ -256,25 +273,26 @@
                                     class="menu-arrow"></span></a>
                         <ul style="display: none;">
 
-                            <li><a class="{{ Request::is('qualified_contact') ? 'active' : '' }}" href="{{ route('qualified_contact') }}"><i class="fa fa-users mr-1" style="font-size: 18px;"></i> Customer</a></li>
+                            <li><a class="{{ Request::is('saletargets/create') ? 'active' : '' }}" href="{{ route('saletargets.create') }}" style="text-decoration: none"><i class="la la-bullseye mr-1" style="font-size: 18px;"></i> Add Sale Target</a></li>
+                            <li><a class="{{ Request::is('contact/qualified') ? 'active' : '' }}" href="{{ route('qualified_contact') }}" style="text-decoration: none"><i class="fa fa-users mr-1" style="font-size: 18px;"></i> Customer</a></li>
                             <li class="submenu">
                                 <a href="#"><img src="{{url(asset('img/icon_image/invoice.png'))}}"  alt="" width="18px" height="18px" class="mr-1" ><span> Invoice</span> <span
                                             class="menu-arrow"></span></a>
                                 <ul style="display: none;">
                                     <li><a class="{{ Request::is('invoices') ? 'active' : '' }}"
-                                           href="{{ route('invoices.index') }}">All Invoice</a></li>
-                                    <li><a class="{{ Request::is('invoices') ? 'active' : '' }}"
-                                           href="{{ route('invoices.create') }}">Invoice Create</a></li>
+                                           href="{{ route('invoices.index') }}" style="text-decoration: none">All Invoice</a></li>
+                                    <li><a class="{{ Request::is('invoices/create') ? 'active' : '' }}"
+                                           href="{{ route('invoices.create') }}" style="text-decoration: none">Invoice Create</a></li>
                                 </ul>
                             </li>
                             <li class="submenu">
                                 <a href="#"><img src="{{url(asset('img/icon_image/order24.png'))}}"  alt="" class="mr-1" width="18px" height="18px;"><span> Order</span> <span
                                             class="menu-arrow"></span></a>
                                 <ul style="display: none;">
-                                    <li><a class="{{ Request::is('invoices') ? 'active' : '' }}"
-                                           href="{{ route('saleorders.index') }}">All Orders</a></li>
-                                    <li><a class="{{ Request::is('invoices') ? 'active' : '' }}"
-                                           href="{{ route('saleorders.create') }}">Orders Create</a></li>
+                                    <li><a class="{{ Request::is('saleorders') ? 'active' : '' }}"
+                                           href="{{ route('saleorders.index') }}" style="text-decoration: none">All Orders</a></li>
+                                    <li><a class="{{ Request::is('saleorders/create') ? 'active' : '' }}"
+                                           href="{{ route('saleorders.create') }}" style="text-decoration: none">Orders Create</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -283,13 +301,13 @@
                         <a href="#"><i class="la la-cube"></i> <span>CRM</span> <span
                                     class="menu-arrow"></span></a>
                         <ul style="display: none;">
-                        <a href="{{route('leads.index')}}"><i class="la la-question-circle mr-2"></i> <span>All Leads</span></a>
+                        <li><a class="{{ Request::is('leads') ? 'active' : '' }}" href="{{route('leads.index')}}" style="text-decoration: none"><i class="la la-question-circle mr-2"></i> <span>All Leads</span></a></li>
                     <li class="submenu">
                         <a href="#"><i class="fa fa-handshake-o mr-2" style="font-size: 18px"></i><span> Deal</span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
-                            <li><a class="{{ Request::is('deals') ? 'active' : '' }}" href="{{ route('deals.index') }}">All
+                            <li><a class="{{ Request::is('deals') ? 'active' : '' }}" href="{{ route('deals.index') }}" style="text-decoration: none">All
                                     Deals</a></li>
-                            <li><a class="{{ Request::is('deals') ? 'active' : '' }}" href="{{ route('deals.create') }}">
+                            <li><a class="{{ Request::is('deals/create') ? 'active' : '' }}" href="{{ route('deals.create') }}" style="text-decoration: none">
                                     Deal Create</a></li>
                         </ul>
                     </li>
@@ -298,12 +316,24 @@
                                     class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             <li><a class="{{ Request::is('quotations') ? 'active' : '' }}"
-                                   href="{{ route('quotations.index') }}">All Quotations</a></li>
-                            <li><a class="{{ Request::is('quotations') ? 'active' : '' }}"
-                                   href="{{ route('quotations.create') }}">Quotation Create</a></li>
+                                   href="{{ route('quotations.index') }}" style="text-decoration: none">All Quotations</a></li>
+                            <li><a class="{{ Request::is('quotations/create') ? 'active' : '' }}"
+                                   href="{{ route('quotations.create') }}" style="text-decoration: none">Quotation Create</a></li>
                         </ul>
                     </li>
 
+                </ul>
+                    </li>
+                    <li class="submenu">
+                        <a href="#"><i class="la la-pie-chart mr-2" style="font-size: 18px"></i> <span> Report</span> <span
+                                    class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+
+                            <li><a class="{{ Request::is('sale/performance') ? 'active' : '' }}"
+                                   href="{{ route('report.saleprformance') }}" style="text-decoration: none">Sale Performance Report</a></li>
+
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>

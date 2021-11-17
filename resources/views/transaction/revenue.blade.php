@@ -48,9 +48,6 @@
                             <div class="form-group">
                                 <label for="account">Account</label>
                                 <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fa fa-bank"></i></span>
-                                    </div>
                                     <select name="account" id="account" class="form-control">
                                         @foreach($data['account'] as $account)
                                             <option value="{{$account->id}}">{{$account->name}}</option>
@@ -87,17 +84,13 @@
                                 <label for="category">Category</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fa fa-folder"></i></span>
+                                        <span class="input-group-text" data-toggle='modal' data-target='#add_cat'><i class="fa fa-plus"></i></span>
                                     </div>
-                                    <select name="category" id="category" class="form-control">
+                                    <select name="category" id="category" class="form-control" style="width: 90%">
                                         @foreach($data['category'] as $cat)
                                             <option value="{{$cat->name}}">{{$cat->name}}</option>
                                         @endforeach
                                     </select>
-                                    <div class="input-group-prepend">
-                                        <a href="" class="input-group-text" data-toggle='modal' data-target='#add_cat'><i
-                                                    class="fa fa-plus"></i></a>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -107,7 +100,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fa fa-refresh"></i></span>
                                 </div>
-                                <select name="recurring" id="recurring" class="form-control">
+                                <select name="recurring" id="recurring" class="form-control" style="width: 90%">
                                     @foreach($data['recurring'] as $recurring)
                                         <option value="{{$recurring}}">{{$recurring}}</option>
                                     @endforeach
@@ -121,7 +114,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fa fa-credit-card"></i></span>
                                     </div>
-                                    <select name="payment_method" id="payment_method" class="form-control ">
+                                    <select name="payment_method" id="payment_method" class="form-control " style="width: 90%">
                                         @foreach($data['payment_method'] as $payment_method)
                                             <option value="{{$payment_method}}">{{$payment_method}}</option>
                                         @endforeach
@@ -166,4 +159,9 @@
     </div>
     </div>
     @include('transaction.add_category')
+    <script>
+        $(document).ready(function () {
+            $('select').select2();
+        });
+    </script>
 @endsection

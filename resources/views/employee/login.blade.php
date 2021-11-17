@@ -51,9 +51,7 @@
 										<label for="username" class="form-label">Email</label>
 										<input name="email" type="email" class="form-control " id="username" placeholder="Enter Email" autocomplete="email" autofocus>
 										@error('email')
-										{{-- <span class="invalid-feedback" role="alert"> --}}
 										<strong class="text-danger">{{ $message }}</strong>
-										{{-- </span> --}}
 										@enderror
 									</div>
 									<div class="mb-3">
@@ -72,7 +70,7 @@
 											<span class="btn btn-light" type="button" id="password-addon"><i class="la la-eye"></i></span>
 										</div>
 										@error('password')
-										<strong>{{ $message }}</strong>
+										<strong class="text-danger">{{ $message }}</strong>
 										@enderror
 									</div>
 									<div class="row mb-4">

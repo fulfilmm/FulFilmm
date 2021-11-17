@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Jobs\leadactivityschedulemail;
 use App\Models\Account;
 use App\Models\Customer;
 use App\Models\Invoice;
@@ -12,6 +13,7 @@ use App\Models\product;
 use App\Models\products_tax;
 use App\Models\ProductVariations;
 use App\Models\Revenue;
+use App\Models\Stock;
 use App\Models\Transaction;
 use App\Models\TransactionCategory;
 use Carbon\Carbon;
@@ -139,8 +141,11 @@ class InvoiceController extends Controller
         if(count($confirm_order_item)!=0){
             $newInvoice->save();
         foreach ($confirm_order_item as $item){
+            $stock=Stock::where('variant_id',$item->variant_id)->first();
             $item->inv_id=$newInvoice->id;
             $item->update();
+            $stock->available=$stock->available-$item->quantity;
+            $stock->update();
         }
         if(isset($request->order_id)){
             $order_item=OrderItem::where('order_id',$request->order_id)->get();
@@ -214,6 +219,7 @@ class InvoiceController extends Controller
 
         }
         if($detail_inv->grand_total > $overdue_amount && $overdue_amount!=0){
+
             $detail_inv->status='Partial';
             $detail_inv->update();
             $this->add_history($id,'Partial','Change Status '.$detail_inv->invoice_id);
@@ -221,10 +227,16 @@ class InvoiceController extends Controller
             $detail_inv->status='Overdue';
             $detail_inv->update();
             $this->add_history($id,'Overdue','Change Status '.$detail_inv->invoice_id);
-        }else{
+        }elseif($overdue_amount==0){
+
             $detail_inv->status='Paid';
             $detail_inv->update();
             $this->add_history($id,'Paid','Change Status '.$detail_inv->invoice_id);
+        }else{
+
+            $detail_inv->status='Draft';
+            $detail_inv->update();
+            $this->add_history($id,'Draft','Change Status '.$detail_inv->invoice_id);
         }
         $transaction_amount=0;
         $customer=Customer::orWhere('customer_type','Customer')->orWhere('customer_type','Lead')->orWhere('customer_type','Partner')->orWhere('customer_type','Inquery')->get();
