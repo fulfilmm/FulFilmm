@@ -8,6 +8,7 @@ use App\Models\product;
 use App\Models\products_category;
 use App\Models\products_tax;
 use App\Models\ProductVariations;
+use App\Models\Stock;
 use App\Models\StockIn;
 use App\Models\Warehouse;
 use App\Traits\StockTrait;
@@ -133,8 +134,16 @@ class ProductController extends Controller
         $suppliers=Customer::where('customer_type','Supplier')->get();
         $product=product::with("category","taxes")->where("id",$id)->firstOrFail();
         $product_variant=ProductVariations::where('product_id',$id)->get();
-//        dd($product_variant);
-        return view("product.edit",compact("taxes","product","category",'warehouses','suppliers','product_variant'));
+        $stock_variant=[];
+        foreach ($product_variant as $variant){
+//            dd($variant->id);
+            $stock=Stock::where('variant_id',$variant->id)->first();
+           if($stock){
+              array_push($stock_variant,$stock);
+           }
+        }
+//dd($stock_variant);
+        return view("product.edit",compact('stock_variant',"taxes","product","category",'warehouses','suppliers','product_variant'));
     }
 
     /**
@@ -183,12 +192,10 @@ class ProductController extends Controller
                 $variation->description = $request->description[$i];
                 $variation->price = $request->price[$i];
                 $variation->purchase_price = $request->purchase_price[$i];
-                $variation->qty = $request->qty[$i];
                 $variation->warehouse_id = $request->warehouse_id[$i];
                 $variation->product_code = $request->product_code[$i];
 //           $variation->barcode=$request->barcode[$i];
                 $variation->discount_rate = $request->discount_rate[$i];
-                $variation->alert_qty = $request->alert_qty[$i];
                 $variation->size = $request->size[$i];
                 $variation->color = $request->color[$i];
                 $variation->other = $request->other[$i];
@@ -198,6 +205,7 @@ class ProductController extends Controller
                 $this->stockin($data);
             } else {
                 $variation=ProductVariations::where('id', $request->variant_id[$i])->first();
+                dd($variation);
                 $image = $request->picture[$i]??null;
                 if ($image != null) {
                     $name = $image->getClientOriginalName();
@@ -208,7 +216,7 @@ class ProductController extends Controller
                 $variation->description = $request->description[$i];
                 $variation->price = $request->price[$i];
                 $variation->purchase_price = $request->purchase_price[$i];
-                $variation->qty = $request->qty[$i];
+                $variation->qty= $request->qty[$i];
                 $variation->warehouse_id = $request->warehouse_id[$i];
                 $variation->product_code = $request->product_code[$i];
 //           $variation->barcode=$request->barcode[$i];

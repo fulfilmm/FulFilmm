@@ -251,7 +251,9 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fa fa-pencil"></i></span>
                                         </div>
-                                        <input type="number" class="form-control" name="qty[]" id="qty" value="{{$variant->qty}}">
+                                       @foreach($stock_variant as $stock)
+                                        <input type="number" class="form-control" name="qty[]" id="qty" value="{{$stock->variant_id==$variant->id?$stock->stock_balance:''}}"readonly>
+                                           @endforeach
                                     </div>
                                 </div>
                             </div>
@@ -294,7 +296,9 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fa fa-bell"></i></span>
                                         </div>
-                                        <input type="text" class="form-control" name="alert_qty[]" value="{{$variant->alert_qty}}">
+                                        @foreach($stock_variant as $stock)
+                                        <input type="text" class="form-control" name="alert_qty[]" value="{{$stock->variant_id==$variant->id?$stock->alert_qty:''}}" readonly>
+                                    @endforeach
                                     </div>
                                 </div>
                             </div>
