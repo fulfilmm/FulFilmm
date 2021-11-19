@@ -18,7 +18,7 @@ class CreateEmployeesTable extends Migration
             $table->string('name', 64);
             $table->foreignId('department_id');
             $table->string('phone', 16)->nullable();
-            $table->string('email', 32)->unique()->nullable();
+            $table->string('email', 100)->unique()->nullable();
             $table->string('work_phone', 16)->nullable();
             $table->boolean('can_login')->default(false);
             $table->boolean('can_post_assignments')->default(false);

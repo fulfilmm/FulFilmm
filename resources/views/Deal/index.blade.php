@@ -56,7 +56,7 @@
                         @foreach($alldeals as $deal)
                         <tr>
                             <td><input type="checkbox"></td>
-                            <td><a href="{{route('deals.show',$deal->id)}}">{{$deal->customer->name}}</a></td>
+                            <td><a href="{{route('deals.show',$deal->id)}}">{{$deal->customer->name??''}}</a></td>
                             <td>{{$deal->amount}} <strong>{{$deal->unit}}</strong></td>
                             <td>{{$deal->customer_company->name}}</td>
                             <td>{{$deal->created_at->toFormattedDateString()}}</td>
