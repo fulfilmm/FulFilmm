@@ -2,19 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\ProductJob;
+
 use App\Models\Customer;
 use App\Models\product;
 use App\Models\products_category;
 use App\Models\products_tax;
 use App\Models\ProductVariations;
+use App\Models\SkuValue;
 use App\Models\Stock;
-use App\Models\StockIn;
+use App\Models\VariantKey;
+use App\Models\VariantValue;
 use App\Models\Warehouse;
 use App\Traits\StockTrait;
 use Carbon\Carbon;
+use function GuzzleHttp\Promise\all;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Arr;
 use Livewire\WithPagination;
 
 class ProductController extends Controller
@@ -28,7 +31,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products=product::with('taxes','category','sub_cat')->paginate(1);
+        $products=product::with('taxes','category','sub_cat')->paginate(10);
+
         return view("product.index",compact("products"));
     }
 
@@ -43,8 +47,9 @@ class ProductController extends Controller
         $category=products_category::all();
         $warehouses=Warehouse::all();
         $suppliers=Customer::where('customer_type','Supplier')->get();
-//        dd($suppliers);
-        return view("product.create",compact("taxes","category",'warehouses','suppliers'));
+        $v_type=VariantKey::all();
+
+        return view("product.create",compact("taxes","category",'warehouses','suppliers','v_type'));
     }
 
     /**
@@ -55,8 +60,13 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-//        dd($request->all());
-//
+//        $a = array('Red', 'Green', 'yellow','Black');
+//        $b = array('Small', 'Large');
+//        $merged = array_merge($a, $b);
+//        $test=shuffle($merged);
+//        dd($merged);
+//        $variant=VariantKey::all()->pluck('name','id')->all();
+//dd(random_int(8,8));
         $product=new product();
         $product->name=$request->name;
         $product->tax=$request->tax;
@@ -78,30 +88,32 @@ class ProductController extends Controller
             $product->enable=0;
         }
         $product->save();
-        for ($i=0;$i<count($request->field_count);$i++){
-            $variation=new ProductVariations();
-            $image = $request->picture[$i]??null;
-            if($image!=null) {
-                $name = $image->getClientOriginalName();
-                $request->picture[$i]->move(public_path().'/product_picture/', $name);
-                $variation->image = $name;
-            }
-            $variation->product_id=$product->id;
-            $variation->description=$request->description[$i];
-            $variation->price=$request->price[$i];
-            $variation->purchase_price=$request->purchase_price[$i];
-            $variation->warehouse_id=$request->warehouse_id[$i];
-            $variation->product_code=$request->product_code[$i];
-//           $variation->barcode=$request->barcode[$i];
-            $variation->discount_rate=$request->discount_rate[$i];
-            $variation->size=$request->size[$i];
-            $variation->color=$request->color[$i];
-            $variation->other=$request->other[$i];
-            $variation->exp_date=Carbon::create($request->exp_date[$i]);
-            $variation->save();
-            $data=['qty'=>$request->qty[$i],'warehouse_id'=>$request->warehouse_id[$i],'supplier_id'=>$request->supplier_id,'variantion_id'=>$variation->id,'alert_qty'=>$request->alert_qty[$i]];
-            $this->stockin($data);
-        }
+        $sku_couter=0;
+       if($request->type!=null){
+           foreach ($request->type as $item=>$v){
+               $name="value".$v;
+//dd($request->$name);
+               if(isset($request->$name)){
+                   $sku_couter=$sku_couter==0?count($request->$name):$sku_couter*count($request->$name);
+                   foreach ($request->$name as $key=>$value){
+//                    dd($value);
+                       $attribute_value=new VariantValue();
+                       $attribute_value->product_id=$product->id;
+                       $attribute_value->variant_key=$v;
+                       $attribute_value->value=$value;
+                       $attribute_value->save();
+                   }
+               }
+
+
+           }
+           for ($i=0;$i<$sku_couter;$i++){
+               $sku=new Stock();
+               $sku->product_id=$product->id;
+               $sku->sku=str_pad(mt_rand(1,99999999),8,'0',STR_PAD_LEFT);
+               $sku->save();
+           }
+       }
         return redirect("/products")->with("message","Product Create Success");
 
     }
@@ -115,9 +127,10 @@ class ProductController extends Controller
     public function show($id)
     {
         $product=product::with("taxes","category")->where("id",$id)->firstOrFail();
-        $variantions=ProductVariations::where('product_id',$product->id)->get();
+        $sku_value=SkuValue::with('variant','variant_value')->where('product_id',$id)->get();
+        $sku=Stock::where('product_id',$id)->get();
 //        dd($variantions);
-        return view("product.show",compact("product",'variantions'));
+        return view("product.show",compact("product",'sku_value','sku'));
     }
 
     /**
@@ -205,7 +218,7 @@ class ProductController extends Controller
                 $this->stockin($data);
             } else {
                 $variation=ProductVariations::where('id', $request->variant_id[$i])->first();
-                dd($variation);
+//                dd($variation);
                 $image = $request->picture[$i]??null;
                 if ($image != null) {
                     $name = $image->getClientOriginalName();
@@ -216,12 +229,10 @@ class ProductController extends Controller
                 $variation->description = $request->description[$i];
                 $variation->price = $request->price[$i];
                 $variation->purchase_price = $request->purchase_price[$i];
-                $variation->qty= $request->qty[$i];
                 $variation->warehouse_id = $request->warehouse_id[$i];
                 $variation->product_code = $request->product_code[$i];
 //           $variation->barcode=$request->barcode[$i];
                 $variation->discount_rate = $request->discount_rate[$i];
-                $variation->alert_qty = $request->alert_qty[$i];
                 $variation->size = $request->size[$i];
                 $variation->color = $request->color[$i];
                 $variation->other = $request->other[$i];
@@ -332,5 +343,25 @@ class ProductController extends Controller
         }elseif ($request->action_Type="Export"){
 
         }
+    }
+    public function add_variant(Request $request){
+//        dd($request->all());
+        $is_exists=VariantKey::where('name',$request->name)->first();
+        dd($is_exists);
+        if($is_exists==null){
+            VariantKey::create($request->all());
+        }else{
+            $is_exists->active=1;
+            $is_exists->update();
+        }
+
+//      if($request->key!=null&&$request->value!=null){
+//        Session::push($request->key,$request->value);
+//       $key=Session::get('key');
+//      if(!isset($request->key,$key)){
+//       $request->session()->push('key',$request->key);
+//      }
+//
+//      }
     }
 }

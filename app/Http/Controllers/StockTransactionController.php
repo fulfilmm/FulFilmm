@@ -4,18 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use App\Models\Employee;
+use App\Models\product;
 use App\Models\ProductVariations;
+use App\Models\SkuValue;
 use App\Models\Stock;
 use App\Models\StockOut;
 use App\Models\StockTransaction;
 use App\Models\StockTransferRecord;
+use App\Models\VariantKey;
+use App\Models\VariantValue;
 use App\Models\Warehouse;
 use App\Traits\StockTrait;
 use Illuminate\Http\Request;
+use Livewire\WithPagination;
 
 class StockTransactionController extends Controller
 {
     use StockTrait;
+    use WithPagination;
 
     public function index()
     {
@@ -26,10 +32,24 @@ class StockTransactionController extends Controller
 
     public function stockin_form()
     {
-        $products = ProductVariations::with('product')->get();
+        $products =product::all();
+
+        return view('stock.product', compact('products'));
+    }
+    public function sku_value($id){
+        $product=product::where('id',$id)->first();
+        $variant_value=VariantValue::where('product_id',$id)->get();
+        $sku=Stock::where('product_id',$id)->get();
+        $attribute=[];
+        foreach ($variant_value as $v){
+            $att=VariantKey::where('id',$v->variant_key)->first();
+            if($att!=null&& !in_array($att,$attribute)){
+                array_push($attribute,$att);
+            }
+        }
         $customers = Customer::where('customer_type', 'Supplier')->get();
         $warehouses = Warehouse::all();
-        return view('stock.stockin', compact('products', 'customers', 'warehouses'));
+        return view('stock.stockin', compact('sku','product','attribute','variant_value','customers','warehouses'));
     }
 
     public function stockout_form()
@@ -45,14 +65,33 @@ class StockTransactionController extends Controller
     public function stock_in(Request $request)
     {
         $this->validate($request, ['qty' => 'required']);
-//        dd($request->all());
-        $data = ['qty' => $request->qty,
-            'warehouse_id' => $request->warehouse_id,
-            'supplier_id' => $request->supplier_id,
-            'variantion_id' => $request->variation_id
-        ];
 //        dd($data);
-        $this->stockin($data);
+        $variant_value=VariantValue::where('product_id',$request->product_id)->get();
+        $attribute=[];
+        foreach ($variant_value as $v){
+            $att=VariantKey::where('id',$v->variant_key)->first();
+            if($att!=null&& !in_array($att,$attribute)){
+                array_push($attribute,$att);
+            }
+        }
+        for ($i=0;$i<count($request->qty);$i++){
+         $stock=Stock::where('id',$request->sku_id[$i])->first();
+         $stock->available=$request->qty[$i];
+         $stock->alert_qty=$request->alert_qty[$i];
+         $stock->warehouse_id=$request->warehouse_id;
+         $stock->update();
+         foreach ($attribute as $att){
+             $name=$att->name;
+             $sku_value=new SkuValue();
+             $sku_value->product_id=$request->product_id;
+             $sku_value->variant_id=$att->id;
+             $sku_value->vaiiant_value_id=$request->$name[$i];
+             $sku_value->sku_id=$request->sku_id[$i];
+             $sku_value->save();
+         }
+
+
+        }
         return redirect(route('stocks.index'));
     }
 
@@ -88,9 +127,10 @@ class StockTransactionController extends Controller
         }
     }
     public function stock(){
-        $stocks=Stock::with('warehouse','variant')->get();
+        $stocks=Stock::with('warehouse','product')->paginate(10);
+        $sku_value=SkuValue::with('variant','variant_value')->get();
 //        dd($stocks);
-        return view('stock.stock',compact('stocks'));
+        return view('stock.stock',compact('stocks','sku_value'));
     }
     public function transfer(){
         $warehouse=Warehouse::all()->pluck('name','id')->all();

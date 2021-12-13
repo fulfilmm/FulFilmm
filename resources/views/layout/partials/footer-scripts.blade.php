@@ -11,7 +11,6 @@
 <!-- Slimscroll JS -->
 <script src="{{asset('js/jquery.slimscroll.min.js')}}"></script>
 <!-- Select2 JS -->
-<script src="{{asset('js/select2.min.js')}}"></script>
 
 <script src="{{asset('js/jquery-ui.min.js')}}"></script>
 <script src="{{asset('js/jquery.ui.touch-punch.min.js')}}"></script>
@@ -32,7 +31,7 @@
 <!-- Datatable JS -->
 <script src="{{asset('js/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('js/dataTables.bootstrap4.min.js')}}"></script>
-
+<script src="{{asset('js/select2.min.js')}}"></script>
 <!-- Summernote JS -->
 <script src="{{asset('plugins/summernote/dist/summernote-bs4.min.js')}}"></script>
 

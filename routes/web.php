@@ -12,6 +12,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\ExpenseClaimController;
+use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\InvoiceItemController;
 use App\Http\Controllers\LeadController;
@@ -20,14 +21,19 @@ use App\Http\Controllers\MinutesController;
 use App\Http\Controllers\OrderlineController;
 use App\Http\Controllers\PriorityController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PurchaseItemController;
+use App\Http\Controllers\PurchaseRequestController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RequestTicket;
+use App\Http\Controllers\RFQController;
+use App\Http\Controllers\RFQItemController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\SaleActivityController;
 use App\Http\Controllers\SaleOrderController;
 use App\Http\Controllers\SaleTargetController;
 use App\Http\Controllers\StockTransactionController;
+use App\Http\Controllers\VariantSettingController;
 use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\TicketPieChartReport;
@@ -291,12 +297,27 @@ Route::middleware(['auth:customer'])->group(function () {
 });
 
 Route::get('test', function () {
-//    $orders=\App\Models\Orderline::with('product')->get();
-//    $total=0;
-//    for ($i=0;$i<count($orders);$i++){
-//        $total=$total+$orders[$i]->total_amount;
+//    $provided = [
+//        'Shirt' => [
+//            'color' => ['green', 'red','white'],
+//            'size' => ['Small', 'Medium'],
+//            'other'=>['']
+//        ],
+//    ]; // Reduced the provided data to reduce the output for sample purposes.
+////dd($provided);
+//    $result = [];
+//    foreach ($provided as $type => $attributes) {
+//        foreach ($attributes['size'] as $color) {
+//            foreach ($attributes['color'] as $size) {
+//                foreach ($attributes['other'] as $oth) {
+//                    $result[] = compact( 'color', 'size','oth');
+//                }
+//            }
+//        }
 //    }
-//    dd(auth('api')->factory()->getTTL() * 60);
+//
+//    dd($result);
+//    dd(str_pad(mt_rand(1,99999999),8,'0',STR_PAD_LEFT));
     return view('test');
 })->name('test');
 
@@ -308,5 +329,30 @@ Route::put('roles/assign-permission/{id}', [RoleController::class, 'assignPermis
 //list routes
 Route::get('companies-card', [CompanyController::class, 'card'])->name('companies.cards');
 Route::resource('request_tickets', RequestTicket::class)->only('create', 'store');
+Route::post('product/variant/add',[VariantSettingController::class,'store'])->name('add.variant');
+Route::get('product/variant/setting',[VariantSettingController::class,'index'])->name('variant.setting');
+Route::post('/variant/value',[VariantSettingController::class,'value_add'])->name('value.add');
+Route::post('/variant/active/{id}',[VariantSettingController::class,'active'])->name('variant.active');
+Route::get('stock/in/product/{id}',[StockTransactionController::class,'sku_value'])->name('stockin.product');
+Route::resource('purchase_request',PurchaseRequestController::class);
+Route::post('/pr/item/add',[PurchaseItemController::class,'store'])->name('purchaseitem.store');
+Route::post('/pr/item/update/{id}',[PurchaseItemController::class,'update'])->name('purchaseitem.update');
+Route::post('pr/status/{id}',[PurchaseRequestController::class,'status_change'])->name('pr.status');
+Route::post('pr/comment',[PurchaseRequestController::class,'comment'])->name('pr.comment');
+Route::get('pr/comment/delet/{id}',[PurchaseRequestController::class,'cmt_delete'])->name('pr_comment.delete');
+Route::post('/pr/item/delete',[PurchaseItemController::class,'delete'])->name('pritem.delete');
+
+Route::resource('rfqs',RFQController::class);
+Route::get('prepare/rfqs/{id}',[RFQController::class,'prepare_rfq'])->name('rfq.prepare');
+Route::post('/rfq/item/add',[RFQItemController::class,'store'])->name('rfqitem.store');
+Route::post('/rfq/item/update/{id}',[RFQItemController::class,'update'])->name('rfqitem.update');
+Route::post('/rfq/item/delete',[RFQItemController::class,'destroy'])->name('rfqitem.delete');
+Route::get('/rfq/sendmail/{vendor_id}',[RFQController::class,'prepareemail'])->name('rfq.preparemail');
+Route::post('rfqs/send',[RFQController::class,'sendmail'])->name('rfq.sendmail');
+Route::get('/rfq/status/change/{id}/{status}',[RFQController::class,'statuschange'])->name('rfq.statuschange');
+Route::get('/rfq/receive/product/{id}',[RFQController::class,'productReceive'])->name('rfq.productreceive');
+Route::get('inventory',[InventoryController::class,'index'])->name('inventory.index');
+Route::get('rfq/receipt/process/',[InventoryController::class,'recipt_proceslist'])->name('receiptprocess');
+Route::get('receipt/show/{id}',[InventoryController::class,'show'])->name('receipt.show');
 
 //new

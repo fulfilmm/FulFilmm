@@ -13,6 +13,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="{{url(asset('img/favicon.png'))}}">
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="{{url(asset("css/bootstrap.min.css"))}}">
+        <link rel="stylesheet" href="{{asset("css/select2.min.css")}}">
 
         <!-- Fontawesome CSS -->
         <link rel="stylesheet" href="{{url(asset("/css/font-awesome.min.css"))}}">
@@ -21,7 +22,7 @@
         <link rel="stylesheet" href="{{url("css/line-awesome.min.css")}}">
 
         <!-- Select2 CSS -->
-        <link rel="stylesheet" href="{{asset("css/select2.min.css")}}">
+
 
         <!-- Datetimepicker CSS -->
         <link rel="stylesheet" href="{{url(asset("css/bootstrap-datetimepicker.min.css"))}}">

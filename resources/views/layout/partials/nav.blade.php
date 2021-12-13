@@ -175,8 +175,6 @@
                                                     </ul>
 
                     </li>
-
-
                     <li class="submenu">
                         <a href="#"><i class="la la-ticket"></i> <span>Complain System</span> <span
                                     class="menu-arrow"></span></a>
@@ -228,6 +226,9 @@
                                     class="menu-arrow"></span></a>
 
                         <ul style="display: none;">
+
+                            <li><a class="{{ Request::is('inventory') ? 'active' : '' }}"
+                                   href="{{ route('inventory.index') }}" style="text-decoration: none"><i class="fa fa-home mr-2" style="font-size: 18px"></i>Inventory</a></li>
                             <li><a class="{{ Request::is('warehouses') ? 'active' : '' }}"
                                    href="{{ route('warehouses.index') }}" style="text-decoration: none"><i class="fa fa-home mr-2" style="font-size: 18px"></i>Warehouse</a></li>
                             <li class="submenu">
@@ -238,6 +239,8 @@
                                             Products</a></li>
                                     <li><a class="{{ Request::is('products/create') ? 'active' : '' }}" href="{{url('/products/create')}}" style="text-decoration: none">
                                             Product Create</a></li>
+                                    <li><a class="{{ Request::is('products/variant/setting') ? 'active' : '' }}" href="{{route('variant.setting')}}" style="text-decoration: none">
+                                            Variant Setting </a></li>
 
                                 </ul>
                             </li>
@@ -268,6 +271,40 @@
                         </ul>
 
                     </li>
+                    <li class="submenu">
+                        <a href="#"><i class="la la-group"></i> <span>Purchase</span> <span
+                                    class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+                            <li class="submenu">
+                                <a href="#" ><i class="la la-cube mr-2" style="font-size: 18px;"></i><span> Purchase Request</span> <span class="menu-arrow"></span></a>
+                                <ul style="display: none;">
+
+                                    <li><a class="{{ Request::is('purchase_request') ? 'active' : '' }}"
+                                           href="{{ route('purchase_request.index') }}" style="text-decoration: none">Purchase Request</a></li>
+
+                                    <li><a class="{{ Request::is('purchase_request/create') ? 'active' : '' }}"
+                                           href="{{ route('purchase_request.create') }}" style="text-decoration: none">Create </a></li>
+
+                                </ul>
+                            </li>
+
+                            <li class="submenu">
+                                <a href="#"><i class="la la-cube mr-2" style="font-size: 18px;"></i> <span>RFQs</span> <span
+                                            class="menu-arrow"></span></a>
+                                <ul style="display: none;">
+
+                                    <li><a class="{{ Request::is('rfqs') ? 'active' : '' }}"
+                                           href="{{ route('rfqs.index') }}" style="text-decoration: none">All RFQs</a></li>
+
+                                    <li><a class="{{ Request::is('rfqs/create') ? 'active' : '' }}"
+                                           href="{{ route('rfqs.create') }}" style="text-decoration: none">Create</a></li>
+
+                                </ul>
+                            </li>
+                        </ul>
+
+                    </li>
+
                     <li class="submenu">
                         <a href="#"><i class="la la-cube"></i> <span>Sale</span> <span
                                     class="menu-arrow"></span></a>

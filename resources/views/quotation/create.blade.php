@@ -269,15 +269,6 @@
                             </td>
 
                         </tr>
-                        {{--<tr>--}}
-                            {{--<td></td>--}}
-                            {{--<td></td>--}}
-                            {{--<td></td>--}}
-                            {{--<th>Discount</th>--}}
-
-                            {{--<td id="grand_total_div"><input class="form-control" type="text" id="grand_total" value="{{$grand_total}}"></td>--}}
-                        {{--</tr>--}}
-
                         <tr>
                             <td></td>
                             <td></td>

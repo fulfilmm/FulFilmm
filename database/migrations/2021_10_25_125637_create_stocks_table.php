@@ -15,12 +15,14 @@ class CreateStocksTable extends Migration
     {
         Schema::create('stocks', function (Blueprint $table) {
             $table->id();
-            $table->string('product_name');
-            $table->double('stock_balance');
-            $table->double('available');
+            $table->bigInteger('product_id')->unsigned();
+            $table->string('sku');
+            $table->double('purchase_price')->default(0.0);
+            $table->double('sale_price')->default(0.0);
+            $table->double('available')->default(0);
             $table->double('alert_qty')->default(0)->nullable();
-            $table->bigInteger('variant_id')->unsigned();
-            $table->bigInteger('warehouse_id')->unsigned();
+            $table->bigInteger('warehouse_id')->unsigned()->nullable();
+            $table->text('image')->nullable();
             $table->timestamps();
         });
     }

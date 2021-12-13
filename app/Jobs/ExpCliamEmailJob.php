@@ -33,7 +33,6 @@ class ExpCliamEmailJob implements ShouldQueue
     public function handle()
     {
         $details=$this->details;
-        dd($details);
         Mail::send('transaction.ExpenseClaim.email', $this->details, function ($message) use ($details) {
             $message->from('siyincin@gmail.com', 'Cloudark');
             $message->to($details['email']);
