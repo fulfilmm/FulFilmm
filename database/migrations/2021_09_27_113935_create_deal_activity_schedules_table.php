@@ -16,6 +16,7 @@ class CreateDealActivitySchedulesTable extends Migration
         Schema::create('deal_activity_schedules', function (Blueprint $table) {
             $table->id();
             $table->bigInteger("deal_id")->unsigned();
+            $table->foreign('deal_id')->references('id')->on('deals')->onDelete('cascade');
             $table->text("description");
             $table->dateTime("to_date")->nullable();
             $table->dateTime("from_date")->nullable();

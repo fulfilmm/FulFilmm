@@ -9,6 +9,9 @@ class ProductReceiveItem extends Model
 {
     use HasFactory;
     public function product(){
-        return $this->belongsTo(product::class,'product_id','id');
+        return $this->belongsTo(ProductVariations::class,'variant_id','id');
+    }
+    public function warehouse(){
+        return $this->belongsTo(Warehouse::class,'warehouse_id','id');
     }
 }

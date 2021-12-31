@@ -161,7 +161,23 @@ class PurchaseRequestController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $pr=PurchaseRequest::where('id',$id)->first();
+        $pr->vendor_id=$request->vendor_id;
+        $pr->approver_id=$request->approver_id;
+        $pr->deadline=$request->deadline;
+        $pr->description=$request->description;
+        $pr->total_cost=$request->total_cost??0;
+        $pr->type=$request->type;
+        if(isset($request->file)){
+            foreach ($request->file('file') as $attach) {
+                $name = $attach->getClientOriginalName();
+                $attach->move(public_path() . '/attach_file/', $name,);
+                $data[] = $name;
+            }
+            $pr->attach = json_encode($data);
+        }
+        $pr->update();
+        return redirect('purchase_request');
     }
 
     /**

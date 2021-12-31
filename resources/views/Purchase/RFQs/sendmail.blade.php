@@ -47,7 +47,7 @@
 </head>
 <body>
    {!! $body !!}
- <div style="border:1px solid" id="print">
+ <div style="border:1px solid">
      <table style="margin-left: 20px">
          <tr>
              <td>Request For Quotation</td>
@@ -94,6 +94,10 @@
              @endforeach
              </tbody>
          </table>
+     </div>
+     <div style="min-height: 20px;margin-left: 20px;margin-top: 20px;">
+         <h4>Description</h4>
+         <p>{{$rfq->description}}</p>
      </div>
  </div>
 </body>

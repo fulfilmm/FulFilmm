@@ -18,7 +18,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body border">
-                    <form action="{{route('rfq.sendmail')}}" method="POST">
+                    <form action="{{route('rfq.sendmail')}}" method="POST" enctype="multipart/form-data">
                         @csrf
                        <div class="row">
                            <div class="col-md-4">
@@ -35,7 +35,12 @@
                                    Dear {{$rfq->vendor->name}},
                                </textarea>
                         </div>
+                        <div class="form-group">
+                            <label for="">Attach</label>
+                            <input type="file" name="attach" class="form-control">
+                        </div>
                         <input type="hidden" name="rfq_id" value="{{$rfq->id}}">
+
                         <button type="submit" class="btn btn-primary">Send</button>
                     </form>
                 </div>

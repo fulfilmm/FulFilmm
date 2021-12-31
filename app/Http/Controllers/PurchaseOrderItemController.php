@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\VariantKey;
-use App\Models\VariantValue;
+use App\Models\PurchaseOrderItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
-class VariantSettingController extends Controller
+class PurchaseOrderItemController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +16,7 @@ class VariantSettingController extends Controller
      */
     public function index()
     {
-        $variants=VariantKey::all();
-        $variants_value=VariantValue::all();
-        return view('product.variantsetting',compact('variants','variants_value'));
+        //
     }
 
     /**
@@ -38,18 +37,15 @@ class VariantSettingController extends Controller
      */
     public function store(Request $request)
     {
-//        dd($request->all());
-        VariantKey::create($request->all());
+      if(!isset($request->po_id)){
+          $Auth=Auth::guard('employee')->user()->id;
+          if(!Session::has("poformdata-".$Auth)){
+              Session::push("poformdata-".$Auth,$request->all());
+          }
+      }
+        PurchaseOrderItem::create($request->all());
     }
-    public function value_add(Request $request){
-       foreach ($request->value as $item){
-           $value=new VariantValue();
-           $value->variant_key=$request->variant_key;
-           $value->value=$item;
-           $value->save();
-       }
-       return redirect('product/variant/setting');
-    }
+
     /**
      * Display the specified resource.
      *
@@ -81,7 +77,13 @@ class VariantSettingController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $po_item=PurchaseOrderItem::where('id',$id)->first();
+        $po_item->variant_id=$request->product_id;
+        $po_item->qty=$request->qty;
+        $po_item->price=$request->price;
+        $po_item->total=$request->total;
+        $po_item->description=$request->description;
+        $po_item->save();
     }
 
     /**
@@ -93,11 +95,5 @@ class VariantSettingController extends Controller
     public function destroy($id)
     {
         //
-    }
-    public function active(Request $request,$id){
-        $variant=VariantKey::where('id',$id)->first();
-        $variant->active=$request->enable;
-        $variant->update();
-        return response()->json(['Account'=>$request->enable?'Active':'Deactive']);
     }
 }

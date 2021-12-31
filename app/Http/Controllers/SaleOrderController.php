@@ -84,7 +84,7 @@ class SaleOrderController extends Controller
        if(Auth::guard('customer')->check()){
            $session_data=Session::get("order-".Auth::guard('customer')->user()->id);
        }else{
-           $session_data=Session::forget("order-".Auth::guard('employee')->user()->id);
+           $session_data=Session::get("order-".Auth::guard('employee')->user()->id);
        }
 
 //          dd($session_data);
@@ -248,10 +248,9 @@ class SaleOrderController extends Controller
     public function generate_invoice($id)
     {
         $order_data = Order::where('id', $id)->first();
-
         if ($order_data->status=='Confirm'){
             $ordered_items = OrderItem::where('order_id', $id)->get();
-            if($ordered_items!=null){
+            if(isset($ordered_items[0])){
                 if($ordered_items[0]->inv_id == null) {
 
 //            dd($order_data);
@@ -274,11 +273,12 @@ class SaleOrderController extends Controller
 //        $generate_id=Str::uuid();
                     $orderline = OrderItem::with('product')->where('order_id', $id)->get();
 //        dd($orderline);
+                    $taxes=products_tax::all();
                     $grand_total = 0;
                     for ($i = 0; $i < count($orderline); $i++) {
                         $grand_total = $grand_total + $orderline[$i]->total;
                     }
-                    return view('invoice.create', compact('request_id', 'allcustomers', 'products', 'orderline', 'grand_total', 'order_data'));
+                    return view('invoice.create', compact('request_id', 'allcustomers', 'products', 'orderline', 'grand_total', 'order_data','taxes'));
 
                 }else{
                     return redirect()->back()->with('error','This order has been generated invoice');
@@ -321,7 +321,7 @@ class SaleOrderController extends Controller
         $company = MainCompany::where('ismaincompany', 1)->first();
         $details = [
 
-            'subject' => $company->name."Order Notification.",
+            'subject' => $company->name??''."Order Notification.",
             'email' =>$status_change->email,
             'name' =>$status_change->customer->name,
             'order_id' =>$status_change->order_id,
@@ -330,7 +330,7 @@ class SaleOrderController extends Controller
             'order_date'=>$status_change->order_date,
             'from' => Auth::guard('employee')->user()->email,
             'from_name' => Auth::guard('employee')->user()->name,
-            'company' => $company->name,
+            'company' => $company->name??'',
 
         ];
         Mail::send('saleorder.order_email_noti', $details, function ($message) use ($details) {

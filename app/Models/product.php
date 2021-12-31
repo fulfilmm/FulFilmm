@@ -17,4 +17,5 @@ class product extends Model
     public function sub_cat(){
         return $this->belongsTo(products_category::class,'sub_cat_id','id');
     }
+
 }

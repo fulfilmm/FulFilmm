@@ -256,7 +256,7 @@
     <!-- /Message Notifications -->
 
         <li class="nav-item dropdown has-arrow main-drop">
-            <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+            <a href="#" class="{{\Illuminate\Support\Facades\Auth::guard('employee')->check()?'dropdown-toggle':''}} nav-link" data-toggle="dropdown">
                        @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
                     <span class="user-img"><img src="{{\Illuminate\Support\Facades\Auth::guard('employee')->user()->profile_img?asset('img/profiles/'.\Illuminate\Support\Facades\Auth::guard('employee')->user()->profile_img):url(asset('img/profiles/avatar-21.jpg'))}}" alt="" width="30px" height="30px;">
                         <span class="status online"></span></span>
@@ -265,12 +265,22 @@
             </a>
             <div class="dropdown-menu">
                 {{-- <a class="dropdown-item" href="profile">My Profile</a>--}}
+                @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
                 <a class="dropdown-item" href="{{route('employees.show',\Illuminate\Support\Facades\Auth::guard('employee')->user()->id)}}">Profile</a>
+
                 <form id="logout-form" action="{{ route('employees.logout') }}" method="POST">
                     @csrf
                     <button class="dropdown-item"> Logout</button>
 
                 </form>
+                    @else
+                    <form id="logout-form" action="{{ route('customers.logout') }}" method="POST">
+                        @csrf
+                        <button class="dropdown-item"> Logout</button>
+
+                    </form>
+                @endif
+
             </div>
         </li>
     </ul>

@@ -18,6 +18,7 @@ class CreateExpenseClaimItemsTable extends Migration
             $table->string('title');
             $table->double('amount');
             $table->bigInteger('exp_claim_id')->unsigned();
+            $table->foreign('exp_claim_id')->references('id')->on('expense_claims')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -13,6 +13,7 @@ trait StockTrait
 //        dd($request['variantion_id']);
         $main_product=ProductVariations::with('product')->where('id',$request['variantion_id'])->first();
         $stockin=new StockIn();
+//        dd($request);
         $stockin->variantion_id=$request['variantion_id'];
         $stockin->emp_id=Auth::guard('employee')->user()->id;
         $stockin->supplier_id=$request['supplier_id'];
@@ -24,15 +25,15 @@ trait StockTrait
             $new_stock->product_name=$main_product->product->name;
             $new_stock->variant_id=$request['variantion_id'];
             $new_stock->warehouse_id=$request['warehouse_id'];
-            $new_stock->stock_balance=$request['qty'];
-            $new_stock->available=$request['qty'];
-            $new_stock->alert_qty=$request['alert_qty'];
+            $new_stock->stock_balance=$request['qty']??0;
+            $new_stock->available=$request['qty']??0;
+            $new_stock->alert_qty=$request['alert_qty']??0;
             $new_stock->save();
         }else{
-            $stock->stock_balance=$stock->stock_balance + $request['qty'];
+            $stock->stock_balance=$stock->stock_balance + $request['qty']??0;
+            $stock->available=$stock->available+$request['qty']??0;
             $stock->update();
             $product_variant=ProductVariations::where('id',$request['variantion_id'])->first();
-            $product_variant->qty=$product_variant->qty + $request['qty'];
             $product_variant->update();
         }
         $stock_transaction=new StockTransaction();

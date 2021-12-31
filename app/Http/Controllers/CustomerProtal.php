@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\assign_ticket;
 use App\Models\Customer;
 use App\Models\deal;
+use App\Models\DeliveryOrder;
 use App\Models\Invoice;
 use App\Models\leadModel;
 use App\Models\Quotation;
@@ -13,12 +14,21 @@ use App\Models\ticket_sender;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Tymon\JWTAuth\Claims\Custom;
 
 class CustomerProtal extends Controller
 {
     public function home(){
-
-        return view('customerprotal.home');
+        $delivery_finish=DeliveryOrder::where('receipt',1)->where('courier_id',Auth::guard('customer')->user()->id)->count();
+        $delivery_unfinish=DeliveryOrder::where('receipt',0)->where('courier_id',Auth::guard('customer')->user()->id)->count();
+        $total = DB::table("delivery_orders")
+            ->select(DB::raw("SUM(delivery_fee) as total"))
+           ->where('receipt',1)->where('courier_id',Auth::guard('customer')->user()->id)
+            ->get();
+            $deli_fee_total=$total[0]->total;
+        return view('customerprotal.home',compact('delivery_finish','delivery_unfinish','deli_fee_total'));
     }
     public function quotation(){
 
@@ -60,5 +70,13 @@ class CustomerProtal extends Controller
     }
     public function change_password(){
         return view('customerprotal.changepassword');
+    }
+    public function password_update($id,Request $request){
+        $customer=Customer::where('id',$id)->first();
+        if(password_verify($request->current_pass,$customer->password)){
+           $customer->password=Hash::make($request->password);
+           $customer->update();
+        }
+        return redirect('customer/home');
     }
 }

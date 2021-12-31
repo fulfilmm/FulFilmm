@@ -17,11 +17,11 @@ class CreateProductReceivesTable extends Migration
             $table->id();
             $table->bigInteger('vendor_id')->unsigned();
             $table->string('received_id');
-            $table->dateTime('schedule_date');
+            $table->dateTime('receive_date');
             $table->tinyInteger('is_validate')->default(0);
             $table->tinyInteger('inprogress')->default(1);
-            $table->dateTime('deadline');
-            $table->bigInteger('rfq_id')->unsigned();
+            $table->bigInteger('po_id')->unsigned();
+            $table->bigInteger('emp_id')->unsigned();
             $table->timestamps();
         });
     }

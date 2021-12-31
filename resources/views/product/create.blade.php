@@ -5,6 +5,7 @@
         input[type="file"] {
             display: block;
         }
+
         .imageThumb {
             max-height: 90px;
             max-width: 150px;
@@ -12,10 +13,12 @@
             padding: 1px;
             cursor: pointer;
         }
+
         .pip {
             display: inline-block;
             margin: 10px 10px 10px 0;
         }
+
         .remove {
             display: block;
             background: #edeff2;
@@ -24,10 +27,12 @@
             text-align: center;
             cursor: pointer;
         }
+
         .remove:hover {
             background: white;
             color: black;
         }
+
     </style>
     <!-- Page Wrapper -->
     <!-- Page Content -->
@@ -73,6 +78,9 @@
                             <div class="form-group">
                                 <label for="">Tax</label>
                                 <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-money"></i></span>
+                                    </div>
                                     <select name="tax" id="product_tax" class="form-control" >
                                         @foreach($taxes as $tax)
                                             <option value="{{$tax->id}}">{{$tax->name}}({{$tax->rate}}%)</option>
@@ -111,6 +119,15 @@
                                 <input type="text" class="form-control" name="serial_no" >
                             </div>
                         </div>
+                        <div class="form-group col-md-4 col-12 ">
+                            <label for="">SKU</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-pencil"></i></span>
+                                </div>
+                                <input type="text" class="form-control" name="sku" >
+                            </div>
+                        </div>
                         <div class="form-group col-md-4 col-12">
                             <label for="">Part No.</label>
                             <div class="input-group">
@@ -140,6 +157,9 @@
                             <div class="form-group">
                                 <label for="">Main Category</label>
                                 <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-list"></i></span>
+                                    </div>
                                     <select name="mian_cat" id="mian_cat" class="form-control" onchange="giveSelection(this.value)" >
                                         <option value="">Select Category</option>
                                         @foreach($category as $cat)
@@ -157,6 +177,9 @@
                             <div class="form-group">
                                 <label for="">Sub Category</label>
                                 <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-list"></i></span>
+                                    </div>
                                     <select name="sub_cat" id="sub_cat" class="form-control" >
                                         <option value="">Select Sub Category</option>
                                         @foreach($category as $cat)
@@ -192,181 +215,63 @@
                         </div>
                     </div>
                 </div>
-              <div class="col-12">
-                  <nav>
-                      <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                          <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Variants and Attribute</a>
-                          <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Attribute Setting</a>
-                          {{--<a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</a>--}}
-                      </div>
-                  </nav>
-                  <div class="tab-content" id="nav-tabContent">
-                      <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                          <div  id="variation" class="col-12">
-                              <table class="table">
-                                  <tr>
-                                      <th>Attribute</th>
-                                      <th>Value</th>
-                                      <th>Action</th>
-                                  </tr>
-                                  <tbody>
-                                   @foreach($v_type as $attribute)
-                                       @if($attribute->active==1)
-                                           {{--@dd($attribute->name)--}}
-                                       <tr>
-                                           <td><select name="type[]" id="" class="select2">
-                                                   <option value="{{$attribute->id}}" selected>{{$attribute->name}}</option>
-                                               </select>
-                                           </td>
-                                           <td>
-                                               <select name="value{{$attribute->id}}[]" id="" class="select2" multiple>
-
-                                               </select>
-                                           </td>
-                                           <td> <div class="custom-control custom-switch">
-                                                   <input type="checkbox" class="custom-control-input" id="active{{$attribute->id}}" name="enable" value="1"
-                                                           {{$attribute->active?'checked':''}}>
-                                                   <label class="custom-control-label" for="active{{$attribute->id}}"></label>
-                                               </div>
-                                               <script>
-                                                   $(document).ready(function () {
-                                                       $('#active{{$attribute->id}}').on('click',function (event) {
-                                                           if($(this).prop("checked") == true){
-                                                               var enable=1;
-                                                           }
-                                                           else if($(this).prop("checked") == false){
-                                                               var enable=0;
-                                                           }
-                                                           $.ajax({
-                                                               data: {
-                                                                   "enable": enable
-                                                               },
-                                                               type: 'POST',
-                                                               url: "{{route('variant.active',$attribute->id)}}",
-                                                               headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                                                               success: function (data) {
-                                                                   console.log(data);
-                                                                   swal({
-                                                                           title: "Variant",
-                                                                           text: 'This variant is '+data.Account,
-                                                                           type: "success"
-                                                                       }
-                                                                   ).then(function(){
-                                                                       location.reload();
-                                                                   });
-                                                               }
-                                                           });
-                                                       });
-                                                   });
-                                               </script>
-                                       </tr>
-                                       @endif
-                                       @endforeach
-                                  </tbody>
-                              </table>
-                          </div>
-                         <div class="col-12">
-                             <div class="fom-group">
-                                 <button href="#" type="button" data-toggle="modal" data-target="#add_variant" class="btn btn-white btn-sm text-primary" id="add_row">Add Attribute</button>
-                             </div>
-                         </div>
-                      </div>
-
-                  <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                      <table class="table">
-                          <tr>
-                              <th>Attribute</th>
-                              <th>Action</th>
-                          </tr>
-                          <tbody>
-                          @foreach($v_type as $attribute)
-                                  <tr>
-                                      <td>{{$attribute->name}}
-                                      </td>
-                                      <td> <div class="custom-control custom-switch">
-                                              <input type="checkbox" class="custom-control-input" id="active{{$attribute->id}}" name="enable" value="1"
-                                                      {{$attribute->active?'checked':''}}>
-                                              <label class="custom-control-label" for="active{{$attribute->id}}"></label>
-                                          </div>
-                                          <script>
-                                              $(document).ready(function () {
-                                                  $('#active{{$attribute->id}}').on('click',function (event) {
-                                                      if($(this).prop("checked") == true){
-                                                          var enable=1;
-                                                      }
-                                                      else if($(this).prop("checked") == false){
-                                                          var enable=0;
-                                                      }
-                                                      $.ajax({
-                                                          data: {
-                                                              "enable": enable
-                                                          },
-                                                          type: 'POST',
-                                                          url: "{{route('variant.active',$attribute->id)}}",
-                                                          headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                                                          success: function (data) {
-                                                              console.log(data);
-                                                              swal({
-                                                                      title: "Variant",
-                                                                      text: 'This variant is '+data.Account,
-                                                                      type: "success"
-                                                                  }
-                                                              ).then(function(){
-                                                                  location.reload();
-                                                              });
-                                                          }
-                                                      });
-                                                  });
-                                              });
-                                          </script>
-                                  </tr>
-                          @endforeach
-                          </tbody>
-                      </table>
-                  </div>
-                  {{--<div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>--}}
-              </div>
-              </div>
-            <button type="submit" class="btn btn-primary text-center col-md-2 col-2 offset-md-5 my-3">Save</button>
             </div>
+            <hr>
+            <div  id="variation">
+
+            </div>
+            <div class="fom-group">
+                <button type="button" class="btn btn-info" id="add_row">Add Variation</button>
+            </div>
+            <button type="submit" class="btn btn-primary text-center col-md-2 col-2 offset-md-5 my-3">Save</button>
         </form>
 
     </div>
 
-    <div class="modal fade" id="add_variant" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Add New Variant</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <input type="text" name="name" id="variant" class="form-control" placeholder="Type Variant">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" data-dismiss="modal" id="add" class="btn btn-primary">Save</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('product.catadd')
     <!-- /Page Content -->
     <!-- /Page Wrapper -->
     <script>
-        function selectRefresh(){
-            $('.select2').select2({
-                tags:true,
-                allowClear: true,
-                width:'100%',
-            });
-        }
-
-        $(document).ready(function(){
-            selectRefresh();
+        $('#add_row').click(function () {
+            $('#variation').append('<div class="card my-3" id="add_variation"><div class="col-12"><div class="row">' +
+                '<div class="col-md-12 col-12 mt-3">' +
+                '<input type="hidden" name="field_count[]" value="field">' +
+                '<div class="form-group">' +
+                '<label>Description</label>' +
+                '<textarea name="description[]" class="form-control" id="" cols="30"></textarea>' +
+                '</div></div>' +
+                '<div class="col-md-4 col-6">' +
+                '<div class="form-group"><label for="price">Price</label>' +
+                '<div class="input-group"><div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-money"></i></span></div><input type="number" class="form-control" name="price[]"></div></div></div>' +
+                '<div class="col-md-4 col-12">' +
+                '<div class="form-group"><label for="purchase_price">Purchase Price</label>' +
+                '<div class="input-group"><div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-money"></i></span></div><input type="number" class="form-control" name="purchase_price[]" id="purchase_price"></div></div></div>' +
+                '<div class="col-md-4 col-12"><div class="form-group"><label>Product Code</label><div class="input-group"><div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-pencil"></i></span></div><input type="text" class="form-control" name="product_code[]"></div></div></div>' +
+                '<div class="col-md-4 col-12"><div class="form-group"><label>Discount Rate</label><input type="number" class="form-control" name="discount_rate[]"></div></div>' +
+                '<div class="col-md-4 col-12 "><div class="form-group"><label>Exp Date</label><div class="input-group"><input type="date" class="form-control" id="exp_date" name="exp_date[]"></div></div></div>' +
+                '<div class="col-md-4 col-12"><div class="form-group"><label for="">Picture</label><input type="file" name="picture[]"></div></div>'+
+                '<div class="col-md-4 col-12">' +
+                '<div class="form-group">' +
+                '<label>Size</label>' +
+                '<div class="input-group">' +
+                '<div class="input-group-prepend">' +
+                '<span class="input-group-text"><i class="fa fa-pencil"></i></span>' +
+                '</div>' +
+                '<input type="text" class="form-control" name="size[]">' +
+                '</div>' +
+                '</div></div>'+
+                '<div class="col-md-4 col-12"><div class="form-group"><label>Color</label>' +
+                '<div class="input-group"><div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-pencil"></i></span>' +
+                '</div><input type="text" class="form-control" name="color[]"></div></div></div>'+
+                '<div class="col-md-4 col-12"><div class="form-group"><label>Other</label>' +
+                '<div class="input-group">' +
+                '<div class="input-group-prepend">' +
+                '<span class="input-group-text"><i class="fa fa-pencil"></i></span>' +
+                '</div><input type="text" class="form-control" name="other[]"></div></div></div>'+
+                '<div class="col-12 my-3"><button id="remove_guest" type="button" class="btn btn-danger col-md-1"><i class="fa fa-trash"></i></button></div></div></div></div>');
+        });
+        $(document).on('click', '#remove_guest', function () {
+            $(this).closest('#add_variation').remove();
         });
         $(document).ready(function () {
             $(document).on('change','#product_cat',function () {
@@ -386,12 +291,14 @@
             };
             reader.readAsDataURL(event.target.files[0]);
         };
+
         function openSelect(file) {
             $(file).trigger('click');
         }
         var sel1 = document.querySelector('#main_cat');
         var sel2 = document.querySelector('#sub_cat');
         var options2 = sel2.querySelectorAll('option');
+
         function giveSelection(selValue) {
             sel2.innerHTML = '';
             for(var i = 0; i < options2.length; i++) {
@@ -400,15 +307,17 @@
                 }
             }
         }
+
         giveSelection(sel1);
         $(document).ready(function () {
-            // $('select').select2({
-            //         "language": {},
-            //         escapeMarkup: function (markup) {
-            //             return markup;
-            //         }
-            //     }
-            // );
+
+            $('#product_tax').select2({
+                    "language": {},
+                    escapeMarkup: function (markup) {
+                        return markup;
+                    }
+                }
+            );
             $('#product_cat').select2({
                     "language": {},
                     escapeMarkup: function (markup) {
@@ -416,28 +325,8 @@
                     }
                 }
             );
+
         });
-        $(document).ready(function () {
-            $(document).on('click', '#add', function () {
-                var variant_name = $('#variant').val();
-                $.ajax({
-                    data: {
-                        active:1,
-                        name: variant_name,
-                    },
-                    type: 'POST',
-                    url: "{{url('product/variant/add')}}",
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    success: function (data) {
-                        console.log(data);
-                        window.location.reload();
-                        selectRefresh();
-                    }
 
-                });
-
-
-            });
-        });
     </script>
 @endsection

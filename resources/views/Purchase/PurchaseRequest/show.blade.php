@@ -46,7 +46,7 @@
                                                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                                                 success: function (data) {
                                                     console.log(data);
-                                                    $("#status_div").load(location.href + " #status_div>* ");
+                                                    location.reload();
 
                                                 }
                                             });

@@ -36,7 +36,10 @@ class CreateInvoicesTable extends Migration
             $table->boolean('send_email')->default(false);
             $table->bigInteger('emp_id')->unsigned();
             $table->index(['id','customer_id']);
+            $table->string('invoice_type');
+            $table->double('delivery_fee');
             $table->bigInteger('order_id')->unsigned()->nullable();
+            $table->double('due_amount');
             $table->softDeletes();
             $table->timestamps();
         });

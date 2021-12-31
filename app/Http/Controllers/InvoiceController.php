@@ -134,6 +134,9 @@ class InvoiceController extends Controller
         $newInvoice->total=$request->total;
         $newInvoice->discount=$request->discount;
         $newInvoice->tax_amount=$request->tax_amount;
+        $newInvoice->invoice_type=$request->invoice_type;
+        $newInvoice->delivery_fee=$request->delivery_fee;
+        $newInvoice->due_amount=$request->inv_grand_total;
         $newInvoice->emp_id=Auth::guard('employee')->user()->id;
         $Auth=Auth::guard('employee')->user()->name;
         $request_id=Session::get($Auth);
@@ -154,7 +157,7 @@ class InvoiceController extends Controller
                 $grand_total=$grand_total+$order_item[$i]->total;
             }
             $order=Order::where('id',$request->order_id)->first();
-            $order->total_amount=$grand_total;
+            $order->grand_total=$grand_total;
             $order->update();
         }
         Session::forget($Auth);
@@ -209,25 +212,23 @@ class InvoiceController extends Controller
         $revenue=Revenue::where('invoice_id',$id)->get();
         $history=InvoiceHistory::where('invoice_id',$id)->get();
         $transaction=[];
-        $overdue_amount=$detail_inv->grand_total;
         foreach ($revenue as $tran){
             $revenue_transaction=Transaction::with('revenue')->where('revenue_id',$tran->id)->first();
             if($revenue!=null){
                 array_push($transaction,$revenue_transaction);
-                $overdue_amount=$revenue!=null?$overdue_amount-$revenue_transaction->revenue->amount:$detail_inv->grand_tota;
             }
 
         }
-        if($detail_inv->grand_total > $overdue_amount && $overdue_amount!=0){
+        if($detail_inv->grand_total > $detail_inv->due_amount && $detail_inv->due_amount!=0){
 
             $detail_inv->status='Partial';
             $detail_inv->update();
             $this->add_history($id,'Partial','Change Status '.$detail_inv->invoice_id);
-        }elseif($overdue_amount!=0 && Carbon::now()>$detail_inv->due_date){
+        }elseif($detail_inv->due_amount!=0 && Carbon::now()>$detail_inv->due_date){
             $detail_inv->status='Overdue';
             $detail_inv->update();
             $this->add_history($id,'Overdue','Change Status '.$detail_inv->invoice_id);
-        }elseif($overdue_amount==0){
+        }elseif($detail_inv->due_amount==0){
 
             $detail_inv->status='Paid';
             $detail_inv->update();
@@ -240,7 +241,7 @@ class InvoiceController extends Controller
         }
         $transaction_amount=0;
         $customer=Customer::orWhere('customer_type','Customer')->orWhere('customer_type','Lead')->orWhere('customer_type','Partner')->orWhere('customer_type','Inquery')->get();
-        $data=['overdue_amount'=>$overdue_amount,'transaction'=>$transaction,'customers'=>$customer,'account'=>$account,'recurring'=>$recurring,'payment_method'=>$payment_method,'category'=>$category];
+        $data=['transaction'=>$transaction,'customers'=>$customer,'account'=>$account,'recurring'=>$recurring,'payment_method'=>$payment_method,'category'=>$category];
 
         return view('invoice.show',compact('detail_inv','invoic_item','company','data','transaction_amount','history'));
     }

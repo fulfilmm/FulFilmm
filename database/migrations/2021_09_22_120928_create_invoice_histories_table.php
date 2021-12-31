@@ -16,6 +16,7 @@ class CreateInvoiceHistoriesTable extends Migration
         Schema::create('invoice_histories', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('invoice_id')->unsigned();
+            $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade');
             $table->string('status');
             $table->string('description');
             $table->timestamps();

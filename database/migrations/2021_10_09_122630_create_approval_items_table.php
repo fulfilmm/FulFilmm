@@ -16,6 +16,7 @@ class CreateApprovalItemsTable extends Migration
         Schema::create('approval_items', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('approval_id')->unsigned();
+            $table->foreign('approval_id')->references('id')->on('approvalrequests')->onDelete('cascade');
             $table->string('title');
             $table->double('amount');
             $table->timestamps();

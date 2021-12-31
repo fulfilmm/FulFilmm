@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\Bill;
 use App\Models\Customer;
 use App\Models\Employee;
 use App\Models\Expense;
+use App\Models\Invoice;
 use App\Models\MainCompany;
 use App\Models\Revenue;
 use App\Models\Transaction;
@@ -82,6 +84,7 @@ class TransactionController extends Controller
         $new_expense->transaction_date = $request->transaction_date;
         $new_expense->emp_id = Auth::guard('employee')->user()->id;
         $new_expense->currency = $request->currency;
+        $new_expense->bill_id=$request->bill_id??null;
         if (isset($request->attachment)) {
             if ($request->attachment != null) {
                 $name = $request->attachment->getClientOriginalName();
@@ -94,7 +97,15 @@ class TransactionController extends Controller
         $this->transaction_add($request->account,$request->type,$new_expense->id,null);
         $this->account_update($request->amount,$request->account,$request->type);
         $last_tran=Transaction::orderBy('id', 'desc')->first();
-        return redirect(route('transactions.show',$last_tran->id))->with('success','Add New Expense Successful');
+        if(isset($request->bill_id)){
+            $bill=Bill::where('id',$request->bill_id)->first();
+            $bill->due_amount=$bill->due_amount-$request->amount;
+            $bill->update();
+            return redirect(route('bills.show',$request->bill_id))->with('success','Add New Revenue Successful');
+        }else{
+            return redirect(route('transactions.show',$last_tran->id))->with('success','Add New Expense Successful');
+        }
+
     }
 
     /**
@@ -189,6 +200,9 @@ class TransactionController extends Controller
         $this->transaction_add($request->account,$request->type,null,$new_revenue->id);
         $this->account_update($request->amount,$request->account,$request->type);
        if(isset($request->invoice_id)){
+           $inv=Invoice::where('id',$request->invoice_id)->first();
+           $inv->due_amount=$inv->due_amount-$request->amount;
+           $inv->update();
            return redirect(route('invoices.show',$request->invoice_id))->with('success','Add New Revenue Successful');
        }else{
            $last_tran=Transaction::orderBy('id', 'desc')->first();

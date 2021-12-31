@@ -40,7 +40,6 @@ class InvoiceItemController extends Controller
      */
     public function store(Request $request)
     {
-//        dd($request->all());
         $Auth=Auth::guard('employee')->user()->id;
         if($request->type=='invoice'){
             if(!Session::has("data-".$Auth)){
@@ -61,15 +60,15 @@ class InvoiceItemController extends Controller
                 }
             }
         }
-        $product=product::with('taxes')->where('id',$request->product_id)->first();
+
         $variant=ProductVariations::where('id',$request->variant_id)->first();
         $items=new OrderItem();
         $items->product_id=$request->product_id;
         $items->description=$variant->description;
         $items->quantity=1;
-        $items->unit_price=$variant->price;
+        $items->unit_price=$variant->price??0;
         $items->variant_id=$request->variant_id;
-        $items->total=$variant->price;
+        $items->total=$variant->price??0;
         $items->creation_id=$request->invoice_id;
         $items->order_id=$request->order_id??null;
         $items->state=1;

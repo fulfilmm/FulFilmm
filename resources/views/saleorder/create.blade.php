@@ -42,6 +42,7 @@
                                     </select>
                                     <span class="text-danger customer_id_err"></span>
                                 </div>
+
                                 <div class="col-md-12 mb-3">
                                     <label for="phone" class="form-label font-weight-bold text-muted text-uppercase">Phone <span class="text-danger">*</span></label>
                                     <input type="text"  class="form-control" id="phone" name="phone" placeholder="Enter Phone" value="{{$session_data[0]['phone']??''}}" required>

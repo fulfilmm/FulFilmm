@@ -11,10 +11,13 @@ use Illuminate\Support\Str;
 class PurchaseItemController extends Controller
 {
     public function store(Request $request){
-        $Auth=Auth::guard('employee')->user()->id;
-        if(!Session::has("prdata-".$Auth)){
-            Session::push("prdata-".$Auth,$request->all());
-        }
+
+       if(!isset($request->edit)){
+           $Auth = Auth::guard('employee')->user()->id;
+           if (!Session::has("prdata-" . $Auth)) {
+               Session::push("prdata-" . $Auth, $request->all());
+           }
+       }
 
        PurchaseItem::create($request->all());
 

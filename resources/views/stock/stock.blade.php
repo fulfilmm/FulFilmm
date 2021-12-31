@@ -1,10 +1,5 @@
 @extends('layout.mainlayout')
 @section('title','Stock')
-<style>
-    svg{
-        height: 18px;
-    }
-</style>
 @section('content')
     <div class="container-fluid">
         <div class="page-header my-3">
@@ -26,7 +21,7 @@
                 <table class="table " id="stock">
                     <thead>
                     <tr>
-                        <th>Sku</th>
+                        <th>Product Code</th>
                         <th>Product </th>
                         <th>Variants</th>
                         <th>Warehouse</th>
@@ -40,34 +35,30 @@
                     <tbody>
                     {{--@dd($stocks)--}}
                     @foreach($stocks as $stock)
-                       @if($stock->warehouse_id!=null)
-                           <tr>
-                               <td><strong>{{$stock->sku}}</strong></td>
-                               <td>{{$stock->product->name}}</td>
-                               <td>@foreach($sku_value as $variant)@if($variant->sku_id==$stock->id) {{$variant->variant->name}}:{{$variant->variant_value->value}} @endif @endforeach</td>
-                               <td><a href="{{route('warehouses.show',$stock->warehouse->id)}}">{{$stock->warehouse->name}}</a></td>
-                               <td>{{$stock->stock_balance}}</td>
-                               <td>{{$stock->available}}</td>
-                               <td>{{$stock->alert_qty}}</td>
-                               <td>{{\Carbon\Carbon::parse($stock->updated_at)->toFormattedDateString()}}</td>
-                           </tr>
-                           @endif
+                        <tr>
+                            <td>{{$stock->variant->product_code}}</td>
+                            <td>{{$stock->product_name}}</td>
+                            <td>{{$stock->variant->size??''}}{{$stock->variant->color?','.$stock->variant->color:''}}{{$stock->variant->other?','.$stock->variant->other:''}}</td>
+                            <td><a href="{{route('warehouses.show',$stock->warehouse->id)}}">{{$stock->warehouse->name}}</a></td>
+                            <td>{{$stock->stock_balance}}</td>
+                            <td>{{$stock->available}}</td>
+                            <td>{{$stock->alert_qty}}</td>
+                            <td>{{\Carbon\Carbon::parse($stock->updated_at)->toFormattedDateString()}}</td>
+                        </tr>
                     @endforeach
                     </tbody>
-
                 </table>
-                {!! $stocks->links() !!}
             </div>
         </div>
     </div>
     {{--<script src="{{url(asset('js/jquery_print.js'))}}"></script>--}}
     {{--<script src="{{url(asset('js/datatable_button.js'))}}"></script>--}}
-    {{--<script>--}}
-        {{--$(document).ready(function () {--}}
-            {{--$('#stock').DataTable();--}}
-            {{--$('.dataTables_filter input').remove('form-control');--}}
-            {{--$('.dataTables_filter input').addClass('rounded');--}}
-        {{--});--}}
-    {{--</script>--}}
+    <script>
+        $(document).ready(function () {
+            $('#stock').DataTable();
+            $('.dataTables_filter input').remove('form-control');
+            $('.dataTables_filter input').addClass('rounded');
+        });
+    </script>
 
 @endsection

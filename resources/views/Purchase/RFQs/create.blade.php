@@ -1,5 +1,5 @@
 @extends('layout.mainlayout')
-@section('title','Purchase Request')
+@section('title','RFQs Create')
 @section('content')
     <div class="content container-fluid">
         <!-- Page Header -->
@@ -261,6 +261,9 @@
                             <td colspan="5">
                                 <button type="button" id="add" class="btn btn-white btn-sm">Add</button>
                             </td>
+                        </tr>
+                        <tr>
+                            <td><input type="hidden"></td>
                         </tr>
                         </tbody>
                     </table>

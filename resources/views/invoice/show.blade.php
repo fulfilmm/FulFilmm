@@ -2,6 +2,7 @@
 @section('title',$detail_inv->invoice_id)
 @section('content')
     <link rel="stylesheet" href="{{url(asset('css/invoice_css/argon.css'))}}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
     <!-- Page Content -->
     <div class="content container-fluid">
     <!-- Page Header -->
@@ -29,7 +30,10 @@
                             <a href="{{route('invoices.create')}}"
                                class="btn btn-white btn-sm">
                                 Add New
-                            </a></div>
+                            </a>
+                            <button class="btn btn-danger btn-sm" type="button" id="create_pdf"><i class="fa fa-file-pdf-o mr-2"></i>PDF Download</button>
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -60,14 +64,14 @@
             Amount due
             <br>
             <strong>
-                <span class="float-left" id="overdue_amount">{{$data['overdue_amount']}}</span></strong> <br><br></div>
+                <span class="float-left" id="overdue_amount">{{$detail_inv->due_amount}}</span></strong> <br><br></div>
         <div class="col-md-2">
             Due on
             <br> <strong><span class="float-left">
                     {{\Illuminate\Support\Carbon::parse($detail_inv->due_date)->toFormattedDateString()}}               </span></strong> <br><br></div>
     </div>
 
-   @if($data['overdue_amount']!=0)
+   @if($detail_inv->due_amount!=0)
             <div class="card">
                 <div class="card-body">
                     <div data-timeline-content="axis" data-timeline-axis-style="dashed" class="timeline timeline-one-side">
@@ -136,14 +140,14 @@
                 </div>
             </div>
        @endif
-    <div class="row" >
+    <div class="row form" >
         <div class="col-lg-12">
             <div class="card" >
                 <div class="card-body" id="print_me" style="padding-top: 50px;">
                     <div class="row pb-4 mx-0 card-header-border">
                         <div class="col-lg-6 col-7 col-md-6 mb-3">
-                            <img class="avatar avatar-50 is-squared"
-                                 src="{{$company!=null ? url(asset('/img/profiles/'.$company->logo)): url(asset('/img/profiles/avatar-01.jpg'))}}">
+                            <img class="is-squared"
+                                 src="{{$company!=null ? url(asset('/img/profiles/'.$company->logo)): url(asset('/img/profiles/avatar-01.jpg'))}}" style="max-width: 100px;max-height: 100px;">
                             <span>{{$company->name??''}}</span><br><span>{{$company->email??''}}</span><br>
                             <span>{{$company->phone??''}}</span><br>
                             <span>{{$company->address??''}}</span>
@@ -229,6 +233,12 @@
                                 <li class="list-group-item">
                                     <div class="d-flex justify-content-end ">
                                         Tax: <p class="ml-2 mb-0 font-weight-bold"> {{$detail_inv->tax_amount}} MMK </p>
+                                    </div>
+
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="d-flex justify-content-end ">
+                                        Delivery Fee: <p class="ml-2 mb-0 font-weight-bold"> {{$detail_inv->delivery_fee}} MMK </p>
                                     </div>
 
                                 </li>
@@ -367,7 +377,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fa fa-money"></i></span>
                                             </div>
-                                            <input type="text" class="form-control" id="amount" name="amount" value="{{$data['overdue_amount']}}">
+                                            <input type="text" class="form-control" id="amount" name="amount" value="{{$detail_inv->due_amount}}">
                                             <div class="input-group-prepend">
                                                 <select name="currency" id="" class="select">
                                                     <option value="MMK">MMK</option>
@@ -516,7 +526,104 @@
                 window.print();
                 $('body').html(restorepage);
             }
+            (function () {
+                var
+                    form = $('.form'),
+                    cache_width = form.width(),
+                    a4 = [595.28, 841.89]; // for a4 size paper width and height
+
+                $('#create_pdf').on('click', function () {
+                    $('body').scrollTop(0);
+                    createPDF();
+                });
+                //create pdf
+                function createPDF() {
+                    getCanvas().then(function (canvas) {
+                        var
+                            img = canvas.toDataURL("image/png"),
+                            doc = new jsPDF({
+                                unit: 'px',
+                                format: 'a4'
+                            });
+                        doc.addImage(img, 'JPEG', 20, 20);
+                        doc.save('{{$detail_inv->invoice_id}}.pdf');
+                        form.width(cache_width);
+                    });
+                }
+
+                // create canvas object
+                function getCanvas() {
+                    form.width((a4[0] * 1.33333) - 80).css('max-width', 'none');
+                    return html2canvas(form, {
+                        imageTimeout: 2000,
+                        removeContainer: true
+                    });
+                }
+
+            }());
+
     </script>
+        <script>
+            (function ($) {
+                $.fn.html2canvas = function (options) {
+                    var date = new Date(),
+                        $message = null,
+                        timeoutTimer = false,
+                        timer = date.getTime();
+                    html2canvas.logging = options && options.logging;
+                    html2canvas.Preload(this[0], $.extend({
+                        complete: function (images) {
+                            var queue = html2canvas.Parse(this[0], images, options),
+                                $canvas = $(html2canvas.Renderer(queue, options)),
+                                finishTime = new Date();
+
+                            $canvas.css({ position: 'absolute', left: 0, top: 0 }).appendTo(document.body);
+                            $canvas.siblings().toggle();
+
+                            $(window).click(function () {
+                                if (!$canvas.is(':visible')) {
+                                    $canvas.toggle().siblings().toggle();
+                                    throwMessage("Canvas Render visible");
+                                } else {
+                                    $canvas.siblings().toggle();
+                                    $canvas.toggle();
+                                    throwMessage("Canvas Render hidden");
+                                }
+                            });
+                            throwMessage('Screenshot created in ' + ((finishTime.getTime() - timer) / 1000) + " seconds<br />", 4000);
+                        }
+                    }, options));
+
+                    function throwMessage(msg, duration) {
+                        window.clearTimeout(timeoutTimer);
+                        timeoutTimer = window.setTimeout(function () {
+                            $message.fadeOut(function () {
+                                $message.remove();
+                            });
+                        }, duration || 2000);
+                        if ($message)
+                            $message.remove();
+                        $message = $('<div ></div>').html(msg).css({
+                            margin: 0,
+                            padding: 10,
+                            background: "#000",
+                            opacity: 0.7,
+                            position: "fixed",
+                            top: 10,
+                            right: 10,
+                            fontFamily: 'Tahoma',
+                            color: '#fff',
+                            fontSize: 12,
+                            borderRadius: 12,
+                            width: 'auto',
+                            height: 'auto',
+                            textAlign: 'center',
+                            textDecoration: 'none'
+                        }).hide().fadeIn().appendTo('body');
+                    }
+                };
+            })(jQuery);
+        </script>
 
     <!-- /Page Content -->
 @endsection

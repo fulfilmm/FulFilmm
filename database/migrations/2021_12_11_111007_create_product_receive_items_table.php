@@ -15,11 +15,14 @@ class CreateProductReceiveItemsTable extends Migration
     {
         Schema::create('product_receive_items', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('product_id')->unsigned();
+            $table->bigInteger('variant_id')->unsigned();
             $table->double('demand');
             $table->double('qty')->nullable();
-            $table->bigInteger('rfq_id')->unsigned();
+            $table->bigInteger('po_id')->unsigned();
             $table->bigInteger('receipt_id')->unsigned();
+            $table->double('price');
+            $table->bigInteger('warehouse_id')->unsigned()->nullable();
+            $table->foreign('receipt_id')->references('id')->on('product_receives')->onDelete('cascade');
             $table->timestamps();
         });
     }

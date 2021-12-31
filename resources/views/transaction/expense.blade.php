@@ -26,6 +26,9 @@
                                 <label for="date">Date</label>
                                 <input type="date" id="date" name="transaction_date" class="form-control">
                             </div>
+                            @error('transaction_date')
+                            <span class="text-danger">{{$message}}</span>
+                            @enderror
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
@@ -42,6 +45,9 @@
                                         </select>
                                     </div>
                                 </div>
+                                @error('amount')
+                                <span class="text-danger">{{$message}}</span>
+                                @enderror
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -57,6 +63,9 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                @error('account')
+                                <span class="text-danger">{{$message}}</span>
+                                @enderror
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -73,6 +82,9 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                @error('customer_id')
+                                <span class="text-danger">{{$message}}</span>
+                                @enderror
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -99,6 +111,9 @@
                                         <a href="" class="input-group-text" data-toggle='modal' data-target='#add_cat'><i class="fa fa-plus"></i></a>
                                     </div>
                                 </div>
+                                @error('category')
+                                <span class="text-danger">{{$message}}</span>
+                                @enderror
                             </div>
                         </div>
                         <div class="col-md-6">

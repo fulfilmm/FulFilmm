@@ -15,7 +15,8 @@ class PermissionSeeder extends Seeder
     protected $permissions = [
         'approvals','cases','comments','companysettings', 'companies', 'customers','deals','departments',
         'employees','groups','invoices','leads','meetings','minutes',
-        'products','permissions','priorities','quotations','quotation_items','roles','rooms','senders','tickets','accounts','expenseclaims'
+        'products','permissions','priorities','quotations','quotation_items','roles','rooms','senders','tickets','accounts','expenseclaims','rfqs','purchase_request',
+        'purchaseorders','bills'
     ];
     public function run()
     {
@@ -101,6 +102,21 @@ class PermissionSeeder extends Seeder
         Permission::create(['name'=>'cash.claim','display_name'=>'Expense Claim Cash status Change','type'=>'expenseclaims','guard_name'=>'employee']);
         Permission::create(['name'=>'exp_claim.comment','display_name'=>'Expense Claim comment','type'=>'expenseclaims','guard_name'=>'employee']);
         Permission::create(['name'=>'exp_claim.comment_delete','display_name'=>'Expense Claim comment delete','type'=>'expenseclaims','guard_name'=>'employee']);
+        Permission::create(['name'=>'pr.status','display_name'=>'Purchase Request Status change','type'=>'purchase_request','guard_name'=>'employee']);
+        Permission::create(['name'=>'rfq.prepare','display_name'=>'Purchase Request to RFQs','type'=>'rfqs','guard_name'=>'employee']);
+        Permission::create(['name'=>'inventory.index','display_name'=>'Inventory Index','type'=>'inventory','guard_name'=>'employee']);
+        Permission::create(['name'=>'receiptprocess','display_name'=>'Product Receive List','type'=>'inventory','guard_name'=>'employee']);
+        Permission::create(['name'=>'receipt.show','display_name'=>'Product Receive view','type'=>'inventory','guard_name'=>'employee']);
+        Permission::create(['name'=>'product.validate','display_name'=>'Validate Product Receive qty','type'=>'inventory','guard_name'=>'employee']);
+        Permission::create(['name'=>'receipt.rededit','display_name'=>'Edit Product Receive data','type'=>'inventory','guard_name'=>'employee']);
+        Permission::create(['name'=>'supplierbills','display_name'=>'Bill create from customer view','type'=>'bills','guard_name'=>'employee']);
+        Permission::create(['name'=>'billitems.store','display_name'=>'Add bill item','type'=>'bills','guard_name'=>'employee']);
+        Permission::create(['name'=>'billitems.update','display_name'=>'Update bill item','type'=>'bills','guard_name'=>'employee']);
+        Permission::create(['name'=>'purchase.orders','display_name'=>'Po direct create from RFQ','type'=>'purchaseorders','guard_name'=>'employee']);
+        Permission::create(['name'=>'purchaseorders.confirm','display_name'=>'Purchase order confirm','type'=>'purchaseorders','guard_name'=>'employee']);
+        Permission::create(['name'=>'to.stock','display_name'=>'Add to stock from PO','type'=>'inventory','guard_name'=>'employee']);
+        Permission::create(['name'=>'po.bill','display_name'=>'Bill direct create form PO','type'=>'bills','guard_name'=>'employee']);
+        Permission::create(['name'=>'delivery.bill','display_name'=>'Bill direct create form delivery','type'=>'bills','guard_name'=>'employee']);
 
     }
 

@@ -16,6 +16,7 @@ class CreateDealCommentsTable extends Migration
         Schema::create('deal_comments', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('deal_id')->unsigned();
+            $table->foreign('deal_id')->references('id')->on('deals')->onDelete('cascade');
             $table->bigInteger('user_id')->unsigned();
             $table->text('comment');
             $table->index('deal_id');

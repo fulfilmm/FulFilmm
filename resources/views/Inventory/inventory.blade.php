@@ -14,7 +14,7 @@
                 </div>
             </div>
         </div>
-    </div>
+
     <div class="col-12">
         <div class="row">
             <div class="col-md-12">
@@ -28,7 +28,7 @@
 
                             </div>
                             <a href="{{url('rfq/receipt/process/')}}">
-                            <h3 class="mb-3">{{$rfqprocess}} Process</h3></a>
+                            <h3 class="mb-3">{{$to_receipt}} Process</h3></a>
                             <div class="progress mb-2" style="height: 5px;">
                                 <div class="progress-bar bg-primary" role="progressbar" style="" aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
@@ -42,7 +42,7 @@
                                     <span class="d-block">Delivery Order </span>
                                 </div>
                             </div>
-                            <h3 class="mb-3">2 Process</h3>
+                            <h3 class="mb-3">{{$deli_order}} Process</h3>
                             <div class="progress mb-2" style="height: 5px;">
                                 <div class="progress-bar bg-primary" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
@@ -94,5 +94,39 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="col-12">
+        <div class="row">
+            <div class="col-12" style="overflow: auto">
+                <h3>Product Received</h3>
+                <table class="table border">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Vendor</th>
+                        <th>Ordered_Date</th>
+                        <th>Deadline</th>
+                        <th>Status</th>
+                        <th>Action</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($allreceipt as $process)
+                        <tr>
+                            <td><a href="{{url('/receipt/show/'.$process->id)}}">{{$process->received_id}}</a></td>
+                            <td><a href="{{route('customers.show',$process->id)}}">{{$process->vendor->name}}</a></td>
+                            <td>{{\Carbon\Carbon::parse($process->ordered_date)->toFormattedDateString()}}</td>
+                            <td>{{\Carbon\Carbon::parse($process->deadline)->toFormattedDateString()}}</td>
+                            <td>{{$process->inprogress==1?($process->is_validate==1?'Validated':'Invalidate'):'Product Received'}} </td>
+                            <td><a href="{{url('/receipt/show/'.$process->id)}}" class="btn btn-white btn-sm"><i class="fa fa-eye"></i></a></td>
+
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
     </div>
     @endsection

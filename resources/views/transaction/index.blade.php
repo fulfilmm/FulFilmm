@@ -60,7 +60,7 @@
                             <tr>
                                 <td><input type="checkbox" name="check"></td>
                                 <td>
-                                    <a href="{{route('transactions.show',$transaction->id)}}">{{\Carbon\Carbon::parse($transaction->expense->transaction_date)->toFormattedDateString()}}</a>
+                                    <a href="{{$transaction->expense->bill_id==null?route('transactions.show',$transaction->id):route('bills.show',$transaction->expense->bill_id)}}">{{\Carbon\Carbon::parse($transaction->expense->transaction_date)->toFormattedDateString()}}</a>
                                 </td>
                                 <td>{{number_format($transaction->expense->amount)}}</td>
                                 <td><span class="badge" style="background-color: #ff4969">{{$transaction->type}}</span></td>

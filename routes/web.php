@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ApprovalController;
 use App\Http\Controllers\Auth\Login\CustomerAuth;
+use App\Http\Controllers\BillController;
 use App\Http\Controllers\CaseTypeController;
 use App\Http\Controllers\CompanySetting;
 use App\Http\Controllers\CustomerProtal;
@@ -22,6 +23,7 @@ use App\Http\Controllers\OrderlineController;
 use App\Http\Controllers\PriorityController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseItemController;
+use App\Http\Controllers\PurchaseOrderItemController;
 use App\Http\Controllers\PurchaseRequestController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\ReportController;
@@ -33,7 +35,6 @@ use App\Http\Controllers\SaleActivityController;
 use App\Http\Controllers\SaleOrderController;
 use App\Http\Controllers\SaleTargetController;
 use App\Http\Controllers\StockTransactionController;
-use App\Http\Controllers\VariantSettingController;
 use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\TicketPieChartReport;
@@ -46,6 +47,7 @@ use App\Http\Controllers\Auth\Login\EmployeeAuthController as AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\ShippmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -128,6 +130,24 @@ Route::middleware(['auth:employee'])->group(function () {
     Route::get('suppliers',[CustomerController::class,'supplier'])->name('suppliers');
     Route::get('theme/color',[SettingsController::class,'theme_setting'])->name('theme.setting');
     Route::post('theme/color',[SettingsController::class,'theme_color'])->name('theme.color');
+    Route::resource('deliveries',ShippmentController::class);
+    Route::post('delivery/comment',[ShippmentController::class,'comment'])->name('delivery.comment');
+    Route::post('/pr/item/add',[PurchaseItemController::class,'store'])->name('purchaseitem.store');
+    Route::post('/pr/item/update/{id}',[PurchaseItemController::class,'update'])->name('purchaseitem.update');
+    Route::post('pr/comment',[PurchaseRequestController::class,'comment'])->name('pr.comment');
+    Route::get('pr/comment/delet/{id}',[PurchaseRequestController::class,'cmt_delete'])->name('pr_comment.delete');
+    Route::post('/pr/item/delete',[PurchaseItemController::class,'delete'])->name('pritem.delete');
+    Route::post('/rfq/item/add',[RFQItemController::class,'store'])->name('rfqitem.store');
+    Route::post('/rfq/item/update/{id}',[RFQItemController::class,'update'])->name('rfqitem.update');
+    Route::post('/rfq/item/delete',[RFQItemController::class,'destroy'])->name('rfqitem.delete');
+    Route::get('/rfq/sendmail/{vendor_id}',[RFQController::class,'prepareemail'])->name('rfq.preparemail');
+    Route::post('rfqs/send',[RFQController::class,'sendmail'])->name('rfq.sendmail');
+    Route::get('/rfq/status/change/{id}/{status}',[RFQController::class,'statuschange'])->name('rfq.statuschange');
+    Route::get('/rfq/receive/product/{id}',[RFQController::class,'productReceive'])->name('rfq.productreceive');
+    Route::post('/po/item/add',[PurchaseOrderItemController::class,'store'])->name('poitem.store');
+    Route::post('/po/item/update/{id}',[PurchaseOrderItemController::class,'update'])->name('poitem.update');
+    Route::post('/po/item/delete',[PurchaseOrderItemController::class,'destroy'])->name('poitem.delete');
+
 
 
 });
@@ -273,6 +293,35 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::get('expenseclaims/comment/delete/{id}',[ExpenseClaimController::class,'commentDelete'])->name('exp_claim.comment_delete');
     Route::get('add/permission',[RoleController::class,'permission_create'])->name('permission.create');
     Route::post('add/permission',[RoleController::class,'permission_store'])->name('permission.store');
+    //
+
+    //
+
+
+    Route::resource('purchase_request',PurchaseRequestController::class);//
+    Route::post('pr/status/{id}',[PurchaseRequestController::class,'status_change'])->name('pr.status');
+
+
+    Route::resource('rfqs',RFQController::class);//
+    Route::get('prepare/rfqs/{id}',[RFQController::class,'prepare_rfq'])->name('rfq.prepare');
+
+    Route::get('inventory',[InventoryController::class,'index'])->name('inventory.index');
+    Route::get('rfq/receipt/process/',[InventoryController::class,'recipt_proceslist'])->name('receiptprocess');
+    Route::get('receipt/show/{id}',[InventoryController::class,'show'])->name('receipt.show');
+    Route::post('receipt/product/validate/{id}',[InventoryController::class,'product_validate'])->name('product.validate');
+    Route::get('reedit/{id}',[InventoryController::class,'reedit'])->name('receipt.rededit');
+
+    Route::resource('bills',BillController::class)->only('store','edit','update','show','index','destroy');//
+    Route::get('bill/create/{supplier_id}',[BillController::class,'create'])->name('supplierbills.create');
+    Route::post('bill/item/store',[\App\Http\Controllers\BillItemController::class,'store'])->name('billitems.store');
+    Route::post('bill/item/update/{id}',[\App\Http\Controllers\BillItemController::class,'update'])->name('billitems.update');
+    Route::get('purchase/order/create/{rfq_id}',[\App\Http\Controllers\PurchaseOrderController::class,'rfq_to_po_create'])->name('purchase.orders');
+    Route::resource('purchaseorders',\App\Http\Controllers\PurchaseOrderController::class);//
+
+    Route::get('po/confirm/{id}',[\App\Http\Controllers\PurchaseOrderController::class,'confirm'])->name('purchaseorders.confirm');
+    Route::get('add/to/stock/{id}',[InventoryController::class,'receipt'])->name('to.stock');
+    Route::get('po/to/bill/create/{po_id}',[BillController::class,'po_to_bill'])->name('po.bill');
+    Route::get('delivery/to/bill/create/{deli_id}',[BillController::class,'deli_bill'])->name('delivery.bill');
 });
 
 //Route::resource('inqueries',InqueryController::class)->only('create','store');
@@ -293,6 +342,11 @@ Route::middleware(['auth:customer'])->group(function () {
     Route::get('customer/order', [CustomerProtal::class, 'dashboard'])->name('customer.orders');
     Route::get('customer/order/{id}', [CustomerProtal::class, 'dashboard'])->name('order.show');
     Route::resource('orders', SaleOrderController::class);
+    Route::resource('deliveries',ShippmentController::class);
+    Route::post('customer/password/update/{id}',[CustomerProtal::class,'password_update'])->name('password.update');
+    Route::post('delivery/comment',[ShippmentController::class,'comment'])->name('delivery.comment');
+    Route::post('delivery/state/{state}/{id}',[ShippmentController::class,'statuschange'])->name('delivery.state');
+
 
 });
 
@@ -325,34 +379,11 @@ Route::get('test', function () {
 //Route::get('piect/search', [TicketPieChartReport::class, 'filter'])->name('piechart.filter');
 //list routes post
 Route::put('roles/assign-permission/{id}', [RoleController::class, 'assignPermission'])->name('roles.assignPermission');
-
-//list routes
 Route::get('companies-card', [CompanyController::class, 'card'])->name('companies.cards');
 Route::resource('request_tickets', RequestTicket::class)->only('create', 'store');
-Route::post('product/variant/add',[VariantSettingController::class,'store'])->name('add.variant');
-Route::get('product/variant/setting',[VariantSettingController::class,'index'])->name('variant.setting');
-Route::post('/variant/value',[VariantSettingController::class,'value_add'])->name('value.add');
-Route::post('/variant/active/{id}',[VariantSettingController::class,'active'])->name('variant.active');
-Route::get('stock/in/product/{id}',[StockTransactionController::class,'sku_value'])->name('stockin.product');
-Route::resource('purchase_request',PurchaseRequestController::class);
-Route::post('/pr/item/add',[PurchaseItemController::class,'store'])->name('purchaseitem.store');
-Route::post('/pr/item/update/{id}',[PurchaseItemController::class,'update'])->name('purchaseitem.update');
-Route::post('pr/status/{id}',[PurchaseRequestController::class,'status_change'])->name('pr.status');
-Route::post('pr/comment',[PurchaseRequestController::class,'comment'])->name('pr.comment');
-Route::get('pr/comment/delet/{id}',[PurchaseRequestController::class,'cmt_delete'])->name('pr_comment.delete');
-Route::post('/pr/item/delete',[PurchaseItemController::class,'delete'])->name('pritem.delete');
+//list routes
 
-Route::resource('rfqs',RFQController::class);
-Route::get('prepare/rfqs/{id}',[RFQController::class,'prepare_rfq'])->name('rfq.prepare');
-Route::post('/rfq/item/add',[RFQItemController::class,'store'])->name('rfqitem.store');
-Route::post('/rfq/item/update/{id}',[RFQItemController::class,'update'])->name('rfqitem.update');
-Route::post('/rfq/item/delete',[RFQItemController::class,'destroy'])->name('rfqitem.delete');
-Route::get('/rfq/sendmail/{vendor_id}',[RFQController::class,'prepareemail'])->name('rfq.preparemail');
-Route::post('rfqs/send',[RFQController::class,'sendmail'])->name('rfq.sendmail');
-Route::get('/rfq/status/change/{id}/{status}',[RFQController::class,'statuschange'])->name('rfq.statuschange');
-Route::get('/rfq/receive/product/{id}',[RFQController::class,'productReceive'])->name('rfq.productreceive');
-Route::get('inventory',[InventoryController::class,'index'])->name('inventory.index');
-Route::get('rfq/receipt/process/',[InventoryController::class,'recipt_proceslist'])->name('receiptprocess');
-Route::get('receipt/show/{id}',[InventoryController::class,'show'])->name('receipt.show');
+
+Route::get('delivery/tracking/{uuid}',[ShippmentController::class,'tracking'])->name('tracking');
 
 //new

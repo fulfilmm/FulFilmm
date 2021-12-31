@@ -17,7 +17,7 @@ class CreateStockInsTable extends Migration
             $table->id();
             $table->bigInteger('variantion_id')->unsigned();
             $table->bigInteger('emp_id')->unsigned();//Auth Login
-            $table->bigInteger('supplier_id')->unsigned();
+            $table->bigInteger('supplier_id')->unsigned()->nullable();
             $table->double('qty');
             $table->timestamps();
         });

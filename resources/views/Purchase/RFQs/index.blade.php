@@ -1,5 +1,5 @@
 @extends('layout.mainlayout')
-@section('title','Purchase Request')
+@section('title','Request For Quotation')
 @section('content')
     <div class="content container-fluid">
         <!-- Page Header -->
@@ -16,57 +16,81 @@
         </div>
         <div class="col-12">
             <div class="row">
-                <div class="col-md-6">
-                    <div class="row">
-                        <div class="col-md-3 offset-md-3">
-                            To Send
-                        </div>
-                        <div class="col-md-3">Waiting</div>
-                        <div class="col-md-3">Late</div>
-                        <div class="col-md-3">
-                          <div class="text-center my-3">
-                              All RFQs
-                          </div>
-                        </div>
-                        <div class="card bg-gradient-info col-md-3" style="height: 50px">
-                            <div class="text-center text-white my-3">
-                                <h4>1</h4>
+                <div class="col-md-12">
+                    <div class="card-group m-b-30">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <span class="d-block">To Send</span>
+                                    </div>
+
+                                </div>
+                                <h3 class="mb-3">1</h3>
+                                <div class="progress mb-2" style="height: 5px;">
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width:100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <div>
+                                    <span class="text-success">100%</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="card bg-gradient-purple col-md-3" style="height: 50px;">
-                            <div class="text-center text-white my-3">
-                                <h4>2</h4>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <span class="d-block">Waiting</span>
+                                    </div>
+
+                                </div>
+                                <h3 class="mb-3">1</h3>
+
+                                <div class="progress mb-2" style="height: 5px;">
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+
+                                </div>
+                                <div>
+                                    <span class="text-success">100%</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="card bg-secondary col-md-3" style="height: 50px;">
-                            <div class="text-center text-white my-3">
-                                <h4>3</h4>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between ">
+                                    <div>
+                                        <span class="d-block">Already Ordered</span>
+                                    </div>
+                                </div>
+                                <h3 class="mb-3">1</h3>
+                                <div class="progress mb-2" style="height: 5px;">
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <div>
+                                    <span class="text-success">100%</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                          <div class="text-center  my-3">
-                              My RFQ
-                          </div>
-                        </div>
-                        <div class="card col-md-3 bg-gradient-info" style="height: 50px;">
-                            <div class="text-center text-white my-3">
-                                <h4>2</h4>
-                            </div>
-                        </div>
-                        <div class="card col-md-3 bg-gradient-purple" style="height: 50px;">
-                            <div class="text-center text-white my-3">
-                                <h4>3</h4>
-                            </div>
-                        </div>
-                        <div class="card col-md-3 bg-secondary" style="height: 50px;">
-                            <div class="text-center text-white my-3">
-                                <h4>5</h4>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <span class="d-block">PO Confirmed</span>
+                                    </div>
+
+                                </div>
+                                <h3 class="mb-3">1</h3>
+
+                                <div class="progress mb-2" style="height: 5px;">
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+
+                                </div>
+                                <div>
+                                    <span class="text-success">100%</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6">
-
                 </div>
             </div>
             <div class="row">
@@ -92,12 +116,17 @@
                                 <td>{{\Carbon\Carbon::parse($rfq->receipt_date)->toFormattedDateString()}}</td>
                                 <td>{{$rfq->type}}</td>
                                 <td>{{$rfq->status}}</td>
-                                <td>{{$rfq->source->pr_id}}</td>
+                                <td>{{$rfq->source->pr_id??'None'}}</td>
                                 <td>{{$rfq->vendor->name}}</td>
                                 <td>
-                                    <a href="{{route('rfqs.show',$rfq->id)}}" class="btn btn-white btn-sm"><i class="fa fa-eye"></i></a>
-                                    <a href="{{route('rfqs.edit',$rfq->id)}}" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></a>
-                                    <a href="{{route('rfqs.edit',$rfq->id)}}" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
+                                   <div class="row">
+                                    <a href="{{route('rfqs.show',$rfq->id)}}" class="btn btn-white btn-sm mr-1"><i class="fa fa-eye"></i></a>
+                                    <a href="{{route('rfqs.edit',$rfq->id)}}" class="btn btn-success btn-sm mr-1"><i class="fa fa-edit"></i></a>
+                                    <form action="{{route('rfqs.destroy',$rfq->id)}}" method="post">
+                                        @csrf @method('delete')
+                                    <button type="submit" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i></button>
+                                    </form>
+                                   </div>
 
                                 </td>
                             </tr>

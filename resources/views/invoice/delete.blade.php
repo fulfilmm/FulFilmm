@@ -10,7 +10,7 @@
                 @csrf
                 @method('delete')
                 <div class="modal-body">
-                    <strong>Do you want to Delete Approval {{$invoice->invoice_id}}?</strong>
+                    <strong>Do you want to Delete invoice ID: {{$invoice->invoice_id}}?</strong>
                 </div>
                 <div class="modal-footer text-center">
                     <button type="button"class="btn btn-danger" data-dismiss="modal">Cancel</button>
