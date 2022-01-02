@@ -15,7 +15,7 @@ class SaleActivityController extends Controller
 {
     public function index(){
 
-       if(Auth::guard('employee')->user()->role->name=='SuperAdmin'||Auth::guard('employee')->user()->role->name=='CEO'){
+       if(Auth::guard('employee')->user()->role->name=='Super Admin'||Auth::guard('employee')->user()->role->name=='CEO'){
            $activities=SaleActivity::with('employee')->get();
        }else{
            $activities=SaleActivity::with('employee')->where('emp_id',Auth::guard('employee')->user()->id)->orWhere('report_to',Auth::guard('employee')->user()->id)->get();
@@ -176,9 +176,13 @@ class SaleActivityController extends Controller
     }
     public function read($id){
 //        dd($id);
-        $activity=SaleActivity::where('id',$id)->first();
-        $activity->status=1;
-        $activity->update();
-        return redirect(route('activity.show',$id));
+        $activity=SaleActivity::where('id',$id)->where('report_to',Auth::guard('employee')->user()->id)->first();
+       if($activity!=null) {
+           $activity->status = 1;
+           $activity->update();
+           return redirect(route('activity.show', $id));
+       }else{
+           return redirect(route('activity.show', $id));
+       }
     }
 }
