@@ -27,7 +27,7 @@ class InventoryController extends Controller
     public function index()
     {
        $to_receipt=ProductReceive::where('inprogress',1)->count();
-       $deli_order=DeliveryOrder::where('state','!=','Done')->count();
+       $deli_order=DeliveryOrder::where('receipt','!=',1)->count();
         $allreceipt =ProductReceive::with('vendor','purchaseorder','employee')->where('inprogress',0)->get();
         return view('Inventory.inventory',compact('to_receipt','allreceipt','deli_order'));
     }

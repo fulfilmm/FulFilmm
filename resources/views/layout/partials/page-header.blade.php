@@ -40,7 +40,7 @@
 
             @if($export === true)
                 <a href="{{route($route.'.export')}}" data-toggle="modal" data-target="#export"
-                   class="btn btn-primary rounded mr-3">Export</a>
+                   class="btn btn-outline-info rounded mr-3"><i class="fa fa-download mr-1"></i>Export</a>
             @endif
         </div>
     </div>

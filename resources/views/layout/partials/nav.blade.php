@@ -76,8 +76,7 @@
                             <a href="#"><i class="la la-calendar" style="font-size: 18px;"></i><span> Activity</span> <span class="menu-arrow"></span></a>
                             <ul style="display: none;">
 
-                                <li><a class="{{ Request::is('sale/activity') ? 'active' : '' }}"
-                                       href="{{ route('activity.index') }}" style="text-decoration: none">Sale Activity</a></li>
+
 
                             </ul>
                         </li>
@@ -338,7 +337,8 @@
                             <a href="#"><i class="la la-cube"></i> <span>Sale</span> <span
                                         class="menu-arrow"></span></a>
                             <ul style="display: none;">
-
+                                <li><a class="{{ Request::is('sale/activity') ? 'active' : '' }}"
+                                       href="{{ route('activity.index') }}" style="text-decoration: none"><i class="la la-calendar mr-1" style="font-size: 18px;"></i>Sale Activity</a></li>
                                 <li><a class="{{ Request::is('saletargets/create') ? 'active' : '' }}" href="{{ route('saletargets.create') }}" style="text-decoration: none"><i class="la la-bullseye mr-1" style="font-size: 18px;"></i> Add Sale Target</a></li>
                                 <li><a class="{{ Request::is('contact/qualified') ? 'active' : '' }}" href="{{ route('qualified_contact') }}" style="text-decoration: none"><i class="fa fa-users mr-1" style="font-size: 18px;"></i> Customer</a></li>
                                 <li class="submenu">
