@@ -339,13 +339,14 @@ class CustomerController extends Controller
         return redirect()->route('customers.index')->with('success', __('alert.delete_success'));
     }
 
-    public function export()
+    public function export(Request $request)
     {
-        return Excel::download(new CustomerExport, 'customers.xlsx');
+        return Excel::download(new CustomerExport($request->start_date,$request->end_date), 'customers.xlsx');
     }
 
     public function import(Request $request)
     {
+//        dd($request->all());
         try {
             Excel::import(new CustomerImport, $request->file('import'));
             return redirect()->route('customers.index')->with('success', __('alert.import_success'));

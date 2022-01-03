@@ -240,16 +240,16 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
 
 
     //export routes
-    Route::get('customers/export', [CustomerController::class, 'export'])->name('customers.export');
-    Route::get('departments/export', [DepartmentController::class, 'export'])->name('departments.export');
-    Route::get('employees/export/', [EmployeeController::class, 'export'])->name('employees.export');
-    Route::get('companies/export', [CompanyController::class, 'export'])->name('companies.export');
+    Route::get('customers/export/excel', [CustomerController::class, 'export'])->name('customers.export');
+    Route::get('departments/export/data', [DepartmentController::class, 'export'])->name('departments.export');
+    Route::get('employees/export/data', [EmployeeController::class, 'export'])->name('employees.export');
+    Route::get('companies/export/data', [CompanyController::class, 'export'])->name('companies.export');
 
     //import routes
-    Route::post('customers/import', [CustomerController::class, 'import'])->name('customers.import');
-    Route::post('departments/import', [DepartmentController::class, 'import'])->name('departments.import');
-    Route::post('employees/import', [EmployeeController::class, 'import'])->name('employees.import');
-    Route::post('companies/import', [CompanyController::class, 'import'])->name('companies.import');
+    Route::post('customers/import/data', [CustomerController::class, 'import'])->name('customers.import');
+    Route::post('departments/import/data', [DepartmentController::class, 'import'])->name('departments.import');
+    Route::post('employees/import/data', [EmployeeController::class, 'import'])->name('employees.import');
+    Route::post('companies/import/data', [CompanyController::class, 'import'])->name('companies.import');
 
 
     //list routes post

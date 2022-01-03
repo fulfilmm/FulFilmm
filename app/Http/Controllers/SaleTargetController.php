@@ -35,7 +35,7 @@ class SaleTargetController extends Controller
                     ->select(DB::raw("SUM(target_sale) as target"))
                     ->where('month', $value)->where('year', date('Y'))
                     ->get();
-                $monthlysaletarget[$value] = $sale_target[0];
+                $monthlysaletarget[$value] = $sale_target[0]??0;
 
             }
             foreach ($year as $key => $value) {
@@ -86,6 +86,7 @@ class SaleTargetController extends Controller
                 $monthlysaletarget[$value] = $sale_target[0];
 
             }
+
             //Yearly
             foreach ($year as $key => $value) {
                 $grand_total = DB::table("invoices")

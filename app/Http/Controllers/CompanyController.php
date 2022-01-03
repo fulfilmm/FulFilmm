@@ -64,9 +64,9 @@ class CompanyController extends Controller
         return view('company.create', compact('parent_companies', 'hasSetUp'));
     }
 
-    public function export()
+    public function export(Request $request)
     {
-        return Excel::download(new CompaniesExport, 'companies.xlsx');
+        return Excel::download(new CompaniesExport($request->start_date,$request->end_date), 'companies.xlsx');
     }
 
     /**

@@ -14,29 +14,38 @@ class CompaniesExport implements FromCollection, WithHeadings, WithMapping
      */
     public $data = [];
     public $exceptKeys = ['logo', 'data', 'user_company'];
-    public function __construct()
+    public function __construct($start_date,$end_date)
     {
-        $this->data = Company::all();
+        $this->data = Company::whereBetween('created_at',[$start_date,$end_date])
+            ->select('name','email','phone','address','business_type','web_link','facebook_page','linkedin','created_at')
+            ->get();
     }
     public function collection()
     {
 
-        return Company::all();
+        return $this->data;
     }
 
     public function headings(): array
     {
-        $keys = collect($this->data->first())->except($this->exceptKeys)->keys()->toArray();
-        return $keys;
+        return collect($this->data->first())->keys()->except(9)->toArray();
     }
 
 
     public function map($company): array
     {
-        $company_array = collect($company)->except($this->exceptKeys)->toArray();
-        $company_array['parent_company'] = $company->parentCompany->name ?? '';
-        $company_array['parent_company_2'] = $company->parentCompany2->name ?? '';
 
-        return $company_array;
+        return [
+            $company->name,
+            $company->email,
+            $company->phone,
+            $company->address,
+            $company->business_type,
+            $company->web_link,
+            $company->facebook_page,
+            $company->linkedin,
+            $company->created_at,
+
+        ];
     }
 }

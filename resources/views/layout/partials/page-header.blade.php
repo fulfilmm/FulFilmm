@@ -1,15 +1,15 @@
 {{-- Modals --}}
-@if($import === true)
-    <x-partials.modal id="import" title="Customer Import">
-        <x-forms.import route="{{$route. '.import'}}"></x-forms.import>
-    </x-partials.modal>
-@endif
+{{--@if($import === true)--}}
+    {{--<x-partials.modal id="import" title="Customer Import">--}}
+        {{--<x-forms.import route="{{$route. '.import'}}"></x-forms.import>--}}
+    {{--</x-partials.modal>--}}
+{{--@endif--}}
 
-@if($export === true)
-    <x-partials.modal id="export" title="Export">
-        <x-forms.export route="{{$route. '.export'}}"></x-forms.export>
-    </x-partials.modal>
-@endif
+{{--@if($export === true)--}}
+    {{--<x-partials.modal id="export" title="Export">--}}
+        {{--<x-forms.export route="{{$route.'.export'}}"></x-forms.export>--}}
+    {{--</x-partials.modal>--}}
+{{--@endif--}}
 
 
 <div class="page-header">
@@ -23,7 +23,7 @@
             <div class="view-icons">
                 @if($import === true)
                     <a href="{{route($route.'.import')}}" data-toggle="modal" data-target="#import"
-                       class="btn btn-white rounded mr-3">Import</a>
+                       class="btn btn-white rounded mr-3"><i class="fa fa-upload mr-2 ml-1"></i><span class="mr-1">Import</span></a>
                 @endif
                 @if($card === true)
                     <a href="{{route($route.'.cards')}}" class="grid-view btn btn-link"><i class="fa fa-th"></i></a>
@@ -39,7 +39,7 @@
         <div class="col-auto float-right ml-auto">
 
             @if($export === true)
-                <a href="{{route($route.'.export')}}" data-toggle="modal" data-target="#export"
+                <a  data-toggle="modal" data-target="#export"
                    class="btn btn-outline-info rounded mr-3"><i class="fa fa-download mr-1"></i>Export</a>
             @endif
         </div>

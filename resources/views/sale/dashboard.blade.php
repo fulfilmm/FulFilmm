@@ -103,7 +103,7 @@
                     <div class="card-body">
                         <span class="dash-widget-icon"><i class="fa fa-bullseye"></i></span>
                         <div class="dash-widget-info">
-                            <h3>1000000</h3>
+                            <h3>{{$monthlysaletarget[date('M')]->target??0}}</h3>
                             <span>Sale Target ({{$search_month??date('M')}})</span>
                         </div>
                     </div>

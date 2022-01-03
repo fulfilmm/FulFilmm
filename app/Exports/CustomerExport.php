@@ -14,10 +14,11 @@ class CustomerExport implements FromCollection,WithHeadings, WithMapping
     */
 
     protected $data;
-    public function __construct()
+    public function __construct($start_date,$end_date)
     {
         $this->data = Customer::with('company')
-                        ->select('name', 'phone', 'email', 'address', 'company_id', 'created_at')
+                        ->select('name', 'phone', 'email', 'address','company_id','customer_type','gender','created_at')
+                        ->whereBetween('created_at',[$start_date,$end_date])
                         ->get();
     }
     public function collection()
@@ -37,8 +38,11 @@ class CustomerExport implements FromCollection,WithHeadings, WithMapping
             $customer->phone,
             $customer->email,
             $customer->address,
+            $customer->customer_type,
+            $customer->gender,
             $customer->created_at,
-            $customer->company->name
+            $customer->company->name,
+
         ];
     }
 }
