@@ -82,7 +82,9 @@
                                                                     $members=json_decode($details_approval->trip_members);
                                                                 @endphp
                                                                 <td style="min-width: 150px" class="text-muted">Trip Member</td>
-                                                                <td>: @foreach($members as $member) {{trim($member,',')}}, @endforeach</td>
+                                                                <td>: @if($details_approval->trip_members!=null)
+                                                                        @foreach($members as $member) {{trim($member,',')}}, @endforeach
+                                                                    @endif</td>
 
                                                             </tr>
                                                            @elseif($details_approval->type=='Payment')
