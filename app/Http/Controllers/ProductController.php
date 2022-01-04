@@ -77,26 +77,28 @@ class ProductController extends Controller
             $product->enable=0;
         }
         $product->save();
-        for ($i=0;$i<count($request->field_count);$i++){
-            $variation=new ProductVariations();
-            $image = $request->picture[$i]??null;
-            if($image!=null) {
-                $name = $image->getClientOriginalName();
-                $request->picture[$i]->move(public_path().'/product_picture/', $name);
-                $variation->image = $name;
-            }
-            $variation->product_id=$product->id;
-            $variation->description=$request->description[$i];
-            $variation->price=$request->price[$i];
-            $variation->purchase_price=$request->purchase_price[$i];
+       if(isset($request->field_count)){
+           for ($i=0;$i<count($request->field_count);$i++){
+               $variation=new ProductVariations();
+               $image = $request->picture[$i]??null;
+               if($image!=null) {
+                   $name = $image->getClientOriginalName();
+                   $request->picture[$i]->move(public_path().'/product_picture/', $name);
+                   $variation->image = $name;
+               }
+               $variation->product_id=$product->id;
+               $variation->description=$request->description[$i];
+               $variation->price=$request->price[$i];
+               $variation->purchase_price=$request->purchase_price[$i];
 //           $variation->barcode=$request->barcode[$i];
-            $variation->discount_rate=$request->discount_rate[$i];
-            $variation->size=$request->size[$i];
-            $variation->color=$request->color[$i];
-            $variation->other=$request->other[$i];
-            $variation->exp_date=Carbon::create($request->exp_date[$i]);
-            $variation->save();
-        }
+               $variation->discount_rate=$request->discount_rate[$i];
+               $variation->size=$request->size[$i];
+               $variation->color=$request->color[$i];
+               $variation->other=$request->other[$i];
+               $variation->exp_date=Carbon::create($request->exp_date[$i]);
+               $variation->save();
+           }
+       }
         return redirect("/products")->with("message","Product Create Success");
 
     }
