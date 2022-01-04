@@ -146,7 +146,7 @@
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 success: function (data) {
                     console.log(data);
-                    // $("#company_div").load(location.href + " #company_div>* ");
+                    $("#company_div").load(location.href + " #company_div>* ");
                 }
             });
         });
