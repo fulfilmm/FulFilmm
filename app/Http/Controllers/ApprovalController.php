@@ -25,13 +25,53 @@ class ApprovalController extends Controller
 
         $auth=Auth::guard('employee')->user();
         $approvals=Approvalrequest::with('approver','secondary_approver','request_emp')->where('emp_id',$auth->id)->get();
+
+        return  view('approval.index',compact('approvals'));
+    }
+    public function requestatin_search(Request $request){
+
+        $auth=Auth::guard('employee')->user();
+        if($request->title==null){
+            $approvals=Approvalrequest::with('approver','secondary_approver','request_emp')->where('emp_id',$auth->id)->whereBetween('created_at',[$request->start_date,$request->end_date])->get();
+        }elseif ($request->start_date==null){
+            $approvals=Approvalrequest::with('approver','secondary_approver','request_emp')->where('emp_id',$auth->id)->where('title','LIKE','%'.$request->title.'%')->get();
+        }else{
+            $approvals=Approvalrequest::with('approver','secondary_approver','request_emp')->where('emp_id',$auth->id)->whereBetween('created_at',[$request->start_date,$request->end_date])
+                ->where('title','LIKE','%'.$request->title.'%')->get();
+        }
+        return  view('approval.index',compact('approvals'));
+    }
+    public function approval_search(Request $request){
+        $auth=Auth::guard('employee')->user();
+        if($request->title==null){
+            $approvals=Approvalrequest::with('approver','secondary_approver','request_emp')->whereBetween('created_at',[$request->start_date,$request->end_date])
+//                ->orWhere('secondary_approved',$auth->id)
+                ->Where('approved_id',$auth->id)
+                ->get();
+        }elseif ($request->start_date==null){
+            $approvals=Approvalrequest::with('approver','secondary_approver','request_emp')
+                ->where('title','LIKE','%'.$request->title.'%')
+//                ->orWhere('secondary_approved',$auth->id)
+                ->Where('approved_id',$auth->id)
+                ->get();
+        }else{
+            $approvals=Approvalrequest::with('approver','secondary_approver','request_emp')
+                ->whereBetween('created_at',[$request->start_date,$request->end_date])
+                ->where('title','LIKE','%'.$request->title.'%')
+//                ->orWhere('secondary_approved',$auth->id)->orWhere('approved_id',$auth->id)
+                ->get();
+        }
+        return  view('approval.request_to_me',compact('approvals'));
+    }
+    public function cc_requestation(){
+        $auth=Auth::guard('employee')->user();
         $cc_approvals=Cc_of_approval::where('emp_id',$auth->id)->get();
         $cc=[];
         foreach ($cc_approvals as $cc_approval) {
             $approval_request=Approvalrequest::with('approver','secondary_approver','request_emp')->where('id',$cc_approval->approval_id)->first();
             array_push($cc,$approval_request);
         }
-        return  view('approval.index',compact('approvals','cc'));
+        return  view('approval.cc_requestation',compact('cc'));
     }
     public function request_to_me(){
         $auth=Auth::guard('employee')->user();
@@ -84,6 +124,7 @@ class ApprovalController extends Controller
         $approval->from_date=$request->from??null;
         $approval->to_date=$request->to_date??null;
         $approval->type=$request->type;
+        $approval->state='New';
         $approval->amount=$request->type=='Procurement'?$request->procurement_amount:($request->type=='Business Trip'?$request->budget:($request->type=='Payment'?$request->payment_amount:null));
         $approval->location=$request->location??'';
         $approval->contact_id=$request->type=='Payment'?$request->contact:$request->supplier;

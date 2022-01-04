@@ -1,5 +1,5 @@
 @extends('layout.mainlayout')
-@section('title','Approval Request Me')
+@section('title','Approval ')
 @section('content')
     <!-- Page Wrapper -->
 
@@ -10,15 +10,42 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Approval Request</h3>
+                    <h3 class="page-title">Approval</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Approval Request To Me</li>
+                        <li class="breadcrumb-item active">My Approval</li>
                     </ul>
                 </div>
             </div>
         </div>
         <!-- /Page Header -->
+        <form action="{{url('approval/search')}}" method="GET">
+            @csrf
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <input type="text" id="title" class="form-control" name="title" placeholder="Type title">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+
+                        <input type="text" class="form-control" id="start_date" name="start_date" placeholder="Enter Start Date">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+
+                        <input type="text" class="form-control" id="end_date" name="end_date" placeholder="Enter End Date">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-white btn-md col-12">Search</button>
+                    </div>
+                </div>
+            </div>
+        </form>
         <table class="table">
             <thead>
             <tr>
@@ -39,7 +66,7 @@
                     <td>{{\Carbon\Carbon::parse($approval->target_date)->toFormattedDateString()}}</td>
                     <td>{{$approval->request_emp->name}}</td>
                     <td>{{$approval->state==null ? "N/A" : $approval->state}}</td>
-                    <td>{{$approval->secondary_approved ?$approval->secondary_approver->name :""}}</td>
+                    <td>{{$approval->secondary_approved ?$approval->secondary_approver->name :"N/A"}}</td>
                     <td><a href="{{route('approvals.show',$approval->id)}}" class="btn btn-outline-info btn-sm la la-eye mr-2"></a><a href="" data-toggle="modal" data-target="#delete{{$approval->id}}" class="btn btn-outline-danger btn-sm la la-trash"></a></td>
                     @include('approval.delete')
                 </tr>
@@ -66,9 +93,13 @@
             </div>
         </div>
     </div>
-    <!-- /Event Modal -->
+    <script>
+        jQuery(document).ready(function () {
+            'use strict';
 
-    <!-- Add Category Modal-->
-    <!-- /Add Category Modal-->
-    <!-- /Page Wrapper -->
+            jQuery('#target_date').datetimepicker();
+            jQuery('#start_date').datetimepicker();
+            jQuery('#end_date').datetimepicker();
+        });
+    </script>
 @endsection
