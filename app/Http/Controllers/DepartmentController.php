@@ -56,7 +56,9 @@ class DepartmentController extends Controller
     public function store(DepartmentRequest $request)
     {
         $department = $this->department_contract->create($request->all());
-        $this->department_contract->assignDepartmentHead($department->id, $request->employee_id);
+        if(isset($request->employee_id)){
+            $this->department_contract->assignDepartmentHead($department->id, $request->employee_id);
+        }
         return redirect()->route('departments.index')->with('success', __('alert.create_success'));
     }
 
@@ -95,7 +97,9 @@ class DepartmentController extends Controller
      */
     public function update(DepartmentRequest $request, $id)
     {
+//        dd($request->all());
         $this->department_contract->updateById($id, $request->all());
+        $this->department_contract->assignDepartmentHead($id, $request->employee_id);
         return redirect()->route('departments.index')->with('success', __('alert.update_success'));
     }
 
