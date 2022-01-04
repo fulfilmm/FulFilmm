@@ -28,12 +28,13 @@ class EmployeeRequest extends FormRequest
             'name' => 'required',
             'role_id' => 'required',
 //            'password' => 'required',
-            'email' => 'required',
+            'email' => 'required'|'unique:employees:',
             'can_login' => 'nullable',
             'can_post_assignments' => 'nullable',
             'phone' => 'required',
             'work_phone' => 'required',
             'join_date' => 'required',
+
         ];
     }
 

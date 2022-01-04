@@ -16,7 +16,7 @@ class CreateSaleActivitiesTable extends Migration
         Schema::create('sale_activities', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->bigInteger('customer_id')->unsigned();
+            $table->bigInteger('customer_id')->unsigned()->nullable();
             $table->string('activity_type');
             $table->text('description');
             $table->string('type')->nullable();
@@ -24,6 +24,10 @@ class CreateSaleActivitiesTable extends Migration
             $table->bigInteger('report_to')->unsigned();
             $table->bigInteger('emp_id')->unsigned();
             $table->tinyInteger('status')->default(0);
+            $table->string('shop')->nullable();
+            $table->double('amount')->nullable();
+            $table->string('township')->nullable();
+            $table->string('address')->nullable();
             $table->text('attachment')->nullable();
             $table->timestamps();
         });

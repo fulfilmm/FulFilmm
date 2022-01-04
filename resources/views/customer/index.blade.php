@@ -75,11 +75,11 @@
                                 <form action="{{url('customers/import/data')}}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <div class="form-group">
-                                        <label for="start">Start Date</label>
+                                        <label for="start">File</label>
                                         <input type="file" class="form-control" id="file" name="import"  value="" required>
                                     </div>
                                     <div class="d-flex justify-content-center">
-                                        <button type="submit" class="btn btn-primary">Export</button>
+                                        <button type="submit" class="btn btn-primary">Import</button>
                                     </div>
                                 </form>
                             </div>

@@ -27,11 +27,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
-
+use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
 
 class CustomerController extends Controller
 {
+    use WithPagination;
     public $state = ['Yangon Division', 'Mandalay Division', 'Bago Division', 'Ayeyarwady Division', 'Tanintharyi Division', 'Magway Division', 'Sagaing Division', 'Kachin State', 'Kayah State', 'Kayin State', 'Chin State', 'Mon State', 'Rakhine State', 'Shan State'];
 
     private $customerContract, $company_contract;
@@ -54,12 +55,13 @@ class CustomerController extends Controller
     public function index()
     {
         //
-        return view('customer.data.lists');
+        $customers = Customer::paginate(10);
+        return view('customer.data.lists',compact('customers'));
     }
 
     public function card()
     {
-        $customers = Customer::paginate(20);
+        $customers = Customer::paginate(12);
         return view('customer.data.cards', compact('customers'));
     }
     public function qualified_contact(){
@@ -90,12 +92,12 @@ class CustomerController extends Controller
      */
     public function store(CustomerRequest $request)
     {
-//        dd($request->all());
+
         $this->validate($request,['email'=>'unique:customers']);
         if (isset($request->profile_img)) {
             if ($request->profile_img != null) {
                 $name = $request->profile_img->getClientOriginalName();
-                $request->profile_img->move(public_path() . '/img/profiles', $name);
+//                $request->profile_img->move(public_path() . '/img/profiles', $name);
 
             }
         }

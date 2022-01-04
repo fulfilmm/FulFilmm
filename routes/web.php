@@ -147,9 +147,6 @@ Route::middleware(['auth:employee'])->group(function () {
     Route::post('/po/item/add',[PurchaseOrderItemController::class,'store'])->name('poitem.store');
     Route::post('/po/item/update/{id}',[PurchaseOrderItemController::class,'update'])->name('poitem.update');
     Route::post('/po/item/delete',[PurchaseOrderItemController::class,'destroy'])->name('poitem.delete');
-
-
-
 });
 //Route::resource('saleorders', SaleOrderController::class)->middleware('auth:employee');
 
@@ -322,6 +319,7 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::get('add/to/stock/{id}',[InventoryController::class,'receipt'])->name('to.stock');
     Route::get('po/to/bill/create/{po_id}',[BillController::class,'po_to_bill'])->name('po.bill');
     Route::get('delivery/to/bill/create/{deli_id}',[BillController::class,'deli_bill'])->name('delivery.bill');
+    Route::get('requestation/cc',[ApprovalController::class,'cc_requestation'])->name('requestation.cc');
 });
 
 //Route::resource('inqueries',InqueryController::class)->only('create','store');
@@ -334,6 +332,9 @@ Route::middleware(['meeting_view_relative_emp', 'auth:employee', 'authorize', 'o
     Route::resource('approvals', ApprovalController::class)->only('show');
 });
 //CustomerProtal Side Route
+Route::middleware(['auth:customer'||'auth:employee'])->group(function () {
+    Route::resource('deliveries', ShippmentController::class);
+});
 Route::middleware(['auth:customer'])->group(function () {
     Route::get('customer/home/', [CustomerProtal::class, 'home'])->name('home');
     Route::get('customer/quotation', [CustomerProtal::class, 'quotation'])->name('customer.quotation');
@@ -342,7 +343,7 @@ Route::middleware(['auth:customer'])->group(function () {
     Route::get('customer/order', [CustomerProtal::class, 'dashboard'])->name('customer.orders');
     Route::get('customer/order/{id}', [CustomerProtal::class, 'dashboard'])->name('order.show');
     Route::resource('orders', SaleOrderController::class);
-    Route::resource('deliveries',ShippmentController::class);
+
     Route::post('customer/password/update/{id}',[CustomerProtal::class,'password_update'])->name('password.update');
     Route::post('delivery/comment',[ShippmentController::class,'comment'])->name('delivery.comment');
     Route::post('delivery/state/{state}/{id}',[ShippmentController::class,'statuschange'])->name('delivery.state');
@@ -387,3 +388,7 @@ Route::resource('request_tickets', RequestTicket::class)->only('create', 'store'
 Route::get('delivery/tracking/{uuid}',[ShippmentController::class,'tracking'])->name('tracking');
 
 //new
+
+Route::get('requestation/search',[ApprovalController::class,'requestatin_search'])->name('requestation.search');
+Route::get('approval/search',[ApprovalController::class,'approval_search'])->name('approval.search');
+Route::get('cc/search',[ApprovalController::class,'cc_search'])->name('cc.search');

@@ -14,7 +14,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12">
+        <div class="col-12" style="overflow: auto">
             <table class="table ">
                 <thead>
                     <tr>

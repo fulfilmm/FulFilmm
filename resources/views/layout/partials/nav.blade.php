@@ -82,7 +82,7 @@
                         </li>
 
                         <li class="submenu">
-                            <a href="#"><i class="la la-group"></i> <span> HRM</span> <span
+                            <a href="#"><i class="la la-group"></i> <span>People</span> <span
                                         class="menu-arrow"></span></a>
                             <ul style="display: none;">
                                 <li class="submenu">
@@ -114,13 +114,15 @@
 
 
                                 <li class="submenu">
-                                    <a href="#"><i class="la la-check-square-o mr-2"></i><span> Approval Request</span> <span
+                                    <a href="#"><i class="la la-check-square-o mr-2"></i><span>Requestation</span> <span
                                                 class="menu-arrow"></span></a>
                                     <ul style="display: none;">
                                         <li><a class="{{ Request::is('approvals') ? 'active' : '' }}"
-                                               href="{{ route('approvals.index') }}" style="text-decoration: none">My Approval </a></li>
+                                               href="{{ route('approvals.index') }}" style="text-decoration: none">Requestation </a></li>
+                                        <li><a class="{{ Request::is('requestation/cc') ? 'active' : '' }}"
+                                               href="{{ route('requestation.cc') }}" style="text-decoration: none">Requestation Cc</a></li>
                                         <li><a class="{{ Request::is('approvals/request/me') ? 'active' : '' }}"
-                                               href="{{ route('request.me') }}" style="text-decoration: none">Requests Me </a></li>
+                                               href="{{ route('request.me') }}" style="text-decoration: none">Approval</a></li>
                                     </ul>
                                 </li>
                                 <li class="submenu">

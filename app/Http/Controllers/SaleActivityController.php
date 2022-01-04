@@ -16,9 +16,9 @@ class SaleActivityController extends Controller
     public function index(){
 
        if(Auth::guard('employee')->user()->role->name=='Super Admin'||Auth::guard('employee')->user()->role->name=='CEO'){
-           $activities=SaleActivity::with('employee')->get();
+           $activities=SaleActivity::orderby('created_at','desc')->with('employee')->get();
        }else{
-           $activities=SaleActivity::with('employee')->where('emp_id',Auth::guard('employee')->user()->id)->orWhere('report_to',Auth::guard('employee')->user()->id)->get();
+           $activities=SaleActivity::orderby('created_at','desc')->with('employee')->where('emp_id',Auth::guard('employee')->user()->id)->orWhere('report_to',Auth::guard('employee')->user()->id)->get();
        }
         $followers=SaleActivityFollower::with('employee')->get();
         $unreach_activity=[];
@@ -33,7 +33,55 @@ class SaleActivityController extends Controller
     public function create(){
         $customers=Customer::all()->pluck('name','id')->all();
         $emps=Employee::all();
-        return view('activity.create',compact('customers','emps'));
+        $township=
+            ["Botataung",
+                "Dagon Seikkan",
+                "Dawbon",
+                "East Dagon",
+                "Mingala Taungnyunt",
+                "North Dagon",
+                "North Okkalapa",
+                "Pazundaung",
+                "South Dagon",
+                "South Okkalapa",
+                "Tamwe",
+                "Thaketa",
+                "Thingangyun",
+                "Yankin",
+"Hlaingthaya",
+"Hlegu",
+"Hmawbi",
+"Htantabin",
+"Insein",
+"Mingaladon",
+"Shwepyitha",
+"Taikkyi",
+"Cocokyun",
+"Dala",
+"Kawhmu",
+"Kayan",
+"Kungyangon",
+"Kyauktan",
+"Seikkyi Kanaungto",
+"Tada",
+"Thanlyin",
+"Thongwa",
+"Twante",
+"Ahlon",
+"Bahan",
+"Dagon",
+"Hlaing",
+"Kamayut",
+"Kyauktada",
+"Kyimyindaing",
+"Lanmadaw",
+"Latha",
+"Mayangon",
+"Pabedan",
+"Sanchaung",
+"Seikkan"
+];
+        return view('activity.create',compact('customers','emps','township'));
     }
     public function store(Request $request){
 //        dd($request->all());

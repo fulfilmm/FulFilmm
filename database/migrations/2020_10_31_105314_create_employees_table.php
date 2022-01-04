@@ -16,6 +16,7 @@ class CreateEmployeesTable extends Migration
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
             $table->string('name', 64);
+            $table->string('empid')->unique();
             $table->foreignId('department_id');
             $table->string('phone', 16)->nullable();
             $table->string('email', 100)->unique()->nullable();

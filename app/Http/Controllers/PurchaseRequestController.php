@@ -68,6 +68,12 @@ class PurchaseRequestController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request,[
+           'vendor_id'=>'required',
+           'approver_id'=>'required',
+           'deadline'=>'required',
+           'item'=>'required',
+        ]);
 //        dd($request->all());
         $last_pr=PurchaseRequest::orderBy('id', 'desc')->first();
 

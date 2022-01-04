@@ -40,7 +40,7 @@ class DatabaseSeeder extends Seeder
         products_category::create(['name'=>'Clothes','parent'=>1]);
         $superadmin = Employee::updateOrCreate(
             ['email' => 'admin@gmail.com'],
-            [
+            [    'empid'=>'Emp-00001',
                 'name' => 'SuperAdmin',
                 'department_id' => '1',
                 'phone' => '123123',
@@ -55,6 +55,7 @@ class DatabaseSeeder extends Seeder
         $ticketadmin = Employee::updateOrCreate(
             ['email' => 'thomascinpu@gmail.com'],
             [
+                'empid'=>'Emp-00002',
                 'name' => 'TicketAdmin',
                 'department_id' => '1',
                 'phone' => '123123',
@@ -69,6 +70,7 @@ class DatabaseSeeder extends Seeder
         $ticketagent = Employee::updateOrCreate(
             ['email' => 'ma.sa.kitaite@gmail.com'],
             [
+                'empid'=>'Emp-00003',
                 'name' => 'Agent',
                 'department_id' => '1',
                 'phone' => '123123',
@@ -83,6 +85,7 @@ class DatabaseSeeder extends Seeder
         $ceo = Employee::updateOrCreate(
             ['email' => 'wailinaung@gmail.com'],
             [
+                'empid'=>'Emp-00004',
                 'name' => 'Ko Wai Lin(CEO)',
                 'department_id' => '1',
                 'phone' => '123123',
@@ -116,7 +119,7 @@ class DatabaseSeeder extends Seeder
 
 
 
-        Employee::factory(100)->create();
+//        Employee::factory(100)->create();
         // \App\Models\User::factory(10)->create();
         $superadmin->assignRole('Super Admin');
         $ticketagent->assignRole('Agent');

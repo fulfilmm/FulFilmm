@@ -16,10 +16,11 @@
                 <th>Email</th>
                 <th>Phone</th>
                 <th>Work Phone</th>
+                <th>Department</th>
                 <th>Join Date</th>
                 <th>Can login</th>
                 <th>Can post assignments</th>
-                <th>Department</th>
+
                 <th>Role</th>
                 <th>Action</th>
             </tr>
@@ -30,10 +31,11 @@
                 <td>{{ $em->email }}</td>
                 <td>{{ $em->phone }}</td>
                 <td>{{ $em->work_phone }}</td>
+                <td>{{ $em->department->name }}</td>
                 <td>{{ $em->join_date }}</td>
                 <td>{{ $em->can_login ? 'Yes' : 'No' }}</td>
                 <td>{{ $em->can_post_assignments ? 'Yes' : 'No' }}</td>
-                <td>{{ $em->department->name }}</td>
+
                 <td>{{$em->getRoleNames()[0] ?? ''}}</td>
                 <td style="display: flex">
                 <a class="pr-2 my-auto btn btn-success" href="{{route('employees.edit',$em->id)}}">

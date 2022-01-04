@@ -16,7 +16,7 @@ class CreateProductReceivesTable extends Migration
         Schema::create('product_receives', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('vendor_id')->unsigned();
-            $table->string('received_id');
+            $table->string('received_id')->unique();
             $table->dateTime('receive_date');
             $table->tinyInteger('is_validate')->default(0);
             $table->tinyInteger('inprogress')->default(1);

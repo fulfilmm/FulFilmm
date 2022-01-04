@@ -54,6 +54,7 @@
                 <div class="col-md-4">
                     <label for="">Source</label>
                     <select name="source" id="source" class="select2 form-control">
+                        <option value="">None</option>
                         @foreach($pr as $key=>$val)
                         <option value="{{$key}}">{{$val}}</option>
                             @endforeach

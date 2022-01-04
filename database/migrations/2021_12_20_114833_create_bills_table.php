@@ -16,7 +16,7 @@ class CreateBillsTable extends Migration
         Schema::create('bills', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('bill_id');
+            $table->string('bill_id')->unique();
             $table->bigInteger('vendor_id')->unsigned();
             $table->string('email');
             $table->text('billing_address');

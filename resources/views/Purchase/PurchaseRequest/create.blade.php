@@ -21,30 +21,38 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="">Supplier</label>
+                        <label for="">Supplier <span class="text-danger">*</span></label>
                         <select name="vendor_id" id="supplier" class="form-control select2">
+                            <option value="">Select Supplier</option>
                             @foreach($suppliers as $supplier)
                                 <option value="{{$supplier->id}}" {{isset($pr_data)?($pr_data[0]['supplier_id']==$supplier->id?'selected':''):''}}>{{$supplier->name}}</option>
                             @endforeach
                         </select>
+                        @error('vendor_id')
+                        <i class="text-danger">{{$message}}</i>
+                        @enderror
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="">Approver</label>
+                        <label for="">Approver <span class="text-danger">*</span></label>
                         <select name="approver_id" id="approver" class="form-control select2">
+                            <option value="">Select Approver</option>
                             @foreach($approvers as $approver)
                                 @if($approver->role->name=='Manager'||$approver->role->name=='CEO')
                                     <option value="{{$approver->id}}" {{isset($pr_data)?($pr_data[0]['approver_id']==$approver->id?'selected':''):''}}>{{$approver->name}}</option>
                                 @endif
                             @endforeach
                         </select>
+                        @error('approver_id')
+                        <i class="text-danger">{{$message}}</i>
+                        @enderror
                     </div>
                 </div>
 {{--                @dd()--}}
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="">Purchase Type</label>
+                        <label for="">Purchase Type <span class="text-danger">*</span></label>
                         <select name="type" id="type" class="select2">
                             <option value="Re-Sale" {{isset($pr_data)?($pr_data[0]['type']=='Re-Sale'?'selected':''):''}}>Re-Sale</option>
                             <option value="Office Use" {{isset($pr_data)?($pr_data[0]['type']=='Office Use'?'selected':''):''}}>Office Use</option>
@@ -53,9 +61,13 @@
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="">Deadline</label>
+                        <label for="">Deadline <span class="text-danger">*</span></label>
                         <input type="date" name="deadline" id="deadline" class="form-control" value="{{$pr_data[0]['deadline']??''}}" >
+                        @error('deadline')
+                        <i class="text-danger">{{$message}}</i>
+                        @enderror
                     </div>
+
                 </div>
 
                 <div class="col-12">
@@ -66,6 +78,7 @@
             </div>
             <input type="hidden" id="creation_id" value="{{$creation_id[0]}}">
             <div class="row">
+
                 <div class="col-12">
                     <table class="table">
                         <thead>
@@ -78,10 +91,11 @@
                         </thead>
                         <tbody id="tbody">
                         @foreach($items as $item)
-
+                            <input type="hidden" name="item" value="{{$item->id}}">
                             <tr>
                                 <td>
                                     {{$item->product->name}}
+
                                 </td>
                                 <td>{{$item->description}}</td>
                                 <td>{{$item->qty??''}}</td>
@@ -229,7 +243,11 @@
                                 </td>
                             </tr>
                         @endforeach
-
+                        @error('item')
+                        <tr>
+                            <td>  <i class="text-danger">! Empty Item</i></td>
+                        </tr>
+                        @enderror
                         <tr id="add_row">
                             <td>
                                 <select name="[]" id="product" class="form-control select2 item_save">

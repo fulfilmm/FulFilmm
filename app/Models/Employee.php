@@ -56,10 +56,10 @@ class Employee extends Authenticatable implements JWTSubject
         return $this->belongsTo(Department::class, 'department_id');
     }
 
-    public function assignments()
-    {
-        return $this->belongsToMany(Assignment::class, 'assignment_employee');
-    }
+//    public function assignments()
+//    {
+//        return $this->belongsToMany(Assignment::class, 'assignment_employee');
+//    }
     public function assign_ticket(){
         return $this->hasMany(assign_ticket::class);
     }
@@ -73,8 +73,8 @@ class Employee extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(ticket_follower::class);
     }
-    public function project_tasks()
-    {
-        return $this->belongsToMany(ProjectTask::class, 'project_task_employee');
-    }
+//    public function project_tasks()
+//    {
+//        return $this->belongsToMany(ProjectTask::class, 'project_task_employee');
+//    }
 }

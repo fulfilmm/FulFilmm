@@ -80,14 +80,13 @@ class CompanyController extends Controller
         //
 //        dd($request->all());
         $data=$request->all();
-        $path = '';
         if ($request->file('logo')) {
             $uploadedFile = $request->file('logo');
             $path = Storage::url($uploadedFile->store('companylogo', ['disk' => 'public']));
             $data['logo'] = $request->logo->getClientOriginalName();
             $data['logo'] = $path;
         }
-
+//        dd($data);
         $this->company_contract->create($data);
         return redirect()->route('companies.index')->with('success', __('alert.create_success'));
     }

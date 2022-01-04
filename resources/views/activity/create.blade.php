@@ -61,6 +61,24 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
+                                <label for="">Township</label>
+                                <select name="" id="" class="select2 form-control">
+                                    <option value="">Select Township</option>
+                                    @foreach($township as $item)
+                                        <option value="{{$item}}">{{$item}}</option>
+                                        @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="address">Address</label>
+                                <input type="text" class="form-control" name="address" placeholder="Address">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
                                 <label for="type">Type <span class="text-danger"> * </span></label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
@@ -70,10 +88,14 @@
                                     <option value="Call">Call</option>
                                     <option value="Meeting">Meeting</option>
                                     <option value="Visit">Visit</option>
+                                    <option value="Sale">Sale</option>
                                     <option value="Other">Other</option>
                                 </select>
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-md-6" id="value">
+
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
@@ -157,6 +179,16 @@
         });
         ClassicEditor.create($('#desc')[0], {
             toolbar: ['heading', 'bold', 'italic', 'undo', 'redo', 'numberedList', 'bulletedList', 'insertTable']
+        });
+        $(document).ready(function () {
+           $('#type').change(function () {
+               var type=$this.val();
+               if(type=='Sale'){
+                   $('#value').show('')
+               }else {
+                   $('#value').hide();
+               }
+           });
         });
     </script>
     <!-- /Page Content -->

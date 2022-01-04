@@ -81,15 +81,24 @@ class EmployeeController extends Controller
     {
         $data  = collect($request->validated())->except('role_id')->toArray();
 //dd($data);
+        $last_emp = Employee::orderBy('id', 'desc')->first();
+
+        if ($last_emp != null) {
+            $last_emp->employee_id++;
+            $employee_id = $last_emp->empid;
+        } else {
+            $employee_id = "Emp-00001";
+        }
         $employee = new Employee();
         $employee->name=$data['name'];
+        $employee->empid=$employee_id;
         $employee->email=$data['email'];
         $employee->phone=$data['phone'];
         $employee->work_phone=$data['work_phone'];
         $employee->join_date=$data['join_date'];
         $employee->password=$request->password;
         $employee->department_id=$data['department_id'];
-        $employee->can_login=$data['can_login'];
+        $employee->can_login=$data['can_login']??0;
         if($request->profile_img!=null){
             $name = $request->profile_img->getClientOriginalName();
             $request->profile_img->move(public_path() . '/img/profiles', $name);
@@ -106,9 +115,10 @@ class EmployeeController extends Controller
      * @param  \App\Models\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function show(Employee $employee)
+    public function show($id)
     {
-        return view('employee.show');
+        $employee=Employee::with('department')->where('id',$id)->first();
+        return view('employee.show',compact('employee'));
     }
 
     /**

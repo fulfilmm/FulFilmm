@@ -26,7 +26,7 @@ class CreateDeliveryOrdersTable extends Migration
             $table->bigInteger('courier_id')->unsigned();
             $table->bigInteger('invoice_id')->unsigned();
             $table->bigInteger('customer_id')->unsigned();
-            $table->string('delivery_id');
+            $table->string('delivery_id')->unique();
             $table->dateTime('delivery_date');
             $table->double('delivery_fee');
             $table->tinyInteger('paid_deli_fee')->default(0);
