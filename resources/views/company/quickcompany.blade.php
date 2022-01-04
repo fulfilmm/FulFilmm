@@ -63,9 +63,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fa fa-envelope"></i></span>
                                         </div>
-                                        <x-forms.basic.input name="email" type="email" value="{{old('email')}}"
-                                                             icon="" title="Email"
-                                                             required></x-forms.basic.input>
+                                        <input type="email" id="comp_email" name="email" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -129,7 +127,7 @@
 
             var type = $('#business_type option:selected').val();
             var phone = $('#company_phone').val();
-            var email = $('#email').val();
+            var email = $('#comp_email').val();
             var ceo_name = $('#company_ceo_name').val();
             var company_registry = $('#company_registry').val();
             var address = $('#company_address').val();
@@ -148,7 +146,7 @@
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 success: function (data) {
                     console.log(data);
-                    $("#company_div").load(location.href + " #company_div>* ");
+                    // $("#company_div").load(location.href + " #company_div>* ");
                 }
             });
         });
