@@ -54,7 +54,7 @@
                                 <td><span class="badge" style="background-color: #72ff9e">{{$transaction->type}}</span></td>
                                 <td>{{$transaction->revenue->category}}</td>
                                 <td>{{$transaction->account->name}}</td>
-                                <td>{{$transaction->revenue->description}}</td>
+                                <td>{!!$transaction->revenue->description!!}</td>
                             </tr>
                         @else
                             <tr>
@@ -66,7 +66,7 @@
                                 <td><span class="badge" style="background-color: #ff4969">{{$transaction->type}}</span></td>
                                 <td>{{$transaction->expense->category}}</td>
                                 <td>{{$transaction->account->name}}</td>
-                                <td>{{$transaction->expense->description}}</td>
+                                <td>{!!  $transaction->expense->description !!}</td>
                             </tr>
                         @endif
                     @endforeach
