@@ -103,7 +103,7 @@
                     <div class="card-body">
                         <span class="dash-widget-icon"><i class="fa fa-bullseye"></i></span>
                         <div class="dash-widget-info">
-                            <h3>{{isset($search_month)?$monthlysaletarget[$search_month]->target??0:$monthlysaletarget[date('M')]->target??0}}</h3>
+                            <h3 style="font-size: 18px">{{isset($search_month)?$monthlysaletarget[$search_month]->target??0:$monthlysaletarget[date('M')]->target??0}}</h3>
                             <span>Sale Target ({{$search_month??date('M')}})</span>
                         </div>
                     </div>
@@ -114,8 +114,8 @@
                     <div class="card-body">
                         <span class="dash-widget-icon"><i class="fa fa-usd"></i></span>
                         <div class="dash-widget-info">
-                            <h3 style="font-size: 24px">1678987677
-                                {{--{{isset($search_month)?$monthly[$search_month]->total??0:$monthly[date('M')]->total??0}}--}}
+                            <h3 style="font-size: 18px">
+                                {{isset($search_month)?$monthly[$search_month]->total??0:$monthly[date('M')]->total??0}}
                             </h3>
                             <span> Total Sale({{$search_month??date('M')}})</span>
                         </div>
@@ -127,7 +127,7 @@
                     <div class="card-body">
                         <span class="dash-widget-icon"><i class="fa fa-money"></i></span>
                         <div class="dash-widget-info">
-                            <h3>{{$revenue[0]->total??0}}</h3>
+                            <h3 style="font-size: 18px">{{$revenue[0]->total??0}}</h3>
                             <span>Revenue({{$search_month??date('M')}})</span>
                         </div>
                     </div>
@@ -138,7 +138,7 @@
                     <div class="card-body">
                         <span class="dash-widget-icon"><i class="fa fa-user"></i></span>
                         <div class="dash-widget-info">
-                            <h3>{{$remaining}}</h3>
+                            <h3 style="font-size: 18px">{{$remaining}}</h3>
                             <span>Remaining</span>
                         </div>
                     </div>

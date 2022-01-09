@@ -25,11 +25,11 @@ class CreateCompaniesTable extends Migration
             $table->text('mission')->nullable();
             $table->text('vision')->nullable();
             $table->string('email', 32)->nullable();
-            $table->string('ceo_name', 32);
+            $table->string('ceo_name', 32)->nullable();
             $table->string('web_link', 128)->nullable();
             $table->string('linkedin', 128)->nullable();
             $table->string('facebook_page', 128)->nullable();
-            $table->text('company_registry');
+            $table->text('company_registry')->nullable();
             $table->foreignId('parent_company')->nullable();
             $table->foreignId('parent_company_2')->nullable();
             $table->softDeletes();
