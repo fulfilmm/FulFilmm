@@ -5,7 +5,7 @@
                 @error($name) is-invalid @enderror
                 type="{{$type ?? 'text'}}"
                 value="{{ $value ?? old($name) }}"
-                {{($required??true)?'required':''}}
+                {{(isset($required))?'required':''}}
                 autocomplete="name"
                 class="form-control">
         @error($name)

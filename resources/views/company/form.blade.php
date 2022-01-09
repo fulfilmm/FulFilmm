@@ -30,7 +30,7 @@
             </div>
         </div>
 
-        <div class="col-md-6" id="business_type" ">
+        <div class="col-md-6" id="business_type" >
             <div class="form-group">
                 <label for="business_type">Type <span class="text-danger"> * </span></label>
 
@@ -71,19 +71,18 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="phone">CEO Name <span class="text-danger"> * </span></label>
+                    <label for="phone">CEO Name </label>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-user"></i></span>
                         </div>
-                        <x-forms.basic.input name="ceo_name" value="{{$record->ceo_name ?? old('ceo_name')}}" icon="user" title="CEO Name"
-                                             ></x-forms.basic.input>
+                        <input type="text" name="ceo_name" value="{{$record->ceo_name ?? old('ceo_name')}}" class="form-control">
                     </div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="company_registry">Company Registry <span class="text-danger"> * </span></label>
+                    <label for="company_registry">Company Registry </label>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-file"></i></span>
@@ -96,7 +95,7 @@
 
             <div class="col-md-12">
                 <div class="form-group">
-                    <label for="address">Address <span class="text-danger"> * </span></label>
+                    <label for="address">Address</label>
                     <textarea name="address" id="address" class="form-control" >{{$record->address ?? old('address')}}</textarea>
                     @error('address')
                     <span role="alert">
