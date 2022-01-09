@@ -15,8 +15,8 @@
                     <a href="{{route('customers.create')}}" class="btn add-btn"><i class="fa fa-plus"></i>
                         Add Contact</a>
                     <div class="view-icons">
-                        <a href="{{route('customers.cards')}}" class="grid-view btn btn-white"><i class="fa fa-th"></i></a>
-                        <a href="{{route('customers.index')}}" class="list-view btn btn-white active"><i class="fa fa-bars"></i></a>
+                        <a href="{{route('customers.cards')}}" data-toggle="tooltip" title="Card View" class="grid-view btn btn-white"><i class="fa fa-th"></i></a>
+                        <a href="{{route('customers.index')}}" data-toggle="tooltip" title="List View" class="list-view btn btn-white active"><i class="fa fa-bars"></i></a>
                         <a href="{{route('customers.import')}}" data-toggle="modal" data-target="#import" class="btn btn-white"><i class="fa fa-upload mr-1 ml-1"></i><span class="mr-1">Import</span></a>
                         <a  data-toggle="modal" data-target="#export" class="btn btn-outline-info rounded"><i class="fa fa-download mr-1"></i>Export</a>
 
@@ -91,7 +91,6 @@
     </div>
     <script>
         $(document).ready(function() {
-            $('#action').hide();
             $('input[type="checkbox"]').click(function () {
                 $('input[type="checkbox"]').click(function () {
                     var checked_id = new Array();

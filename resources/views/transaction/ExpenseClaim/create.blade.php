@@ -24,7 +24,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                             </div>
-                            <input type="date" class="form-control" id="date" name="date">
+                            <input type="date" class="form-control" id="date" name="date" value="{{\Carbon\Carbon::parse(old('date'))->format('Y-m-d')}}">
                         </div>
                         @error('date')
                         <span class="text-danger">{{$message}}</span>
@@ -80,9 +80,6 @@
                                 <option value="{{$emp->id}}">{{$emp->name}}</option>
                             @endforeach
                         </select>
-                        @error('approver')
-                        <span class="text-danger">{{$message}}</span>
-                        @enderror
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -95,6 +92,9 @@
                 <div class="col-md-12 mb-2">
                     <label for="desc">Description</label>
                     <textarea name="description" id="desc" cols="30" rows="10" class="form-control"></textarea>
+                    @error('description')
+                    <span class="text-danger">{{$message}}</span>
+                    @enderror
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
@@ -119,7 +119,7 @@
                             </div>
                             <input type="number" class="form-control amount" id="amount" name="amount[]">
                         </div>
-                        @error('date')
+                        @error('amount')
                         <span class="text-danger">{{$message}}</span>
                         @enderror
                     </div>
@@ -140,6 +140,9 @@
                </div>
                <div class="col-md-6">
                    <input type="number" name="total" class="form-control" id="total">
+                   @error('total')
+                   <span class="text-danger">{{$message}}</span>
+                   @enderror
                </div>
            </div>
 

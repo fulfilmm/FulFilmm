@@ -7,18 +7,20 @@ use App\Models\Employee;
 use App\Models\SaleActivity;
 use App\Models\SaleActivityComment;
 use App\Models\SaleActivityFollower;
+use App\Traits\NotifyTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 class SaleActivityController extends Controller
 {
+    use NotifyTrait;
     public function index(){
 
        if(Auth::guard('employee')->user()->role->name=='Super Admin'||Auth::guard('employee')->user()->role->name=='CEO'){
-           $activities=SaleActivity::orderby('created_at','desc')->with('employee')->get();
+           $activities=SaleActivity::orderby('created_at','desc')->with('employee','customer','report')->get();
        }else{
-           $activities=SaleActivity::orderby('created_at','desc')->with('employee')->where('emp_id',Auth::guard('employee')->user()->id)->orWhere('report_to',Auth::guard('employee')->user()->id)->get();
+           $activities=SaleActivity::orderby('created_at','desc')->with('employee','customer','report')->where('emp_id',Auth::guard('employee')->user()->id)->orWhere('report_to',Auth::guard('employee')->user()->id)->get();
        }
         $followers=SaleActivityFollower::with('employee')->get();
         $unreach_activity=[];
@@ -100,6 +102,9 @@ class SaleActivityController extends Controller
         $activity->description=$request->desc;
         $activity->report_to=$request->report_to;
         $activity->date=$request->date;
+        $activity->shop=$request->shop;
+        $activity->amount=$request->amount;
+        $activity->township=$request->township;
         $activity->emp_id=Auth::guard('employee')->user()->id;
         if ($request->hasfile('attachment')) {
             foreach ($request->file('attachment') as $attach) {
@@ -119,6 +124,7 @@ class SaleActivityController extends Controller
             }
         }
         $report_to=Employee::where('id',$request->report_to)->first();
+        $this->addnotify($report_to->id,'success','Add new sale activity posted and reported you.','sale/activity/show/'.$activity->id,Auth::guard('employee')->user()->id);
        if(isset($request->follower)){
            foreach ($request->follower as $follower){
                $follower_emp=Employee::where('id',$follower)->first();
@@ -140,6 +146,7 @@ class SaleActivityController extends Controller
                    }
 
                });
+
            }
        }else{
            $details = array(
@@ -169,6 +176,7 @@ class SaleActivityController extends Controller
         foreach ($request->follower as $follower){
             $unfollow_emp=SaleActivityFollower::where('emp_id',$follower)->where('activity_id',$request->activity_id)->first();
             $unfollow_emp->delete();
+            $this->addnotify($follower,'danger','Removed as a follower','sale/activity/show/'.$request->activity_id,Auth::guard('employee')->user()->id);
         }
         return redirect()->back();
     }
@@ -177,6 +185,7 @@ class SaleActivityController extends Controller
         $addfollow->emp_id=$emp_id;
         $addfollow->activity_id=$activity_id;
         $addfollow->save();
+        $this->addnotify($emp_id,'success','Added you as a follower of sale activity.','sale/activity/show/'.$activity_id,Auth::guard('employee')->user()->id);
     }
     public function show($id){
         $activity=SaleActivity::with('report','employee','customer')->where('id',$id)->first();
@@ -224,10 +233,11 @@ class SaleActivityController extends Controller
     }
     public function read($id){
 //        dd($id);
-        $activity=SaleActivity::where('id',$id)->where('report_to',Auth::guard('employee')->user()->id)->first();
+        $activity=SaleActivity::with('report')->where('id',$id)->where('report_to',Auth::guard('employee')->user()->id)->first();
        if($activity!=null) {
            $activity->status = 1;
            $activity->update();
+           $this->addnotify($activity->emp_id,'success','Your sale activity is aknowledge by'.$activity->report->name.'.','sale/activity/show/'.$activity->id,Auth::guard('employee')->user()->id);
            return redirect(route('activity.show', $id));
        }else{
            return redirect(route('activity.show', $id));

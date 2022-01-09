@@ -36,6 +36,8 @@ class CreateApprovalrequestsTable extends Migration
             $table->bigInteger('contact_id')->unsigned()->nullable();
             $table->text('trip_members')->nullable();
             $table->string('quantity')->nullable();
+            $table->tinyInteger('approver_noti')->default(0);
+            $table->tinyInteger('requester_noti')->default(1);
             $table->softDeletes();
             $table->timestamps();
         });

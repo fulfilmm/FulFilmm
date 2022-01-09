@@ -1,37 +1,5 @@
 @extends('layout.mainlayout')
 @section('title','Meetings')
-@section('noti_section')
-    <li class="nav-item dropdown">
-        <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-            <i class="fa fa-bell-o"></i> <span class="badge badge-pill">{{count($alert_meeting)}}</span>
-        </a>
-        <div class="dropdown-menu notifications">
-            <div class="topnav-dropdown-header">
-                <span class="notification-title">Meeting Notifications</span>
-{{--                <a href="javascript:void(0)" class="clear-noti"> Clear All </a>--}}
-            </div>
-            <div class="noti-content">
-                <ul class="notification-list">
-                    @foreach($alert_meeting as $alert)
-                    <li class="notification-message">
-                        <a href="{{route('meetings.show',$alert->id)}}">
-                            <div class="media">
-                                <div class="media-body">
-                                    <p class="noti-details">You have to attend <span class="noti-title"> {{$alert->title}}</span><span class="noti-title"> meeting. </span></p>
-                                    <p class="noti-time"><span class="notification-time">{{\Carbon\Carbon::parse($alert->date_time)->toFormattedDateString()}} at {{date('h:i a', strtotime(\Carbon\Carbon::parse($alert->date_time)))}}</span></p>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    @endforeach
-                </ul>
-            </div>
-            <div class="topnav-dropdown-footer">
-                <a href="">View all Notifications</a>
-            </div>
-        </div>
-    </li>
-@endsection
 @section('content')
     <!-- Page Content -->
     <div class="content container-fluid">

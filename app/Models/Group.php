@@ -14,6 +14,7 @@ class Group extends Model
     protected $fillable = [
         'name',
         'created_by',
+        'type'
     ];
 
     public function created_employee()

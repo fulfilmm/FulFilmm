@@ -26,7 +26,7 @@
                                 <div class="float-right">
                                     <span>Status: </span>
                                     <div class="nav-item dropdown dropdown-action btn btn-outline-white border btn-sm rounded-pill">
-                                        <a href="" class="dropdown-toggle rounded-pill" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-{{$details_approval->state=='Approve'?'success':($details_approval->state=='Reject'?'danger':($details_approval->state=='Pending'?'primary':'secondary'))}}"></i> {{$details_approval->state ? :"New"}}</a>
+                                        <a href="" class="dropdown-toggle rounded-pill" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-{{$details_approval->state=='Approve'?'success':($details_approval->state=='Reject'?'danger':($details_approval->state=='Pending'?'primary':'info'))}}"></i> {{$details_approval->state ? :"New"}}</a>
                                         @if($details_approval->approved_id == \Illuminate\Support\Facades\Auth::guard('employee')->user()->id||$details_approval->secondary_approved==\Illuminate\Support\Facades\Auth::guard('employee')->user()->id)
                                             <div class="dropdown-menu">
                                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#add-category">Change Status</a>

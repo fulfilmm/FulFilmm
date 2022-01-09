@@ -40,6 +40,7 @@ class CreateCustomersTable extends Migration
             $table->string('status')->nullable();
             $table->string('lead_title')->nullable();
             $table->string('customer_type');
+            $table->string('case')->nullable();
             $table->rememberToken();
             $table->foreignId('company_id');
             $table->softDeletes();

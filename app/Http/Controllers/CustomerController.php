@@ -54,9 +54,8 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        //
-        $customers = Customer::paginate(10);
-        return view('customer.data.lists',compact('customers'));
+
+        return view('customer.data.lists');
     }
 
     public function card()

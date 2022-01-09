@@ -70,7 +70,7 @@
                     <td style="min-width: 100px;">{{$approval->title}}</td>
                     <td style="min-width: 120px;">{{\Carbon\Carbon::parse($approval->target_date)->toFormattedDateString()}}</td>
                     <td style="min-width: 150px;">{{$approval->request_emp->name}}</td>
-                    <td style="min-width: 100px;">{{$approval->state==null ? "N/A" : $approval->state}}</td>
+                    <td style="min-width: 100px;"><span class="badge badge-{{$approval->state=='Approve'?'success':($approval->state=='Reject'?'danger':($approval->state=='Pending'?'primary':'info'))}} rounded" style='font-size: 13px;'><i class="fa fa-dot-circle-o mr-1"></i>{{$approval->state==null ? "N/A" : $approval->state}}</span></td>
                     <td>{{$approval->type}}</td>
                     <td style="min-width: 150px;">{{$approval->approver->name}}</td>
                     <td style="min-width: 160px;">{{$approval->secondary_approved ? $approval->secondary_approver->name :"N/A"}}</td>

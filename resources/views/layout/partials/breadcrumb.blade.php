@@ -9,7 +9,7 @@ $parentPath = '';
         <div class="col">
             <h3 class="page-title">{{$header}}</h3>
             <ul class="breadcrumb">
-                <li class="breadcrumb-item active"><a href="/">Dashboard</a></li>
+                <li class="breadcrumb-item active"><a href="{{url('/')}}">Dashboard</a></li>
                 @foreach ($paths as $key=>$path)
                 @php($parentPath = $parentPath.'/'.$path)
                 @if ($currentPath === $key)

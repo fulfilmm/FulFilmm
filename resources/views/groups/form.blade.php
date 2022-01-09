@@ -20,7 +20,12 @@
             @foreach ($employees as $dept)
             <optgroup label={{$dept->name}}>
                 @foreach ($dept->employees as $employee)
+                   @if(isset($members))
+                            <option value={{$employee->id}} @foreach($members as $mem){{$employee->id ===$mem->employee_id?'selected':''}} @endforeach>{{$employee->name}}</option>
+
+                       @else
                 <option value={{$employee->id}} @if($employee->id === \Auth::id()) selected @endif>{{$employee->name}}</option>
+               @endif
                 @endforeach
 
                 </optgroup>

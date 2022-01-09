@@ -1,95 +1,5 @@
 @extends('layout.mainlayout')
-@section('noti_section')
-    <style>
-        #commentbox{
-            height: 760px;
-        }
-    </style>
-    <li class="nav-item dropdown">
-        <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-            <i class="fa fa-bell-o"></i> <span class="badge badge-pill">@if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->id==$activity->emp_id){{count($unreach_activity)+count($reportto_cmts)+count($folloer_cmt)}} @else {{count($unreach_activity)+count($creater_comments)+count($folloer_cmt)}} @endif</span>
-        </a>
-        <div class="dropdown-menu notifications">
-            <div class="topnav-dropdown-header">
-                <span class="notification-title">Sale Activity Notifications</span>
-                {{--                <a href="javascript:void(0)" class="clear-noti"> Clear All </a>--}}
-            </div>
-            <div class="noti-content">
-                <ul class="notification-list">
-                    @foreach($unreach_activity as $alert)
-                        <li class="notification-message">
-                            <a href="{{route('activity.show',$alert->id)}}">
-                                <div class="media">
-                                    <div class="media-body">
-                                        <p class="noti-details">Add new activity <span
-                                                    class="noti-title"> {{$alert->title}}</span><span
-                                                    class="noti-title"> submitted by {{$alert->employee->name}}. </span>
-                                        </p>
-                                        <p class="noti-time"><span class="notification-time">{{\Carbon\Carbon::parse($alert->date)->toFormattedDateString()}} at {{date('h:i a', strtotime(\Carbon\Carbon::parse($alert->date)))}}</span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                    @endforeach
-                       @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->id==$activity->emp_id)
-                            @foreach($reportto_cmts as $alert)
-                                <li class="notification-message">
-                                    <div class="col-12">
-                                        <div class="media">
-                                            <div class="media-body">
-                                                <p class="noti-details">
-                                                    <span class="noti-title"> {{ucfirst($alert->user->name)}} </span>
-                                                    <span class="noti-title">comment in your activity.</span>
-                                                </p>
-                                                <p class="noti-time"><span class="notification-time">{{\Carbon\Carbon::parse($alert->created_at)->toFormattedDateString()}} at {{date('h:i a', strtotime(\Carbon\Carbon::parse($alert->created_at)))}}</span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            @endforeach
-                                @foreach($folloer_cmt as $alert)
-                                    <li class="notification-message">
-                                        <div class="col-12">
-                                            <div class="media">
-                                                <div class="media-body">
-                                                    <p class="noti-details">
-                                                        <span class="noti-title">  {{ucfirst($alert->user->name)}} </span>
-                                                        <span class="noti-title">reply in your comment.</span>
-
-                                                    </p>
-                                                    <p class="noti-time"><span class="notification-time">{{\Carbon\Carbon::parse($alert->created_at)->toFormattedDateString()}} at {{date('h:i a', strtotime(\Carbon\Carbon::parse($alert->created_at)))}}</span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                @endforeach
-                           @elseif(\Illuminate\Support\Facades\Auth::guard('employee')->user()->id==$activity->report_to)
-                            @foreach($creater_comments as $alert)
-                                <li class="notification-message">
-                                    <div class="col-12">
-                                        <div class="media">
-                                            <div class="media-body">
-                                                <p class="noti-details">
-                                                    <span class="noti-title">  {{ucfirst($alert->user->name)}} </span>
-                                                    <span class="noti-title">replied.</span>
-                                                </p>
-                                                <p class="noti-time"><span class="notification-time">{{\Carbon\Carbon::parse($alert->created_at)->toFormattedDateString()}} at {{date('h:i a', strtotime(\Carbon\Carbon::parse($alert->created_at)))}}</span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            @endforeach
-                           @endif
-                </ul>
-            </div>
-        </div>
-    </li>
-@endsection
-
+@section('title','Sale Activity Details')
 @section('content')
     <!-- Page Wrapper -->
 
@@ -112,8 +22,8 @@
         <!-- /Page Header -->
         <div class="my-2">
             {{--@dd($activity)--}}
-            <span class="btn btn-primary btn-sm">Report To :{{$activity->report->name}}</span>
-            <a href="{{route('read',$activity->id)}}" class="btn btn-{{$activity->status==0?'warning':'success'}} btn-sm ml-2"><i class="fa fa-{{$activity->status==0?'close':'check'}} mr-2"></i>{{$activity->status==0?'Un':''}}Aknowledge</a>
+            <span class="btn btn-primary btn-sm">Report :{{$activity->report->name}}</span>
+            <a href="{{route('read',$activity->id)}}" class="btn btn-{{$activity->status==0?'warning':'success'}} btn-sm ml-2"><i class="fa fa-{{$activity->status==0?'close':'check'}} mr-2"></i>Aknowledge</a>
         </div>
         <div class="row">
 
@@ -124,7 +34,33 @@
                         <span class="float-right">{{\Carbon\Carbon::parse($activity->date)->toFormattedDateString()}}</span>
                     </div>
                     <div class="card-body" style="min-height: 300px;">
-                        {!! $activity->description!!}
+                        <div class="row">
+                            <div class="col-12">
+                                <span class="text-muted">Customer Name</span> : {{$activity->customer->name}}
+                            </div>
+                            <div class="col-12">
+                                <span class="text-muted">Type Of Activity</span> : {{$activity->type}}
+                            </div>
+                            @if($activity->address!=null)
+                            <div class="col-12">
+                               <span class="text-muted">Address</span> :{{$activity->address}} {{$activity->township!=null?','.$activity->township:''}}
+                            </div>
+                            @endif
+                            @if($activity->shop!=null)
+                            <div class="col-12">
+                               <span class="text-muted">Shop Name :</span> {{$activity->shop}}
+                            </div>
+                                <div class="col-12">
+                                    <span class="text-muted">Sale Volume :</span> {{$activity->amount??0}}
+                                </div>
+                                @endif
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <strong class="mb-2">Description</strong>
+                                {!! $activity->description!!}
+                            </div>
+                        </div>
                     </div>
                     <div class="card-footer">
                        <span>Follower :</span>

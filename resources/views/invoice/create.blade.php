@@ -440,8 +440,13 @@
                     for (var i = 0; i < alltotal.length; i++) {
                         grand_total = parseFloat(grand_total) + parseFloat(alltotal[i]);
                     }
+                    if (!$.isEmptyObject(data.Error)) {
+                        // alert(data.orderempty);
+                        swal('Out Of Stock', 'This product is out of stock.', 'error');
+                    }else {
 
-                    location.reload();
+                        location.reload();
+                    }
                 }
             });
 

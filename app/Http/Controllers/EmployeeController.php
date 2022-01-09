@@ -27,11 +27,12 @@ class EmployeeController extends Controller
     }
     public function index()
     {
-        return view('employee.data.lists');
+        $employees = Employee::paginate(20);
+        return view('employee.data.lists',compact('employees'));
     }
 
     public function card(){
-        $employees = Employee::paginate(20);
+        $employees = Employee::orderBy('empid','desc')->paginate(20);
         return view('employee.data.cards', compact('employees'));
     }
 
@@ -79,16 +80,20 @@ class EmployeeController extends Controller
      */
     public function store(EmployeeRequest $request)
     {
+        $this->validate($request,[
+            'email'=>'unique:employees'
+        ]);
         $data  = collect($request->validated())->except('role_id')->toArray();
 //dd($data);
-        $last_emp = Employee::orderBy('id', 'desc')->first();
+        $last_emp = Employee::orderBy('empid', 'desc')->first();
 
         if ($last_emp != null) {
-            $last_emp->employee_id++;
+            $last_emp->empid++;
             $employee_id = $last_emp->empid;
         } else {
             $employee_id = "Emp-00001";
         }
+//        dd($employee_id);
         $employee = new Employee();
         $employee->name=$data['name'];
         $employee->empid=$employee_id;
@@ -182,5 +187,16 @@ class EmployeeController extends Controller
     {
         $employee->delete();
         return redirect('employees')->with('success', __('alert.delete_success'));
+    }
+    public function password_edit(){
+        return view('settings.passwordchange');
+    }
+    public function password_update(Request $request,$id){
+        $emp=Employee::where('id',$id)->first();
+        if(password_verify($request->current_pass,$emp->password)){
+            $emp->password=Hash::make($request->password);
+            $emp->update();
+        }
+        return redirect('/')->with('success','Password Change Successful!');
     }
 }

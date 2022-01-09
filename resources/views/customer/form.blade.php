@@ -210,6 +210,12 @@
                     <input type="text" id="position" name="position" class="form-control" placeholder="Enter Contact Position">
                 </div>
             </div>
+            <div class="col-md-12 mb-3" id="case">
+                <div class="form-group">
+                    <label for="case_text">Case</label>
+                    <input type="text" class="form-control" name="case" id="case_text">
+                </div>
+            </div>
             <div class="col-md-4 mb-3" id="title">
                 <label for='title'
                        class='form-label font-weight-bold text-muted text-uppercase pro_label'>Title </label>

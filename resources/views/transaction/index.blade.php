@@ -34,6 +34,7 @@
                     <tr>
                         <th></th>
                         <th>Date</th>
+                        <th>Invoice ID</th>
                         <th>Amount</th>
                         <th>Type</th>
                         <th>Category</th>
@@ -50,6 +51,7 @@
                                 <td>
                                     <a href="{{$transaction->revenue->invoice_id==null?route('transactions.show',$transaction->id):route('invoices.show',$transaction->revenue->invoice_id)}}">{{\Carbon\Carbon::parse($transaction->revenue->transaction_date)->toFormattedDateString()}}</a>
                                 </td>
+                                <td>@php $invoice=\App\Models\Invoice::where('id',$transaction->revenue->invoice_id)->first() @endphp @if($invoice!=null) <a href="{{$transaction->revenue->invoice_id==null?route('transactions.show',$transaction->id):route('invoices.show',$transaction->revenue->invoice_id)}}">{{$invoice->invoice_id??'N/A'}}</a>@else{{$invoice->invoice_id??'N/A'}}@endif</td>
                                 <td>{{number_format($transaction->revenue->amount)}}</td>
                                 <td><span class="badge" style="background-color: #72ff9e">{{$transaction->type}}</span></td>
                                 <td>{{$transaction->revenue->category}}</td>

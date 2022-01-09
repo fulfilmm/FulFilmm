@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\product;
 use App\Models\ProductVariations;
+use App\Models\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -40,47 +41,52 @@ class InvoiceItemController extends Controller
      */
     public function store(Request $request)
     {
-        $Auth=Auth::guard('employee')->user()->id;
-        if($request->type=='invoice'){
-            if(!Session::has("data-".$Auth)){
-                Session::push("data-".$Auth,$request->all());
-            }
+//        $stock=Stock::where('variant_id',$request->variant_id)->first();
+//       if($stock->available > 0 ) {
+           $Auth = Auth::guard('employee')->user()->id;
+           if ($request->type == 'invoice') {
+               if (!Session::has("data-" . $Auth)) {
+                   Session::push("data-" . $Auth, $request->all());
+               }
 //            dd('invoice');
-        }else if ($request->type=='order'){
-            if(Auth::guard('customer')->check()){
+           } else if ($request->type == 'order') {
+               if (Auth::guard('customer')->check()) {
 //                dd('customer');
-                $customer=Auth::guard('customer')->user()->id;
-                if(!Session::has("order-".$customer)){
-                    Session::push("order-".$customer,$request->all());
-                }
-            }else{
+                   $customer = Auth::guard('customer')->user()->id;
+                   if (!Session::has("order-" . $customer)) {
+                       Session::push("order-" . $customer, $request->all());
+                   }
+               } else {
 //                dd('employee');
-                if(!Session::has("order-".$Auth)){
-                    Session::push("order-".$Auth,$request->all());
-                }
-            }
-        }
+                   if (!Session::has("order-" . $Auth)) {
+                       Session::push("order-" . $Auth, $request->all());
+                   }
+               }
+           }
 
-        $variant=ProductVariations::where('id',$request->variant_id)->first();
-        $items=new OrderItem();
-        $items->product_id=$request->product_id;
-        $items->description=$variant->description;
-        $items->quantity=1;
-        $items->unit_price=$variant->price??0;
-        $items->variant_id=$request->variant_id;
-        $items->total=$variant->price??0;
-        $items->creation_id=$request->invoice_id;
-        $items->order_id=$request->order_id??null;
-        $items->state=1;
-        $items->save();
+           $variant = ProductVariations::where('id', $request->variant_id)->first();
+           $items = new OrderItem();
+           $items->product_id = $request->product_id;
+           $items->description = $variant->description;
+           $items->quantity = 1;
+           $items->unit_price = $variant->price ?? 0;
+           $items->variant_id = $request->variant_id;
+           $items->total = $variant->price ?? 0;
+           $items->creation_id = $request->invoice_id;
+           $items->order_id = $request->order_id ?? null;
+           $items->state = 1;
+           $items->save();
 //        if($request->order_id!=null){
 //            $order=Order::where('id',$request->order_id)->first();
 //            $order->total_amount=$request->grand_total+$product->sale_price;
 //            $order->update();
 //        }
-        return response()->json([
-            'Message'=>'Success'
-        ]);
+           return response()->json([
+               'Message' => 'Success'
+           ]);
+//       }else{
+//           return response()->json(['Error' => 'This product is Out of Stock']);
+//       }
     }
 
     /**

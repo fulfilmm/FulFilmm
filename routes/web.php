@@ -332,7 +332,7 @@ Route::middleware(['meeting_view_relative_emp', 'auth:employee', 'authorize', 'o
     Route::resource('approvals', ApprovalController::class)->only('show');
 });
 //CustomerProtal Side Route
-Route::middleware(['auth:customer'||'auth:employee'])->group(function () {
+Route::middleware(['guadcheck'])->group(function () {
     Route::resource('deliveries', ShippmentController::class);
 });
 Route::middleware(['auth:customer'])->group(function () {
@@ -392,3 +392,8 @@ Route::get('delivery/tracking/{uuid}',[ShippmentController::class,'tracking'])->
 Route::get('requestation/search',[ApprovalController::class,'requestatin_search'])->name('requestation.search');
 Route::get('approval/search',[ApprovalController::class,'approval_search'])->name('approval.search');
 Route::get('cc/search',[ApprovalController::class,'cc_search'])->name('cc.search');
+Route::get('employee/change/password',[EmployeeController::class,'password_edit'])->name('password.edit');
+Route::post('employee/update/password/{id}',[EmployeeController::class,'password_update'])->name('emp_password.update');
+Route::get('notification/index',[\App\Http\Controllers\NotificationController::class,'index'])->name('notifications.index');
+Route::get('notification/delete/{id}',[\App\Http\Controllers\NotificationController::class,'destroy'])->name('notifications.delete');
+Route::get('notification/{uuid}',[\App\Http\Controllers\NotificationController::class,'show'])->name('notifications.show');

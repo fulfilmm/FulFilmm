@@ -7,8 +7,15 @@
 @include('layout.partials.breadcrumb',['header'=>'Employee Form'])
 <!-- /Page Header -->
 
+    <form action="{{route('employees.store')}}" method="POST" enctype="multipart/form-data">
+        @csrf
+        @include('employee.partial.employeeform')
+        <div class="text-center my-3">
+            <button class="btn btn-primary" type="submit">Submit</button>
+            <a href="{{route('employees.index')}}" class="btn btn-secondary ml-3">Cancel</a>
+        </div>
+    </form>
 
-                @include('employee.partial.employeeform')
 {{-- {{dd($errors->all())}} --}}
 </div>
 @endsection

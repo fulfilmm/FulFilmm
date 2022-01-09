@@ -69,5 +69,6 @@ class Kernel extends HttpKernel
         'ownership' => OwnershipMiddleware::class,
         'meeting_view_relative_emp'=>meetingshowcontrol::class,
         'custom_auth'=>\App\Http\Middleware\TwoguardMiddleware::class,
+        'guadcheck'=>\App\Http\Middleware\AllguadMiddleware::class,
     ];
 }

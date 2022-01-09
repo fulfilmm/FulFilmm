@@ -54,6 +54,15 @@ class ExpenseClaimController extends Controller
     public function store(Request $request)
     {
 //        dd($request->all());
+        $this->validate($request,[
+           'description'=>'required',
+            'date'=>'required',
+            'approver'=>'required',
+            'finance_approver'=>'required',
+            'amount'=>'required',
+            'title'=>'required',
+            'total'=>'required'
+        ]);
        try {
            $exp_claim = new ExpenseClaim();
            $exp_claim->emp_id = Auth::guard('employee')->user()->id;
@@ -100,7 +109,7 @@ class ExpenseClaimController extends Controller
            }
 
        }catch (Exception $e){
-           return $e;
+           return redirect()->route('expenseclaims.index')->with('error', $e->getMessage());
     }
         return redirect(route('expenseclaims.index'));
     }

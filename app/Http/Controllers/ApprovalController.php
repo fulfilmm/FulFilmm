@@ -7,6 +7,7 @@ use App\Models\Approvalrequest;
 use App\Models\Cc_of_approval;
 use App\Models\Customer;
 use App\Models\Employee;
+use App\Traits\NotifyTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Mail;
 
 class ApprovalController extends Controller
 {
+    use NotifyTrait;
     /**
      * Display a listing of the resource.
      *
@@ -163,6 +165,7 @@ class ApprovalController extends Controller
                 $message->to($details['email']);
                 $message->subject($details['subject']);
             });
+            $this->addnotify($request->approve_id,'success','Add new approval '.$approval->approval_id.'.','approvals/'.$approval->id,Auth::guard('employee')->user()->id);
         }
         $secondary_approver=Employee::where('id',$request->secondary_id)->first();
         if($secondary_approver!=null){
@@ -182,6 +185,7 @@ class ApprovalController extends Controller
                 $message->to($details['email']);
                 $message->subject($details['subject']);
             });
+            $this->addnotify($request->secondary_id,'success','Add new approval '.$approval->approval_id.'.','approvals/'.$approval->id,Auth::guard('employee')->user()->id);
         }
 
         if(isset($request->cc)){
@@ -210,6 +214,7 @@ class ApprovalController extends Controller
                     $message->to($details['email']);
                     $message->subject($details['subject']);
                 });
+                $this->addnotify($value,'success','Add new approval '.$approval->approval_id.'.','approvals/'.$approval->id,Auth::guard('employee')->user()->id);
             }
         }
         return redirect(route('approvals.index'));

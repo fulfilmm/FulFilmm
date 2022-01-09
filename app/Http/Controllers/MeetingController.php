@@ -11,6 +11,7 @@ use App\Models\Meetingminutes;
 use App\Models\MinutesAssign;
 use App\Models\Room;
 use App\Models\RoomBooking;
+use App\Traits\NotifyTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,6 +21,7 @@ use mysql_xdevapi\Exception;
 
 class MeetingController extends Controller
 {
+    use NotifyTrait;
     /**
      * Display a listing of the resource.
      *
@@ -37,7 +39,7 @@ class MeetingController extends Controller
                 array_push($alert_meeting,$item);
             }
             if($invites_me!=null){
-            foreach ($invites_me as $invite){
+                foreach ($invites_me as $invite){
                     if(Carbon::parse($invite->meeting->date_time)<= (Carbon::now()->addMinutes(30))){
                         array_push($alert_meeting,$invite->meeting);
                     }
@@ -219,6 +221,9 @@ class MeetingController extends Controller
              $meeting_member->is_accept = 0;
              $meeting_member->is_external=0;
              $meeting_member->save();
+             $meeting=Meeting::where('id',$meeting_id)->first();
+             $this->addnotify($value,'warning','You are invited to attend  '.$meeting->title.' meeting in '.Carbon::parse($meeting->date_time)->toFormattedDateString().' at'.date('h:i a', strtotime(Carbon::parse($meeting->date_time))),'meetings/'.$meeting->id,null);
+
          }
      }
 

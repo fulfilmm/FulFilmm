@@ -1,11 +1,6 @@
 
 
 
-<form action="{{isset( $employee) ? route('employees.update',$employee->id): route('employees.store')}}" method="POST" enctype="multipart/form-data" >
-    @csrf
-    @if (isset($employee))
-    @method('put')
-    @endif
     <div class="row">
         <div class="col-md-4">
             <div class="text-center my-2" >
@@ -96,11 +91,6 @@
             </div>
         </div>
     </div>
-    <div class="text-center my-3">
-        <button class="btn btn-primary" type="submit">submit</button>
-        <a href="{{route('employees.index')}}" class="btn btn-secondary ml-3">Cancel</a>
-    </div>
-</form>
 <script>
     var loadFile = function(event) {
         var reader = new FileReader();

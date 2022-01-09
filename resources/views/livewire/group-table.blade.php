@@ -14,7 +14,7 @@
                 <tr>
                     <th>Name</th>
                     <th>Created By</th>
-                    <th></th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 @foreach ($groups as $group)
@@ -22,9 +22,12 @@
                         <td>{{$group->name}}</td>
                         <td>{{$group->created_employee->name }}</td>
                         <td style="display: flex">
-{{--                            <a class="pr-2 my-auto btn btn-success" href="{{route('groups.edit',$group->id)}}">--}}
-{{--                                <span class='fa fa-edit'></span>--}}
-{{--                            </a>&nbsp;--}}
+                            <a class="pr-2 my-auto btn btn-success" href="{{route('groups.edit',$group->id)}}">
+                                <span class='fa fa-edit'></span>
+                            </a>&nbsp;
+                            <a class="pr-2 my-auto btn btn-white" href="{{route('groups.show',$group->id)}}">
+                                <span class='fa fa-eye'></span>
+                            </a>&nbsp;
 
                             <form id="group-del-{{$group->id}}" action="{{route('groups.destroy',$group->id)}}"
                                   method="POST">

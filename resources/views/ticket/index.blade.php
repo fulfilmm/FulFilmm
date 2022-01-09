@@ -235,7 +235,6 @@
 
                                 <td style="min-width: 150px;">
                                     <a class="btn btn-white btn-sm btn-rounded " href="#" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-{{$ticket->ticket_priority->color}}"></i> {{$ticket->ticket_priority->priority}}</a>
-
                                 </td>
                                 <td style="min-width: 150px;">
                                     @foreach($status_color as $staus=>$color)

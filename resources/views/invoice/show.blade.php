@@ -140,121 +140,125 @@
                 </div>
             </div>
        @endif
-    <div class="row form" >
-        <div class="col-lg-12">
-            <div class="card" >
-                <div class="card-body" id="print_me" style="padding-top: 50px;">
-                    <div class="row pb-4 mx-0 card-header-border">
-                        <div class="col-lg-6 col-7 col-md-6 mb-3">
-                            <img class="is-squared"
-                                 src="{{$company!=null ? url(asset('/img/profiles/'.$company->logo)): url(asset('/img/profiles/avatar-01.jpg'))}}" style="max-width: 100px;max-height: 100px;">
-                            <span>{{$company->name??''}}</span><br><span>{{$company->email??''}}</span><br>
-                            <span>{{$company->phone??''}}</span><br>
-                            <span>{{$company->address??''}}</span>
-                        </div>
-                        <div class="col-lg-3 col-3">
-                            <div class="text-left">
-                                <h5 class="font-weight-bold mb-2">Invoice number</h5>
-                                <b class="mb-0">{{$detail_inv->invoice_id}}</b>
+    <div class="row form">
+        <div class="col-12 ">
+            <div class="row" >
+                <div class="col-lg-12 ">
+                    <div class="card" >
+                        <div class="card-body" id="print_me" style="padding-top: 50px;">
+                            <div class="row pb-4 mx-0 card-header-border">
+                                <div class="col-lg-6 col-7 col-md-6 mb-3">
+                                    <img class="is-squared"
+                                         src="{{$company!=null ? url(asset('/img/profiles/'.$company->logo)): url(asset('/img/profiles/avatar-01.jpg'))}}" style="max-width: 100px;max-height: 100px;">
+                                    <span>{{$company->name??''}}</span><br><span>{{$company->email??''}}</span><br>
+                                    <span>{{$company->phone??''}}</span><br>
+                                    <span>{{$company->address??''}}</span>
+                                </div>
+                                <div class="col-lg-3 col-3">
+                                    <div class="text-left">
+                                        <h5 class="font-weight-bold mb-2">Invoice number</h5>
+                                        <b class="mb-0">{{$detail_inv->invoice_id}}</b>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-3">
+                                    <div class="text-right">
+                                        <h5 class="font-weight-bold mb-2">Invoice Date</h5>
+                                        <p class="mb-0">{{\Illuminate\Support\Carbon::parse($detail_inv->invoice_date)->toFormattedDateString()}}</p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-lg-3 col-md-3">
-                            <div class="text-right">
-                                <h5 class="font-weight-bold mb-2">Invoice Date</h5>
-                                <p class="mb-0">{{\Illuminate\Support\Carbon::parse($detail_inv->invoice_date)->toFormattedDateString()}}</p>
+                            <div class="row pt-4 pb-5 mx-0">
+                                <div class="col-lg-6 col-6">
+                                    <div class="text-left">
+                                        <h5 class="font-weight-bold mb-3">Invoice From</h5>
+                                        <p class="mb-0 mb-1">{{$detail_inv->employee->name}}</p>
+                                        <p class="mb-0 mb-1">{{$detail_inv->employee->address}}</p>
+                                        <p class="mb-0 mb-1">{{$detail_inv->employee->phone}}</p>
+                                        <p class="mb-0 mb-2">{{$detail_inv->employee->email}}</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-6">
+                                    <div class="text-right">
+                                        <h5 class="font-weight-bold mb-3">Invoice To</h5>
+                                        <p class="mb-0 mb-1">{{$detail_inv->customer->company->name}}</p>
+                                        <p class="mb-0 mb-1">{{$detail_inv->customer->name}}</p>
+                                        <p class="mb-0 mb-1">{{$detail_inv->customer->address}}</p>
+                                        <p class="mb-0 mb-2">{{$detail_inv->customer->phone}}</p>
+                                        <p class="mb-0 mb-2">{{$detail_inv->customer->email}}</p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row pt-4 pb-5 mx-0">
-                        <div class="col-lg-6 col-6">
-                            <div class="text-left">
-                                <h5 class="font-weight-bold mb-3">Invoice From</h5>
-                                <p class="mb-0 mb-1">{{$detail_inv->employee->name}}</p>
-                                <p class="mb-0 mb-1">{{$detail_inv->employee->address}}</p>
-                                <p class="mb-0 mb-1">{{$detail_inv->employee->phone}}</p>
-                                <p class="mb-0 mb-2">{{$detail_inv->employee->email}}</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-6">
-                            <div class="text-right">
-                                <h5 class="font-weight-bold mb-3">Invoice To</h5>
-                                <p class="mb-0 mb-1">{{$detail_inv->customer->company->name}}</p>
-                                <p class="mb-0 mb-1">{{$detail_inv->customer->name}}</p>
-                                <p class="mb-0 mb-1">{{$detail_inv->customer->address}}</p>
-                                <p class="mb-0 mb-2">{{$detail_inv->customer->phone}}</p>
-                                <p class="mb-0 mb-2">{{$detail_inv->customer->email}}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item p-0">
-                                    <div class="table-responsive">
-                                        <table class="table table-striped table-hover">
-                                            <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>ITEM</th>
-                                                <th class="d-none d-sm-table-cell">DESCRIPTION</th>
-                                                <th>UNIT COST</th>
-                                                <th>QUANTITY</th>
-                                                <th class="text-right">TOTAL</th>
-                                                <th></th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            @foreach($invoic_item as $item)
-                                                <tr>
-                                                    <td>{{$item->id}}</td>
-                                                    <td>{{$item->product->name}}</td>
-                                                    <td class="d-none d-sm-table-cell">{{$item->description}}</td>
-                                                    <td>{{$item->unit_price}}
-                                                    <td>{{$item->quantity}}</td>
-                                                    <td class="text-right">{{$item->total}}</td>
-                                                </tr>
-                                        @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="d-flex justify-content-end">
-                                        Total: <p class="ml-2 mb-0 font-weight-bold">  {{$detail_inv->total}} MMK </p>
-                                    </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item p-0">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-hover">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>ITEM</th>
+                                                        <th class="d-none d-sm-table-cell">DESCRIPTION</th>
+                                                        <th>UNIT COST</th>
+                                                        <th>QUANTITY</th>
+                                                        <th class="text-right">TOTAL</th>
+                                                        <th></th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    @foreach($invoic_item as $item)
+                                                        <tr>
+                                                            <td>{{$item->id}}</td>
+                                                            <td>{{$item->product->name}}</td>
+                                                            <td class="d-none d-sm-table-cell">{{$item->description}}</td>
+                                                            <td>{{$item->unit_price}}
+                                                            <td>{{$item->quantity}}</td>
+                                                            <td class="text-right">{{$item->total}}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="d-flex justify-content-end">
+                                                Total: <p class="ml-2 mb-0 font-weight-bold">  {{$detail_inv->total}} MMK </p>
+                                            </div>
 
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="d-flex justify-content-end ">
-                                        Discount: <p class="ml-2 mb-0 font-weight-bold">  {{$detail_inv->discount}} MMK</p>
-                                    </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="d-flex justify-content-end ">
+                                                Discount: <p class="ml-2 mb-0 font-weight-bold">  {{$detail_inv->discount}} MMK</p>
+                                            </div>
 
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="d-flex justify-content-end ">
-                                        Tax: <p class="ml-2 mb-0 font-weight-bold"> {{$detail_inv->tax_amount}} MMK </p>
-                                    </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="d-flex justify-content-end ">
+                                                Tax: <p class="ml-2 mb-0 font-weight-bold"> {{$detail_inv->tax_amount}} MMK </p>
+                                            </div>
 
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="d-flex justify-content-end ">
-                                        Delivery Fee: <p class="ml-2 mb-0 font-weight-bold"> {{$detail_inv->delivery_fee}} MMK </p>
-                                    </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="d-flex justify-content-end ">
+                                                Delivery Fee: <p class="ml-2 mb-0 font-weight-bold"> {{$detail_inv->delivery_fee}} MMK </p>
+                                            </div>
 
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="d-flex justify-content-end mb-2">
-                                        Grand Total: <p class="ml-2 mb-0 font-weight-bold">  {{$detail_inv->grand_total}} MMK</p>
-                                    </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="d-flex justify-content-end mb-2">
+                                                Grand Total: <p class="ml-2 mb-0 font-weight-bold">  {{$detail_inv->grand_total}} MMK</p>
+                                            </div>
 
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="d-flex flex-wrap justify-content-between align-items-center p-4">
-                                <div class="flex align-items-start flex-column">
-                                    <h6>Notes</h6>
-                                    <p class="mb-0 my-2">{{$detail_inv->other_information}}</p>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="d-flex flex-wrap justify-content-between align-items-center p-4">
+                                        <div class="flex align-items-start flex-column">
+                                            <h6>Notes</h6>
+                                            <p class="mb-0 my-2">{{$detail_inv->other_information}}</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -348,7 +352,6 @@
                 </div>
             </div>
         </div>
-    </div>
     </div>
     <div class="modal fade" id="add_payment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -624,6 +627,7 @@
                 };
             })(jQuery);
         </script>
-
+    </div>
+    </div>
     <!-- /Page Content -->
 @endsection

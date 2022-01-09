@@ -62,7 +62,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="">Township</label>
-                                <select name="" id="" class="select2 form-control">
+                                <select name="township" id="" class="select2 form-control">
                                     <option value="">Select Township</option>
                                     @foreach($township as $item)
                                         <option value="{{$item}}">{{$item}}</option>
@@ -84,7 +84,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fa fa-list"></i></span>
                                     </div>
-                                <select name="type" id="type" class="form-control">
+                                <select name="type" id="type" class="form-control select2">
                                     <option value="Call">Call</option>
                                     <option value="Meeting">Meeting</option>
                                     <option value="Visit">Visit</option>
@@ -94,9 +94,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6" id="value">
 
-                        </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="follower">Follower</label>
@@ -111,6 +109,18 @@
                                 </select>
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-md-6" id="value">
+                          <div class="form-group">
+                              <label for="amount">Sale Volume</label>
+                              <input type="number" id="amount" class="form-control" name="amount">
+                          </div>
+                        </div>
+                        <div class="col-md-6" id="shop">
+                           <div class="form-group">
+                               <label for="shop">Shop Name</label>
+                               <input type="text" id="shop" class="form-control" name="shop">
+                           </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
@@ -170,6 +180,20 @@
     </div>
     <script>
         $(document).ready(function () {
+            $('#value').hide();
+            $('#shop').hide();
+            $(document).on('change','#type',function () {
+                var type=$(this).val();
+                if(type=='Sale'){
+                    $('#value').show('');
+                    $('#shop').show('');
+                }else {
+                    $('#value').hide('');
+                    $('#shop').hide('');
+                }
+            });
+        });
+        $(document).ready(function () {
             $('select').select2();
         });
         jQuery(document).ready(function () {
@@ -177,18 +201,10 @@
 
             jQuery('#date_time').datetimepicker();
         });
+
+
         ClassicEditor.create($('#desc')[0], {
             toolbar: ['heading', 'bold', 'italic', 'undo', 'redo', 'numberedList', 'bulletedList', 'insertTable']
-        });
-        $(document).ready(function () {
-           $('#type').change(function () {
-               var type=$this.val();
-               if(type=='Sale'){
-                   $('#value').show('')
-               }else {
-                   $('#value').hide();
-               }
-           });
         });
     </script>
     <!-- /Page Content -->

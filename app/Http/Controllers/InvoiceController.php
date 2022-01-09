@@ -45,7 +45,18 @@ class InvoiceController extends Controller
     {
         $allcustomers =Customer::where('customer_type','Lead')->where('status','Qualified')->get();
         $products =product::all();
+
+        $pd=ProductVariations::with('product')->get();
         $variants=ProductVariations::with('product')->get();
+//        foreach ($pd as $product){
+//
+//            if($pd!=null){
+//                $stock=Stock::where('variant_id',$product->id)->where('available','>',0)->first();
+//                if($stock!=null){
+//                    array_push($variants,$product);
+//                }
+//            }
+//        }
         $taxes=products_tax::all();
         $Auth=Auth::guard('employee')->user()->name;
 //        Session::forget('data-'.Auth::guard('employee')->user()->id);

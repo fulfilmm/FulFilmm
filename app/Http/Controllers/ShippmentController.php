@@ -23,6 +23,7 @@ class ShippmentController extends Controller
      */
     public function index()
     {
+
         $deliveries=DeliveryOrder::with('invoice','courier','customer')->get();
         return view('Inventory.Shippment.index',compact('deliveries'));
     }

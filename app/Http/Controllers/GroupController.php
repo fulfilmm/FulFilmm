@@ -6,6 +6,7 @@ use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Group;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class GroupController extends Controller
 {
@@ -45,7 +46,7 @@ class GroupController extends Controller
     {
         //
 
-        $group = Group::create(['name' => $request->name, 'created_by' => auth()->guard('employee')->id()]);
+        $group =Group::create(['name' => $request->name,'type'=>$request->type,'created_by' => auth()->guard('employee')->id()]);
         foreach($request->employees as $employee){
             $group->employees()->attach($employee);
         }
@@ -62,7 +63,8 @@ class GroupController extends Controller
      */
     public function show($id)
     {
-        //
+        $group=Group::with('employees')->where('id',$id)->first();
+        return view('groups.show',compact('group'));
     }
 
     /**
@@ -73,7 +75,10 @@ class GroupController extends Controller
      */
     public function edit($id)
     {
-        //
+        $group=Group::where('id',$id)->first();
+        $members=DB::table('groups_employees')->where('group_id',$group->id)->get();
+        $employees = Department::with('employees')->has('employees')->get();
+        return view('groups.edit',compact('group','employees','members'));
     }
 
     /**
@@ -85,7 +90,19 @@ class GroupController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $group =Group::where('id',$id)->first();
+        $group->name=$request->name;
+        $group->type=$request->type;
+        $group->update();
+        foreach($request->employees as $employee){
+            $members=DB::table('groups_employees')->where('group_id',$group->id)->where('employee_id',$employee)->first();
+         if($members==null){
+
+             $group->employees()->attach($employee);
+         }
+
+        }
+        return redirect()->back()->with('success','Updated Successful');
     }
 
     /**

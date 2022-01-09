@@ -3,27 +3,27 @@
     <div class="profile-widget">
         <div class="profile-img">
             <a href="{{route( $route.'.show', $id)}}" class="avatar text-center">
-                <img src="{{$image ??''}}" alt="Add profile" width="80px" height="80px" style="font-size: 8px;">
+                <img src="{{$image ??''}}" alt="Add profile" data-toggle="tooltip" title="Profile" width="80px" height="80px" style="font-size: 8px;">
             </a>
         </div>
         <div class="dropdown profile-action">
-            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
-               aria-expanded="false"><i class="material-icons">more_vert</i></a>
+            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" title="Action"
+               aria-expanded="false" ><i class="material-icons">more_vert</i></a>
             <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item" href="{{route($route.'.edit',$id)}}"><i
+                <a class="dropdown-item" data-toggle="tooltip" title="Edit" href="{{route($route.'.edit',$id)}}"><i
                         class="fa fa-pencil m-r-5"></i> Edit</a>
                 <form action="{{route($route.'.destroy',$id)}}"
                       id="del-{{$id}}" method="POST">
                     @method('delete')
                     @csrf
-                    <a class="dropdown-item" href="#" onclick="deleteRecord({{$id}})"><i
+                    <a class="dropdown-item" href="#" data-toggle="tooltip" title="Delete" onclick="deleteRecord({{$id}})"><i
                             class="fa fa-trash-o m-r-5"></i> Delete</a>
                 </form>
 
             </div>
         </div>
-        <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a href="profile">{{$title}}</a></h4>
-        <div class="small text-muted">{{$subtitle}}</div>
+        <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a href="profile" data-toggle="tooltip" title="Name">{{$title}}</a></h4>
+        <div class="small text-muted" data-toggle="tooltip" title="Email">{{$subtitle}}</div>
     </div>
 </div>
 
