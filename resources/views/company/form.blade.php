@@ -77,7 +77,7 @@
                             <span class="input-group-text"><i class="fa fa-user"></i></span>
                         </div>
                         <x-forms.basic.input name="ceo_name" value="{{$record->ceo_name ?? old('ceo_name')}}" icon="user" title="CEO Name"
-                                             required></x-forms.basic.input>
+                                             ></x-forms.basic.input>
                     </div>
                 </div>
             </div>
@@ -89,7 +89,7 @@
                             <span class="input-group-text"><i class="fa fa-file"></i></span>
                         </div>
                         <input type="text" is="company_registry" class="form-control" name="company_registry" value="{{$record->company_registry ?? old('company_registry')}}"
-                               title="Company Registry" required>
+                               title="Company Registry" >
                     </div>
                 </div>
             </div>
@@ -97,7 +97,7 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label for="address">Address <span class="text-danger"> * </span></label>
-                    <textarea name="address" id="address" class="form-control" required>{{$record->address ?? old('address')}}</textarea>
+                    <textarea name="address" id="address" class="form-control" >{{$record->address ?? old('address')}}</textarea>
                     @error('address')
                     <span role="alert">
             <p class="text-danger mt-3 mb-0">{{ $message }}</p>
