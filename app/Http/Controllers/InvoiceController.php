@@ -13,6 +13,7 @@ use App\Models\product;
 use App\Models\products_tax;
 use App\Models\ProductVariations;
 use App\Models\Revenue;
+use App\Models\SellingUnit;
 use App\Models\Stock;
 use App\Models\Transaction;
 use App\Models\TransactionCategory;
@@ -44,9 +45,6 @@ class InvoiceController extends Controller
     public function create()
     {
         $allcustomers =Customer::where('customer_type','Lead')->where('status','Qualified')->get();
-        $products =product::all();
-
-        $pd=ProductVariations::with('product')->get();
         $variants=ProductVariations::with('product')->get();
 //        foreach ($pd as $product){
 //
@@ -78,7 +76,8 @@ class InvoiceController extends Controller
             $grand_total=$grand_total+$orderline[$i]->total;
         }
         $status=$this->status;
-        return view('invoice.create',compact('request_id','allcustomers','products','orderline','grand_total','status','data','variants','taxes'));
+        $unit_price=SellingUnit::all();
+        return view('invoice.create',compact('request_id','allcustomers','orderline','grand_total','status','data','variants','taxes','unit_price'));
     }
 
     /**

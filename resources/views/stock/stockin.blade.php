@@ -25,10 +25,7 @@
                                    <label for="warehouse">Product</label>
                                    <select name="product_id" id="warehouse" class="form-control">
                                        @foreach($products as $product)
-                                           <option value="{{$product->id}}">{{$product->product->name}}
-                                               @if($product->color!=null||$product->size!=null||$product->other!=null)
-                                                   ({{$product->color}} {{$product->size}} {{$product->other}})
-                                               @endif
+                                           <option value="{{$product->id}}">{{$product->product_name}}({{$product->variant}})
                                            </option>
                                        @endforeach
                                    </select>

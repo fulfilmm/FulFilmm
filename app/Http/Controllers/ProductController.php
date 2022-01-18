@@ -8,6 +8,7 @@ use App\Models\product;
 use App\Models\products_category;
 use App\Models\products_tax;
 use App\Models\ProductVariations;
+use App\Models\SellingUnit;
 use App\Models\Stock;
 use App\Models\StockIn;
 use App\Models\Warehouse;
@@ -15,7 +16,10 @@ use App\Traits\StockTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Intervention\Image\Facades\Image;
+use function Livewire\str;
 use Livewire\WithPagination;
+use Psy\Util\Str;
 
 class ProductController extends Controller
 {
@@ -59,47 +63,74 @@ class ProductController extends Controller
 //
         $product=new product();
         $product->name=$request->name;
-        $product->tax=$request->tax;
-        $product->currency_unit=$request->unit;
         $product->description=$request->detail;
-        $product->cat_id=$request->mian_cat;
         $product->model_no=$request->model_no;
-        $product->serial_no=$request->serial_no;
-        $product->sku=$request->sku;
+        $product->cat_id=$request->mian_cat;
         $product->sub_cat_id=$request->sub_cat;
-        $product->part_no=$request->part_no;
-        $product->unit=$request->unit;
-        $product->stock_type=$request->stock_type;
-        if(isset($request->enable))
-        {
-            $product->enable=1;
-        }else{
-            $product->enable=0;
+        $product->brand_id=$request->brand_id;
+        if (isset($request->picture)) {
+//            if ($request->picture != null) {
+            foreach ($request->file('picture') as $image) {
+                $input['imagename'] =\Illuminate\Support\Str::random(10).time().'.'.$image->extension();
+
+                $filePath = public_path('/product_picture/');
+
+                $img = Image::make($image->path());
+                $img->resize(400, 800, function ($const) {
+                    $const->aspectRatio();
+                })->save($filePath.'/'.$input['imagename']);
+                $data[] = $input['imagename'];
+
+            }
+            $product->image=json_encode($data);
         }
+
+
         $product->save();
-       if(isset($request->field_count)){
-           for ($i=0;$i<count($request->field_count);$i++){
-               $variation=new ProductVariations();
-               $image = $request->picture[$i]??null;
-               if($image!=null) {
-                   $name = $image->getClientOriginalName();
-                   $request->picture[$i]->move(public_path().'/product_picture/', $name);
-                   $variation->image = $name;
-               }
-               $variation->product_id=$product->id;
-               $variation->description=$request->description[$i];
-               $variation->price=$request->price[$i];
-               $variation->purchase_price=$request->purchase_price[$i];
-//           $variation->barcode=$request->barcode[$i];
-               $variation->discount_rate=$request->discount_rate[$i];
-               $variation->size=$request->size[$i];
-               $variation->color=$request->color[$i];
-               $variation->other=$request->other[$i];
-               $variation->exp_date=Carbon::create($request->exp_date[$i]);
-               $variation->save();
-           }
-       }
         return redirect("/products")->with("message","Product Create Success");
+
+    }
+    public function create_variant(){
+        $product=product::all()->pluck('name','id')->all();
+        return view('product.variantadd',compact('product'));
+    }
+    public function variant_add(Request $request){
+        $this->validate($request,[
+            'product_code'=>'required',
+            'variant'=>'required',
+            'picture.*'=>'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+        $product=product::where('id',$request->product_id)->first();
+        $variation=new ProductVariations();
+        if (isset($request->picture)) {
+//            if ($request->picture != null) {
+                foreach ($request->file('picture') as $image) {
+                $input['imagename'] =\Illuminate\Support\Str::random(16).'.'.$image->extension();
+
+                $filePath = public_path('/product_picture/');
+
+                $img = Image::make($image->path());
+                $img->save($filePath.'/'.$input['imagename']);
+                $data[] = $input['imagename'];
+
+            }
+            $variation->image =json_encode($data);
+        }
+        $variation->product_name=$product->name;
+        $variation->product_id=$request->product_id;
+        $variation->description=$request->description;
+        $variation->product_code=$request->product_code;
+        $variation->serial_no=$request->serial_no;
+        $variation->variant=$request->variant;
+        $variation->exp_date=Carbon::create($request->exp_date);
+        $variation->save();
+        return redirect(route('products.show',$request->product_id));
+    }
+    public function show_variant($id){
+        $product=ProductVariations::with('product')->where('id',$id)->firstOrFail();
+        $stock=Stock::with('warehouse')->where('variant_id',$id)->get();
+        $selling_info=SellingUnit::where('variant_id',$id)->get();
+        return view('product.variantshow',compact('product','stock','selling_info'));
 
     }
 
@@ -111,7 +142,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product=product::with("taxes","category")->where("id",$id)->firstOrFail();
+        $product=product::with("category",'sub_cat')->where("id",$id)->firstOrFail();
         $variantions=ProductVariations::where('product_id',$product->id)->get();
 //        dd($variantions);
         return view("product.show",compact("product",'variantions'));

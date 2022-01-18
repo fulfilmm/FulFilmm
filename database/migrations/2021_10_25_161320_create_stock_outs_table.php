@@ -16,10 +16,16 @@ class CreateStockOutsTable extends Migration
         Schema::create('stock_outs', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('variantion_id')->unsigned();
+            $table->string('type');
             $table->bigInteger('emp_id')->unsigned();//select option
-            $table->bigInteger('customer_id')->unsigned();
+            $table->bigInteger('customer_id')->unsigned()->nullable();
+            $table->bigInteger('invoice_id')->unsigned()->nullable();
+            $table->bigInteger('approver_id')->unsigned();
             $table->bigInteger('courier_id')->unsigned()->nullable();
+            $table->bigInteger('warehouse_id')->unsigned()->nullable();
             $table->double('qty');
+            $table->text('description')->nullable();
+            $table->tinyInteger('approve')->default(0);
             $table->timestamps();
         });
     }

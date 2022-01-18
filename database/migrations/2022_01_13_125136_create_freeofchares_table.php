@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateVariantKeysTable extends Migration
+class CreateFreeofcharesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,13 @@ class CreateVariantKeysTable extends Migration
      */
     public function up()
     {
-        Schema::create('variant_keys', function (Blueprint $table) {
+        Schema::create('freeofchares', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->boolean('active')->default(true);
+            $table->bigInteger('variant_id')->unsigned();
+            $table->double('qty');
+            $table->double('remaining_qty');
+            $table->bigInteger('issuer_id')->unsigned();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +31,6 @@ class CreateVariantKeysTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('variant_keys');
+        Schema::dropIfExists('freeofchares');
     }
 }

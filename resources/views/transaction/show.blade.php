@@ -111,8 +111,8 @@
                                                 Description:
                                             </td>
                                             <td style="width: 80%; padding-bottom: 3px; font-size: 14px;"><p
-                                                        style="font-size: 14px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; margin: 0px;">
-                                                   {{$transaction->type=="Revenue"?$transaction->revenue->description:$transaction->expense->description}}
+                                                       class="mt-3" style="font-size: 14px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; margin: 0px;">
+                                                   {!!$transaction->type=="Revenue"?$transaction->revenue->description:$transaction->expense->description!!}
                                                 </p></td>
                                         </tr>
 

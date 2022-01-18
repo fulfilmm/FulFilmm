@@ -1,157 +1,124 @@
 <html>
 <head>
     <title>Convert HTML To PDF</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-1.12.4.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{{url(asset('js/barcodegenerator/jquery-barcode.js'))}}"></script>
+    <script type="text/javascript" src="{{url(asset('js/barcodegenerator/jquery-barcode.min.js'))}}"></script>
+    <script type="text/javascript">
+
+        function generateBarcode(){
+            var btype ="std25";
+            var renderer ="css";
+            var value="{{random_int(999999,999999999)}}";
+
+
+            var settings = {
+                output:renderer,
+                bgColor: '#FFFFFF',
+                color: '#000000',
+                barWidth: '1',
+                barHeight: '50',
+                moduleSize: '5',
+                posX: '10',
+                posY: '20',
+                addQuietZone: '1'
+            };
+
+            if (renderer == 'canvas'){
+                clearCanvas();
+                $("#barcodeTarget").hide();
+                $("#canvasTarget").show().barcode(value, btype, settings);
+            } else {
+                $("#canvasTarget").hide();
+                $("#barcodeTarget").html("").show().barcode(value, btype, settings);
+            }
+        }
+
+        function showConfig1D(){
+            $('.config .barcode1D').show();
+            $('.config .barcode2D').hide();
+        }
+
+        function showConfig2D(){
+            $('.config .barcode1D').hide();
+            $('.config .barcode2D').show();
+        }
+
+        function clearCanvas(){
+            var canvas = $('#canvasTarget').get(0);
+            var ctx = canvas.getContext('2d');
+            ctx.lineWidth = 1;
+            ctx.lineCap = 'butt';
+            ctx.fillStyle = '#FFFFFF';
+            ctx.strokeStyle  = '#000000';
+            ctx.clearRect (0, 0, canvas.width, canvas.height);
+            ctx.strokeRect (0, 0, canvas.width, canvas.height);
+        }
+
+        $(function(){
+            $('input[name=btype]').click(function(){
+                if ($(this).attr('id') == 'datamatrix') showConfig2D(); else showConfig1D();
+            });
+            $('input[name=renderer]').click(function(){
+                if ($(this).attr('id') == 'canvas') $('#miscCanvas').show(); else $('#miscCanvas').hide();
+            });
+            generateBarcode();
+        });
+
+    </script>
 </head>
 <body>
-<input type="button" id="create_pdf" value="Generate PDF">
-<form class="form" style="max-width: none; width: 1005px;">
-    <h3>DEMO</h3>
-    <p style="font-size: large">
-        Convert HTML TO PDF:
-    </p>
-    <table class="table table-border">
-        <tbody>
-        <tr>
-            <th>S.N.</th>
-            <th>Employee Name</th>
-            <th>Address</th>
-            <th>Company</th>
-        </tr>
-        <tr>
-            <td>1</td>
-            <td>Mike</td>
-            <td>USA</td>
-            <td>Microsoft</td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>Manoj Ranjit</td>
-            <td>India</td>
-            <td>Tata Motors</td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>xìng</td>
-            <td>China</td>
-            <td>Alibaba</td>
-        </tr>
-        <tr>
-            <td>4</td>
-            <td>Akari</td>
-            <td>Japan</td>
-            <td>Mitsubishi </td>
-        </tr>
-        <tr>
-            <td>5</td>
-            <td>Binod</td>
-            <td>Nepal</td>
-            <td>CG </td>
-        </tr>
-        </tbody>
-    </table>
-</form>
+<div align="center">
+    <h2>jQuery Barcode Generator Example</h2>
+    <div class="frmContact">
+        <div class="field-row">
+            <label>Fill The Code</label> <span class="info"></span>
+            <br />
+            <input type="text" id="barcodeValue" value="19851106" class="input_box">
+        </div>
+        <div class="field-row">
+            <div class="contact-row column-right">
+                <label>Barcode Type</label>
+                <span class="info"></span>
+                <br />
+                <select name="btype" class="select_box">
+                    <option value="ean8">EAN 8</option>
+                    <option value="ean13">EAN 13</option>
+                    <option value="upc">UPC</option>
+                    <option value="std25">standard 2 of 5 (industrial)</option>
+                    <option value="int25">interleaved 2 of 5</option>
+                    <option value="code11">code 11</option>
+                    <option value="code39">Code 39</option>
+                    <option value="code93">code 93</option>
+                    <option value="code93">code 93</option>
+                    <option value="code128">code 128</option>
+                    <option value="codabar">codabar</option>
+                    <option value="msi">MSI</option>
+                    <option value="datamatrix">Data Matrix</option>
+                </select>
 
+
+            </div>
+            <div class="contact-row cvv-box">
+                <label>Format</label> <span class="info"></span><br />
+                <select name="renderer" class="select_box">
+                    <option value="css">CSS</option>
+                    <option value="bmp">BMP (not usable in IE)</option>
+                    <option value="svg">SVG (not usable in IE)</option>
+                    <option value="canvas">Canvas (not usable in IE)</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div>
+            <input type="button" onclick="generateBarcode();" value="Generate the barcode" class="btnAction">
+        </div>
+
+    </div>
+</div>
+<div id="barcodeTarget" class="barcodeTarget"></div>
+<canvas id="canvasTarget" width="150" height="150"></canvas>
 </body>
 
 </html>
-<script>
-    (function () {
-        var
-            form = $('.form'),
-            cache_width = form.width(),
-            a4 = [595.28, 841.89]; // for a4 size paper width and height
-
-        $('#create_pdf').on('click', function () {
-            $('body').scrollTop(0);
-            createPDF();
-        });
-        //create pdf
-        function createPDF() {
-            getCanvas().then(function (canvas) {
-                var
-                    img = canvas.toDataURL("image/png"),
-                    doc = new jsPDF({
-                        unit: 'px',
-                        format: 'a4'
-                    });
-                doc.addImage(img, 'JPEG', 20, 20);
-                doc.save('bhavdip-html-to-pdf.pdf');
-                form.width(cache_width);
-            });
-        }
-
-        // create canvas object
-        function getCanvas() {
-            form.width((a4[0] * 1.33333) - 80).css('max-width', 'none');
-            return html2canvas(form, {
-                imageTimeout: 2000,
-                removeContainer: true
-            });
-        }
-
-    }());
-</script>
-<script>
-    (function ($) {
-        $.fn.html2canvas = function (options) {
-            var date = new Date(),
-                $message = null,
-                timeoutTimer = false,
-                timer = date.getTime();
-            html2canvas.logging = options && options.logging;
-            html2canvas.Preload(this[0], $.extend({
-                complete: function (images) {
-                    var queue = html2canvas.Parse(this[0], images, options),
-                        $canvas = $(html2canvas.Renderer(queue, options)),
-                        finishTime = new Date();
-
-                    $canvas.css({ position: 'absolute', left: 0, top: 0 }).appendTo(document.body);
-                    $canvas.siblings().toggle();
-
-                    $(window).click(function () {
-                        if (!$canvas.is(':visible')) {
-                            $canvas.toggle().siblings().toggle();
-                            throwMessage("Canvas Render visible");
-                        } else {
-                            $canvas.siblings().toggle();
-                            $canvas.toggle();
-                            throwMessage("Canvas Render hidden");
-                        }
-                    });
-                    throwMessage('Screenshot created in ' + ((finishTime.getTime() - timer) / 1000) + " seconds<br />", 4000);
-                }
-            }, options));
-
-            function throwMessage(msg, duration) {
-                window.clearTimeout(timeoutTimer);
-                timeoutTimer = window.setTimeout(function () {
-                    $message.fadeOut(function () {
-                        $message.remove();
-                    });
-                }, duration || 2000);
-                if ($message)
-                    $message.remove();
-                $message = $('<div ></div>').html(msg).css({
-                    margin: 0,
-                    padding: 10,
-                    background: "#000",
-                    opacity: 0.7,
-                    position: "fixed",
-                    top: 10,
-                    right: 10,
-                    fontFamily: 'Tahoma',
-                    color: '#fff',
-                    fontSize: 12,
-                    borderRadius: 12,
-                    width: 'auto',
-                    height: 'auto',
-                    textAlign: 'center',
-                    textDecoration: 'none'
-                }).hide().fadeIn().appendTo('body');
-            }
-        };
-    })(jQuery);
-</script>

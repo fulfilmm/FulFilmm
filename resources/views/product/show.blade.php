@@ -45,105 +45,209 @@
             </div>
         </div>
         <!-- /Page Header -->
-
-        <div class=" col-md-12">
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                @for($i=0;$i<count($variantions);$i++)
-                    <li class="nav-item">
-                        @php $j=$i+1; @endphp
-                        <a class="nav-link {{$i==0?'active':""}}" id="home-tab" data-toggle="tab" href="#variant_{{$variantions[$i]->id}}"
-                           role="tab" aria-controls="home" aria-selected="true">{{$variantions[$i]->product_code}}</a>
-                    </li>
-                @endfor
-            </ul>
-            <div class="tab-content" id="myTabContent">
-                @for($i=0;$i<count($variantions);$i++)
-                    <div class="tab-pane fade show {{$i==0?'active':""}}" id="variant_{{$variantions[$i]->id}}"
-                         role="tabpanel" aria-labelledby="home-tab">
-                        <div class="row">
-                            <div class="col-md-5 card">
-                                <div class="text-center">
-                                    <img src="{{url(asset("/product_picture/".$variantions[$i]->image))}}"
-                                         class="rounded mt-5" height="200px; " alt="" style="max-width: 300px;">
-                                </div>
-                            </div>
-                            <div class="col-md-7">
-                                <h4 class="mt-3 ml-3 text-uppercase">{{$product->name}}</h4>
-                                <div class="row my-3 ml-5">
-                                    <div class="col-md-4 mt-4">Model Number</div>
-                                    <div class="col-md-8 mt-4">: {{$product->model_no??''}}</div>
-                                    <div class="col-md-4 mt-4">Available Stock</div>
-                                    <div class="col-md-8 mt-4">: {{$variantions[$i]->qty??''}}</div>
-
-                                    <div class="col-md-4 mt-4">Sale Price</div>
-                                    <div class="col-md-8 mt-4">: {{$variantions[$i]->price}} {{$product->currency_unit??''}}</div>
-                                    <div class="col-md-4 mt-4">Purchased Price</div>
-                                    <div class="col-md-8 mt-4">
-                                        : {{$variantions[$i]->purchase_price??''}} {{$product->currency_unit??''}}</div>
-                                    <span class="col-md-4 mt-4">Status</span>
-                                    <span class="col-md-8 mt-4">@if($product->enable==1)
-                                            : Enable
-                                        @else
-                                            : Disable
-                                        @endif
-                            </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endfor
-            </div>
-
-        </div>
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <ul class="nav nav-tabs " id="myTab" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
-                   aria-selected="true">Discription</a>
+                   aria-selected="true"><i class="fa fa-list mr-2"></i>About Product</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
-                   aria-selected="false">General Details</a>
+                   aria-selected="false"><i class="la la-cube mr-2"></i>Variants</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#addnew" role="tab" aria-controls="profile"
+                   aria-selected="false"><i class="la la-plus mr-2"></i>Add NewVariants</a>
             </li>
         </ul>
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                <h3>Production Description</h3>
-                <p>{{ $product->description??''}}</p>
+                <div class="card col-12">
+                    <div class="card-header">
+                        <h4>Product Specification</h4>
+                    </div>
+                    <div class="col-12 mt-3">
+                         <div class="row">
+                             <span class="text-muted col-md-2">Product Name </span><span class="col-md-10">: {{$product->name}}</span>
+                         </div>
+                    </div>
+                    <div class="col-12 my-1">
+                        <div class="row">
+                        <span class="text-muted col-md-2">Model No </span><span class="col-md-10">: {{$product->model_no??'N/A'}}</span>
+                        </div>
+                    </div>
+                    <div class="col-12 my-1">
+                        <div class="row">
+                        <span class="text-muted col-md-2">Main Category</span><span class="col-md-10">: {{$product->category->name??''}}</span>
+                        </div>
+                    </div>
+                    <div class="col-12 my-1">
+                        <div class="row">
+                        <span class="text-muted col-md-2">Sub-Category</span><span class="col-md-10">: {{$product->sub_cat->name??'N/A'}}</span>
+                        </div>
+                    </div>
+                    <div class="col-12 my-1">
+                        <div class="row">
+                        <span class="text-muted col-md-2">Brand</span><span class="col-md-10">: {{$product->sub_cat->name??'N/A'}}</span>
+                        </div>
+                    </div>
+                        <div class="col-12">
+                            <h5>Description</h5>
+                           <div class="border" style="min-height: 100px">
+                              <p class="mx-3 my-3"> {!! $product->description !!}</p>
+                           </div>
+                        </div>
+
+                   <div class="col-12 my-3">
+                       <h5>Images</h5>
+                       <div class="row my-1">
+                          @if($product->image!=null)
+                           @foreach(json_decode($product->image) as $image)
+                               <img src="{{url(asset('/product_picture/'.$image))}}" alt="" class="border mr-2 ml-2" style="max-height:200px;max-width:100%;border: solid">
+                           @endforeach
+                              @endif
+                       </div>
+                   </div>
+
+                </div>
             </div>
             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                <h3>Additional Information</h3>
+                <h3>Product Variant</h3>
                 <table class="table">
+                  <thead>
+                  <tr>
+                      <th>Product Code</th>
+                      <th>Serial Number</th>
+                      <th>Variation</th>
+                      <th>Created Date</th>
+                      <th>Barcode</th>
+
+                  </tr>
+                  </thead>
                     <tbody>
-                    <tr>
-                        <th>Main Product Code</th>
-                        <td>{{$product->product_code??''}}</td>
-                    </tr>
-                    <tr>
-                        <th>Category</th>
-                        <td>{{$product->category->name??''}}</td>
-                    </tr>
-                    <tr>
-                        <th>Tax Type(Rate)</th>
-                        <td>{{$product->taxes->name??''}}( {{$product->taxes->rate??''}} % )</td>
-                    </tr>
-                    <tr>
-                        <th>SKU</th>
-                        <td>{{$product->sku??''}}</td>
-                    </tr>
-                    <tr>
-                        <th>Serial Number</th>
-                        <td>{{$product->serial_no??''}}</td>
-                    </tr>
-                    <tr>
-                        <th>Part Number</th>
-                        <td>{{$product->part_no??''}}</td>
-                    </tr>
+                    @foreach($variantions as $item)
+                        <tr>
+                            <td><a href="{{route('show.variant',$item->id)}}"><strong>{{$item->product_code}}</strong></a></td>
+                            <td>{{$item->serial_no}}</td>
+                            <td>{{$item->variant}}</td>
+                            <td>{{$item->created_at->toFormattedDateString()}}</td>
+                            <td>
+                                <div id="barcodeTarget{{$item->id}}" class="barcodeTarget"></div>
+                                <canvas id="canvasTarget{{$item->id}}" width="100" height="50"></canvas>
+                                <script type="text/javascript">
+                                        var btype ="std25";
+                                        var renderer ="css";
+                                        var value="{{$item->product_code}}";
+
+
+                                        var settings = {
+                                            output:renderer,
+                                            bgColor: '#FFFFFF',
+                                            color: '#000000',
+                                            barWidth: '1',
+                                            barHeight: '20',
+                                            moduleSize: '5',
+                                            posX: '10',
+                                            posY: '20',
+                                            addQuietZone: '1'
+                                        };
+
+                                        if (renderer == 'canvas'){
+                                            clearCanvas();
+                                            $("#barcodeTarget{{$item->id}}").hide();
+                                            $("#canvasTarget{{$item->id}}").show().barcode(value, btype, settings);
+                                        } else {
+                                            $("#canvasTarget{{$item->id}}").hide();
+                                            $("#barcodeTarget{{$item->id}}").html("").show().barcode(value, btype, settings);
+                                        }
+
+
+                                    function clearCanvas(){
+                                        var canvas = $('#canvasTarget{{$item->id}}').get(0);
+                                        var ctx = canvas.getContext('2d');
+                                        ctx.lineWidth = 1;
+                                        ctx.lineCap = 'butt';
+                                        ctx.fillStyle = '#FFFFFF';
+                                        ctx.strokeStyle  = '#000000';
+                                        ctx.clearRect (0, 0, canvas.width, canvas.height);
+                                        ctx.strokeRect (0, 0, canvas.width, canvas.height);
+                                    }
+
+                                </script>
+                            </td>
+                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
+            <div class="tab-pane fade" id="addnew" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="col-12">
+                    <form action="{{route('variant.store')}}" enctype="multipart/form-data" method="POST">
+                        @csrf
+                        <div class="row">
+                            <input type="hidden" name="product_id" value="{{$product->id}}">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="">Product Code</label>
+                                    <div class="input-group">
+                                        <input type="text" id="p_code" name="product_code" class="form-control" value="{{old('product_code')}}" readonly required>
+                                        <button type="button" class="btn btn-white btn-sm" onclick="generatecode()" id="generate">Generate Product Code</button>
+                                    </div>
+                                    @error('product_code')
+                                    <span class="text-danger">{{$message}}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="">Serial No.</label>
+                                    <input type="text" class="form-control" name="serial_no" value="{{old('serial_no')}}">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="">Exp Date</label>
+                                    <input type="date" class="form-control" name="exp_date" value="{{\Carbon\Carbon::parse(old('exp_date'))->format('Y-m-d')}}">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="">Variant</label>
+                                    <input type="text" class="form-control" name="variant" value="{{old('variant')}}" placeholder='Enter this format : "Color:Red Size:XL"'>
+                                    @error('variant')
+                                    <span class="text-danger">{{$message}}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="">Images</label>
+                                    <input type="file" name="picture[]" class="form-control" multiple >
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="">Description</label>
+                                    <textarea name="description" class="form-control" id="description" cols="30" rows="10"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-12 text-center">
+                                <button type="submit" class="btn btn-primary">Add</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
-    </div>
+    <script>
+        function generatecode(){
+           var pcode='{{random_int(100000000,999999999)}}';
+           $("#p_code").val(pcode);
+        }
+        ClassicEditor.create($('#description')[0], {
+            toolbar: ['heading', 'bold', 'italic', 'undo', 'redo', 'numberedList', 'bulletedList', 'insertTable']
+        });
+    </script>
     <!-- /Page Content -->
     <!-- /Page Wrapper -->
 @endsection

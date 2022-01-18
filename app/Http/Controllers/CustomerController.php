@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -95,13 +96,20 @@ class CustomerController extends Controller
         $this->validate($request,['email'=>'unique:customers']);
         if (isset($request->profile_img)) {
             if ($request->profile_img != null) {
-                $name = $request->profile_img->getClientOriginalName();
-//                $request->profile_img->move(public_path() . '/img/profiles', $name);
+                $image = $request->file('profile_img');
+                $input['imagename'] = time().'.'.$image->extension();
+
+                $filePath = public_path('/img/profiles');
+
+                $img = Image::make($image->path());
+                $img->resize(110, 110, function ($const) {
+                    $const->aspectRatio();
+                })->save($filePath.'/'.$input['imagename']);
 
             }
         }
         $data = [
-            'profile' => isset($name) ?? null,
+            'profile' => $request->profile_img != null?$input['imagename']:null,
             'name' => $request->name,
             'region' => $request->region,
             'phone' => $request->phone,
@@ -244,9 +252,17 @@ class CustomerController extends Controller
 
         if (isset($request->profile_img)) {
             if ($request->profile_img != null) {
-                $name = $request->profile_img->getClientOriginalName();
-                $request->profile_img->move(public_path() . '/img/profiles', $name);
+                $image = $request->file('profile_img');
+                $input['imagename'] = time().'.'.$image->extension();
 
+                $filePath = public_path('/thumbnails');
+
+                $img = Image::make($image->path());
+                $img->resize(110, 110, function ($const) {
+                    $const->aspectRatio();
+                })->save($filePath.'/'.$input['imagename']);
+
+                $image->move(public_path() . '/img/profiles', $input['imagename']);
             }
         }
         if (!$customer->can_login) {
@@ -255,8 +271,9 @@ class CustomerController extends Controller
             } else {
                 $password = null;
             }
+            dd($input['imagename']);
             $data = [
-                'profile' => isset($request->profile_img) ? $name : $request->oldpic,
+                'profile' => isset($request->profile_img) ? $input['imagename'] : $request->oldpic,
                 'name' => $request->name,
                 'phone' => $request->phone,
                 'email' => $request->email,
@@ -296,7 +313,7 @@ class CustomerController extends Controller
             }
         } else {
             $data = [
-                'profile' => isset($request->profile_img) ? $name : $request->oldpic,
+                'profile' => isset($request->profile_img) ? $input['imagename'] : $request->oldpic,
                 'name' => $request->name,
                 'phone' => $request->phone,
                 'region' => $request->region,

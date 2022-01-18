@@ -43,25 +43,25 @@
             $('#customer_type').on('change', function () {
                 var customer_type = $('#customer_type option:selected').val();
                 if (customer_type == "Lead") {
-                    $('#title').show();
-                    $('#priority').show();
-                    $('#tag_industry').show();
-                    $('#status').show();
-                    $('#case').hide();
+                    $('#title').show('');
+                    $('#priority').show('');
+                    $('#tag_industry').show('');
+                    $('#status').show('');
+                    $('#case').hide('');
 
                 } else if(customer_type=='In Query') {
-                    $('#title').hide();
-                    $('#priority').hide();
-                    $('#tag_industry').hide();
-                    $('#status').hide();
+                    $('#title').hide('');
+                    $('#priority').hide('');
+                    $('#tag_industry').hide('');
+                    $('#status').hide('');
                     $('#case').show('');
 
                 }else {
-                    $('#title').hide();
-                    $('#priority').hide();
-                    $('#tag_industry').hide();
-                    $('#status').hide();
-                    $('#case').hide();
+                    $('#title').hide('');
+                    $('#priority').hide('');
+                    $('#tag_industry').hide('');
+                    $('#status').hide('');
+                    $('#case').hide('');
                 }
             })
         });

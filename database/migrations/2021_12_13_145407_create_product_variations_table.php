@@ -16,17 +16,15 @@ class CreateProductVariationsTable extends Migration
         Schema::create('product_variations', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('product_id')->unsigned()->nullable();
+            $table->string('product_name');
             $table->text('description')->nullable();
-            $table->double('price')->default(0.0)->nullable();
+            $table->text('serial_no')->nullable();
             $table->double('purchase_price')->default(0.0)->nullable();
             $table->string('product_code')->nullable();
-            $table->string('barcode')->nullable();
-            $table->double('discount_rate')->nullable();
             $table->dateTime('exp_date')->nullable();
+            $table->tinyInteger('enable')->default(0);
             $table->text('image')->nullable();
-            $table->string('size')->nullable();
-            $table->string('color')->nullable();
-            $table->string('other')->nullable();
+            $table->text('variant')->nullable();
             $table->timestamps();
         });
     }

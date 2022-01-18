@@ -23,6 +23,7 @@ class CreateOrderItemsTable extends Migration
             $table->text('description')->nullable();
             $table->integer('quantity');
             $table->double('unit_price');
+            $table->bigInteger('sell_unit')->unsigned();
             $table->double("total");
             $table->bigInteger('inv_id')->unsigned()->nullable();
             $table->foreign('inv_id')->references('id')->on('invoices')->onDelete('cascade');

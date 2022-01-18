@@ -66,7 +66,7 @@ class InvoiceItemController extends Controller
 
            $variant = ProductVariations::where('id', $request->variant_id)->first();
            $items = new OrderItem();
-           $items->product_id = $request->product_id;
+           $items->product_id = $request->variant_id;
            $items->description = $variant->description;
            $items->quantity = 1;
            $items->unit_price = $variant->price ?? 0;

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSkuValuesTable extends Migration
+class CreateSellingUnitsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,15 @@ class CreateSkuValuesTable extends Migration
      */
     public function up()
     {
-        Schema::create('sku_values', function (Blueprint $table) {
+        Schema::create('selling_units', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('product_id')->unsigned();
             $table->bigInteger('variant_id')->unsigned();
-            $table->bigInteger('vaiiant_value_id')->unsigned();
-            $table->bigInteger('sku_id')->unsigned();
+            $table->string('unit');
+            $table->string('sale_type');
+            $table->double('convert_amount');
+            $table->double('price');
+            $table->double('barcode');
+            $table->tinyInteger('active')->default(1);
             $table->timestamps();
         });
     }
@@ -30,6 +33,6 @@ class CreateSkuValuesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sku_values');
+        Schema::dropIfExists('selling_units');
     }
 }

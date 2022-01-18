@@ -11,9 +11,6 @@ class Stock extends Model
     public function warehouse(){
         return $this->belongsTo(Warehouse::class,'warehouse_id','id');
     }
-    public function product(){
-        return $this->belongsTo(product::class,'product_id','id');
-    }
     public function variant(){
         return $this->belongsTo(ProductVariations::class,'variant_id','id');
     }

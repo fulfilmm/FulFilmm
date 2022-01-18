@@ -249,7 +249,7 @@
                                 <select name="[]" id="product" class="form-control select2 item_save">
                                     <option value="" selected>Select Product</option>
                                     @foreach($product as $prod)
-                                        <option value="{{$prod->id}}">{{$prod->product->name}} ({{$prod->size??''}}{{$prod->color??''}}{{$prod->other??''}})</option>
+                                        <option value="{{$prod->id}}">{{$prod->product->name}} ({{$prod->variant??''}})</option>
                                     @endforeach
                                 </select>
                             </td>

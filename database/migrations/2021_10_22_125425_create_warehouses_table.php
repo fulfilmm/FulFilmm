@@ -17,6 +17,7 @@ class CreateWarehousesTable extends Migration
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
+            $table->tinyInteger('is_virtual')->default(0);
             $table->timestamps();
         });
     }

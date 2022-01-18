@@ -34,12 +34,18 @@
                     <tr>
                         <th></th>
                         <th>Date</th>
+                        @if(isset($revenue))
                         <th>Invoice ID</th>
+                            @elseif(isset($expense))
+                            <th>Bill ID</th>
+                            @else
+                            <th>Invoice ID/Bill ID</th>
+                        @endif
                         <th>Amount</th>
                         <th>Type</th>
                         <th>Category</th>
                         <th>Account</th>
-                        <th>Description</th>
+                        <th>{{isset($revenue)?'Receiver':(isset($expense)?'Issuer':'Receiver/Issuer')}}</th>
                     </tr>
 
                     </thead>
@@ -51,12 +57,12 @@
                                 <td>
                                     <a href="{{$transaction->revenue->invoice_id==null?route('transactions.show',$transaction->id):route('invoices.show',$transaction->revenue->invoice_id)}}">{{\Carbon\Carbon::parse($transaction->revenue->transaction_date)->toFormattedDateString()}}</a>
                                 </td>
-                                <td>@php $invoice=\App\Models\Invoice::where('id',$transaction->revenue->invoice_id)->first() @endphp @if($invoice!=null) <a href="{{$transaction->revenue->invoice_id==null?route('transactions.show',$transaction->id):route('invoices.show',$transaction->revenue->invoice_id)}}">{{$invoice->invoice_id??'N/A'}}</a>@else{{$invoice->invoice_id??'N/A'}}@endif</td>
+                                <td>@foreach($invoice as $key=>$val)@if($key==$transaction->revenue->invoice_id)<a href="{{$transaction->revenue->invoice_id==null?route('transactions.show',$transaction->id):route('invoices.show',$transaction->revenue->invoice_id)}}">{{$val}}</a>@else N/A @endif @endforeach</td>
                                 <td>{{number_format($transaction->revenue->amount)}}</td>
                                 <td><span class="badge" style="background-color: #72ff9e">{{$transaction->type}}</span></td>
                                 <td>{{$transaction->revenue->category}}</td>
                                 <td>{{$transaction->account->name}}</td>
-                                <td>{!!$transaction->revenue->description!!}</td>
+                                <td>@foreach($employees as $key=>$val) {{$key==$transaction->revenue->emp_id?$val:''}}  @endforeach</td>
                             </tr>
                         @else
                             <tr>
@@ -64,11 +70,18 @@
                                 <td>
                                     <a href="{{$transaction->expense->bill_id==null?route('transactions.show',$transaction->id):route('bills.show',$transaction->expense->bill_id)}}">{{\Carbon\Carbon::parse($transaction->expense->transaction_date)->toFormattedDateString()}}</a>
                                 </td>
+                                <td>
+                                    @if($transaction->expense->bill_id!=null)
+                                        @foreach($bill as $key=>$val)@if($key==$transaction->expense->bill_id)<a href="{{$transaction->expensse->bill_id==null?route('transactions.show',$transaction->id):route('bills.show',$transaction->expense->bill_id)}}">{{$val}}</a>@endif @endforeach
+                                        @else
+                                        N/A
+                                    @endif
+                                </td>
                                 <td>{{number_format($transaction->expense->amount)}}</td>
                                 <td><span class="badge" style="background-color: #ff4969">{{$transaction->type}}</span></td>
                                 <td>{{$transaction->expense->category}}</td>
                                 <td>{{$transaction->account->name}}</td>
-                                <td>{!!  $transaction->expense->description !!}</td>
+                                <td><a href="{{route('employees.show',$transaction->expense->emp_id)}}">@foreach($employees as $key=>$val) {{$key==$transaction->expense->emp_id?$val:''}}  @endforeach </a></td>
                             </tr>
                         @endif
                     @endforeach

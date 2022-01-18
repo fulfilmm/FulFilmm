@@ -40,7 +40,7 @@
                                     {{\Carbon\Carbon::parse($transfer->created_at)->toFormattedDateString()}}
                                 </td>
                                 <td>{{$transfer->product_name}}</td>
-                                <td>{{$transfer->variant->color??''}}{{$transfer->variant->size?','.$transfer->variant->size:'' }}</td>
+                                <td>{{$transfer->variant->variant}}</td>
                                 <td>{{number_format($transfer->qty)}}</td>
                                 <td>{{$transfer->from->name}}</td>
                                 <td>{{$transfer->to->name}}</td>

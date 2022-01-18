@@ -16,6 +16,7 @@
                         @error('case_name')
                         <span class="text-danger">{{$message}}</span>
                         @enderror
+                        <input type="checkbox" class="mr-2" name="is_virtual" value="1"><label for="">Virtual Warehouse</label>
                     </div>
                     <div class="from-group">
                         <label for="desc">Description</label>

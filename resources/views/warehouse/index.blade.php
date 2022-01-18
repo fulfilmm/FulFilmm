@@ -15,7 +15,7 @@
                     </ul>
                 </div>
                 <div class="col-auto float-right ml-auto">
-                    <a href="#" class="btn add-btn"  data-toggle="modal" data-target="#stock" data-whatever="@getbootstrap"><i class="fa fa-plus"></i> Add Warehouse</a>
+                    <a href="#" class="btn add-btn btn-sm"  data-toggle="modal" data-target="#stock" data-whatever="@getbootstrap"><i class="fa fa-plus"></i> Add Warehouse</a>
                 </div>
             </div>
         </div>

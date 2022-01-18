@@ -241,6 +241,16 @@
                                                 Products</a></li>
                                         <li><a class="{{ Request::is('products/create') ? 'active' : '' }}" href="{{url('/products/create')}}" style="text-decoration: none">
                                                 Product Create</a></li>
+                                        <li><a class="{{ Request::is('product/variant/create') ? 'active' : '' }}" href="{{route('create.variant')}}" style="text-decoration: none">
+                                                Product Variant Add</a></li>
+                                    </ul>
+                                </li>
+                                <li class="submenu">
+                                    <a href="#"><i class="la la-cube mr-2" style="font-size: 18px"></i><span> Selling Unit</span> <span class="menu-arrow"></span></a>
+                                    <ul style="display: none;">
+                                        <li><a class="{{ Request::is('sellingunits') ? 'active' : '' }}" href="{{route('sellingunits.index')}}" style="text-decoration: none">All Unit</a></li>
+                                        <li><a class="{{ Request::is('sellingunits/create') ? 'active' : '' }}" href="{{route('sellingunits.create')}}" style="text-decoration: none">
+                                                Add Unit</a></li>
                                     </ul>
                                 </li>
                                 <li class="submenu">
@@ -255,13 +265,17 @@
                                 <li class="submenu">
                                     <a href="#"><i class="la la-cube mr-2" style="font-size: 18px"></i><span>Stock Transaction</span> <span class="menu-arrow"></span></a>
                                     <ul style="display: none;">
+
                                         <li><a class="{{ Request::is('stocks') ? 'active' : '' }}"
                                                href="{{ route('stocks') }}" style="text-decoration: none">Stocks</a></li>
+
                                         <li><a class="{{ Request::is('stocks/index') ? 'active' : '' }}" href="{{route('stocks.index')}}" style="text-decoration: none">Stock Transaction</a></li>
                                         <li><a class="{{ Request::is('stockin') ? 'active' : '' }}" href="{{route('showstockin')}}" style="text-decoration: none">
                                                 Stock In</a></li>
+                                        <li><a class="{{ Request::is('stockout/index') ? 'active' : '' }}"
+                                               href="{{ route('stock.out.index') }}" style="text-decoration: none">Stocks Out</a></li>
                                         <li><a class="{{ Request::is('stockout') ? 'active' : '' }}" href="{{route('showstockout')}}" style="text-decoration: none">
-                                                Stock Out</a></li>
+                                                Create Stockout</a></li>
 
                                     </ul>
                                 </li>
@@ -361,6 +375,14 @@
                                                href="{{ route('saleorders.index') }}" style="text-decoration: none">All Orders</a></li>
                                         <li><a class="{{ Request::is('saleorders/create') ? 'active' : '' }}"
                                                href="{{ route('saleorders.create') }}" style="text-decoration: none">Orders Create</a></li>
+                                    </ul>
+                                </li>
+                                <li class="submenu">
+                                    <a href="#"><i class="la la-cube mr-2" style="font-size: 18px"></i><span>Promotion and Discount</span> <span class="menu-arrow"></span></a>
+                                    <ul style="display: none;">
+                                        <li><a class="{{ Request::is('discount_promotions') ? 'active' : '' }}" href="{{route('discount_promotions.index')}}" style="text-decoration: none">All Promotion and Discount</a></li>
+                                        <li><a class="{{ Request::is('discount_promotions/create') ? 'active' : '' }}" href="{{route('discount_promotions.create')}}" style="text-decoration: none">
+                                                Add Promotion and Discount</a></li>
                                     </ul>
                                 </li>
                             </ul>

@@ -27,7 +27,10 @@ class TransactionController extends Controller
     public function index()
     {
         $transactions=Transaction::with('expense','revenue','account')->get();
-        return view('transaction.index',compact('transactions'));
+        $employees=Employee::all()->pluck('name','id')->all();
+        $invoice=Invoice::all()->pluck('invoice_id','id')->all();
+        $bill=Bill::all()->pluck('bill_id','id')->all();
+        return view('transaction.index',compact('transactions','employees','invoice','bill'));
     }
 
     /**
@@ -49,12 +52,18 @@ class TransactionController extends Controller
 
         $expense="Expense";
         $transactions=Transaction::with('expense','revenue','account')->where('type','Expense')->get();
-        return view('transaction.index',compact('transactions','expense'));
+        $employees=Employee::all()->pluck('name','id')->all();
+        $invoice=Invoice::all()->pluck('invoice_id','id')->all();
+        $bill=Bill::all()->pluck('bill_id','id')->all();
+        return view('transaction.index',compact('transactions','expense','employees','bill','invoice'));
     }
     public function revenue_index(){
         $revenue="Revenue";
         $transactions=Transaction::with('expense','revenue','account')->where('type','Revenue')->get();
-        return view('transaction.index',compact('transactions','revenue'));
+        $employees=Employee::all()->pluck('name','id')->all();
+        $invoice=Invoice::all()->pluck('invoice_id','id')->all();
+        $bill=Bill::all()->pluck('bill_id','id')->all();
+        return view('transaction.index',compact('transactions','revenue','employees','bill','invoice'));
     }
     /**
      * Store a newly created resource in storage.

@@ -49,7 +49,7 @@
                                    {{\Carbon\Carbon::parse($transaction->created_at)->toFormattedDateString()}}
                                 </td>
                                 <td>{{$transaction->product_name}}</td>
-                                <td>{{$transaction->variant->color??''}}{{$transaction->variant->size?','.$transaction->variant->size:'' }}</td>
+                                <td>{{$transaction->variant->variant??''}}</td>
                                 <td>+ {{number_format($transaction->stockin->qty)}}</td>
                                 <td><span class="badge" style="background-color: #72ff9e">Stock In</span></td>
                                 <td>{{$transaction->warehouse->name}}</td>
@@ -60,9 +60,8 @@
                                     {{\Carbon\Carbon::parse($transaction->created_at)->toFormattedDateString()}}
                                 </td>
                                 <td>{{$transaction->product_name}}</td>
-                                <td>@if($transaction->stockout->color!=null||$transaction->stockout->size!=null||$transaction->stockout->other!=null)
-                                        ({{$transaction->stockout->color??''}} {{$transaction->stockout->size??''}} {{$transaction->stockout->other??''}})
-                                    @endif
+                                <td>
+                                    {{$transaction->variant->variant??''}}
                                 </td>
                                 <td>- {{number_format($transaction->stockout->qty)}}</td>
                                 <td><span class="badge" style="background-color: #72ff9e">Stock Out</span></td>

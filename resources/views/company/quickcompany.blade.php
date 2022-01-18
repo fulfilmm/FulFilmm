@@ -69,43 +69,8 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="phone">CEO Name <span class="text-danger"> * </span></label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fa fa-user"></i></span>
-                                        </div>
-                                        <x-forms.basic.input name="company_ceo_name"
-                                                             value="{{$record->ceo_name ?? old('ceo_name')}}"
-                                                             icon="user" title="CEO Name"
-                                                             required></x-forms.basic.input>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="company_registry">Company Registry <span class="text-danger"> * </span></label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fa fa-file"></i></span>
-                                        </div>
-                                        <input type="text" id="company_registry" class="form-control"
-                                               name="company_registry"
-                                               value="{{$record->company_registry ?? old('company_registry')}}"
-                                               title="Company Registry" required>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="address">Address <span class="text-danger"> * </span></label>
-                                    <textarea name="address" id="company_address" class="form-control"
-                                              required></textarea>
-                                    @error('address')
-                                    <span role="alert">
-            <p class="text-danger mt-3 mb-0">{{ $message }}</p>
-            </span>
-                                    @enderror
+                                    <label for="address">address</label>
+                                    <input type="text" class="form-control" name="address" id="com_address">
                                 </div>
                             </div>
                         </div>
@@ -124,13 +89,10 @@
         $(document).on('click', '#new_company', function () {
 // alert('hello');
             var name = $('#company_name').val();
-
             var type = $('#business_type option:selected').val();
             var phone = $('#company_phone').val();
             var email = $('#comp_email').val();
-            var ceo_name = $('#company_ceo_name').val();
-            var company_registry = $('#company_registry').val();
-            var address = $('#company_address').val();
+            var address = $('#com_address').val();
             $.ajax({
                 type: 'POST',
                 data: {
@@ -138,8 +100,6 @@
                     business_type: type,
                     phone: phone,
                     email: email,
-                    ceo_name: ceo_name,
-                    company_registry: company_registry,
                     address: address
                 },
                 url: "{{route('companies.store')}}",
