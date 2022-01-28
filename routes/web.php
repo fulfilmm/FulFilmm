@@ -413,6 +413,8 @@ Route::get('stockout/approve/{id}',[StockTransactionController::class,'approve']
 Route::get('stock/export',[StockTransactionController::class,'export'])->name('stock.export');
 Route::get('product/price/index',[SellingUnitController::class,'price_list'])->name('add.index');
 Route::post('product/price/store',[SellingUnitController::class,'store_price'])->name('store.price');
+Route::get('product/price/delete/{id}',[SellingUnitController::class,'price_destory'])->name('sellprice.destroy');
+Route::post('product/price/update/{id}',[SellingUnitController::class,'update_price'])->name('sellprice.update');
 Route::get('retail/invoice/create',[InvoiceController::class,'retail_inv'])->name('invoice.rental');
 Route::get('foc/index',[ProductController::class,'focproduct'])->name('foc.index');
 Route::get('demage/index',[StockTransactionController::class,'damage'])->name('damage.index');

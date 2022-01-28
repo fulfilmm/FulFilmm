@@ -28,9 +28,8 @@
                     <th>Unit</th>
                     <th>Sale Price</th>
                     <th>Sale Type</th>
-                    <th>Status</th>
                     <th>Created Date</th>
-                    <th></th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -43,19 +42,78 @@
                         <td>{{$item->price}}</td>
                         <td>{{$item->sale_type}}</td>
                         <td>{{$item->created_at->toFormattedDateString()}}</td>
-                        <td>
+                        <td style="min-width: 120px;">
                             <div class="row justify-content-center">
                                 @if($item->active)
                                 <a href="{{url('price/inactive/'.$item->id)}}" class="btn btn-success btn-sm mr-1">Active</a>
                                 @else
                                     <a href="{{url('price/active/'.$item->id)}}" class="btn btn-danger btn-sm mr-1">Inactive</a>
                                     @endif
-                                <a href="{{route('sellingunits.edit',$item->id)}}" class="btn btn-success btn-sm"><i class="la la-edit"></i></a>
-                                <form action="{{route('sellingunits.destroy',$item->id)}}" method="POST">
-                                    @csrf
-                                    @method('Delete')
-                                    <button type="submit" class="btn btn-danger btn-sm"><i class="la la-trash"></i></button>
-                                </form>
+                                <a href="#" data-toggle="modal" data-target="#edit_{{$item->id}}" class="btn btn-success btn-sm"><i class="la la-edit"></i></a>
+                                    <a href="{{route('sellprice.destroy',$item->id)}}" class="btn btn-danger btn-sm"><i class="la la-trash"></i></a>
+                            </div>
+                            <div id="edit_{{$item->id}}" class="modal custom-modal fade" role="dialog">
+                                <div class="modal-dialog modal-dialog-centered modal-md">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Update New Price</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="col-12">
+                                                <form action="{{route('sellprice.update',$item->id)}}" method="POST">
+                                                    @csrf
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label for="pid">Product Name</label>
+                                                                    <select name="product_id" id="pid" onchange="giveSelection(this.value)" class="form-control select2" style="width: 100%" required>
+                                                                        @foreach($products as $pd)
+                                                                            <option value="{{$pd->id}}" {{$item->variant->id==$pd->id?'selected':''}}>{{$pd->product_name}}({{$pd->variant}})</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label for="unit_id">Unit</label>
+                                                                    <div class="input-group">
+                                                                        <select name="unit_id" id="unit_id" class="form-control" required  style="width: 100%">
+                                                                            @foreach($units as $unit)
+                                                                                <option value="{{$unit->id}}" data-option="{{$unit->variant_id}}" {{$item->unit_id==$unit->id?'selected':''}}>{{$unit->unit}}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label for="sale_type">Sale Type</label>
+                                                                    <select name="sale_type" id="sale_type" class="form-control" style="width: 100%">
+                                                                        <option value="Whole Sale" {{$item->sale_type=='Whole Sale'?'selected':''}}>Whole Sale</option>
+                                                                        <option value="Retail Sale" {{$item->sale_type=='Retail Sale'?'selected':''}}>Retail Sale</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label for="price">Unit Price</label>
+                                                                    <input type="number" class="form-control" name="price" value="{{$item->price}}" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 text-center">
+                                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </td>
                     </tr>
@@ -125,6 +183,7 @@
                     </div>
                 </div>
         </div>
+    </div>
     </div>
         <script>
             $(document).ready(function () {

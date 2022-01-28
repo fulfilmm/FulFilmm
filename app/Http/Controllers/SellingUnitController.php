@@ -135,4 +135,14 @@ class SellingUnitController extends Controller
         $price->update();
      return redirect()->back();
     }
+    public function price_destory($id){
+        $price=product_price::where('id',$id)->firstOrFail();
+        $price->delete();
+        return redirect()->back();
+    }
+    public function update_price(Request $request,$id){
+        $price=product_price::where('id',$id)->firstOrFail();
+        $price->update($request->all());
+        return redirect()->back();
+    }
 }
