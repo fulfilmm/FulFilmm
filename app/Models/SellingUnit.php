@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class SellingUnit extends Model
 {
     use HasFactory;
-    protected $fillable=['variant_id','unit','price','sale_type','barcode','active'];
+    protected $fillable=['variant_id','unit','unit_convert_rate','active'];
     public function variant(){
         return $this->belongsTo(ProductVariations::class,'variant_id','id');
     }

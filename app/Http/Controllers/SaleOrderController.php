@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account;
+use App\Models\AdvancePayment;
 use App\Models\Customer;
 use App\Models\Department;
+use App\Models\DiscountPromotion;
 use App\Models\Employee;
+use App\Models\Freeofchare;
 use App\Models\Group;
 use App\Models\MainCompany;
 use App\Models\Order;
@@ -12,9 +16,12 @@ use App\Models\order_assign;
 use App\Models\order_comments;
 use App\Models\OrderItem;
 use App\Models\product;
+use App\Models\product_price;
 use App\Models\products_tax;
 use App\Models\ProductVariations;
 use App\Models\Quotation;
+use App\Models\Stock;
+use App\Models\Warehouse;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -55,7 +62,7 @@ class SaleOrderController extends Controller
             $request_id=Session::get($Auth);
         }
 //        $generate_id=Str::uuid();
-        $items=OrderItem::with('product')->where('creation_id',$request_id)->get();
+        $items=OrderItem::with('variant')->where('creation_id',$request_id)->get();
 //        dd($orderline);
         $grand_total=0;
         for ($i=0;$i<count($items);$i++){
@@ -224,7 +231,7 @@ class SaleOrderController extends Controller
     }
     public function show($id){
         $Order=Order::with('customer','quotation','tax')->where('id',$id)->firstOrFail();
-        $items=OrderItem::with('product','invoice','variant')->where('order_id',$id)->get();
+        $items=OrderItem::with('invoice','variant')->where('order_id',$id)->get();
 //        dd($orderline);
 //        dd($items);
         $grand_total=0;
@@ -238,7 +245,10 @@ class SaleOrderController extends Controller
         $product=product::all();
         $assign_info=order_assign::with('employee','department','group')->where('order_id',$id)->first();
 //        dd($assign_info);
-        $data=['grand_total'=>$grand_total,'product'=>$product,'Order'=>$Order,'items'=>$items,'comments'=>$comments,'emp'=>$employees,'dept'=>$depts,'group'=>$groups,'assign_info'=>$assign_info];
+        $account=Account::all();
+        $advance_pay=AdvancePayment::where('order_id',$id)->first();
+
+        $data=['advance_pay'=>$advance_pay,'account'=>$account,'grand_total'=>$grand_total,'product'=>$product,'Order'=>$Order,'items'=>$items,'comments'=>$comments,'emp'=>$employees,'dept'=>$depts,'group'=>$groups,'assign_info'=>$assign_info];
         return view('saleorder.show',compact('data'));
     }
     public function destroy($id){
@@ -247,6 +257,7 @@ class SaleOrderController extends Controller
 
     public function generate_invoice($id)
     {
+        $warehouse=Warehouse::all();
         $order_data = Order::where('id', $id)->first();
         if ($order_data->status=='Confirm'){
             $ordered_items = OrderItem::where('order_id', $id)->get();
@@ -255,7 +266,6 @@ class SaleOrderController extends Controller
 
 //            dd($order_data);
                     $allcustomers = Customer::all();
-                    $products = product::with("category", "taxes")->get();
                     $Auth = Auth::guard('employee')->user()->name;
 
 //        Session::forget($Auth);
@@ -271,14 +281,19 @@ class SaleOrderController extends Controller
                         $item->update();
                     }
 //        $generate_id=Str::uuid();
-                    $orderline = OrderItem::with('product')->where('order_id', $id)->get();
+                    $orderline = OrderItem::with('variant')->where('order_id', $id)->get();
 //        dd($orderline);
                     $taxes=products_tax::all();
                     $grand_total = 0;
                     for ($i = 0; $i < count($orderline); $i++) {
                         $grand_total = $grand_total + $orderline[$i]->total;
                     }
-                    return view('invoice.create', compact('request_id', 'allcustomers', 'products', 'orderline', 'grand_total', 'order_data','taxes'));
+                    $aval_product=Stock::with('variant')->where('available','>',0)->get();
+                    $unit_price=product_price::where('sale_type','Whole Sale')->get();
+                    $dis_promo=DiscountPromotion::where('sale_type','Rental Sale')->get();
+                    $focs=Freeofchare::with('variant')->get();
+                    $type='Whole Sale';
+                    return view('invoice.create', compact('focs','unit_price','dis_promo','warehouse','aval_product','request_id', 'allcustomers', 'orderline', 'grand_total', 'order_data','taxes','type'));
 
                 }else{
                     return redirect()->back()->with('error','This order has been generated invoice');
@@ -308,7 +323,7 @@ class SaleOrderController extends Controller
         return redirect()->back();
     }
     public function status_change($status,$id){
-        $items=OrderItem::with('product','invoice')->where('order_id',$id)->get();
+        $items=OrderItem::with('variant','invoice')->where('order_id',$id)->get();
 //        dd($orderline);
         $grand_total=0;
         for ($i=0;$i<count($items);$i++){

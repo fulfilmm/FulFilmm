@@ -76,15 +76,21 @@
                                     <td style="min-width: 400px">
                                        <div class="row">
                                            <div class="col-md-2">
-                                               <img src="{{url(asset('product_picture/'.$order->variant->image))}}"  alt="" width="40px" height="40px">
+                                               @php
+                                                   $img=json_decode($order->variant->image);
+                                               @endphp
+                                               @if($img!=null)
+                                                   <img src="{{url(asset('product_picture/'.$img[0]??''))}}"
+                                                        alt="" style="max-width: 50px;max-height: 50px;">
+                                               @endif
                                            </div>
                                            <div class="col-md-10">
-                                               <h4>{{$order->product->name}}</h4>
-                                               <p>{{$order->variant->size??''}}{{$order->variant->color?','.$order->variant->color:''}}{{$order->variant->other?','.$order->variant->other:''}}</p>
+                                               <h4>{{$order->variant->product_name}}</h4>
+                                               <p>{{$order->variant->variant??''}}</p>
                                            </div>
                                        </div>
                                     </td>
-                                    <td>{{$order->description}}</td>
+                                    <td>{!! $order->description !!}</td>
                                     <td>{{$order->quantity}}</td>
                                     <td>{{$order->price}}</td>
                                     <td>{{$order->total_amount}}

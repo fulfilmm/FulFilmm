@@ -28,6 +28,7 @@ trait StockTrait
             $new_stock->stock_balance=$request['qty']??0;
             $new_stock->available=$request['qty']??0;
             $new_stock->alert_qty=$request['alert_qty']??0;
+            $new_stock->product_location=$request['product_location'];
             $new_stock->save();
         }else{
             $stock->stock_balance=$stock->stock_balance + $request['qty']??0;

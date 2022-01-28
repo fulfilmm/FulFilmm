@@ -5,14 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Company;
 use App\Models\Customer;
 use App\Models\deal;
+use App\Models\DiscountPromotion;
 use App\Models\Employee;
+use App\Models\Freeofchare;
 use App\Models\MainCompany;
 use App\Models\Orderline;
 use App\Models\product;
+use App\Models\product_price;
 use App\Models\products_tax;
 use App\Models\ProductVariations;
 use App\Models\Quotation;
 use App\Models\QuotationItem;
+use App\Models\Stock;
 use App\Repositories\Contracts\CompanyContract;
 use App\Repositories\Contracts\CustomerContract;
 use Illuminate\Http\Request;
@@ -43,7 +47,6 @@ class QuotationController extends Controller
     {
 
         $allcustomers =Customer::where('customer_type','Lead')->where('status','Qualified')->get();
-        $products =product::all();
         $variants=ProductVariations::with('product')->get();
         $taxes=products_tax::all();
         $companies = Company::all()->pluck('name', 'id');
@@ -63,12 +66,47 @@ class QuotationController extends Controller
             $grand_total = $grand_total + $orderline[$i]->total_amount;
         }
         $deals = deal::where('sale_stage', 'Qualified')->get();
-        return view("quotation.create", compact('deals', "allcustomers", "request_id", "orderline", 'grand_total', "companies", "products", 'data','variants','taxes'));
+        $unit_price=product_price::where('sale_type','Whole Sale')->get();
+        $aval_product=Stock::with('variant')->where('available','>',0)->get();
+        $dis_promo=DiscountPromotion::where('sale_type','Whole Sale')->get();
+        $focs=Freeofchare::with('variant')->get();
+        $type='Whole Sale';
+        return view("quotation.create", compact('deals','dis_promo' ,'focs',"allcustomers", "request_id", "orderline", 'grand_total', "companies", "unit_price", 'data','variants','taxes','aval_product','type'));
+    }
+    public function retailSale()
+    {
+
+        $allcustomers =Customer::where('customer_type','Lead')->where('status','Qualified')->get();
+        $variants=ProductVariations::with('product')->get();
+        $taxes=products_tax::all();
+        $companies = Company::all()->pluck('name', 'id');
+        $Auth = Auth::guard('employee')->user()->name;
+//        Session::forget($Auth);
+        $session_value = \Illuminate\Support\Str::random(10);
+        if (!Session::has($Auth)) {
+            Session::push("$Auth", $session_value);
+            $request_id = Session::get($Auth);
+        } else {
+            $request_id = Session::get($Auth);
+        }
+        $data = Session::get("quotation-" . Auth::guard('employee')->user()->id);
+        $orderline = QuotationItem::with('product','variant')->where("quotation_id", $request_id)->get();
+        $grand_total = 0;
+        for ($i = 0; $i < count($orderline); $i++) {
+            $grand_total = $grand_total + $orderline[$i]->total_amount;
+        }
+        $deals = deal::where('sale_stage', 'Qualified')->get();
+        $unit_price=product_price::where('sale_type','Retail Sale')->get();
+        $aval_product=Stock::with('variant')->where('available','>',0)->get();
+        $dis_promo=DiscountPromotion::where('sale_type','Retail Sale')->get();
+        $focs=Freeofchare::with('variant')->get();
+        $type='Retail Sale';
+        return view("quotation.create", compact('deals','dis_promo' ,'focs',"allcustomers", "request_id", "orderline", 'grand_total', "companies", "unit_price", 'data','variants','taxes','aval_product','type'));
     }
 
     public function store(Request $request)
     {
-
+//        dd($request->all());
         $this->validate($request, [
             'customer' => 'required',
             'expiration' => 'required',
@@ -112,7 +150,8 @@ class QuotationController extends Controller
         $quotation->is_confirm = isset($request->confirm) ? 1 : 0;
         $quotation->tax_id=$request->tax_id;
         $quotation->total=$request->total;
-        $quotation->tax_amount=$request->tax_amount;
+        $quotation->sale_type=$request->sale_type;
+        $quotation->tax_amount=$request->tax_amount??0;
         $quotation->discount=$request->discount;
         $quotation->save();
         if (isset($request->deal_id)) {
@@ -230,9 +269,12 @@ class QuotationController extends Controller
         $payterm = ["Immediate Payment", "15 Days", "15 Days", "30 Days", "45 Days", "2 Months",
             "End Of Following Month", "30% Now,Balance 60 Days"];
         $deals = deal::where('sale_stage', 'Qualified')->get();
-        $variants=ProductVariations::with('product')->get();
         $taxes=products_tax::all();
-        return view("quotation.edit", compact('grand_total', 'deals', "allcustomers", 'payterm', "companies", "products", "quotation", 'orderline','variants','taxes'));
+        $unit_price=product_price::where('sale_type',$quotation->sale_type)->get();
+        $aval_product=Stock::with('variant')->where('available','>',0)->get();
+        $dis_promo=DiscountPromotion::where('sale_type',$quotation->sale_type)->get();
+        $focs=Freeofchare::with('variant')->get();
+        return view("quotation.edit", compact('grand_total', 'deals', "allcustomers", 'payterm', "companies", "products", "quotation", 'orderline','unit_price','taxes','aval_product','dis_promo','focs'));
     }
 
     public function update(Request $request, $id)

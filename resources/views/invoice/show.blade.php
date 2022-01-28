@@ -136,6 +136,24 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="timeline-block"><span class="timeline-step badge-success"><i
+                                        class="la la-truck text-white"></i></span>
+                            <div class="timeline-content"><h2 class="font-weight-500">
+                                    Stock Out
+                                </h2>
+                                <small>
+                                    Status:
+                                </small>
+                                <small>
+                                    Somethings
+                                </small>
+                                <div class="mt-3">
+                                    <button id="button-stockout" class="btn btn-success btn-sm header-button-bottom" data-toggle='modal' data-target='#stockout'>
+                                        Stock Out
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -199,8 +217,9 @@
                                                         <th>#</th>
                                                         <th>ITEM</th>
                                                         <th class="d-none d-sm-table-cell">DESCRIPTION</th>
-                                                        <th>UNIT COST</th>
+                                                        <th>UNIT Price</th>
                                                         <th>QUANTITY</th>
+                                                        <th>Unit</th>
                                                         <th class="text-right">TOTAL</th>
                                                         <th></th>
                                                     </tr>
@@ -209,10 +228,11 @@
                                                     @foreach($invoic_item as $item)
                                                         <tr>
                                                             <td>{{$item->id}}</td>
-                                                            <td>{{$item->product->name}}</td>
-                                                            <td class="d-none d-sm-table-cell">{{$item->description}}</td>
+                                                            <td>{{$item->variant->product_name}}({{$item->variant->variant??''}})</td>
+                                                            <td class="d-none d-sm-table-cell">{!!$item->description !!}</td>
                                                             <td>{{$item->unit_price}}
                                                             <td>{{$item->quantity}}</td>
+                                                            <td>{{$item->unit->unit}}</td>
                                                             <td class="text-right">{{$item->total}}</td>
                                                         </tr>
                                                     @endforeach
@@ -366,7 +386,8 @@
                     @csrf
                         <div class="card-body">
                             <div class="row">
-                                <input type="hidden" name="type" value="Revenue">
+                                <input type="hidden" name="advance_id" value="{{isset($advan_pay->id)?$advan_pay->id:''}}">
+
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="date">Date</label>
@@ -399,7 +420,7 @@
                                             </div>
                                             <select name="account" id="account" class="form-control" style="width: 83%">
                                                 @foreach($data['account'] as $account)
-                                                    <option value="{{$account->id}}">{{$account->name}}</option>
+                                                    <option value="{{$account->id}}" {{$advan_pay->account_id==$account->id?'selected':""}}>{{$account->name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -418,6 +439,18 @@
                                                 @endforeach
                                             </select>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="approve">Approver</label>
+                                        <select name="approver_id" id="" class="form-control select2">
+                                           @foreach($emps as $emp)
+                                            @if($emp->department->name=='Finance Department')
+                                                <option value="{{$emp->id}}">{{$emp->name}}</option>
+                                                @endif
+                                               @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
@@ -458,6 +491,7 @@
                                                 @foreach($data['payment_method'] as $payment_method)
                                                     <option value="{{$payment_method}}">{{$payment_method}}</option>
                                                 @endforeach
+                                                    <option value="Advance Payment" {{$advan_pay!=null?'selected':''}}>Advance Payment</option>
                                             </select>
                                         </div>
                                     </div>
@@ -468,7 +502,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fa fa-file-text-o"></i></span>
                                             </div>
-                                            <input type="text" class="form-control" name="reference" id="reference">
+                                            <input type="text" class="form-control" name="reference" id="reference" value="{{$advan_pay->order->order_id}}">
                                         </div>
                                     </div>
                                 </div>
@@ -490,6 +524,108 @@
             </div>
         </div>
     </div>
+        <div class="modal fade" id="stockout" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Stock Out</h5>
+                        <button type="button" aria-hidden="true"  data-dismiss="modal" class="close">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{route('stockout')}}" method="POST">
+                            @csrf
+                            <div class="row">
+                                <input type="hidden" name="customer_id" value="{{$detail_inv->customer->id}}">
+                                <input type="hidden" name="type" value="Invoice">
+                                <input type="hidden" name="invoice_id" value="{{$detail_inv->id}}">
+                                <input type="hidden" >
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="variantion_id">Product <span class="text-danger"> * </span></label>
+                                        <select name="variantion_id" id="variant_id" class="form-control select">
+                                            @foreach($invoic_item as $item)
+                                                <option value="{{$item->variant->id}}">{{$item->variant->product_name}} ({{$item->variant->variant}})</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="emp">Employee <span class="text-danger"> * </span></label>
+                                        <select name="emp_id" id="emp" class="form-control select">
+                                            @foreach($emps as $emp)
+                                                <option value="{{$emp->id}}">{{$emp->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="approver">Approver <span class="text-danger"> * </span></label>
+                                        <select name="approver_id" id="approver" class="form-control select">
+                                            @foreach($emps as $emp)
+                                                @if($emp->role->name=='Manager')
+                                                    <option value="{{$emp->id}}">{{$emp->name}}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="warehouse">Warehouse <span class="text-danger"> * </span></label>
+                                        <input type="text" class="form-control" value="{{$detail_inv->warehouse->name}}" readonly>
+                                        <input type="hidden" name="warehouse_id" class="form-control" value="{{$detail_inv->warehouse_id}}">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <div class="form-group">
+                                        <label for="qty">Quantity <span class="text-danger"> * </span></label>
+                                        <input type="hidden" name="sell_unit" id="unit_id">
+                                        <input type="hidden" name="qty" id="real_qty">
+                                        <div class="input-group">
+                                            <input type="number" id="stockout_qty" class="form-control" value="{{old('qty')}}">
+                                                <input type="text" id="unit" class="form-control">
+                                        </div>
+                                    </div>
+                                    @error('qty')
+                                    <span class="text-danger">{{$message}}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="courier">Courier <span class="text-danger"> * </span></label>
+                                        <select name="courier_id" id="courier" class="form-control select">
+                                            <option value="">Select Courier</option>
+                                            @foreach($data['customers'] as $courier)
+                                                @if($courier->customer_type=='Courier')
+                                                <option value="{{$customer->id}}">{{$customer->name}}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="desc">Description</label>
+                                        <textarea name="description" id="desc" cols="30" rows="10" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group ">
+                                        <div class="col-12">
+                                            <button type="submit" class="btn btn-primary text-center">Stock Out</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     <div class="modal custom-modal fade" id="delete{{$detail_inv->id}}">
         <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
             <div class="modal-content">
@@ -565,8 +701,6 @@
 
             }());
 
-    </script>
-        <script>
             (function ($) {
                 $.fn.html2canvas = function (options) {
                     var date = new Date(),
@@ -626,6 +760,30 @@
                     }
                 };
             })(jQuery);
+            $(document).ready(function () {
+                var item_id=$('#variant_id option:selected').val();
+                @foreach($invoic_item as $item)
+                if(item_id=='{{$item->variant->id}}') {
+                    $('#unit').val('{{$item->unit->unit}}');
+                    $('#unit_id').val({{$item->sell_unit}});
+                    $('#stockout_qty').val({{$item->quantity}});
+                    $('#real_qty').val({{$item->quantity}});
+                }
+                @endforeach
+                $('#variant_id').on('change',function () {
+                    var item_id=$('#variant_id option:selected').val();
+                    @foreach($invoic_item as $item)
+                            if(item_id=='{{$item->variant->id}}') {
+                        $('#unit').val('{{$item->unit->unit}}');
+                        $('#unit_id').val({{$item->sell_unit}});
+                        $('#stockout_qty').val({{$item->quantity}});
+                        $('#real_qty').val({{$item->quantity}});
+                    }
+                    @endforeach
+                });
+
+
+            });
         </script>
     </div>
     </div>

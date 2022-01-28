@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EmployeeRequest;
 use App\Models\Department;
 use App\Models\Employee;
+use App\Models\OfficeBranch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
@@ -47,10 +48,12 @@ class EmployeeController extends Controller
 
         $departments = Department::all()->pluck('name', 'id');
         $roles = Role::all()->pluck('name', 'id');
+        $office=OfficeBranch::all();
 
         return view('employee.create', compact(
             'departments',
-            'roles'
+            'roles',
+            'office'
         ));
     }
 
@@ -99,6 +102,7 @@ class EmployeeController extends Controller
         $employee->empid=$employee_id;
         $employee->email=$data['email'];
         $employee->phone=$data['phone'];
+        $employee->office_branch_id=$data['office_branch_id'];
         $employee->work_phone=$data['work_phone'];
         $employee->join_date=$data['join_date'];
         $employee->password=$request->password;
@@ -136,11 +140,13 @@ class EmployeeController extends Controller
     {
         $departments = Department::all()->pluck('name', 'id');
         $roles = Role::all()->pluck('name', 'id');
+        $office=OfficeBranch::all();
 
         return view('employee.edit', compact(
             'departments',
             'roles',
-            'employee'
+            'employee',
+            'office'
         ));
     }
 
@@ -161,6 +167,7 @@ class EmployeeController extends Controller
         $employee->name=$data['name'];
         $employee->email=$data['email'];
         $employee->phone=$data['phone'];
+        $employee->office_branch_id=$request->office_branch_id;
         $employee->work_phone=$data['work_phone'];
         $employee->join_date=$data['join_date'];
         $employee->department_id=$data['department_id'];

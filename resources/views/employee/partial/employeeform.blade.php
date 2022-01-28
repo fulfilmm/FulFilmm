@@ -64,6 +64,16 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
+                        <label for="">Office</label>
+                        <select name="office_branch_id" id="" class="select form-control">
+                            @foreach($office as $item)
+                                <option value="{{$item->id}}">{{$item->name}}</option>
+                                @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
                         <label for="">Role</label>
                         <x-forms.basic.select name="role_id"
                                               title="Asssign Role"

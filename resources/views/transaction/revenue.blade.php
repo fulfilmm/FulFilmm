@@ -21,6 +21,7 @@
                 <div class="card-body">
                     <div class="row">
                         <input type="hidden" name="type" value="Revenue">
+                        <input type="hidden" name="advance_id" value="{{isset($advance)?$advance->id:''}}">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="date">Date</label>
@@ -34,7 +35,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fa fa-money"></i></span>
                                     </div>
-                                    <input type="text" class="form-control" id="amount" name="amount">
+                                    <input type="text" class="form-control" id="amount" name="amount" value="{{$advance->amount??''}}">
                                     <div class="input-group-prepend">
                                         <select name="currency" id="" class="select">
                                             <option value="MMK">MMK</option>
@@ -50,7 +51,7 @@
                                 <div class="input-group">
                                     <select name="account" id="account" class="form-control">
                                         @foreach($data['account'] as $account)
-                                            <option value="{{$account->id}}">{{$account->name}}</option>
+                                            <option value="{{$account->id}}" {{isset($advance->acount_id)?($advance->account_id==$account->id?'selected':''):''}}>{{$account->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -65,8 +66,43 @@
                                     </div>
                                     <select name="customer_id" id="customer_id" class="form-control">
                                         @foreach($data['customers'] as $customer)
-                                            <option value="{{$customer->id}}">{{$customer->name}}</option>
+                                            <option value="{{$customer->id}}" {{isset($advance->customer_id)?($advance->customer_id==$customer->id?'selected':''):''}}>{{$customer->name}}</option>
                                         @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="payment_method">Payment Method</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-credit-card"></i></span>
+                                    </div>
+                                    <select name="payment_method" id="payment_method" class="form-control " style="width: 90%">
+                                        @foreach($data['payment_method'] as $payment_method)
+                                            <option value="{{$payment_method}}">{{$payment_method}}</option>
+                                        @endforeach
+                                        <option value="Advance Payment"{{isset($advance)?'selected':''}}>Advance Payment</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="payment_method">Approver Name</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-user"></i></span>
+                                    </div>
+                                    <select name="approver_id" id="payment_method" class="form-control " style="width: 90%">
+                                        @foreach($data['emps'] as $emps)
+                                            @if($emps->department->name=='Finance Department')
+                                                <option value="{{$emps->id}}">{{$emps->name}}</option>
+                                                @endif
+                                        @endforeach
+
                                     </select>
                                 </div>
                             </div>
@@ -107,28 +143,14 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="payment_method">Payment Method</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fa fa-credit-card"></i></span>
-                                    </div>
-                                    <select name="payment_method" id="payment_method" class="form-control " style="width: 90%">
-                                        @foreach($data['payment_method'] as $payment_method)
-                                            <option value="{{$payment_method}}">{{$payment_method}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
+
+                        <div class="col-md-12">
                             <div class="form-group"><label for="reference">Reference</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fa fa-file-text-o"></i></span>
                                     </div>
-                                    <input type="text" class="form-control" name="reference" id="reference">
+                                    <input type="text" class="form-control" name="reference" id="reference" value="{{isset($advance)?$advance->order->order_id:''}}">
                                 </div>
                             </div>
                         </div>

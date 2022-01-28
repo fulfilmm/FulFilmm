@@ -32,6 +32,7 @@
                     <tr>
                         <th scope="col">Name</th>
                         <th scope="col">Description</th>
+                        <th scope="col">Address</th>
                         <th scope="col">Stock Balance</th>
                         <th scope="col">Action</th>
                     </tr>
@@ -41,6 +42,7 @@
                         <tr>
                             <td><i class="fa fa-home mr-3"></i>{{$warehouse->name}}
                             <td>{{$warehouse->description}}</td>
+                            <td>{{$warehouse->address}}</td>
                             <td>@foreach($warehouse_qty as $key=>$val)
                                     @if($key==$warehouse->id)
                                         {{$val}}

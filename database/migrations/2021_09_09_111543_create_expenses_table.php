@@ -25,6 +25,8 @@ class CreateExpensesTable extends Migration
             $table->string('category');
             $table->dateTime('transaction_date');
             $table->text('attachment')->nullable();
+            $table->tinyInteger('approve')->default(0);
+            $table->bigInteger('approver_id')->unsigned();
             $table->bigInteger('emp_id');
             $table->string('currency');
             $table->timestamps();

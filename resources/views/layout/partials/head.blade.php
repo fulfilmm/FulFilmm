@@ -45,13 +45,14 @@
 
         <link rel="stylesheet" href="{{url(asset('css/jquery_ui.css'))}}">
         <link rel="stylesheet" href="{{url(asset('css/jquery.datetimepicker.css'))}}">
+        <link rel="stylesheet" href="{{url(asset('css/exportcss/buttons.dataTables.min.css'))}}">
+
         {{--<!-- Main CSS -->--}}
         @php
             $active_theme=\App\Models\ThemeSetting::where('active',1)->first();
         @endphp
         <link rel="stylesheet" href="{{url(asset("css/theme/$active_theme->link"))}}">
         <script src="{{url(asset("js/jquery-3.2.1.min.js"))}}"></script>
-        {{--<script src="https://cdn.ckeditor.com/ckeditor5/22.0.0/classic/ckeditor.js"></script>--}}
         <script src="{{asset('/js/ckeditor.js')}}"></script>
         <script src="{{url(asset('js/http_cdnjs.cloudflare.com_ajax_libs_Chart.js_2.7.3_Chart.js'))}}"></script>
 
@@ -67,66 +68,66 @@
         {{--</style>--}}
         <script type="text/javascript" src="{{url(asset('js/barcodegenerator/jquery-barcode.js'))}}"></script>
         <script type="text/javascript" src="{{url(asset('js/barcodegenerator/jquery-barcode.min.js'))}}"></script>
-        <script type="text/javascript">
+        {{--<script type="text/javascript">--}}
 
-            function generateBarcode(){
-                var value =$('#product_code').val();
-                var btype ='std25';
-                var renderer ='css';
+            {{--function generateBarcode(){--}}
+                {{--var value =$('#product_code').val();--}}
+                {{--var btype ='std25';--}}
+                {{--var renderer ='css';--}}
 
 
-                var settings = {
-                    output:renderer,
-                    bgColor: '#FFFFFF',
-                    color: '#000000',
-                    barWidth: '1',
-                    barHeight: '50',
-                    moduleSize: '5',
-                    posX: '10',
-                    posY: '20',
-                    addQuietZone: '1'
-                };
+                {{--var settings = {--}}
+                    {{--output:renderer,--}}
+                    {{--bgColor: '#FFFFFF',--}}
+                    {{--color: '#000000',--}}
+                    {{--barWidth: '1',--}}
+                    {{--barHeight: '50',--}}
+                    {{--moduleSize: '5',--}}
+                    {{--posX: '10',--}}
+                    {{--posY: '20',--}}
+                    {{--addQuietZone: '1'--}}
+                {{--};--}}
 
-                if (renderer == 'canvas'){
-                    clearCanvas();
-                    $("#barcodeTarget").hide();
-                    $("#canvasTarget").show().barcode(value, btype, settings);
-                } else {
-                    $("#canvasTarget").hide();
-                    $("#barcodeTarget").html("").show().barcode(value, btype, settings);
-                }
-            }
+                {{--if (renderer == 'canvas'){--}}
+                    {{--clearCanvas();--}}
+                    {{--$("#barcodeTarget").hide();--}}
+                    {{--$("#canvasTarget").show().barcode(value, btype, settings);--}}
+                {{--} else {--}}
+                    {{--$("#canvasTarget").hide();--}}
+                    {{--$("#barcodeTarget").html("").show().barcode(value, btype, settings);--}}
+                {{--}--}}
+            {{--}--}}
 
-            function showConfig1D(){
-                $('.config .barcode1D').show();
-                $('.config .barcode2D').hide();
-            }
+            {{--function showConfig1D(){--}}
+                {{--$('.config .barcode1D').show();--}}
+                {{--$('.config .barcode2D').hide();--}}
+            {{--}--}}
 
-            function showConfig2D(){
-                $('.config .barcode1D').hide();
-                $('.config .barcode2D').show();
-            }
+            {{--function showConfig2D(){--}}
+                {{--$('.config .barcode1D').hide();--}}
+                {{--$('.config .barcode2D').show();--}}
+            {{--}--}}
 
-            function clearCanvas(){
-                var canvas = $('#canvasTarget').get(0);
-                var ctx = canvas.getContext('2d');
-                ctx.lineWidth = 1;
-                ctx.lineCap = 'butt';
-                ctx.fillStyle = '#FFFFFF';
-                ctx.strokeStyle  = '#000000';
-                ctx.clearRect (0, 0, canvas.width, canvas.height);
-                ctx.strokeRect (0, 0, canvas.width, canvas.height);
-            }
+            {{--function clearCanvas(){--}}
+                {{--var canvas = $('#canvasTarget').get(0);--}}
+                {{--var ctx = canvas.getContext('2d');--}}
+                {{--ctx.lineWidth = 1;--}}
+                {{--ctx.lineCap = 'butt';--}}
+                {{--ctx.fillStyle = '#FFFFFF';--}}
+                {{--ctx.strokeStyle  = '#000000';--}}
+                {{--ctx.clearRect (0, 0, canvas.width, canvas.height);--}}
+                {{--ctx.strokeRect (0, 0, canvas.width, canvas.height);--}}
+            {{--}--}}
 
-            $(function(){
-                $('input[name=btype]').click(function(){
-                    if ($(this).attr('id') == 'datamatrix') showConfig2D(); else showConfig1D();
-                });
-                $('input[name=renderer]').click(function(){
-                    if ($(this).attr('id') == 'canvas') $('#miscCanvas').show(); else $('#miscCanvas').hide();
-                });
-                generateBarcode();
-            });
+            {{--$(function(){--}}
+                {{--$('input[name=btype]').click(function(){--}}
+                    {{--if ($(this).attr('id') == 'datamatrix') showConfig2D(); else showConfig1D();--}}
+                {{--});--}}
+                {{--$('input[name=renderer]').click(function(){--}}
+                    {{--if ($(this).attr('id') == 'canvas') $('#miscCanvas').show(); else $('#miscCanvas').hide();--}}
+                {{--});--}}
+                {{--generateBarcode();--}}
+            {{--});--}}
 
-        </script>
+        {{--</script>--}}
     </head>

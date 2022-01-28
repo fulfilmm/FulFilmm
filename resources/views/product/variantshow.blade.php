@@ -25,10 +25,9 @@
                    <div class="col-md-6">
                        <div class="col-md-12 mt-3">
                            <div class="row">
-                               <div class="col-md-4">Barcode</div>
+                               <div class="col-md-4 text-muted">Product Code</div>
                                <div class="col-md-8">
-                                   <div id="barcodeTarget" class="barcodeTarget"></div>
-                                   <canvas id="canvasTarget" width="100" height="50"></canvas>
+                                  : <strong>{{$product->product_code}}</strong>
                                </div>
                            </div>
                        </div>
@@ -44,7 +43,7 @@
                        </div>
                        <div class="col-12 my-1">
                            <div class="row">
-                               <span class="text-muted col-md-4">Main Category</span><span class="col-md-8">: {{$product->product->category->name}}</span>
+                               <span class="text-muted col-md-4">Main Category</span><span class="col-md-8">: {{$product->product->category->name??'N/A'}}</span>
                            </div>
                        </div>
                        <div class="col-12 my-1">
@@ -71,7 +70,7 @@
                       @foreach($selling_info as $item)
                        <div class="col-12 my-1">
                            <div class="row">
-                               <span class="text-muted col-md-6">{{$item->sale_type}}({{$item->unit}})</span><span class="col-md-6">: {{$item->price??'N/A'}} MMK</span>
+                               <span class="text-muted col-md-6">{{$item->sale_type}}({{$item->unit->unit}})</span><span class="col-md-6">: {{$item->price??'N/A'}} MMK</span>
                            </div>
                        </div>
                           @endforeach
@@ -93,9 +92,11 @@
                 <div class="col-12 my-3">
                     <h5>Images</h5>
                     <div class="row my-1">
-                        @foreach(json_decode($product->image) as $image)
-                            <img src="{{url(asset('/product_picture/'.$image))}}" alt="" class="border mr-2 ml-2" style="max-height:200px;max-width:100%;border: solid">
-                        @endforeach
+                       @if($product->image!=null)
+                            @foreach(json_decode($product->image) as $image)
+                                <img src="{{url(asset('/product_picture/'.$image))}}" alt="" class="border mr-2 ml-2" style="max-height:200px;max-width:100%;border: solid">
+                            @endforeach
+                           @endif
                     </div>
                 </div>
 

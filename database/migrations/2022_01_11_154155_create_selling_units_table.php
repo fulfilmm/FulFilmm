@@ -17,10 +17,7 @@ class CreateSellingUnitsTable extends Migration
             $table->id();
             $table->bigInteger('variant_id')->unsigned();
             $table->string('unit');
-            $table->string('sale_type');
-            $table->double('convert_amount');
-            $table->double('price');
-            $table->double('barcode');
+            $table->double('unit_convert_rate');
             $table->tinyInteger('active')->default(1);
             $table->timestamps();
         });

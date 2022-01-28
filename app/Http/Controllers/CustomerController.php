@@ -13,6 +13,7 @@ use App\Models\Invoice;
 use App\Models\lead_comment;
 use App\Models\lead_follower;
 use App\Models\next_plan;
+use App\Models\OrderItem;
 use App\Models\Quotation;
 use App\Models\SalePipelineRecord;
 use App\Models\tags_industry;
@@ -24,6 +25,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -177,8 +179,9 @@ class CustomerController extends Controller
      */
     public function show($id)
     {
+        $customer = Customer::with('company')->where('id', $id)->firstOrFail();
         $assign_ticket = assign_ticket::with('agent', 'dept')->get();
-        $customer = Customer::with('company')->where('id', $id)->first();
+
         $ticket_history = ticket_sender::where('customer_id', $id)->first();
 
         if ($ticket_history == null) {
@@ -189,15 +192,17 @@ class CustomerController extends Controller
         $customer_invoice = Invoice::where('customer_id', $id)->get();
         $customer_deal = deal::with("customer_company", "customer", "employee")->where('contact', $id)->get();
         $customer_quotation = Quotation::where('customer_name', $customer->id)->get();
+        $grand_total = DB::table("invoices")
+            ->select(DB::raw("SUM(grand_total) as total"))
+            ->where('customer_id',$id)
+            ->get();
         $paid_total = 0;
         $overdue = 0;
         $open_unpaid = 0;
         foreach ($customer_invoice as $invoice) {
             if ($invoice->status == 'Paid') {
                 $paid_total = $paid_total + $invoice->grand_total;
-            } elseif ($invoice->status == 'Unpaid' && Carbon::parse($invoice->due_date) > Carbon::now()) {
-                $overdue = $overdue + $invoice->grand_total;
-            } elseif ($invoice->status == 'Unpaid') {
+            } else{
                 $open_unpaid = $open_unpaid + $invoice->grand_total;
             }
         }
@@ -212,13 +217,21 @@ class CustomerController extends Controller
             'paid_total' => $paid_total,
             'overdue' => $overdue,
             'open' => $open_unpaid,
-            'activity_schedule' => $next_plan
+            'activity_schedule' => $next_plan,
+            'total_sale'=>$grand_total[0]->total
         ];
         $comments = lead_comment::with("user")->where("contact_id", $id)->get();
         $followers = lead_follower::with("user")->where("contact_id", $id)->get();
         $allemps = Employee::all()->pluck('name', 'id')->all();
         $status_color = ['New' => '#49d1b6', 'Open' => '#e84351', 'Close' => '#4e5450', 'Pending' => '#f0ed4f', 'In Progress' => '#2333e8', 'Complete' => '#18b820', 'Overdue' => '#000'];
-        return view('customer.show', compact('data', 'assign_ticket', 'status_color', 'comments', 'followers', 'allemps'));
+      $items=[];
+        foreach ($customer_invoice as $item){
+            $order_item=OrderItem::with('variant','invoice','unit')->where('inv_id',$item->id)->get();
+            foreach ($order_item as $inv_item){
+                array_push($items,$inv_item);
+            }
+        }
+        return view('customer.show', compact('data', 'assign_ticket', 'status_color', 'comments', 'followers', 'allemps','items'));
     }
 
     /**
@@ -271,7 +284,6 @@ class CustomerController extends Controller
             } else {
                 $password = null;
             }
-            dd($input['imagename']);
             $data = [
                 'profile' => isset($request->profile_img) ? $input['imagename'] : $request->oldpic,
                 'name' => $request->name,

@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Jobs\ProductJob;
 use App\Models\Customer;
+use App\Models\Freeofchare;
 use App\Models\product;
+use App\Models\product_price;
 use App\Models\products_category;
 use App\Models\products_tax;
 use App\Models\ProductVariations;
@@ -129,7 +131,7 @@ class ProductController extends Controller
     public function show_variant($id){
         $product=ProductVariations::with('product')->where('id',$id)->firstOrFail();
         $stock=Stock::with('warehouse')->where('variant_id',$id)->get();
-        $selling_info=SellingUnit::where('variant_id',$id)->get();
+        $selling_info=product_price::with('unit')->where('product_id',$id)->get();
         return view('product.variantshow',compact('product','stock','selling_info'));
 
     }
@@ -186,68 +188,29 @@ class ProductController extends Controller
 //        dd($request->all());
         $product=product::where("id",$id)->firstOrFail();
         $product->name=$request->name;
-        $product->tax=$request->tax;
-        $product->currency_unit=$request->unit;
         $product->description=$request->detail;
-        $product->cat_id=$request->cat_id;
         $product->model_no=$request->model_no;
-        $product->serial_no=$request->serial_no;
-        $product->sku=$request->sku;
-        $product->part_no=$request->part_no;
-        $product->unit=$request->unit;
-        $product->stock_type=$request->stock_type;
-        if(isset($request->enable))
-        {
-            $product->enable=1;
-        }else{
-            $product->enable=0;
-        }
-        $product->update();
-        for ($i=0;$i<count($request->field_count);$i++) {
-//            dd($request->variant_id[$i]);
-            $is_exit =ProductVariations::where('id', $request->variant_id[$i])->first();
-//            dd($is_exit);
-            if ($is_exit == null) {
-                $variation = new ProductVariations();
-                $image = $request->picture[$i]??null;
-                if ($image != null) {
-                    $name = $image->getClientOriginalName();
-                    $request->picture[$i]->move(public_path() . '/product_picture/', $name);
-                    $variation->image = $name;
-                }
-                $variation->product_id = $product->id;
-                $variation->description = $request->description[$i];
-                $variation->price = $request->price[$i];
-                $variation->purchase_price = $request->purchase_price[$i];
-//           $variation->barcode=$request->barcode[$i];
-                $variation->discount_rate = $request->discount_rate[$i];
-                $variation->size = $request->size[$i];
-                $variation->color = $request->color[$i];
-                $variation->other = $request->other[$i];
-                $variation->exp_date = Carbon::create($request->exp_date[$i]);
-                $variation->save();
-            } else {
-                $variation=ProductVariations::where('id', $request->variant_id[$i])->first();
-//                dd($request->all());
-                $image = $request->picture[$i]??null;
-                if ($image != null) {
-                    $name = $image->getClientOriginalName();
-                    $request->picture[$i]->move(public_path() . '/product_picture/', $name);
-                    $variation->image = $name;
-                }
-                $variation->product_id = $product->id;
-                $variation->description = $request->description[$i];
-                $variation->price = $request->price[$i];
-                $variation->purchase_price = $request->purchase_price[$i];
-//           $variation->barcode=$request->barcode[$i];
-                $variation->discount_rate = $request->discount_rate[$i];
-                $variation->size = $request->size[$i];
-                $variation->color = $request->color[$i];
-                $variation->other = $request->other[$i];
-                $variation->exp_date = Carbon::create($request->exp_date[$i]);
-                $variation->update();
+        $product->cat_id=$request->mian_cat;
+        $product->sub_cat_id=$request->sub_cat;
+        $product->brand_id=$request->brand_id;
+        if (isset($request->picture)) {
+//            if ($request->picture != null) {
+            foreach ($request->file('picture') as $image) {
+                $input['imagename'] =\Illuminate\Support\Str::random(10).time().'.'.$image->extension();
+
+                $filePath = public_path('/product_picture/');
+
+                $img = Image::make($image->path());
+                $img->resize(400, 800, function ($const) {
+                    $const->aspectRatio();
+                })->save($filePath.'/'.$input['imagename']);
+                $data[] = $input['imagename'];
+
             }
+            $product->image=json_encode($data);
         }
+
+        $product->update();
         return redirect("/products")->with("message","Product Updated Success");
     }
 
@@ -351,5 +314,9 @@ class ProductController extends Controller
         }elseif ($request->action_Type="Export"){
 
         }
+    }
+    public function focproduct(){
+        $foc=Freeofchare::with('emp','variant')->get();
+        return view('product.foc',compact('foc'));
     }
 }

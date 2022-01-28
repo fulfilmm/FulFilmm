@@ -133,27 +133,22 @@
                             <input type="hidden" id="creation_id" value="{{$data['id'][0]}}">
                             <div class="table-responsive">
                                 @if(!isset($order_data))
-                                    <div class="row my-3">
-                                        <div class="col-md-5 col-5">
-                                            <select name="" id="product" class="form-control" onchange="giveSelection(this.value)">
-                                                <option value="">Select Product</option>
-                                                @foreach($data['products'] as $product)
-                                                    <option value="{{$product->id}}">{{$product->name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="col-md-5 col-5">
-                                            <select name="" id="variant" class="form-control">
-                                                <option value="">Select Variant</option>
-                                                @foreach($data['variants'] as $variant)
-                                                    <option value="{{$variant->id}}" data-option="{{$variant->product_id}}">{{$variant->size??''}}{{$variant->color?','.$variant->color:''}}{{$variant->other?','.$variant->other:''}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="col-2">
-                                            <button class="btn btn-primary" id="add_item">Add</button>
-                                        </div>
-                                    </div>
+                                   <div class="col-12">
+                                       <div class="row my-3">
+                                           <div class="input-group col-md-6 col-6">
+                                               <select name="" id="variant" class="form-control">
+                                                   <option value="">Select Variant</option>
+                                                   @foreach($data['variants'] as $variant)
+                                                       <option value="{{$variant->id}}" data-option="{{$variant->product_id}}">{{$variant->product_name}} ({{$variant->variant??''}})</option>
+                                                   @endforeach
+                                               </select>
+
+                                           <div class="input-group-prepend">
+                                               <button class="btn btn-primary" id="add_item">Add</button>
+                                           </div>
+                                           </div>
+                                       </div>
+                                   </div>
                                 @endif
                                 <table class="table table-hover table-white" id="order_table">
                                     <thead>
@@ -175,11 +170,11 @@
                                                     </div>
                                                     <div class="col-8">
                                                         <div>
-                                                            <span class="font-weight-bold">{{$order->product->name}}</span>
+                                                            <span class="font-weight-bold">{{$order->variant->product_name}}</span>
                                                         </div>
                                                         <p class="m-0 mt-1">
-                                                            {{$order->variant->description}}
-                                                            {{$order->variant->size??''}} {{$order->variant->color??''}} {{$order->variant->other??''}}
+                                                            {!! $order->variant->description !!}
+                                                            {{$order->variant->variant??''}}
                                                         </p>
                                                         <p>
 
@@ -244,6 +239,7 @@
                                                             $('#grand_total').val(grand_total);
                                                             // $("#order_table").load(location.href + " #order_table>* ");
                                                             $("#grand_total_div").load(location.href + " #grand_total_div>* ");
+                                                            $("#total_div").load(location.href + " #total_div>* ");
 
                                                         }
                                                     });
@@ -263,7 +259,7 @@
                                     <tr>
                                         <td colspan="2"></td>
                                         <th colspan="2" class="text-right"><span class="mt-5">Total</span></th>
-                                        <td id="" colspan="2"><input class="form-control" type="text" id="total" value="{{$data['grand_total']}}">
+                                        <td id="total_div" colspan="2"><input class="form-control" type="text" id="total" value="{{$data['grand_total']}}">
                                         </td>
                                     </tr>
                                     <tr>

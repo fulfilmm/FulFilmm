@@ -23,7 +23,7 @@
                            <div class="col-md-6">
                                <div class="form-group">
                                    <label for="warehouse">Product</label>
-                                   <select name="product_id" id="warehouse" class="form-control">
+                                   <select name="product_id" id="product_id" class="form-control">
                                        @foreach($products as $product)
                                            <option value="{{$product->id}}">{{$product->product_name}}({{$product->variant}})
                                            </option>
@@ -53,6 +53,12 @@
                            </div>
                            <div class="col-md-6">
                                <div class="form-group">
+                                   <label for="loca">Location</label>
+                                   <input type="text" class="form-control" name="product_location" placeholder="Enter product location in warehouse">
+                               </div>
+                           </div>
+                           <div class="col-md-6">
+                               <div class="form-group">
                                    <label for="">Quantity</label>
                                    <input type="number" name="qty" class="form-control">
                                </div>
@@ -68,4 +74,9 @@
            </div>
        </div>
     </div>
+    <script>
+       $(document).ready(function () {
+           $('select').select2();
+       });
+    </script>
 @endsection

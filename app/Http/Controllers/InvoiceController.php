@@ -3,13 +3,18 @@
 namespace App\Http\Controllers;
 use App\Jobs\leadactivityschedulemail;
 use App\Models\Account;
+use App\Models\AdvancePayment;
 use App\Models\Customer;
+use App\Models\DiscountPromotion;
+use App\Models\Employee;
+use App\Models\Freeofchare;
 use App\Models\Invoice;
 use App\Models\InvoiceHistory;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\MainCompany;
 use App\Models\product;
+use App\Models\product_price;
 use App\Models\products_tax;
 use App\Models\ProductVariations;
 use App\Models\Revenue;
@@ -17,6 +22,7 @@ use App\Models\SellingUnit;
 use App\Models\Stock;
 use App\Models\Transaction;
 use App\Models\TransactionCategory;
+use App\Models\Warehouse;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -45,7 +51,36 @@ class InvoiceController extends Controller
     public function create()
     {
         $allcustomers =Customer::where('customer_type','Lead')->where('status','Qualified')->get();
-        $variants=ProductVariations::with('product')->get();
+        $taxes=products_tax::all();
+        $Auth=Auth::guard('employee')->user()->name;
+        $data=Session::get('data-'.Auth::guard('employee')->user()->id);
+//        dd($data);
+        $session_value=\Illuminate\Support\Str::random(10);
+        if(!Session::has($Auth)){
+            Session::push("$Auth",$session_value);
+            $request_id=Session::get($Auth);
+        }else{
+            $request_id=Session::get($Auth);
+        }
+        $orderline=OrderItem::with('variant')->where('creation_id',$request_id)->get();
+//        dd($orderline);
+        $grand_total=0;
+        for ($i=0;$i<count($orderline);$i++){
+            $grand_total=$grand_total+$orderline[$i]->total;
+        }
+        $status=$this->status;
+        $unit_price=product_price::where('sale_type','Whole Sale')->get();
+        $dis_promo=DiscountPromotion::where('sale_type','Whole Sale')->get();
+        $focs=Freeofchare::with('variant')->get();
+        $type='Whole Sale';
+        $warehouse=Warehouse::all();
+        $aval_product=Stock::with('variant')->where('available','>',0)->get();
+        return view('invoice.create',compact('warehouse','type','request_id','allcustomers','orderline','grand_total','status','data','aval_product','taxes','unit_price','dis_promo','focs'));
+    }
+    public function retail_inv()
+    {
+        $allcustomers =Customer::where('customer_type','Lead')->where('status','Qualified')->get();
+        $aval_product=Stock::with('variant')->where('available','>',0)->get();
 //        foreach ($pd as $product){
 //
 //            if($pd!=null){
@@ -69,15 +104,19 @@ class InvoiceController extends Controller
             $request_id=Session::get($Auth);
         }
 //        $generate_id=Str::uuid();
-        $orderline=OrderItem::with('product','variant')->where('creation_id',$request_id)->get();
+        $orderline=OrderItem::with('variant')->where('creation_id',$request_id)->get();
 //        dd($orderline);
         $grand_total=0;
         for ($i=0;$i<count($orderline);$i++){
             $grand_total=$grand_total+$orderline[$i]->total;
         }
         $status=$this->status;
-        $unit_price=SellingUnit::all();
-        return view('invoice.create',compact('request_id','allcustomers','orderline','grand_total','status','data','variants','taxes','unit_price'));
+        $unit_price=product_price::where('sale_type','Rental Sale')->get();
+        $dis_promo=DiscountPromotion::where('sale_type','Rental Sale')->get();
+        $focs=Freeofchare::with('variant')->get();
+        $type='Retail Sale';
+        $warehouse=Warehouse::all();
+        return view('invoice.create',compact('warehouse','request_id','allcustomers','orderline','grand_total','status','data','aval_product','taxes','unit_price','dis_promo','focs','type'));
     }
 
     /**
@@ -147,6 +186,8 @@ class InvoiceController extends Controller
         $newInvoice->invoice_type=$request->invoice_type;
         $newInvoice->delivery_fee=$request->delivery_fee;
         $newInvoice->due_amount=$request->inv_grand_total;
+        $newInvoice->warehouse_id=$request->warehouse_id;
+        $newInvoice->inv_type=$request->inv_type;
         $newInvoice->emp_id=Auth::guard('employee')->user()->id;
         $Auth=Auth::guard('employee')->user()->name;
         $request_id=Session::get($Auth);
@@ -154,10 +195,11 @@ class InvoiceController extends Controller
         if(count($confirm_order_item)!=0){
             $newInvoice->save();
         foreach ($confirm_order_item as $item){
-            $stock=Stock::where('variant_id',$item->variant_id)->first();
+            $unit=SellingUnit::where('id',$item->sell_unit)->first();
+            $stock=Stock::where('variant_id',$item->variant_id)->where('warehouse_id',$request->warehouse_id)->first();
             $item->inv_id=$newInvoice->id;
             $item->update();
-            $stock->available=$stock->available-$item->quantity;
+            $stock->available=$stock->available-($item->quantity*$unit->unit_convert_rate);
             $stock->update();
         }
         if(isset($request->order_id)){
@@ -214,7 +256,7 @@ class InvoiceController extends Controller
     {
         $company=MainCompany::where('ismaincompany',true)->first();
         $detail_inv=Invoice::with('customer','employee','tax','order')->where('id',$id)->firstOrFail();
-        $invoic_item=OrderItem::with('product')->where("inv_id",$detail_inv->id)->get();
+        $invoic_item=OrderItem::with('variant','unit')->where("inv_id",$detail_inv->id)->get();
         $account=Account::where('enabled',1)->get();
         $recurring=['No','Daily','Weekly','Monthly','Yearly'];
         $payment_method=['Cash','eBanking','WaveMoney','KBZ Pay'];
@@ -250,10 +292,13 @@ class InvoiceController extends Controller
             $this->add_history($id,'Draft','Change Status '.$detail_inv->invoice_id);
         }
         $transaction_amount=0;
-        $customer=Customer::orWhere('customer_type','Customer')->orWhere('customer_type','Lead')->orWhere('customer_type','Partner')->orWhere('customer_type','Inquery')->get();
+//        $customer=Customer::orWhere('customer_type','Customer')->orWhere('customer_type','Lead')->orWhere('customer_type','Partner')->orWhere('customer_type','Inquery')->get();
+            $customer=Customer::all();
+        $emps = Employee::all();
+        $advan_pay=AdvancePayment::with('order')->where('order_id',$detail_inv->order_id)->first();
         $data=['transaction'=>$transaction,'customers'=>$customer,'account'=>$account,'recurring'=>$recurring,'payment_method'=>$payment_method,'category'=>$category];
 
-        return view('invoice.show',compact('detail_inv','invoic_item','company','data','transaction_amount','history'));
+        return view('invoice.show',compact('detail_inv','advan_pay','invoic_item','company','data','transaction_amount','history','emps'));
     }
 
     /**

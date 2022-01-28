@@ -32,7 +32,6 @@
                 <table class="table " id="transaction">
                     <thead>
                     <tr>
-                        <th></th>
                         <th>Date</th>
                         @if(isset($revenue))
                         <th>Invoice ID</th>
@@ -45,7 +44,10 @@
                         <th>Type</th>
                         <th>Category</th>
                         <th>Account</th>
+                        <th>Approve</th>
+                        <th>Approver Name</th>
                         <th>{{isset($revenue)?'Receiver':(isset($expense)?'Issuer':'Receiver/Issuer')}}</th>
+                        <th>Action</th>
                     </tr>
 
                     </thead>
@@ -53,22 +55,32 @@
                     @foreach($transactions as $transaction)
                         @if($transaction->type=='Revenue')
                             <tr>
-                                <td><input type="checkbox" name="check"></td>
                                 <td>
-                                    <a href="{{$transaction->revenue->invoice_id==null?route('transactions.show',$transaction->id):route('invoices.show',$transaction->revenue->invoice_id)}}">{{\Carbon\Carbon::parse($transaction->revenue->transaction_date)->toFormattedDateString()}}</a>
+                                    <a href="{{route('transactions.show',$transaction->id)}}">{{\Carbon\Carbon::parse($transaction->revenue->transaction_date)->toFormattedDateString()}}</a>
                                 </td>
-                                <td>@foreach($invoice as $key=>$val)@if($key==$transaction->revenue->invoice_id)<a href="{{$transaction->revenue->invoice_id==null?route('transactions.show',$transaction->id):route('invoices.show',$transaction->revenue->invoice_id)}}">{{$val}}</a>@else N/A @endif @endforeach</td>
+                                <td>@if($transaction->revenue->invoice_id!=null)@foreach($invoice as $key=>$val)@if($key==$transaction->revenue->invoice_id)<a href="{{$transaction->revenue->invoice_id==null?route('transactions.show',$transaction->id):route('invoices.show',$transaction->revenue->invoice_id)}}">{{$val}}</a> @endif @endforeach @else N/A @endif</td>
                                 <td>{{number_format($transaction->revenue->amount)}}</td>
-                                <td><span class="badge" style="background-color: #72ff9e">{{$transaction->type}}</span></td>
+                                <td>{{$transaction->type}}</td>
                                 <td>{{$transaction->revenue->category}}</td>
                                 <td>{{$transaction->account->name}}</td>
+                                <td>
+                                    @if($transaction->revenue->approve==0)
+                                        <a href="{{url('transaction/approve/'.$transaction->revenue->id.'/Revenue')}}" class="btn btn-white btn-white btn-sm">Approve</a>
+                                    @else
+                                        <button type="button" class="btn btn-success btn-sm disabled">Approved</button>
+                                    @endif
+                                   </td>
+                                <td>@foreach($employees as $key=>$val) {{$key==$transaction->revenue->approver_id?$val:''}}  @endforeach</td>
                                 <td>@foreach($employees as $key=>$val) {{$key==$transaction->revenue->emp_id?$val:''}}  @endforeach</td>
+                            <td>
+                                <a href="{{$transaction->revenue->invoice_id==null?route('transactions.show',$transaction->id):route('invoices.show',$transaction->revenue->invoice_id)}}" class="btn btn-white btn-sm"><i class="la la-eye"></i></a>
+
+                            </td>
                             </tr>
                         @else
                             <tr>
-                                <td><input type="checkbox" name="check"></td>
                                 <td>
-                                    <a href="{{$transaction->expense->bill_id==null?route('transactions.show',$transaction->id):route('bills.show',$transaction->expense->bill_id)}}">{{\Carbon\Carbon::parse($transaction->expense->transaction_date)->toFormattedDateString()}}</a>
+                                    <a href="{{route('transactions.show',$transaction->id)}}">{{\Carbon\Carbon::parse($transaction->expense->transaction_date)->toFormattedDateString()}}</a>
                                 </td>
                                 <td>
                                     @if($transaction->expense->bill_id!=null)
@@ -81,7 +93,20 @@
                                 <td><span class="badge" style="background-color: #ff4969">{{$transaction->type}}</span></td>
                                 <td>{{$transaction->expense->category}}</td>
                                 <td>{{$transaction->account->name}}</td>
-                                <td><a href="{{route('employees.show',$transaction->expense->emp_id)}}">@foreach($employees as $key=>$val) {{$key==$transaction->expense->emp_id?$val:''}}  @endforeach </a></td>
+                                <td>
+                                    @if($transaction->expense->approve==0)
+                                    <a href="{{url('transaction/approve/'.$transaction->expense->id.'/Expense')}}" class="btn btn-white btn-white btn-sm ">Approve</a>
+                                @else
+                                        <button type="button" class="btn btn-success btn-sm disabled">Approved</button>
+                                    @endif
+                                </td>
+                                <td>@foreach($employees as $key=>$val) {{$key==$transaction->expense->approver_id?$val:''}}  @endforeach</td>
+                                <td>
+                                    <a href="{{route('employees.show',$transaction->expense->emp_id)}}">@foreach($employees as $key=>$val) {{$key==$transaction->expense->emp_id?$val:''}}  @endforeach </a>
+                                </td>
+                                <td>
+                                    <a href="{{$transaction->expense->invoice_id==null?route('transactions.show',$transaction->id):route('invoices.show',$transaction->expense->invoice_id)}}" class="btn btn-white btn-sm"><i class="la la-eye"></i></a>
+                                </td>
                             </tr>
                         @endif
                     @endforeach

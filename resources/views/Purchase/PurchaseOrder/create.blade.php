@@ -82,6 +82,7 @@
                         <th scope="col">Description</th>
                         <th>Quantity</th>
                         <th>Price</th>
+                        <th>Unit</th>
                         <th>Total</th>
                         <th>Action</th>
                         </thead>
@@ -382,7 +383,8 @@
                     type:type,
                     vendor_ref:vendor_ref,
                     received_date:received_date,
-                    source:source
+                    source:source,
+                    unit:'Unit'
 
                 },
                 type: 'POST',

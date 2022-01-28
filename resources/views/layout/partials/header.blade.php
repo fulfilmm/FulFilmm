@@ -3,7 +3,8 @@
     <!-- Logo -->
     <div class="header-left">
         <a href="{{url('companysettings/create')}}" class="logo">
-            <img src="{{$maincompany!=null ? url(asset('/img/profiles/'.$maincompany->logo)): url(asset('/img/profiles/avatar-01.jpg'))}}" width="40" height="40" alt="">
+            <img src="{{$maincompany!=null ? url(asset('/img/profiles/'.$maincompany->logo)): url(asset('/img/profiles/avatar-01.jpg'))}}"
+                 width="40" height="40" alt="">
         </a>
     </div>
     <!-- /Logo -->
@@ -23,44 +24,35 @@
     <!-- /Header Title -->
 
     <a id="mobile_btn" class="mobile_btn" href="#sidebar"><i class="fa fa-bars"></i></a>
-
     <!-- Header Menu -->
     <ul class="nav user-menu">
 
         <!-- Search -->
-    {{-- <li class="nav-item">
-        <div class="top-nav-search">
-            <a href="javascript:void(0);" class="responsive-search">
-                <i class="fa fa-search"></i>
-           </a>
-            <form action="search">
-                <input class="form-control" type="text" placeholder="Search here">
-                <button class="btn" type="submit"><i class="fa fa-search"></i></button>
-            </form>
-        </div>
-    </li> --}}
-    <!-- /Search -->
+        <li class="nav-item">
+          @yield('search')
+        </li>
+        <!-- /Search -->
 
         <!-- Flag -->
-    {{-- <li class="nav-item dropdown has-arrow flag-nav">
-        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button">
-            <img src="img/flags/us.png" alt="" height="20"> <span>English</span>
-        </a>
-        <div class="dropdown-menu dropdown-menu-right">
-            <a href="javascript:void(0);" class="dropdown-item">
-                <img src="img/flags/us.png" alt="" height="16"> English
-            </a>
-            <a href="javascript:void(0);" class="dropdown-item">
-                <img src="img/flags/fr.png" alt="" height="16"> French
-            </a>
-            <a href="javascript:void(0);" class="dropdown-item">
-                <img src="img/flags/es.png" alt="" height="16"> Spanish
-            </a>
-            <a href="javascript:void(0);" class="dropdown-item">
-                <img src="img/flags/de.png" alt="" height="16"> German
-            </a>
-        </div>
-    </li> --}}
+    {{-- <li class="nav-item dropdown has-arrow flag-nav">--}}
+    {{--<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button">--}}
+    {{--<img src="img/flags/us.png" alt="" height="20"> <span>English</span>--}}
+    {{--</a>--}}
+    {{--<div class="dropdown-menu dropdown-menu-right">--}}
+    {{--<a href="javascript:void(0);" class="dropdown-item">--}}
+    {{--<img src="img/flags/us.png" alt="" height="16"> English--}}
+    {{--</a>--}}
+    {{--<a href="javascript:void(0);" class="dropdown-item">--}}
+    {{--<img src="img/flags/fr.png" alt="" height="16"> French--}}
+    {{--</a>--}}
+    {{--<a href="javascript:void(0);" class="dropdown-item">--}}
+    {{--<img src="img/flags/es.png" alt="" height="16"> Spanish--}}
+    {{--</a>--}}
+    {{--<a href="javascript:void(0);" class="dropdown-item">--}}
+    {{--<img src="img/flags/de.png" alt="" height="16"> German--}}
+    {{--</a>--}}
+    {{--</div>--}}
+    {{--</li> --}}
     <!-- /Flag -->
         @php $notifications=\App\Models\Notification::with('notify_user','notifier')->where('notify_user_id',\Illuminate\Support\Facades\Auth::guard('employee')->user()->id)->where('read_at',null)->get();
         @endphp
@@ -80,8 +72,10 @@
                                 <a href="{{route('notifications.show',$alert->uuid)}}">
                                     <div class="media">
                                         <div class="media-body">
-                                            <p class="noti-details">{{$alert->notifier->name??\Illuminate\Support\Facades\Auth::guard('employee')->user()->name}}<span class="noti-title"> {{$alert->message}}</span></p>
-                                            <p class="noti-time"><span class="notification-time">{{\Carbon\Carbon::parse($alert->created_at)->toFormattedDateString()}} at {{date('h:i a', strtotime(\Carbon\Carbon::parse($alert->created_at)))}}</span></p>
+                                            <p class="noti-details">{{$alert->notifier->name??\Illuminate\Support\Facades\Auth::guard('employee')->user()->name}}
+                                                <span class="noti-title"> {{$alert->message}}</span></p>
+                                            <p class="noti-time"><span class="notification-time">{{\Carbon\Carbon::parse($alert->created_at)->toFormattedDateString()}} at {{date('h:i a', strtotime(\Carbon\Carbon::parse($alert->created_at)))}}</span>
+                                            </p>
                                         </div>
                                     </div>
                                 </a>
@@ -287,25 +281,30 @@
     <!-- /Message Notifications -->
 
         <li class="nav-item dropdown has-arrow main-drop">
-            <a href="#" class="{{\Illuminate\Support\Facades\Auth::guard('employee')->check()?'dropdown-toggle':''}} nav-link" data-toggle="dropdown">
-                       @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
-                    <span class="user-img"><img src="{{\Illuminate\Support\Facades\Auth::guard('employee')->user()->profile_img?asset('img/profiles/'.\Illuminate\Support\Facades\Auth::guard('employee')->user()->profile_img):url(asset('img/profiles/avatar-21.jpg'))}}" alt="" width="30px" height="30px;">
+            <a href="#"
+               class="{{\Illuminate\Support\Facades\Auth::guard('employee')->check()?'dropdown-toggle':''}} nav-link"
+               data-toggle="dropdown">
+                @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
+                    <span class="user-img"><img
+                                src="{{\Illuminate\Support\Facades\Auth::guard('employee')->user()->profile_img?asset('img/profiles/'.\Illuminate\Support\Facades\Auth::guard('employee')->user()->profile_img):url(asset('img/profiles/avatar-21.jpg'))}}"
+                                alt="" width="30px" height="30px;">
                         <span class="status online"></span></span>
-                           @endif
+                @endif
                 <span>{{\Illuminate\Support\Facades\Auth::guard('employee')->user()->name ?? \Illuminate\Support\Facades\Auth::guard('customer')->user()->name}}</span>
             </a>
             <div class="dropdown-menu">
                 {{-- <a class="dropdown-item" href="profile">My Profile</a>--}}
                 @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
-                <a class="dropdown-item" href="{{route('employees.show',\Illuminate\Support\Facades\Auth::guard('employee')->user()->id)}}">Profile</a>
-                <a class="dropdown-item" href="{{route('password.edit')}}">Change Password</a>
+                    <a class="dropdown-item"
+                       href="{{route('employees.show',\Illuminate\Support\Facades\Auth::guard('employee')->user()->id)}}">Profile</a>
+                    <a class="dropdown-item" href="{{route('password.edit')}}">Change Password</a>
 
-                <form id="logout-form" action="{{ route('employees.logout') }}" method="POST">
-                    @csrf
-                    <button class="dropdown-item"> Logout</button>
+                    <form id="logout-form" action="{{ route('employees.logout') }}" method="POST">
+                        @csrf
+                        <button class="dropdown-item"> Logout</button>
 
-                </form>
-                    @else
+                    </form>
+                @else
                     <form id="logout-form" action="{{ route('customers.logout') }}" method="POST">
                         @csrf
                         <button class="dropdown-item"> Logout</button>
@@ -319,15 +318,15 @@
     <!-- /Header Menu -->
 
     <!-- Mobile Menu -->
-    {{--<div class="dropdown mobile-user-menu">--}}
-        {{--<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i--}}
-                {{--class="fa fa-ellipsis-v"></i></a>--}}
-        {{--<div class="dropdown-menu dropdown-menu-right">--}}
-            {{--<a class="dropdown-item" href="">My Profile</a>--}}
-            {{--<a class="dropdown-item" href="">Settings</a>--}}
-            {{--<a class="dropdown-item" href="">Logout</a>--}}
-        {{--</div>--}}
-    {{--</div>--}}
-    <!-- /Mobile Menu -->
+{{--<div class="dropdown mobile-user-menu">--}}
+{{--<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i--}}
+{{--class="fa fa-ellipsis-v"></i></a>--}}
+{{--<div class="dropdown-menu dropdown-menu-right">--}}
+{{--<a class="dropdown-item" href="">My Profile</a>--}}
+{{--<a class="dropdown-item" href="">Settings</a>--}}
+{{--<a class="dropdown-item" href="">Logout</a>--}}
+{{--</div>--}}
+{{--</div>--}}
+<!-- /Mobile Menu -->
 
 </div>

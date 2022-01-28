@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\product;
+use App\Models\product_price;
 use App\Models\ProductVariations;
+use App\Models\SellingUnit;
 use App\Models\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -36,63 +38,102 @@ class InvoiceItemController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
+//        dd($request->all());
 //        $stock=Stock::where('variant_id',$request->variant_id)->first();
 //       if($stock->available > 0 ) {
-           $Auth = Auth::guard('employee')->user()->id;
-           if ($request->type == 'invoice') {
-               if (!Session::has("data-" . $Auth)) {
-                   Session::push("data-" . $Auth, $request->all());
-               }
+        $variant = ProductVariations::where('id', $request->variant_id)->first();
+        $sale_unit = SellingUnit::where('variant_id', $request->variant_id)->where('unit_convert_rate', 1)->first();
+        $Auth = Auth::guard('employee')->user()->id;
+        if ($request->type == 'invoice') {
+            if (!Session::has("data-" . $Auth)) {
+                Session::push("data-" . $Auth, $request->all());
+            }
 //            dd('invoice');
-           } else if ($request->type == 'order') {
-               if (Auth::guard('customer')->check()) {
+        } else if ($request->type == 'order') {
+            if (Auth::guard('customer')->check()) {
 //                dd('customer');
-                   $customer = Auth::guard('customer')->user()->id;
-                   if (!Session::has("order-" . $customer)) {
-                       Session::push("order-" . $customer, $request->all());
-                   }
-               } else {
-//                dd('employee');
-                   if (!Session::has("order-" . $Auth)) {
-                       Session::push("order-" . $Auth, $request->all());
-                   }
-               }
-           }
+                $customer = Auth::guard('customer')->user()->id;
+                if (!Session::has("order-" . $customer)) {
+                    Session::push("order-" . $customer, $request->all());
 
-           $variant = ProductVariations::where('id', $request->variant_id)->first();
-           $items = new OrderItem();
-           $items->product_id = $request->variant_id;
-           $items->description = $variant->description;
-           $items->quantity = 1;
-           $items->unit_price = $variant->price ?? 0;
-           $items->variant_id = $request->variant_id;
-           $items->total = $variant->price ?? 0;
-           $items->creation_id = $request->invoice_id;
-           $items->order_id = $request->order_id ?? null;
-           $items->state = 1;
-           $items->save();
+                }
+            } else {
+//                dd($request->all());
+                if (!Session::has("order-" . $Auth)) {
+
+                    Session::push("order-" . $Auth, $request->all());
+                }
+
+                    $items = new OrderItem();
+                    $items->description =$variant->description;
+                    $items->quantity = 1;
+                    $items->variant_id = $request->variant_id;
+                    $items->unit_price = 0;
+                    $items->total = 0;
+                    $items->creation_id = $request->invoice_id;
+                    $items->order_id = $request->order_id ?? null;
+                    $items->state = 0;
+
+                    $items->save();
+
+            }
+        }
+
+
+
+        if (isset($request->foc)) {
+            $items = new OrderItem();
+            $items->description = 'This is FOC item';
+            $items->quantity = 1;
+            $items->variant_id = $request->variant_id;
+            $items->unit_price = 0;
+            $items->total = 0;
+            $items->creation_id = $request->invoice_id;
+            $items->order_id = $request->order_id ?? null;
+            $items->state = 1;
+            $items->foc=true;
+            $items->save();
+            return response()->json([
+                'Message' => 'Success'
+            ]);
+        }else{
+            $price = product_price::where('sale_type',$request->inv_type)->where('product_id', $request->variant_id)->first();
+            if($price != null){
+            $items = new OrderItem();
+            $items->description =$variant->description;
+            $items->quantity = 1;
+            $items->variant_id = $request->variant_id;
+            $items->sell_unit = $sale_unit->id;
+            $items->unit_price = $variant->price ?? 0;
+            $items->total = $variant->price ?? 0;
+            $items->sell_unit = $sale_unit->id;
+            $items->creation_id = $request->invoice_id;
+            $items->order_id = $request->order_id ?? null;
+            $items->state = 1;
+            $items->save();
 //        if($request->order_id!=null){
 //            $order=Order::where('id',$request->order_id)->first();
 //            $order->total_amount=$request->grand_total+$product->sale_price;
 //            $order->update();
 //        }
-           return response()->json([
-               'Message' => 'Success'
-           ]);
-//       }else{
-//           return response()->json(['Error' => 'This product is Out of Stock']);
-//       }
+            return response()->json([
+                'Message' => 'Success'
+            ]);
+        }else {
+                return response()->json(['Error' => 'This product is does not fixed price']);
+            }
+        }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -103,7 +144,7 @@ class InvoiceItemController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -114,18 +155,19 @@ class InvoiceItemController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
 //        dd($request->all());
-        $items=OrderItem::where('id',$id)->first();
-        $items->product_id=$request->product_id;
-        $items->quantity=$request->quantity;
-        $items->unit_price=$request->unit_price;
-        $items->total=$request->total;
+        $items = OrderItem::where('id', $id)->first();
+        $items->quantity = $request->quantity;
+        $items->unit_price = $request->unit_price;
+        $items->total = $request->total;
+        $items->sell_unit = $request->sell_unit;
+        $items->discount_promotion = $request->discount_pro;
         $items->update();
 //        if($items->order_id!=null){
 //            $order=Order::where('id',$items->order_id)->first();
@@ -133,20 +175,20 @@ class InvoiceItemController extends Controller
 //            $order->update();
 //        }
         return response()->json([
-            'Message'=>'Success'
+            'Message' => 'Success'
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request,$id)
+    public function destroy(Request $request, $id)
     {
-        $invoice_item=OrderItem::where('id',$id)->first();
+        $invoice_item = OrderItem::where('id', $id)->first();
         $invoice_item->delete();
-        return response()->json(['Delete'=>"Delete Success"]);
+        return response()->json(['Delete' => "Delete Success"]);
     }
 }

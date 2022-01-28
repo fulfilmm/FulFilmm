@@ -9,7 +9,7 @@
         <div class="page-header">
             <div class="row">
                 <div class="col-sm-12">
-                    <h3 class="page-title">Deal Add</h3>
+                    <h3 class="page-title">Deal Add</h3> working
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url("home")}}">Dashboard</a></li>
                         <li class="breadcrumb-item active"><a href="{{url("/deal")}}">Deal</a></li>

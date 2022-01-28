@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\product_price;
 use App\Models\ProductVariations;
 use App\Models\SellingUnit;
 use Illuminate\Http\Request;
@@ -38,7 +39,12 @@ class SellingUnitController extends Controller
      */
     public function store(Request $request)
     {
-        SellingUnit::create($request->all());
+        foreach ($request->variant_id as $p_id){
+            $data['variant_id']=$p_id;
+            $data['unit']=$request->unit;
+            $data['unit_convert_rate']=$request->unit_convert_rate;
+            SellingUnit::create($data);
+        }
         return redirect(route('sellingunits.index'));
     }
 
@@ -77,8 +83,7 @@ class SellingUnitController extends Controller
     {
         $unit=SellingUnit::where('id',$id)->first();
         $unit->unit=$request->unit;
-        $unit->price=$request->price;
-        $unit->sale_type=$request->sale_type;
+        $unit->unit_convert_rate=$request->unit_convert_rate;
         $unit->variant_id=$request->variant_id;
         $unit->update();
         return redirect(route('sellingunits.index'));
@@ -95,5 +100,39 @@ class SellingUnitController extends Controller
         $unit=SellingUnit::where('id',$id)->firstOrFail();
         $unit->delete();
         return redirect(route('sellingunits.index'));
+    }
+    public function price_list(){
+//        dd('je;p');
+        $units=SellingUnit::all();
+        $products=ProductVariations::all();
+        $price_lists=product_price::with('unit','variant')->get();
+        return view('sale.sellingunit.price',compact('units','products','price_lists'));
+    }
+    public function store_price(Request $request){
+        $this->validate($request,[
+           'product_id'=>'required',
+           'unit_id'=>'required',
+           'sale_type'=>'required',
+            'price'=>'required'
+        ]);
+        $exist_price=product_price::where('product_id',$request->product_id)->where('unit_id',$request->unit_id)->where('active',1)->first();
+        if($exist_price==null) {
+            product_price::create($request->all());
+        }else{
+            $exist_price->active=0;
+            $exist_price->update();
+            product_price::create($request->all());
+        }
+        return redirect()->back();
+    }
+    public function price_active($status,$id){
+        $price=product_price::where('id',$id)->firstOrFail();
+     if($status=='active'){
+         $price->active=1;
+     }else{
+         $price->active=0;
+     }
+        $price->update();
+     return redirect()->back();
     }
 }

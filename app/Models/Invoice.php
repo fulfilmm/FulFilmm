@@ -20,4 +20,7 @@ class Invoice extends Model
     public function order(){
         return $this->belongsTo(Order::class,'order_id','id');
     }
+    public function warehouse(){
+        return $this->belongsTo(Warehouse::class,'warehouse_id','id');
+    }
 }

@@ -34,7 +34,7 @@
         var tax=$('#tax option:selected').val();
         @foreach($data['taxes'] as $tax)
         if(tax=="{{$tax->id}}")
-            var tax_rate={{$tax->rate}};
+            var tax_rate='{{$tax->rate}}';
                 @endforeach
 
         var total = $('#total').val();
@@ -49,7 +49,7 @@
         var tax=$('#tax option:selected').val();
         @foreach($data['taxes'] as $tax)
         if(tax=="{{$tax->id}}")
-            var tax_rate={{$tax->rate}};
+            var tax_rate='{{$tax->rate}}';
                 @endforeach
 
         var total = $('#total').val();
@@ -189,18 +189,4 @@
             });
         });
     });
-    var product = document.querySelector('#product');
-    var variant = document.querySelector('#variant');
-    var options2 = variant.querySelectorAll('option');
-    // alert(product)
-    function giveSelection(selValue) {
-        variant.innerHTML = '';
-        for(var i = 0; i < options2.length; i++) {
-            if(options2[i].dataset.option === selValue) {
-                variant.appendChild(options2[i]);
-            }
-        }
-    }
-
-    giveSelection(product.value);
 </script>

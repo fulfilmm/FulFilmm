@@ -11,4 +11,10 @@ class Expense extends Model
     public function supplier(){
         return $this->belongsTo(Customer::class,'vendor_id','id');
     }
+    public function approver(){
+        return $this->belongsTo(Employee::class,'approver_id','id');
+    }
+    public function employee(){
+        return $this->belongsTo(Employee::class,'emp_id','id');
+    }
 }

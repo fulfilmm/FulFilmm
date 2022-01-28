@@ -123,7 +123,9 @@
                                 <tr>
                                     <th>Product</th>
                                     <th>Demand</th>
+                                    <th>Demand Unit</th>
                                     <th>Done</th>
+                                    <th>Default Unit</th>
                                     <th>Warehouse</th>
                                 </tr>
                                 </thead>
@@ -147,7 +149,7 @@
                                                 <input type="number" name="demand[]" class="form-control"
                                                        value="{{$item->demand}}"></td>
                                         @endif
-
+                                        <td>{{$item->unit}}</td>
                                         <td>
                                             @if($receipt->is_validate==1)
                                                 {{$item->qty}}
@@ -157,6 +159,7 @@
 
                                         @endif
                                         </td>
+                                        <td>Default Unit</td>
                                         <td>
                                             @if($receipt->is_validate==1)
                                                 {{$item->warehouse->name??''}}

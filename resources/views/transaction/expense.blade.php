@@ -87,6 +87,38 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="payment_method">Payment Method</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-credit-card"></i></span>
+                                    </div>
+                                    <select name="payment_method" id="payment_method" class="form-control ">
+                                        @foreach($data['payment_method'] as $payment_method)
+                                            <option value="{{$payment_method}}">{{$payment_method}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="payment_method">Approver Name</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-credit-card"></i></span>
+                                    </div>
+                                    <select name="approver_id" id="payment_method" class="form-control ">
+                                        @foreach($data['emps'] as $emps)
+                                            @if($emps->department->name=='Finance Department')
+                                            <option value="{{$emps->id}}">{{$emps->name}}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="revenue_description">Description</label>

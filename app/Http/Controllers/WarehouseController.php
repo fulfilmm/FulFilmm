@@ -87,9 +87,12 @@ class WarehouseController extends Controller
      */
     public function update(Request $request, $id)
     {
+//        dd($request->all());
         $stocks=Warehouse::where('id',$id)->firstorFail();
         $stocks->name=$request->name;
         $stocks->description=$request->description;
+        $stocks->is_virtual=$request->is_virtual??0;
+        $stocks->address=$request->address;
         $stocks->update();
         return redirect()->back();
     }

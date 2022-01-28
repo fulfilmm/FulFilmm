@@ -21,12 +21,10 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th>Barcode</th>
                    <th>Product Code</th>
                     <th>Product Name</th>
-                    <th>Sale Type</th>
                     <th>Unit</th>
-                    <th>Price</th>
+                    <th>Unit Convert Rate</th>
                     <th>Created Date</th>
                     <th></th>
                 </tr>
@@ -34,58 +32,10 @@
                 <tbody>
                     @foreach($sellingunits as $item)
                         <tr>
-                            <td>
-                                <div id="barcodeTarget" class="barcodeTarget"></div>
-                                <canvas id="canvasTarget" width="100" height="50"></canvas>
-                                <script>
-                                        $(document).ready(function () {
-                                            var pcode='{{$item->barcode}}';
-                                            $("#p_code").val(pcode);
-                                            var btype ="std25";
-                                            var renderer ="css";
-                                            var value=pcode;
-
-
-                                            var settings = {
-                                                output:renderer,
-                                                bgColor: '#FFFFFF',
-                                                color: '#000000',
-                                                barWidth: '1',
-                                                barHeight: '20',
-                                                moduleSize: '5',
-                                                posX: '10',
-                                                posY: '20',
-                                                addQuietZone: '1'
-                                            };
-
-                                            if (renderer == 'canvas'){
-                                                clearCanvas();
-                                                $("#barcodeTarget").hide();
-                                                $("#canvasTarget").show().barcode(value, btype, settings);
-                                            } else {
-                                                $("#canvasTarget").hide();
-                                                $("#barcodeTarget").html("").show().barcode(value, btype, settings);
-                                            }
-
-
-                                            function clearCanvas(){
-                                                var canvas = $('#canvasTarget').get(0);
-                                                var ctx = canvas.getContext('2d');
-                                                ctx.lineWidth = 1;
-                                                ctx.lineCap = 'butt';
-                                                ctx.fillStyle = '#FFFFFF';
-                                                ctx.strokeStyle  = '#000000';
-                                                ctx.clearRect (0, 0, canvas.width, canvas.height);
-                                                ctx.strokeRect (0, 0, canvas.width, canvas.height);
-                                            }
-                                        });
-                                </script>
-                            </td>
                             <td><strong>{{$item->variant->product_code}}</strong></td>
-                            <td>{{$item->variant->product_name}}</td>
-                            <td>{{$item->sale_type}}</td>
+                            <td>{{$item->variant->product_name}}({{$item->variant->variant}})</td>
                             <td>{{$item->unit}}</td>
-                            <td>{{$item->price}}</td>
+                            <td>{{$item->unit_convert_rate}}</td>
                             <td>{{$item->created_at->toFormattedDateString()}}</td>
                             <td>
                                 <div class="row justify-content-center">

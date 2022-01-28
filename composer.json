@@ -21,7 +21,9 @@
         "livewire/livewire": "^2.3",
         "maatwebsite/excel": "^3.1",
         "spatie/laravel-permission": "^4.0",
-        "tymon/jwt-auth": "^1.0"
+        "tymon/jwt-auth": "^1.0",
+        "yajra/laravel-datatables": "^1.5",
+        "yajra/laravel-datatables-oracle": "~9.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

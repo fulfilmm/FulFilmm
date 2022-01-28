@@ -270,6 +270,7 @@ class PurchaseOrderController extends Controller
               $recipt_item->variant_id=$item->variant_id;
               $recipt_item->demand=$item->qty;
               $recipt_item->po_id=$po->id;
+              $recipt_item->unit='Default';
               $recipt_item->receipt_id=$product_receive->id;
               $recipt_item->price=$item->price;
               $recipt_item->save();

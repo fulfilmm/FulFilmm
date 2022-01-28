@@ -84,11 +84,23 @@
                 <div class="col-md-4 mb-3">
                     <div class="form-group">
                         <label for="qty">Quantity <span class="text-danger"> * </span></label>
-                        <input type="number" id="qty" name="qty" class="form-control" value="{{old('qty')}}">
+                        <div class="input-group">
+                            <input type="number" id="qty" name="qty" class="form-control" value="{{old('qty')}}">
+                        </div>
                     </div>
                     @error('qty')
                     <span class="text-danger">{{$message}}</span>
                     @enderror
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="form-group">
+                        <label for="unit">Unit</label>
+                        <select name="sell_unit" id="" class="form-control select col-4">
+                            @foreach($units as $unit)
+                                <option value="{{$unit->id}}" {{$unit->unit_convert_rate==1?'selected':''}}>{{$unit->unit}}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\AdvancePaymentController;
 use App\Http\Controllers\ApprovalController;
 use App\Http\Controllers\Auth\Login\CustomerAuth;
 use App\Http\Controllers\BillController;
@@ -20,6 +21,7 @@ use App\Http\Controllers\InvoiceItemController;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\MinutesController;
+use App\Http\Controllers\OfficeBranchController;
 use App\Http\Controllers\OrderlineController;
 use App\Http\Controllers\PriorityController;
 use App\Http\Controllers\ProductController;
@@ -34,6 +36,7 @@ use App\Http\Controllers\RFQItemController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\SaleActivityController;
 use App\Http\Controllers\SaleOrderController;
+use App\Http\Controllers\SaleReportController;
 use App\Http\Controllers\SaleTargetController;
 use App\Http\Controllers\SellingUnitController;
 use App\Http\Controllers\StockTransactionController;
@@ -408,3 +411,28 @@ Route::get('stockout/index',[StockTransactionController::class,'stockoutindex'])
 Route::get('stockout/show/{id}',[StockTransactionController::class,'show_stockout'])->name('stockout.show');
 Route::get('stockout/approve/{id}',[StockTransactionController::class,'approve'])->name('stockout.approve');
 Route::get('stock/export',[StockTransactionController::class,'export'])->name('stock.export');
+Route::get('product/price/index',[SellingUnitController::class,'price_list'])->name('add.index');
+Route::post('product/price/store',[SellingUnitController::class,'store_price'])->name('store.price');
+Route::get('retail/invoice/create',[InvoiceController::class,'retail_inv'])->name('invoice.rental');
+Route::get('foc/index',[ProductController::class,'focproduct'])->name('foc.index');
+Route::get('demage/index',[StockTransactionController::class,'damage'])->name('damage.index');
+Route::post('stock/update/{p_id}',[StockTransactionController::class,'update'])->name('stock.update');
+Route::get('stock/update/history/{id}',[StockTransactionController::class,'history'])->name('update.history');
+Route::get('stock/transaction/search',[StockTransactionController::class,'stockfilter'])->name('stock.search');
+Route::get('price/{status}/{id}',[SellingUnitController::class,'price_active'])->name('price.active');
+Route::get('selling/report',[SaleReportController::class,'sale_report'])->name('sale.report');
+Route::resource('advancepayments',AdvancePaymentController::class);
+Route::resource('officebranch',OfficeBranchController::class);
+Route::get('transaction/approve/{id}/{type}',[TransactionController::class,'account_update'])->name('transaction.approve');
+Route::get('advance/make/transaction/{id}',[AdvancePaymentController::class,'maketransaction'])->name('advance.maketransaction');
+
+
+
+//Report route
+ Route::get('stock/in/report',[ReportController::class,'stockin'])->name('report.stockin');
+ Route::get('stock/out/report',[ReportController::class,'stockout'])->name('report.stockout');
+ Route::get('daily/income/report',[ReportController::class,'todayincome'])->name('report.income');
+ Route::get('daily/expense/report',[ReportController::class,'expense_report'])->name('report.expense');
+ Route::get('daily/stock/report',[ReportController::class,'stock_report'])->name('report.stock');
+ Route::get('reports',[ReportController::class,'reportpage'])->name('reports');
+ Route::get('retail/sale/quotation',[QuotationController::class,'retailSale'])->name('quotations.retail');

@@ -18,9 +18,13 @@
                         @enderror
                         <input type="checkbox" class="mr-2" name="is_virtual" value="1"><label for="">Virtual Warehouse</label>
                     </div>
-                    <div class="from-group">
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <input type="text" class="form-control" id="address" name="address" placeholder="Enter Address">
+                    </div>
+                    <div class="from-group mb-2">
                         <label for="desc">Description</label>
-                        <textarea name="description" id="desc" cols="30" class="form-control"  rows="10"></textarea>
+                        <textarea name="description" id="desc" cols="30" class="form-control"  rows="5"></textarea>
                     </div>
                     <button type="submit" class="btn btn-success float-right mr-2">Save</button>
                     <button type="button" class="btn btn-danger float-right mr-2" data-dismiss="modal">Close</button>

@@ -124,6 +124,30 @@
                                     </tr>
                                     <tr>
                                         <td class="p-0">
+                                            <p class="mb-0 text-muted">Total Sale</p>
+                                        </td>
+                                        <td>
+                                            <p class="mb-0 ">{{$data['total_sale']}}</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-0">
+                                            <p class="mb-0 text-muted">Paid</p>
+                                        </td>
+                                        <td>
+                                            <p class="mb-0 ">{{$data['paid_total']}}</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-0">
+                                            <p class="mb-0 text-muted">Debt</p>
+                                        </td>
+                                        <td>
+                                            <p class="mb-0 ">{{$data['open']}}</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-0">
                                             <p class="mb-0 text-muted">Total ticket</p>
                                         </td>
                                         <td>
@@ -174,6 +198,7 @@
                             @endif
                             <li class="pb-2 mb-0 nav-item"><a data-toggle="tab" class="font-weight-bold text-uppercase px-5 py-2" {{$data['customer']->status=='Qualified' && $data['customer']->customer_type=='Lead'?'':'active'}} href="#activity">Activity Schedule</a></li>
                             <li class="pb-2 mb-0 nav-item"><a data-toggle="tab" class="font-weight-bold text-uppercase px-5 py-2" href="#comment">Notes</a></li>
+                                <li class="pb-2 mb-0 nav-item"><a data-toggle="tab" class="font-weight-bold text-uppercase px-5 py-2" href="#item_sale">Item Amount</a></li>
                         </ul>
                         <div class="tab-content col-12" >
                             <div id="invoice" class="tab-pane fade show {{$data['customer']->status=='Qualified' && $data['customer']->customer_type=='Lead'?'active':''}} ">
@@ -299,6 +324,42 @@
                                     </form>
                                 </div>
                             </div>
+                            <div id="item_sale" class="tab-pane fade ">
+                                <div class="d-flex justify-content-between align-items-center p-3">
+                                    <h5>Item List</h5>
+                                </div>
+                                <div class="table-responsive" style="overflow: auto">
+                                    <table class="table" >
+                                        <thead class="table-color-heading">
+                                        <tr class="text-muted">
+                                            <th style="min-width: 150px;">Date </th>
+                                            <th scope="col" style="min-width: 120px;">Invoice ID</th>
+                                            <th scope="col" style="min-width: 120px;">Product Code</th>
+                                            <th scope="col" style="min-width: 150px;">Product Name</th>
+                                            <th scope="col">Quantity</th>
+                                            <th scope="col" style="min-width: 120px;">Unit</th>
+                                            <th scope="col" style="min-width: 120px;">Unit Price</th>
+                                            <th scope="col" class="text-right" style="min-width: 120px;">Total</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($items as $item)
+                                            <tr>
+                                                <td style="min-width: 100px;">{{$item->created_at->toFormattedDateString()}}</td>
+                                                <td>{{$item->invoice->invoice_id}}</td>
+                                                <td>{{$item->variant->product_code}}</td>
+                                                <td>{{$item->variant->product_name}}</td>
+                                                <td>{{$item->quantity}}</td>
+                                                <td>{{$item->unit->unit}}</td>
+                                                <td>{{$item->unit_price}}</td>
+                                                <td>{{$item->total}}</td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>

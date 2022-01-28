@@ -17,7 +17,6 @@ class CreateFreeofcharesTable extends Migration
             $table->id();
             $table->bigInteger('variant_id')->unsigned();
             $table->double('qty');
-            $table->double('remaining_qty');
             $table->bigInteger('issuer_id')->unsigned();
             $table->text('description')->nullable();
             $table->timestamps();

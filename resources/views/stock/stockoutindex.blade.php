@@ -27,10 +27,11 @@
                         <th>Product</th>
                         <th>Variant</th>
                         <th>Qty</th>
-                        <th>Status</th>
+                        <th>Unit</th>
+                        <th>Type</th>
                         <th>Approver Name</th>
                         <th>Warehouse</th>
-                        <th></th>
+                        <th>Action</th>
                     </tr>
 
                     </thead>
@@ -43,20 +44,38 @@
                                 </td>
                                 <td>{{$item->variant->product_name}}</td>
                                 <td>{{$item->variant->variant}}</td>
-                                <td>{{$item->qty}}</td>
-                                <td>@if($item->approve)
+                                <td><span id="qty{{$item->id}}"></span>
+                                    <script>
+                                        $(document).ready(function () {
+                                            var qty = '{{$item->qty}}';
+                                            $('#qty{{$item->id}}').text(qty);
+                                            $('#unit{{$item->id}}').change(function () {
+                                                var unit = $(this).val();
+                                                var st_bal = Math.round(parseFloat(qty) / parseInt(unit));
+                                                $('#qty{{$item->id}}').text(st_bal);
+
+                                            });
+                                        });
+                                    </script>
+                                </td>
+                                <td> <select name="" id="unit{{$item->id}}" class="form-control select">
+                                        @foreach($units as $unit)
+                                            @if($unit->variant_id==$item->variant->id)
+                                                <option value="{{$unit->unit_convert_rate}}" {{$unit->unit_convert_rate==1?'selected':''}}>{{$unit->unit}}</option>
+                                            @endif
+                                        @endforeach
+                                    </select></td>
+                                <td>{{$item->type}}</td>
+                                <td>{{$item->approver->name}}</td>
+                                <td>{{$item->warehouse->name}}</td>
+                                <td>
+                                    @if($item->approve)
                                         <span class="badge badge-success">Approved</span>
                                     @else
                                         <a href="{{route('stockout.approve',$item->id)}}" class="btn btn-white btn-sm">
                                             Approve
                                         </a>
-                                    @endif</td>
-                                <td>
-                                    <img src="{{$item->approver->profile_img!=null? url(asset('img/profiles/'.$item->approver->profile_img)):url(asset('img/profiles/avatar-01.jpg'))}}" alt="" class="avatar chat-avatar-sm">
-                                    {{$item->approver->name}}</td>
-                                <td>{{$item->warehouse->name}}</td>
-                                <td>
-
+                                    @endif
                                 </td>
 
                             </tr>

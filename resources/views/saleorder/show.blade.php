@@ -11,7 +11,7 @@
                         <li class="breadcrumb-item active">Order Details</li>
                     </ul>
                 </div>
-            </div>
+            </div>product
         </div>
         <div class="row">
 
@@ -32,15 +32,17 @@
                         </div>
                     </div>
                     <div class="bs-offset-main bs-canvas-anim">
-                        <button class="btn btn-primary btn-sm rounded-circle float-left mr-2" type="button" data-toggle="canvas"
+                        <span class="mt-1 float-left mr-2" type="button" data-toggle="canvas"
                                 data-target="#bs-canvas-left" aria-expanded="false"
-                                aria-controls="bs-canvas-right"><i class="fa fa-comment"></i>
-                        </button>
+                                aria-controls="bs-canvas-right"><i class="fa fa-comment " style="font-size: 24px;color:#c2ccfd;"></i>
+                        </span>
                     </div>
                     <a href="{{route('saleorders.edit',$data['Order']->id)}}">
-                    <button class="btn btn-primary btn-sm rounded-circle float-left" type="button" ><i class="fa fa-edit"></i>
-                    </button>
+                    <span class="float-left mt-1" type="button" ><i class="fa fa-edit" style="font-size: 24px"></i>
+                    </span>
                     </a>
+                    <span class="float-left ml-2 mt-1" data-toggle="modal" data-target="#advan_pay" type="button" ><i class="fa fa-money " style="font-size: 24px"></i>
+                    </span>
                 </div>
                 <div class="d-flex justify-content-between float-right ">
 
@@ -144,7 +146,17 @@
                                         </td>
                                         <td>
                                             <p class="mb-0 text-danger font-weight-bold d-flex justify-content-start align-items-center">
-                                                {{number_format($data['grand_total'])}} MMK
+                                                {{number_format($data['Order']->grand_total)}} MMK
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr class="white-space-no-wrap">
+                                        <td class="text-muted pl-0">
+                                            Advance Payment
+                                        </td>
+                                        <td>
+                                            <p class="mb-0 text-danger font-weight-bold d-flex justify-content-start align-items-center">
+                                                {{number_format($data['advance_pay']->amount??0)}} MMK
                                             </p>
                                         </td>
                                     </tr>
@@ -265,10 +277,10 @@
                                         </div>
                                         <div class="col-8">
                                             <div>
-                                                <span class="font-weight-bold">{{$order->product->name}}</span>
+                                                <span class="font-weight-bold">{{$order->variant->product_name}}</span>
                                             </div>
                                             <p class="m-0 mt-1">
-                                                {{$order->product->description}}
+                                                {!! $order->description !!}
                                             </p>
                                         </div>
                                     </div>
@@ -295,20 +307,20 @@
                         <tr>
                             <td colspan="2"></td>
                             <th colspan="2" class="text-right"><span class="mt-5">Total</span></th>
-                            <td id="" colspan="2"><input class="form-control" type="text" id="total" value="{{$data['Order']->total}}">
+                            <td id="" colspan="2">{{$data['Order']->total}}
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2"></td>
                             <th colspan="2" class="text-right"><span class="mt-5">Discount</span></th>
 
-                            <td id="discount_div" colspan="2"><input class="form-control" type="text" id="discount" value="{{$data['Order']->discount}}" ></td>
+                            <td id="discount_div" colspan="2">{{$data['Order']->discount??0}} MMK</td>
                         </tr>
                         <tr>
                             <td colspan="2"></td>
                             <th colspan="2" class="text-right"><span class="mt-5">Tax</span></th>
                             <td id="tax" colspan="2">
-                                <input type="text" class="form-control" id="tax" value="{{$data['Order']->tax_amount}} ({{$data['Order']->tax->name}} {{$data['Order']->tax->rate}}%)">
+                                {{$data['Order']->tax_amount}} ({{$data['Order']->tax->name}} {{$data['Order']->tax->rate}}%)
                                 <input type="hidden" id="tax_amount" name="tax_mount">
                             </td>
                         </tr>
@@ -317,7 +329,7 @@
                             <td colspan="2"></td>
                             <th colspan="2" class="text-right"><span class="mt-5">Grand Total</span></th>
                             <td colspan="2" id="grand_total_div">
-                                <input class="form-control" type="text" id="grand_total" value="{{$data['Order']->grand_total}}">
+                                {{number_format($data['Order']->grand_total)}} MMK
                             </td>
                             <td></td>
 
@@ -480,4 +492,99 @@
             </div>
         </div>
     </div>
+    <div id="advan_pay" class="modal custom-modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Advance Payment</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{{route('advancepayments.store')}}" accept-charset="UTF-8" id="transaction" role="form" novalidate="novalidate"  class="form-loading-button needs-validation">
+                        @csrf
+                        <div class="card-body">
+                            <div class="row">
+                                <input type="hidden" name="payment_type" value="Advance">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="date">Type</label>
+                                        <select name="type" id="type" class="form-control" style="width: 100%">
+                                            <option value="Cash">Cash</option>
+                                            <option value="Ebanking">Ebanking</option>
+                                            <option value="KBZ Pay">KBZ Pay</option>
+                                        </select>
+                                        @error('type')
+                                        <span class="text-danger">{{$message}}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="customer">Customer</label>
+                                        <input type="text" id="customer" class="form-control" value="{{$data['Order']->customer->name}}" readonly>
+                                        <input type="hidden" name="customer_id" value="{{$data['Order']->customer->id}}">
+                                    </div>
+                                </div>
+                                <div class="col-md-12" id="account_div">
+                                    <div class="form-group">
+                                        <label for="account">Account</label>
+                                        <select name="account" id="account" class="form-control" style="width: 100%">
+                                            <option value="">None</option>
+                                            @foreach($data['account'] as $item)
+                                                <option value="{{$item->id}}">{{$item->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="amount">Amount</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-money"></i></span>
+                                            </div>
+                                            <input type="text" class="form-control" id="amount" name="amount" value="{{$data['grand_total']}}">
+                                        </div>
+                                        @error('amount')
+                                        <span class="text-danger">{{$message}}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="emp_id" value="{{\Illuminate\Support\Facades\Auth::guard('employee')->user()->id}}">
+                        <input type="hidden" name="order_id" value="{{$data['Order']->id}}">
+                        <div class="card-footer">
+                            <div class="row save-buttons">
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-icon btn-success"><!----> <span
+                                                class="btn-inner--text">Save</span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+           var type=$('#type option:selected').val();
+           if(type=='Cash'){
+               $('#account_div').hide();
+           }else {
+               $('#account_div').show();
+           }
+           $('#type').change(function () {
+              var select_type=$(this).val();
+               if(select_type=='Cash'){
+                   $('#account_div').hide();
+               }else {
+                   $('#account_div').show();
+               }
+           });
+        });
+    </script>
     @endsection

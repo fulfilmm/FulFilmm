@@ -25,8 +25,11 @@ class CreateRevenuesTable extends Migration
             $table->string('category');
             $table->dateTime('transaction_date');
             $table->text('attachment')->nullable();
+            $table->tinyInteger('approve')->default(0);
+            $table->bigInteger('approver_id')->unsigned();
             $table->bigInteger('emp_id')->unsigned();
             $table->string('currency');
+            $table->bigInteger('advance_pay_id')->unsigned()->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -1,12 +1,12 @@
 
 
-
 <script src="{{url(asset('js/swalalert.js'))}}"></script>
 <script src="{{url(asset('js/jquery_ui1_11_0.js'))}}"></script>
 <!-- Bootstrap Core JS -->
 <script src="{{asset('js/popper.min.js')}}"></script>
 <script src="{{asset('js/bootstrap.min.js')}}"></script>
 <script src="{{url(asset('js/offcavas.js'))}}"></script>
+
 
 <!-- Slimscroll JS -->
 <script src="{{asset('js/jquery.slimscroll.min.js')}}"></script>
@@ -25,6 +25,10 @@
 <script src="{{asset('js/jquery.fullcalendar.js')}}"></script>
 <script src="{{url(asset('js/jquery.datetimepicker.js'))}}"></script>
 
+
+
+
+
 <!-- Multiselect JS -->
 <script src="{{asset('js/multiselect.min.js')}}"></script>
 
@@ -38,6 +42,12 @@
 
 <script src="{{asset('plugins/sticky-kit-master/dist/sticky-kit.min.js')}}"></script>
 
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+<script src="{{url(asset('js/exportjs/buttons.html5.min.js'))}}"></script>
+<script src="{{url(asset('js/exportjs/buttons.print.min.js'))}}"></script>
+<script src="{{url(asset('js/exportjs/jszip.min.js'))}}"></script>
+<script src="{{url(asset('js/exportjs/pdfmake.min.js'))}}"></script>
+<script src="{{url(asset('js/exportjs/vfs_fonts.js'))}}"></script>
 <!-- Task JS -->
 <script src="{{asset('js/task.js')}}"></script>
 

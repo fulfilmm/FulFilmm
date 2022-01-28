@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DamagedProduct;
 use App\Models\DeliveryOrder;
 use App\Models\MainCompany;
 use App\Models\product;
@@ -11,10 +12,14 @@ use App\Models\ProductVariations;
 use App\Models\PurchaseOrder;
 use App\Models\PurchaseOrderItem;
 use App\Models\RequestForQuotation;
+use App\Models\StockIn;
+use App\Models\StockOut;
+use App\Models\StockTransaction;
 use App\Models\Warehouse;
 use App\Traits\StockTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class InventoryController extends Controller
 {
@@ -29,7 +34,12 @@ class InventoryController extends Controller
        $to_receipt=ProductReceive::where('inprogress',1)->count();
        $deli_order=DeliveryOrder::where('receipt','!=',1)->count();
         $allreceipt =ProductReceive::with('vendor','purchaseorder','employee')->where('inprogress',0)->get();
-        return view('Inventory.inventory',compact('to_receipt','allreceipt','deli_order'));
+        $stock_transactions=StockTransaction::with('warehouse','stockin', 'stockout','variant')->whereDate('created_at',Carbon::today())->get();
+        $damage= DB::table("damaged_products")
+            ->select(DB::raw("SUM(qty) as qty"))
+            ->get();
+        $damage_product=$damage[0]->qty;
+        return view('Inventory.inventory',compact('damage_product','to_receipt','allreceipt','deli_order','stock_transactions'));
     }
 
     /**
