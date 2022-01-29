@@ -107,7 +107,7 @@
         </div>
         <div class="card">
             <div class="table-responsive my-3 col-12" style="overflow: auto">
-                <table class="table " id="stock">
+                <table class="table table-striped custom-table" id="stock">
                     <thead>
                     <tr>
                         <th style="min-width: 130px">Product Code</th>

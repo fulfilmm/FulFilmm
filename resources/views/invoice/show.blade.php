@@ -287,6 +287,7 @@
             </div>
         </div>
     </div>
+
     <div class="row">
         <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
             <div class="accordion">
@@ -420,7 +421,7 @@
                                             </div>
                                             <select name="account" id="account" class="form-control" style="width: 83%">
                                                 @foreach($data['account'] as $account)
-                                                    <option value="{{$account->id}}" {{$advan_pay->account_id==$account->id?'selected':""}}>{{$account->name}}</option>
+                                                    <option value="{{$account->id}}" {{$advan_pay==null?'':($advan_pay->account_id==$account->id?'selected':"")}}>{{$account->name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -502,7 +503,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fa fa-file-text-o"></i></span>
                                             </div>
-                                            <input type="text" class="form-control" name="reference" id="reference" value="{{$advan_pay->order->order_id}}">
+                                            <input type="text" class="form-control" name="reference" id="reference" value="{{$advan_pay==null?'':$advan_pay->order->order_id??''}}">
                                         </div>
                                     </div>
                                 </div>

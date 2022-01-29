@@ -15,15 +15,11 @@
                                                class="btn btn-success btn-sm">Add New</a></div>
                 </div>
             </div>
-            <div class="card">
+            <div class="card shadow">
                 <div class="col-12 my-5" style="overflow: auto">
-                    <table class="table" id="account">
-                        <thead class="thead-light">
+                    <table class="table table-striped custom-table" id="account">
+                        <thead>
                         <tr>
-                            <th >
-                                <div class="custom-control custom-checkbox">
-                                    <input id="table-check-all" type="checkbox" class="custom-control-input"> <label for="table-check-all" class="custom-control-label"></label></div>
-                            </th>
                             <th >
                                 Name</th>
                             <th>Account
@@ -38,15 +34,6 @@
                         <tbody>
                         @foreach($account as $acc)
                             <tr>
-                                <td>
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox"
-                                                                                       id="bulk-action-188694"
-                                                                                       data-bulk-action="188694"
-                                                                                       class="custom-control-input"
-                                                                                       value="188694"> <label
-                                                for="bulk-action-188694" class="custom-control-label"></label></div>
-                                </td>
                                 <td >
                                     <a href="{{route('accounts.show',$acc->id)}}">{{$acc->name}}</a></td>
                                 <td >{{$acc->number}}</td>
@@ -90,16 +77,8 @@
                                     </script>
                                 </td>
                                 <td>
-                                    <div class="dropdown">
-                                        <a href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-neutral btn-sm text-light items-align-center py-2">
-                                            <i class="fa fa-ellipsis-h text-muted"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                            <a href="{{route('accounts.edit',$acc->id)}}" class="dropdown-item">Edit</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a href="" class="dropdown-item " data-toggle="modal" data-target="#delete_{{$acc->id}}"><i class="la la-trash mr-2"></i>Delete</a>
-                                        </div>
-                                    </div>
+                                    <a href="{{route('accounts.edit',$acc->id)}}" class="btn btn-white btn-sm"><i class="la la-edit"></i></a>
+                                    <a href="" class="btn btn-danger btn-sm " data-toggle="modal" data-target="#delete_{{$acc->id}}"><i class="la la-trash "></i></a>
                                     <div id="delete_{{$acc->id}}" class="modal custom-modal fade" role="dialog">
                                         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                             <div class="modal-content">

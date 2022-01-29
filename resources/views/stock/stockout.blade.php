@@ -2,21 +2,21 @@
 @section('title','Stock Out')
 @section('content')
     <div class="container-fluid">
-        <div class="page-header mt-3">
-            <div class="row align-items-center">
-                <div class="col">
-                    <h3 class="page-title">Stock Out</h3>
-                    <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{url("/")}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Stock</li>
-                        <li class="breadcrumb-item active">Out</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        {{--<div class="page-header mt-3">--}}
+            {{--<div class="row align-items-center">--}}
+                {{--<div class="col">--}}
+                    {{--<h3 class="page-title">Stock Out</h3>--}}
+                    {{--<ul class="breadcrumb">--}}
+                        {{--<li class="breadcrumb-item"><a href="{{url("/")}}">Dashboard</a></li>--}}
+                        {{--<li class="breadcrumb-item active">Stock</li>--}}
+                        {{--<li class="breadcrumb-item active">Out</li>--}}
+                    {{--</ul>--}}
+                {{--</div>--}}
+            {{--</div>--}}
+        {{--</div>--}}
         <form action="{{route('stockout')}}" method="POST">
             @csrf
-            <div class="row">
+            <div class="row mt-5">
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="variantion_id">Product <span class="text-danger"> * </span></label>
@@ -39,23 +39,13 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="emp">Approver <span class="text-danger"> * </span></label>
-                        <select name="approver_id" id="emp" class="form-control">
+                        <label for="approver">Approver <span class="text-danger"> * </span></label>
+                        <select name="approver_id" id="approver" class="form-control">
                             @foreach($emps as $emp)
                                 @if($emp->role->name=='Manager')
                                 <option value="{{$emp->id}}">{{$emp->name}}</option>
                                 @endif
                             @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="customer">Customer <span class="text-danger"> * </span></label>
-                        <select name="customer_id" id="customer" class="form-control">
-                            @foreach($customers as $customer)
-                            <option value="{{$customer->id}}">{{$customer->name}}</option>
-                                @endforeach
                         </select>
                     </div>
                 </div>
@@ -67,6 +57,17 @@
                             @foreach($type as $item)
                             <option value="{{$item}}">{{$item}}</option>
                                 @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4" id="customer_div">
+                    <div class="form-group">
+                        <label for="customer">Customer <span class="text-danger"> * </span></label>
+                        <select name="customer_id" id="customer" class="form-control">
+                            <option value="">Select Customer</option>
+                            @foreach($customers as $customer)
+                                <option value="{{$customer->id}}">{{$customer->name}}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -139,6 +140,17 @@
         </form>
     </div>
     <script>
+        $(document).ready(function () {
+           $('select').select2();
+        });
+        $('#type').change(function () {
+           var type=$(this).val();
+           if(type=='Damage'||type=='FOC'){
+               $('#customer_div').hide();
+           }else {
+               $('#customer_div').show();
+           }
+        });
         $(document).ready(function () {
             $('#inv_id').html('<option value="">None</option>')
            $('#type').change(function () {

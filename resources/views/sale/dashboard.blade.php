@@ -64,13 +64,13 @@
             <div class="col-md-3">
                @if(isset($search_month))
                     <div class="form-group">
-                        <a href="{{route('saletargets.index')}}" class="btn btn-primary col-12"><i class="fa fa-backward mr-3"></i>Back To Current Month</a>
+                        <a href="{{route('saletargets.index')}}" class="btn btn-primary col-12 shadow"><i class="fa fa-backward mr-3"></i>Back To Current Month</a>
                     </div>
                    @endif
             </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <select name="month"  id="" class="form-control">
+                        <select name="month"  id="" class="form-control shadow">
                             @foreach($month as $key=>$val)
                                 <option value="{{$val}}"{{isset($search_month)?($search_month==$val?'selected':''):($val==date('M')?'selected':'')}}>{{$val}}</option>
                             @endforeach
@@ -79,7 +79,7 @@
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <select name="year"  id="" class="form-control">
+                        <select name="year"  id="" class="form-control shadow">
                             <option value="{{date('Y')-2}}" {{isset($searchYear)?($searchYear==date('Y')-2?'selected':''):''}}>{{date('Y')-2}}</option>
                             <option value="{{date('Y')-1}}" {{isset($searchYear)?($searchYear==date('Y')-1?'selected':''):''}}>{{date('Y')-1}}</option>
                             <option value="{{date('Y')}}" {{isset($searchYear)?($searchYear==date('Y')?'selected':''):'selected'}}>{{date('Y')}}</option>
@@ -90,7 +90,7 @@
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary col-12">Search</button>
+                        <button type="submit" class="btn btn-primary col-12 shadow">Search</button>
                     </div>
                 </div>
 
@@ -99,7 +99,7 @@
         </form>
         <div class="row">
             <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                <div class="card dash-widget">
+                <div class="card dash-widget shadow">
                     <div class="card-body">
                         <span class="dash-widget-icon"><i class="fa fa-bullseye"></i></span>
                         <div class="dash-widget-info">
@@ -110,7 +110,7 @@
                 </div>
             </div>
             <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                <div class="card dash-widget">
+                <div class="card dash-widget shadow">
                     <div class="card-body">
                         <span class="dash-widget-icon"><i class="fa fa-usd"></i></span>
                         <div class="dash-widget-info">
@@ -123,7 +123,7 @@
                 </div>
             </div>
             <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                <div class="card dash-widget">
+                <div class="card dash-widget shadow">
                     <div class="card-body">
                         <span class="dash-widget-icon"><i class="fa fa-money"></i></span>
                         <div class="dash-widget-info">
@@ -134,7 +134,7 @@
                 </div>
             </div>
             <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                <div class="card dash-widget">
+                <div class="card dash-widget shadow">
                     <div class="card-body">
                         <span class="dash-widget-icon"><i class="fa fa-user"></i></span>
                         <div class="dash-widget-info">
@@ -150,7 +150,7 @@
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-6 text-center">
-                        <div class="card">
+                        <div class="card shadow">
 
                             <figure class="highcharts-figure my-2">
                                 <div id="monthly"></div>
@@ -159,7 +159,7 @@
                         </div>
                     </div>
                     <div class="col-md-6 text-center">
-                        <div class="card">
+                        <div class="card shadow">
                             <figure class="highcharts-figure my-2">
                                 <div id="yearly"></div>
                             </figure>

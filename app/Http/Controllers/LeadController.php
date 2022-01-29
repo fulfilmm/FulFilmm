@@ -129,12 +129,17 @@ class LeadController extends Controller
         ]);
     }
     public function comment(Request $request){
-        $comments = new lead_comment();
-        $comments->contact_id = $request->lead_id;
-        $comments->user_id = Auth::guard('employee')->user()->id;
-        $comments->comment = $request->comment;
-        $comments->save();
-        return redirect()->back();
+       if($request->comment!=null){
+           $comments = new lead_comment();
+           $comments->contact_id = $request->lead_id;
+           $comments->user_id = Auth::guard('employee')->user()->id;
+           $comments->comment = $request->comment;
+           $comments->save();
+           return redirect()->back()->with('success','Added note');
+       }else{
+           return redirect()->back()->with('error','Type note');
+       }
+
     }
     public function comment_delete($id){
         $comment=lead_comment::where("id",$id)->first();

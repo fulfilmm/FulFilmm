@@ -19,7 +19,7 @@ class CreateStocksTable extends Migration
             $table->double('stock_balance');
             $table->double('available');
             $table->double('alert_qty')->default(0)->nullable();
-            $table->bigInteger('variant_id')->unsigned()->unique();
+            $table->bigInteger('variant_id')->unsigned();
             $table->bigInteger('warehouse_id')->unsigned();
             $table->text('product_location')->nullable();
             $table->timestamps();

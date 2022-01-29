@@ -21,7 +21,7 @@
             </div>
         <div class="row">
             <div class="col-lg-4">
-                <div class="card">
+                <div class="card shadow">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">
                             <div>
@@ -190,7 +190,7 @@
                 </div>
             </div>
             <div class="col-lg-8">
-                <div class="card" style="height: 630px">
+                <div class="card shadow-lg" style="height: 630px">
                     <div class="card-body p-0">
                         <ul class="nav tab-nav-pane nav-tabs pt-2 mb-0" id="mytab">
                             @if($data['customer']->status=='Qualified' && $data['customer']->customer_type=='Lead')
@@ -239,13 +239,14 @@
                                 </div>
                             </div>
                             <div id="activity" class="tab-pane fade show {{$data['customer']->status=='Qualified' && $data['customer']->customer_type=='Lead'?'':'active'}} scroll">
-                                <div class="bs-offset-main bs-canvas-anim float-right">
+                                <h5>Activity Schedule</h5>
+                                <div class="bs-offset-main bs-canvas-anim mt-2">
                                     <button class="btn btn-primary btn-sm" type="button" data-toggle="canvas"
                                             data-target="#activity_schedule" aria-expanded="false"
                                             aria-controls="bs-canvas-right">Add New
                                     </button>
                                 </div>
-                                <h3>Activity Schedule</h3>
+
 
                                 <div class="iq-timeline0 m-0 d-flex align-items-center justify-content-between position-relative activity_schedule" style="overflow: auto">
 

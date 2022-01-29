@@ -23,7 +23,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card-group m-b-30">
-                        <div class="card">
+                        <div class="card shadow">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between">
                                     <div>
@@ -44,7 +44,7 @@
                             </div>
                         </div>
 
-                        <div class="card">
+                        <div class="card shadow">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between ">
                                     <div>
@@ -64,7 +64,7 @@
                             </div>
                         </div>
 
-                        <div class="card">
+                        <div class="card shadow">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between">
                                     <div>
@@ -87,7 +87,7 @@
                             </div>
                         </div>
 
-                        <div class="card">
+                        <div class="card shadow">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between">
                                     <div>
@@ -107,7 +107,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card">
+                        <div class="card shadow">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between">
                                     <div>
@@ -133,7 +133,7 @@
             </div>
             <div class="row">
                 <div class="col-md-6 d-flex">
-                    <div class="card card-table flex-fill">
+                    <div class="card card-table flex-fill shadow">
                         <div class="card-header">
                             <h3 class="card-title mb-0">All Agents Performance</h3>
                         </div>
@@ -196,7 +196,7 @@
                     </div>
                 </div>
                 <div class="col-md-6 d-flex">
-                    <div class="card card-table flex-fill">
+                    <div class="card card-table flex-fill shadow">
                         <div class="card-header">
                             <h3 class="card-title mb-0">All Department Performance</h3>
                         </div>
@@ -259,7 +259,7 @@
         @else
             <div class="row">
                 <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                    <div class="card dash-widget">
+                    <div class="card dash-widget shadow">
                         <div class="card-body">
                             <span class="dash-widget-icon"><i class="fa fa-group"></i></span>
                             <div class="dash-widget-info">
@@ -271,7 +271,7 @@
                 </div>
                @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='CEO')
                     <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                        <div class="card dash-widget">
+                        <div class="card dash-widget shadow">
                             <div class="card-body">
                                 <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
                                 <div class="dash-widget-info">
@@ -284,7 +284,7 @@
                         </div>
                     </div>
                     <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                        <div class="card dash-widget">
+                        <div class="card dash-widget shadow">
                             <div class="card-body">
                                 <span class="dash-widget-icon"><i class="fa fa-file"></i></span>
                                 <div class="dash-widget-info">
@@ -299,7 +299,7 @@
 
                     <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                         <a href="{{route('tickets.index')}}">
-                        <div class="card dash-widget">
+                        <div class="card dash-widget shadow">
                             <div class="card-body">
                                 <span class="dash-widget-icon"><i class="fa fa-ticket"></i></span>
                                 <div class="dash-widget-info">
