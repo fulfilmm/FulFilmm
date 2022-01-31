@@ -250,6 +250,8 @@
                                     <a href="#"><i class="la la-cube mr-2" style="font-size: 18px"></i><span> Product</span> <span class="menu-arrow"></span></a>
                                     <ul style="display: none;">
                                         <li><a class="{{ Request::is('product/category') ? 'active' : '' }}" href="{{route('category')}}" style="text-decoration: none">Products Category</a></li>
+                                        <li><a class="{{ Request::is('product_brand') ? 'active' : '' }}" href="{{url('product_brand')}}" style="text-decoration: none">
+                                                Product Brand</a></li>
                                         <li><a class="{{ Request::is('products') ? 'active' : '' }}" href="{{url('/products')}}" style="text-decoration: none">All
                                                 Products</a></li>
                                         <li><a class="{{ Request::is('products/create') ? 'active' : '' }}" href="{{url('/products/create')}}" style="text-decoration: none">
