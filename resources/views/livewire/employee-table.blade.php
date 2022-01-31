@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card shadow">
 {{--  --}}
 <div class="card-header">
     <h4 class="card-title mb-0 d-inline">Employees</h4>
@@ -9,7 +9,7 @@
     {{-- <a href={{url('/employees/export')}}><button  class="btn btn-primary ml-2">Export</button></a> --}}
     <div class="card-body">
     <div class="table-responsive">
-        <table class="table table-nowrap datatable mb-0 " id="emp">
+        <table class="table table-hover" id="emp">
         <thead>
             <tr>
                 <th>Employee ID</th>
@@ -55,6 +55,11 @@
         @endforeach
     </table>
     {{ $employees->links()}}
+        <script>
+            $(document).ready(function() {
+                $('#emp').DataTable();
+            } );
+        </script>
 </div>
 </div>
 

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 
 class ProductBrandController extends Controller
 {
@@ -13,7 +15,8 @@ class ProductBrandController extends Controller
      */
     public function index()
     {
-        //
+        $brand=Brand::all();
+        return view('product.brand',compact('brand'));
     }
 
     /**
@@ -34,7 +37,25 @@ class ProductBrandController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'name'=>'required',
+        ]);
+        if (isset($request->brand_logo)) {
+                $input['imagename'] =\Illuminate\Support\Str::random(10).time().'.'.$request->file('brand_logo')->extension();
+
+                $filePath = public_path('/product_picture/');
+
+                $img = Image::make($request->file('brand_logo')->path());
+                $img->resize(400, 800, function ($const) {
+                    $const->aspectRatio();
+                })->save($filePath.'/'.$input['imagename']);
+                $data[] = $input['imagename'];
+            $data['brand_logo']=$input['imagename'];
+            }
+
+        $data['name']=$request->name;
+        Brand::create($data);
+        return redirect(route('product_brand.index'))->with('success','Brand add success!');
     }
 
     /**
@@ -68,7 +89,24 @@ class ProductBrandController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        if (isset($request->brand_logo)) {
+            $input['imagename'] =\Illuminate\Support\Str::random(10).time().'.'.$request->file('brand_logo')->extension();
+
+            $filePath = public_path('/product_picture/');
+
+            $img = Image::make($request->file('brand_logo')->path());
+            $img->resize(400, 800, function ($const) {
+                $const->aspectRatio();
+            })->save($filePath.'/'.$input['imagename']);
+            $data[] = $input['imagename'];
+            $data['brand_logo']=$input['imagename'];
+        }
+
+        $data['name']=$request->name;
+        $brand=Brand::where('id',$id)->first();
+        $brand->update($data);
+        return redirect()->back()->with('success','Brand Updated Successful');
     }
 
     /**
@@ -79,6 +117,8 @@ class ProductBrandController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $brand=Brand::where('id',$id)->first();
+        $brand->delete();
+        return redirect()->back()->with('error','Deleted Successful !');
     }
 }

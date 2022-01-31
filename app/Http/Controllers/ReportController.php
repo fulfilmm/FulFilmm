@@ -10,6 +10,7 @@ use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Expense;
 use App\Models\next_plan;
+use App\Models\OrderItem;
 use App\Models\Quotation;
 use App\Models\Revenue;
 use App\Models\SalePipelineRecord;
@@ -167,12 +168,12 @@ class ReportController extends Controller
 
     public function reportpage()
     {
-        $total_income = DB::table("revenues")
-            ->select(DB::raw("SUM(amount) as total"))
+        $total_sale = DB::table("invoices")
+            ->select(DB::raw("SUM(total) as total"))
             ->whereDate('created_at',Carbon::today())
-            ->where('approve',0)
             ->get();
-        return view('Report.report',compact('total_income'));
+        $items=OrderItem::with('variant','unit','invoice')->where('inv_id','!=',null)->whereDate('created_at',Carbon::today())->get();
+        return view('Report.report',compact('items','total_sale'));
     }
     public function expense_report(Request $request){
         if ($request->ajax()) {

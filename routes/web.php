@@ -24,6 +24,8 @@ use App\Http\Controllers\MinutesController;
 use App\Http\Controllers\OfficeBranchController;
 use App\Http\Controllers\OrderlineController;
 use App\Http\Controllers\PriorityController;
+use App\Http\Controllers\ProductBrand;
+use App\Http\Controllers\ProductBrandController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseItemController;
 use App\Http\Controllers\PurchaseOrderItemController;
@@ -438,3 +440,4 @@ Route::get('advance/make/transaction/{id}',[AdvancePaymentController::class,'mak
  Route::get('daily/stock/report',[ReportController::class,'stock_report'])->name('report.stock');
  Route::get('reports',[ReportController::class,'reportpage'])->name('reports');
  Route::get('retail/sale/quotation',[QuotationController::class,'retailSale'])->name('quotations.retail');
+ Route::resource('product_brand',ProductBrandController::class);

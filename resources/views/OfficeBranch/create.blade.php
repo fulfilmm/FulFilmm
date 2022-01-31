@@ -17,12 +17,12 @@
         <div class="col-12">
             <form action="{{route('officebranch.store')}}" method="POST">
                 @csrf
-                <div class="col-md-8 offset-md-2">
-                    <div class="row">
+                <div class="col-md-8 offset-md-2 card shadow">
+                    <div class="row my-5">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="name">Name</label>
-                                <input type="text" id="name" name="name" class="form-control" value="{{old('name')}}">
+                                <input type="text" id="name" name="name" class="form-control shadow-sm" value="{{old('name')}}">
                                 @error('name')
                                 <span class="text-danger">{{$message}}</span>
                                 @enderror
@@ -41,12 +41,12 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="location">Location</label>
-                                <input type="text" class="form-control" name="address" value="{{old('address')}}" id="location">
+                                <input type="text" class="form-control shadow-sm" name="address" value="{{old('address')}}" id="location">
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-group text-center">
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="submit" class="btn btn-primary shadow">Submit</button>
                             </div>
                         </div>
                     </div>

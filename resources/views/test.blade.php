@@ -8,6 +8,24 @@
     <title>Document</title>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
+    <style>
+        td.details-control {
+            background: url('/examples/resources/details_open.png') no-repeat center center;
+            cursor: pointer;
+        }
+
+        tr.shown td.details-control {
+            background: url('/examples/resources/details_close.png') no-repeat center center;
+        }
+
+        div.slider {
+            display: none;
+        }
+
+        table.dataTable tbody td.no-padding {
+            padding: 0;
+        }
+    </style>
 </head>
 <body>
 <table id="example" class="display" style="width:100%">
@@ -508,6 +526,66 @@
                 'csvHtml5',
                 'pdfHtml5'
             ]
+        } );
+    } );
+    /* Formatting function for row details - modify as you need */
+    function format ( d ) {
+        // `d` is the original data object for the row
+        return '<div class="slider">'+
+            '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+            '<tr>'+
+            '<td>Full name:</td>'+
+            '<td>'+d.name+'</td>'+
+            '</tr>'+
+            '<tr>'+
+            '<td>Extension number:</td>'+
+            '<td>'+d.extn+'</td>'+
+            '</tr>'+
+            '<tr>'+
+            '<td>Extra info:</td>'+
+            '<td>And any further details here (images etc)...</td>'+
+            '</tr>'+
+            '</table>'+
+            '</div>';
+    }
+
+    $(document).ready(function() {
+        var table = $('#example').DataTable( {
+            "ajax": "/examples/ajax/data/objects.txt",
+            "columns": [
+                {
+                    "class":          'details-control',
+                    "orderable":      false,
+                    "data":           null,
+                    "defaultContent": ''
+                },
+                { "data": "name" },
+                { "data": "position" },
+                { "data": "office" },
+                { "data": "salary" }
+            ],
+            "order": [[1, 'asc']]
+        } );
+
+        // Add event listener for opening and closing details
+        $('#example tbody').on('click', 'td.details-control', function () {
+            var tr = $(this).closest('tr');
+            var row = table.row( tr );
+
+            if ( row.child.isShown() ) {
+                // This row is already open - close it
+                $('div.slider', row.child()).slideUp( function () {
+                    row.child.hide();
+                    tr.removeClass('shown');
+                } );
+            }
+            else {
+                // Open this row
+                row.child( format(row.data()), 'no-padding' ).show();
+                tr.addClass('shown');
+
+                $('div.slider', row.child()).slideDown();
+            }
         } );
     } );
 </script>

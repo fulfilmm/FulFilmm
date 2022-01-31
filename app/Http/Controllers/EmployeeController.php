@@ -102,7 +102,7 @@ class EmployeeController extends Controller
         $employee->empid=$employee_id;
         $employee->email=$data['email'];
         $employee->phone=$data['phone'];
-        $employee->office_branch_id=$data['office_branch_id'];
+        $employee->office_branch_id=$data['office_branch_id']??null;
         $employee->work_phone=$data['work_phone'];
         $employee->join_date=$data['join_date'];
         $employee->password=$request->password;

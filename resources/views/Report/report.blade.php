@@ -1,32 +1,34 @@
 @extends('layout.mainlayout')
-@section('title','Report')
+@section('title','Report For'.\Carbon\Carbon::today()->toFormattedDateString())
 @section('content')
-
     <!-- Page Content -->
     <div class="content container-fluid">
         <!-- Page Header -->
-        <div class="page-header">
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="stockin_report" data-toggle="tab" href="#stockin_tab" role="tab" aria-controls="home" aria-selected="true">Daily Stock In</a>
+        <div class="row">
+            <ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded nav-justified my-2" id="myTab" role="tablist">
+                <li class="nav-item mx-2" role="presentation" style="background-color: #e9e9e9;border-radius: 50px;">
+                    <a class="nav-link text-sm active" id="sale_report" data-toggle="tab" href="#sale" role="tab" aria-controls="home" aria-selected="true">Sale</a>
                 </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="stockout_report" data-toggle="tab" href="#stockoutReport" role="tab" aria-controls="profile" aria-selected="false">Daily Stock Out</a>
+                <li class="nav-item mx-2" role="presentation" style="background-color: #e9e9e9;border-radius: 50px;">
+                    <a class="nav-link text-sm" id="stockin_report" data-toggle="tab" href="#stockin_tab" role="tab" aria-controls="home" aria-selected="true">StockIn</a>
                 </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="stock_tab" data-toggle="tab" href="#stock_report" role="tab" aria-controls="contact" aria-selected="false">Daily Stock Balance</a>
+                <li class="nav-item mx-2" role="presentation" style="background-color: #e9e9e9;border-radius: 50px;">
+                    <a class="nav-link text-sm" id="stockout_report" data-toggle="tab" href="#stockoutReport" role="tab" aria-controls="profile" aria-selected="false">StockOut</a>
                 </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" id='total_income' data-toggle="tab" href="#revenue" role="tab" aria-controls="contact" aria-selected="false">Daily Revenue</a>
+                <li class="nav-item mx-2" role="presentation" style="background-color: #e9e9e9;border-radius: 50px;">
+                    <a class="nav-link text-sm" id="stock_tab" data-toggle="tab" href="#stock_report" role="tab" aria-controls="contact" aria-selected="false">StockBalance</a>
                 </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="expense_tab" data-toggle="tab" href="#expense" role="tab" aria-controls="contact" aria-selected="false">Daily Expense</a>
+                <li class="nav-item mx-2" role="presentation" style="background-color: #e9e9e9;border-radius: 50px;">
+                    <a class="nav-link text-sm" id='total_income' data-toggle="tab" href="#revenue" role="tab" aria-controls="contact" aria-selected="false">Revenue</a>
                 </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Daily Advance Payment</a>
+                <li class="nav-item mx-2" role="presentation" style="background-color: #e9e9e9;border-radius: 50px;">
+                    <a class="nav-link text-sm" id="expense_tab" data-toggle="tab" href="#expense" role="tab" aria-controls="contact" aria-selected="false">Expense</a>
                 </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Daily Deposit</a>
+                <li class="nav-item mx-2" role="presentation" style="background-color: #e9e9e9;border-radius: 50px;">
+                    <a class="nav-link text-sm" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">AdvancePay</a>
+                </li>
+                <li class="nav-item mx-2" role="presentation" style="background-color: #e9e9e9;border-radius: 50px;">
+                    <a class="nav-link text-sm" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Deposit</a>
                 </li>
             </ul>
         </div>
@@ -34,6 +36,50 @@
         <!-- /Page Header -->
         <div class="col-md-12 col-sm-12 col-12">
             <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade active show" id="sale" role="tabpanel" aria-labelledby="home-tab">
+                    <table id="sale_table" class="table table-hover table-nowrap table-bordered"  style="width: 100%">
+                        <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Invoice ID</th>
+                            <th>Product Code</th>
+                            <th>Product</th>
+                            <th>Variant</th>
+                            <th>Qty</th>
+                            <th>Unit</th>
+                            <th>Unit Price</th>
+                            <th>Total</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($items as $item)
+                            <tr>
+                                <td>{{$item->created_at->toFormattedDateString()}}</td>
+                                <td>{{$item->invoice->invoice_id}}</td>
+                                <td>{{$item->variant->product_code}}</td>
+                                <td>{{$item->variant->product_name}}</td>
+                                <td>{{$item->variant->variant}}</td>
+                                <td>{{$item->quantity}}</td>
+                                <td>{{$item->unit->unit}}</td>
+                                <td>{{$item->unit_price}}</td>
+                                <td>{{$item->total}}</td>
+                            </tr>
+                            @endforeach
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>Total</td>
+                            <td>{{$total_sale[0]->total}}</td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+                </div>
                 <div class="tab-pane fade" id="stockin_tab" role="tabpanel" aria-labelledby="home-tab">
                     <table id="stockin" class="table col-12" style="width: 100%">
                         <thead>
@@ -64,18 +110,11 @@
                             <th>Type</th>
                             <th>Warehouse</th>
                             <th>Customer</th>
-
-
                         </tr>
                         </thead>
                     </table>
                 </div>
                 <div class="tab-pane fade" id="revenue" role="tabpanel" aria-labelledby="contact-tab">
-                    <div class="col-12">
-                        <div class="row justify-content-between">
-                            <span>Cash On Hand :{{$total_income[0]->total??0}}</span>
-                        </div>
-                    </div>
                     <table id="income" class="table col-12" style="width: 100%">
                         <thead>
                         <tr>
@@ -133,6 +172,16 @@
     </div>
     <script type="text/javascript">
         $(document).ready(function () {
+            $('#sale_table').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+                "order": [[ 0, "desc" ]]
+            });
+        });
+        $(document).ready(function () {
+
            $('#stock_tab').click(function () {
                $('#stock_report_table').DataTable({
                    dom: 'Bfrtip',

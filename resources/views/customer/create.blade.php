@@ -4,7 +4,6 @@
     <style>
         .ck-editor__editable {
             min-height: 200px !important;
-
         }
     </style>
     <!-- Page Header -->
@@ -18,7 +17,7 @@
                     <form action="{{route('customers.store')}}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="card-body">
-                           @include('customer.form')
+                            @include('customer.form')
                             <div class="text-center border-top">
                                 <button type="submit" class="btn btn-primary mt-3">
                                     Create
@@ -26,45 +25,42 @@
                             </div>
                         </div>
                     </form>
-                @include('company.quickcompany')
+                    @include('company.quickcompany')
+                </div>
             </div>
         </div>
-    </div>
-    <script>
-        ClassicEditor.create($('#bio')[0], {
-            toolbar: ['heading', 'bold', 'italic', 'undo', 'redo', 'numberedList', 'bulletedList', 'insertTable']
-        });
-        $(document).ready(function () {
-            $('#title').hide();
-            $('#priority').hide();
-            $('#tag_industry').hide();
-            $('#status').hide();
-            $('#case').hide();
-            $('#customer_type').on('change', function () {
-                var customer_type = $('#customer_type option:selected').val();
-                if (customer_type == "Lead") {
-                    $('#title').show('');
-                    $('#priority').show('');
-                    $('#tag_industry').show('');
-                    $('#status').show('');
-                    $('#case').hide('');
-
-                } else if(customer_type=='In Query') {
-                    $('#title').hide('');
-                    $('#priority').hide('');
-                    $('#tag_industry').hide('');
-                    $('#status').hide('');
-                    $('#case').show('');
-
-                }else {
-                    $('#title').hide('');
-                    $('#priority').hide('');
-                    $('#tag_industry').hide('');
-                    $('#status').hide('');
-                    $('#case').hide('');
-                }
-            })
-        });
-
-    </script>
+        <script>
+            ClassicEditor.create($('#bio')[0], {
+                toolbar: ['heading', 'bold', 'italic', 'undo', 'redo', 'numberedList', 'bulletedList', 'insertTable']
+            });
+            $(document).ready(function () {
+                $('#title').hide();
+                $('#priority').hide();
+                $('#tag_industry').hide();
+                $('#status').hide();
+                $('#case').hide();
+                $('#customer_type').on('change', function () {
+                    var customer_type = $('#customer_type option:selected').val();
+                    if (customer_type == "Lead") {
+                        $('#title').show('');
+                        $('#priority').show('');
+                        $('#tag_industry').show('');
+                        $('#status').show('');
+                        $('#case').hide('');
+                    } else if(customer_type=='In Query') {
+                        $('#title').hide('');
+                        $('#priority').hide('');
+                        $('#tag_industry').hide('');
+                        $('#status').hide('');
+                        $('#case').show('');
+                    }else {
+                        $('#title').hide('');
+                        $('#priority').hide('');
+                        $('#tag_industry').hide('');
+                        $('#status').hide('');
+                        $('#case').hide('');
+                    }
+                })
+            });
+        </script>
 @endsection

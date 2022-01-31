@@ -67,12 +67,14 @@
                             </div>
                         </div>
                         <div class="form-group col-md-6 col-12 ">
-                            <label for="">Model No.</label>
+                            <label for="">Brand</label>
                             <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fa fa-pencil"></i></span>
-                                </div>
-                                <input type="text" class="form-control" name="model_no" >
+                                <select name="brand_id" id="brand" class="form-control ">
+                                    <option value="">None</option>
+                                    @foreach($brand as $item)
+                                        <option value="{{$item->id}}" {{$item->id==$product->brand_id?'selected':''}}>{{$item->name}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class=" col-md-6 col-12 " id="cat_div">
@@ -86,7 +88,7 @@
                                         <option value="">Select Category</option>
                                         @foreach($category as $cat)
                                             @if($cat->parent==1)
-                                                <option value="{{$cat->id}}">{{$cat->name}}</option>
+                                                <option value="{{$cat->id}}" {{$cat->id==$product->cat_id?'selected':''}}>{{$cat->name}}</option>
                                             @endif
                                         @endforeach
                                     </select>
@@ -106,7 +108,7 @@
                                         <option value="">Select Sub Category</option>
                                         @foreach($category as $cat)
                                             @if($cat->parent==0)
-                                                <option value="{{$cat->id}}" data-option="{{$cat->parent_id}}">{{$cat->name}}</option>
+                                                <option value="{{$cat->id}}" data-option="{{$cat->parent_id}}" {{$cat->id==$product->sub_cat_id?'selected':''}}>{{$cat->name}}</option>
                                             @endif
                                         @endforeach
                                     </select>
@@ -116,8 +118,18 @@
                             </div>
                         </div>
                         <div class="form-group col-md-12 col-12 ">
+                            <label for="">Model No.</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-pencil"></i></span>
+                                </div>
+                                <input type="text" class="form-control" name="model_no" value="{{$product->model_no}}" >
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-12 col-12 ">
                             <label for="description">Detail</label>
-                            <textarea name="detail" class="form-control" id="detail" ></textarea>
+                            <textarea name="detail" class="form-control" id="detail" >{{$product->description}}</textarea>
                         </div>
                         <div class="col-12">
                             <div class="form-group">
@@ -158,21 +170,13 @@
 
         $(document).ready(function () {
 
-            $('#product_tax').select2({
+            $('select').select2({
                     "language": {},
                     escapeMarkup: function (markup) {
                         return markup;
                     }
                 }
             );
-            $('#product_cat').select2({
-                    "language": {},
-                    escapeMarkup: function (markup) {
-                        return markup;
-                    }
-                }
-            );
-
         });
 
     </script>

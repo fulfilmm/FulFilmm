@@ -52,7 +52,7 @@
         <!-- /Page Header -->
         <form action="{{route("products.store")}}" method="POST" enctype="multipart/form-data">
             @csrf
-            <div class="card">
+            <div class="card shadow">
                 {{--<div class="card-header"></div>--}}
                 <div class="col-12 my-3">
                     <div class="row">
@@ -62,16 +62,18 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fa fa-cube"></i></span>
                                 </div>
-                                <input type="text" class="form-control" name="name" required>
+                                <input type="text" class="form-control shadow-sm" name="name" required>
                             </div>
                         </div>
                         <div class="form-group col-md-6 col-12 ">
-                            <label for="">Model No.</label>
+                            <label for="">Brand</label>
                             <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fa fa-pencil"></i></span>
-                                </div>
-                                <input type="text" class="form-control" name="model_no" >
+                                <select name="brand_id" id="brand" class="form-control ">
+                                    <option value="">None</option>
+                                    @foreach($brand as $item)
+                                        <option value="{{$item->id}}">{{$item->name}}</option>
+                                        @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class=" col-md-6 col-12 " id="cat_div">
@@ -115,8 +117,18 @@
                             </div>
                         </div>
                         <div class="form-group col-md-12 col-12 ">
+                            <label for="">Model No.</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-pencil"></i></span>
+                                </div>
+                                <input type="text" class="form-control shadow-sm" name="model_no" >
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-12 col-12 ">
                             <label for="description">Detail</label>
-                            <textarea name="detail" class="form-control" id="detail" ></textarea>
+                            <textarea name="detail" class="form-control shadow-sm" id="detail" ></textarea>
                         </div>
                         <div class="col-12">
                             <div class="form-group">
@@ -174,22 +186,7 @@
 
         giveSelection(sel1);
         $(document).ready(function () {
-
-            $('#product_tax').select2({
-                    "language": {},
-                    escapeMarkup: function (markup) {
-                        return markup;
-                    }
-                }
-            );
-            $('#product_cat').select2({
-                    "language": {},
-                    escapeMarkup: function (markup) {
-                        return markup;
-                    }
-                }
-            );
-
+            $('select').select2();
         });
 
     </script>

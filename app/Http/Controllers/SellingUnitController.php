@@ -115,14 +115,20 @@ class SellingUnitController extends Controller
            'sale_type'=>'required',
             'price'=>'required'
         ]);
-        $exist_price=product_price::where('product_id',$request->product_id)->where('unit_id',$request->unit_id)->where('active',1)->first();
-        if($exist_price==null) {
-            product_price::create($request->all());
-        }else{
-            $exist_price->active=0;
-            $exist_price->update();
-            product_price::create($request->all());
-        }
+       foreach ($request->product_id as $item){
+           $exist_price=product_price::where('product_id',$item)->where('sale_type',$request->sale_type)->where('unit_id',$request->unit_id)->where('active',1)->first();
+           $data['product_id']=$item;
+           $data['unit_id']=$request->unit_id;
+           $data['sale_type']=$request->sale_type;
+           $data['price']=$request->price;
+           if($exist_price==null) {
+               product_price::create($data);
+           }else{
+               $exist_price->active=0;
+               $exist_price->update();
+               product_price::create($data);
+           }
+       }
         return redirect()->back();
     }
     public function price_active($status,$id){

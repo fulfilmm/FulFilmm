@@ -66,11 +66,10 @@
 
                 </div>
                     <!-- /Search Filter -->
-
                 <div class="row">
                     <div class="col-md-12">
                         <div class="table-responsive">
-                            <table class="table  mb-0" id="invoice">
+                            <table class="table table-nowrap mb-0 table-hover" id="invoice">
                                 <thead>
                                     <tr>
                                         <th>#</th>

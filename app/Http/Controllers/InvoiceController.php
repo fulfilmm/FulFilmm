@@ -50,7 +50,7 @@ class InvoiceController extends Controller
      */
     public function create()
     {
-        $allcustomers =Customer::where('customer_type','Lead')->where('status','Qualified')->get();
+        $allcustomers =Customer::all();
         $taxes=products_tax::all();
         $Auth=Auth::guard('employee')->user()->name;
         $data=Session::get('data-'.Auth::guard('employee')->user()->id);
@@ -79,7 +79,7 @@ class InvoiceController extends Controller
     }
     public function retail_inv()
     {
-        $allcustomers =Customer::where('customer_type','Lead')->where('status','Qualified')->get();
+        $allcustomers =Customer::all();
         $aval_product=Stock::with('variant')->where('available','>',0)->get();
 //        foreach ($pd as $product){
 //
@@ -195,12 +195,21 @@ class InvoiceController extends Controller
         if(count($confirm_order_item)!=0){
             $newInvoice->save();
         foreach ($confirm_order_item as $item){
-            $unit=SellingUnit::where('id',$item->sell_unit)->first();
-            $stock=Stock::where('variant_id',$item->variant_id)->where('warehouse_id',$request->warehouse_id)->first();
-            $item->inv_id=$newInvoice->id;
-            $item->update();
-            $stock->available=$stock->available-($item->quantity*$unit->unit_convert_rate);
-            $stock->update();
+            if($item->foc){
+                $unit=SellingUnit::where('id',$item->sell_unit)->first();
+                $stock=Freeofchare::where('variant_id',$item->variant_id)->first();
+                $item->inv_id=$newInvoice->id;
+                $item->update();
+                $stock->qty=$stock->qty-($item->quantity*$unit->unit_convert_rate);
+                $stock->update();
+            }else{
+                $unit=SellingUnit::where('id',$item->sell_unit)->first();
+                $stock=Stock::where('variant_id',$item->variant_id)->where('warehouse_id',$request->warehouse_id)->first();
+                $item->inv_id=$newInvoice->id;
+                $item->update();
+                $stock->available=$stock->available-($item->quantity*$unit->unit_convert_rate);
+                $stock->update();
+            }
         }
         if(isset($request->order_id)){
             $order_item=OrderItem::where('order_id',$request->order_id)->get();
@@ -237,7 +246,7 @@ class InvoiceController extends Controller
 //        dd($company);
         $detail_inv=Invoice::with('customer')->where('id',$id)->first();
 //        dd($detail_inv);
-        $invoice_item=OrderItem::with('product')->where("inv_id",$id)->get();
+        $invoice_item=OrderItem::with('variant')->where("inv_id",$id)->get();
 //        dd($invoice_item);
         $grand_total=0;
           for ($i=0;$i<count($invoice_item);$i++){
@@ -341,7 +350,7 @@ class InvoiceController extends Controller
 //        dd(env('MAIL_PORT'));
 //        dd($request->all());
         $invoice=Invoice::with('customer','employee')->where("id",$request->inv_id)->first();
-        $invoice_item=OrderItem::with('product')->where("inv_id",$request->inv_id)->get();
+        $invoice_item=OrderItem::with('variant')->where("inv_id",$request->inv_id)->get();
         $company=MainCompany::where('ismaincompany',true)->first();
         if($request->attach!=null){
             $file = $request->attach;

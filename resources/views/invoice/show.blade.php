@@ -107,15 +107,12 @@
                                         Mark Sent
                                     </a>
                                     <a href="{{route('invoice.sendmail',$detail_inv->id)}}">
-                                        <button type="button" class="el-tooltip btn btn-{{$detail_inv->send_email?'danger':'white'}} btn-sm btn-tooltip disabled header-button-top"
+                                        <button type="button" class="el-tooltip btn btn-{{$detail_inv->send_email?'danger':'white'}} btn-sm btn-tooltip disabled header-button-top shadow"
                                                                                                     aria-describedby="el-tooltip-9140" tabindex="0">
                                            <i class="fa fa-{{$detail_inv->send_email?'check-circle':''}} mr-2"></i>Send Email
                                         </button>
                                     </a>
-                                    <a href="https://app.akaunting.com/142258/signed/invoices/1201302?signature=4b75ab08f681bfb43e37e90a7d50fcd207d2819ebe4d53671d59e93d7018998a"
-                                       target="_blank" class="btn btn-white btn-sm header-button-top">
-                                        Share
-                                    </a></div>
+                                   </div>
                             </div>
                         </div>
                         <div class="timeline-block"><span class="timeline-step badge-success"><i
@@ -130,13 +127,13 @@
                                     {{$detail_inv->status}}
                                 </small>
                                 <div class="mt-3">
-                                    <button id="button-payment" class="btn btn-success btn-sm header-button-bottom" data-toggle='modal' data-target='#add_payment'>
+                                    <button id="button-payment" class="btn btn-white btn-sm header-button-bottom" data-toggle='modal' data-target='#add_payment'>
                                         Add Payment
                                     </button>
                                 </div>
                             </div>
                         </div>
-                        <div class="timeline-block"><span class="timeline-step badge-success"><i
+                        <div class="timeline-block"><span class="timeline-step badge-primary"><i
                                         class="la la-truck text-white"></i></span>
                             <div class="timeline-content"><h2 class="font-weight-500">
                                     Stock Out
@@ -148,7 +145,7 @@
                                     Somethings
                                 </small>
                                 <div class="mt-3">
-                                    <button id="button-stockout" class="btn btn-success btn-sm header-button-bottom" data-toggle='modal' data-target='#stockout'>
+                                    <button id="button-stockout" class="btn btn-primary btn-sm header-button-bottom" data-toggle='modal' data-target='#stockout'>
                                         Stock Out
                                     </button>
                                 </div>

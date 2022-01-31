@@ -16,35 +16,35 @@
             </div>
         </div>
     </div>
-    <div class="col-12">
+    <div class="col-12 ">
         <form action="{{route('sellingunits.store')}}" method="POST">
             @csrf
-           <div class="col-md-8 offset-md-2">
-               <div class="row">
-                   <div class="col-md-6">
+           <div class="col-md-8 offset-md-2 card shadow">
+               <div class="row my-5">
+                   <div class="col-md-12">
                        <div class="form-group">
                            <label for="pid">Product Name</label>
-                           <select name="variant_id[]" id="pid" class="form-control select2" required multiple>
+                           <select name="variant_id[]" id="pid" class="form-control select2" multiple required >
                                @foreach($products as $pd)
                                    <option value="{{$pd->id}}">{{$pd->product_name}}({{$pd->variant}})</option>
                                @endforeach
                            </select>
                        </div>
                    </div>
-                   <div class="col-md-6">
+                   <div class="col-md-12">
                        <div class="form-group">
                            <label for="unit">Unit</label>
-                           <input type="text" name="unit" id="unit" class="form-control" placeholder="Enter Selling Unit" required>
+                           <input type="text" name="unit" id="unit" class="form-control shadow-sm" placeholder="Enter Selling Unit" required>
                        </div>
                    </div>
-                   <div class="col-md-6">
+                   <div class="col-md-12">
                        <div class="form-group">
                            <label for="price">Unit Convert Rate</label>
-                           <input type="number" class="form-control" name="unit_convert_rate" placeholder="Enter Unit Convert Rate" required>
+                           <input type="number" class="form-control shadow-sm" name="unit_convert_rate" placeholder="Enter Unit Convert Rate" required>
                        </div>
                    </div>
                    <div class="col-12 text-center">
-                       <button type="submit" class="btn btn-primary">Submit</button>
+                       <button type="submit" class="btn btn-primary shadow">Submit</button>
                    </div>
                </div>
            </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\ProductJob;
+use App\Models\Brand;
 use App\Models\Customer;
 use App\Models\Freeofchare;
 use App\Models\product;
@@ -34,7 +35,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products=product::with('taxes','category','sub_cat')->paginate(10);
+        $products=product::with('taxes','category','sub_cat','brand')->paginate(10);
         return view("product.index",compact("products"));
     }
 
@@ -49,8 +50,9 @@ class ProductController extends Controller
         $category=products_category::all();
         $warehouses=Warehouse::all();
         $suppliers=Customer::where('customer_type','Supplier')->get();
+        $brand=Brand::all();
 //        dd($suppliers);
-        return view("product.create",compact("taxes","category",'warehouses','suppliers'));
+        return view("product.create",compact("taxes","category",'warehouses','suppliers','brand'));
     }
 
     /**
@@ -164,6 +166,7 @@ class ProductController extends Controller
         $suppliers=Customer::where('customer_type','Supplier')->get();
         $product=product::with("category","taxes")->where("id",$id)->firstOrFail();
         $product_variant=ProductVariations::where('product_id',$id)->get();
+        $brand=Brand::all();
         $stock_variant=[];
         foreach ($product_variant as $variant){
 //            dd($variant->id);
@@ -173,7 +176,7 @@ class ProductController extends Controller
             }
         }
 //dd($stock_variant);
-        return view("product.edit",compact('stock_variant',"taxes","product","category",'warehouses','suppliers','product_variant'));
+        return view("product.edit",compact('stock_variant',"taxes","product","category",'warehouses','suppliers','product_variant','brand'));
     }
 
     /**

@@ -48,6 +48,7 @@ class InvoiceItemController extends Controller
 //       if($stock->available > 0 ) {
         $variant = ProductVariations::where('id', $request->variant_id)->first();
         $sale_unit = SellingUnit::where('variant_id', $request->variant_id)->where('unit_convert_rate', 1)->first();
+        $price=product_price::where('sale_type',$request->inv_type)->where('unit_id',$sale_unit->id)->first();
         $Auth = Auth::guard('employee')->user()->id;
         if ($request->type == 'invoice') {
             if (!Session::has("data-" . $Auth)) {
@@ -73,8 +74,8 @@ class InvoiceItemController extends Controller
                     $items->description =$variant->description;
                     $items->quantity = 1;
                     $items->variant_id = $request->variant_id;
-                    $items->unit_price = 0;
-                    $items->total = 0;
+                    $items->unit_price =$price->price;
+                    $items->total =$price->price;
                     $items->creation_id = $request->invoice_id;
                     $items->order_id = $request->order_id ?? null;
                     $items->state = 0;
@@ -109,8 +110,8 @@ class InvoiceItemController extends Controller
             $items->quantity = 1;
             $items->variant_id = $request->variant_id;
             $items->sell_unit = $sale_unit->id;
-            $items->unit_price = $variant->price ?? 0;
-            $items->total = $variant->price ?? 0;
+            $items->unit_price =$price->price ?? 0;
+            $items->total = $price->price ?? 0;
             $items->sell_unit = $sale_unit->id;
             $items->creation_id = $request->invoice_id;
             $items->order_id = $request->order_id ?? null;
