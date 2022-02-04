@@ -13,20 +13,18 @@
     <!-- /Page Header -->
         <div class="row">
             <div class="col-lg-12">
-                <div class="card">
-                    <form action="{{route('customers.store')}}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <div class="card-body">
-                            @include('customer.form')
-                            <div class="text-center border-top">
-                                <button type="submit" class="btn btn-primary mt-3">
-                                    Create
-                                </button>
-                            </div>
+                <form action="{{route('customers.store')}}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="card-body">
+                        @include('customer.form')
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary mt-3">
+                                Create
+                            </button>
                         </div>
-                    </form>
-                    @include('company.quickcompany')
-                </div>
+                    </div>
+                </form>
+                @include('company.quickcompany')
             </div>
         </div>
         <script>

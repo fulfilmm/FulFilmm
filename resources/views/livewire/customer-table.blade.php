@@ -1,13 +1,7 @@
-<div class="card">
+<div class="card shadow">
     <div class="card-header">
         <h4 class="card-title mb-0 d-inline">Contacts</h4>
-        <div class="float-right">
-            <input type="text" wire:model="search_key">
-        </div>
-    </div>
-    <div class="card-body">
         <div class="form-group col-md-4 col-12 float-right" id="action">
-            <label for="">Change Customer Type</label>
             <div class="input-group">
                 <select name="type" id="type" class="form-control">
                     <option value="">Select Customer Type</option>
@@ -22,6 +16,8 @@
                 <button type="button" data-toggle="tooltip" title="Change type of Customer" id="type_change" class="btn btn-primary"><i class="fa fa-save"></i></button>
             </div>
         </div>
+    </div>
+    <div class="card-body">
         <div class="table-responsive">
             <table class="table table-nowrap datatable mb-0 table-hover">
                 <thead>

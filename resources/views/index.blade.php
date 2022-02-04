@@ -269,13 +269,13 @@
                         </div>
                     </div>
                 </div>
-               @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='CEO')
+               @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='CEO'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Super Admin')
                     <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                         <div class="card dash-widget shadow">
                             <div class="card-body">
                                 <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
                                 <div class="dash-widget-info">
-                                    {{--<h3>{{$items['my_assignments']}}</h3>--}}
+                                    <h3>{{$total_emp}}</h3>
                                     <div class="row">
                                         <span>Total Employees</span>
                                     </div>
@@ -286,9 +286,9 @@
                     <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                         <div class="card dash-widget shadow">
                             <div class="card-body">
-                                <span class="dash-widget-icon"><i class="fa fa-file"></i></span>
+                                <span class="dash-widget-icon"><i class="fa fa-money"></i></span>
                                 <div class="dash-widget-info">
-                                    {{--<h3>{{$items['my_activities']}}</h3>--}}
+                                    <h3>{{$items['my_activities']??0}}</h3>
                                     <span>Total Revenue</span>
                                 </div>
                             </div>
@@ -304,7 +304,11 @@
                                 <span class="dash-widget-icon"><i class="fa fa-ticket"></i></span>
                                 <div class="dash-widget-info">
                                     <h3>{{$items['all_ticket']}}</h3>
-                                    <span>My Tickets</span>
+                                    @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='CEO'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Super Admin')
+                                        <span>Total Tickets</span>
+                                    @else
+                                        <span>My Tickets</span>
+                                    @endif
                                 </div>
                             </div>
                         </div>

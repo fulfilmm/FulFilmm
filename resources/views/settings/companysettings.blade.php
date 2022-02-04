@@ -41,11 +41,11 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-8 offset-md-2">
+		<div class="col-md-8 offset-md-2 card shadow">
 
 			<!-- /Page Header -->
 
-			<form action="{{route('companysettings.store')}}" method="POST" enctype="multipart/form-data">
+			<form action="{{route('companysettings.store')}}" method="POST" class="my-5" enctype="multipart/form-data">
 				@csrf
 				<div class="text-center">
 					<h4 for="">Logo <span class="text-danger">*</span></h4>
@@ -60,7 +60,7 @@
 					<div class="col-sm-6">
 						<div class="form-group">
 							<label>Company Name <span class="text-danger">*</span></label>
-							<input class="form-control" type="text" name="name" value="{{$company->name??''}}" required>
+							<input class="form-control shadow-sm" type="text" name="name" value="{{$company->name??''}}" required>
 						</div>
 						@error('name')
 						<span class="text-danger">{{$message}}</span>
@@ -69,7 +69,7 @@
 					<div class="col-sm-6">
 						<div class="form-group">
 							<label>Contact Person</label>
-							<input class="form-control " name="contact_person" value="{{$company->contact_person??''}}" type="text">
+							<input class="form-control shadow-sm" name="contact_person" value="{{$company->contact_person??''}}" type="text">
 						</div>
 					</div>
 				</div>
@@ -83,19 +83,19 @@
 					<div class="col-sm-6 col-md-6 col-lg-3">
 						<div class="form-group">
 							<label>Country</label>
-							<input type="text" class="form-control" name="country" value="{{$company->country??''}}" >
+							<input type="text" class="form-control shadow-sm" name="country" value="{{$company->country??''}}" >
 						</div>
 					</div>
 					<div class="col-sm-6 col-md-6 col-lg-3">
 						<div class="form-group">
 							<label>City</label>
-							<input class="form-control" name="city" value="{{$company->city??''}}" type="text">
+							<input class="form-control shadow-sm" name="city" value="{{$company->city??''}}" type="text">
 						</div>
 					</div>
 					<div class="col-sm-6 col-md-6 col-lg-3">
 						<div class="form-group">
 							<label>State/Province</label>
-							<input type="text" class="form-control" name="state" value="{{$company->state??''}}">
+							<input type="text" class="form-control shadow-sm" name="state" value="{{$company->state??''}}">
 						</div>
 					</div>
 					<div class="col-sm-6 col-md-6 col-lg-3">
@@ -109,13 +109,13 @@
 					<div class="col-sm-6">
 						<div class="form-group">
 							<label>Email</label>
-							<input class="form-control" name="email" value="{{$company->email??''}}" type="email">
+							<input class="form-control shadow-sm" name="email" value="{{$company->email??''}}" type="email">
 						</div>
 					</div>
 					<div class="col-sm-6">
 						<div class="form-group">
 							<label>Phone Number</label>
-							<input class="form-control" name="phone" value="{{$company->phone??''}}" type="text">
+							<input class="form-control shadow-sm" name="phone" value="{{$company->phone??''}}" type="text">
 						</div>
 					</div>
 				</div>
@@ -123,13 +123,13 @@
 					<div class="col-sm-6">
 						<div class="form-group">
 							<label>Mobile Number</label>
-							<input class="form-control" name="mobile" value="{{$company->mobile_phone??''}}" type="text">
+							<input class="form-control shadow-sm" name="mobile" value="{{$company->mobile_phone??''}}" type="text">
 						</div>
 					</div>
 					<div class="col-sm-6">
 						<div class="form-group">
 							<label>Fax</label>
-							<input class="form-control" name="fax" value="{{$company->fax??''}}" type="text">
+							<input class="form-control shadow-sm" name="fax" value="{{$company->fax??''}}" type="text">
 						</div>
 					</div>
 				</div>
@@ -137,7 +137,7 @@
 					<div class="col-sm-12">
 						<div class="form-group">
 							<label>Website Url</label>
-							<input class="form-control" name="web_link" value="{{$company->web_link??''}}" type="text">
+							<input class="form-control shadow-sm" name="web_link" value="{{$company->web_link??''}}" type="text">
 						</div>
 					</div>
 				</div>

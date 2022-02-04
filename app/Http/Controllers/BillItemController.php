@@ -59,4 +59,9 @@ class BillItemController extends Controller
             'Message' => 'Success'
         ]);
     }
+    public function destroy($id){
+        $item=BillItem::where('id',$id)->first();
+        $item->delete();
+
+    }
 }

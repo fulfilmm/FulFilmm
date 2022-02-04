@@ -205,12 +205,8 @@
                                                     $(document).on('click', '#delete_{{$item->id}}', function (event) {
                                                         // alert('hello');
                                                         $.ajax({
-                                                            data: {
-                                                                item_id: "{{$item->id}}"
-
-                                                            },
-                                                            type: 'POST',
-                                                            url: "{{url('/po/item/delete')}}",
+                                                            type: 'GET',
+                                                            url: "{{url('bill/item/delete/'.$item->id)}}",
                                                             async: false,
                                                             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                                                             success: function (data) {

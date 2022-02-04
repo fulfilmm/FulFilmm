@@ -10,6 +10,7 @@ use App\Models\Employee;
 use App\Models\Freeofchare;
 use App\Models\Invoice;
 use App\Models\InvoiceHistory;
+use App\Models\OfficeBranch;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\MainCompany;
@@ -73,7 +74,8 @@ class InvoiceController extends Controller
         $dis_promo=DiscountPromotion::where('sale_type','Whole Sale')->get();
         $focs=Freeofchare::with('variant')->get();
         $type='Whole Sale';
-        $warehouse=Warehouse::all();
+        $Auth=Auth::guard('employee')->user();
+        $warehouse=OfficeBranch::with('warehouse')->where('id',$Auth->office_branch_id)->get();
         $aval_product=Stock::with('variant')->where('available','>',0)->get();
         return view('invoice.create',compact('warehouse','type','request_id','allcustomers','orderline','grand_total','status','data','aval_product','taxes','unit_price','dis_promo','focs'));
     }
@@ -115,7 +117,9 @@ class InvoiceController extends Controller
         $dis_promo=DiscountPromotion::where('sale_type','Rental Sale')->get();
         $focs=Freeofchare::with('variant')->get();
         $type='Retail Sale';
-        $warehouse=Warehouse::all();
+        $Auth=Auth::guard('employee')->user();
+
+        $warehouse=OfficeBranch::with('warehouse')->where('id',$Auth->office_branch_id)->get();
         return view('invoice.create',compact('warehouse','request_id','allcustomers','orderline','grand_total','status','data','aval_product','taxes','unit_price','dis_promo','focs','type'));
     }
 

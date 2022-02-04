@@ -34,10 +34,10 @@
         </div>
 
         <!-- /Page Header -->
-        <div class="col-md-12 col-sm-12 col-12">
+        <div class="col-md-12 col-sm-12 col-12 card shadow">
             <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade active show" id="sale" role="tabpanel" aria-labelledby="home-tab">
-                    <table id="sale_table" class="table table-hover table-nowrap table-bordered"  style="width: 100%">
+                <div class="tab-pane fade active show my-3" id="sale" role="tabpanel" aria-labelledby="home-tab">
+                    <table id="sale_table" class="table table-hover table-nowrap "  style="width: 100%">
                         <thead>
                         <tr>
                             <th>Date</th>

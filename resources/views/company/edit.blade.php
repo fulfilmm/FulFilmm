@@ -11,10 +11,6 @@
                             @csrf
                             @method('put')
                             @include('company.form')
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="submit">Update</button>
-                                <a href="{{route('companies.index')}}" class="btn btn-secondary ml-3">Cancel</a>
-                            </div>
                         </form>
                         {{-- {{dd($errors->all())}} --}}
                     </div>

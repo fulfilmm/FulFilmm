@@ -143,17 +143,7 @@
                    @endforeach
                </select>
            </div>
-           <div class="col-md-6 mb-3">
-               <label for="address"
-                      class="form-label font-weight-bold text-muted text-uppercase">Address</label>
-               <div class="input-group">
-                   <div class="input-group-prepend">
-                       <span class="input-group-text"><i class="fa fa-map-o"></i></span>
-                   </div>
-                   <input type="text" class="form-control" id="address" name="address"
-                          placeholder="Enter Address">
-               </div>
-           </div>
+
            <div class="col-md-6 mb-3">
                <label for="fb"
                       class="form-label font-weight-bold text-muted text-uppercase">Facebook</label>
@@ -174,6 +164,17 @@
                    </div>
                    <input type="text" class="form-control" id="linkedin" name="linkedin"
                           placeholder="Enter linkedin link">
+               </div>
+           </div>
+           <div class="col-md-12 mb-3">
+               <label for="address"
+                      class="form-label font-weight-bold text-muted text-uppercase">Address</label>
+               <div class="input-group">
+                   <div class="input-group-prepend">
+                       <span class="input-group-text"><i class="fa fa-map-o"></i></span>
+                   </div>
+                   <input type="text" class="form-control" id="address" name="address"
+                          placeholder="Enter Address">
                </div>
            </div>
        </div>
@@ -271,7 +272,7 @@
 
     </div>
     <div class="card shadow col-12">
-    <div class="form-group">
+    <div class="form-group mt-3 mb-2">
         <label for="bio" class="form-label font-weight-bold text-muted text-uppercase">Bio</label>
         <textarea name="bio" class="form-control" id="bio" rows="10"
                   placeholder="Enter Bio"></textarea>

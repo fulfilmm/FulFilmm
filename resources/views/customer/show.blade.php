@@ -286,9 +286,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div id="comment" class="tab-pane fade p-3" >
-                                <div class="card ">
-                                    <div class="card-body scroll">
+                            <div id="comment" class="tab-pane fade " >
                                         <ul class="files-list">
                                             @foreach($comments as $comment)
                                                 <div class="chat chat-left">
@@ -309,7 +307,6 @@
                                                 </div>
                                             @endforeach
                                         </ul>
-                                    </div>
                                     <hr>
                                     <form method="POST" action="{{url("/lead/post/comment")}}" >
                                         {{csrf_field()}}
@@ -317,8 +314,10 @@
                                                 <input type="hidden" name="lead_id" value="{{$data['customer']->id}}">
                                             <div class="col-12">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" name="comment" style="background-color: #c3c8cb">
-                                                    <button class="btn btn-primary " type="submit">Add Note</button>
+                                                    <input type="text" class="form-control shadow" name="comment">
+                                                    <div class="input-group-prepend">
+                                                        <button class="btn btn-primary shadow rounded-right" type="submit">Add Note</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

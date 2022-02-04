@@ -2,21 +2,12 @@
 @section("title",'Theme Color')
 @section('content')
     <div class="content container-fluid">
-        <div class="page-header">
-            <div class="row">
-                <div class="col-sm-12">
-                    <h3 class="page-title">Theme Color Settings</h3>
-                </div>
-            </div>
-        </div>
         <div class="row">
-            <div class="col-md-8 offset-md-2">
-
-                <!-- Page Header -->
-
-                <!-- /Page Header -->
-
-                <form action="{{route('theme.color')}}" method="POST">
+            <div class="col-md-8 offset-md-2 card shadow">
+<div class="card-header">
+    <h4>Theme Color Setting</h4>
+</div>
+                <form action="{{route('theme.color')}}" class="my-3" method="POST">
                     @csrf
                     <div class="form-group row">
                         <label class="col-lg-3 col-form-label">Theme Color</label>
@@ -30,7 +21,7 @@
                     </div>
 
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn">Save</button>
+                        <button class="btn btn-primary submit-btn">Change</button>
                     </div>
                 </form>
             </div>

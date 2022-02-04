@@ -16,16 +16,11 @@
                     </ul>
                 </div>
                 <div class="col-auto float-right ml-auto">
-                    <a href="{{route('customers.create')}}" class="btn add-btn"><i class="fa fa-plus"></i> Add Lead</a>
+                    <a href="{{route('customers.create')}}" class="btn add-btn shadow-sm"><i class="fa fa-plus"></i> Add Lead</a>
                 </div>
             </div>
         </div>
-        <div class="card">
-            <div class="card-header">
-                <div class="float-right">
-                    <input type="text" wire:model="search_key">
-                </div>
-            </div>
+        <div class="card shadow">
             <div class="card-body">
                 <div class="form-group col-md-4 col-12 float-right" id="action">
                     <label for="">Action</label>

@@ -11,7 +11,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-6">
+                <div class="col-6 card shadow">
                   <h4>Upload profile</h4>
                   <form action="{{route('settings.profile-update')}}" class="form" method="POST" enctype="multipart/form-data">
                     @csrf

@@ -87,7 +87,7 @@
                 </div>
                 <div class="row mt-5">
                     <div class="col-12">
-                        <a class="btn btn-block btn-primary" href="{{route('companies.edit',$record->id)}}">Edit</span></a>
+                        <a class="btn btn-block btn-primary" href="{{route('companies.edit',$record->id)}}">Edit</a>
                     </div>
                 </div>
             </div>

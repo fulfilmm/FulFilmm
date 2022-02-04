@@ -291,7 +291,7 @@
                 var table = $('#ticket').DataTable();
                 table.column(3).search($(this).val()).draw();
             });
-            $('#ticket_id').on('change', function () {
+            $('#ticket_id').keyup(function () {
                 var table = $('#ticket').DataTable();
                 table.column(1).search($(this).val()).draw();
             });

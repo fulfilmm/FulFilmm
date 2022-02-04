@@ -8,7 +8,7 @@
     <!-- /Page Header -->
         <div class="row justify-content-center">
             <div class="col-xl-8 col-lg-8 col-md-10 col-sm-12 col-12">
-                <div class="card">
+                <div class="card shadow">
                     <div class="card-header">
                         <h4 class="card-title mb-0">Create New Department</h4>
                     </div>
@@ -16,11 +16,12 @@
                         <form action="{{route('departments.store')}}" method="POST">
                             @csrf
                             @include('department.form')
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="submit">Submit</button>
-                                <a href="{{route('departments.index')}}" class="btn btn-secondary ml-3">Cancel</a>
+                            <div class="col-8 offset-2">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary col-5" type="submit">Submit</button>
+                                    <a href="{{route('departments.index')}}" class="btn btn-secondary col-5 ml-5">Cancel</a>
+                                </div>
                             </div>
-                            </button>
                         </form>
                         {{-- {{dd($errors->all())}} --}}
                     </div>

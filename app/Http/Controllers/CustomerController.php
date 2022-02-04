@@ -268,7 +268,7 @@ class CustomerController extends Controller
                 $image = $request->file('profile_img');
                 $input['imagename'] = time().'.'.$image->extension();
 
-                $filePath = public_path('/thumbnails');
+                $filePath = public_path('/img/profiles');
 
                 $img = Image::make($image->path());
                 $img->resize(110, 110, function ($const) {

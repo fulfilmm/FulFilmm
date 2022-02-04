@@ -187,12 +187,15 @@ class BillController extends Controller
             } else {
                 $request_id = Session::get($Auth);
             }
-            $items = new BillItem();
-            $items->po_id = $po->id;
-            $items->amount = $po->grand_total;
-            $items->type = 'Purchase';
-            $items->creation_id = $request_id[0];
-            $items->save();
+            $item_exist=BillItem::where('po_id',$po->id)->first();
+           if($item_exist==null){
+               $items = new BillItem();
+               $items->po_id = $po->id;
+               $items->amount = $po->grand_total;
+               $items->type = 'Purchase';
+               $items->creation_id = $request_id[0];
+               $items->save();
+           }
 //        $generate_id=Str::uuid();
             $items = BillItem::with('purchaseorder', 'delivery')->where('creation_id', $request_id)->get();
 //        dd($orderline);
@@ -215,7 +218,7 @@ class BillController extends Controller
     public function deli_bill($deli_id)
     {
 //        dd($po_id);
-        $delivery = DeliveryOrder::where('paid_deli_fee', 0)->where('paid_deli_fee', 0)->where('id', $deli_id)->first();
+        $delivery = DeliveryOrder::where('paid_deli_fee', 0)->where('id', $deli_id)->first();
         if ($delivery != null) {
             $vendor = Customer::where('id', $delivery->courier_id)->first();
 //        dd($vendor);
@@ -230,12 +233,16 @@ class BillController extends Controller
                 $request_id = Session::get($Auth);
             }
 //        dd($delivery);
-            $items = new BillItem();
-            $items->delivery_id = $deli_id;
-            $items->amount = $delivery->delivery_fee;
-            $items->type = 'Delivery';
-            $items->creation_id = $request_id[0];
-            $items->save();
+            $exist_item=BillItem::where('delivery_id',$deli_id)->first();
+           if($exist_item==null){
+               $items = new BillItem();
+               $items->delivery_id = $deli_id;
+               $items->amount = $delivery->delivery_fee;
+               $items->type = 'Delivery';
+               $items->creation_id = $request_id[0];
+               $items->save();
+           }
+
 //        $generate_id=Str::uuid();
             $items = BillItem::with('purchaseorder', 'delivery')->where('creation_id', $request_id)->get();
 //        dd($orderline);

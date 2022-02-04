@@ -145,7 +145,6 @@ class TicketController extends Controller
     public function store(Request $request)
     {
 //        dd($request->all());
-        try {
             $this->validate($request, [
                 'files.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 'attachment' => 'mimes:pdf,xlsx,doc,docx,jpg,jpeg,ppt,bip',
@@ -156,9 +155,6 @@ class TicketController extends Controller
                 'client_phone' => $request->has('client_phone') ? 'required' : ''
 
             ]);
-        } catch (ValidationException $e) {
-            return redirect()->route('tickets.create')->with('error', $e->getMessage());
-        }
 
         //add customer info store
         $this->add_sender_info($request->all());

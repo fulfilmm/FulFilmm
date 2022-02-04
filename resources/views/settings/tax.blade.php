@@ -15,14 +15,14 @@
                     </ul>
                 </div>
                 <div class="col-auto float-right ml-auto">
-                    <a href="#" class="btn add-btn"  data-toggle="modal" data-target="#add" data-whatever="@getbootstrap"><i class="fa fa-plus"></i> Add Tax</a>
+                    <a href="#" class="btn add-btn shadow"  data-toggle="modal" data-target="#add" data-whatever="@getbootstrap"><i class="fa fa-plus"></i> Add Tax</a>
                 </div>
             </div>
         </div>
         <!-- /Page Header -->
 
         @include('product.taxadd')
-        <div class="card">
+        <div class="card shadow">
             <div class="card-header card-header-danger">
                 <h4 class="text-dark"><i class="fa fa-list-alt mr-2"></i>Tax</h4>
             </div>

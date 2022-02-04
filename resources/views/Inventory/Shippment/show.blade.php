@@ -233,7 +233,7 @@
                                                 @foreach($invoic_item as $item)
                                                     <tr>
                                                         <td>{{$item->id}}</td>
-                                                        <td>{{$item->product->name}}</td>
+                                                        <td>{{$item->variant->product_name}}</td>
                                                         <td class="d-none d-sm-table-cell">{{$item->description}}</td>
                                                         <td>{{$item->unit_price}}
                                                         <td>{{$item->quantity}}</td>

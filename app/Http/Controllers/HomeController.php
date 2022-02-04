@@ -65,7 +65,7 @@ class HomeController extends Controller
              $numberOfalltickets=$myticket+$follow_ticket;
          }
           $id = Auth::id();
-
+            $total_emp=Employee::count();
           $items = [
 //            'projects' => Project::count(),
 //              'my_assignments' => Assignment::whereHas('assigned_employees', function ($query) use ($id) {
@@ -78,7 +78,7 @@ class HomeController extends Controller
               'all_ticket'=>$numberOfalltickets,
           ];
 
-          return view('index', compact('items'));
+          return view('index', compact('items','total_emp'));
       }
     }
     public function agent_all_ticket(){

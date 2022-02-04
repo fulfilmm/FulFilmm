@@ -44,7 +44,7 @@ class ShippmentController extends Controller
             $delivery_id = "D-00001";
         }
         $invoices=Invoice::all();
-        $customer=Customer::where('status','Qualified')->get();
+        $customer=Customer::all();
         $courier=Customer::where('customer_type','Courier')->get();
         $warehouse=Warehouse::all()->pluck('name','id')->all();
         return view('Inventory.Shippment.create',compact('invoices','customer','courier','warehouse','delivery_id'));
@@ -84,7 +84,7 @@ class ShippmentController extends Controller
         $delivery=DeliveryOrder::with('invoice','courier','customer')->where('id',$id)->firstOrFail();
         $detail_inv=Invoice::with('customer','employee','tax','order')->where('id',$delivery->invoice_id)->firstOrFail();
         $company=MainCompany::where('ismaincompany',true)->first();
-        $invoic_item=OrderItem::with('product')->where("inv_id",$detail_inv->id)->get();
+        $invoic_item=OrderItem::with('variant')->where("inv_id",$detail_inv->id)->get();
         $comments=DeliveryComment::with('emp','courier')->where('delivery_id',$id)->get();
 //        dd($comments);
         return view('Inventory.Shippment.show',compact('delivery','detail_inv','company','invoic_item','comments'));

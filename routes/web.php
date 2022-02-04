@@ -319,6 +319,7 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::get('bill/create/{supplier_id}',[BillController::class,'create'])->name('supplierbills.create');
     Route::post('bill/item/store',[\App\Http\Controllers\BillItemController::class,'store'])->name('billitems.store');
     Route::post('bill/item/update/{id}',[\App\Http\Controllers\BillItemController::class,'update'])->name('billitems.update');
+    Route::get('bill/item/delete/{id}',[\App\Http\Controllers\BillItemController::class,'destroy'])->name('destroy.billitem');
     Route::get('purchase/order/create/{rfq_id}',[\App\Http\Controllers\PurchaseOrderController::class,'rfq_to_po_create'])->name('purchase.orders');
     Route::resource('purchaseorders',\App\Http\Controllers\PurchaseOrderController::class);//
 

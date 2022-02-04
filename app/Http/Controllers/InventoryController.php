@@ -139,25 +139,30 @@ class InventoryController extends Controller
     }
     public function receipt($id){
         $receipt=ProductReceive::where('id',$id)->first();
-        $rec_item=ProductReceiveItem::where('receipt_id',$id)->get();
-        foreach ($rec_item as $item) {
-            $data = ['qty' => $item->qty,
-                'warehouse_id' => $item->warehouse_id,
-                'supplier_id' => $receipt->vendor_id,
-                'variantion_id' => $item->variant_id
-            ];
-            $variant=ProductVariations::where('id',$item->variant_id)->first();
-            $variant->purchase_price=$item->price;
-            $variant->update();
+       if($receipt->inprogress==1) {
+           $rec_item = ProductReceiveItem::where('receipt_id', $id)->get();
+           foreach ($rec_item as $item) {
+               $data = ['qty' => $item->qty,
+                   'warehouse_id' => $item->warehouse_id,
+                   'supplier_id' => $receipt->vendor_id,
+                   'variantion_id' => $item->variant_id
+               ];
+               $variant = ProductVariations::where('id', $item->variant_id)->first();
+               $variant->purchase_price = $item->price;
+               $variant->update();
 //        dd($data);
-            $this->stockin($data);
-        }
-        $receipt->inprogress=0;
-        $receipt->update();
+               $this->stockin($data);
+           }
+           $receipt->inprogress = 0;
+           $receipt->update();
 
-        $po=PurchaseOrder::where('id',$receipt->po_id)->first();
-        $po->is_receipt=1;
-        $po->update();
-        return redirect(route('stocks.index'));
+           $po = PurchaseOrder::where('id', $receipt->po_id)->first();
+           $po->is_receipt = 1;
+           $po->update();
+
+           return redirect(route('stocks.index'));
+       }else{
+           return redirect(route('stocks.index'))->with('warning','Have been stock in !');
+       }
     }
 }

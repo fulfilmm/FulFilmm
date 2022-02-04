@@ -145,7 +145,7 @@
                           <label for="bill_address">Warehouse<span class="text-danger"> * </span></label>
                           <select name="" id="warehouse" class="form-control select2" onchange="giveSelection(this.value)">
                               @foreach($warehouse as $item)
-                                  <option value="{{$item->id}}">{{$item->name}}</option>
+                                  <option value="{{$item->warehouse_id}}">{{$item->warehouse->name}}</option>
                               @endforeach
                           </select>
                       </div>

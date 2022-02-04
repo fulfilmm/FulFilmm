@@ -4,8 +4,8 @@
     <div class="container-fluid content">
         <form action="{{route('emp_password.update',\Illuminate\Support\Facades\Auth::guard('employee')->user()->id)}}" method="POST">
             @csrf
-            <div class="col-md-8 offset-md-2">
-                <div class="card">
+            <div class="col-md-8 offset-md-2 ">
+                <div class="card shadow">
                     <div class="card-header">
                         Password Change
                     </div>

@@ -4,8 +4,11 @@
 	<!-- Page Content -->
 	<div class="content container-fluid">
 		<div class="row">
-			<div class="col-md-8 offset-md-2">
-				<form action="{{route('mail.setting')}}" method="POST">
+			<div class="col-md-8 offset-md-2 card shadow">
+				<div class="card-header">
+					<h4>Email Setting</h4>
+				</div>
+				<form action="{{route('mail.setting')}}" method="POST" class="my-5 mx-3">
 					@csrf
 					<div class="form-group">
 						<div class="form-check form-check-inline">

@@ -16,6 +16,8 @@
                     </ul>
                 </div>
                 <div class="col-auto float-right ml-auto">
+                    {{--<button type="button" class="btn btn-white rounded-pill mt-3 mr-1 shadow" data-toggle="modal" data-target="import"><i class="la la-download"></i>Export</button>--}}
+                    {{--<button type="button" class="btn btn-white rounded-pill mt-3 mr-1 shadow" data-toggle="modal" data-target="import"><i class="la la-upload"></i>Import</button>--}}
                 <a href="{{route("products.create")}}" class="btn btn-white float-right mr-3 mt-3 shadow rounded-pill" style="box-shadow: white"><i class="fa fa-plus mr-2"></i>Add Product</a>
                 </div>
             </div>
@@ -26,27 +28,6 @@
         <div class="col-md-12">
             <div class="table-responsive card shadow">
                 <div class="col-12 my-3">
-                    <div class="bg-white">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="ml-2 col-md-4 col-8 float-right">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <select class="form-control" name="action" id="action_type">
-                                                <option value="Enable">Enable</option>
-                                                <option value="Disable">Disable</option>
-                                                <option value="Delete">Delete</option>
-                                            </select>
-                                            <div class="input-group-prepend">
-                                                <button type="button" id="confirm" class="btn btn-primary rounded-right">Confirm</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
                     <table class="table table-striped custom-table mb-0 table-hover" id="product_table">
                         <thead>
                         <tr>
@@ -63,7 +44,7 @@
                         @foreach($products as $product)
                             <tr>
                                 <td>
-                                    <input type="checkbox" name="product[]" value="{{$product->id}}" class="single">
+                                    <input type="checkbox"  name="product[]" value="{{$product->id}}" class="single">
                                 </td>
                                 <td><a href="{{route("products.show",$product->id)}}">
                                         <span class="ml-3">{{$product->name}}</span></a></td>
@@ -107,12 +88,33 @@
                                 </td>
                             </tr>
                         @endforeach
+
                         </tbody>
                     </table>
                     {!! $products->links() !!}
                 </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="ml-2 col-md-4 col-8 float-left">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <select class="form-control" name="action" id="action_type">
+                                        <option value="Enable">Enable</option>
+                                        <option value="Disable">Disable</option>
+                                        <option value="Delete">Delete</option>
+                                    </select>
+                                    <div class="input-group-prepend">
+                                        <button type="button" id="confirm" class="btn btn-primary rounded-right">Confirm</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
+
     </div>
     <!-- /Page Content -->
 
@@ -156,5 +158,6 @@
                 });
             });
         });
+
     </script>
 @endsection

@@ -1,13 +1,7 @@
-<div class="card">
-    <div class="card-header">
-        <h4 class="card-title mb-0 d-inline">Departments</h4>
-        <div class="float-right">
-            <input type="text" wire:model="search_key">
-        </div>
-    </div>
+<div class="card shadow">
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-nowrap datatable mb-0">
+            <table class="table table-nowrap datatable mb-0 table-hover">
                 <thead>
                     <tr>
                         <th>Name</th>
