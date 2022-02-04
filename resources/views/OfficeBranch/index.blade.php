@@ -13,8 +13,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-12">
-           <table class="table">
+        <div class="col-12 card shadow">
+           <table class="table table-nowrap table-hover">
                <thead>
                <tr>
                    <th>Branch Name</th>
@@ -30,9 +30,15 @@
                         <td>{{$branch->address}}</td>
                         <td>{{$branch->warehouse->name}}</td>
                         <td>
-                            <a href="" class="btn btn-white btn-sm"><i class="fa fa-eye"></i></a>
-                            <a href="" class="btn btn-white btn-sm"><i class="la la-edit"></i></a>
-                            <a href="" class="btn btn-white btn-sm"><i class="la la-trash"></i></a>
+                            <div class="row">
+                                <a href="{{route('officebranch.show',$branch->id)}}" class="btn btn-white btn-sm"><i class="fa fa-eye"></i></a>
+                                <a href="{{route('officebranch.edit',$branch->id)}}" class="btn btn-white btn-sm"><i class="la la-edit"></i></a>
+                                <form action="{{route('officebranch.destroy',$branch->id)}}" method="POST">
+                                    @method('DELETE')
+                                    @csrf
+                                    <button type="submit" class="btn btn-white btn-sm"><i class="la la-trash"></i></button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 @endforeach

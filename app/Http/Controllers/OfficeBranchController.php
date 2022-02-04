@@ -61,7 +61,9 @@ class OfficeBranchController extends Controller
      */
     public function show($id)
     {
-        //
+        $branch=OfficeBranch::where('id',$id)->first();
+        $employees=Employee::all();
+        return view('OfficeBranch.show',compact('branch','employees'));
     }
 
     /**
@@ -100,10 +102,8 @@ class OfficeBranchController extends Controller
     public function addemp(Request $request){
         foreach ($request->emp_id as $emp_id){
             $employee=Employee::where('id',$emp_id)->first();
-            $employee->office_branch_id=$request->action_type;
+            $employee->office_branch_id=$request->branch_id;
             $employee->update();
-
-            return redirect('employees')->with('success', __('alert.update_success'));
         }
         return redirect(route('employees.index'))->with('success','Add office branch success');
     }
