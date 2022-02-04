@@ -38,5 +38,27 @@
             }
         })
     }
+    $(document).ready(function () {
+       $('select').select2();
+    });
+    $(document).on('click', '#change', function () {
+        var emp_id =new Array();
+        $("input:checked").each(function () {
+            // console.log($(this).val()); //works fine
+            emp_id.push($(this).val());
+        });
+        var action_type=$( "#brand option:selected" ).val();
+        // alert(action_type);
+        $.ajax({
+            type:'POST',
+            data : {action_Type:action_type,emp_id:emp_id},
+            url:'/add/emp/branch',
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success:function(data){
+                console.log(data);
+                window.location.reload();
+            }
+        });
+    });
 </script>
 @endpush

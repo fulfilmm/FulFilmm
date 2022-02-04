@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EmployeeRequest;
+use App\Models\Brand;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\OfficeBranch;
@@ -29,12 +30,14 @@ class EmployeeController extends Controller
     public function index()
     {
         $employees = Employee::paginate(20);
-        return view('employee.data.lists',compact('employees'));
+        $branch=OfficeBranch::all();
+        return view('employee.data.lists',compact('employees','branch'));
     }
 
     public function card(){
         $employees = Employee::orderBy('empid','desc')->paginate(20);
-        return view('employee.data.cards', compact('employees'));
+        $branch=OfficeBranch::all();
+        return view('employee.data.cards', compact('employees','branch'));
     }
 
     /**

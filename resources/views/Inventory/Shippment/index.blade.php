@@ -35,14 +35,14 @@
                         <th><a href="{{route('deliveries.show',$deli->id)}}">{{$deli->delivery_id}}</a></th>
                         <td>{{\Carbon\Carbon::parse($deli->delivery_date)->toFormattedDateString()}}</td>
 
-                        <td>{{$deli->courier->name}}</td>
-                        <td>{{$deli->warehouse->name}}</td>
-                        <td>{{$deli->shipping_address}}</td>
-                        <td>{{$deli->customer->name}}</td>
+                        <td>{{$deli->courier->name??''}}</td>
+                        <td>{{$deli->warehouse->name??''}}</td>
+                        <td>{{$deli->shipping_address??''}}</td>
+                        <td>{{$deli->customer->name??''}}</td>
                         <td>@if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
                                 <a href="{{route('invoices.show',$deli->invoice->id)}}">{{$deli->invoice->invoice_id}}</a>
                                 @else
-                                {{$deli->invoice->invoice_id}}
+                                {{$deli->invoice->invoice_id??''}}
                             @endif
                         </td>
 

@@ -155,11 +155,11 @@
                 </div>
             </div>
        @endif
-    <div class="row form">
+    <div class="row form" >
         <div class="col-12 ">
             <div class="row" >
-                <div class="col-lg-12 ">
-                    <div class="card" >
+                <div class="col-lg-12" >
+                    <div class="card shadow"  >
                         <div class="card-body" id="print_me" style="padding-top: 50px;">
                             <div class="row pb-4 mx-0 card-header-border">
                                 <div class="col-lg-6 col-7 col-md-6 mb-3">
@@ -269,9 +269,9 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="col-lg-12">
+                                <div class="col-lg-12 col-12 col-md-12">
                                     <div class="d-flex flex-wrap justify-content-between align-items-center p-4">
-                                        <div class="flex align-items-start flex-column">
+                                        <div class="flex align-items-start flex-column col-12">
                                             <h6>Notes</h6>
                                             <p class="mb-0 my-2">{{$detail_inv->other_information}}</p>
                                         </div>
@@ -288,7 +288,7 @@
     <div class="row">
         <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
             <div class="accordion">
-                <div class="card">
+                <div class="card shadow">
                     <div id="accordion-histories-header" data-toggle="collapse" data-target="#accordion-histories-body"
                          aria-expanded="false" aria-controls="accordion-histories-body" class="card-header"><h4
                                 class="mb-0">Histories<i class="fa fa-chevron-down float-right"></i></h4></div>
@@ -333,7 +333,7 @@
         </div>
         <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
             <div class="accordion">
-                <div class="card">
+                <div class="card shadow">
                     <div id="accordion-transactions-header" data-toggle="collapse"
                          data-target="#accordion-transactions-body" aria-expanded="false"
                          aria-controls="accordion-transactions-body" class="card-header collapsed"><h4 class="mb-0">
@@ -371,7 +371,7 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="add_payment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal fade" id="add_payment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -624,7 +624,7 @@
                 </div>
             </div>
         </div>
-    <div class="modal custom-modal fade" id="delete{{$detail_inv->id}}">
+        <div class="modal custom-modal fade" id="delete{{$detail_inv->id}}">
         <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -648,6 +648,8 @@
     </div>
     <div id="print_me"  style="visibility: hidden">
     @include('transaction.add_category')
+
+        <script src="{{url(asset('js/html2pdf.js'))}}"></script>
         <script>
             function printContent(el){
                 // document.title = ;
@@ -663,101 +665,18 @@
                 window.print();
                 $('body').html(restorepage);
             }
-            (function () {
-                var
-                    form = $('.form'),
-                    cache_width = form.width(),
-                    a4 = [595.28, 841.89]; // for a4 size paper width and height
 
                 $('#create_pdf').on('click', function () {
-                    $('body').scrollTop(0);
-                    createPDF();
+                    generatePDF();
                 });
-                //create pdf
-                function createPDF() {
-                    getCanvas().then(function (canvas) {
-                        var
-                            img = canvas.toDataURL("image/png"),
-                            doc = new jsPDF({
-                                unit: 'px',
-                                format: 'a4'
-                            });
-                        doc.addImage(img, 'JPEG', 20, 20);
-                        doc.save('{{$detail_inv->invoice_id}}.pdf');
-                        form.width(cache_width);
-                    });
+                function generatePDF() {
+                    // Choose the element that our invoice is rendered in.
+                    var element = document.getElementById('print_me');
+                    // Choose the element and save the PDF for our user.
+                    html2pdf().from(element).save('{{$detail_inv->invoice_id}}');
                 }
 
-                // create canvas object
-                function getCanvas() {
-                    form.width((a4[0] * 1.33333) - 80).css('max-width', 'none');
-                    return html2canvas(form, {
-                        imageTimeout: 2000,
-                        removeContainer: true
-                    });
-                }
 
-            }());
-
-            (function ($) {
-                $.fn.html2canvas = function (options) {
-                    var date = new Date(),
-                        $message = null,
-                        timeoutTimer = false,
-                        timer = date.getTime();
-                    html2canvas.logging = options && options.logging;
-                    html2canvas.Preload(this[0], $.extend({
-                        complete: function (images) {
-                            var queue = html2canvas.Parse(this[0], images, options),
-                                $canvas = $(html2canvas.Renderer(queue, options)),
-                                finishTime = new Date();
-
-                            $canvas.css({ position: 'absolute', left: 0, top: 0 }).appendTo(document.body);
-                            $canvas.siblings().toggle();
-
-                            $(window).click(function () {
-                                if (!$canvas.is(':visible')) {
-                                    $canvas.toggle().siblings().toggle();
-                                    throwMessage("Canvas Render visible");
-                                } else {
-                                    $canvas.siblings().toggle();
-                                    $canvas.toggle();
-                                    throwMessage("Canvas Render hidden");
-                                }
-                            });
-                            throwMessage('Screenshot created in ' + ((finishTime.getTime() - timer) / 1000) + " seconds<br />", 4000);
-                        }
-                    }, options));
-
-                    function throwMessage(msg, duration) {
-                        window.clearTimeout(timeoutTimer);
-                        timeoutTimer = window.setTimeout(function () {
-                            $message.fadeOut(function () {
-                                $message.remove();
-                            });
-                        }, duration || 2000);
-                        if ($message)
-                            $message.remove();
-                        $message = $('<div ></div>').html(msg).css({
-                            margin: 0,
-                            padding: 10,
-                            background: "#000",
-                            opacity: 0.7,
-                            position: "fixed",
-                            top: 10,
-                            right: 10,
-                            fontFamily: 'Tahoma',
-                            color: '#fff',
-                            fontSize: 12,
-                            borderRadius: 12,
-                            width: 'auto',
-                            height: 'auto',
-                            textAlign: 'center',
-                            textDecoration: 'none'
-                        }).hide().fadeIn().appendTo('body');
-                    }
-                };
-            })(jQuery);
             $(document).ready(function () {
                 var item_id=$('#variant_id option:selected').val();
                 @foreach($invoic_item as $item)

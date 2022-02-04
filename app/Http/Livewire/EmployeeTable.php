@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Employee;
+use App\Models\OfficeBranch;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -24,7 +25,7 @@ class EmployeeTable extends Component
             ->with(['department' => function($q) {
                 $q->withTrashed();
             }])
-            ->paginate(20)
-            ]);
+            ->paginate(20),
+            'branch'=>OfficeBranch::all()]);
         }
     }

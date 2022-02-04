@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EmployeeRequest;
+use App\Models\Employee;
 use App\Models\OfficeBranch;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
@@ -94,5 +96,15 @@ class OfficeBranchController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function addemp(Request $request){
+        foreach ($request->emp_id as $emp_id){
+            $employee=Employee::where('id',$emp_id)->first();
+            $employee->office_branch_id=$request->action_type;
+            $employee->update();
+
+            return redirect('employees')->with('success', __('alert.update_success'));
+        }
+        return redirect(route('employees.index'))->with('success','Add office branch success');
     }
 }

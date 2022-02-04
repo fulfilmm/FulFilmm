@@ -318,7 +318,21 @@ class InvoiceController extends Controller
      */
     public function edit($id)
     {
-        dd($id);
+        $invoice=Invoice::with('customer','tax','employee','order','warehouse')->where('id',$id)->firstOrFail();
+        $allcustomers =Customer::all();
+        $aval_product=Stock::with('variant')->where('available','>',0)->get();
+        $taxes=products_tax::all();
+        $orderline=OrderItem::with('variant','unit')->where('inv_id',$id)->get();
+        $grand_total=0;
+        for ($i=0;$i<count($orderline);$i++){
+            $grand_total=$grand_total+$orderline[$i]->total;
+        }
+        $status=$this->status;
+        $unit_price=product_price::where('sale_type',$invoice->inv_type)->get();
+        $dis_promo=DiscountPromotion::where('sale_type',$invoice->inv_type)->get();
+        $focs=Freeofchare::with('variant')->get();
+        $warehouse=Warehouse::all();
+       return view('invoice.edit',compact('warehouse','allcustomers','orderline','grand_total','status','aval_product','taxes','unit_price','dis_promo','focs','invoice'));
     }
 
     /**
@@ -330,7 +344,34 @@ class InvoiceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $update_Invoice=Invoice::where('id',$id)->first();
+        $update_Invoice->title=$request->title;
+        $update_Invoice->customer_id=$request->client_id;
+        $update_Invoice->email=$request->client_email;
+        $update_Invoice->customer_address=$request->client_address;
+        $update_Invoice->billing_address=$request->bill_address;
+        $update_Invoice->invoice_date=Carbon::create($request->inv_date);
+        $update_Invoice->due_date=Carbon::create($request->due_date);
+        $update_Invoice->other_information=$request->more_info;
+        $update_Invoice->grand_total=$request->inv_grand_total;
+        $update_Invoice->status="Daft";
+        $update_Invoice->order_id=$request->order_id;
+        $update_Invoice->send_email=isset($request->save_type)?1:0;
+        $update_Invoice->payment_method=$request->payment_method;
+        $update_Invoice->tax_id=$request->tax_id;
+        $update_Invoice->total=$request->total;
+        $update_Invoice->discount=$request->discount;
+        $update_Invoice->tax_amount=$request->tax_amount;
+        $update_Invoice->invoice_type=$request->invoice_type;
+        $update_Invoice->delivery_fee=$request->delivery_fee;
+        $update_Invoice->due_amount=$request->inv_grand_total;
+        $update_Invoice->warehouse_id=$request->warehouse_id;
+        $update_Invoice->inv_type=$request->inv_type;
+        $update_Invoice->emp_id=Auth::guard('employee')->user()->id;
+        $update_Invoice->update();
+        return response()->json([
+            'url'=>url('invoices/'.$update_Invoice->id)
+        ]);
     }
 
     /**
