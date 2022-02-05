@@ -444,3 +444,5 @@ Route::get('advance/make/transaction/{id}',[AdvancePaymentController::class,'mak
  Route::get('retail/sale/quotation',[QuotationController::class,'retailSale'])->name('quotations.retail');
  Route::resource('product_brand',ProductBrandController::class);
  Route::post('/add/emp/branch',[OfficeBranchController::class,'addemp'])->name('addemp');
+ Route::get('product/export',[ProductController::class,'export'])->name('product.export');
+ Route::post('product/import',[ProductController::class,'import'])->name('product.import');

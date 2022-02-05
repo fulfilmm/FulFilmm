@@ -32,12 +32,82 @@
                         <td>
                             <div class="row">
                                 <a href="{{route('officebranch.show',$branch->id)}}" class="btn btn-white btn-sm"><i class="fa fa-eye"></i></a>
-                                <a href="{{route('officebranch.edit',$branch->id)}}" class="btn btn-white btn-sm"><i class="la la-edit"></i></a>
-                                <form action="{{route('officebranch.destroy',$branch->id)}}" method="POST">
-                                    @method('DELETE')
-                                    @csrf
-                                    <button type="submit" class="btn btn-white btn-sm"><i class="la la-trash"></i></button>
-                                </form>
+                                <button type="button" data-toggle="modal" data-target="#edit_{{$branch->id}}" class="btn btn-white btn-sm"><i class="la la-edit"></i></button>
+                                <button type="button" data-toggle="modal" data-target="#delete_{{$branch->id}}" class="btn btn-white btn-sm"><i class="la la-trash"></i></button>
+                            </div>
+                            <div id="edit_{{$branch->id}}" class="modal custom-modal fade" role="dialog">
+                                <div class="modal-dialog modal-dialog-centered modal-md">
+                                    <div class="modal-content">
+                                        <div class="modal-header border-bottom">
+                                            <h5 class="modal-title">Edit Office Branch</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="{{route('officebranch.update',$branch->id)}}" method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label for="name">Name</label>
+                                                            <input type="text" class="form-control" name="name" value="{{$branch->name}}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label for="warehouse">Warehouse</label>
+                                                            <select name="warehouse_id" id="warehouse" class="form-control">
+                                                                @foreach($warehouse as $item)
+                                                                    <option value="{{$item->id}}"{{$item->id==$branch->warehouse_id?'selected':''}}>{{$item->name}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label for="address">Address</label>
+                                                            <input type="text" name="address" class="form-control" value="{{$branch->address}}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group text-center">
+                                                    <button type="submit" data-dismiss="modal" class="btn btn-danger">Cancel</button>
+                                                    <button type="submit" class="btn btn-primary">Update</button>
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="delete_{{$branch->id}}" class="modal custom-modal fade" role="dialog">
+                                <div class="modal-dialog modal-dialog-centered modal-sm">
+                                    <div class="modal-content">
+                                        <div class="modal-header border-bottom">
+                                            <h5 class="modal-title">Edit Office Branch</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="{{route('officebranch.destroy',$branch->id)}}" method="POST">
+                                                @method('DELETE')
+                                                @csrf
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <span class="text-warning">Are you sure {{$branch->name}} delete?</span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group text-center">
+                                                    <button type="submit" class="btn btn-primary">Add</button>
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </td>
                     </tr>
@@ -46,4 +116,5 @@
            </table>
         </div>
     </div>
+
 @endsection

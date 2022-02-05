@@ -91,7 +91,7 @@
                                                            value="" title="End Date" required>
                                                 </div>
                                                 <div class="d-flex justify-content-center">
-                                                    <button type="submit" data-dismiss="modal" class="btn btn-primary">Export</button>
+                                                    <button type="submit"  class="btn btn-primary">Export</button>
                                                 </div>
                                             </form>
                                         </div>

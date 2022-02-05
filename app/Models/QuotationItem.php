@@ -14,5 +14,11 @@ class QuotationItem extends Model
     public function variant(){
         return $this->belongsTo(ProductVariations::class,'variant_id','id');
     }
+    public function unit(){
+        return $this->belongsTo(SellingUnit::class,'unit_id','id');
+    }
+    public function discount(){
+        return $this->belongsTo(DiscountPromotion::class,'discount_id','id');
+    }
 
 }

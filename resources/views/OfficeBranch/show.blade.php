@@ -14,6 +14,7 @@
             </div>
         </div>
         <div class="col-12 card shadow">
+            <div class="card-header">Office Branch Information</div>
            <div class="row">
                <div class="col-md-6 col-12">
                    <div class="row my-3">
@@ -29,7 +30,9 @@
            </div>
         </div>
         <div class="col-12 card shadow">
-            <h3 class="my-3">Branch Employees</h3>
+          <div class="card-header">
+             Office Branch Employees
+          </div>
             <table class="table table-hover table-nowrap">
                 <thead>
                 <tr>

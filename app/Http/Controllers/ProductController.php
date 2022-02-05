@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ProductExport;
+use App\Imports\ProductImport;
 use App\Jobs\ProductJob;
 use App\Models\Brand;
 use App\Models\Customer;
@@ -17,11 +19,13 @@ use App\Models\StockIn;
 use App\Models\Warehouse;
 use App\Traits\StockTrait;
 use Carbon\Carbon;
+use http\Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
 use function Livewire\str;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 use Psy\Util\Str;
 
 class ProductController extends Controller
@@ -321,5 +325,17 @@ class ProductController extends Controller
     public function focproduct(){
         $foc=Freeofchare::with('emp','variant')->get();
         return view('product.foc',compact('foc'));
+    }
+    public function export()
+    {
+        return Excel::download(new ProductExport(), 'products.xlsx');
+    }
+    public function import(Request $request){
+        try {
+            Excel::import(new ProductImport(), $request->file('import'));
+            return redirect()->route('products.index')->with('success', __('alert.import_success'));
+        } catch (Exception $e) {
+            return redirect()->route('products.index')->with('error', $e->getMessage());
+        }
     }
 }

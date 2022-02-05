@@ -18,7 +18,8 @@ class OfficeBranchController extends Controller
     public function index()
     {
         $office_branch=OfficeBranch::with('warehouse')->get();
-        return view('OfficeBranch.index',compact('office_branch'));
+        $warehouse=Warehouse::all();
+        return view('OfficeBranch.index',compact('office_branch','warehouse'));
     }
 
     /**
@@ -86,7 +87,10 @@ class OfficeBranchController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+//        dd($request->all());
+        $office=OfficeBranch::where('id',$id)->first();
+        $office->update($request->all());
+        return redirect()->back();
     }
 
     /**
@@ -97,7 +101,9 @@ class OfficeBranchController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $office=OfficeBranch::where('id',$id)->first();
+        $office->delete();
+        return redirect()->back();
     }
     public function addemp(Request $request){
         foreach ($request->emp_id as $emp_id){

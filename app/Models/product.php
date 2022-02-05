@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class product extends Model
 {
+    protected $fillable=['name','description','model_no','cat_id','sub_cat_id','brand_id'];
     use HasFactory;
     public function taxes(){
         return $this->belongsTo(products_tax::class,'tax','id');

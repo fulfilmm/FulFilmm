@@ -64,11 +64,14 @@
                 <div class="col-12" id="home" role="tabpanel" aria-labelledby="home-tab" style="overflow-x: auto">
                         <table class="table" >
                             <thead>
-                            <th scope="col">Product Name</th>
+                            <th scope="col" style="min-width: 200px;">Product</th>
                             <th>Description</th>
                             <th>Quantity</th>
+                            <th>Unit</th>
                             <th>Price</th>
+                            <th>Discount/Promotion</th>
                             <th>Total</th>
+                            <th>Action</th>
                             </thead>
                             <tbody id="tbody">
                             @foreach($orderline as $order)
@@ -92,7 +95,9 @@
                                     </td>
                                     <td>{!! $order->description !!}</td>
                                     <td>{{$order->quantity}}</td>
+                                    <td>{{$order->unit->unit}}</td>
                                     <td>{{$order->price}}</td>
+                                    <td>{{$order->discount->rate??'N/A'}}</td>
                                     <td>{{$order->total_amount}}
                                         <input type="hidden" class="total" value="{{$order->total_amount}}">
                                     </td>

@@ -46,7 +46,7 @@ class QuotationController extends Controller
     public function create()
     {
 
-        $allcustomers =Customer::where('customer_type','Lead')->where('status','Qualified')->get();
+        $allcustomers =Customer::all();
         $variants=ProductVariations::with('product')->get();
         $taxes=products_tax::all();
         $companies = Company::all()->pluck('name', 'id');
@@ -76,7 +76,7 @@ class QuotationController extends Controller
     public function retailSale()
     {
 
-        $allcustomers =Customer::where('customer_type','Lead')->where('status','Qualified')->get();
+        $allcustomers =Customer::all();
         $variants=ProductVariations::with('product')->get();
         $taxes=products_tax::all();
         $companies = Company::all()->pluck('name', 'id');
@@ -203,7 +203,7 @@ class QuotationController extends Controller
     public function sendEmail($quotation_id)
     {
         $quotation = Quotation::with("customer", "sale_person")->where('quotation_id', $quotation_id)->first();
-        $orderline = QuotationItem::with('product')->where("quotation_id", $quotation->id)->get();
+        $orderline = QuotationItem::with('variant','unit','discount')->where("quotation_id", $quotation->id)->get();
         $grand_total = 0;
         for ($i = 0; $i < count($orderline); $i++) {
             $grand_total = $grand_total + $orderline[$i]->total_amount;

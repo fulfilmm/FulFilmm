@@ -16,15 +16,43 @@
                     </ul>
                 </div>
                 <div class="col-auto float-right ml-auto">
-                    {{--<button type="button" class="btn btn-white rounded-pill mt-3 mr-1 shadow" data-toggle="modal" data-target="import"><i class="la la-download"></i>Export</button>--}}
-                    {{--<button type="button" class="btn btn-white rounded-pill mt-3 mr-1 shadow" data-toggle="modal" data-target="import"><i class="la la-upload"></i>Import</button>--}}
+                    <a href="{{route('product.export')}}" class="btn btn-white rounded-pill mt-3 mr-1 shadow"><i class="la la-download"></i>Export</a>
+                    <button type="button" class="btn btn-white rounded-pill mt-3 mr-1 shadow" data-toggle="modal" data-target="#import"><i class="la la-upload"></i>Import</button>
                 <a href="{{route("products.create")}}" class="btn btn-white float-right mr-3 mt-3 shadow rounded-pill" style="box-shadow: white"><i class="fa fa-plus mr-2"></i>Add Product</a>
                 </div>
             </div>
         </div>
         <!-- /Page Header -->
         <!-- Content Starts -->
-
+        <div id="import" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Import</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row justify-content-center">
+                            <div>
+                                {{--@dd($route)--}}
+                                <form action="{{route('product.import')}}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="form-group">
+                                        <label for="start">File</label>
+                                        <input type="file" class="form-control" id="file" name="import"  value="" required>
+                                    </div>
+                                    <div class="d-flex justify-content-center">
+                                        <button type="submit" class="btn btn-primary">Import</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="col-md-12">
             <div class="table-responsive card shadow">
                 <div class="col-12 my-3">
@@ -58,6 +86,7 @@
                                     <a class="btn btn-white btn-sm" href="{{route("products.edit",$product->id)}}" ><i class="fa fa-pencil"></i> </a>
                                     <a class="btn btn-secondary btn-sm" href="{{url("product/duplicate/$product->id")}}" ><i class="fa fa-copy"></i> </a>
                                     <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#delete_product{{$product->id}}"><i class="fa fa-trash-o"></i> </a>
+
                                     <div class="modal fade" id="delete_product{{$product->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
