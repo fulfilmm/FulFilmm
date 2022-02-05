@@ -194,10 +194,10 @@
                     <div class="card-body p-0">
                         <ul class="nav tab-nav-pane nav-tabs pt-2 mb-0" id="mytab">
                             @if($data['customer']->status=='Qualified' && $data['customer']->customer_type=='Lead')
-                            <li class="pb-2 mb-0 nav-item"><a data-toggle="tab" class="font-weight-bold text-uppercase px-5 py-2 {{$data['customer']->status=='Qualified' && $data['customer']->customer_type=='Lead'?'active':''}}" href="#invoice">Invoice</a></li>
+                                <li class="pb-2 mb-0 nav-item"><a data-toggle="tab" class="font-weight-bold text-uppercase px-5 py-2 {{$data['customer']->status=='Qualified' && $data['customer']->customer_type=='Lead'?'active':''}}" href="#invoice">Invoice</a></li>
                             @endif
-                            <li class="pb-2 mb-0 nav-item"><a data-toggle="tab" class="font-weight-bold text-uppercase px-5 py-2" {{$data['customer']->status=='Qualified' && $data['customer']->customer_type=='Lead'?'':'active'}} href="#activity">Activity Schedule</a></li>
-                            <li class="pb-2 mb-0 nav-item"><a data-toggle="tab" class="font-weight-bold text-uppercase px-5 py-2" href="#comment">Notes</a></li>
+                                <li class="pb-2 mb-0 nav-item"><a data-toggle="tab" class="font-weight-bold text-uppercase px-5 py-2" {{$data['customer']->status=='Qualified' && $data['customer']->customer_type=='Lead'?'':'active'}} href="#activity">Activity Schedule</a></li>
+                                <li class="pb-2 mb-0 nav-item"><a data-toggle="tab" class="font-weight-bold text-uppercase px-5 py-2" href="#comment">Notes</a></li>
                                 <li class="pb-2 mb-0 nav-item"><a data-toggle="tab" class="font-weight-bold text-uppercase px-5 py-2" href="#item_sale">Item Amount</a></li>
                         </ul>
                         <div class="tab-content col-12" >
@@ -322,7 +322,6 @@
                                             </div>
                                         </div>
                                     </form>
-                                </div>
                             </div>
                             <div id="item_sale" class="tab-pane fade ">
                                 <div class="d-flex justify-content-between align-items-center p-3">
@@ -359,7 +358,6 @@
                                     </table>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
