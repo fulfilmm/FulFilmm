@@ -439,6 +439,7 @@ Route::get('advance/make/transaction/{id}',[AdvancePaymentController::class,'mak
  Route::get('daily/income/report',[ReportController::class,'todayincome'])->name('report.income');
  Route::get('daily/expense/report',[ReportController::class,'expense_report'])->name('report.expense');
  Route::get('daily/stock/report',[ReportController::class,'stock_report'])->name('report.stock');
+ Route::get('daily/advancepayment/report',[ReportController::class,'advancedaily'])->name('report.advancepay');
  Route::get('reports',[ReportController::class,'reportpage'])->name('reports');
  Route::get('retail/sale/quotation',[QuotationController::class,'retailSale'])->name('quotations.retail');
  Route::resource('product_brand',ProductBrandController::class);

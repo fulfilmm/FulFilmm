@@ -64,7 +64,7 @@ class DealController extends Controller
     public function create()
     {
             $allemployees = employee::all();
-            $allcustomers = Customer::where('customer_type','Lead')->where('status','Qualified')->get();
+            $allcustomers = Customer::all();
             $parent_companies=Company::all()->pluck('name', 'id')->all();
             $companies=Company::all()->pluck('name', 'id')->all();
             $lead_source=$this->lead_sources;

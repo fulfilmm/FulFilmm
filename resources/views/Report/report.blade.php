@@ -25,11 +25,11 @@
                     <a class="nav-link text-sm" id="expense_tab" data-toggle="tab" href="#expense" role="tab" aria-controls="contact" aria-selected="false">Expense</a>
                 </li>
                 <li class="nav-item mx-2" role="presentation" style="background-color: #e9e9e9;border-radius: 50px;">
-                    <a class="nav-link text-sm" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">AdvancePay</a>
+                    <a class="nav-link text-sm" id="advance_payment" data-toggle="tab" href="#advance_pay" role="tab" aria-controls="contact" aria-selected="false">AdvancePay</a>
                 </li>
-                <li class="nav-item mx-2" role="presentation" style="background-color: #e9e9e9;border-radius: 50px;">
-                    <a class="nav-link text-sm" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Deposit</a>
-                </li>
+                {{--<li class="nav-item mx-2" role="presentation" style="background-color: #e9e9e9;border-radius: 50px;">--}}
+                    {{--<a class="nav-link text-sm" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Deposit</a>--}}
+                {{--</li>--}}
             </ul>
         </div>
 
@@ -162,6 +162,22 @@
                             <th>Balance</th>
                             <th>Available</th>
                             <th>Last Updated</th>
+                        </tr>
+
+                        </thead>
+                    </table>
+                </div>
+                <div class="tab-pane fade" id="advance_pay" role="tabpanel" aria-labelledby="contact-tab">
+                    <table class="table" id="advance_payment_table" style="width: 100%">
+                        <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Order ID</th>
+                            <th>Amount</th>
+                            <th>Type</th>
+                            <th>Account Name</th>
+                            <th>Customer</th>
+                            <th>Receiver Employee</th>
                         </tr>
 
                         </thead>
@@ -438,6 +454,51 @@
                     ],
 
                 });
+            });
+            $('#advance_payment').click(function () {
+                $('#advance_payment_table').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    destroy:true,
+                    processing: true,
+                    serverSide: true,
+                    ajax: "{{ route('report.advancepay') }}",
+                    columns: [{
+                        data: 'created_at',
+                        name: 'Date'
+
+                    },
+                        {
+                            data: 'order.order_id',
+                            name: 'Order ID'
+                        },
+                        {
+                            data:'amount',
+                            name:'Amount'
+                        },
+                        {
+                            data:'type',
+                            name:'Type'
+                        },
+                        {
+                            data: 'account',
+                            name: 'Account Name.'
+                        },
+                        {
+                            data:'customer.name',
+                            name:'Customer'
+                        },
+                        {
+                            data:'emp.name',
+                            name:'Receiver'
+                        }
+
+                    ]
+
+                });
+
             });
         });
 

@@ -46,7 +46,7 @@ class SaleOrderController extends Controller
     public function create(){
         $variants=ProductVariations::with('product')->get();
         $taxes=products_tax::all();
-        $allcustomers=Customer::where('customer_type','Lead')->where('status','Qualified')->get();
+        $allcustomers=Customer::all();
         $session_value=\Illuminate\Support\Str::random(10);
         if(Auth::guard('employee')->check()){
 //            dd('emp');

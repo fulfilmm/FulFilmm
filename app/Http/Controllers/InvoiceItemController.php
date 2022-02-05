@@ -54,6 +54,48 @@ class InvoiceItemController extends Controller
             if (!Session::has("data-" . $Auth)) {
                 Session::push("data-" . $Auth, $request->all());
             }
+            if (isset($request->foc)) {
+                $items = new OrderItem();
+                $items->description = 'This is FOC item';
+                $items->quantity = 1;
+                $items->variant_id = $request->variant_id;
+                $items->unit_price = 0;
+                $items->total = 0;
+                $items->creation_id = $request->invoice_id;
+                $items->order_id = $request->order_id ?? null;
+                $items->state = 1;
+                $items->foc=true;
+                $items->save();
+                return response()->json([
+                    'Message' => 'Success'
+                ]);
+            }else{
+                $price = product_price::where('sale_type',$request->inv_type)->where('product_id', $request->variant_id)->first();
+                if($price != null){
+                    $items = new OrderItem();
+                    $items->description =$variant->description;
+                    $items->quantity = 1;
+                    $items->variant_id = $request->variant_id;
+                    $items->sell_unit = $sale_unit->id;
+                    $items->unit_price =$price->price ?? 0;
+                    $items->total = $price->price ?? 0;
+                    $items->sell_unit = $sale_unit->id;
+                    $items->creation_id = $request->invoice_id;
+                    $items->order_id = $request->order_id ?? null;
+                    $items->state = 1;
+                    $items->save();
+//        if($request->order_id!=null){
+//            $order=Order::where('id',$request->order_id)->first();
+//            $order->total_amount=$request->grand_total+$product->sale_price;
+//            $order->update();
+//        }
+                    return response()->json([
+                        'Message' => 'Success'
+                    ]);
+                }else {
+                    return response()->json(['Error' => 'This product is does not fixed price']);
+                }
+            }
 //            dd('invoice');
         } else if ($request->type == 'order') {
             if (Auth::guard('customer')->check()) {
@@ -81,54 +123,16 @@ class InvoiceItemController extends Controller
                     $items->state = 0;
 
                     $items->save();
+                return response()->json([
+                    'Message' => 'Success'
+                ]);
 
             }
         }
 
 
 
-        if (isset($request->foc)) {
-            $items = new OrderItem();
-            $items->description = 'This is FOC item';
-            $items->quantity = 1;
-            $items->variant_id = $request->variant_id;
-            $items->unit_price = 0;
-            $items->total = 0;
-            $items->creation_id = $request->invoice_id;
-            $items->order_id = $request->order_id ?? null;
-            $items->state = 1;
-            $items->foc=true;
-            $items->save();
-            return response()->json([
-                'Message' => 'Success'
-            ]);
-        }else{
-            $price = product_price::where('sale_type',$request->inv_type)->where('product_id', $request->variant_id)->first();
-            if($price != null){
-            $items = new OrderItem();
-            $items->description =$variant->description;
-            $items->quantity = 1;
-            $items->variant_id = $request->variant_id;
-            $items->sell_unit = $sale_unit->id;
-            $items->unit_price =$price->price ?? 0;
-            $items->total = $price->price ?? 0;
-            $items->sell_unit = $sale_unit->id;
-            $items->creation_id = $request->invoice_id;
-            $items->order_id = $request->order_id ?? null;
-            $items->state = 1;
-            $items->save();
-//        if($request->order_id!=null){
-//            $order=Order::where('id',$request->order_id)->first();
-//            $order->total_amount=$request->grand_total+$product->sale_price;
-//            $order->update();
-//        }
-            return response()->json([
-                'Message' => 'Success'
-            ]);
-        }else {
-                return response()->json(['Error' => 'This product is does not fixed price']);
-            }
-        }
+
     }
 
     /**

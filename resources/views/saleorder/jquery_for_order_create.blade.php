@@ -1,6 +1,7 @@
 <script>
 
     $(document).ready(function () {
+        $('select').select2();
 
         var type = $("input[name='shipping_type']:checked").val();
         if (type == 'pickup') {
@@ -99,7 +100,8 @@
                     'shipping_address': shipping_address,
                     'shipping_type': shipping_type,
                     'quotation_id': quotation_id,
-                    'type':'order'
+                    'type':'order',
+                    'inv_type':'Whole Sale'
 
                 },
                 type: 'POST',

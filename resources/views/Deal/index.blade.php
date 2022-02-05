@@ -1,12 +1,6 @@
 @extends('layout.mainlayout')
 @section('title','All Deals')
 @section('content')
-
-    <style>
-        .kanban-list{
-            min-height: 500px;
-        }
-    </style>
         <!-- Page Content -->
         <div class="content container-fluid">
 
@@ -76,10 +70,10 @@
                     </table>
                 </div>
                 <div class="tab-pane fade show active" id="kaban_view" role="tabpanel" aria-labelledby="home-tab">
-                    <div class="kanban-board card mb-0 col-12">
+                    <div class="kanban-board card mb-0 col-12 shadow">
                         <div class="card-body">
                             <div class="kanban-cont">
-                                <div class="kanban-list kanban-purple">
+                                <div class="kanban-list kanban-purple shadow">
                                     <div class="kanban-header">
                                         <span class="status-title">New</span>
                                     </div>
@@ -127,7 +121,7 @@
                                         @endforeach
                                     </div>
                                 </div>
-                                <div class="kanban-list kanban-success">
+                                <div class="kanban-list kanban-success shadow">
                                     <div class="kanban-header">
                                         <span class="status-title">Qualified</span>
 
@@ -175,7 +169,7 @@
                                     </div>
 
                                 </div>
-                                <div class="kanban-list kanban-warning">
+                                <div class="kanban-list kanban-warning shadow">
                                     <div class="kanban-header">
                                     <span class="status-title">Quotation</span>
                                     </div>
@@ -224,7 +218,7 @@
                                     </div>
 
                                 </div>
-                                <div class="kanban-list kanban-info">
+                                <div class="kanban-list kanban-info shadow">
                                     <div class="kanban-header">
                                         <span class="status-title">Invoicing</span>
                                     </div>
@@ -274,7 +268,7 @@
                                     </div>
 
                                 </div>
-                                <div class="kanban-list kanban-success">
+                                <div class="kanban-list kanban-success shadow">
                                     <div class="kanban-header">
                                         <span class="status-title">Win</span>
                                     </div>
@@ -321,7 +315,7 @@
                                         @endforeach
                                     </div>
                                 </div>
-                                <div class="kanban-list kanban-danger">
+                                <div class="kanban-list kanban-danger shadow">
                                     <div class="kanban-header">
                                         <span class="status-title">Lost</span>
                                     </div>

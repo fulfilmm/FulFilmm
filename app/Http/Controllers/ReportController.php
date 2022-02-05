@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\AdvancePayment;
 use App\Models\Customer;
 use App\Models\deal;
 use App\Models\DealActivitySchedule;
@@ -215,4 +216,20 @@ class ReportController extends Controller
                 ->make(true);
         }
     }
+    public function advancedaily(Request $request){
+        if ($request->ajax()) {
+            $advancepayment=AdvancePayment::with('customer','emp','order','account')->get();
+        }
+            return Datatables::of($advancepayment)
+                ->addIndexColumn()
+                ->editColumn('created_at', function ($data) {
+                    $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->updated_at)->toFormattedDateString();
+                    return $formatedDate;
+                })
+                ->addColumn('account',function ($data){
+                    return $data->account->name??'N/A';
+                })
+                ->make(true);
+        }
+
 }

@@ -49,7 +49,7 @@
                         </li>
 
                         <li class="submenu">
-                            <a href="#"><i class="fa fa-th-list" style="font-size: 18px;"></i><span> Contact</span> <span class="menu-arrow"></span></a>
+                            <a href="#"><i class="la la-th-list" style="font-size: 18px;"></i><span> Contact</span> <span class="menu-arrow"></span></a>
                             <ul style="display: none;">
 
                                 <li><a class="{{ Request::is('customers') ? 'active' : '' }}"
@@ -60,7 +60,7 @@
                             </ul>
                         </li>
                         <li class="submenu">
-                            <a href="#"><i class="fa fa-building" style="font-size: 18px;"></i><span> Company</span> <span
+                            <a href="#"><i class="la la-building" style="font-size: 18px;"></i><span> Company</span> <span
                                         class="menu-arrow"></span></a>
                             <ul style="display: none;">
 
@@ -86,7 +86,7 @@
                                         class="menu-arrow"></span></a>
                             <ul style="display: none;">
                                 <li class="submenu">
-                                    <a href="#"><i class="fa fa-th-list" style="font-size: 18px;"></i><span> Office Branch</span> <span class="menu-arrow"></span></a>
+                                    <a href="#"><i class="la la-th-list" style="font-size: 18px;"></i><span> Office Branch</span> <span class="menu-arrow"></span></a>
                                     <ul style="display: none;">
 
                                         <li><a class="{{ Request::is('officebranch') ? 'active' : '' }}"
@@ -384,7 +384,7 @@
                                 <li><a class="{{ Request::is('sale/activity') ? 'active' : '' }}"
                                        href="{{ route('activity.index') }}" style="text-decoration: none"><i class="la la-calendar mr-1" style="font-size: 18px;"></i>Sale Activity</a></li>
                                 <li><a class="{{ Request::is('saletargets/create') ? 'active' : '' }}" href="{{ route('saletargets.create') }}" style="text-decoration: none"><i class="la la-bullseye mr-1" style="font-size: 18px;"></i> Add Sale Target</a></li>
-                                <li><a class="{{ Request::is('contact/qualified') ? 'active' : '' }}" href="{{ route('qualified_contact') }}" style="text-decoration: none"><i class="fa fa-users mr-1" style="font-size: 18px;"></i> Customer</a></li>
+                                <li><a class="{{ Request::is('contact/qualified') ? 'active' : '' }}" href="{{ route('qualified_contact') }}" style="text-decoration: none"><i class="la la-users mr-1" style="font-size: 18px;"></i> Customer</a></li>
                                 <li class="submenu">
                                     <a href="#"><img src="{{url(asset('img/icon_image/invoice.png'))}}"  alt="" width="18px" height="18px" class="mr-1" ><span> Invoice</span> <span
                                                 class="menu-arrow"></span></a>
@@ -461,7 +461,7 @@
                     @else
                     <ul>
                         <li>
-                            <a href="{{url('customer/home')}}"><i class="fa fa-home mr-2"></i> Home</a>
+                            <a href="{{url('customer/home')}}"><i class="la la-home mr-2"></i> Home</a>
                         </li>
                         <li class="submenu">
                             <a href="{{ route('deliveries.index') }}"><i class="la la-truck" style="font-size: 18px;"></i> <span>Delivery</span> <span
