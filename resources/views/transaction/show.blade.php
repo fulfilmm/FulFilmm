@@ -33,7 +33,7 @@
                         <div class="row my-1">
                             <div class="col-2">Account</div>
                             <div class="col-8">
-                                : {{$transaction->account->name}}</div>
+                                : {{$transaction->account->name??'N/A'}}</div>
                         </div>
                         <div class="row my-1">
                             <div class="col-2">Amount</div>

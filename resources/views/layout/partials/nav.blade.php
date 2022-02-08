@@ -212,6 +212,19 @@
                                         class="menu-arrow"></span></a>
                             <ul style="display: none;">
                                 <li class="submenu">
+                                    <a href="#"><i class="la la-building mr-2" style="font-size: 18px;"></i> <span>Payment Receive</span> <span
+                                                class="menu-arrow"></span></a>
+                                    <ul style="display: none;">
+
+                                        <li><a class="{{ Request::is('payment_receives') ? 'active' : '' }}"
+                                               href="{{ route('payment_receives.index') }}" style="text-decoration: none">All Receive</a></li>
+
+                                        <li><a class="{{ Request::is('payment_receives/create') ? 'active' : '' }}"
+                                               href="{{ route('payment_receives.create') }}" style="text-decoration: none">Create  Receive</a></li>
+
+                                    </ul>
+                                </li>
+                                <li class="submenu">
                                     <a href="#"><i class="la la-building mr-2" style="font-size: 18px;"></i> <span> Expense Claim</span> <span
                                                 class="menu-arrow"></span></a>
                                     <ul style="display: none;">

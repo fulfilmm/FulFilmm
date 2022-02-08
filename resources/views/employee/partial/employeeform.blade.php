@@ -25,6 +25,33 @@
                         <x-forms.basic.input name="name" title="Name" value="{{$employee->name ?? old('name')}}" required></x-forms.basic.input>
                     </div>
                 </div>
+                <div class="col-md-12 mt-3">
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="input-group">
+                                    <input type="radio" id="gender" class="mr-2 ml-3" name="gender" value="Male">
+                                    <label for="Male">Male</label>
+                                </div>
+                            </div>
+                           <div class="col-6">
+                               <div class="input-group">
+                                   <input type="radio" id="gender" class="mr-2 ml-3" name="gender" value="Female">
+                                   <label for="Female">Female</label>
+                               </div>
+                           </div>
+                        </div>
+                        <div class="input-group ">
+                            <div class="checkbox">
+                                <label for="can_login">
+                                    <input type="checkbox" value='1' name="can_login" id="can_login" {{isset( $employee->can_login) ?  $employee->can_login === 1 ? 'checked' : '' : ''}}>
+                                    Can login
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-md-12">
                     <div class="form-group">
                         <label for="email">Email</label>
@@ -32,7 +59,7 @@
                     </div>
                 </div>
                 @if(!isset($employee))
-                    <div class="col-md-12 mb-3">
+                    <div class="col-md-12">
                         <div class="form-group">
                             <label for="password">Password</label>
 
@@ -41,22 +68,22 @@
                         </div>
                     </div>
                     @else
-                    <div class="col-md-12 mb-3">
+                    <div class="col-md-12">
                         <div class="form-group">
                             <label for="password">Password</label>
-                            <input type="password" class="form-control" readonly>
+                            <input type="password" id="password" class="form-control" readonly>
                         </div>
                     </div>
                 @endif
                 <div class="col-md-12">
-                    <div class="input-group ">
-
-                        <div class="checkbox">
-                            <label for="can_login">
-                                <input type="checkbox" value='1' name="can_login" id="can_login" {{isset( $employee->can_login) ?  $employee->can_login === 1 ? 'checked' : '' : ''}}>
-                                Can login
-                            </label>
-                        </div>
+                    <div class="form-group">
+                        <label for="report_to">Report To</label>
+                        <select name="report_to" id="report_to" class="form-control">
+                            <option value="">Select Report Person</option>
+                            @foreach($all_employee as $key=>$val)
+                                <option value="{{$key}}">{{$val}}</option>
+                                @endforeach
+                        </select>
                     </div>
                 </div>
             </div>
@@ -110,8 +137,20 @@
                        </div>
                        <div class="col-md-12">
                            <div class="form-group">
+                               <label for="dob">Date Of Birth</label>
+                               <input type="date" class="form-control" name="dob" title="dob" id="dob" value="{{$employee->dob??old('dob')}}">
+                           </div>
+                       </div>
+                       <div class="col-md-12">
+                           <div class="form-group">
                                <label for="join_date">Join Date</label>
                                <x-forms.basic.input name="join_date" title="Joined Date" type="date" value="{{$employee->join_date ?? old('join_date')}}" required></x-forms.basic.input>
+                           </div>
+                       </div>
+                       <div class="col-md-12">
+                           <div class="form-group">
+                               <label for="address">Address</label>
+                               <input type="text" class="form-control" name="address" id="address" value="{{$employee->address??old('address')}}">
                            </div>
                        </div>
 

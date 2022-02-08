@@ -20,6 +20,10 @@ class CreateEmployeesTable extends Migration
             $table->foreignId('department_id');
             $table->string('phone', 16)->nullable();
             $table->string('email', 100)->unique()->nullable();
+            $table->bigInteger('report_to')->unsigned()->nullable();
+            $table->dateTime('dob')->nullable();
+            $table->text('address')->nullable();
+            $table->string('gender')->nullable();
             $table->string('work_phone', 16)->nullable();
             $table->boolean('can_login')->default(false);
             $table->boolean('can_post_assignments')->default(false);

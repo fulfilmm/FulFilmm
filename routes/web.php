@@ -454,6 +454,7 @@ Route::get('delivery/tracking/{uuid}',[ShippmentController::class,'tracking'])->
 
 
 //Route::get('stockout/show/{id}',[StockTransactionController::class,'show_stockout'])->name('stockout.show');
+Route::resource('payment_receives',\App\Http\Controllers\PaymentReceiveController::class);
 
 
 

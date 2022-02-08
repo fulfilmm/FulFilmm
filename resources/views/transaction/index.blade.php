@@ -62,7 +62,7 @@
                                 <td>{{number_format($transaction->revenue->amount)}}</td>
                                 <td>{{$transaction->type}}</td>
                                 <td>{{$transaction->revenue->category}}</td>
-                                <td>{{$transaction->account->name}}</td>
+                                <td>{{$transaction->account->name??'N/A'}}</td>
                                 <td>
                                     @if($transaction->revenue->approve==0)
                                         <a href="{{url('transaction/approve/'.$transaction->revenue->id.'/Revenue')}}" class="btn btn-white btn-white btn-sm">Approve</a>

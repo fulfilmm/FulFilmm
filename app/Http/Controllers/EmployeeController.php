@@ -10,6 +10,7 @@ use App\Models\Invoice;
 use App\Models\OfficeBranch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\EmployeeExport;
@@ -59,11 +60,13 @@ class EmployeeController extends Controller
         $departments = Department::all()->pluck('name', 'id');
         $roles = Role::all()->pluck('name', 'id');
         $office=OfficeBranch::all();
+        $all_employee=Employee::all()->pluck('name','id')->all();
 
         return view('employee.create', compact(
             'departments',
             'roles',
-            'office'
+            'office',
+            'all_employee'
         ));
     }
 
@@ -93,6 +96,7 @@ class EmployeeController extends Controller
      */
     public function store(EmployeeRequest $request)
     {
+//        dd($request->all());
         $this->validate($request,[
             'email'=>'unique:employees'
         ]);
@@ -118,6 +122,10 @@ class EmployeeController extends Controller
         $employee->password=$request->password;
         $employee->department_id=$data['department_id'];
         $employee->can_login=$data['can_login']??0;
+        $employee->dob=$request->dob;
+        $employee->address=$request->address;
+        $employee->report_to=$request->report_to;
+        $employee->gender=$request->gender;
         if($request->profile_img!=null){
             $name = $request->profile_img->getClientOriginalName();
             $request->profile_img->move(public_path() . '/img/profiles', $name);
@@ -136,9 +144,23 @@ class EmployeeController extends Controller
      */
     public function show($id)
     {
-        $employee=Employee::with('department')->where('id',$id)->first();
+        $employee=Employee::with('department','reportperson')->where('id',$id)->first();
         $invoices=Invoice::with('customer')->where('emp_id',Auth::guard('employee')->user()->id)->get();
-        return view('employee.show',compact('employee','invoices'));
+        $grand_total = DB::table("invoices")
+            ->select(DB::raw("SUM(grand_total) as total"))
+            ->where('emp_id',$id)
+            ->get();
+        $total_on_hand=DB::table("revenues")
+            ->select(DB::raw("SUM(amount) as total"))
+            ->where('emp_id',$id)
+            ->where('approve',0)
+            ->get();
+        $total_on_transaction=DB::table("revenues")
+            ->select(DB::raw("SUM(amount) as total"))
+            ->where('emp_id',$id)
+            ->where('approve',1)
+            ->get();
+        return view('employee.show',compact('employee','invoices','grand_total','total_on_hand','total_on_transaction'));
     }
 
     /**
@@ -152,12 +174,14 @@ class EmployeeController extends Controller
         $departments = Department::all()->pluck('name', 'id');
         $roles = Role::all()->pluck('name', 'id');
         $office=OfficeBranch::all();
+        $all_employee=Employee::all()->pluck('name','id')->all();
 
         return view('employee.edit', compact(
             'departments',
             'roles',
             'employee',
-            'office'
+            'office',
+            'all_employee'
         ));
     }
 
@@ -184,6 +208,10 @@ class EmployeeController extends Controller
         $employee->department_id=$data['department_id'];
         $employee->can_login=$data['can_login'];
         $employee->can_post_assignments=$data['can_post_assignment'];
+        $employee->dob=$request->dob;
+        $employee->address=$request->address;
+        $employee->report_to=$request->report_to;
+        $employee->gender=$request->gender;
         if($request->profile_img!=null){
             $name = $request->profile_img->getClientOriginalName();
             $request->profile_img->move(public_path() . '/img/profiles', $name);

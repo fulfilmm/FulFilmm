@@ -73,6 +73,9 @@ class Employee extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(ticket_follower::class);
     }
+    public function reportperson(){
+        return $this->belongsTo(Employee::class,'report_to','id');
+    }
 //    public function project_tasks()
 //    {
 //        return $this->belongsToMany(ProjectTask::class, 'project_task_employee');

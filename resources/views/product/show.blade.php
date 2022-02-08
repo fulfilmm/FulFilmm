@@ -119,7 +119,6 @@
                       <th>Serial Number</th>
                       <th>Variation</th>
                       <th>Created Date</th>
-                      <th>Barcode</th>
 
                   </tr>
                   </thead>
@@ -130,50 +129,6 @@
                             <td>{{$item->serial_no}}</td>
                             <td>{{$item->variant}}</td>
                             <td>{{$item->created_at->toFormattedDateString()}}</td>
-                            <td>
-                                <div id="barcodeTarget{{$item->id}}" class="barcodeTarget"></div>
-                                <canvas id="canvasTarget{{$item->id}}" width="100" height="50"></canvas>
-                                <script type="text/javascript">
-                                        var btype ="std25";
-                                        var renderer ="css";
-                                        var value="{{$item->product_code}}";
-
-
-                                        var settings = {
-                                            output:renderer,
-                                            bgColor: '#FFFFFF',
-                                            color: '#000000',
-                                            barWidth: '1',
-                                            barHeight: '20',
-                                            moduleSize: '5',
-                                            posX: '10',
-                                            posY: '20',
-                                            addQuietZone: '1'
-                                        };
-
-                                        if (renderer == 'canvas'){
-                                            clearCanvas();
-                                            $("#barcodeTarget{{$item->id}}").hide();
-                                            $("#canvasTarget{{$item->id}}").show().barcode(value, btype, settings);
-                                        } else {
-                                            $("#canvasTarget{{$item->id}}").hide();
-                                            $("#barcodeTarget{{$item->id}}").html("").show().barcode(value, btype, settings);
-                                        }
-
-
-                                    function clearCanvas(){
-                                        var canvas = $('#canvasTarget{{$item->id}}').get(0);
-                                        var ctx = canvas.getContext('2d');
-                                        ctx.lineWidth = 1;
-                                        ctx.lineCap = 'butt';
-                                        ctx.fillStyle = '#FFFFFF';
-                                        ctx.strokeStyle  = '#000000';
-                                        ctx.clearRect (0, 0, canvas.width, canvas.height);
-                                        ctx.strokeRect (0, 0, canvas.width, canvas.height);
-                                    }
-
-                                </script>
-                            </td>
                         </tr>
                         @endforeach
                     </tbody>
