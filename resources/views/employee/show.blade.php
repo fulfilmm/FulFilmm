@@ -48,7 +48,7 @@
                                             </li>
                                             <li>
                                                 <div class="title">Birthday:</div>
-                                                <div class="text">{{$employee->dob??'yyyy-mm-dd'}}</div>
+                                                <div class="text">{{isset($employee->dob)?\Carbon\Carbon::parse($employee->dob)->toFormattedDateString():'yyyy-mm-dd'}}</div>
                                             </li>
                                             <li>
                                                 <div class="title">Address:</div>
@@ -63,11 +63,12 @@
                                                 <div class="text">
                                                     <div class="avatar-box">
                                                         <div class="avatar avatar-xs">
-                                                            <img src="img/profiles/avatar-16.jpg" alt="">
+                                                            {{--@dd($employee->reportperson)--}}
+                                                            <img src="{{$employee->reportperson!=null? url(asset('img/profiles/'.$employee->reportperson->profile_img)):url(asset('img/profiles/avatar-01.jpg'))}}" alt="">
                                                         </div>
                                                     </div>
                                                     <a href="profile">
-                                                        Jeffery Lalor
+                                                       {{$employee->reportperson->name??'N/A'}}
                                                     </a>
                                                 </div>
                                             </li>
@@ -130,7 +131,6 @@
                                                    {{--<a class="btn btn-white btn-sm btn-rounded "  href="#" data-toggle="modal" data-target="#change_status{{$invoice->id}}"></a>--}}
                                                </div>
                                            </td>
-                                           @include('invoice.inv_statuschange')
                                            <td class="text-right">
                                                <div class="dropdown dropdown-action">
                                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -143,9 +143,25 @@
                                                </div>
                                            </td>
                                        </tr>
-                                       @include('invoice.delete')
                                    @endforeach
                                    </tbody>
+                                   <tfoot>
+                                   <tr>
+                                       <td colspan="5"></td>
+                                       <td>Total On hand</td>
+                                       <td>{{$total_on_hand[0]->total??0}}</td>
+                                   </tr>
+                                   <tr>
+                                       <td colspan="5"></td>
+                                       <td>Total Transferred Amount</td>
+                                       <td>{{$total_on_transaction[0]->total??0}}</td>
+                                   </tr>
+                                        <tr>
+                                            <td colspan="5"></td>
+                                            <td>Total Sale</td>
+                                            <td>{{$grand_total[0]->total??0}}</td>
+                                        </tr>
+                                   </tfoot>
                                </table>
                            </div>
                        </div>
