@@ -1,6 +1,6 @@
 
 <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-    <div class="profile-widget">
+    <div class="profile-widget shadow">
         <div class="profile-img">
             <a href="{{route( $route.'.show', $id)}}" class="avatar text-center">
                 <img src="{{$image ??''}}" alt="Add profile" data-toggle="tooltip" title="Profile" width="80px" height="80px" style="font-size: 8px;">

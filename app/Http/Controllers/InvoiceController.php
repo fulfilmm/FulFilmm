@@ -51,36 +51,42 @@ class InvoiceController extends Controller
      */
     public function create()
     {
-        $allcustomers =Customer::all();
-        $taxes=products_tax::all();
-        $Auth=Auth::guard('employee')->user()->name;
-        $data=Session::get('data-'.Auth::guard('employee')->user()->id);
-//        dd($data);
-        $session_value=\Illuminate\Support\Str::random(10);
-        if(!Session::has($Auth)){
-            Session::push("$Auth",$session_value);
-            $request_id=Session::get($Auth);
-        }else{
-            $request_id=Session::get($Auth);
-        }
-        $orderline=OrderItem::with('variant')->where('creation_id',$request_id)->get();
-//        dd($orderline);
-        $grand_total=0;
-        for ($i=0;$i<count($orderline);$i++){
-            $grand_total=$grand_total+$orderline[$i]->total;
-        }
-        $status=$this->status;
-        $unit_price=product_price::where('sale_type','Whole Sale')->get();
-        $dis_promo=DiscountPromotion::where('sale_type','Whole Sale')->get();
-        $focs=Freeofchare::with('variant')->get();
-        $type='Whole Sale';
         $Auth=Auth::guard('employee')->user();
-        $warehouse=OfficeBranch::with('warehouse')->where('id',$Auth->office_branch_id)->get();
-        $aval_product=Stock::with('variant')->where('available','>',0)->get();
-        return view('invoice.create',compact('warehouse','type','request_id','allcustomers','orderline','grand_total','status','data','aval_product','taxes','unit_price','dis_promo','focs'));
+        if($Auth->office_branch_id!=null){
+            $allcustomers = Customer::all();
+            $taxes = products_tax::all();
+            $data = Session::get('data-' . Auth::guard('employee')->user()->id);
+//        dd($data);
+            $session_value = \Illuminate\Support\Str::random(10);
+            if (!Session::has($Auth->name)) {
+                Session::push("$Auth->name", $session_value);
+                $request_id = Session::get($Auth->name);
+            } else {
+                $request_id = Session::get($Auth->name);
+            }
+            $orderline = OrderItem::with('variant')->where('creation_id', $request_id)->get();
+//        dd($orderline);
+            $grand_total = 0;
+            for ($i = 0; $i < count($orderline); $i++) {
+                $grand_total = $grand_total + $orderline[$i]->total;
+            }
+            $status = $this->status;
+            $unit_price = product_price::where('sale_type', 'Whole Sale')->get();
+            $dis_promo = DiscountPromotion::where('sale_type', 'Whole Sale')->get();
+            $focs = Freeofchare::with('variant')->get();
+            $type = 'Whole Sale';
+
+            $warehouse = OfficeBranch::with('warehouse')->where('id', $Auth->office_branch_id)->get();
+            $aval_product = Stock::with('variant')->where('available', '>', 0)->get();
+            return view('invoice.create', compact('warehouse', 'type', 'request_id', 'allcustomers', 'orderline', 'grand_total', 'status', 'data', 'aval_product', 'taxes', 'unit_price', 'dis_promo', 'focs'));
+        }else{
+            return redirect()->back()->with('error','Firstly,Fixed your Branch of Office');
+    }
     }
     public function retail_inv()
     {
+        $Auth=Auth::guard('employee')->user();
+        if($Auth->office_branch_id!=null){
         $allcustomers =Customer::all();
         $aval_product=Stock::with('variant')->where('available','>',0)->get();
 //        foreach ($pd as $product){
@@ -93,17 +99,17 @@ class InvoiceController extends Controller
 //            }
 //        }
         $taxes=products_tax::all();
-        $Auth=Auth::guard('employee')->user()->name;
+
 //        Session::forget('data-'.Auth::guard('employee')->user()->id);
         $data=Session::get('data-'.Auth::guard('employee')->user()->id);
 //        dd($data);
 //        Session::forget($Auth);
         $session_value=\Illuminate\Support\Str::random(10);
-        if(!Session::has($Auth)){
-            Session::push("$Auth",$session_value);
-            $request_id=Session::get($Auth);
+        if(!Session::has($Auth->name)){
+            Session::push("$Auth->name",$session_value);
+            $request_id=Session::get($Auth->name);
         }else{
-            $request_id=Session::get($Auth);
+            $request_id=Session::get($Auth->name);
         }
 //        $generate_id=Str::uuid();
         $orderline=OrderItem::with('variant')->where('creation_id',$request_id)->get();
@@ -121,6 +127,9 @@ class InvoiceController extends Controller
 
         $warehouse=OfficeBranch::with('warehouse')->where('id',$Auth->office_branch_id)->get();
         return view('invoice.create',compact('warehouse','request_id','allcustomers','orderline','grand_total','status','data','aval_product','taxes','unit_price','dis_promo','focs','type'));
+        }else{
+            return redirect()->back()->with('error','Firstly,Fixed your Branch of Office');
+        }
     }
 
     /**

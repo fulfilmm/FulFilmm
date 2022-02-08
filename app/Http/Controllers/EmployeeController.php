@@ -6,8 +6,10 @@ use App\Http\Requests\EmployeeRequest;
 use App\Models\Brand;
 use App\Models\Department;
 use App\Models\Employee;
+use App\Models\Invoice;
 use App\Models\OfficeBranch;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\EmployeeExport;
@@ -36,6 +38,11 @@ class EmployeeController extends Controller
 
     public function card(){
         $employees = Employee::orderBy('empid','desc')->paginate(20);
+        $branch=OfficeBranch::all();
+        return view('employee.data.cards', compact('employees','branch'));
+    }
+    public function search(Request $request){
+        $employees = Employee::orderBy('empid','desc')->where('id',$request->search)->orWhere('name','LIKE',$request->search)->orWhere('empid',$request->serach)->paginate(20);
         $branch=OfficeBranch::all();
         return view('employee.data.cards', compact('employees','branch'));
     }
@@ -130,7 +137,8 @@ class EmployeeController extends Controller
     public function show($id)
     {
         $employee=Employee::with('department')->where('id',$id)->first();
-        return view('employee.show',compact('employee'));
+        $invoices=Invoice::with('customer')->where('emp_id',Auth::guard('employee')->user()->id)->get();
+        return view('employee.show',compact('employee','invoices'));
     }
 
     /**

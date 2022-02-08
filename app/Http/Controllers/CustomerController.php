@@ -167,7 +167,7 @@ class CustomerController extends Controller
             }
         return redirect()->route('customers.index')->with('success', __('alert.create_success'));
         }catch (Exception $e){
-            return $e;
+            return redirect()->back()->with('error',$e->getMessage());
         }
     }
 

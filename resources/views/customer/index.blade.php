@@ -1,7 +1,6 @@
 @extends('layout.mainlayout')
 
 @section('name', 'Contact')
-
 @section('content')
 
     <!-- Page Header -->
@@ -91,6 +90,7 @@
     </div>
     <script>
         $(document).ready(function() {
+            $('select').select2();
             $('input[type="checkbox"]').click(function () {
                 $('input[type="checkbox"]').click(function () {
                     var checked_id = new Array();

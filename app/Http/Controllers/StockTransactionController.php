@@ -78,7 +78,7 @@ class StockTransactionController extends Controller
     public function stockout(Request $request)
     {
 //        dd($request->all());
-        $this->validate($request, ['qty' => 'required', 'customer_id' => 'required','type'=>'required']);
+        $this->validate($request, ['qty' => 'required','type'=>'required']);
         $stock=Stock::where('variant_id',$request->variantion_id)->where('warehouse_id',$request->warehouse_id)->first();
         if($stock->stock_balance < $request->qty){
             return redirect()->back()->with('warning','Not Enough Product!Maximum Product is '.$stock->stock_balance);

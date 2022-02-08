@@ -1,4 +1,10 @@
 <div class="card shadow">
+    <div class="card-header">
+        <h4 class="card-title mb-0 d-inline">Company</h4>
+        <div class="float-right">
+            <input type="text" wire:model="search_key" class="form-control-sm form-control rounded-pill" placeholder="Search">
+        </div>
+    </div>
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-nowrap datatable mb-0 table-hover">

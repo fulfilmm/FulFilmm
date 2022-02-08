@@ -25,6 +25,9 @@
                                 <option value="{{$product->id}}">{{$product->product->name}} ({{$product->variant}})</option>
                             @endforeach
                         </select>
+                        @error('variantion_id')
+                        <span class="text-danger">{{$message}}</span>
+                        @enderror
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -35,6 +38,9 @@
                             <option value="{{$emp->id}}">{{$emp->name}}</option>
                                 @endforeach
                         </select>
+                        @error('emp_id')
+                        <span class="text-danger">{{$message}}</span>
+                        @enderror
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -47,6 +53,9 @@
                                 @endif
                             @endforeach
                         </select>
+                        @error('approver_id')
+                        <span class="text-danger">{{$message}}</span>
+                        @enderror
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -58,6 +67,9 @@
                             <option value="{{$item}}">{{$item}}</option>
                                 @endforeach
                         </select>
+                        @error('type')
+                        <span class="text-danger">{{$message}}</span>
+                        @enderror
                     </div>
                 </div>
                 <div class="col-md-4" id="customer_div">
@@ -69,6 +81,9 @@
                                 <option value="{{$customer->id}}">{{$customer->name}}</option>
                             @endforeach
                         </select>
+                        @error('customer_id')
+                        <span class="text-danger">{{$message}}</span>
+                        @enderror
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -79,6 +94,9 @@
                             <option value="{{$warehouse->id}}">{{$warehouse->name}}{{$warehouse->is_virtual?'(Virtual Warehouse)':''}}</option>
                                 @endforeach
                         </select>
+                        @error('warehouse_id')
+                        <span class="text-danger">{{$message}}</span>
+                        @enderror
                     </div>
                 </div>
 

@@ -210,7 +210,6 @@ class TransactionController extends Controller
            $this->validate($request, [
                'transaction_date' => 'required',
                'amount' => 'required',
-               'account' => 'required',
                'customer_id' => 'required',
                'category' => 'required',
                'payment_method' => 'required',

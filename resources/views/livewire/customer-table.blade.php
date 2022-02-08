@@ -1,20 +1,8 @@
 <div class="card shadow">
     <div class="card-header">
         <h4 class="card-title mb-0 d-inline">Contacts</h4>
-        <div class="form-group col-md-4 col-12 float-right" id="action">
-            <div class="input-group">
-                <select name="type" id="type" class="form-control">
-                    <option value="">Select Customer Type</option>
-                    <option value="Customer">Customer</option>
-                    <option value="Lead">Lead</option>
-                    <option value="In Query">In Query</option>
-                    <option value="Partner">Partner</option>
-                    <option value="Competitor">Competitor</option>
-                    <option value="Supplier">Supplier</option>
-                    <option value="Courier">Courier</option>
-                </select>
-                <button type="button" data-toggle="tooltip" title="Change type of Customer" id="type_change" class="btn btn-primary"><i class="fa fa-save"></i></button>
-            </div>
+        <div class="float-right">
+            <input type="text" wire:model="search_key" class="form-control-sm form-control rounded-pill" placeholder="Search">
         </div>
     </div>
     <div class="card-body">
@@ -54,6 +42,23 @@
                 </tbody>
             </table>
             {{$customers->links()}}
+        </div>
+    </div>
+    <div class="card-footer">
+        <div class="form-group col-md-4 col-12 float-left" id="action">
+            <div class="input-group">
+                <select name="type" id="type" class="form-control">
+                    <option value="">Select Customer Type</option>
+                    <option value="Customer">Customer</option>
+                    <option value="Lead">Lead</option>
+                    <option value="In Query">In Query</option>
+                    <option value="Partner">Partner</option>
+                    <option value="Competitor">Competitor</option>
+                    <option value="Supplier">Supplier</option>
+                    <option value="Courier">Courier</option>
+                </select>
+                <button type="button" data-toggle="tooltip" title="Change type of Customer" id="type_change" class="btn btn-white"><i class="fa fa-save"></i></button>
+            </div>
         </div>
     </div>
 </div>

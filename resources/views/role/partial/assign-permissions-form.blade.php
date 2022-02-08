@@ -26,9 +26,19 @@
     @endforeach
     <hr>
        <div class="col-12 border-bottom mb-3"></div>
+       <h4 class="col-12">Bill</h4>
+       @foreach ($permissions as $permission)
+           @if($permission->type=='bills')
+               <label for="{{'permission' . $permission->display_name}}" class="col-md-3">
+                   <input type="checkbox" {{$hasPermissions->contains($permission->id)? 'checked' : ''}}  name="permissions[]" id="{{'permission' . $permission->display_name}}" value="{{$permission->id}}"> {{$permission->display_name}}
+               </label>
+           @endif
+       @endforeach
+       <hr>
+       <div class="col-12 border-bottom mb-3"></div>
     <h4 class="col-12">Customer</h4>
     @foreach ($permissions as $permission)
-        @if($permission->type=='customers'||$permission->type=='companies')
+        @if($permission->type=='customers'||$permission->type=='companies'||$permission->type=='lead')
             <label for="{{'permission' . $permission->display_name}}" class="col-md-3">
                 <input type="checkbox" {{$hasPermissions->contains($permission->id)? 'checked' : ''}}  name="permissions[]" id="{{'permission' . $permission->display_name}}" value="{{$permission->id}}"> {{$permission->display_name}}
             </label>
@@ -53,6 +63,15 @@
         @endif
     @endforeach
        <div class="col-12 border-bottom mb-3"></div>
+       <h4 class="col-12">Expense Claim</h4>
+       @foreach ($permissions as $permission)
+           @if($permission->type=='expenseclaims')
+               <label for="{{'permission' . $permission->display_name}}" class="col-md-3">
+                   <input type="checkbox" {{$hasPermissions->contains($permission->id)? 'checked' : ''}}  name="permissions[]" id="{{'permission' . $permission->display_name}}" value="{{$permission->id}}"> {{$permission->display_name}}
+               </label>
+           @endif
+       @endforeach
+       <div class="col-12 border-bottom mb-3"></div>
     <h4 class="col-12">Invoice</h4>
     @foreach ($permissions as $permission)
         @if($permission->type=='invoices')
@@ -62,9 +81,27 @@
         @endif
     @endforeach
        <div class="col-12 border-bottom mb-3"></div>
+       <h4 class="col-12">Inventory</h4>
+       @foreach ($permissions as $permission)
+           @if($permission->type=='inventory')
+               <label for="{{'permission' . $permission->display_name}}" class="col-md-3">
+                   <input type="checkbox" {{$hasPermissions->contains($permission->id)? 'checked' : ''}}  name="permissions[]" id="{{'permission' . $permission->display_name}}" value="{{$permission->id}}"> {{$permission->display_name}}
+               </label>
+           @endif
+       @endforeach
+       <div class="col-12 border-bottom mb-3"></div>
     <h4 class="col-12">Meeting</h4>
     @foreach ($permissions as $permission)
         @if($permission->type=='meetings'||$permission->type=='minutes')
+            <label for="{{'permission' . $permission->display_name}}" class="col-md-3">
+                <input type="checkbox" {{$hasPermissions->contains($permission->id)? 'checked' : ''}}  name="permissions[]" id="{{'permission' . $permission->display_name}}" value="{{$permission->id}}"> {{$permission->display_name}}
+            </label>
+        @endif
+    @endforeach
+       <div class="col-12 border-bottom mb-3"></div>
+       <h4 class="col-12">Office</h4>
+    @foreach ($permissions as $permission)
+        @if($permission->type=='officebranch')
             <label for="{{'permission' . $permission->display_name}}" class="col-md-3">
                 <input type="checkbox" {{$hasPermissions->contains($permission->id)? 'checked' : ''}}  name="permissions[]" id="{{'permission' . $permission->display_name}}" value="{{$permission->id}}"> {{$permission->display_name}}
             </label>
@@ -79,6 +116,33 @@
             </label>
         @endif
     @endforeach
+       <div class="col-12 border-bottom mb-3"></div>
+       <h4 class="col-12">Products</h4>
+       @foreach ($permissions as $permission)
+           @if($permission->type=='products')
+               <label for="{{'permission' . $permission->display_name}}" class="col-md-3">
+                   <input type="checkbox" {{$hasPermissions->contains($permission->id)? 'checked' : ''}}  name="permissions[]" id="{{'permission' . $permission->display_name}}" value="{{$permission->id}}"> {{$permission->display_name}}
+               </label>
+           @endif
+       @endforeach
+       <div class="col-12 border-bottom mb-3"></div>
+       <h4 class="col-12">Products Brand</h4>
+       @foreach ($permissions as $permission)
+           @if($permission->type=='product_brand')
+               <label for="{{'permission' . $permission->display_name}}" class="col-md-3">
+                   <input type="checkbox" {{$hasPermissions->contains($permission->id)? 'checked' : ''}}  name="permissions[]" id="{{'permission' . $permission->display_name}}" value="{{$permission->id}}"> {{$permission->display_name}}
+               </label>
+           @endif
+       @endforeach
+       <div class="col-12 border-bottom mb-3"></div>
+       <h4 class="col-12">Purchase</h4>
+       @foreach ($permissions as $permission)
+           @if($permission->type=='rfqs'||$permission->type=='purchase_request'||$permission->type=='purchaseorders')
+               <label for="{{'permission' . $permission->display_name}}" class="col-md-3">
+                   <input type="checkbox" {{$hasPermissions->contains($permission->id)? 'checked' : ''}}  name="permissions[]" id="{{'permission' . $permission->display_name}}" value="{{$permission->id}}"> {{$permission->display_name}}
+               </label>
+           @endif
+       @endforeach
        <div class="col-12 border-bottom mb-3"></div>
     <h4 class="col-12">Quotation</h4>
     @foreach ($permissions as $permission)
@@ -134,9 +198,18 @@
            @endif
        @endforeach
        <div class="col-12 border-bottom mb-3"></div>
+       <h4 class="col-12 border-top">Sell Unit</h4>
+       @foreach ($permissions as $permission)
+           @if($permission->type=='sellingunits')
+               <label for="{{'permission' . $permission->display_name}}" class="col-md-3">
+                   <input type="checkbox" {{$hasPermissions->contains($permission->id)? 'checked' : ''}}  name="permissions[]" id="{{'permission' . $permission->display_name}}" value="{{$permission->id}}"> {{$permission->display_name}}
+               </label>
+           @endif
+       @endforeach
+       <div class="col-12 border-bottom mb-3"></div>
        <h4 class="col-12 border-top">Dashboard and Report</h4>
        @foreach ($permissions as $permission)
-           @if($permission->type=='Sale')
+           @if($permission->type=='Sale'||$permission->type=='Report')
                <label for="{{'permission' . $permission->display_name}}" class="col-md-3">
                    <input type="checkbox" {{$hasPermissions->contains($permission->id)? 'checked' : ''}}  name="permissions[]" id="{{'permission' . $permission->display_name}}" value="{{$permission->id}}"> {{$permission->display_name}}
                </label>
