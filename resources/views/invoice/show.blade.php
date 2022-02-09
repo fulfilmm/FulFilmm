@@ -356,13 +356,13 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($data['transaction'] as $transaction)
-                                      <tr class="row">
-                                          <td class="col-xs-4 col-sm-4">{{\Carbon\Carbon::parse($transaction->revenue->transaction_date)->toFormattedDateString()}}</td>
-                                          <td class="col-xs-4 col-sm-4">{{$transaction->revenue->amount}}</td>
-                                          <td class="col-xs-4 col-sm-4 d-none d-sm-block">{{$transaction->account->name}}</td>
-                                      </tr>
-                                    @endforeach
+                                {{--@foreach($data['transaction'] as $transaction)--}}
+                                      {{--<tr class="row">--}}
+                                          {{--<td class="col-xs-4 col-sm-4">{{\Carbon\Carbon::parse($transaction->revenue->transaction_date)->toFormattedDateString()}}</td>--}}
+                                          {{--<td class="col-xs-4 col-sm-4">{{$transaction->revenue->amount??'N/A'}}</td>--}}
+                                          {{--<td class="col-xs-4 col-sm-4 d-none d-sm-block">{{$transaction->account->name}}</td>--}}
+                                      {{--</tr>--}}
+                                    {{--@endforeach--}}
                                 </tbody>
                             </table>
                         </div>

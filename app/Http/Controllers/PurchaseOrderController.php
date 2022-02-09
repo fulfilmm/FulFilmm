@@ -66,6 +66,7 @@ class PurchaseOrderController extends Controller
         } else {
             $purchaseorder_id = "PO-00001";
         }
+        dd($product);
         return view('Purchase.PurchaseOrder.create',compact('product','suppliers','source','creation_id','po_data','items','taxes','grand_total','purchaseorder_id'));
     }
 

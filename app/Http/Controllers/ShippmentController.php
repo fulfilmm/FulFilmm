@@ -59,6 +59,7 @@ class ShippmentController extends Controller
     public function store(Request $request)
     {
 //        dd($request->all());
+        $customer=Customer::where('id','courier_id')->first();
         $this->validate($request,[
             'courier_id'=>'required',
             'invoice_id'=>'required',
@@ -70,6 +71,7 @@ class ShippmentController extends Controller
             'shipping_address'=>'required'
         ]);
         DeliveryOrder::create($request->all());
+
         return redirect(route('deliveries.index'));
     }
 

@@ -39,7 +39,7 @@ class InvoiceController extends Controller
     public  $status=['Paid','Unpaid','Pending','Cancel','Draft','Sent'];
     public function index()
     {
-        $allinv=Invoice::with('customer','')->get();
+        $allinv=Invoice::with('customer')->get();
         $status=$this->status;
         return view('invoice.index',compact('allinv','status'));
     }
