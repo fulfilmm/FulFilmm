@@ -129,7 +129,7 @@
                                                                     <select name="[]" id="product{{$item->id}}"
                                                                             class="form-control select2 update{{$item->id}}">
                                                                         @foreach($product as $p)
-                                                                            <option value="{{$p->id}}" {{$p->id==$item->variant_id?'selected':''}}>{{$p->product->name}} ({{$p->size??''}}{{$p->color??''}} {{$p->other??''}})</option>
+                                                                            <option value="{{$p->id}}" {{$p->id==$item->variant_id?'selected':''}}>{{$p->product_name}} ({{$p->variant??''}})</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
