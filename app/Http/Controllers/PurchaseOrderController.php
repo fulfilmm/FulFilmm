@@ -66,7 +66,6 @@ class PurchaseOrderController extends Controller
         } else {
             $purchaseorder_id = "PO-00001";
         }
-        dd($product);
         return view('Purchase.PurchaseOrder.create',compact('product','suppliers','source','creation_id','po_data','items','taxes','grand_total','purchaseorder_id'));
     }
 
@@ -97,7 +96,7 @@ class PurchaseOrderController extends Controller
             Session::forget($Auth);
             return redirect('purchaseorders');
         }catch (Exception $e){
-
+            return redirect()->back()->with('error',$e->getMessage());
         }
     }
 

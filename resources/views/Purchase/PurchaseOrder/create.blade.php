@@ -93,8 +93,8 @@
                                 <td>
                                     @foreach($product as $prd)
                                         @if($prd->id==$item->variant_id)
-                                            {{$prd->product->name}}
-                                            ({{$prd->size??''}} {{$prd->color??''}})
+                                            {{$prd->product_name}}
+                                            ({{$prd->variant??''}})
                                             @endif
                                         @endforeach
                                 </td>
