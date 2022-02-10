@@ -112,9 +112,9 @@ class DatabaseSeeder extends Seeder
 //        priority::create(['priority'=>'Medium','color'=>'info','hours'=>0,'minutes'=>40,'seconds'=>0]);
 //        priority::create(['priority'=>'Low','color'=>'success','hours'=>0,'minutes'=>50,'seconds'=>0]);
         $this->call([
-            PermissionSeeder::class,
-            RoleSeeder::class,
-//            RoleAndPermissionSeeder::class,
+//            PermissionSeeder::class,
+//            RoleSeeder::class,
+            RoleAndPermissionSeeder::class,
         ]);
 
 
