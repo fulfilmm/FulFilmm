@@ -338,6 +338,7 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::get('cc/search',[ApprovalController::class,'cc_search'])->name('cc.search');
     Route::get('product/variant/create',[ProductController::class,'create_variant'])->name('create.variant');
     Route::post('product/variant/store',[ProductController::class,'variant_add'])->name('variant.store');
+    Route::post('product/variant/update/{id}',[ProductController::class,'update_variant'])->name('variant.update');
     Route::resource('sellingunits',SellingUnitController::class);
     Route::resource('discount_promotions',DiscountPromotionController::class);
     Route::get('variant/show/{id}',[ProductController::class,'show_variant'])->name('show.variant');
@@ -454,7 +455,6 @@ Route::get('delivery/tracking/{uuid}',[ShippmentController::class,'tracking'])->
 
 
 //Route::get('stockout/show/{id}',[StockTransactionController::class,'show_stockout'])->name('stockout.show');
-Route::resource('payment_receives',\App\Http\Controllers\PaymentReceiveController::class);
 
 
 

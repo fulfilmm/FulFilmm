@@ -177,22 +177,20 @@
             <td></td>
         </tr>
         <tr class="heading">
-            <td>Item</td>
-            <td>Quantity</td>
-            <td style="min-width: 150px;">Price</td>
-            <td>Tax(%)</td>
-            <td>Discount</td>
-            <td style="min-width: 150px;">Discount Type</td>
-            <td>Total</td>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th style="min-width: 150px;">Price</th>
+            <th>Unit</th>
+            <th>Discount</th>
+            <th>Total</th>
         </tr>
         @foreach($orderItem as $item)
             <tr class="item">
-                <td>{{$item->product->name}}</td>
+                <td>{{$item->variant->product_name}}</td>
                 <td>{{$item->quantity}}</td>
                 <td>{{$item->unit_price}}</td>
-                <td>{{$item->tax_id}}(%)</td>
-                <td>{{$item->discount}}</td>
-                <td>{{$item->discount_type}}</td>
+                <td>{{$item->unit->unit}}</td>
+                <td>{{$item->discount_promotion}}%</td>
                 <td>{{$item->total}}</td>
             </tr>
         @endforeach

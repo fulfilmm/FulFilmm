@@ -1,5 +1,36 @@
 @extends('layout.mainlayout')
 @section('title','Courier Home')
+@section('noti')
+    <li class="nav-item dropdown">
+        <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+            <i class="fa fa-bell-o"></i> <span class="badge badge-pill">{{count($new_deli)}}</span>
+        </a>
+        <div class="dropdown-menu notifications">
+            <div class="topnav-dropdown-header">
+                <span class="notification-title">Notifications</span>
+                {{--                <a href="javascript:void(0)" class="clear-noti"> Clear All </a>--}}
+            </div>
+            <div class="noti-content">
+                <ul class="notification-list">
+                    @foreach($new_deli as $alert)
+                        <li class="notification-message">
+                            <a href="{{route('deliveries.show',$alert->id)}}">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <p class="noti-details">{{$alert->employee->name??\Illuminate\Support\Facades\Auth::guard('employee')->user()->name}}
+                                            <span class="noti-title">Assigned to you {{$alert->delivery_id}}</span></p>
+                                        <p class="noti-time"><span class="notification-time">{{\Carbon\Carbon::parse($alert->created_at)->toFormattedDateString()}} at {{date('h:i a', strtotime(\Carbon\Carbon::parse($alert->created_at)))}}</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
+    </li>
+    @endsection
 @section('content')
 <div class="container-fluid content">
     <div class="row">

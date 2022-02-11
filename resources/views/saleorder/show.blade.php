@@ -17,6 +17,20 @@
 
             <div class="col-lg-12 mb-3">
                 <div class="d-flex justify-content-between float-left ">
+                    <div class="bs-offset-main bs-canvas-anim">
+                        <button class="btn btn-white btn-sm  float-left mr-2" type="button" data-toggle="canvas"
+                                data-target="#bs-canvas-left" aria-expanded="false"
+                                aria-controls="bs-canvas-right"><i class="fa fa-comment "></i>
+                        </button>
+                    </div>
+                    <a class="btn btn-success btn-sm" href="{{route('saleorders.edit',$data['Order']->id)}}">
+                    <span class="float-left" type="button" ><i class="fa fa-edit"></i>
+                    </span>
+                    </a>
+                    <button  class="btn btn-primary btn-sm float-left ml-2" data-toggle="modal" data-target="#advan_pay" type="button" ><i class="fa fa-money " ></i>
+                    </button>
+                </div>
+                <div class="d-flex justify-content-between float-right ">
 
                     <div class="dropdown mr-1">
                         <a class="btn btn-outline-{{$data["Order"]->status=='Confirm'?'success':($data["Order"]->status=='Cancel'?'danger':'info')}} btn-sm btn-rounded  dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -31,30 +45,15 @@
 
                         </div>
                     </div>
-                    <div class="bs-offset-main bs-canvas-anim">
-                        <span class="mt-1 float-left mr-2" type="button" data-toggle="canvas"
-                                data-target="#bs-canvas-left" aria-expanded="false"
-                                aria-controls="bs-canvas-right"><i class="fa fa-comment " style="font-size: 24px;color:#c2ccfd;"></i>
-                        </span>
-                    </div>
-                    <a href="{{route('saleorders.edit',$data['Order']->id)}}">
-                    <span class="float-left mt-1" type="button" ><i class="fa fa-edit" style="font-size: 24px"></i>
-                    </span>
-                    </a>
-                    <span class="float-left ml-2 mt-1" data-toggle="modal" data-target="#advan_pay" type="button" ><i class="fa fa-money " style="font-size: 24px"></i>
-                    </span>
-                </div>
-                <div class="d-flex justify-content-between float-right ">
-
-
-                    <a class="btn btn-primary btn-sm mr-1" href="{{route('generate_inv',$data["Order"]->id??'')}}">
+                    <a class="btn btn-primary btn-sm mr-1 shadow-sm btn-rounded" href="{{route('generate_inv',$data["Order"]->id??'')}}">
                         <svg xmlns="http://www.w3.org/2000/svg" class="mr-2" width="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
                         Generate Invoice
                     </a>
+
                     <div class="bs-offset-main bs-canvas-anim">
-                        <button class="btn btn-primary btn-sm" type="button" data-toggle="canvas"
+                        <button class="btn btn-primary btn-sm shadow-sm btn-rounded" type="button" data-toggle="canvas"
                                 data-target="#bs-canvas-right" aria-expanded="false"
                                 aria-controls="bs-canvas-right">Assign
                         </button>
@@ -65,7 +64,7 @@
         <input type="hidden" id="order_id" value="{{$data['Order']->id}}">
         <div class="row">
             <div class="col-lg-6" id="refreshDiv">
-                <div class="card">
+                <div class="card shadow">
                     <ul class="list-group list-group-flush mr-1 ml-1">
                         <li class="list-group-item p-3">
                             <h5 class="font-weight-bold pb-2">Order Info</h5>
@@ -172,7 +171,7 @@
                 </div>
             </div>
             <div class="col-lg-6">
-                <div class="card">
+                <div class="card shadow">
                     <ul class="list-group list-group-flush mr-1 ml-1">
                         <li class="list-group-item p-3">
                             <h5 class="font-weight-bold pb-2">Customer Details</h5>
@@ -235,6 +234,14 @@
                                             {{$data['Order']->address}}
                                         </td>
                                     </tr>
+                                    <tr class="white-space-no-wrap">
+                                        <td class="text-muted pl-0">
+                                            Remark
+                                        </td>
+                                        <td>
+                                            {{$data['Order']->comment}}
+                                        </td>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -243,99 +250,103 @@
                 </div>
             </div>
             <div class="col-lg-12">
-                <div class="table-responsive">
-                   @if(!$data['Order']->status=='Confirm')
-                        @if(!isset($order_data))
-                            <div class="form-group">
-                                <label for="">Add Item</label>
-                                <select name="" id="product" class="form-control" style="min-width: 150px;">
-                                    <option value="">Select Product</option>
-                                    @foreach($data['product'] as $product)
-                                        <option value="{{$product->id}}">{{$product->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        @endif
-                       @endif
-                    <table class="table table-hover table-white" id="order_table">
-                        <thead>
-                        <th colspan="3">Product</th>
-                        <th>Quantity</th>
-                        <th>Unit Price</th>
-                        <th>Total</th>
-                        </thead>
-                        <tbody id="tbody">
-                        <input type="hidden" id="creation_id" value="{{$data['items'][0]->creation_id??$data['Order']->id}}">
-                        @foreach($data['items'] as $order)
-                            <tr>
-                                <td style="min-width: 200px;" colspan="3">
+               <div class="card shadow">
+                   <div class="card-header">
+                       Order Items
+                   </div>
+                   <div class="col-12 my-3">
+                       <div class="table-responsive">
+                           {{--@if(!$data['Order']->status=='Confirm')--}}
+                           {{--@if(!isset($order_data))--}}
+                           {{--<div class="form-group">--}}
+                           {{--<label for="">Add Item</label>--}}
+                           {{--<select name="" id="product" class="form-control" style="min-width: 150px;">--}}
+                           {{--<option value="">Select Product</option>--}}
+                           {{--@foreach($data['product'] as $product)--}}
+                           {{--<option value="{{$product->id}}">{{$product->name}}</option>--}}
+                           {{--@endforeach--}}
+                           {{--</select>--}}
+                           {{--</div>--}}
+                           {{--@endif--}}
+                           {{--@endif--}}
+                           <table class="table table-hover table-white" id="order_table">
+                               <thead>
+                               <th colspan="3">Product</th>
+                               <th>Quantity</th>
+                               <th>Price</th>
+                               <th>Unit</th>
+                               <th>Discount/Promotion</th>
+                               <th>Total</th>
+                               </thead>
+                               <tbody id="tbody">
+                               <input type="hidden" id="creation_id" value="{{$data['items'][0]->creation_id??$data['Order']->id}}">
+                               @foreach($data['items'] as $order)
+                                   <tr>
+                                       <td style="min-width: 200px;" colspan="3">
 
-                                    <input type="hidden" id="order_id_{{$order->id}}" value="{{$order->id}}">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <img src="{{url(asset('product_picture/'.$order->variant->image))}}"  alt="" width="40px" height="40px">
-                                        </div>
-                                        <div class="col-8">
-                                            <div>
-                                                <span class="font-weight-bold">{{$order->variant->product_name}}</span>
-                                            </div>
-                                            <p class="m-0 mt-1">
-                                                {!! $order->description !!}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    {{$order->quantity}}
-                                </td>
-                                <td>
-                                    {{$order->unit_price}}
-                                </td>
-                                <td>
-                                    {{number_format($order->total)}}</td>
-                            </tr>
-                        @endforeach
+                                           <input type="hidden" id="order_id_{{$order->id}}" value="{{$order->id}}">
+                                           <div class="row">
+                                               <div class="col-md-4">
+                                                   <img src="{{url(asset('product_picture/'.$order->variant->image))}}"  alt="" width="40px" height="40px">
+                                               </div>
+                                               <div class="col-8">
+                                                   <div>
+                                                       <span class="font-weight-bold">{{$order->variant->product_name}}</span>
+                                                   </div>
+                                                   <p class="m-0 mt-1">
+                                                       {!! $order->description !!}
+                                                   </p>
+                                               </div>
+                                           </div>
+                                       </td>
+                                       <td>
+                                           {{$order->quantity}}
+                                       </td>
+                                       <td>
+                                           {{$order->unit_price}}
+                                       </td>
+                                       <td>{{$order->unit->unit??'N/A'}}</td>
+                                       <td>{{$order->discount_promotion==0?'N/A':$order->discount_promotion.'%'}}</td>
+                                       <td>
+                                           {{number_format($order->total)}}</td>
+                                   </tr>
+                               @endforeach
 
-                        </tbody>
-                        <tr>
+                               </tbody>
+                               <tr>
+                                   <td colspan="2"></td>
+                                   <th colspan="5" class="text-right"><span class="mt-5">Total</span></th>
+                                   <td id="" colspan="2">{{$data['Order']->total}}
+                                   </td>
+                               </tr>
+                               <tr>
+                                   <td colspan="2"></td>
+                                   <th colspan="5" class="text-right"><span class="mt-5">Discount</span></th>
 
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                                   <td id="discount_div" colspan="2">{{$data['Order']->discount??0}} MMK</td>
+                               </tr>
+                               <tr>
+                                   <td colspan="2"></td>
+                                   <th colspan="5" class="text-right"><span class="mt-5">Tax</span></th>
+                                   <td id="tax" colspan="2">
+                                       {{$data['Order']->tax_amount}} ({{$data['Order']->tax->name}} {{$data['Order']->tax->rate}}%)
+                                       <input type="hidden" id="tax_amount" name="tax_mount">
+                                   </td>
+                               </tr>
 
-                        </tr>
-                        <tr>
-                            <td colspan="2"></td>
-                            <th colspan="2" class="text-right"><span class="mt-5">Total</span></th>
-                            <td id="" colspan="2">{{$data['Order']->total}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"></td>
-                            <th colspan="2" class="text-right"><span class="mt-5">Discount</span></th>
+                               <tr>
+                                   <td colspan="2"></td>
+                                   <th colspan="5" class="text-right"><span class="mt-5">Grand Total</span></th>
+                                   <td colspan="2" id="grand_total_div">
+                                       {{number_format($data['Order']->grand_total)}} MMK
+                                   </td>
+                                   <td></td>
 
-                            <td id="discount_div" colspan="2">{{$data['Order']->discount??0}} MMK</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"></td>
-                            <th colspan="2" class="text-right"><span class="mt-5">Tax</span></th>
-                            <td id="tax" colspan="2">
-                                {{$data['Order']->tax_amount}} ({{$data['Order']->tax->name}} {{$data['Order']->tax->rate}}%)
-                                <input type="hidden" id="tax_amount" name="tax_mount">
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td colspan="2"></td>
-                            <th colspan="2" class="text-right"><span class="mt-5">Grand Total</span></th>
-                            <td colspan="2" id="grand_total_div">
-                                {{number_format($data['Order']->grand_total)}} MMK
-                            </td>
-                            <td></td>
-
-                        </tr>
-                    </table>
-                </div>
+                               </tr>
+                           </table>
+                       </div>
+                   </div>
+               </div>
             </div>
         </div>
         <div id="bs-canvas-right" class="bs-canvas bs-canvas-anim bs-canvas-right position-fixed  h-100 mt-5"
@@ -397,42 +408,42 @@
                         }
                     });
                 });
-                $(document).ready(function () {
-                    $(document).on('change','#product',function (){
-                        var creation_id = $('#creation_id').val();
-                        var order_id=$('#order_id').val();
-                        var product = $('#product option:selected').val();
-                        var grand_total=$('#grand_total').val();
-                        $.ajax({
-                            data: {
-                                "product_id":product,
-                                "invoice_id":creation_id,
-                                'order_id':order_id,
-                                'grand_total':grand_total,
+                {{--$(document).ready(function () {--}}
+                    {{--$(document).on('change','#product',function (){--}}
+                        {{--var creation_id = $('#creation_id').val();--}}
+                        {{--var order_id=$('#order_id').val();--}}
+                        {{--var product = $('#product option:selected').val();--}}
+                        {{--var grand_total=$('#grand_total').val();--}}
+                        {{--$.ajax({--}}
+                            {{--data: {--}}
+                                {{--"product_id":product,--}}
+                                {{--"invoice_id":creation_id,--}}
+                                {{--'order_id':order_id,--}}
+                                {{--'grand_total':grand_total,--}}
 
-                            },
-                            type: 'POST',
-                            url: "{{route('invoice_items.store')}}",
-                            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                            success: function (data) {
-                                console.log(data);
-                                $("#order_table").load(location.href + " #order_table>* ");
-                                $("#grand_total_div").load(location.href + " #grand_total_div>* ");
-                                var alltotal = [];
-                                $('.total').each(function () {
-                                    alltotal.push(this.value);
-                                });
-                                var grand_total = 0;
-                                for (var i = 0; i < alltotal.length; i++) {
-                                    grand_total = parseFloat(grand_total) + parseFloat(alltotal[i]);
-                                }
-                                $('#grand_total').val(grand_total);
-                                location.reload();
+                            {{--},--}}
+                            {{--type: 'POST',--}}
+                            {{--url: "{{route('invoice_items.store')}}",--}}
+                            {{--headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},--}}
+                            {{--success: function (data) {--}}
+                                {{--console.log(data);--}}
+                                {{--$("#order_table").load(location.href + " #order_table>* ");--}}
+                                {{--$("#grand_total_div").load(location.href + " #grand_total_div>* ");--}}
+                                {{--var alltotal = [];--}}
+                                {{--$('.total').each(function () {--}}
+                                    {{--alltotal.push(this.value);--}}
+                                {{--});--}}
+                                {{--var grand_total = 0;--}}
+                                {{--for (var i = 0; i < alltotal.length; i++) {--}}
+                                    {{--grand_total = parseFloat(grand_total) + parseFloat(alltotal[i]);--}}
+                                {{--}--}}
+                                {{--$('#grand_total').val(grand_total);--}}
+                                {{--location.reload();--}}
 
-                            }
-                        });
-                    });
-                });
+                            {{--}--}}
+                        {{--});--}}
+                    {{--});--}}
+                {{--});--}}
             </script>
 
         </div>

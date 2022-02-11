@@ -15,12 +15,12 @@
                     </ul>
                 </div>
                 <div class="col-auto float-right ml-auto">
-                    <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_room"><i class="fa fa-plus"></i> Add Room</a>
+                    <a href="#" class="btn add-btn shadow-sm" data-toggle="modal" data-target="#add_room"><i class="fa fa-plus"></i> Add Room</a>
                 </div>
             </div>
         </div>
         <!-- /Page Header -->
-        <div class="row">
+        <div class="card shadow">
             <div class="col-md-12">
                 <div class="table-responsive">
                     <table class="table" id="ticket">

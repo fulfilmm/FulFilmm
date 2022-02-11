@@ -61,7 +61,7 @@
         </ul>
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                <div class="card col-12">
+                <div class="card col-12 shadow">
                     <div class="card-header">
                         <h4>Product Specification</h4>
                     </div>
@@ -111,85 +111,191 @@
                 </div>
             </div>
             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                <h3>Product Variant</h3>
-                <table class="table">
-                  <thead>
-                  <tr>
-                      <th>Product Code</th>
-                      <th>Serial Number</th>
-                      <th>Variation</th>
-                      <th>Created Date</th>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="ml-2 col-md-4 col-12 float-right">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <select class="form-control" name="action" id="action_type" style="width: 70%">
+                                        <option value="Enable">Enable</option>
+                                        <option value="Disable">Disable</option>
+                                    </select>
+                                    <div class="input-group-prepend">
+                                        <button type="button" id="confirm" class="btn btn-primary rounded-right">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                  </tr>
-                  </thead>
-                    <tbody>
-                    @foreach($variantions as $item)
-                        <tr>
-                            <td><a href="{{route('show.variant',$item->id)}}"><strong>{{$item->product_code}}</strong></a></td>
-                            <td>{{$item->serial_no}}</td>
-                            <td>{{$item->variant}}</td>
-                            <td>{{$item->created_at->toFormattedDateString()}}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                </div>
+               <div style="overflow: auto">
+                   <table class="table table-nowrap table-hover">
+                       <thead>
+                       <tr>
+                           <th><input type="checkbox" name="all" id="checkall"></th>
+                           <th>Product Name</th>
+                           <th>Product Code</th>
+                           <th>Serial Number</th>
+                           <th>Variation</th>
+                           <th>Disable/Enable</th>
+                           <th>Created Date</th>
+                           <th>Action</th>
+
+                       </tr>
+                       </thead>
+                       <tbody>
+                       @foreach($variantions as $item)
+                           <tr>
+                               <td>
+                                   <input type="checkbox"  name="product[]" value="{{$item->id}}" class="single">
+                               </td>
+                               <td>{{$item->product_name}}</td>
+                               <td><a href="{{route('show.variant',$item->id)}}"><strong>{{$item->product_code}}</strong></a></td>
+                               <td>{{$item->serial_no}}</td>
+                               <td>{{$item->variant}}</td>
+                               <td>{{$item->enable==0?'Disable':'Enable'}}</td>
+                               <td>{{$item->created_at->toFormattedDateString()}}</td>
+                               <td>
+                                   <div class="row">
+                                       <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#edit{{$item->id}}"><i class="la la-edit"></i></button>
+                                       <a href="{{route('show.variant',$item->id)}}" class="btn btn-white btn-sm"><i class="la la-eye"></i></a>
+                                   </div>
+                                   <div id="edit{{$item->id}}" class="modal custom-modal fade" role="dialog">
+                                       <div class="modal-dialog modal-dialog-centered modal-lg">
+                                           <div class="modal-content">
+                                               <div class="modal-header border-bottom">
+                                                   <h5 class="modal-title">Update Product Variant</h5>
+                                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                       <span aria-hidden="true">&times;</span>
+                                                   </button>
+                                               </div>
+                                               <div class="modal-body">
+                                                   <form action="{{route('variant.update',$item->id)}}" enctype="multipart/form-data" method="POST">
+                                                       @csrf
+                                                       <div class="row">
+                                                           <input type="hidden" name="product_id" value="{{$product->id}}">
+                                                           <div class="col-md-4">
+                                                               <div class="form-group">
+                                                                   <label for="">Product Code</label>
+                                                                   <div class="input-group">
+                                                                       <input type="text" id="p_code" name="product_code" class="form-control" value="{{$item->product_code}}" readonly required>
+                                                                   </div>
+                                                                   @error('product_code')
+                                                                   <span class="text-danger">{{$message}}</span>
+                                                                   @enderror
+                                                               </div>
+                                                           </div>
+                                                           <div class="col-md-4">
+                                                               <div class="form-group">
+                                                                   <label for="">Serial No.</label>
+                                                                   <input type="text" class="form-control" name="serial_no" value="{{$item->serial_no}}">
+                                                               </div>
+                                                           </div>
+                                                           <div class="col-md-4">
+                                                               <div class="form-group">
+                                                                   <label for="">Exp Date</label>
+                                                                   <input type="date" class="form-control" name="exp_date" value="{{\Carbon\Carbon::parse($item->exp_date)->format('Y-m-d')}}">
+                                                               </div>
+                                                           </div>
+                                                           <div class="col-md-12">
+                                                               <div class="form-group">
+                                                                   <label for="">Variant</label>
+                                                                   <input type="text" class="form-control" name="variant" value="{{$item->variant}}" placeholder='Enter this format : "Color:Red Size:XL"'>
+                                                                   @error('variant')
+                                                                   <span class="text-danger">{{$message}}</span>
+                                                                   @enderror
+                                                               </div>
+                                                           </div>
+                                                           <div class="col-md-12">
+                                                               <div class="form-group">
+                                                                   <label for="">Images</label>
+                                                                   <input type="file" name="picture[]" class="form-control" multiple >
+                                                               </div>
+                                                           </div>
+                                                           <div class="col-md-12">
+                                                               <div class="form-group">
+                                                                   <label for="">Description</label>
+                                                                   <textarea name="description" class="form-control" id="description" cols="30" rows="10">{{$item->description}}</textarea>
+                                                               </div>
+                                                           </div>
+                                                           <div class="col-12 text-center">
+                                                               <button type="submit" class="btn btn-primary">Add</button>
+                                                           </div>
+                                                       </div>
+                                                   </form>
+                                               </div>
+                                           </div>
+                                       </div>
+                                   </div>
+
+                               </td>
+                           </tr>
+                       @endforeach
+                       </tbody>
+                   </table>
+               </div>
             </div>
             <div class="tab-pane fade" id="addnew" role="tabpanel" aria-labelledby="profile-tab">
                 <div class="col-12">
-                    <form action="{{route('variant.store')}}" enctype="multipart/form-data" method="POST">
-                        @csrf
-                        <div class="row">
-                            <input type="hidden" name="product_id" value="{{$product->id}}">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="">Product Code</label>
-                                    <div class="input-group">
-                                        <input type="text" id="p_code" name="product_code" class="form-control" value="{{old('product_code')}}" readonly required>
-                                        <button type="button" class="btn btn-white btn-sm" onclick="generatecode()" id="generate">Generate Product Code</button>
-                                    </div>
-                                    @error('product_code')
-                                    <span class="text-danger">{{$message}}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="">Serial No.</label>
-                                    <input type="text" class="form-control" name="serial_no" value="{{old('serial_no')}}">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="">Exp Date</label>
-                                    <input type="date" class="form-control" name="exp_date" value="{{\Carbon\Carbon::parse(old('exp_date'))->format('Y-m-d')}}">
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="">Variant</label>
-                                    <input type="text" class="form-control" name="variant" value="{{old('variant')}}" placeholder='Enter this format : "Color:Red Size:XL"'>
-                                    @error('variant')
-                                    <span class="text-danger">{{$message}}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="">Images</label>
-                                    <input type="file" name="picture[]" class="form-control" multiple >
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="">Description</label>
-                                    <textarea name="description" class="form-control" id="description" cols="30" rows="10"></textarea>
-                                </div>
-                            </div>
-                            <div class="col-12 text-center">
-                                <button type="submit" class="btn btn-primary">Add</button>
-                            </div>
-                        </div>
-                    </form>
+                   <div class="card shadow-sm">
+                       <div class="col-12 my-3 mt-2">
+                           <form action="{{route('variant.store')}}" enctype="multipart/form-data" method="POST">
+                               @csrf
+                               <div class="row">
+                                   <input type="hidden" name="product_id" value="{{$product->id}}">
+                                   <div class="col-md-4">
+                                       <div class="form-group">
+                                           <label for="">Product Code</label>
+                                           <div class="input-group">
+                                               <input type="text" id="p_code" name="product_code" class="form-control" value="{{old('product_code')}}" readonly required>
+                                               <button type="button" class="btn btn-white btn-sm" onclick="generatecode()" id="generate">Generate Product Code</button>
+                                           </div>
+                                           @error('product_code')
+                                           <span class="text-danger">{{$message}}</span>
+                                           @enderror
+                                       </div>
+                                   </div>
+                                   <div class="col-md-4">
+                                       <div class="form-group">
+                                           <label for="">Serial No.</label>
+                                           <input type="text" class="form-control" name="serial_no" value="{{old('serial_no')}}">
+                                       </div>
+                                   </div>
+                                   <div class="col-md-4">
+                                       <div class="form-group">
+                                           <label for="">Exp Date</label>
+                                           <input type="date" class="form-control" name="exp_date" value="{{\Carbon\Carbon::parse(old('exp_date'))->format('Y-m-d')}}">
+                                       </div>
+                                   </div>
+                                   <div class="col-md-12">
+                                       <div class="form-group">
+                                           <label for="">Variant</label>
+                                           <input type="text" class="form-control" name="variant" value="{{old('variant')}}" placeholder='Enter this format : "Color:Red Size:XL"'>
+                                           @error('variant')
+                                           <span class="text-danger">{{$message}}</span>
+                                           @enderror
+                                       </div>
+                                   </div>
+                                   <div class="col-md-12">
+                                       <div class="form-group">
+                                           <label for="">Images</label>
+                                           <input type="file" name="picture[]" class="form-control" multiple >
+                                       </div>
+                                   </div>
+                                   <div class="col-md-12">
+                                       <div class="form-group">
+                                           <label for="">Description</label>
+                                           <textarea name="description" class="form-control" id="description" cols="30" rows="10"></textarea>
+                                       </div>
+                                   </div>
+                                   <div class="col-12 text-center">
+                                       <button type="submit" class="btn btn-primary">Add</button>
+                                   </div>
+                               </div>
+                           </form>
+                       </div>
+                   </div>
                 </div>
             </div>
         </div>
@@ -201,6 +307,41 @@
         }
         ClassicEditor.create($('#description')[0], {
             toolbar: ['heading', 'bold', 'italic', 'undo', 'redo', 'numberedList', 'bulletedList', 'insertTable']
+        });
+        $('#checkall').change(function () {
+            $('.single').prop('checked',this.checked);
+        });
+
+        $('.single').change(function () {
+            if ($('.single:checked').length == $('.single').length){
+                $('#checkall').prop('checked',true);
+            }
+            else {
+                $('#checkall').prop('checked',false);
+                // $(".action").remove();
+            }
+        });
+        $(document).ready(function() {
+            $('select').select2();
+            $(document).on('click', '#confirm', function () {
+                var product_id =new Array();
+                $("input:checked").each(function () {
+                    // console.log($(this).val()); //works fine
+                    product_id.push($(this).val());
+                });
+                var action_type=$( "#action_type option:selected" ).val();
+                // alert(action_type);
+                $.ajax({
+                    type:'POST',
+                    data : {action_Type:action_type,product_id:product_id},
+                    url:'/action/confirm',
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    success:function(data){
+                        console.log(data);
+                        window.location.reload();
+                    }
+                });
+            });
         });
     </script>
     <!-- /Page Content -->

@@ -15,10 +15,6 @@
                             <div class="navbar">
                                 <div class="float-left ticket-view-details">
                                     <div class="ticket-header">
-                                        <span class="m-l-15 text-muted">Approver: </span>
-                                        <a href="#">{{$details_approval->approver->name}}</a>
-                                        <span class="m-l-15 text-muted">Secondary Approver: </span>
-                                        <span>{{$details_approval->secondary_approved ? $details_approval->secondary_approver->name:"N/A"}}</span>
                                         <span class="m-l-15 text-muted">Target Date: </span>
                                         <span>{{\Carbon\Carbon::parse($details_approval->target_date)->toFormattedDateString()}} </span>
                                     </div>
@@ -52,32 +48,40 @@
                                                 </div>
                                                 <div class="card-body">
                                                     <table>
-                                                        <tr style="padding-top: 20px">
+                                                        <tr style="padding-top: 50px">
+                                                            <td style="min-width: 150px" class="text-muted">Approver</td>
+                                                            <td>: {{$details_approval->approver->name}}</td>
+                                                        </tr>
+                                                        <tr style="padding-top: 50px">
+                                                            <td style="min-width: 150px" class="text-muted">Secondary Approver</td>
+                                                            <td>: {{$details_approval->secondary_approved ? $details_approval->secondary_approver->name:"N/A"}}</td>
+                                                        </tr>
+                                                        <tr style="padding-top: 50px">
                                                             <td style="min-width: 150px" class="text-muted">Approval Type</td>
                                                             <td>: {{$details_approval->type}}</td>
                                                         </tr>
-                                                        <tr style="padding-top: 20px">
+                                                        <tr style="padding-top: 50px">
                                                             <td style="min-width: 150px" class="text-muted">Approval Title</td>
                                                             <td>: {{$details_approval->title}}</td>
                                                         </tr>
                                                        @if($details_approval->type=='Business Trip')
 
-                                                            <tr style="padding-top: 20px">
+                                                            <tr style="padding-top: 50px">
                                                                 <td style="min-width: 150px" class="text-muted">Period Date</td>
                                                                 <td>: {{\Carbon\Carbon::parse($details_approval->from_date)->toFormattedDateString()}} - {{\Carbon\Carbon::parse($details_approval->to_date)->toFormattedDateString()}} </td>
 
                                                             </tr>
-                                                            <tr style="padding-top: 20px">
+                                                            <tr style="padding-top: 50px">
                                                                 <td style="min-width: 150px" class="text-muted">Location</td>
                                                                 <td>: {{$details_approval->location}} </td>
 
                                                             </tr>
-                                                            <tr style="padding-top: 20px">
+                                                            <tr style="padding-top: 50px">
                                                                 <td style="min-width: 150px" class="text-muted">Budget</td>
                                                                 <td>: {{$details_approval->amount}} MMK</td>
 
                                                             </tr>
-                                                            <tr style="padding-top: 20px">
+                                                            <tr style="padding-top: 50px">
                                                                 @php
                                                                     $members=json_decode($details_approval->trip_members);
                                                                 @endphp
@@ -88,28 +92,28 @@
 
                                                             </tr>
                                                            @elseif($details_approval->type=='Payment')
-                                                            <tr style="padding-top: 20px">
+                                                            <tr style="padding-top: 50px">
                                                                 <td style="min-width: 150px" class="text-muted">Contact</td>
                                                                 <td>: {{$details_approval->contact->name}} </td>
 
                                                             </tr>
-                                                            <tr style="padding-top: 20px">
+                                                            <tr style="padding-top: 50px">
                                                                 <td style="min-width: 150px" class="text-muted">Amount</td>
                                                                 <td>: {{$details_approval->amount}} MMK</td>
 
                                                             </tr>
                                                         @elseif($details_approval->type=='Procurement')
-                                                            <tr style="padding-top: 20px">
+                                                            <tr style="padding-top: 50px">
                                                                 <td style="min-width: 150px" class="text-muted">Contact</td>
                                                                 <td>: {{$details_approval->contact->name??'N/A'}} </td>
 
                                                             </tr>
-                                                            <tr style="padding-top: 20px">
+                                                            <tr style="padding-top: 50px">
                                                                 <td style="min-width: 150px" class="text-muted">Quantity</td>
                                                                 <td>: {{$details_approval->quantity}} </td>
 
                                                             </tr>
-                                                            <tr style="padding-top: 20px">
+                                                            <tr style="padding-top: 50px">
                                                                 <td style="min-width: 150px" class="text-muted">Amount</td>
                                                                 <td>: {{$details_approval->amount}} MMK</td>
 
@@ -123,20 +127,16 @@
                                                 </div>
                                             </div>
                                             <div class="card">
+                                                <div class="card-header">Description</div>
                                                 <div class="card-body">
-                                                    <div class="project-title">
-                                                        <div class="m-b-20">
-                                                            <span class="h5 card-title ">Description</span>
-
-                                                        </div>
-                                                    </div>
-
                                                     <p>{{$details_approval->content}} </p>
                                                 </div>
                                             </div>
                                             <div class="card">
+                                                <div class="card-header">
+                                                    Uploaded Document files
+                                                </div>
                                                 <div class="card-body">
-                                                    <h5 class="card-title m-b-20">Uploaded Document files</h5>
                                                     <div class="row">
                                                         @if($doc_files!=null)
                                                             <div class="card-body">

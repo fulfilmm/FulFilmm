@@ -15,7 +15,7 @@
                     </ul>
                 </div>
                 <div class="col-auto float-right ml-auto">
-                    <a href="#" class="btn add-btn" data-toggle="modal" data-target="#booking"><i class="fa fa-plus"></i> Booking</a>
+                    <a href="#" class="btn add-btn shadow-sm" data-toggle="modal" data-target="#booking"><i class="fa fa-plus"></i> Booking</a>
                 </div>
 
             </div>
@@ -25,25 +25,22 @@
         <div class="row filter-row">
             <div class="col-sm-6 col-md-3 offset-md-6 col-lg-3 offset-lg-6 col-xl-2 offset-xl-8 col-12">
                 <div class="form-group">
-                    <label class="focus-label">From</label>
-                    <input type="text" id="min" class="form-control floating " name="min">
+                    <input type="text" id="min" class="form-control floating form-control-sm rounded shadow-sm" name="min" placeholder="Enter Start Date">
 
                 </div>
             </div>
             <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
                 <div class="form-group">
-                    <label >To</label>
-                    <input type="text" class="form-control floating " id="max" name="max">
+                    <input type="text" class="form-control floating form-control-sm rounded shadow-sm" id="max" name="max" placeholder="Enter End Date">
 
                 </div>
             </div>
         </div>
         <!-- /Search Filter -->
-        <div class="row">
-
-            <div class="col-md-12">
-                <div class="table-responsive">
-                    <table class="table" id="room_booking">
+        <div class="card shadow">
+            <div class="col-md-12 my-5">
+                <div class="table-responsive ">
+                    <table class="table table-hover table-nowrap" id="room_booking">
                         <thead>
                         <tr>
                             <th>#</th>
@@ -63,14 +60,14 @@
                                 <th>{{$booking->subject}}</th>
                                 <td>{{$booking->bookroom->room_no}}</td>
                                 <td>{{$booking->bookroom->address}}</td>
-                                <td><span class="badge bg-gradient-blue text-white">{{\Carbon\Carbon::parse($booking->start_time)->toFormattedDateString()}}</span>
+                                <td><span style="font-size: 14px;">{{\Carbon\Carbon::parse($booking->start_time)->toFormattedDateString()}}</span>
                                 </td>
-                                   <td>
-                                       <span class="badge bg-gradient-info">{{date('h:i a', strtotime(\Carbon\Carbon::parse($booking->start_time)))}}</span> -
-                                       <span class="badge bg-gradient-primary">{{date('h:i a', strtotime(\Carbon\Carbon::parse($booking->endtime)))}}</span></td>
-                                    <td>
-                                        {{$booking->booking_emp->name}}
-                                    </td>
+                                <td>
+                                    <span  style="font-size: 14px;">{{date('h:i a', strtotime(\Carbon\Carbon::parse($booking->start_time)))}}</span> -
+                                    <span  style="font-size: 14px;">{{date('h:i a', strtotime(\Carbon\Carbon::parse($booking->endtime)))}}</span></td>
+                                <td>
+                                    {{$booking->booking_emp->name}}
+                                </td>
                                 <td>
                                     <a href="{{url('booking/cancel/'.$booking->id)}}" class="btn btn-white btn-sm">Cancel Booking</a>
                                 </td>

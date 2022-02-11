@@ -31,35 +31,41 @@
         }
         @endforeach
     });
-    $('input').keyup( function () {
-        var tax=$('#tax option:selected').val();
+    $(document).ready(function () {
+        var tax = $('#tax option:selected').val();
+        var sum =$('#total').val();
         @foreach($data['taxes'] as $tax)
-        if(tax=="{{$tax->id}}")
-            var tax_rate='{{$tax->rate}}';
+        if (tax == "{{$tax->id}}")
+            var tax_rate ='{{$tax->rate}}';
                 @endforeach
-
-        var total = $('#total').val();
-        var tax_amount=total*(tax_rate/100);
-        var tax_include=(total-0)+tax_amount;
+        var tax_amount = parseFloat(sum) * (parseInt(tax_rate) / 100);
         var discount = $('#discount').val();
-        var grand =tax_include-discount;
-        $('#grand_total').val(grand);
-        $('#tax_amount').val(tax_amount);
-    });
-    $(document).on('change','#tax',function () {
-        var tax=$('#tax option:selected').val();
-        @foreach($data['taxes'] as $tax)
-        if(tax=="{{$tax->id}}")
-            var tax_rate='{{$tax->rate}}';
-                @endforeach
-
-        var total = $('#total').val();
-        var tax_amount=total*(tax_rate/100);
-        var tax_include=total-tax_amount;
-        var discount = $('#discount').val();
-        var grand =tax_include-discount;
-        $('#grand_total').val(grand);
-        $('#tax_amount').val(tax_amount);
+        var deli_fee = $('#deli_fee').val();
+        $('#grand_total').val((parseFloat(sum) + parseFloat(deli_fee) + parseFloat(tax_amount)) - parseFloat(discount));
+        $('select').change(function () {
+            var tax = $('#tax option:selected').val();
+            var sum =$('#total').val();
+            @foreach($data['taxes'] as $tax)
+            if (tax == "{{$tax->id}}")
+                var tax_rate ='{{$tax->rate}}';
+                    @endforeach
+            var tax_amount = parseFloat(sum) * (parseInt(tax_rate) / 100);
+            var discount = $('#discount').val();
+            var deli_fee = $('#deli_fee').val();
+            $('#grand_total').val((parseFloat(sum) + parseFloat(deli_fee) + parseFloat(tax_amount)) - parseFloat(discount));
+        });
+        $('input').keyup(function () {
+            var tax = $('#tax option:selected').val();
+            var sum =$('#total').val();
+            @foreach($data['taxes'] as $tax)
+            if (tax == "{{$tax->id}}")
+                var tax_rate ='{{$tax->rate}}';
+                    @endforeach
+            var tax_amount = parseFloat(sum) * (parseInt(tax_rate) / 100);
+            var discount = $('#discount').val();
+            var deli_fee = $('#deli_fee').val();
+            $('#grand_total').val((parseFloat(sum) + parseFloat(deli_fee) + parseFloat(tax_amount)) - parseFloat(discount));
+        });
     });
     $(document).ready(function () {
         $(document).on('click','#add_item',function (){

@@ -16,10 +16,10 @@
                 @endif
 
 
-                <div class="view-icons">
+                {{--<div class="view-icons">--}}
 {{--                    <a href="{{route('companies.cards')}}" class="grid-view btn btn-link"><i class="fa fa-th"></i></a>--}}
-                    <a href="{{route('groups.index')}}" class="list-view btn btn-link active"><i class="fa fa-bars"></i></a>
-                </div>
+                    {{--<a href="{{route('groups.index')}}" class="list-view btn btn-link active"><i class="fa fa-bars"></i></a>--}}
+                {{--</div>--}}
             </div>
         </div>
         <div class="row">

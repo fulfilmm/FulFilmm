@@ -9,13 +9,16 @@ use App\Models\Invoice;
 use App\Models\MainCompany;
 use App\Models\OrderItem;
 use App\Models\Warehouse;
+use App\Traits\Emailtrait;
 use Carbon\Carbon;
+use function GuzzleHttp\Promise\all;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 class ShippmentController extends Controller
 {
+    use Emailtrait;
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +28,13 @@ class ShippmentController extends Controller
     {
 
         $deliveries=DeliveryOrder::with('invoice','courier','customer')->get();
-        return view('Inventory.Shippment.index',compact('deliveries'));
+        if(Auth::guard('customer')->check()){
+            $new_deli=DeliveryOrder::with('employee')->where('courier_id',Auth::guard('customer')->user()->id)->where('seen',0)->get();
+        }else{
+            $new_deli=[];
+        }
+
+        return view('Inventory.Shippment.index',compact('deliveries','new_deli'));
     }
 
     /**
@@ -59,7 +68,7 @@ class ShippmentController extends Controller
     public function store(Request $request)
     {
 //        dd($request->all());
-        $customer=Customer::where('id','courier_id')->first();
+
         $this->validate($request,[
             'courier_id'=>'required',
             'invoice_id'=>'required',
@@ -70,8 +79,16 @@ class ShippmentController extends Controller
             'warehouse_id'=>'required',
             'shipping_address'=>'required'
         ]);
-        DeliveryOrder::create($request->all());
-
+        $customer=Customer::where('id',$request->courier_id)->first();
+//        dd($customer);
+        $deli=DeliveryOrder::create($request->all());
+        $data['email']=$customer->email;
+        $data['name']=$customer->name;
+        $data['subject']='Delivery Assigned Notification';
+        $data['content']=ucfirst(Auth::guard('employee')->user()->name).'has assigned to you'.$deli->delivery_id;
+        $data['link']='deliveries.show';
+        $data['id']=$deli->id;
+        $this->emailnoti($data);
         return redirect(route('deliveries.index'));
     }
 
@@ -88,8 +105,16 @@ class ShippmentController extends Controller
         $company=MainCompany::where('ismaincompany',true)->first();
         $invoic_item=OrderItem::with('variant')->where("inv_id",$detail_inv->id)->get();
         $comments=DeliveryComment::with('emp','courier')->where('delivery_id',$id)->get();
+        if(Auth::guard('customer')->check()){
+            $delivery->seen=1;
+            $delivery->update();
+            $new_deli=DeliveryOrder::with('employee')->where('courier_id',Auth::guard('customer')->user()->id)->where('seen',0)->get();
+        }else{
+            $new_deli=[];
+        }
+
 //        dd($comments);
-        return view('Inventory.Shippment.show',compact('delivery','detail_inv','company','invoic_item','comments'));
+        return view('Inventory.Shippment.show',compact('delivery','detail_inv','company','invoic_item','comments','new_deli'));
     }
 
     /**

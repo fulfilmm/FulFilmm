@@ -9,7 +9,7 @@ class DeliveryOrder extends Model
 {
     use HasFactory;
     protected $fillable=['state','courier_id','invoice_id','customer_id','delivery_id','delivery_date','delivery_fee',
-        'warehouse_id','shipping_address','uuid','reach_date','estimate_date','draft_time'];
+        'warehouse_id','shipping_address','uuid','reach_date','estimate_date','draft_time','emp_id'];
     public function invoice(){
         return $this->belongsTo(Invoice::class,'invoice_id','id');
     }
@@ -21,5 +21,8 @@ class DeliveryOrder extends Model
     }
     public function warehouse(){
         return $this->belongsTo(Warehouse::class,'warehouse_id','id');
+    }
+    public function employee(){
+        return $this->belongsTo(Employee::class,'emp_id','id');
     }
 }

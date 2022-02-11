@@ -14,9 +14,7 @@
                 for (var i=0;i<alltotal.length;i++){
                     grand_total=parseFloat(grand_total)+parseFloat(alltotal[i]);
                 }
-                $('#grand_total').val(grand_total);
-                $("#order_table").load(location.href + " #order_table>* ");
-                $("#grand_total_div").load(location.href + " #grand_total_div>* ");
+              location.reload();
 
             }
         });

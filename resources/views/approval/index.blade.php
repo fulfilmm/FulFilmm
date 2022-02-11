@@ -5,7 +5,6 @@
 
     <!-- Page Content -->
     <div class="content container-fluid">
-
         <!-- Page Header -->
         <div class="page-header">
             <div class="row align-items-center">
@@ -25,61 +24,65 @@
                 <div class="row mt-3">
                     <div class="col-md-3">
                         <div class="form-group">
-                            <input type="text" id="title" class="form-control" name="title" placeholder="Type title">
+                            <input type="text" id="title" class="form-control shadow-sm" name="title" placeholder="Type title">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
 
-                            <input type="text" class="form-control" id="start_date" name="start_date" placeholder="Enter Start Date">
+                            <input type="text" class="form-control shadow-sm" id="start_date" name="start_date" placeholder="Enter Start Date">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
 
-                            <input type="text" class="form-control" id="end_date" name="end_date" placeholder="Enter End Date">
+                            <input type="text" class="form-control shadow-sm" id="end_date" name="end_date" placeholder="Enter End Date">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <button type="submit" class="btn btn-white btn-md col-12">Search</button>
+                            <button type="submit" class="btn btn-white btn-md col-12 shadow-sm">Search</button>
                         </div>
                     </div>
                 </div>
             </form>
         </div>
         <!-- /Page Header -->
-        <table class="table">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Target Date</th>
-                <th>Request By</th>
-                <th>Status</th>
-                <th>Type</th>
-                <th>Approver Name</th>
-                <th>2nd Approver</th>
-                <th>Action</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($approvals as $approval)
-                <tr>
-                    <td style="min-width: 100px;"><a href="{{route('approvals.show',$approval->id)}}">#{{$approval->approval_id}}</a></td>
-                    <td style="min-width: 100px;">{{$approval->title}}</td>
-                    <td style="min-width: 120px;">{{\Carbon\Carbon::parse($approval->target_date)->toFormattedDateString()}}</td>
-                    <td style="min-width: 150px;">{{$approval->request_emp->name}}</td>
-                    <td style="min-width: 100px;"><span class="badge badge-{{$approval->state=='Approve'?'success':($approval->state=='Reject'?'danger':($approval->state=='Pending'?'primary':'info'))}} rounded" style='font-size: 13px;'><i class="fa fa-dot-circle-o mr-1"></i>{{$approval->state==null ? "N/A" : $approval->state}}</span></td>
-                    <td>{{$approval->type}}</td>
-                    <td style="min-width: 150px;">{{$approval->approver->name}}</td>
-                    <td style="min-width: 160px;">{{$approval->secondary_approved ? $approval->secondary_approver->name :"N/A"}}</td>
-                    <td style="min-width: 100px;"><a href="{{route('approvals.show',$approval->id)}}" class="btn btn-outline-info btn-sm la la-eye mr-2"></a><a href="" data-toggle="modal" data-target="#delete{{$approval->id}}" class="btn btn-outline-danger btn-sm la la-trash"></a></td>
-                    @include('approval.delete')
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
+        <div class="card shadow">
+            <div class="col-12" style="overflow: auto">
+                <table class="table table-hover table-nowrap">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Target Date</th>
+                        <th>Request By</th>
+                        <th>Status</th>
+                        <th>Type</th>
+                        <th>Approver Name</th>
+                        <th>Secondary Approver</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($approvals as $approval)
+                        <tr>
+                            <td style="min-width: 100px;"><a href="{{route('approvals.show',$approval->id)}}">#{{$approval->approval_id}}</a></td>
+                            <td style="min-width: 100px;">{{$approval->title}}</td>
+                            <td style="min-width: 120px;">{{\Carbon\Carbon::parse($approval->target_date)->toFormattedDateString()}}</td>
+                            <td style="min-width: 150px;">{{$approval->request_emp->name}}</td>
+                            <td style="min-width: 100px;"><span class="badge badge-{{$approval->state=='Approve'?'success':($approval->state=='Reject'?'danger':($approval->state=='Pending'?'primary':'info'))}} rounded" style='font-size: 13px;'><i class="fa fa-dot-circle-o mr-1"></i>{{$approval->state==null ? "N/A" : $approval->state}}</span></td>
+                            <td>{{$approval->type}}</td>
+                            <td style="min-width: 150px;">{{$approval->approver->name}}</td>
+                            <td style="min-width: 160px;">{{$approval->secondary_approved ? $approval->secondary_approver->name :"N/A"}}</td>
+                            <td style="min-width: 100px;"><a href="{{route('approvals.show',$approval->id)}}" class="btn btn-outline-info btn-sm la la-eye mr-2"></a><a href="" data-toggle="modal" data-target="#delete{{$approval->id}}" class="btn btn-outline-danger btn-sm la la-trash"></a></td>
+                            @include('approval.delete')
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
     <!-- /Page Content -->
 

@@ -44,6 +44,7 @@ class SaleOrderController extends Controller
         return view('saleorder.index',compact('data'));
     }
     public function create(){
+        $unit_price=product_price::where('sale_type','Whole Sale')->get();
         $variants=ProductVariations::with('product')->get();
         $taxes=products_tax::all();
         $allcustomers=Customer::all();
@@ -93,10 +94,10 @@ class SaleOrderController extends Controller
        }else{
            $session_data=Session::get("order-".Auth::guard('employee')->user()->id);
        }
-
+        $dis_promo=DiscountPromotion::where('sale_type','Whole Sale')->get();
 //          dd($session_data);
         $data=['customer'=>$allcustomers,'items'=>$items,'grand_total'=>$grand_total,'id'=>$request_id,'products'=>$products,'quotation'=>$quotation, 'variants'=>$variants,'taxes'=>$taxes];
-        return view('saleorder.create',compact('data','session_data'));
+        return view('saleorder.create',compact('data','session_data','unit_price','dis_promo'));
     }
     public function store(Request $request){
 //dd($request->all());
@@ -166,11 +167,10 @@ class SaleOrderController extends Controller
         $edit_order=Order::where('id',$id)->first();
         $variants=ProductVariations::with('product')->get();
         $taxes=products_tax::all();
-        $allcustomers=Customer::where('customer_type','Lead')->where('status','Qualified')->get();
+        $allcustomers=Customer::all();
 
 //        $generate_id=Str::uuid();
-        $items=OrderItem::with('product')->where('order_id',$id)->get();
-//        dd($orderline);
+        $items=OrderItem::with('variant','unit')->where('order_id',$id)->get();
         $grand_total=0;
         for ($i=0;$i<count($items);$i++){
             $grand_total=$grand_total+$items[$i]->total;
@@ -200,10 +200,12 @@ class SaleOrderController extends Controller
         }else{
             $session_data=Session::forget("order-".Auth::guard('employee')->user()->id);
         }
+        $unit_price=product_price::where('sale_type','Whole Sale')->get();
+        $dis_promo=DiscountPromotion::where('sale_type','Whole Sale')->get();
 
 //          dd($session_data);
         $data=['customer'=>$allcustomers,'items'=>$items,'grand_total'=>$grand_total,'id'=>$items[0]->creation_id,'products'=>$products,'quotation'=>$quotation, 'variants'=>$variants,'taxes'=>$taxes];
-        return view('saleorder.edit',compact('data','session_data','edit_order'));
+        return view('saleorder.edit',compact('data','session_data','edit_order','unit_price','dis_promo'));
     }
     public function update(Request $request,$id){
         $order =Order::where('id',$id)->first();
@@ -231,7 +233,7 @@ class SaleOrderController extends Controller
     }
     public function show($id){
         $Order=Order::with('customer','quotation','tax')->where('id',$id)->firstOrFail();
-        $items=OrderItem::with('invoice','variant')->where('order_id',$id)->get();
+        $items=OrderItem::with('invoice','variant','unit')->where('order_id',$id)->get();
 //        dd($orderline);
 //        dd($items);
         $grand_total=0;

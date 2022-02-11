@@ -66,6 +66,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name'=>'approval.search','display_name'=>'Approval Search','type'=>'approvals','guard_name'=>'employee']);
         Permission::create(['name'=>'cc.search','display_name'=>'Tagged Approval Search','type'=>'approvals','guard_name'=>'employee']);
         Permission::create(['name' => 'request.me', 'display_name' => "Can view employee approval request to login employee",'type'=>'approvals', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'requestation.cc', 'display_name' => "Can view tag request list to login employee",'type'=>'approvals', 'guard_name' => 'employee']);
        //minutes
         Permission::create(['name' => 'assign.minutes', 'display_name' => "Can assign  minutes  in meeting show",'type'=>'meetings','guard_name' => 'employee']);
         //setting

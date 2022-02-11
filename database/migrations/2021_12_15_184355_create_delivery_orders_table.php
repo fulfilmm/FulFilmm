@@ -35,6 +35,8 @@ class CreateDeliveryOrdersTable extends Migration
             $table->text('uuid');
             $table->dateTime('reach_date')->nullable();
             $table->string('estimate_date')->nullable();
+            $table->tinyInteger('seen')->default(0);
+            $table->bigInteger('emp_id')->unsigned();
             $table->timestamps();
         });
     }

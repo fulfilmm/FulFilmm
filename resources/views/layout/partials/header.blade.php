@@ -54,40 +54,48 @@
     {{--</div>--}}
     {{--</li> --}}
     <!-- /Flag -->
-        @php $notifications=\App\Models\Notification::with('notify_user','notifier')->where('notify_user_id',\Illuminate\Support\Facades\Auth::guard('employee')->user()->id)->where('read_at',null)->get();
+        @php
+            if(\Illuminate\Support\Facades\Auth::guard('employee')->check()){
+            $notifications=\App\Models\Notification::with('notify_user','notifier')->where('notify_user_id',\Illuminate\Support\Facades\Auth::guard('employee')->user()->id)->where('read_at',null)->get();
+            }else{
+            $notifications=\App\Models\Notification::with('notify_user','notifier')->where('notify_user_id',\Illuminate\Support\Facades\Auth::guard('customer')->user()->id)->where('read_at',null)->get();}
         @endphp
-        <li class="nav-item dropdown">
-            <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                <i class="fa fa-bell-o"></i> <span class="badge badge-pill">{{count($notifications)}}</span>
-            </a>
-            <div class="dropdown-menu notifications">
-                <div class="topnav-dropdown-header">
-                    <span class="notification-title">Notifications</span>
-                    {{--                <a href="javascript:void(0)" class="clear-noti"> Clear All </a>--}}
-                </div>
-                <div class="noti-content">
-                    <ul class="notification-list">
-                        @foreach($notifications as $alert)
-                            <li class="notification-message">
-                                <a href="{{route('notifications.show',$alert->uuid)}}">
-                                    <div class="media">
-                                        <div class="media-body">
-                                            <p class="noti-details">{{$alert->notifier->name??\Illuminate\Support\Facades\Auth::guard('employee')->user()->name}}
-                                                <span class="noti-title"> {{$alert->message}}</span></p>
-                                            <p class="noti-time"><span class="notification-time">{{\Carbon\Carbon::parse($alert->created_at)->toFormattedDateString()}} at {{date('h:i a', strtotime(\Carbon\Carbon::parse($alert->created_at)))}}</span>
-                                            </p>
+       @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
+            <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                    <i class="fa fa-bell-o"></i> <span class="badge badge-pill">{{count($notifications)}}</span>
+                </a>
+                <div class="dropdown-menu notifications">
+                    <div class="topnav-dropdown-header">
+                        <span class="notification-title">Notifications</span>
+                        {{--                <a href="javascript:void(0)" class="clear-noti"> Clear All </a>--}}
+                    </div>
+                    <div class="noti-content">
+                        <ul class="notification-list">
+                            @foreach($notifications as $alert)
+                                <li class="notification-message">
+                                    <a href="{{route('notifications.show',$alert->uuid)}}">
+                                        <div class="media">
+                                            <div class="media-body">
+                                                <p class="noti-details">{{$alert->notifier->name??\Illuminate\Support\Facades\Auth::guard('employee')->user()->name}}
+                                                    <span class="noti-title"> {{$alert->message}}</span></p>
+                                                <p class="noti-time"><span class="notification-time">{{\Carbon\Carbon::parse($alert->created_at)->toFormattedDateString()}} at {{date('h:i a', strtotime(\Carbon\Carbon::parse($alert->created_at)))}}</span>
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </a>
-                            </li>
-                        @endforeach
-                    </ul>
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    <div class="topnav-dropdown-footer">
+                        <a href="{{route('notifications.index')}}">View all Notifications</a>
+                    </div>
                 </div>
-                <div class="topnav-dropdown-footer">
-                    <a href="{{route('notifications.index')}}">View all Notifications</a>
-                </div>
-            </div>
-        </li>
+            </li>
+           @else
+           @yield('noti')
+           @endif
         <!-- Notifications -->
     {{-- <li class="nav-item dropdown">
         <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">

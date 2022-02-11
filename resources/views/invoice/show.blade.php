@@ -25,6 +25,9 @@
                                     <button type="button" title="Delete" data-toggle="modal" data-target="#delete{{$detail_inv->id}}" class="dropdown-item action-delete">
                                        <i class="fa fa-trash"></i> Delete
                                     </button>
+                                    <button type="button" title="Stock Out" data-toggle='modal' data-target='#stockout' class="dropdown-item action-delete">
+                                     <i class="la la-cube"></i>  Stock Out
+                                    </button>
                                 </div>
                             </div>
                             <a href="{{route('invoices.create')}}"
@@ -102,12 +105,15 @@
                                 <small>
                                     {{$detail_inv->send_email?'Sent':'Not sent'}}
                                 </small>
-                                <div class="mt-3"><a href=""
-                                                     class="btn btn-white btn-sm header-button-top">
-                                        Mark Sent
-                                    </a>
+                                <div class="row mt-3">
+                                    <form action="{{route('invoices.update',$detail_inv->id)}}" method="post">
+                                        @csrf
+                                        @method('PUT')
+                                        <input type="hidden" name="mark_sent" value="1">
+                                        <button type="submit" class="btn btn-{{$detail_inv->mark_sent==0?'white':'success'}} btn-sm header-button-top">@if($detail_inv->mark_sent==1)<i class="la la-check-circle-o"></i> @endif Mark Sent</button>
+                                    </form>
                                     <a href="{{route('invoice.sendmail',$detail_inv->id)}}">
-                                        <button type="button" class="el-tooltip btn btn-{{$detail_inv->send_email?'danger':'white'}} btn-sm btn-tooltip disabled header-button-top shadow"
+                                        <button type="button" class="el-tooltip btn btn-{{$detail_inv->send_email?'danger':'white'}} btn-sm btn-tooltip header-button-top ml-2"
                                                                                                     aria-describedby="el-tooltip-9140" tabindex="0">
                                            <i class="fa fa-{{$detail_inv->send_email?'check-circle':''}} mr-2"></i>Send Email
                                         </button>
@@ -382,6 +388,7 @@
                     <form method="POST" action="{{route('income.store')}}" accept-charset="UTF-8" id="transaction" role="form" novalidate="novalidate" enctype="multipart/form-data"
                           class="form-loading-button needs-validation">
                     @csrf
+                        <input type="hidden" name="type" value="Revenue">
                         <div class="card-body">
                             <div class="row">
                                 <input type="hidden" name="advance_id" value="{{isset($advan_pay->id)?$advan_pay->id:''}}">

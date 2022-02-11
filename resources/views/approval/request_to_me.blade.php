@@ -24,55 +24,59 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="form-group">
-                        <input type="text" id="title" class="form-control" name="title" placeholder="Type title">
+                        <input type="text" id="title" class="form-control shadow-sm" name="title" placeholder="Type title">
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
 
-                        <input type="text" class="form-control" id="start_date" name="start_date" placeholder="Enter Start Date">
+                        <input type="text" class="form-control shadow-sm" id="start_date" name="start_date" placeholder="Enter Start Date">
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
 
-                        <input type="text" class="form-control" id="end_date" name="end_date" placeholder="Enter End Date">
+                        <input type="text" class="form-control shadow-sm" id="end_date" name="end_date" placeholder="Enter End Date">
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <button type="submit" class="btn btn-white btn-md col-12">Search</button>
+                        <button type="submit" class="btn btn-primary btn-md col-12 shadow-sm">Search</button>
                     </div>
                 </div>
             </div>
         </form>
-        <table class="table">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Target Date</th>
-                <th>Request Employee</th>
-                <th>Status</th>
-                <th>Secondary Approver Name</th>
-                <th>Action</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($approvals as $approval)
-                <tr>
-                    <td><a href="{{route('approvals.show',$approval->id)}}">#{{$approval->approval_id}}</a></td>
-                    <td>{{$approval->title}}</td>
-                    <td>{{\Carbon\Carbon::parse($approval->target_date)->toFormattedDateString()}}</td>
-                    <td>{{$approval->request_emp->name}}</td>
-                    <td>{{$approval->state==null ? "N/A" : $approval->state}}</td>
-                    <td>{{$approval->secondary_approved ?$approval->secondary_approver->name :"N/A"}}</td>
-                    <td><a href="{{route('approvals.show',$approval->id)}}" class="btn btn-outline-info btn-sm la la-eye mr-2"></a><a href="" data-toggle="modal" data-target="#delete{{$approval->id}}" class="btn btn-outline-danger btn-sm la la-trash"></a></td>
-                    @include('approval.delete')
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
+      <div class="card shadow">
+          <div class="col-12">
+              <table class="table">
+                  <thead>
+                  <tr>
+                      <th>ID</th>
+                      <th>Title</th>
+                      <th>Target Date</th>
+                      <th>Request Employee</th>
+                      <th>Status</th>
+                      <th>Secondary Approver Name</th>
+                      <th>Action</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  @foreach($approvals as $approval)
+                      <tr>
+                          <td><a href="{{route('approvals.show',$approval->id)}}">#{{$approval->approval_id}}</a></td>
+                          <td>{{$approval->title}}</td>
+                          <td>{{\Carbon\Carbon::parse($approval->target_date)->toFormattedDateString()}}</td>
+                          <td>{{$approval->request_emp->name}}</td>
+                          <td>{{$approval->state==null ? "N/A" : $approval->state}}</td>
+                          <td>{{$approval->secondary_approved ?$approval->secondary_approver->name :"N/A"}}</td>
+                          <td><a href="{{route('approvals.show',$approval->id)}}" class="btn btn-outline-info btn-sm la la-eye mr-2"></a><a href="" data-toggle="modal" data-target="#delete{{$approval->id}}" class="btn btn-outline-danger btn-sm la la-trash"></a></td>
+                          @include('approval.delete')
+                      </tr>
+                  @endforeach
+                  </tbody>
+              </table>
+          </div>
+      </div>
     </div>
     <!-- /Page Content -->
     <!-- Event Modal -->

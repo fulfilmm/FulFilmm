@@ -20,6 +20,7 @@
                 @csrf
                 <div class="row">
                     <input type="hidden" name="draft_time" value="{{\Carbon\Carbon::now()}}">
+                    <input type="hidden" name="emp_id" value="{{\Illuminate\Support\Facades\Auth::guard('employee')->user()->id}}">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="">Delivery ID</label>

@@ -156,12 +156,11 @@ class SaleTargetController extends Controller
                 $sale_target->month = $request->month;
                 $sale_target->year = $request->year;
                 $sale_target->save();
-                return redirect(route('saletargets.create'));
-            } else {
-                return redirect(route('saletargets.create'))->with('error', 'This employee have been assigned sale target for' . $request->month . ' month.');
+
             }
 
         }
+        return redirect(route('saletargets.create'));
 
     }
 

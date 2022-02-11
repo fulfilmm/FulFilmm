@@ -141,6 +141,39 @@ class ProductController extends Controller
         return view('product.variantshow',compact('product','stock','selling_info'));
 
     }
+    public function update_variant(Request $request,$id){
+        $variation=ProductVariations::where('id',$id)->first();
+        if (isset($request->picture)) {
+//            if ($request->picture != null) {
+            foreach ($request->file('picture') as $image) {
+                $input['imagename'] =\Illuminate\Support\Str::random(16).'.'.$image->extension();
+
+                $filePath = public_path('/product_picture/');
+
+                $img = Image::make($image->path());
+                $img->save($filePath.'/'.$input['imagename']);
+                $data[] = $input['imagename'];
+
+            }
+            if($variation->image!=null)
+            {
+                $exist_img=json_decode($variation->image);
+                foreach ($exist_img as $item){
+                    $data[]=$item;
+                }
+
+
+            }
+            $variation->image =json_encode($data);
+        }
+        $variation->description=$request->description;
+        $variation->product_code=$request->product_code;
+        $variation->serial_no=$request->serial_no;
+        $variation->variant=$request->variant;
+        $variation->exp_date=Carbon::create($request->exp_date);
+        $variation->update();
+        return redirect(route('products.show',$variation->product_id))->with('success','Product Variant Updated');
+    }
 
     /**
      * Display the specified resource.
@@ -296,7 +329,7 @@ class ProductController extends Controller
         if($request->action_Type=="Enable"){
             foreach ($request->product_id as $product){
                 if($product!="on") {
-                    $action_product = product::where("id", $product)->first();
+                    $action_product = ProductVariations::where("id", $product)->first();
                     $action_product->enable = 1;
                     $action_product->update();
                 }
@@ -305,7 +338,7 @@ class ProductController extends Controller
         }elseif ($request->action_Type="Disable"){
             foreach ($request->product_id as $product){
                 if($product!="on") {
-                    $action_product = product::where("id", $product)->first();
+                    $action_product = ProductVariations::where("id", $product)->first();
                     $action_product->enable = 0;
                     $action_product->update();
                 }

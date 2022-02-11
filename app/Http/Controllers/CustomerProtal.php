@@ -28,7 +28,8 @@ class CustomerProtal extends Controller
            ->where('receipt',1)->where('courier_id',Auth::guard('customer')->user()->id)
             ->get();
             $deli_fee_total=$total[0]->total;
-        return view('customerprotal.home',compact('delivery_finish','delivery_unfinish','deli_fee_total'));
+            $new_deli=DeliveryOrder::with('employee')->where('seen',0)->get();
+        return view('customerprotal.home',compact('delivery_finish','delivery_unfinish','deli_fee_total','new_deli'));
     }
     public function quotation(){
 
@@ -66,7 +67,8 @@ class CustomerProtal extends Controller
             'overdue'=>$overdue,
             'open'=>$open_unpaid
         ];
-        return view('customerprotal.dashboard',compact('data'));
+        $new_deli=DeliveryOrder::with('employee')->where('seen',0)->get();
+        return view('customerprotal.dashboard',compact('data','new_deli'));
     }
     public function change_password(){
         return view('customerprotal.changepassword');

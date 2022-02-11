@@ -59,7 +59,7 @@
                     <table class="table table-striped custom-table mb-0 table-hover" id="product_table">
                         <thead>
                         <tr>
-                            <th><input type="checkbox" name="all" id="checkall"></th>
+
                             <th>Name</th>
                             <th>MainCategory</th>
                             <th>Sub Category</th>
@@ -71,9 +71,6 @@
                         {{--@dd($products)--}}
                         @foreach($products as $product)
                             <tr>
-                                <td>
-                                    <input type="checkbox"  name="product[]" value="{{$product->id}}" class="single">
-                                </td>
                                 <td><a href="{{route("products.show",$product->id)}}">
                                         <span class="ml-3">{{$product->name}}</span></a></td>
                                 <td>{{$product->category->name??''}}</td>
@@ -122,25 +119,6 @@
                     </table>
                     {!! $products->links() !!}
                 </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="ml-2 col-md-4 col-8 float-left">
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <select class="form-control" name="action" id="action_type">
-                                        <option value="Enable">Enable</option>
-                                        <option value="Disable">Disable</option>
-                                        <option value="Delete">Delete</option>
-                                    </select>
-                                    <div class="input-group-prepend">
-                                        <button type="button" id="confirm" class="btn btn-primary rounded-right">Confirm</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
             </div>
         </div>
 
@@ -149,44 +127,10 @@
 
     <!-- /Page Wrapper -->
     <script>
-        $('#checkall').change(function () {
-            $('.single').prop('checked',this.checked);
-        });
-
-        $('.single').change(function () {
-            if ($('.single:checked').length == $('.single').length){
-                $('#checkall').prop('checked',true);
-            }
-            else {
-                $('#checkall').prop('checked',false);
-                // $(".action").remove();
-            }
-        });
         $(document).ready(function () {
            $('#product_table').DataTable();
         });
-        $(document).ready(function() {
-            $('select').select2();
-            $(document).on('click', '#confirm', function () {
-                var product_id =new Array();
-                $("input:checked").each(function () {
-                    // console.log($(this).val()); //works fine
-                    product_id.push($(this).val());
-                });
-                var action_type=$( "#action_type option:selected" ).val();
-                // alert(action_type);
-                $.ajax({
-                    type:'POST',
-                    data : {action_Type:action_type,product_id:product_id},
-                    url:'/action/confirm',
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    success:function(data){
-                        console.log(data);
-                        window.location.reload();
-                    }
-                });
-            });
-        });
+
 
     </script>
 @endsection
