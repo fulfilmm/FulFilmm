@@ -224,7 +224,7 @@
                                                                  role="document">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header text-sm">
-                                                                        <strong class="modal-title">Assign to this
+                                                                        <strong class="modal-title">Assign
                                                                             Minutes</strong>
                                                                         <button type="button" class="close"
                                                                                 data-dismiss="modal" aria-label="Close">

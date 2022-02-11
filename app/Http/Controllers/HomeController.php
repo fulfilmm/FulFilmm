@@ -8,6 +8,8 @@ use App\Models\countdown;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Group;
+use App\Models\Meetingmember;
+use App\Models\MinutesAssign;
 use App\Models\status;
 use App\Models\ticket;
 use App\Models\ticket_follower;
@@ -53,6 +55,8 @@ class HomeController extends Controller
               $depts=Department::all();
           return view('index', compact('numberOfalltickets','agents','depts','assign_ticket','status','status_report','report_percentage','count_down',));
       }else{
+          $meeting=Meetingmember::with('meeting')->where('member_id',Auth::guard('employee')->user()->id)->count();
+          $assignment=MinutesAssign::where('emp_id',Auth::guard('employee')->user()->id)->count();
           $user=Auth::guard('employee')->user();
           $follow_ticket=ticket_follower::where('emp_id',$user->id)->count();
          if($user->role->name=='Agent'){
@@ -67,11 +71,8 @@ class HomeController extends Controller
           $id = Auth::id();
             $total_emp=Employee::count();
           $items = [
-//            'projects' => Project::count(),
-//              'my_assignments' => Assignment::whereHas('assigned_employees', function ($query) use ($id) {
-//                  $query->where('employee_id', $id);
-//              })->count(),
-//              'my_activities' => Activity::where('employee_id', $id)->count(),
+              'assignment'=>$assignment,
+              'meeting'=>$meeting,
               'my_groups' => Group::whereHas('employees', function ($query) use ($id) {
                   $query->where('employee_id', $id);
               })->count(),

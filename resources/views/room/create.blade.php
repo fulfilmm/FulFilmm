@@ -19,7 +19,7 @@
                         <input type="text" id="address" class="form-control" name="address" required>
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-primary">Add</button>
+                        <button type="submit" class="btn btn-primary">Add</button>
                     </div>
                 </form>
             </div>

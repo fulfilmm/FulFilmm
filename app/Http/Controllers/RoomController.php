@@ -63,8 +63,8 @@ class RoomController extends Controller
     public function edit($id)
     {
 //        $select_room=Room::where('id',$id)->first();
-//        return view('room.edit',compact('select_room'));
-        return redirect()->back();
+//        dd($select_room);
+        return view('room.edit',compact('select_room'));
     }
 
     /**
@@ -76,7 +76,9 @@ class RoomController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $room=Room::where('id',$id)->first();
+        $room->update($request->all());
+        return redirect()->back()->with('success','Room Updated!');
     }
     public function booking(){
         $room=Room::all()->pluck('room_no','id')->all();
@@ -118,7 +120,9 @@ class RoomController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $room=Room::where('id',$id)->firstOrFail();
+        $room->delete();
+        return redirect()->back()->with('success','Room Deleted!');
     }
 
     /**

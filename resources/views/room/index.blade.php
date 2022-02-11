@@ -39,9 +39,41 @@
                                 <td>{{$room->room_no}}</td>
                                 <td>{{$room->address}}</td>
                                 <td>
-                                    <a href="{{route('rooms.edit',$room->id)}}" class="btn btn-white btn-sm"><i class="fa fa-edit"></i></a>
-                                    <a href="{{route('booking')}}" class="btn btn-white btn-sm"><i class="fa fa-eye text-primary"></i></a>
-                                    <a href="" class="btn btn-white btn-sm"><i class="fa fa-trash text-danger"></i></a>
+                                  <div class="row">
+                                      <button type="button" class="btn btn-white btn-sm" data-toggle="modal" data-target="#edit{{$room->id}}"><i class="fa fa-edit"></i></button>
+                                      <form action="{{route('rooms.destroy',$room->id)}}" method="post">
+                                          @csrf
+                                          @method('DELETE')
+                                          <button type="submit" class="btn btn-white btn-sm"><i class="fa fa-trash text-danger"></i></button>
+                                      </form>
+                                  </div>
+                                    <div id="edit{{$room->id}}" class="modal custom-modal fade" role="dialog">
+                                        <div class="modal-dialog modal-dialog-centered modal-md">
+                                            <div class="modal-content">
+                                                <div class="modal-header border-bottom">
+                                                    <h5 class="modal-title">Edit Room</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="{{route('rooms.update',$room->id)}}" method="post">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <div class="form-group">
+                                                            <label for="room_no">Room No</label>
+                                                            <input type="text" id="room_no" class="form-control" name="room_no" value="{{$room->room_no}}" required>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="address">Address</label>
+                                                            <input type="text" id="address" class="form-control" name="address" value="{{$room->address}}" required>
+                                                        </div>
+                                                        <button type="submit" class="btn btn-primary">Update</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach

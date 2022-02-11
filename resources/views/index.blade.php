@@ -256,7 +256,34 @@
                     </div>
                 </div>
             </div>
-        @else
+        @elseif(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='CEO'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Super Admin')
+                   <div class="row">
+                       <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                           <div class="card dash-widget shadow">
+                               <div class="card-body">
+                                   <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
+                                   <div class="dash-widget-info">
+                                       <h3>{{$total_emp}}</h3>
+                                       <div class="row">
+                                           <span>Total Employees</span>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                       <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                           <div class="card dash-widget shadow">
+                               <div class="card-body">
+                                   <span class="dash-widget-icon"><i class="fa fa-money"></i></span>
+                                   <div class="dash-widget-info">
+                                       <h3>{{$items['my_activities']??0}}</h3>
+                                       <span>Total Revenue</span>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+           @elseif(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Employee'&&\Illuminate\Support\Facades\Auth::guard('employee')->user()->department->name=='Sale Department')
             <div class="row">
                 <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                     <div class="card dash-widget shadow">
@@ -269,36 +296,8 @@
                         </div>
                     </div>
                 </div>
-               @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='CEO'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Super Admin')
-                    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                        <div class="card dash-widget shadow">
-                            <div class="card-body">
-                                <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
-                                <div class="dash-widget-info">
-                                    <h3>{{$total_emp}}</h3>
-                                    <div class="row">
-                                        <span>Total Employees</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                        <div class="card dash-widget shadow">
-                            <div class="card-body">
-                                <span class="dash-widget-icon"><i class="fa fa-money"></i></span>
-                                <div class="dash-widget-info">
-                                    <h3>{{$items['my_activities']??0}}</h3>
-                                    <span>Total Revenue</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                @endif
-
-                    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                        <a href="{{route('tickets.index')}}">
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <a href="{{route('tickets.index')}}">
                         <div class="card dash-widget shadow">
                             <div class="card-body">
                                 <span class="dash-widget-icon"><i class="fa fa-ticket"></i></span>
@@ -312,9 +311,34 @@
                                 </div>
                             </div>
                         </div>
-                        </a>
-                    </div>
-
+                    </a>
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <a href="{{route('meetings.index')}}">
+                        <div class="card dash-widget shadow">
+                            <div class="card-body">
+                                <span class="dash-widget-icon"><i class="la la-money"></i></span>
+                                <div class="dash-widget-info">
+                                    <h3>{{$items['meeting']}}</h3>
+                                    <span>Meeting</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <a href="{{route('tickets.index')}}">
+                        <div class="card dash-widget shadow">
+                            <div class="card-body">
+                                <span class="dash-widget-icon"><i class="la la-money"></i></span>
+                                <div class="dash-widget-info">
+                                    <h3>{{$items['assignment']??0}}</h3>
+                                    <span>Assignment</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
             </div>
         @endif
 

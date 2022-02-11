@@ -42,7 +42,7 @@
                         console.log(data);
                         $("#minutelist{{$minute->id}}").load(location.href + " #minutelist{{$minute->id}}>* ");
                         $("#view{{$minute->id}}").load(location.href + " #view{{$minute->id}}>* ");
-                        alert(data.Success);
+                        swal('Assignment', 'Minute assigned!', 'success');
                     }else {
                         $.each(data.error,function (key,value){
                             console.log(key);
