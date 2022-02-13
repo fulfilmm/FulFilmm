@@ -86,6 +86,7 @@ class ExpenseClaimController extends Controller
            }
            $exp_claim->save();
            $this->addnotify($request->finance_approver,'success','Request to expense claim.','expenseclaims/'.$exp_claim->id,Auth::guard('employee')->user()->id);
+           $this->addnotify($request->approver,'success','Request to expense claim.','expenseclaims/'.$exp_claim->id,Auth::guard('employee')->user()->id);
            for($i=0;$i<count($request->title);$i++){
                $item=new ExpenseClaimItem();
                $item->exp_claim_id=$exp_claim->id;
@@ -197,7 +198,7 @@ class ExpenseClaimController extends Controller
         $emps=Employee::all();
         $customer=Customer::where('customer_type','Supplier')->get();
         $data=['emps'=>$emps,'customers'=>$customer,'account'=>$account,'recurring'=>$recurring,'payment_method'=>$payment_method,'category'=>$category];
-        $this->addnotify($exp_claim->financial_approver,'danger','Claimed  expense claim','expenseclaims/'.$exp_claim->id,$exp_claim->emp_id);
+        $this->addnotify($exp_claim->emp_id,'danger','Claimed  expense claim','expenseclaims/'.$exp_claim->id,$exp_claim->financial_approver);
 
         return view('transaction.expense',compact('data','exp_claim'));
     }
