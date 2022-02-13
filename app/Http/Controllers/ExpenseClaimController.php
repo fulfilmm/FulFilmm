@@ -194,8 +194,9 @@ class ExpenseClaimController extends Controller
         $recurring=['No','Daily','Weekly','Monthly','Yearly'];
         $payment_method=['Cash','eBanking','WaveMoney','KBZ Pay'];
         $category=TransactionCategory::all();
+        $emps=Employee::all();
         $customer=Customer::where('customer_type','Supplier')->get();
-        $data=['customers'=>$customer,'account'=>$account,'recurring'=>$recurring,'payment_method'=>$payment_method,'category'=>$category];
+        $data=['emps'=>$emps,'customers'=>$customer,'account'=>$account,'recurring'=>$recurring,'payment_method'=>$payment_method,'category'=>$category];
         return view('transaction.expense',compact('data','exp_claim'));
     }
 }

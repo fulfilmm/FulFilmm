@@ -47,7 +47,7 @@ class TransactionController extends Controller
         $emps = Employee::all();
         $customer = Customer::where('customer_type', 'Supplier')->get();
         $data = ['emps' => $emps, 'customers' => $customer, 'account' => $account, 'recurring' => $recurring, 'payment_method' => $payment_method, 'category' => $category];
-        return view('transaction.expense', compact('data',));
+        return view('transaction.expense', compact('data'));
     }
 
     public function expense_index()
