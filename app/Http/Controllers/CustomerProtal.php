@@ -36,7 +36,7 @@ class CustomerProtal extends Controller
            ->where('receipt',1)->where('courier_id',Auth::guard('customer')->user()->id)
             ->get();
             $deli_fee_total=$total[0]->total;
-            $new_deli=DeliveryOrder::with('employee')->where('seen',0)->get();
+        $new_deli=DeliveryOrder::with('employee')->where('courier_id',Auth::guard('customer')->user()->id)->where('seen',0)->get();
             $ticket_count=ticket::where('customer_id',$auth_id)->count();
             $order_count=Order::where('customer_id',$auth_id)->count();
             $invoice_count=Invoice::where('customer_id',$auth_id)->count();

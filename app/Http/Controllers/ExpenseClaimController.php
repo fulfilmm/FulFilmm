@@ -183,7 +183,7 @@ class ExpenseClaimController extends Controller
       $exp_claim=ExpenseClaim::where('id',$id)->firstorFail();
       $exp_claim->status=$status;
       $exp_claim->update();
-      $this->addnotify($exp_claim->emp_id,'danger','Changed'.$status.'your expense claim','expenseclaims/'.$exp_claim->id,$exp_claim->financial_approver);
+      $this->addnotify($exp_claim->emp_id,'danger',$status.'your expense claim','expenseclaims/'.$exp_claim->id,$exp_claim->financial_approver);
         return redirect(route('expenseclaims.show',$id));
     }
     public function CashClaim($id){
