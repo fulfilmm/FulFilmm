@@ -79,7 +79,7 @@ class ExpenseClaimController extends Controller
            if ($request->hasfile('attach')) {
                foreach ($request->file('attach') as $attach) {
                    $name = $attach->getClientOriginalName();
-                   $attach->move(public_path() . '/approval_doc/', $name,);
+                   $attach->move(public_path() . '/approval_doc/', $name);
                    $data[] = $name;
                }
                $exp_claim->attach = json_encode($data);
