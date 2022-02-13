@@ -57,8 +57,10 @@
         @php
             if(\Illuminate\Support\Facades\Auth::guard('employee')->check()){
             $notifications=\App\Models\Notification::with('notify_user','notifier')->where('notify_user_id',\Illuminate\Support\Facades\Auth::guard('employee')->user()->id)->where('read_at',null)->get();
+            dd($notifications);
             }else{
-            $notifications=\App\Models\Notification::with('notify_user','notifier')->where('notify_user_id',\Illuminate\Support\Facades\Auth::guard('customer')->user()->id)->where('read_at',null)->get();}
+            $notifications=\App\Models\Notification::with('notify_user','notifier')->where('notify_user_id',\Illuminate\Support\Facades\Auth::guard('customer')->user()->id)->where('read_at',null)->get();
+        }
         @endphp
        @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
             <li class="nav-item dropdown">

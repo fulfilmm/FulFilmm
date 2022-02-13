@@ -183,7 +183,7 @@ class ExpenseClaimController extends Controller
       $exp_claim=ExpenseClaim::where('id',$id)->firstorFail();
       $exp_claim->status=$status;
       $exp_claim->update();
-      $this->addnotify($exp_claim->emp_id,'danger',$status.'your expense claim','expenseclaims/'.$exp_claim->id,$exp_claim->financial_approver);
+      $this->addnotify($exp_claim->emp_id,'danger',$status.' your expense claim','expenseclaims/'.$exp_claim->id,$exp_claim->financial_approver);
         return redirect(route('expenseclaims.show',$id));
     }
     public function CashClaim($id){
@@ -197,7 +197,7 @@ class ExpenseClaimController extends Controller
         $emps=Employee::all();
         $customer=Customer::where('customer_type','Supplier')->get();
         $data=['emps'=>$emps,'customers'=>$customer,'account'=>$account,'recurring'=>$recurring,'payment_method'=>$payment_method,'category'=>$category];
-        $this->addnotify($exp_claim->financial_approver,'danger','Has been claimed cash','expenseclaims/'.$exp_claim->id,$exp_claim->emp_id);
+        $this->addnotify($exp_claim->financial_approver,'danger','Claimed  expense claim','expenseclaims/'.$exp_claim->id,$exp_claim->emp_id);
 
         return view('transaction.expense',compact('data','exp_claim'));
     }

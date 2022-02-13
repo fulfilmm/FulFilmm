@@ -63,7 +63,7 @@ class CustomerController extends Controller
 
     public function card()
     {
-        $customers = Customer::paginate(12);
+        $customers = Customer::withTrashed()->paginate(12);
         return view('customer.data.cards', compact('customers'));
     }
     public function qualified_contact(){
