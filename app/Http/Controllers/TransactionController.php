@@ -316,7 +316,7 @@ class TransactionController extends Controller
         } else {
             $expense = Expense::where('id', $id)->first();
             if ($expense->approver_id == Auth::guard('employee')->user()->id) {
-                $transaction = Transaction::where('revenue_id', $expense->id)->first();
+                $transaction = Transaction::where('expense_id', $expense->id)->first();
                 $account = Account::where('id', $transaction->account_id)->first();
                 $account->balance = $account->balance - $expense->amount;
                 $expense->approve = 1;
