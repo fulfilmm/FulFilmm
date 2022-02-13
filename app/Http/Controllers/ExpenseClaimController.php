@@ -197,6 +197,8 @@ class ExpenseClaimController extends Controller
         $emps=Employee::all();
         $customer=Customer::where('customer_type','Supplier')->get();
         $data=['emps'=>$emps,'customers'=>$customer,'account'=>$account,'recurring'=>$recurring,'payment_method'=>$payment_method,'category'=>$category];
+        $this->addnotify($exp_claim->financial_approver,'danger','Has been claimed cash','expenseclaims/'.$exp_claim->id,$exp_claim->emp_id);
+
         return view('transaction.expense',compact('data','exp_claim'));
     }
 }

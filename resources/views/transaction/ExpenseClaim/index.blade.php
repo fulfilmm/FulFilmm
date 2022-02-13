@@ -41,9 +41,9 @@
                     <td>{{$expense->status}}</td>
                         <td>{{$expense->is_claim?'Yes':'No'}}</td>
                         <td>
-                            <a href="" class="btn btn-primary btn-s"><i class="fa fa-edit"></i></a>
+                            {{--<a href="" class="btn btn-primary btn-s"><i class="fa fa-edit"></i></a>--}}
                             <a href="{{route('expenseclaims.show',$expense->id)}}" class="btn btn-white btn-s"><i class="fa fa-eye"></i></a>
-                            <a href="" class="btn btn-danger btn-s"><i class="fa fa-trash"></i></a>
+                            {{--<a href="" class="btn btn-danger btn-s"><i class="fa fa-trash"></i></a>--}}
                         </td>
                     </tr>
                     @endforeach
