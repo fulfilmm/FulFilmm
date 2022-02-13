@@ -16,8 +16,8 @@
                 <div class="col-auto float-right ml-auto">
                     <div class="col-12">
                       @if($prs->status=='Approved')
-                        <a href="{{route('rfq.prepare',$prs->id)}}" class="btn btn-success btn-sm rounded-pill shadow-sm">Prepare For RFQs</a>
-                        <a href="{{route('purchaseorders.create')}}" class="btn btn-white btn-sm rounded-pill shadow-sm">Create Order</a>
+                        <a href="{{route('rfq.prepare',$prs->id)}}" class="btn btn-success btn-sm rounded-pill shadow-sm">Create RFQs</a>
+                        <a href="{{route('purchaseorders.create')}}" class="btn btn-white btn-sm rounded-pill shadow-sm">Create PO</a>
                         @endif
                           <a href="{{route('purchase_request.edit',$prs->id)}}" class="btn btn-secondary btn-sm rounded-pill"><i class="fa fa-edit mr-2 ml-2"></i>Edit</a>
                         <div class="dropdown action-label" id="status_div">

@@ -117,7 +117,73 @@
                 Attach File
             </div>
             <div class="card-body">
+                <div class="row">
+                   @if($transaction->type=='Revenue')
+                        @if($transaction->revenue->attachment!=null)
+                            <div class="card-body">
+                                <div class="row row-sm">
+                                    <div class="col-6 col-sm-4 col-md-3 col-lg-4 col-xl-3">
+                                        <div class="card card-file" style="min-width: 100px;">
+                                            @php
 
+                                                $infoPath = pathinfo(public_path('attach_file/'.$transaction->revenue->attachment));
+                                                 $extension = $infoPath['extension'];
+
+                                            @endphp
+                                            <div class="card-file-thumb">
+                                                @if($extension=='xlsx')
+                                                    <i class="fa fa-file-excel-o"></i>
+                                                @elseif($extension=='pdf')
+                                                    <i class="fa fa-file-pdf-o"></i>
+                                                @else
+                                                    <i class="fa fa-file-word-o"></i>
+                                                @endif
+                                            </div>
+                                            <div class="card-body">
+                                                <h6><a href="{{url(asset('attach_file/'.$transaction->revenue->attachment))}}" download>{{$transaction->revenue->attachment}}</a></h6>
+                                            </div>
+                                            <div class="card-footer">{{$transaction->created_at->toFormattedDateString()}}
+                                                <a href="{{url(asset('attach_file/'.$transaction->revenue->attachment))}}" class="float-right" ><i class="fa fa-download" style="font-size: 16px;"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                       @else
+                        @if($transaction->expense->attachment!=null)
+                            <div class="card-body">
+                                <div class="row row-sm">
+                                    <div class="col-6 col-sm-4 col-md-3 col-lg-4 col-xl-3">
+                                        <div class="card card-file" style="min-width: 100px;">
+                                            @php
+
+                                                $infoPath = pathinfo(public_path('attach_file/'.$transaction->expense->attachment));
+                                                 $extension = $infoPath['extension'];
+
+                                            @endphp
+                                            <div class="card-file-thumb">
+                                                @if($extension=='xlsx')
+                                                    <i class="fa fa-file-excel-o"></i>
+                                                @elseif($extension=='pdf')
+                                                    <i class="fa fa-file-pdf-o"></i>
+                                                @else
+                                                    <i class="fa fa-file-word-o"></i>
+                                                @endif
+                                            </div>
+                                            <div class="card-body">
+                                                <h6><a href="{{url(asset('attach_file/'.$transaction->expense->attachment))}}" download>{{$transaction->expense->attachment}}</a></h6>
+                                            </div>
+                                            <div class="card-footer">{{$transaction->created_at->toFormattedDateString()}}
+                                                <a href="{{url(asset('attach_file/'.$transaction->expense->attachment))}}" class="float-right" ><i class="fa fa-download" style="font-size: 16px;"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    @endif
+                </div>
             </div>
         </div>
         <div class="row">
