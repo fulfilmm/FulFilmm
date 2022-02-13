@@ -1,4 +1,4 @@
-@extends(\Illuminate\Support\Facades\Auth::guard('employee')->check()?'layout.mainlayout':'layouts.app')
+@extends('layout.mainlayout')
 @section('title','Order View')
 @section('content')
     <div class="container-fluid">
@@ -27,24 +27,28 @@
                             <option value="Pending">Pending</option>
                         </select>
                     </div>
+                    @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
                     <div class="col-md-2 col-5">
                         <input type="text" class="form-control shadow-sm" id="customer_name" placeholder="Customer Name">
                     </div>
+                    @endif
                     <div class="col-md-2 col-5">
                         <input type="text" class="form-control shadow-sm" id="min" placeholder="From Date">
                     </div>
                     <div class="col-md-2 col-5">
                         <input type="text" class="form-control shadow-sm" id="max" placeholder="To Date">
                     </div>
-                    <div class="col-md-2">
+                   @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
+                        <div class="col-md-2">
 
-                        <a href="{{\Illuminate\Support\Facades\Auth::guard('customer')->check()?route('orders.create'):route('saleorders.create')}}" class="btn btn-primary btn-md position-relative d-flex align-items-center justify-content-between shadow-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="mr-2" width="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                            </svg>
-                            Add Order
-                        </a>
-                    </div>
+                            <a href="{{\Illuminate\Support\Facades\Auth::guard('customer')->check()?route('orders.create'):route('saleorders.create')}}" class="btn btn-primary btn-md position-relative d-flex align-items-center justify-content-between shadow-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="mr-2" width="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                </svg>
+                                Add Order
+                            </a>
+                        </div>
+                       @endif
                 </div>
                 <div class="row">
                     <div class="col-lg-12">
@@ -100,19 +104,29 @@
                                                     </span>
                                                     </p>
                                                 </td>
-                                                <td>
+                                               @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
+                                                    <td>
 
                                                         <a class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="" data-original-title="View" href="{{route('saleorders.show',$order->id)}}">
                                                             <i class="la la-eye">
                                                             </i>
                                                         </a>
-                                                    <a href="{{route('saleorders.edit',$order->id)}}" class="btn btn-success btn-sm"><i class="la la-edit"></i></a>
+                                                        <a href="{{route('saleorders.edit',$order->id)}}" class="btn btn-success btn-sm"><i class="la la-edit"></i></a>
                                                         {{--<a class="" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit" href="#">--}}
                                                         {{--<svg xmlns="http://www.w3.org/2000/svg" class="text-secondary" width="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">--}}
                                                         {{--<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />--}}
                                                         {{--</svg>--}}
                                                         {{--</a>--}}
-                                                </td>
+                                                    </td>
+                                                   @else
+                                                    <td>
+
+                                                        <a class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="" data-original-title="View" href="{{route('orders.show',$order->id)}}">
+                                                            <i class="la la-eye">
+                                                            </i>
+                                                        </a>
+                                                    </td>
+                                                @endif
                                             </tr>
                                         @endforeach
                                         </tbody>

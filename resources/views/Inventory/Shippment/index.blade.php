@@ -58,6 +58,7 @@
                         <th>Shipping Address</th>
                         <th>Customer</th>
                         <th>Invoice ID</th>
+                        <th>Status</th>
                         <th>Action</th>
 
                     </tr>
@@ -78,7 +79,17 @@
                                 {{$deli->invoice->invoice_id??''}}
                             @endif
                         </td>
-
+                        <td style="min-width: 120px;">
+                           <div class="row">
+                               <div class="nav-item dropdown dropdown-action btn btn-outline-white border btn-sm rounded-pill">
+                                   <a href="" class="dropdown-toggle rounded-pill" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-{{$deli->cancel==1?'danger':'success'}} ml-1 mr-1"></i> {{$deli->cancel==1 ?'Cancel' :"Accept"}}</a>
+                                       <div class="dropdown-menu">
+                                           <a class="dropdown-item" href="{{url('delivery/state/cancel/'.$deli->id)}}" >Cancel</a>
+                                           <a class="dropdown-item" href="{{url('delivery/state/accept/'.$deli->id)}}">Accept</a>
+                                       </div>
+                               </div>
+                           </div>
+                        </td>
                         <td>
                             <a href="{{route('deliveries.show',$deli->id)}}" class="btn btn-white btn-sm"><i class="fa fa-eye"></i></a>
                             <a href="{{route('deliveries.edit',$deli->id)}}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></a></td>

@@ -27,10 +27,12 @@ class ShippmentController extends Controller
     public function index()
     {
 
-        $deliveries=DeliveryOrder::with('invoice','courier','customer')->get();
+
         if(Auth::guard('customer')->check()){
+            $deliveries=DeliveryOrder::with('invoice','courier','customer')->where('courier_id',Auth::guard('customer')->user()->id)->get();
             $new_deli=DeliveryOrder::with('employee')->where('courier_id',Auth::guard('customer')->user()->id)->where('seen',0)->get();
         }else{
+            $deliveries=DeliveryOrder::with('invoice','courier','customer')->get();
             $new_deli=[];
         }
 
@@ -73,7 +75,7 @@ class ShippmentController extends Controller
             'courier_id'=>'required',
             'invoice_id'=>'required',
             'customer_id'=>'required',
-            'delivery_id'=>'required',
+            'delivery_id'=>'required|unique:delivery_orders',
             'delivery_date'=>'required',
             'delivery_fee'=>'required',
             'warehouse_id'=>'required',
@@ -81,15 +83,21 @@ class ShippmentController extends Controller
         ]);
         $customer=Customer::where('id',$request->courier_id)->first();
 //        dd($customer);
-        $deli=DeliveryOrder::create($request->all());
-        $data['email']=$customer->email;
-        $data['name']=$customer->name;
-        $data['subject']='Delivery Assigned Notification';
-        $data['content']=ucfirst(Auth::guard('employee')->user()->name).'has assigned to you'.$deli->delivery_id;
-        $data['link']='deliveries.show';
-        $data['id']=$deli->id;
-        $this->emailnoti($data);
-        return redirect(route('deliveries.index'));
+        $delivery=DeliveryOrder::where('invoice_id',$request->invoice_id)->where('cancel',0)->first();
+        if($delivery==null){
+           $deli=DeliveryOrder::create($request->all());
+           $data['email']=$customer->email;
+           $data['name']=$customer->name;
+           $data['subject']='Delivery Assigned Notification';
+           $data['content']=ucfirst(Auth::guard('employee')->user()->name).'has assigned to you'.$deli->delivery_id;
+           $data['link']='deliveries.show';
+           $data['id']=$deli->id;
+           $this->emailnoti($data);
+           return redirect(route('deliveries.index'));
+       }else{
+           return redirect(route('deliveries.index'))->with('error','This invoice has been deliveried!');
+       }
+
     }
 
     /**
@@ -171,35 +179,54 @@ class ShippmentController extends Controller
     }
     public function statuschange($state,$id){
         $delivery=DeliveryOrder::with('invoice','customer','courier')->where('id',$id)->first();
-        if($state=='Packing'&& $delivery->packing==0){
-            $delivery->packing=1;
-            $delivery->packing_time=Carbon::now();
-        }elseif ($state=='Delivery' && $delivery->on_way==0){
-            $delivery->on_way=1;
-            $delivery->onway_time=Carbon::now();
-        }elseif ($state=='Done' && $delivery->receipt==0){
-            $delivery->receipt=1;
-            $delivery->receipt_time=Carbon::now();
+        if($delivery->courier_id==Auth::guard('customer')->user()->id){
+            if($state!='cancel'&&$state!='accept'){
+                $details = [
+
+                    'subject' => $company->name??''."Delivery Tracking Notification.",
+                    'email' =>$delivery->customer->email,
+                    'name' =>$delivery->customer->name,
+                    'inv_id' =>$delivery->invoice->invoice_id,
+                    'courier_name'=>$delivery->courier->name,
+                    'uuid'=>$delivery->uuid,
+                    'company' => $company->name??'',
+
+                ];
+                Mail::send('Inventory.Shippment.email', $details, function ($message) use ($details) {
+                    $message->from('cincin.com@gmail.com',$details['company']);
+                    $message->to($details['email']);
+                    $message->subject($details['subject']);
+                });
+            }
+            if($state=='Packing'&& $delivery->packing==0){
+                $delivery->packing=1;
+                $delivery->packing_time=Carbon::now();
+                $delivery->update();
+                return redirect(route('deliveries.show',$id));
+            }elseif ($state=='Delivery' && $delivery->on_way==0){
+                $delivery->on_way=1;
+                $delivery->onway_time=Carbon::now();
+                $delivery->update();
+                return redirect(route('deliveries.show',$id));
+            }elseif ($state=='Done' && $delivery->receipt==0){
+                $delivery->receipt=1;
+                $delivery->receipt_time=Carbon::now();
+                $delivery->update();
+                return redirect(route('deliveries.show',$id));
+            }elseif ($state=='cancel'){
+                $delivery->cancel=1;
+                $delivery->update();
+                return redirect(route('deliveries.index'))->with('success','Canceled delivery');
+            }elseif($state=='accept'&&$delivery->cancel!=1){
+                $delivery->cancel=0;
+                $delivery->update();
+                return redirect(route('deliveries.show',$id))->with('success','Accepted delivery assign');
+            }else{
+                return redirect(route('deliveries.index'));
+            }
+        }else{
+            return redirect(route('deliveries.index'))->with('error','You can not change state!');
         }
-        $details = [
-
-            'subject' => $company->name??''."Delivery Tracking Notification.",
-            'email' =>$delivery->customer->email,
-            'name' =>$delivery->customer->name,
-            'inv_id' =>$delivery->invoice->invoice_id,
-            'courier_name'=>$delivery->courier->name,
-            'uuid'=>$delivery->uuid,
-            'from' => Auth::guard('employee')->user()->email,
-            'from_name' => Auth::guard('employee')->user()->name,
-            'company' => $company->name??'',
-
-        ];
-        Mail::send('Inventory.Shippment.email', $details, function ($message) use ($details) {
-            $message->from($details['from'], $details['company']);
-            $message->to($details['email']);
-            $message->subject($details['subject']);
-        });
-        $delivery->update();
     }
     public function comment(Request $request){
        $comment=new DeliveryComment();

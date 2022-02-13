@@ -10,6 +10,7 @@ use App\Models\ExpClaimComment;
 use App\Models\ExpenseClaim;
 use App\Models\ExpenseClaimItem;
 use App\Models\TransactionCategory;
+use App\Traits\NotifyTrait;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ExpenseClaimController extends Controller
 {
+    use NotifyTrait;
     /**
      * Display a listing of the resource.
      *
@@ -83,6 +85,7 @@ class ExpenseClaimController extends Controller
                $exp_claim->attach = json_encode($data);
            }
            $exp_claim->save();
+           $this->addnotify($request->finance_approver,'success','Request to expense claim.','expenseclaims/'.$exp_claim->id,Auth::guard('employee')->user()->id);
            for($i=0;$i<count($request->title);$i++){
                $item=new ExpenseClaimItem();
                $item->exp_claim_id=$exp_claim->id;
@@ -180,6 +183,7 @@ class ExpenseClaimController extends Controller
       $exp_claim=ExpenseClaim::where('id',$id)->firstorFail();
       $exp_claim->status=$status;
       $exp_claim->update();
+      $this->addnotify($exp_claim->emp_id,'danger','Changed'.$status.'your expense claim','expenseclaims/'.$exp_claim->id,$exp_claim->financial_approver);
         return redirect(route('expenseclaims.show',$id));
     }
     public function CashClaim($id){

@@ -44,7 +44,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div data-timeline-content="axis" data-timeline-axis-style="dashed" class="timeline timeline-one-side">
-                            <a href="" id="draft">
+                            <a href="{{url('delivery/state/Draft/'.$delivery->id)}}" id="draft">
                                 <div class="timeline-block"><span class="timeline-step badge-primary"><i class="la la-{{$delivery->draft==1?'check':''}} text-white"></i></span>
                                     <div class="timeline-content"><h2 class="font-weight-500">
                                             Draft
@@ -57,7 +57,7 @@
                                     </div>
                                 </div>
                             </a>
-                            <a href="" id="packing">
+                            <a href="{{url('delivery/state/Packing/'.$delivery->id)}}" id="packing">
                                 <div class="timeline-block">
 
                         <span class="timeline-step badge-danger"><i
@@ -75,7 +75,7 @@
                                     </div>
                                 </div>
                             </a>
-                            <a href="" id="delivery">
+                            <a href="{{url('delivery/state/Delivery/'.$delivery->id)}}" id="delivery">
                                 <div class="timeline-block">
 
                                 <span class="timeline-step badge-purple">
@@ -93,7 +93,7 @@
                                     </div>
                                 </div>
                             </a>
-                            <a href=""  id="done">
+                            <a href="{{url('delivery/state/Done/'.$delivery->id)}}"  id="done">
                                 <div class="timeline-block">
 
                                 <span class="timeline-step badge-success">
@@ -118,7 +118,9 @@
            <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <a href="{{route('delivery.bill',$delivery->id)}}" class="btn btn-primary btn-sm float-right  {{$delivery->paid_deli_fee==1?'disabled':''}}">{{$delivery->paid_deli_fee==1?'Already Created Bill':'Create Bill'}}</a><br>
+                    @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
+                        <a href="{{route('delivery.bill',$delivery->id)}}" class="btn btn-primary btn-sm float-right  {{$delivery->paid_deli_fee==1?'disabled':''}}">{{$delivery->paid_deli_fee==1?'Already Created Bill':'Create Bill'}}</a>
+                        @endif<br>
                     <h3 class="d-inline-flex mb-0 long-texts">Shipping Information</h3>
                 </div>
                 <div class="col-12 my-2">
@@ -374,70 +376,6 @@
                 }
 
             }());
-            $(document).on('click', '#draft', function (event) {
-                $.ajax({
-                    data: {
-
-                    },
-                    type: 'POST',
-                    url: '{{url("delivery/state/Draft/$delivery->id")}}',
-                    async: false,
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    success: function (data) {
-                        console.log(data);
-                        // location.reload();
-                    }
-                });
-
-            });
-            $(document).on('click', '#packing', function () {
-                $.ajax({
-                    data: {
-
-                    },
-                    type: 'POST',
-                    url: '{{url("delivery/state/Packing/$delivery->id")}}',
-                    async: false,
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    success: function (data) {
-                        console.log(data);
-                        // location.reload();
-                    }
-                });
-
-            });
-            $(document).on('click', '#delivery', function (event) {
-                $.ajax({
-                    data: {
-
-                    },
-                    type: 'POST',
-                    url: '{{url("delivery/state/Delivery/$delivery->id")}}',
-                    async: false,
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    success: function (data) {
-                        console.log(data);
-                        // location.reload();
-                    }
-                });
-
-            });
-            $(document).on('click', '#done', function (event) {
-                $.ajax({
-                    data: {
-
-                    },
-                    type: 'POST',
-                    url: '{{url("delivery/state/Done/$delivery->id")}}',
-                    async: false,
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    success: function (data) {
-                        console.log(data);
-                        // location.reload();
-                    }
-                });
-
-            });
         </script>
 
         <!-- /Page Content -->

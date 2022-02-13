@@ -19,9 +19,11 @@
                                 <li class="breadcrumb-item active">Invoices</li>
                             </ul>
                         </div>
-                        <div class="col-auto float-right ml-auto">
-                            <a href="{{route('invoices.create')}}" class="btn add-btn"><i class="fa fa-plus"></i> Create Invoice</a>
-                        </div>
+                       @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
+                            <div class="col-auto float-right ml-auto">
+                                <a href="{{route('invoices.create')}}" class="btn add-btn"><i class="fa fa-plus"></i> Create Invoice</a>
+                            </div>
+                           @endif
                     </div>
                 </div>
                 <!-- /Page Header -->
@@ -86,7 +88,12 @@
                                  @foreach($allinv as $invoice)
                                     <tr>
                                         <td>{{$invoice->id}}</td>
-                                        <td><a href="{{route('invoices.show',$invoice->id)}}">#{{$invoice->invoice_id}}</a></td>
+                                        @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
+                                            <td><a href="{{route('invoices.show',$invoice->id)}}">#{{$invoice->invoice_id}}</a></td>
+                                            @else
+                                            <td><a href="{{route("customer.invoice_show",$invoice->id)}}" >#{{$invoice->invoice_id}}</a></td>
+                                            @endif
+
                                         <td>{{$invoice->customer->name}}</td>
                                         <td>{{$invoice->created_at->toFormattedDateString()}}</td>
                                         <td>{{\Illuminate\Support\Carbon::parse($invoice->due_date)->toFormattedDateString()}}</td>
@@ -97,18 +104,24 @@
                                                 {{--<a class="btn btn-white btn-sm btn-rounded "  href="#" data-toggle="modal" data-target="#change_status{{$invoice->id}}"></a>--}}
                                             </div>
                                         </td>
-                                        @include('invoice.inv_statuschange')
-                                        <td class="text-right">
-                                            <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-{{--                                                    <a class="dropdown-item" href="{{route("invoices.edit",$invoice->id)}}"><i class="fa fa-pencil m-r-5"></i> Edit</a>--}}
-                                                    <a class="dropdown-item" href="{{route("invoices.show",$invoice->id)}}"><i class="fa fa-eye m-r-5"></i> View</a>
-{{--                                                    <a class="dropdown-item" href="#"><i class="fa fa-file-pdf-o m-r-5"></i> Download</a>--}}
-                                                    <a class="dropdown-item" href="" data-toggle="modal" data-target="#delete{{$invoice->id}}"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                        @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
+                                            @include('invoice.inv_statuschange')
+                                            <td class="text-right">
+                                                <div class="dropdown dropdown-action">
+                                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                        {{--                                                    <a class="dropdown-item" href="{{route("invoices.edit",$invoice->id)}}"><i class="fa fa-pencil m-r-5"></i> Edit</a>--}}
+                                                        <a class="dropdown-item" href="{{route("invoices.show",$invoice->id)}}"><i class="fa fa-eye m-r-5"></i> View</a>
+                                                        {{--                                                    <a class="dropdown-item" href="#"><i class="fa fa-file-pdf-o m-r-5"></i> Download</a>--}}
+                                                        <a class="dropdown-item" href="" data-toggle="modal" data-target="#delete{{$invoice->id}}"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
+                                            </td>
+                                            @else
+                                            <td>
+                                                <a href="{{route("customer.invoice_show",$invoice->id)}}" class="btn btn-white btn-sm"><i class="la la-eye"></i></a>
+                                            </td>
+                                            @endif
                                     </tr>
                                      @include('invoice.delete')
                                  @endforeach
@@ -145,7 +158,7 @@
                     });
                 });
                 $(document).ready(function() {
-                    $('#filter_id').on('change', function () {
+                    $('#filter_id').keyup(function () {
                         var table = $('#invoice').DataTable();
                         table.column(1).search($(this).val()).draw();
 

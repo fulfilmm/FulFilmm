@@ -9,6 +9,7 @@ use App\Models\Employee;
 use App\Models\TransactionCategory;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
 
 class AdvancePaymentController extends Controller
@@ -20,7 +21,12 @@ class AdvancePaymentController extends Controller
      */
     public function index(Request $request)
     {
-        $advancepayment=AdvancePayment::with('customer','emp','order','account')->get();
+       if(Auth::guard('employee')->check())
+       {
+           $advancepayment=AdvancePayment::with('customer','emp','order','account')->get();
+       }else{
+           $advancepayment=AdvancePayment::with('customer','emp','order','account')->where('customer_id',Auth::guard('customer')->user()->id)->get();
+       }
         return view('transaction.advancepayment',compact('advancepayment'));
     }
 

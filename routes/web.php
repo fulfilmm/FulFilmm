@@ -358,7 +358,7 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::get('stock/transaction/search',[StockTransactionController::class,'stockfilter'])->name('stock.search');
     Route::get('price/{status}/{id}',[SellingUnitController::class,'price_active'])->name('price.active');
     Route::get('selling/report',[SaleReportController::class,'sale_report'])->name('sale.report');
-    Route::resource('advancepayments',AdvancePaymentController::class);
+    Route::resource('advancepayments',AdvancePaymentController::class)->only('create','store','edit','update','destroy');
     Route::resource('officebranch',OfficeBranchController::class);
     Route::get('transaction/approve/{id}/{type}',[TransactionController::class,'account_update'])->name('transaction.approve');
     Route::get('advance/make/transaction/{id}',[AdvancePaymentController::class,'maketransaction'])->name('advance.maketransaction');
@@ -391,19 +391,23 @@ Route::middleware(['meeting_view_relative_emp', 'auth:employee', 'authorize', 'o
 //CustomerProtal Side Route
 Route::middleware(['guadcheck'])->group(function () {
     Route::resource('deliveries', ShippmentController::class);
+    Route::resource('advancepayments',AdvancePaymentController::class)->only('index','show');
+
 });
 Route::middleware(['auth:customer'])->group(function () {
     Route::get('customer/home/', [CustomerProtal::class, 'home'])->name('home');
     Route::get('customer/quotation', [CustomerProtal::class, 'quotation'])->name('customer.quotation');
-    Route::get('customer/dashboard', [CustomerProtal::class, 'dashboard'])->name('customer.invoice');
     Route::get('customer/password/change/',[CustomerProtal::class,'change_password'])->name('customers.changepassword');
     Route::get('customer/order', [CustomerProtal::class, 'dashboard'])->name('customer.orders');
     Route::get('customer/order/{id}', [CustomerProtal::class, 'dashboard'])->name('order.show');
     Route::resource('orders', SaleOrderController::class);
-
     Route::post('customer/password/update/{id}',[CustomerProtal::class,'password_update'])->name('password.update');
     Route::post('delivery/comment',[ShippmentController::class,'comment'])->name('delivery.comment');
-    Route::post('delivery/state/{state}/{id}',[ShippmentController::class,'statuschange'])->name('delivery.state');
+    Route::get('delivery/state/{state}/{id}',[ShippmentController::class,'statuschange'])->name('delivery.state');
+    Route::get('customer/invoice',[CustomerProtal::class,'invoice'])->name('customer.invoice');
+    Route::get('customer/invoice/show/{id}',[CustomerProtal::class,'invoice_show'])->name('customer.invoice_show');
+    Route::get('customer/ticket',[CustomerProtal::class,'ticket'])->name('customer.ticket');
+    Route::get('customer/ticket/show/{id}',[CustomerProtal::class,'ticket_show'])->name('customer.ticket_show');
 
 
 });
@@ -457,5 +461,8 @@ Route::get('delivery/tracking/{uuid}',[ShippmentController::class,'tracking'])->
 //Route::get('stockout/show/{id}',[StockTransactionController::class,'show_stockout'])->name('stockout.show');
 
 
-
+Route::post('backups/upload', ['as'=>'backups.upload', 'uses'=>'BackupsController@upload']);
+Route::post('backups/{fileName}/restore', ['as'=>'backups.restore', 'uses'=>'BackupsController@restore']);
+Route::get('backups/{fileName}/dl', ['as'=>'backups.download', 'uses'=>'BackupsController@download']);
+Route::resource('backups','BackupsController');
 
