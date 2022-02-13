@@ -12,9 +12,6 @@
                         <li class="breadcrumb-item float-right">Show</li>
                     </ul>
                 </div>
-                <div class="col-auto float-right ml-auto">
-                    <a href="{{route('expenseclaims.create')}}" class="btn btn-white float-right mr-3 mt-3 border-dark rounded-pill" style="box-shadow: white"><i class="fa fa-plus mr-2"></i>New Expense Claim</a>
-                </div>
             </div>
         </div>
         <div class="">

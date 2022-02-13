@@ -14,13 +14,19 @@
                 </div>
             </div>
         </div>
-        <div class="card">
+        <div class="card shadow">
             <form method="POST" action="{{route('expense.store')}}" accept-charset="UTF-8" id="transaction" role="form" novalidate="novalidate" enctype="multipart/form-data"
                   class="form-loading-button needs-validation">
                 @csrf
                 <div class="card-body">
                     <div class="row">
                         <input type="hidden" name="type" value="Expense">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="title">Title</label>
+                                <input type="text" class="form-control" id="title" name="title">
+                            </div>
+                        </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="date">Date</label>
@@ -119,14 +125,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="revenue_description">Description</label>
-                                <textarea name="description" id="desc" cols="30" rows="5" class="form-control">
-                                   {!! $exp_claim->description??'' !!}
-                                </textarea>
-                            </div>
-                        </div>
                         <div class="col-md-6" id="cat_div">
                             <div class="form-group">
                                 <label for="category">Category</label>
@@ -148,6 +146,15 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="revenue_description">Description</label>
+                                <textarea name="description" id="desc" cols="30" rows="5" class="form-control">
+                                   {!! $exp_claim->description??'' !!}
+                                </textarea>
+                            </div>
+                        </div>
+
                         <div class="col-md-6">
                             <label for="recurring">Recurring</label>
                             <div class="input-group">
@@ -176,7 +183,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-group"><label for="reference">Reference</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">

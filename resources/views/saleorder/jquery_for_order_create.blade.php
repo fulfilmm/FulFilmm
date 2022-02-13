@@ -41,7 +41,12 @@
         var tax_amount = parseFloat(sum) * (parseInt(tax_rate) / 100);
         var discount = $('#discount').val();
         var deli_fee = $('#deli_fee').val();
-        $('#grand_total').val((parseFloat(sum) + parseFloat(deli_fee) + parseFloat(tax_amount)) - parseFloat(discount));
+        var grand=(parseFloat(sum) + parseFloat(deli_fee) + parseFloat(tax_amount)) - parseFloat(discount);
+        if(isNaN(grand)){
+            $('#grand_total').val('0.0');
+        }else {
+            $('#grand_total').val(grand);
+        }
         $('select').change(function () {
             var tax = $('#tax option:selected').val();
             var sum =$('#total').val();

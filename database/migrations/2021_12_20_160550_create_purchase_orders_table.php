@@ -16,8 +16,7 @@ class CreatePurchaseOrdersTable extends Migration
         Schema::create('purchase_orders', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('vendor_id')->unsigned();
-            $table->string('purchaseorder_id')->unique();
-            $table->bigInteger('rfq_id')->unsigned()->nullable()->unique();
+            $table->bigInteger('pr_id')->unsigned()->nullable();
             $table->dateTime('ordered_date');
             $table->dateTime('deadline')->nullable();
             $table->string('purchase_type');
@@ -34,6 +33,7 @@ class CreatePurchaseOrdersTable extends Migration
             $table->tinyInteger('is_receipt')->default(0);
             $table->tinyInteger('confirm')->default(0);
             $table->dateTime('confirm_date')->nullable();
+            $table->text('attach')->nullable();
             $table->timestamps();
         });
     }

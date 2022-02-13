@@ -15,6 +15,7 @@ class CreateExpenseClaimsTable extends Migration
     {
         Schema::create('expense_claims', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
             $table->bigInteger('emp_id')->unsigned();
             $table->bigInteger('approver_id')->unsigned();
             $table->string('status');//for reject,pending,approve

@@ -18,10 +18,40 @@
         </div>
         <div class="card">
             <div class="col-12">
-                <table class="table table-striped custom-table mb-0 datatable">
+                <div class="row filter-row my-3">
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group">
+                            <input class="form-control form-control-md  shadow-sm" type="text" id="filter_id" name='id' placeholder="Type Invocie ID">
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group ">
+                            <input class="form-control form-control-md shadow-sm" type="text" name="min" id="min" placeholder="Enter Start Date">
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group">
+                            <input class="form-control shadow-sm form-control-md" type="text" id="max" name="max" placeholder="Enter End Date">
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group">
+                            <select class="select form-control-md" id="filter_status">
+                                <option value="" disabled>Select Status</option>
+                                <option value="">All</option>
+                                <option value="Approved">Approved</option>
+                                <option value="Approved">Approved</option>
+                                <option value="Approved">Approved</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <table class="table table-striped custom-table mb-0 datatable" id="exp_claim">
                     <thead>
                     <tr>
                         <th>Date</th>
+                        <th>Title</th>
                         <th>Employee</th>
                         <th>Amount</th>
                         <th>Approver</th>
@@ -35,6 +65,7 @@
                     @foreach($expense_claim as $expense)
                     <tr>
                         <td>{{\Carbon\Carbon::parse($expense->date)->toFormattedDateString()}}</td>
+                        <td><a href="{{route('expenseclaims.show',$expense->id)}}">{{$expense->title??''}}</a></td>
                     <td>{{$expense->employee->name}}</td>
                     <td>{{$expense->total}}</td>
                     <td>{{$expense->approver->name}}</td>
@@ -52,4 +83,43 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function(){
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var min = $('#min').datepicker("getDate");
+                    var max = $('#max').datepicker("getDate");
+                    var startDate = new Date(data[3]);
+                    if (min == null && max == null) { return true; }
+                    if (min == null && startDate <= max) { return true;}
+                    if(max == null && startDate >= min) {return true;}
+                    if (startDate <= max && startDate >= min) { return true; }
+                    return false;
+                }
+            );
+
+            $("#min").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
+            $("#max").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
+            var table = $('#invoice').DataTable();
+
+            // Event listener to the two range filtering inputs to redraw on input
+            $('#min, #max').change(function () {
+                table.draw();
+            });
+        });
+        $(document).ready(function() {
+            $('#filter_id').keyup(function () {
+                var table = $('#invoice').DataTable();
+                table.column(1).search($(this).val()).draw();
+
+            });
+        });
+        $(document).ready(function() {
+            $('#filter_status').on('change', function () {
+                var table = $('#invoice').DataTable();
+                table.column(6).search($(this).val()).draw();
+
+            });
+        });
+    </script>
 @endsection

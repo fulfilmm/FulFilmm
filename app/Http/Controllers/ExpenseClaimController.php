@@ -57,16 +57,18 @@ class ExpenseClaimController extends Controller
     {
 //        dd($request->all());
         $this->validate($request,[
-           'description'=>'required',
+            'description'=>'required',
             'date'=>'required',
             'approver'=>'required',
             'finance_approver'=>'required',
             'amount'=>'required',
+            'main_title'=>'required',
             'title'=>'required',
-            'total'=>'required'
+            'total'=>'required',
         ]);
        try {
            $exp_claim = new ExpenseClaim();
+           $exp_claim->title=$request->main_title;
            $exp_claim->emp_id = Auth::guard('employee')->user()->id;
            $exp_claim->approver_id = $request->approver;
            $exp_claim->status = 'New';

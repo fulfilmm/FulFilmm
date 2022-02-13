@@ -8,6 +8,7 @@ use App\Models\product;
 use App\Models\PurchaseItem;
 use App\Models\PurchaseRequest;
 use App\Models\PurchaseRequestComment;
+use App\Traits\NotifyTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Session;
 
 class PurchaseRequestController extends Controller
 {
+    use NotifyTrait;
     /**
      * Display a listing of the resource.
      *
@@ -111,6 +113,7 @@ class PurchaseRequestController extends Controller
         }
         Session::forget($Auth);
         Session::forget("prdata-".Auth::guard('employee')->user()->id);
+        $this->addnotify($request->approver_id,'general',' Requested purchase request id '.$pr_id.'to you','purchase_request/'.$pr->id,Auth::guard('employee')->user()->id);
         return redirect(route('purchase_request.index'));
     }
 
@@ -200,6 +203,7 @@ class PurchaseRequestController extends Controller
         $purchase_request=PurchaseRequest::where('id',$id)->firstorFail();
         $purchase_request->status=$request->status;
         $purchase_request->update();
+        $this->addnotify($request->creator_id,'general',' Requested purchase request id '.$purchase_request->pr_id.'to you','purchase_request/'.$purchase_request->id,$purchase_request->approver_id);
     }
     public function comment(Request $request){
         $pr_cmt=new PurchaseRequestComment();

@@ -27,10 +27,6 @@
                                         </button>
                                     </div>
                                 </div>
-                                <a href="{{route('invoices.create')}}"
-                                   class="btn btn-white btn-sm">
-                                    Add New
-                                </a>
                                 <button class="btn btn-danger btn-sm" type="button" id="create_pdf"><i class="fa fa-file-pdf-o mr-2"></i>PDF Download</button>
 
                             </div>

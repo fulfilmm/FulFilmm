@@ -13,10 +13,19 @@
                 </div>
             </div>
         </div>
-    <form method="POST" action="{{route('expenseclaims.store')}}" accept-charset="UTF-8" id="transaction" role="form" novalidate="novalidate"  class="form-loading-button needs-validation" enctype="multipart/form-data">
+    <form method="POST" action="{{route('expenseclaims.store')}}" id="transaction" role="form" class="form-loading-button needs-validation" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
             <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" name="main_title" class="form-control" id="title" required>
+                        @error('main_title')
+                        <span class="text-danger">{{$message}}</span>
+                        @enderror
+                    </div>
+                </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="date">Date</label>
@@ -38,7 +47,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-user"></i></span>
                         </div>
-                        <select name="approver" id="approver" class="form-control" style="width: 90%">
+                        <select name="approver" id="approver" class="form-control" style="width: 92%">
                             @foreach($employee as $emp)
                                @if($emp->role->name=='CEO'||$emp->role->name=='Manager')
                                 <option value="{{$emp->id}}">{{$emp->name}}</option>
@@ -57,7 +66,7 @@
                             <span class="input-group-text"><i class="fa fa-user"></i></span>
                         </div>
 
-                        <select name="finance_approver" id="finance approver" class="form-control" style="width: 90%">
+                        <select name="finance_approver" id="finance approver" class="form-control" style="width: 92%">
                             @foreach($employee as $emp)
                                 @if($emp->department->name=='Finance Department')
                                     <option value="{{$emp->id}}">{{$emp->name}}</option>
@@ -69,20 +78,22 @@
                         @enderror
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <label for="tag">CC</label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fa fa-user"></i></span>
-                        </div>
-                        <select name="tag[]" id="tag" class="form-control" multiple style="width: 90%">
-                            @foreach($employee as $emp)
-                                <option value="{{$emp->id}}">{{$emp->name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                <div class="col-md-6 mt-2">
+                   <div class="form-group">
+                       <label for="tag">CC</label>
+                       <div class="input-group">
+                           <div class="input-group-prepend">
+                               <span class="input-group-text"><i class="fa fa-user"></i></span>
+                           </div>
+                           <select name="tag[]" id="tag" class="form-control" multiple style="width: 90%">
+                               @foreach($employee as $emp)
+                                   <option value="{{$emp->id}}">{{$emp->name}}</option>
+                               @endforeach
+                           </select>
+                       </div>
+                   </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 mt-2">
                     <div class="form-group">
                         <label for="attach">Attachment File</label>
                         <input type="file" name="attach[]" id="attach" class="form-control" multiple>

@@ -47,14 +47,14 @@
                            <div class="col-sm-4 col-md-4">
                                <div class="form-group">
                                    <label for="inv_date">Invoice date <span class="text-danger">*</span></label>
-                                   <input class="form-control shadow-sm" type="date" id="inv_date" value="{{$data[0]['inv_date']??''}}">
+                                   <input class="form-control shadow-sm" type="date" id="inv_date" value="{{isset($data[0]['inv_date'])?$data[0]['inv_date']:\Carbon\Carbon::now()->format('Y-m-d')}}">
 
                                </div>
                            </div>
                            <div class="col-sm-4 col-md-4">
                                <div class="form-group">
                                    <label for="due_date">Due Date <span class="text-danger">*</span></label>
-                                   <input class="form-control shadow-sm" type="date" id="due_date" value="{{$data[0]['due_date']??''}}">
+                                   <input class="form-control shadow-sm" type="date" id="due_date" value="{{isset($data[0]['due_date'])?$data[0]['due_date']:\Carbon\Carbon::now()->format('Y-m-d')}}">
                                </div>
                            </div>
                        </div>
@@ -87,7 +87,7 @@
                                            <option value="{{$client->id}}" {{isset($order_data)?($client->id==$order_data->customer_id?'selected':''):($data!=null?($data[0]['client_id']?'selected':''):'')}}>{{$client->name}}</option>
                                        @endforeach
                                    </select>
-
+                                    <span class="text-danger client_id_err"></span>
                                </div>
                            </div>
                            <div class="col-sm-6 col-md-6">
@@ -95,6 +95,7 @@
                                    <label for="client_email">Email</label>
                                    <input class="form-control shadow-sm" type="email" id="client_email"
                                           value="{{$order_data->email??$data[0]['client_email']??''}}" required>
+                                   <span class="text-danger client_email_err"></span>
                                </div>
                            </div>
                            <div class="col-sm-3 col-md-6">
@@ -102,6 +103,7 @@
                                    <label for="client_address">Shipping Address <span class="text-danger"> * </span></label>
                                    <input type="text" class="form-control" id="client_address"
                                           value="{{$order_data->address??$data[0]['client_address']??''}}">
+                                   <span class="text-danger client_address_err"></span>
                                </div>
                            </div>
                            <div class="col-sm-3 col-md-6">
@@ -109,6 +111,7 @@
                                    <label for="bill_address">Billing Address <span class="text-danger"> * </span></label>
                                    <input type="text" class="form-control shadow-sm" id="bill_address"
                                           value="{{$order_data->billing_address??$data[0]['bill_address']??''}}">
+                                   <span class="text-danger bill_address_err"></span>
                                </div>
                            </div>
                            <div class="col-md-12 ">
@@ -508,7 +511,14 @@
             var tax_amount = parseFloat(sum) * (parseInt(tax_rate) / 100);
             var discount = $('#discount').val();
             var deli_fee = $('#deli_fee').val();
-            $('#grand_total').val((parseFloat(sum) + parseFloat(deli_fee) + parseFloat(tax_amount)) - parseFloat(discount));
+            var grand=(parseFloat(sum) + parseFloat(deli_fee) + parseFloat(tax_amount)) - parseFloat(discount);
+            if(isNaN(grand)){
+                $('#total').val('0')
+                $('#grand_total').val('0.0');
+            }else {
+                $('#grand_total').val(grand);
+            }
+
            $('select').change(function () {
                var tax = $('#tax option:selected').val();
                var sum =$('#total').val();
@@ -825,10 +835,18 @@
                     success: function (data) {
                         console.log(data);
                         if (!$.isEmptyObject(data.orderempty)) {
-                            // alert(data.orderempty);
                             swal('Empty Item', 'You invoice does not have any item.', 'error');
-                        } else {
+
+                        } else if ($.isEmptyObject(data.error)) {
+                            console.log(data);
+                            swal('Order Crete', 'Invoice Create Success', 'success');
+
                             window.location = data.url;
+                        } else {
+                            $.each(data.error, function (key, value) {
+                                console.log(key);
+                                $('.' + key + '_err').text(value);
+                            });
                         }
                     }
                 });
@@ -885,21 +903,20 @@
                     url: "{{route('invoices.store')}}",
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     success: function (data) {
-                        // console.log(data.errors);
                         if (!$.isEmptyObject(data.orderempty)) {
-                            // alert(data.orderempty);
                             swal('Empty Item', 'You invoice does not have any item.', 'error');
-                        } else {
-                            window.location.href = data.url;
-                        }
-                    },
-                    error: function (data) {
-                        $.each(data.errors, function (key, value) {
-                            // console.log(key);
-                            alert(value);
-                            $('.' + key + '_err').text(value);
-                        });
 
+                        } else if ($.isEmptyObject(data.error)) {
+                            console.log(data);
+                            swal('Order Crete', 'Invoice Create Success', 'success');
+
+                            window.location = data.url;
+                        } else {
+                            $.each(data.error, function (key, value) {
+                                console.log(key);
+                                $('.' + key + '_err').text(value);
+                            });
+                        }
                     }
                 });
             });

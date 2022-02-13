@@ -81,6 +81,7 @@ class TransactionController extends Controller
     {
 //        dd($request->all());
         $this->validate($request, [
+            'title'=>'required',
             'transaction_date' => 'required',
             'amount' => 'required',
             'account' => 'required',
@@ -89,6 +90,7 @@ class TransactionController extends Controller
             'attachment' => 'mimes:pdf,xlsx,doc,docx,jpg,jpeg,ppt,bip|max:2048',
         ]);
         $new_expense = new Expense();
+        $new_expense->title=$request->title;
         $new_expense->vendor_id = $request->customer_id;
         $new_expense->amount = $request->amount;
         $new_expense->reference = $request->reference;
@@ -208,6 +210,7 @@ class TransactionController extends Controller
 
        }else{
            $this->validate($request, [
+               'title'=>'required',
                'transaction_date' => 'required',
                'amount' => 'required',
                'customer_id' => 'required',
@@ -216,6 +219,7 @@ class TransactionController extends Controller
                'attachment' => 'mimes:pdf,xlsx,doc,docx,jpg,jpeg,ppt,bip'
            ]);
            $new_revenue = new Revenue();
+           $new_revenue->title=$request->title;
            $new_revenue->customer_id = $request->customer_id;
            $new_revenue->amount = $request->amount;
            $new_revenue->invoice_id = $request->invoice_id ?? null;

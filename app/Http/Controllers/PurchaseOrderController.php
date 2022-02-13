@@ -11,6 +11,7 @@ use App\Models\products_tax;
 use App\Models\ProductVariations;
 use App\Models\PurchaseOrder;
 use App\Models\PurchaseOrderItem;
+use App\Models\PurchaseRequest;
 use App\Models\RequestForQuotation;
 use Carbon\Carbon;
 use http\Exception;
@@ -28,7 +29,7 @@ class PurchaseOrderController extends Controller
      */
     public function index()
     {
-        $purchase_orders=PurchaseOrder::with('vendor','tax','rfq')->get();
+        $purchase_orders=PurchaseOrder::with('vendor','tax','pr')->get();
         return view('Purchase.PurchaseOrder.index',compact('purchase_orders'));
     }
 
@@ -41,7 +42,7 @@ class PurchaseOrderController extends Controller
     {
         $product=ProductVariations::with('product')->get();
         $suppliers = Customer::where('customer_type', 'Supplier')->get();
-        $source=RequestForQuotation::all()->pluck('purchase_id','id')->all();
+        $source=PurchaseRequest::all()->pluck('pr_id','id')->all();
         $session_value = \Illuminate\Support\Str::random(10);
         $Auth = "PO-" . Auth::guard('employee')->user()->id;
         if (!Session::has($Auth)) {
@@ -108,7 +109,7 @@ class PurchaseOrderController extends Controller
      */
     public function show($id)
     {
-        $po=PurchaseOrder::with('vendor','tax','rfq','employee')->where('id',$id)->firstOrFail();
+        $po=PurchaseOrder::with('vendor','tax','pr','employee')->where('id',$id)->firstOrFail();
         $items=PurchaseOrderItem::with('product')->where('po_id',$po->id)->get();
         $company=MainCompany::where('ismaincompany',true)->first();
         $inventory_receipt=false;
@@ -155,7 +156,7 @@ class PurchaseOrderController extends Controller
     {
         $po=PurchaseOrder::where('id',$id)->first();
         $po->vendor_id=$request->vendor_id;
-        $po->rfq_id=$request->rfq_id;
+        $po->pr_id=$request->pr_id;
         $po->ordered_date=$request->ordered_date;
         $po->deadline=$request->deadline;
         $po->purchase_type=$request->purchase_type;
@@ -179,39 +180,39 @@ class PurchaseOrderController extends Controller
     {
         //
     }
-    public function rfq_to_po_create($id){
-        $rfq=RequestForQuotation::with('source', 'vendor')->where('id', $id)->firstOrFail();
-        $rfq->status='Done';
-        $rfq->update();
-        $product=ProductVariations::with('product')->get();
-        $suppliers = Customer::where('customer_type', 'Supplier')->get();
-        $source=RequestForQuotation::all()->pluck('purchase_id','id')->all();
-        $session_value = \Illuminate\Support\Str::random(10);
-        $Auth = "PO-" . Auth::guard('employee')->user()->id;
-        if (!Session::has($Auth)) {
-            Session::push("$Auth", $session_value);
-            $creation_id = Session::get($Auth);
-        } else {
-            $creation_id = Session::get($Auth);
-        }
-        $items=PurchaseOrderItem::where('creation_id', $creation_id)->get();
-        $total = DB::table("purchase_order_items")
-            ->select(DB::raw("SUM(total) as total"))
-            ->where('creation_id', $creation_id)
-            ->get();
-        $grand_total = $total[0]->total;
-        $po_data = Session::get('poformdata-' . Auth::guard('employee')->user()->id);
-        $taxes=products_tax::all();
-        $last_po = PurchaseOrder::orderBy('id', 'desc')->first();
-
-        if ($last_po != null) {
-            $last_po->purchaseorder_id++;
-            $purchaseorder_id = $last_po->purchaseorder_id;
-        } else {
-            $purchaseorder_id = "PO-00001";
-        }
-        return view('Purchase.PurchaseOrder.create',compact('rfq','product','suppliers','source','creation_id','po_data','items','taxes','purchaseorder_id','grand_total'));
-    }
+//    public function rfq_to_po_create($id){
+//        $rfq=RequestForQuotation::with('source', 'vendor')->where('id', $id)->firstOrFail();
+//        $rfq->status='Done';
+//        $rfq->update();
+//        $product=ProductVariations::with('product')->get();
+//        $suppliers = Customer::where('customer_type', 'Supplier')->get();
+//        $source=RequestForQuotation::all()->pluck('purchase_id','id')->all();
+//        $session_value = \Illuminate\Support\Str::random(10);
+//        $Auth = "PO-" . Auth::guard('employee')->user()->id;
+//        if (!Session::has($Auth)) {
+//            Session::push("$Auth", $session_value);
+//            $creation_id = Session::get($Auth);
+//        } else {
+//            $creation_id = Session::get($Auth);
+//        }
+//        $items=PurchaseOrderItem::where('creation_id', $creation_id)->get();
+//        $total = DB::table("purchase_order_items")
+//            ->select(DB::raw("SUM(total) as total"))
+//            ->where('creation_id', $creation_id)
+//            ->get();
+//        $grand_total = $total[0]->total;
+//        $po_data = Session::get('poformdata-' . Auth::guard('employee')->user()->id);
+//        $taxes=products_tax::all();
+//        $last_po = PurchaseOrder::orderBy('id', 'desc')->first();
+//
+//        if ($last_po != null) {
+//            $last_po->purchaseorder_id++;
+//            $purchaseorder_id = $last_po->purchaseorder_id;
+//        } else {
+//            $purchaseorder_id = "PO-00001";
+//        }
+//        return view('Purchase.PurchaseOrder.create',compact('rfq','product','suppliers','source','creation_id','po_data','items','taxes','purchaseorder_id','grand_total'));
+//    }
     public function receive($id){
         $last_rfq =ProductReceive::orderBy('id', 'desc')->first();
 

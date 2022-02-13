@@ -14,7 +14,7 @@
                 </div>
             </div>
         </div>
-        <div class="card">
+        <div class="card shadow">
             <form method="POST" action="{{route('income.store')}}" accept-charset="UTF-8" id="transaction" role="form" novalidate="novalidate" enctype="multipart/form-data"
                   class="form-loading-button needs-validation">
                 @csrf
@@ -22,6 +22,12 @@
                     <div class="row">
                         <input type="hidden" name="type" value="Revenue">
                         <input type="hidden" name="advance_id" value="{{isset($advance)?$advance->id:''}}">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="title">Title</label>
+                                <input type="text" class="form-control" id="title" name="title">
+                            </div>
+                        </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="date">Date</label>
@@ -107,14 +113,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="revenue_description">Description</label>
-                                <textarea name="description" id="revenue_description" cols="30" rows="5" class="form-control">
-
-                                </textarea>
-                            </div>
-                        </div>
                         <div class="col-md-6" id="cat_div">
                             <div class="form-group">
                                 <label for="category">Category</label>
@@ -130,6 +128,15 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="revenue_description">Description</label>
+                                <textarea name="description" id="revenue_description" cols="30" rows="5" class="form-control">
+
+                                </textarea>
+                            </div>
+                        </div>
+
                         <div class="col-md-6">
                             <label for="recurring">Recurring</label>
                             <div class="input-group">
@@ -144,7 +151,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group"><label for="reference">Reference</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">

@@ -40,6 +40,7 @@
                             @else
                             <th>Invoice ID/Bill ID</th>
                         @endif
+                        <th>Title</th>
                         <th>Amount</th>
                         <th>Type</th>
                         <th>Category</th>
@@ -59,6 +60,7 @@
                                     <a href="{{route('transactions.show',$transaction->id)}}">{{\Carbon\Carbon::parse($transaction->revenue->transaction_date)->toFormattedDateString()}}</a>
                                 </td>
                                 <td>@if($transaction->revenue->invoice_id!=null)@foreach($invoice as $key=>$val)@if($key==$transaction->revenue->invoice_id)<a href="{{$transaction->revenue->invoice_id==null?route('transactions.show',$transaction->id):route('invoices.show',$transaction->revenue->invoice_id)}}">{{$val}}</a> @endif @endforeach @else N/A @endif</td>
+                                <td>{{$transaction->revenue->title}}</td>
                                 <td>{{number_format($transaction->revenue->amount)}}</td>
                                 <td>{{$transaction->type}}</td>
                                 <td>{{$transaction->revenue->category}}</td>
@@ -89,6 +91,7 @@
                                         N/A
                                     @endif
                                 </td>
+                                <td>{{$transaction->expense->title}}</td>
                                 <td>{{number_format($transaction->expense->amount)}}</td>
                                 <td><span class="badge" style="background-color: #ff4969">{{$transaction->type}}</span></td>
                                 <td>{{$transaction->expense->category}}</td>

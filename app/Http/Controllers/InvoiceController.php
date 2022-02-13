@@ -29,6 +29,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
+
 class InvoiceController extends Controller
 {
     /**
@@ -140,7 +142,7 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,[
+        $validator=Validator::make($request->all(),[
            'title'=>'required',
             'client_id'=>'required',
             'client_email'=>'required',
@@ -149,108 +151,113 @@ class InvoiceController extends Controller
             'client_address'=>'required',
             'bill_address'=>'required',
             'payment_method'=>'required',
+
         ]);
 //        dd($request->all());
-        $prefix=MainCompany::where('ismaincompany',true)->pluck('invoice_prefix','id')->first();
-        $last_invoice=Invoice::orderBy('id', 'desc')->first();
+        if($validator->passes()) {
+            $prefix = MainCompany::where('ismaincompany', true)->pluck('invoice_prefix', 'id')->first();
+            $last_invoice = Invoice::orderBy('id', 'desc')->first();
 
-        if ($last_invoice!=null) {
-            // Sum 1 + last id
-           if($prefix!=null){
-               $ischange=$last_invoice->invoice_id;
-               $ischange=explode("-", $ischange);
-               if($ischange[0]==$prefix){
-                   $last_invoice->invoice_id++;
-                   $invoice_id = $last_invoice->invoice_id;
-               }else{
-                   $arr=[$prefix,$ischange[1]];
-                   $pre=implode('-',$arr);
+            if ($last_invoice != null) {
+                // Sum 1 + last id
+                if ($prefix != null) {
+                    $ischange = $last_invoice->invoice_id;
+                    $ischange = explode("-", $ischange);
+                    if ($ischange[0] == $prefix) {
+                        $last_invoice->invoice_id++;
+                        $invoice_id = $last_invoice->invoice_id;
+                    } else {
+                        $arr = [$prefix, $ischange[1]];
+                        $pre = implode('-', $arr);
 
-                   $pre ++;
-                   $invoice_id=$pre;
-               }
-           }else{
-               $last_invoice->invoice_id++;
-               $invoice_id = $last_invoice->invoice_id;
-           }
-        } else {
-            $invoice_id=($prefix ? :'INV')."-0001";
-        }
+                        $pre++;
+                        $invoice_id = $pre;
+                    }
+                } else {
+                    $last_invoice->invoice_id++;
+                    $invoice_id = $last_invoice->invoice_id;
+                }
+            } else {
+                $invoice_id = ($prefix ?: 'INV') . "-0001";
+            }
 //dd($invoice_id);
-        $newInvoice=new Invoice();
-        $newInvoice->title=$request->title;
-        $newInvoice->invoice_id=$invoice_id;
-        $newInvoice->customer_id=$request->client_id;
-        $newInvoice->email=$request->client_email;
-        $newInvoice->customer_address=$request->client_address;
-        $newInvoice->billing_address=$request->bill_address;
-        $newInvoice->invoice_date=Carbon::create($request->inv_date);
-        $newInvoice->due_date=Carbon::create($request->due_date);
-        $newInvoice->other_information=$request->more_info;
-        $newInvoice->grand_total=$request->inv_grand_total;
-        $newInvoice->status="Daft";
-        $newInvoice->order_id=$request->order_id;
-        $newInvoice->send_email=isset($request->save_type)?1:0;
-        $newInvoice->payment_method=$request->payment_method;
-        $newInvoice->tax_id=$request->tax_id;
-        $newInvoice->total=$request->total;
-        $newInvoice->discount=$request->discount;
-        $newInvoice->tax_amount=$request->tax_amount;
-        $newInvoice->invoice_type=$request->invoice_type;
-        $newInvoice->delivery_fee=$request->delivery_fee;
-        $newInvoice->due_amount=$request->inv_grand_total;
-        $newInvoice->warehouse_id=$request->warehouse_id;
-        $newInvoice->inv_type=$request->inv_type;
-        $newInvoice->emp_id=Auth::guard('employee')->user()->id;
-        $Auth=Auth::guard('employee')->user()->name;
-        $request_id=Session::get($Auth);
-        $confirm_order_item=OrderItem::where("creation_id",$request_id)->get();
-        if(count($confirm_order_item)!=0){
-            $newInvoice->save();
-        foreach ($confirm_order_item as $item){
-            if($item->foc){
-                $unit=SellingUnit::where('id',$item->sell_unit)->first();
-                $stock=Freeofchare::where('variant_id',$item->variant_id)->first();
-                $item->inv_id=$newInvoice->id;
-                $item->update();
-                $stock->qty=$stock->qty-($item->quantity*$unit->unit_convert_rate);
-                $stock->update();
-            }else{
-                $unit=SellingUnit::where('id',$item->sell_unit)->first();
-                $stock=Stock::where('variant_id',$item->variant_id)->where('warehouse_id',$request->warehouse_id)->first();
-                $item->inv_id=$newInvoice->id;
-                $item->update();
-                $stock->available=$stock->available-($item->quantity*$unit->unit_convert_rate);
-                $stock->update();
+            $newInvoice = new Invoice();
+            $newInvoice->title = $request->title;
+            $newInvoice->invoice_id = $invoice_id;
+            $newInvoice->customer_id = $request->client_id;
+            $newInvoice->email = $request->client_email;
+            $newInvoice->customer_address = $request->client_address;
+            $newInvoice->billing_address = $request->bill_address;
+            $newInvoice->invoice_date = Carbon::create($request->inv_date);
+            $newInvoice->due_date = Carbon::create($request->due_date);
+            $newInvoice->other_information = $request->more_info;
+            $newInvoice->grand_total = $request->inv_grand_total;
+            $newInvoice->status = "Daft";
+            $newInvoice->order_id = $request->order_id;
+            $newInvoice->send_email = isset($request->save_type) ? 1 : 0;
+            $newInvoice->payment_method = $request->payment_method;
+            $newInvoice->tax_id = $request->tax_id;
+            $newInvoice->total = $request->total;
+            $newInvoice->discount = $request->discount;
+            $newInvoice->tax_amount = $request->tax_amount;
+            $newInvoice->invoice_type = $request->invoice_type;
+            $newInvoice->delivery_fee = $request->delivery_fee;
+            $newInvoice->due_amount = $request->inv_grand_total;
+            $newInvoice->warehouse_id = $request->warehouse_id;
+            $newInvoice->inv_type = $request->inv_type;
+            $newInvoice->emp_id = Auth::guard('employee')->user()->id;
+            $Auth = Auth::guard('employee')->user()->name;
+            $request_id = Session::get($Auth);
+            $confirm_order_item = OrderItem::where("creation_id", $request_id)->get();
+            if (count($confirm_order_item) != 0) {
+                $newInvoice->save();
+                foreach ($confirm_order_item as $item) {
+                    if ($item->foc) {
+                        $unit = SellingUnit::where('id', $item->sell_unit)->first();
+                        $stock = Freeofchare::where('variant_id', $item->variant_id)->first();
+                        $item->inv_id = $newInvoice->id;
+                        $item->update();
+                        $stock->qty = $stock->qty - ($item->quantity * $unit->unit_convert_rate);
+                        $stock->update();
+                    } else {
+                        $unit = SellingUnit::where('id', $item->sell_unit)->first();
+                        $stock = Stock::where('variant_id', $item->variant_id)->where('warehouse_id', $request->warehouse_id)->first();
+                        $item->inv_id = $newInvoice->id;
+                        $item->update();
+                        $stock->available = $stock->available - ($item->quantity * $unit->unit_convert_rate);
+                        $stock->update();
+                    }
+                }
+                if (isset($request->order_id)) {
+                    $order_item = OrderItem::where('order_id', $request->order_id)->get();
+                    $grand_total = 0;
+                    for ($i = 0; $i < count($order_item); $i++) {
+                        $grand_total = $grand_total + $order_item[$i]->total;
+                    }
+                    $order = Order::where('id', $request->order_id)->first();
+                    $order->grand_total = $grand_total;
+                    $order->update();
+                }
+                Session::forget($Auth);
+                Session::forget('data-' . Auth::guard('employee')->user()->id);
+                $this->add_history($newInvoice->id, 'Daft', 'Add' . $invoice_id);
+                if (isset($request->save_type)) {
+                    $this->sending_form($newInvoice->id);
+                    return response()->json([
+                        'url' => url('invoice/sendmail/' . $newInvoice->id)
+                    ]);
+                } else {
+                    return response()->json([
+                        'url' => url('invoices/' . $newInvoice->id)
+                    ]);
+                }
+            } else {
+                return response()->json([
+                    'orderempty' => 'Empty Item',
+                ]);
             }
-        }
-        if(isset($request->order_id)){
-            $order_item=OrderItem::where('order_id',$request->order_id)->get();
-            $grand_total=0;
-            for ($i=0;$i<count($order_item);$i++){
-                $grand_total=$grand_total+$order_item[$i]->total;
-            }
-            $order=Order::where('id',$request->order_id)->first();
-            $order->grand_total=$grand_total;
-            $order->update();
-        }
-        Session::forget($Auth);
-        Session::forget('data-'.Auth::guard('employee')->user()->id);
-        $this->add_history($newInvoice->id,'Daft','Add'.$invoice_id);
-        if(isset($request->save_type)){
-           $this->sending_form($newInvoice->id);
-           return response()->json([
-              'url'=>url('invoice/sendmail/'.$newInvoice->id)
-           ]);
         }else{
-            return response()->json([
-                'url'=>url('invoices/'.$newInvoice->id)
-            ]);
-        }
-        }else{
-            return response()->json([
-                'orderempty'=>'Empty Item',
-            ]);
+            return response()->json(['error'=>$validator->errors()]);
         }
 
     }

@@ -112,6 +112,14 @@
             </div>
 
         </div>
+        <div class="card shadow">
+            <div class="card-header">
+                Attach File
+            </div>
+            <div class="card-body">
+
+            </div>
+        </div>
         <div class="row">
             <div class="col-12">
                 <a href="" id="print" onclick="printContent('print_me');" class="btn btn-outline-dark float-right"><i

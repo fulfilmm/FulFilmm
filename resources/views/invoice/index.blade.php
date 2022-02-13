@@ -21,7 +21,7 @@
                         </div>
                        @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
                             <div class="col-auto float-right ml-auto">
-                                <a href="{{route('invoices.create')}}" class="btn add-btn"><i class="fa fa-plus"></i> Create Invoice</a>
+                                <a href="{{route('invoices.create')}}" class="btn add-btn shadow-sm"><i class="fa fa-plus"></i> Create Invoice</a>
                             </div>
                            @endif
                     </div>
@@ -31,38 +31,29 @@
                 <!-- Search Filter -->
                 <div class="row filter-row">
                     <div class="col-sm-6 col-md-3">
-                        <div class="form-group form-focus">
-                            <div>
-                                <input class="form-control floating " type="text" id="filter_id" name='id' value="#">
-                            </div>
-                            <label class="focus-label">ID</label>
+                        <div class="form-group">
+                            <input class="form-control form-control-md  shadow-sm" type="text" id="filter_id" name='id' placeholder="Type Invocie ID">
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
-                        <div class="form-group form-focus">
-                            <div >
-                                <input class="form-control floating " type="text" name="min" id="min">
-                            </div>
-                            <label class="focus-label">From</label>
+                        <div class="form-group ">
+                            <input class="form-control form-control-md shadow-sm" type="text" name="min" id="min" placeholder="Enter Start Date">
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
-                        <div class="form-group form-focus">
-                            <div>
-                                <input class="form-control floating " type="text" id="max" name="max">
-                            </div>
-                            <label class="focus-label">To</label>
+                        <div class="form-group">
+                            <input class="form-control shadow-sm form-control-md" type="text" id="max" name="max" placeholder="Enter End Date">
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
-                        <div class="form-group form-focus select-focus">
-                            <select class="select floating" id="filter_status">
+                        <div class="form-group">
+                            <select class="select form-control-md" id="filter_status">
+                                <option value="" disabled>Select Status</option>
                                 <option value="">All</option>
                                 @foreach($status as $key=>$val)
                                     <option value="{{$val}}"> {{$val}} </option>
                                 @endforeach
                             </select>
-                            <label class="focus-label">Status</label>
                         </div>
                     </div>
 
@@ -74,7 +65,6 @@
                             <table class="table table-nowrap mb-0 table-hover" id="invoice">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
                                         <th>Invoice Number</th>
                                         <th>Client</th>
                                         <th>Created Date</th>
@@ -87,9 +77,8 @@
                                 <tbody>
                                  @foreach($allinv as $invoice)
                                     <tr>
-                                        <td>{{$invoice->id}}</td>
                                         @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
-                                            <td><a href="{{route('invoices.show',$invoice->id)}}">#{{$invoice->invoice_id}}</a></td>
+                                            <td><a href="{{route('invoices.show',$invoice->id)}}">{{$invoice->invoice_id}}</a></td>
                                             @else
                                             <td><a href="{{route("customer.invoice_show",$invoice->id)}}" >#{{$invoice->invoice_id}}</a></td>
                                             @endif
@@ -106,16 +95,10 @@
                                         </td>
                                         @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
                                             @include('invoice.inv_statuschange')
+
                                             <td class="text-right">
-                                                <div class="dropdown dropdown-action">
-                                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        {{--                                                    <a class="dropdown-item" href="{{route("invoices.edit",$invoice->id)}}"><i class="fa fa-pencil m-r-5"></i> Edit</a>--}}
-                                                        <a class="dropdown-item" href="{{route("invoices.show",$invoice->id)}}"><i class="fa fa-eye m-r-5"></i> View</a>
-                                                        {{--                                                    <a class="dropdown-item" href="#"><i class="fa fa-file-pdf-o m-r-5"></i> Download</a>--}}
-                                                        <a class="dropdown-item" href="" data-toggle="modal" data-target="#delete{{$invoice->id}}"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                    </div>
-                                                </div>
+                                                <a href="{{route("invoices.show",$invoice->id)}}" class="btn btn-white btn-sm"><i class="la la-eye"></i></a>
+                                               <button type="button" data-toggle="modal" data-target="#delete{{$invoice->id}}" class="btn btn-danger btn-sm"><i class="la la-trash"></i></button>
                                             </td>
                                             @else
                                             <td>
