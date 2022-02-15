@@ -43,7 +43,6 @@
                     <table class="table table-hover table-nowrap" id="room_booking">
                         <thead>
                         <tr>
-                            <th>#</th>
                             <th>Subject</th>
                             <th>Room No</th>
                             <th>Address</th>
@@ -56,7 +55,6 @@
                         <tbody>
                         @foreach($data['bookedroom'] as $booking)
                             <tr>
-                                <th>#{{$booking->id}}</th>
                                 <th>{{$booking->subject}}</th>
                                 <td>{{$booking->bookroom->room_no}}</td>
                                 <td>{{$booking->bookroom->address}}</td>
