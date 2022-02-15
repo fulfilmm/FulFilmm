@@ -21,7 +21,8 @@
                                   <input type="hidden" name="created_emp" value="{{$data['emp_id']}}">
                                   <div class="form-group">
                                       <label for="room_no">Room No</label>
-                                      <select name="room_id"  id="room_no" class="select form-control">
+                                      <select name="room_id"  id="room_no" class="select form-control" required>
+                                          <option value="">Select Room</option>
                                           @foreach($data['room'] as $key=>$val)
                                               <option value="{{$key}}">{{$val}}</option>
                                           @endforeach
