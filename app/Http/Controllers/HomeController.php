@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\Approvalrequest;
 use App\Models\assign_ticket;
 use App\Models\countdown;
+use App\Models\Customer;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Group;
 use App\Models\Meetingmember;
 use App\Models\MinutesAssign;
+use App\Models\SaleActivity;
 use App\Models\status;
 use App\Models\ticket;
 use App\Models\ticket_follower;
@@ -55,15 +58,23 @@ class HomeController extends Controller
               $depts=Department::all();
           return view('index', compact('numberOfalltickets','agents','depts','assign_ticket','status','status_report','report_percentage','count_down',));
       }else{
+
           $meeting=Meetingmember::with('meeting')->where('member_id',Auth::guard('employee')->user()->id)->count();
+//          dd($meeting);
           $assignment=MinutesAssign::where('emp_id',Auth::guard('employee')->user()->id)->count();
           $user=Auth::guard('employee')->user();
           $follow_ticket=ticket_follower::where('emp_id',$user->id)->count();
+          $requestation=Approvalrequest::where('emp_id',Auth::guard('employee')->user()->id)->count();
+         ;
+          $contact=Customer::count();
          if($user->role->name=='Agent'){
+             $sale_activity=SaleActivity::where('emp_id',Auth::guard('employee')->user()->id)->count();
              $numberOfalltickets=count($this->agent_all_ticket())+$follow_ticket;
          }elseif ($user->role->name=='Super Admin'||$user->role->name=='CEO'||$user->role->name=='Manager'){
+             $sale_activity=SaleActivity::where('report_to',Auth::guard('employee')->user()->id)->count();
              $numberOfalltickets=ticket::all()->count();
          }else{
+             $sale_activity=SaleActivity::where('emp_id',Auth::guard('employee')->user()->id)->count();
              $myticket=ticket::where('created_emp_id',$user->id)->count();
              $follow_ticket=ticket_follower::where('emp_id',$user->id)->count();
              $numberOfalltickets=$myticket+$follow_ticket;
@@ -71,6 +82,9 @@ class HomeController extends Controller
           $id = Auth::id();
             $total_emp=Employee::count();
           $items = [
+              'saleactivity'=>$sale_activity,
+              'requestation'=>$requestation,
+              'customer'=>$contact,
               'assignment'=>$assignment,
               'meeting'=>$meeting,
               'my_groups' => Group::whereHas('employees', function ($query) use ($id) {

@@ -17,8 +17,9 @@ class CreateRoomBookingsTable extends Migration
             $table->id();
             $table->bigInteger('room_id')->unsigned();
             $table->foreign('room_id')->references('id')->on('rooms')->onDelete('cascade');
-            $table->dateTime('start_time')->nullable();
-            $table->dateTime('endtime')->nullable();
+            $table->time('start_time')->nullable();
+            $table->dateTime('date');
+            $table->time('endtime')->nullable();
             $table->bigInteger('created_emp')->unsigned();
             $table->foreign('created_emp')->references('id')->on('employees')->onDelete('cascade');
             $table->text('subject');

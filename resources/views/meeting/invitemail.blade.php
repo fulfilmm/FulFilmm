@@ -12,10 +12,6 @@
 <table style="border: 0;padding-top: 20px">
     <tr>
         <th style="text-align: left">Agenda</th>
-        <th style="text-align: left">Meeting Members</th>
-        <th ></th>
-    </tr>
-    <tr>
         <td style="min-width: 400px;text-align: left;">
             <ol type="1">
             @foreach($agenda as $key=>$val)
@@ -25,6 +21,9 @@
             @endforeach
             </ol>
         </td>
+    </tr>
+    <tr>
+        <th style="text-align: left">Meeting Members</th>
         <td style="min-width: 400px;text-align: left">
             <ol type="1">
                 @foreach($our_emps as $key=>$val)

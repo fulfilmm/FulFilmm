@@ -118,8 +118,9 @@ class MeetingController extends Controller
 
 
         }
+        $this->invite_member($last_meeting->id,$request->internal_members,'internal');
        $this->invitemail($last_meeting,$reciver_mail,$meeting_member);
-       $this->invite_member($last_meeting->id,$request->internal_members,'internal');
+
        return redirect(route('meetings.index'));
     }
 

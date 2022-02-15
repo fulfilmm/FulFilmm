@@ -10,7 +10,7 @@
 <body>
     Dear,<br>
     {{$to_name}}<br>
-    <p>{{$request_name}} requested Approval Request <a href="{{route('approvals.show',$id)}}">{{$app_id}}</a> to {{isset($type)?'you as'.$type:$approver_name.$request_name."sent CC to You."}}</p>
+    <p>Requestation ID <a href="{{route('approvals.show',$id)}}">{{$app_id}}</a> requested by {{$request_name}}.</p>
     <br>
     If You want to view,
     <a href="{{route('approvals.show',$id)}}"><button>Click Here</button></a>

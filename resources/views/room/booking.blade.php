@@ -1,8 +1,8 @@
 @extends('layout.mainlayout')
 @section('title','Room')
 @section('content')
-
     <!-- Page Content -->
+
     <div class="content container-fluid">
         <!-- Page Header -->
         <div class="page-header">
@@ -60,7 +60,7 @@
                                 <th>{{$booking->subject}}</th>
                                 <td>{{$booking->bookroom->room_no}}</td>
                                 <td>{{$booking->bookroom->address}}</td>
-                                <td><span style="font-size: 14px;">{{\Carbon\Carbon::parse($booking->start_time)->toFormattedDateString()}}</span>
+                                <td><span style="font-size: 14px;">{{\Carbon\Carbon::parse($booking->date)->toFormattedDateString()}}</span>
                                 </td>
                                 <td>
                                     <span  style="font-size: 14px;">{{date('h:i a', strtotime(\Carbon\Carbon::parse($booking->start_time)))}}</span> -
@@ -82,7 +82,9 @@
     </div>
 
     @include('room.bookingcreate')
+
     <script>
+
         $(document).ready(function(){
             $.fn.dataTable.ext.search.push(
                 function (settings, data, dataIndex) {

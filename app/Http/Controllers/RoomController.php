@@ -18,6 +18,7 @@ class RoomController extends Controller
     public function index()
     {
         $rooms=Room::all();
+
         return view('room.index',compact('rooms'));
     }
 
@@ -88,19 +89,24 @@ class RoomController extends Controller
         return view('room.booking',compact('data'));
     }
     public function booking_save(Request $request){
-        $booked_rooms=RoomBooking::where('start_time','<=',$request->start_time)->where('endtime','>=',$request->endtime)->get();
-    $isvalid=true;
-     if(!$booked_rooms->isEmpty()){
+
+        $booked_rooms=RoomBooking::where('room_id',$request->room_id)->where('date',$request->date)->get();
+     if($booked_rooms->isEmpty()){
+         $isvalid=true;
+     }else{
          foreach ($booked_rooms as $room){
-             if($room->room_id==$request->room_id){
+             if(Carbon::parse($room->start_time)->greaterThan(Carbon::parse($request->start_time))){
                  $isvalid=false;
+             }else{
+                 $isvalid=true;
              }
          }
      }
         if($isvalid){
             $book=new RoomBooking();
-            $book->start_time=Carbon::parse($request->start_time);
-            $book->endtime=Carbon::parse($request->endtime);
+            $book->start_time=$request->start_time;
+            $book->endtime=$request->endtime;
+            $book->date=$request->date;
             $book->room_id=$request->room_id;
             $book->created_emp=Auth::guard('employee')->user()->id;
             $book->subject=$request->subject;

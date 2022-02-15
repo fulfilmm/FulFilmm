@@ -12,16 +12,16 @@
                     </ul>
                 </div>
                 <div class="col-auto float-right ml-auto">
-                    <a href="{{route('expenseclaims.create')}}" class="btn btn-white float-right mr-3 mt-3 border-dark rounded-pill" style="box-shadow: white"><i class="fa fa-plus mr-2"></i>New Expense Claim</a>
+                    <a href="{{route('expenseclaims.create')}}" class="btn btn-white float-right mr-3 mt-3 border-dark rounded-pill shadow-sm" style="box-shadow: white"><i class="fa fa-plus mr-2"></i>New Expense Claim</a>
                 </div>
             </div>
         </div>
-        <div class="card">
+        <div class="card shadow">
             <div class="col-12">
                 <div class="row filter-row my-3">
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group">
-                            <input class="form-control form-control-md  shadow-sm" type="text" id="filter_id" name='id' placeholder="Type Invocie ID">
+                            <input class="form-control form-control-md  shadow-sm" type="text" id="filter_id" name='id' placeholder="Type title">
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
@@ -39,15 +39,15 @@
                             <select class="select form-control-md" id="filter_status">
                                 <option value="" disabled>Select Status</option>
                                 <option value="">All</option>
-                                <option value="Approved">Approved</option>
-                                <option value="Approved">Approved</option>
-                                <option value="Approved">Approved</option>
+                                <option value="Approved">Approve</option>
+                                <option value="Approved">Pending</option>
+                                <option value="Approved">Reject</option>
                             </select>
                         </div>
                     </div>
 
                 </div>
-                <table class="table table-striped custom-table mb-0 datatable" id="exp_claim">
+                <table class="table table-striped custom-table mb-0" id="exp_claim">
                     <thead>
                     <tr>
                         <th>Date</th>
@@ -100,7 +100,7 @@
 
             $("#min").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
             $("#max").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
-            var table = $('#invoice').DataTable();
+            var table = $('#exp_claim').DataTable();
 
             // Event listener to the two range filtering inputs to redraw on input
             $('#min, #max').change(function () {
@@ -109,15 +109,15 @@
         });
         $(document).ready(function() {
             $('#filter_id').keyup(function () {
-                var table = $('#invoice').DataTable();
+                var table = $('#exp_claim').DataTable();
                 table.column(1).search($(this).val()).draw();
 
             });
         });
         $(document).ready(function() {
             $('#filter_status').on('change', function () {
-                var table = $('#invoice').DataTable();
-                table.column(6).search($(this).val()).draw();
+                var table = $('#exp_claim').DataTable();
+                table.column(5).search($(this).val()).draw();
 
             });
         });

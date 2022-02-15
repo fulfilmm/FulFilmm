@@ -148,46 +148,15 @@ class ApprovalController extends Controller
             $approval->secondary_approved=$request->secondary_id;
         }
         $approval->save();
+
+
         $approver=Employee::where('id',$request->approve_id)->first();
-        if($approver!=null){
-            $details = [
-                'from'=>Auth::guard('employee')->user()->email,
-                'email' => $approver->email,
-                'subject' => 'Approval Request',
-                'request_name' =>ucfirst(Auth::guard('employee')->user()->name),
-                'approver_name'=>$approver->name,
-                'to_name'=>ucfirst($approver->name),
-                'id'=>$approval->id,
-                'app_id'=>$approval->approval_id,
-            ];
-            Mail::send('approval.cc_email_noti', $details, function ($message) use ($details) {
-                $message->from('sinyincinpu@gmail.com', 'Cloudark');
-                $message->to($details['email']);
-                $message->subject($details['subject']);
-            });
-            $this->addnotify($request->approve_id,'success','Add new approval '.$approval->approval_id.'.','approvals/'.$approval->id,Auth::guard('employee')->user()->id);
-        }
         $secondary_approver=Employee::where('id',$request->secondary_id)->first();
+        $cc_mail=[];
         if($secondary_approver!=null){
-            $details = [
-                'from'=>Auth::guard('employee')->user()->email,
-                'email' => $secondary_approver->email,
-                'subject' => 'Approval Request',
-                'request_name' =>ucfirst(Auth::guard('employee')->user()->name),
-                'approver_name'=>$secondary_approver->name,
-                'to_name'=>ucfirst($secondary_approver->name),
-                'id'=>$approval->id,
-                'app_id'=>$approval->approval_id,
-                'type'=>'First Approver'
-            ];
-            Mail::send('approval.cc_email_noti', $details, function ($message) use ($details) {
-                $message->from('sinyincinpu@gmail.com', 'Cloudark');
-                $message->to($details['email']);
-                $message->subject($details['subject']);
-            });
+            array_push($cc_mail,$secondary_approver->email);
             $this->addnotify($request->secondary_id,'success','Add new approval '.$approval->approval_id.'.','approvals/'.$approval->id,Auth::guard('employee')->user()->id);
         }
-
         if(isset($request->cc)){
             $approval=Approvalrequest::orderBy('id', 'desc')->first();
             foreach ($request->cc as $value)
@@ -197,25 +166,31 @@ class ApprovalController extends Controller
                 $cc->emp_id=$value;
                 $cc->save();
                 $emp=Employee::where("id",$value)->first();
+                array_push($cc_mail,$emp->email);
                 $approver=Employee::where("id",$request->approve_id)->first();
-                $details = [
-                    'from'=>Auth::guard('employee')->user()->email,
-                    'email' => $emp->email,
-                    'subject' => 'Approval Request CC Send',
-                    'request_name' =>ucfirst(Auth::guard('employee')->user()->name),
-                    'approver_name'=>$approver->name,
-                    'to_name'=>ucfirst($emp->name),
-                    'id'=>$approval->id,
-                    'app_id'=>$approval->approval_id,
-                    'type'=>'Approver'
-                ];
-                Mail::send('approval.cc_email_noti', $details, function ($message) use ($details) {
-                    $message->from('sinyincinpu@gmail.com', 'Cloudark');
-                    $message->to($details['email']);
-                    $message->subject($details['subject']);
-                });
                 $this->addnotify($value,'success','Add new approval '.$approval->approval_id.'.','approvals/'.$approval->id,Auth::guard('employee')->user()->id);
             }
+        }
+
+        if($approver!=null){
+            $details = [
+                'from'=>Auth::guard('employee')->user()->email,
+                'email' => $approver->email,
+                'subject' => 'Approval Request',
+                'request_name' =>ucfirst(Auth::guard('employee')->user()->name),
+                'approver_name'=>$approver->name,
+                'to_name'=>ucfirst($approver->name),
+                'id'=>$approval->id,
+                'cc'=>$cc_mail,
+                'app_id'=>$approval->approval_id,
+            ];
+            Mail::send('approval.cc_email_noti', $details, function ($message) use ($details) {
+                $message->from('sinyincinpu@gmail.com', 'Cloudark');
+                $message->to($details['email']);
+                $message->cc($details['cc']);
+                $message->subject($details['subject']);
+            });
+            $this->addnotify($request->approve_id,'success','Add new approval '.$approval->approval_id.'.','approvals/'.$approval->id,Auth::guard('employee')->user()->id);
         }
         return redirect(route('approvals.index'));
     }

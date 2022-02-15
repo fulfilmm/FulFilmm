@@ -136,7 +136,7 @@
                             <tr>
                                 <td>{{$activity->title}}</td>
                                 <td>{{\Carbon\Carbon::parse($activity->date)->toFormattedDateString()}}</td>
-                                <td>{{$activity->customer->name}}</td>
+                                <td>{{$activity->customer->name??'N/A'}}</td>
                                 <td>{{$activity->township??'N/A'}}</td>
                                 <td>{{$activity->type}}</td>
                                 <td>{{$activity->report->name}}</td>

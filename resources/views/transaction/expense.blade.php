@@ -110,7 +110,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="payment_method">Approver Name</label>
+                                <label for="payment_method">Casher</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fa fa-credit-card"></i></span>

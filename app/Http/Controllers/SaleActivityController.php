@@ -88,7 +88,6 @@ class SaleActivityController extends Controller
     public function store(Request $request){
 //        dd($request->all());
         $this->validate($request,[
-            'customer_id'=>'required',
             'report_to'=>'required',
             'date'=>'required',
             'desc'=>'required',
