@@ -248,7 +248,7 @@
                                        <div class="form-group">
                                            <label for="">Product Code</label>
                                            <div class="input-group">
-                                               <input type="text" id="p_code" name="product_code" class="form-control" value="{{old('product_code')}}" required>
+                                               <input type="text" id="generate_code" name="product_code" class="form-control" value="{{old('product_code')}}"  required>
                                                <button type="button" class="btn btn-white btn-sm" onclick="generatecode()" id="generate">Generate Product Code</button>
                                            </div>
                                            @error('product_code')
@@ -301,12 +301,10 @@
         </div>
     </div>
     <script>
-       $(document).ready(function () {
-           function generatecode(){
-               var pcode='{{random_int(100000000,999999999)}}';
-               $("#p_code").val(pcode);
-           }
-       });
+        function generatecode(){
+            var pcode='{{random_int(100000000,999999999)}}';
+            $("#generate_code").val(pcode);
+        }
         ClassicEditor.create($('#description')[0], {
             toolbar: ['heading', 'bold', 'italic', 'undo', 'redo', 'numberedList', 'bulletedList', 'insertTable']
         });
