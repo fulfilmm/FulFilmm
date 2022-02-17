@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use App\Models\Employee;
+use App\Models\pr_follower;
 use App\Models\product;
 use App\Models\PurchaseItem;
 use App\Models\PurchaseRequest;
@@ -24,7 +25,7 @@ class PurchaseRequestController extends Controller
      */
     public function index()
     {
-        $purchase_request=PurchaseRequest::with('approver','vendor')
+        $purchase_request=PurchaseRequest::orderBy('id', 'desc')->with('approver','vendor')
             ->orWhere('creator_id',Auth::guard('employee')->user()->id)
             ->orWhere('approver_id',Auth::guard('employee')->user()->id)
             ->get();
@@ -59,7 +60,8 @@ class PurchaseRequestController extends Controller
         $Auth=Auth::guard('employee')->user()->id;
 //        Session::forget("prdata-".$Auth);
         $pr_data=Session::get("prdata-".$Auth);
-        return view('Purchase.PurchaseRequest.create',compact('approvers','suppliers','items','product','grand_total','creation_id','pr_data'));
+        $emps=Employee::all()->pluck('name','id')->all();
+        return view('Purchase.PurchaseRequest.create',compact('approvers','suppliers','items','product','grand_total','creation_id','pr_data','emps'));
     }
 
     /**
@@ -71,7 +73,6 @@ class PurchaseRequestController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-           'vendor_id'=>'required',
            'approver_id'=>'required',
            'deadline'=>'required',
            'item'=>'required',
@@ -98,7 +99,7 @@ class PurchaseRequestController extends Controller
         if(isset($request->file)){
             foreach ($request->file('file') as $attach) {
                 $name = $attach->getClientOriginalName();
-                $attach->move(public_path() . '/attach_file/', $name,);
+                $attach->move(public_path() . '/attach_file/', $name);
                 $data[] = $name;
             }
             $pr->attach = json_encode($data);
@@ -113,8 +114,20 @@ class PurchaseRequestController extends Controller
         }
         Session::forget($Auth);
         Session::forget("prdata-".Auth::guard('employee')->user()->id);
+
+       if($request->tag!=null){
+           foreach ($request->tag as $emp){
+               $this->addtag($emp,$pr->id);
+               $this->addnotify($emp,'warning',' Added as a follower of '.$pr_id,'purchaserequest/'.$pr->id,Auth::guard('employee')->user()->id);
+           }
+       }
         $this->addnotify($request->approver_id,'general',' Requested purchase request id '.$pr_id.'to you','purchase_request/'.$pr->id,Auth::guard('employee')->user()->id);
         return redirect(route('purchase_request.index'));
+    }
+    public function addtag($emp_id,$pr_id){
+        $data['pr_id']=$pr_id;
+        $data['emp_id']=$emp_id;
+        pr_follower::create($data);
     }
 
     /**
@@ -135,7 +148,8 @@ class PurchaseRequestController extends Controller
         $grand_total=$total[0]->total;
         $attach=json_decode($prs->attach)??[];
         $comments=PurchaseRequestComment::with('emp')->where('pr_id',$id)->get();
-        return view('Purchase.PurchaseRequest.show',compact('prs','items','statuses','grand_total','attach','comments'));
+        $followers=pr_follower::with('emp')->where('pr_id',$id)->get();
+        return view('Purchase.PurchaseRequest.show',compact('prs','items','statuses','grand_total','attach','comments','followers'));
     }
 
     /**
@@ -146,7 +160,7 @@ class PurchaseRequestController extends Controller
      */
     public function edit($id)
     {
-        $approvers=Employee::all();
+        $emps=Employee::all();
         $suppliers=Customer::where('customer_type','Supplier')->get();
         $prs=PurchaseRequest::with('approver','vendor')->where('id',$id)->firstOrFail();
         $items=PurchaseItem::with('product')->where('pr_id',$id)->get();
@@ -156,9 +170,10 @@ class PurchaseRequestController extends Controller
             ->where('pr_id',$id)
             ->get();
         $grand_total=$total[0]->total;
-        $attach=json_decode($prs->attach);
+        $attach=json_decode($prs->attach)??[];
         $product=product::all()->pluck('name','id')->all();
-        return view('Purchase.PurchaseRequest.edit',compact('items','statuses','grand_total','attach','suppliers','approvers','prs','product'));
+        $pr_followers=pr_follower::where('pr_id',$id)->get();
+        return view('Purchase.PurchaseRequest.edit',compact('items','statuses','grand_total','attach','suppliers','emps','prs','product','pr_followers'));
     }
 
     /**
@@ -180,12 +195,22 @@ class PurchaseRequestController extends Controller
         if(isset($request->file)){
             foreach ($request->file('file') as $attach) {
                 $name = $attach->getClientOriginalName();
-                $attach->move(public_path() . '/attach_file/', $name,);
+                $attach->move(public_path() . '/attach_file/', $name);
                 $data[] = $name;
             }
             $pr->attach = json_encode($data);
         }
         $pr->update();
+        $pr_follower=pr_follower::where('pr_id',$id)->get();
+        foreach ($pr_follower as $item){
+            $item->delete();
+        }
+        if($request->tag!=null){
+            foreach ($request->tag as $emp){
+                    $this->addtag($emp,$pr->id);
+
+            }
+        }
         return redirect('purchase_request');
     }
 
@@ -207,10 +232,12 @@ class PurchaseRequestController extends Controller
     }
     public function comment(Request $request){
         $pr_cmt=new PurchaseRequestComment();
-        $pr_cmt->comment=$request->comment;
-        $pr_cmt->pr_id=$request->pr_id;
-        $pr_cmt->emp_id=Auth::guard('employee')->user()->id;
-        $pr_cmt->save();
+        if($request->comment!=null){
+            $pr_cmt->comment=$request->comment;
+            $pr_cmt->pr_id=$request->pr_id;
+            $pr_cmt->emp_id=Auth::guard('employee')->user()->id;
+            $pr_cmt->save();
+        }
         return redirect()->back();
     }
     public function cmt_delete($id){

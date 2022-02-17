@@ -839,7 +839,7 @@
 
                         } else if ($.isEmptyObject(data.error)) {
                             console.log(data);
-                            swal('Order Crete', 'Invoice Create Success', 'success');
+                            swal('Invoice Crete', 'Invoice Create Success', 'success');
 
                             window.location = data.url;
                         } else {
@@ -908,7 +908,7 @@
 
                         } else if ($.isEmptyObject(data.error)) {
                             console.log(data);
-                            swal('Order Crete', 'Invoice Create Success', 'success');
+                            swal('Invoice Create', 'Invoice Create Success', 'success');
 
                             window.location = data.url;
                         } else {

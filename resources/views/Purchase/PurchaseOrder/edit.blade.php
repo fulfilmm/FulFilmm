@@ -82,6 +82,7 @@
                         <th scope="col">Description</th>
                         <th>Quantity</th>
                         <th>Price</th>
+                        <th>Unit</th>
                         <th>Total</th>
                         <th>Action</th>
                         </thead>
@@ -93,13 +94,14 @@
                                     @foreach($product as $prd)
                                         @if($prd->id==$item->variant_id)
                                             {{$prd->product->name}}
-                                            ({{$prd->size??''}} {{$prd->color??''}})
+                                            ({{$prd->variant??''}})
                                         @endif
                                     @endforeach
                                 </td>
                                 <td>{{$item->description}}</td>
                                 <td>{{$item->qty??''}}</td>
                                 <td>{{$item->price??''}}</td>
+                                <td>{{$item->unit??''}}</td>
                                 <td>{{$item->total??''}}
                                 </td>
                                 <td style="min-width: 60px;">
@@ -139,7 +141,7 @@
                                                                 <label for="" class="col-md-3">Description</label>
                                                                 <div class="col-md-9">
                                                                     <textarea name="" id="desc{{$item->id}}" cols="30" rows="2"
-                                                                              class="form-control col-md-8 update{{$item->id}}">{{$item->description}}</textarea>
+                                                                              class="form-control update{{$item->id}}">{{$item->description}}</textarea>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -151,6 +153,14 @@
                                                                            class="form-control update{{$item->id}}"
                                                                            name="qty"
                                                                            value="{{$item->qty??''}}"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="row">
+                                                                <label for="" class="col-md-3">Unit</label>
+                                                                <div class="col-9">
+                                                                    <input type="text" class="form-control" id="unit{{$item->id}}" name="unit" value="{{$item->unit??'Type Purchase Unit'}}">
+                                                                </div>
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
@@ -189,6 +199,7 @@
                                             var description = $('#desc{{$item->id}}').val();
                                             var product = $('#product{{$item->id}} option:selected').val();
                                             var qty=$('#qty{{$item->id}}').val();
+                                            var unit=$('#unit{{$item->id}}').val();
                                             var price = $('#price{{$item->id}}').val();
                                             var total = $('#total{{$item->id}}').val();
                                             $.ajax({
@@ -197,7 +208,8 @@
                                                     product_id: product,
                                                     qty:qty,
                                                     price: price,
-                                                    total:total
+                                                    total:total,
+                                                    unit:unit
 
                                                 },
                                                 type: 'POST',
@@ -265,24 +277,24 @@
 
                         </tr>
                         <tr>
-                            <td colspan="5">
+                            <td colspan="6">
                                 <button type="button" id="add" class="btn btn-white btn-sm">Add</button>
                             </td>
                             <td></td>
                         </tr>
                         <tr>
                             <td colspan="3" class="text-right">Subtotal</td>
-                            <td colspan="2"><input type="number" class="form-control" id="subtotal" name="subtotal" value="{{$grand_total}}"></td>
+                            <td colspan="3"><input type="number" class="form-control" id="subtotal" name="subtotal" value="{{$grand_total}}"></td>
                             <td></td>
                         </tr>
                         <tr>
                             <td colspan="3" class="text-right">Discount</td>
-                            <td colspan="2"><input type="number" id="discount" class="form-control" name="discount" value="{{$po->discount}}"></td>
+                            <td colspan="3"><input type="number" id="discount" class="form-control" name="discount" value="{{$po->discount}}"></td>
                             <td></td>
                         </tr>
                         <tr>
                             <td colspan="3" class="text-right">Tax</td>
-                            <td colspan="2">
+                            <td colspan="3">
                                 <select name="tax_id" id="tax" class="form-control select2">
                                     @foreach($taxes as $tax)
                                         <option value="{{$tax->id}}" {{$po->tax_id==$tax->id?'selected':''}}>{{$tax->name}} ({{$tax->rate}} %)</option>
@@ -294,7 +306,7 @@
 
                         <tr>
                             <td colspan="3" class="text-right">Grand Total</td>
-                            <td colspan="2"><input type="number" class="form-control" id="grand_total" name="grand_total" value="{{$grand_total??0}}"></td>
+                            <td colspan="3"><input type="number" class="form-control" id="grand_total" name="grand_total" value="{{$grand_total??0}}"></td>
                             <td></td>
                         </tr>
                         </tbody>

@@ -7,6 +7,7 @@ use App\Models\Bill;
 use App\Models\BillItem;
 use App\Models\Customer;
 use App\Models\DeliveryOrder;
+use App\Models\Employee;
 use App\Models\MainCompany;
 use App\Models\PurchaseOrder;
 use App\Models\TransactionCategory;
@@ -129,8 +130,9 @@ class BillController extends Controller
         $recurring=['No','Daily','Weekly','Monthly','Yearly'];
         $payment_method=['Cash','eBanking','WaveMoney','KBZ Pay'];
         $category=TransactionCategory::all();
+        $emps = Employee::all();
         $customer=Customer::where('customer_type','Supplier')->get();
-        $data=['customers'=>$customer,'account'=>$account,'recurring'=>$recurring,'payment_method'=>$payment_method,'category'=>$category];
+        $data=['emps'=>$emps,'customers'=>$customer,'account'=>$account,'recurring'=>$recurring,'payment_method'=>$payment_method,'category'=>$category];
         $bill=Bill::with('supplier','employee')->where('id',$id)->firstOrFail();
         $bill_item=BillItem::with('purchaseorder','delivery')->where('bill_id',$bill->id)->get();
         $company=MainCompany::where('ismaincompany',true)->first();

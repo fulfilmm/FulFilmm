@@ -34,7 +34,7 @@
                 <tbody>
                 @foreach($purchase_orders as $po)
                     <tr>
-                        <td>{{$po->purchaseorder_id}}</td>
+                        <td>{{$po->po_id}}</td>
                         <td>{{\Carbon\Carbon::parse($po->ordered_date)->toFormattedDateString()}}</td>
                         <td>{{\Carbon\Carbon::parse($po->deadline)->toFormattedDateString()}}</td>
                         <td>{{$po->purchase_type}}</td>

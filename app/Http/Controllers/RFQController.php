@@ -3,15 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\RFQsMail;
+use App\Models\Company;
 use App\Models\Customer;
+use App\Models\Employee;
+use App\Models\MainCompany;
 use App\Models\product;
 use App\Models\ProductReceive;
 use App\Models\ProductReceiveItem;
 use App\Models\PurchaseItem;
 use App\Models\PurchaseRequest;
 use App\Models\RequestForQuotation;
+use App\Models\rfq_follower;
 use App\Models\RFQItems;
 //use Barryvdh\DomPDF\PDF;
+use App\Traits\NotifyTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -23,6 +28,7 @@ use PDF;
 
 class RFQController extends Controller
 {
+    use NotifyTrait;
 
     /**
      * Display a listing of the resource.
@@ -32,7 +38,13 @@ class RFQController extends Controller
     public function index()
     {
         $rfqs = RequestForQuotation::with('source', 'vendor')->get();
-        return view('Purchase.RFQs.index', compact('rfqs'));
+        $confirm=RequestForQuotation::where('status','Confirm Order')->count();
+        $tosend=RequestForQuotation::where('status','Daft')->count();
+        $waiting=RequestForQuotation::where('status','RFQ Sent')->count();
+        $overdue=RequestForQuotation::whereDate('deadline','<',Carbon::now())->count();
+
+//        dd($overdue);
+        return view('Purchase.RFQs.index', compact('rfqs','confirm','tosend','waiting','overdue'));
     }
 
     /**
@@ -62,7 +74,8 @@ class RFQController extends Controller
         $data = Session::get($session_key) ?? [];
         $rfq_data = Session::get('rfqformdata-' . Auth::guard('employee')->user()->id);
         $pr = PurchaseRequest::all()->pluck('pr_id', 'id')->all();
-        return view('Purchase.RFQs.create', compact('items', 'product', 'grand_total', 'creation_id', 'suppliers', 'data', 'rfq_data', 'pr'));
+        $emps=Employee::all()->pluck('name','id')->all();
+        return view('Purchase.RFQs.create', compact('items', 'product', 'grand_total', 'creation_id', 'suppliers', 'data', 'rfq_data', 'pr','emps'));
     }
 
     /**
@@ -80,7 +93,7 @@ class RFQController extends Controller
             $last_rfq->purchase_id++;
             $purchase_id = $last_rfq->purchase_id;
         } else {
-            $purchase_id = "P-00001";
+            $purchase_id = "RFQ-00001";
         }
         $rfq = new  RequestForQuotation();
         $rfq->purchase_id = $purchase_id;
@@ -94,7 +107,21 @@ class RFQController extends Controller
         $rfq->creator_id = Auth::guard('employee')->user()->id;
         $rfq->vendor_reference = $request->vendor_reference;
         $rfq->type = $request->type;
+        if(isset($request->attach)){
+            foreach ($request->file('attach') as $attach) {
+                $name = $attach->getClientOriginalName();
+                $attach->move(public_path() . '/attach_file/', $name);
+                $data[] = $name;
+            }
+            $rfq->attach = json_encode($data);
+        }
         $rfq->save();
+        if($request->tag!=null){
+            foreach ($request->tag as $emp){
+                $this->addtag($emp,$rfq->id);
+                $this->addnotify($emp,'warning',' Added as a follower of '.$purchase_id,'rfqs/'.$rfq->id,Auth::guard('employee')->user()->id);
+            }
+        }
         $Auth = "rfq-" . Auth::guard('employee')->user()->id;
         $creation_id = Session::get($Auth);
         $rfq_items = RFQItems::where('creation_id', $creation_id)->get();
@@ -106,6 +133,12 @@ class RFQController extends Controller
         Session::forget('rfqformdata-' . Auth::guard('employee')->user()->id);
         return redirect(route('rfqs.show', $rfq->id));
     }
+    public function addtag($emp_id,$rfq_id){
+        $data['rfq_id']=$rfq_id;
+        $data['emp_id']=$emp_id;
+        rfq_follower::create($data);
+    }
+
 
     /**
      * Display the specified resource.
@@ -117,7 +150,10 @@ class RFQController extends Controller
     {
         $rfq = RequestForQuotation::with('source', 'vendor')->where('id', $id)->firstOrFail();
         $rfq_items = RFQItems::with('product')->where('rfq_id', $id)->get();
-        return view('Purchase.RFQs.show', compact('rfq', 'rfq_items'));
+        $company=MainCompany::where('ismaincompany',true)->first();
+        $followers=rfq_follower::with('emp')->where('rfq_id',$id)->get();
+        $attach=json_decode($rfq->attach)??[];
+        return view('Purchase.RFQs.show', compact('rfq', 'rfq_items','company','followers','attach'));
     }
 
 

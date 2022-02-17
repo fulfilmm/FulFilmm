@@ -2,7 +2,6 @@
 @section('title',$detail_inv->invoice_id)
 @section('content')
     <link rel="stylesheet" href="{{url(asset('css/invoice_css/argon.css'))}}">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
     <!-- Page Content -->
     <div class="content container-fluid">
     <!-- Page Header -->

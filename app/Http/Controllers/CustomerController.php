@@ -365,7 +365,8 @@ class CustomerController extends Controller
     public function destroy($id)
     {
         //
-        $this->customerContract->deleteById($id);
+       $customer=Customer::where('id',$id)->firstOrFail();
+       $customer->forceDelete();
         return redirect()->route('customers.index')->with('success', __('alert.delete_success'));
     }
 

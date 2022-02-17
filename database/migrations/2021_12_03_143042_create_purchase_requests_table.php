@@ -16,7 +16,7 @@ class CreatePurchaseRequestsTable extends Migration
         Schema::create('purchase_requests', function (Blueprint $table) {
             $table->id();
             $table->string('pr_id')->unique();
-            $table->bigInteger('vendor_id')->unsigned();
+            $table->bigInteger('vendor_id')->unsigned()->nullable();
             $table->bigInteger('approver_id')->unsigned();
             $table->dateTime('deadline');
             $table->text('description')->nullable();

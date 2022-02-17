@@ -83,6 +83,7 @@ class PurchaseOrderItemController extends Controller
         $po_item->price=$request->price;
         $po_item->total=$request->total;
         $po_item->description=$request->description;
+        $po_item->unit=$request->unit;
         $po_item->save();
     }
 

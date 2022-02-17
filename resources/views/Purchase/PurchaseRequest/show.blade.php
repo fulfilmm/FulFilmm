@@ -67,7 +67,7 @@
         <div class="col-12">
             <div class="row">
                 <div class="col-md-8">
-                <div class="card ">
+                <div class="card shadow-sm">
                     <div class="card-header">
                         <div class="row">
                             <div class="col-md-4">
@@ -78,12 +78,12 @@
                                 {{$prs->type}}
                             </div>
                             <div class="col-md-4"><label for="" class="text-muted">Vendor :</label>
-                                {{$prs->Vendor->name}}</div>
+                                {{$prs->Vendor->name??'N/A'}}</div>
                         </div>
                     </div>
                     <div class="card-body">
                         <h4>Items</h4>
-                        <table class="table">
+                        <table class="table table-nowrap table-hover">
                             <thead>
                             <th scope="col" style="min-width: 200px;">Product</th>
                             <th>Description</th>
@@ -115,40 +115,42 @@
                         </table>
                     </div>
                 </div>
-                    <div class="card">
+                    <div class="card shadow-sm">
                         <div class="card-header">
                             Attachment File
                         </div>
                         <div class="card-body">
                             <div class="row">
                                 @foreach($attach as $key=>$val)
-                                    <ul class="files-list">
-                                        @if($prs->attach!=null)
-                                            <li>
-                                                <div class="files-cont">
-                                                    <div class="file-type">
+                                    <div class="col-md-4">
+                                        <ul class="files-list">
+                                            @if($prs->attach!=null)
+                                                <li>
+                                                    <div class="files-cont">
+                                                        <div class="file-type">
                                                                     <span class="files-icon"><i
                                                                                 class="fa fa-file-pdf-o"></i></span>
-                                                    </div>
-                                                    <div class="files-info">
+                                                        </div>
+                                                        <div class="files-info">
                                                                     <span class="file-name text-ellipsis"><a
                                                                                 href="">{{$val}}</a></span>
-                                                        <span class="file-date">{{$prs->created_at}}</span>
-                                                        <div class="file-size"></div>
+                                                            <span class="file-date">{{$prs->created_at}}</span>
+                                                            <div class="file-size"></div>
+                                                        </div>
+                                                        <a class="dropdown-item"
+                                                           href="{{url(asset("/attach_file/$val"))}}"><i class="fa fa-download mr-1"></i>Download</a>
                                                     </div>
-                                                    <a class="dropdown-item"
-                                                       href="{{url(asset("/attach_file/$val"))}}"><i class="fa fa-download mr-1"></i>Download</a>
-                                                </div>
-                                            </li>
-                                        @endif
-                                    </ul>
+                                                </li>
+                                            @endif
+                                        </ul>
+                                    </div>
                                     @endforeach
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
-                <div class="card" style="height: 400px;">
+                     <div class="card shadow-sm" style="height: 400px;">
                     <div class="card-header">Comment</div>
                     <div class="chat-contents task-chat-contents">
                         <div class="chat-content-wrap">
@@ -185,7 +187,6 @@
                         </div>
                     </div>
                     <div class="chat-footer">
-
                         <div class="message-bar">
                             <div class="message-inner">
                                 <form action="{{url("/pr/comment")}}" method="POST" enctype="multipart/form-data">
@@ -204,8 +205,24 @@
                                 </form>
                             </div>
                         </div>
+
                     </div>
                 </div>
+                    <div class="card shadow-sm">
+                        <div class="card-header">
+                            Followers
+                        </div>
+                       <div class="col-12">
+                           <div class="row my-2 ml-3">
+                               @foreach($followers as $follower)
+                                   <a href="#" data-toggle="tooltip" title="{{$follower->emp->name}}"
+                                      class="avatar">
+                                       <img src="{{$follower->emp->profile_img!=null? url(asset('img/profiles/'.$follower->emp->profile_img)):url(asset('img/profiles/avatar-01.jpg'))}}" alt="">
+                                   </a>
+                               @endforeach
+                           </div>
+                       </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -137,23 +137,21 @@
                 <div class="card" >
                     <div class="card-body" id="print_me" style="padding-top: 50px;">
                         <div class="row pb-4 mx-0 card-header-border">
-                            <div class="col-lg-6 col-7 col-md-6 mb-3">
+                            <div class="col-lg-4 col-4 col-md-4 mb-3">
                                 <img class="is-squared"
                                      src="{{$company!=null ? url(asset('/img/profiles/'.$company->logo)): url(asset('/img/profiles/avatar-01.jpg'))}}" style="max-width: 100px;max-height: 100px;">
-                                <span>{{$company->name??''}}</span><br><span>{{$company->email??''}}</span><br>
-                                <span>{{$company->phone??''}}</span><br>
-                                <span>{{$company->address??''}}</span>
+
                             </div>
-                            <div class="col-lg-3 col-3">
-                                <div class="text-left">
-                                    <h5 class="font-weight-bold mb-2">Bill number</h5>
-                                    <b class="mb-0">{{$bill->bill_id}}</b>
-                                </div>
+                            <div class="col-lg-4 col-4">
+                                <h3 class="text-center">{{$company->name??''}}</h3>
+                                <h6 class="text-center">{{$company->email??''}}</h6>
+                                <h6 class='text-center'>{{$company->phone??''}}</h6>
+                                <h6 class="text-center">{{$company->address??''}}</h6>
                             </div>
-                            <div class="col-lg-3 col-md-3">
+                            <div class="col-lg-4 col-md-4">
                                 <div class="text-right">
-                                    <h5 class="font-weight-bold mb-2">Bill Date</h5>
-                                    <p class="mb-0">{{\Illuminate\Support\Carbon::parse($bill->bill_date)->toFormattedDateString()}}</p>
+                                    <b class="mb-0">{{$bill->bill_id}}</b>
+                                    <p class="mb-0">Bill Date : {{\Illuminate\Support\Carbon::parse($bill->bill_date)->toFormattedDateString()}}</p>
                                 </div>
                             </div>
                         </div>
@@ -189,7 +187,6 @@
                                                     <th>Item</th>
                                                     <th class="d-none d-sm-table-cell">DESCRIPTION</th>
                                                     <th class='d-none d-sm-table-cell'>TOTAL</th>
-                                                    <th>Action</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -198,22 +195,13 @@
                                                         <td>
                                                             @if($item->type=='Purchase')
                                                                 <a href="{{route('purchaseorders.show',$item->purchaseorder->id)}}">
-                                                            {{$item->purchaseorder->purchaseorder_id}}</a>
+                                                            {{$item->purchaseorder->po_id}}</a>
                                                         @else
                                                                 <a href="{{route('deliveries.show',$item->delivery->id)}}">  {{$item->delivery->delivery_id}}</a>
                                                             @endif
                                                         </td>
                                                         <td class="d-none d-sm-table-cell">{{$item->description}}</td>
                                                         <td>{{$item->amount}}</td>
-                                                        <td>
-                                                            @if($item->type=='Purchase')
-                                                                <a href="{{route('purchaseorders.show',$item->purchaseorder->id)}}">
-                                                                    <i class="fa fa-eye"></i></a>
-                                                            @else
-                                                                <a href="{{route('deliveries.show',$item->delivery->id)}}">
-                                                                    <i class="fa fa-eye"></i></a>
-                                                            @endif
-                                                        </td>
                                                     </tr>
                                                 @endforeach
                                                 </tbody>
@@ -453,6 +441,23 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
+                                        <label for="payment_method">Casher</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-user"></i></span>
+                                            </div>
+                                            <select name="approver_id" id="payment_method" class="form-control ">
+                                                @foreach($data['emps'] as $emps)
+                                                    @if($emps->department->name=='Finance Department')
+                                                        <option value="{{$emps->id}}">{{$emps->name}}</option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
                                         <label for="payment_method">Payment Method</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
@@ -466,7 +471,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="form-group"><label for="reference">Reference</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
@@ -526,6 +531,7 @@
         </div>
     </div>
     <div id="print_me"  style="visibility: hidden">
+        <script src="{{url(asset('js/html2pdf.js'))}}"></script>
         @include('transaction.add_category')
         <script>
             function printContent(el){
@@ -542,104 +548,16 @@
                 window.print();
                 $('body').html(restorepage);
             }
-            (function () {
-                var
-                    form = $('.form'),
-                    cache_width = form.width(),
-                    a4 = [595.28, 841.89]; // for a4 size paper width and height
-
-                $('#create_pdf').on('click', function () {
-                    $('body').scrollTop(0);
-                    createPDF();
-                });
-                //create pdf
-                function createPDF() {
-                    getCanvas().then(function (canvas) {
-                        var
-                            img = canvas.toDataURL("image/png"),
-                            doc = new jsPDF({
-                                unit: 'px',
-                                format: 'a4'
-                            });
-                        doc.addImage(img, 'JPEG', 20, 20);
-                        doc.save('{{$bill->bill_id}}.pdf');
-                        form.width(cache_width);
-                    });
-                }
-
-                // create canvas object
-                function getCanvas() {
-                    form.width((a4[0] * 1.33333) - 80).css('max-width', 'none');
-                    return html2canvas(form, {
-                        imageTimeout: 2000,
-                        removeContainer: true
-                    });
-                }
-
-            }());
+            $('#create_pdf').on('click', function () {
+                generatePDF();
+            });
+            function generatePDF() {
+                // Choose the element that our invoice is rendered in.
+                var element = document.getElementById('print_me');
+                // Choose the element and save the PDF for our user.
+                html2pdf().from(element).save('{{$bill->bill_id}}');
+            }
 
         </script>
-        <script>
-            (function ($) {
-                $.fn.html2canvas = function (options) {
-                    var date = new Date(),
-                        $message = null,
-                        timeoutTimer = false,
-                        timer = date.getTime();
-                    html2canvas.logging = options && options.logging;
-                    html2canvas.Preload(this[0], $.extend({
-                        complete: function (images) {
-                            var queue = html2canvas.Parse(this[0], images, options),
-                                $canvas = $(html2canvas.Renderer(queue, options)),
-                                finishTime = new Date();
-
-                            $canvas.css({ position: 'absolute', left: 0, top: 0 }).appendTo(document.body);
-                            $canvas.siblings().toggle();
-
-                            $(window).click(function () {
-                                if (!$canvas.is(':visible')) {
-                                    $canvas.toggle().siblings().toggle();
-                                    throwMessage("Canvas Render visible");
-                                } else {
-                                    $canvas.siblings().toggle();
-                                    $canvas.toggle();
-                                    throwMessage("Canvas Render hidden");
-                                }
-                            });
-                            throwMessage('Screenshot created in ' + ((finishTime.getTime() - timer) / 1000) + " seconds<br />", 4000);
-                        }
-                    }, options));
-
-                    function throwMessage(msg, duration) {
-                        window.clearTimeout(timeoutTimer);
-                        timeoutTimer = window.setTimeout(function () {
-                            $message.fadeOut(function () {
-                                $message.remove();
-                            });
-                        }, duration || 2000);
-                        if ($message)
-                            $message.remove();
-                        $message = $('<div ></div>').html(msg).css({
-                            margin: 0,
-                            padding: 10,
-                            background: "#000",
-                            opacity: 0.7,
-                            position: "fixed",
-                            top: 10,
-                            right: 10,
-                            fontFamily: 'Tahoma',
-                            color: '#fff',
-                            fontSize: 12,
-                            borderRadius: 12,
-                            width: 'auto',
-                            height: 'auto',
-                            textAlign: 'center',
-                            textDecoration: 'none'
-                        }).hide().fadeIn().appendTo('body');
-                    }
-                };
-            })(jQuery);
-        </script>
-
         <!-- /Page Content -->
 @endsection

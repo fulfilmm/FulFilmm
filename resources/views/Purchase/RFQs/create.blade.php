@@ -66,6 +66,20 @@
                         <input type="date" class="form-control" name="receive_date" id="received_date" value="{{$rfq_data[0]['received_date']??''}}">
                     </div>
                 </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="">Tag</label>
+                        <select name="tag[]" id="tag" class="form-control select2" multiple>
+                            @foreach($emps as $key=>$val )
+                                @if(isset($rfq_data[0]['emp']))
+                                    <option value="{{$key}}" @foreach($rfq_data[0]['emp'][0] as $index=>$item) {{$item==$key?'selected':''}} @endforeach>{{$val}}</option>
+                                @else
+                                    <option value="{{$key}}">{{$val}}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
                 <div class="col-12">
                     <label for="">Description</label>
                     <textarea name="description" id="description" cols="30" rows="5" class="form-control">{{$rfq_data[0]['desc']??''}}</textarea>
@@ -271,6 +285,12 @@
 
                 </div>
             </div>
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="attach">Attachment File</label>
+                    <input type="file" class="form-control" name="attach[]" multiple>
+                </div>
+            </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
@@ -311,6 +331,11 @@
         }
 
         $(document).on('change', '#product', function (event) {
+            var emp =new Array();
+            $("#tag").each(function () {
+                // console.log($(this).val()); //works fine
+                emp.push($(this).val());
+            });
             var supplier = $('#supplier option:selected').val();
             var approver = $('#approver option:selected').val();
             var deadline = $('#deadline').val();
@@ -338,7 +363,8 @@
                     type:type,
                     vendor_ref:vendor_ref,
                     received_date:received_date,
-                    source:source
+                    source:source,
+                    emp:emp
 
                 },
                 type: 'POST',

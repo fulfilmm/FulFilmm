@@ -33,7 +33,7 @@
                     <div class="form-group">
                         <label for="">Approver</label>
                         <select name="approver_id" id="approver" class="form-control select2">
-                            @foreach($approvers as $approver)
+                            @foreach($emps as $approver)
                                 @if($approver->role->name=='Manager'||$approver->role->name=='CEO')
                                     <option value="{{$approver->id}}" {{$prs->approver_id==$approver->id?'selected':''}}>{{$approver->name}}</option>
                                 @endif
@@ -123,7 +123,7 @@
                                                                 <label for="" class="col-md-3">Description</label>
                                                                 <div class="col-md-9">
                                                                     <textarea name="" id="desc{{$item->id}}" cols="30" rows="2"
-                                                                              class="form-control col-md-8 update{{$item->id}}">{{$item->description}}</textarea>
+                                                                              class="form-control update{{$item->id}}">{{$item->description}}</textarea>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -260,8 +260,18 @@
             </div>
             <div class="col-md-12">
                 <div class="form-group">
+                    <label for="">Tag</label>
+                    <select name="tag[]" id="tag" class="form-control select2" multiple>
+                        @foreach($emps as $emp )
+                            <option value="{{$emp->id}}" @foreach($pr_followers as $item) {{$item->emp_id==$emp->id?'selected':''}} @endforeach>{{$emp->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
                     <label for="">Attachment Files</label>
-                    <input type="file" name="file[]" class="form-control" id="attach" multiple>
+                    <input type="file" name="file[]" class="form-control" id="attach" value="@foreach($attach as $item){{url(asset('attach_file/'.$item))}} @endforeach" multiple >
                 </div>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>

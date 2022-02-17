@@ -62,6 +62,7 @@ class BillItemController extends Controller
     public function destroy($id){
         $item=BillItem::where('id',$id)->first();
         $item->delete();
+        return redirect()->back();
 
     }
 }

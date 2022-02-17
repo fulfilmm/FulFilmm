@@ -113,7 +113,7 @@
                                 <label for="payment_method">Casher</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fa fa-credit-card"></i></span>
+                                        <span class="input-group-text"><i class="fa fa-user"></i></span>
                                     </div>
                                     <select name="approver_id" id="payment_method" class="form-control ">
                                         @foreach($data['emps'] as $emps)

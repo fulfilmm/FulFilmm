@@ -111,8 +111,8 @@
                     <thead>
                     <tr>
                         <th style="min-width: 130px">Product Code</th>
-                        {{--<th style="min-width: 100px">Product</th>--}}
-                        {{--<th style="min-width: 100px">Variants</th>--}}
+                        <th style="min-width: 100px">Product</th>
+                        <th style="min-width: 100px">Variants</th>
                         <th style="min-width: 100px">Warehouse</th>
                         <th style="min-width: 100px">Unit</th>
                         <td style="min-width: 100px">Balance</td>
@@ -130,12 +130,12 @@
                             <td style="min-width: 100px">
                                 <a href="{{route('show.variant',$stock->variant->id)}}">{{$stock->variant->product_code}}</a>
                             </td>
-                            {{--<td>--}}
-                                {{--<a href="{{route('products.show',$stock->variant->product_id)}}">{{$stock->product_name}}</a>--}}
-                            {{--</td>--}}
-                            {{--<td>--}}
-                                {{--<a href="{{route('show.variant',$stock->variant->id)}}">{{$stock->variant->variant??''}}</a>--}}
-                            {{--</td>--}}
+                            <td>
+                                <a href="{{route('products.show',$stock->variant->product_id)}}">{{$stock->product_name}}</a>
+                            </td>
+                            <td>
+                                <a href="{{route('show.variant',$stock->variant->id)}}">{{$stock->variant->variant??''}}</a>
+                            </td>
                             <td>
                                 <a href="{{route('warehouses.show',$stock->warehouse->id)}}">{{$stock->warehouse->name}}</a>
                             </td>

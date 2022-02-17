@@ -248,7 +248,7 @@
                                        <div class="form-group">
                                            <label for="">Product Code</label>
                                            <div class="input-group">
-                                               <input type="text" id="p_code" name="product_code" class="form-control" value="{{old('product_code')}}" readonly required>
+                                               <input type="text" id="p_code" name="product_code" class="form-control" value="{{old('product_code')}}" required>
                                                <button type="button" class="btn btn-white btn-sm" onclick="generatecode()" id="generate">Generate Product Code</button>
                                            </div>
                                            @error('product_code')

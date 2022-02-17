@@ -27,6 +27,7 @@ class CreateRequestForQuotationsTable extends Migration
             $table->text('vendor_reference')->nullable();
             $table->dateTime('confirm_date')->nullable();
             $table->string('type');
+            $table->text('attach')->nullable();
             $table->timestamps();
         });
     }

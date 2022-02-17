@@ -120,7 +120,7 @@
                                             <td>
                                                 @if($item->type=='Purchase')
                                                     <a href="{{route('purchaseorders.show',$item->purchaseorder->id)}}">
-                                                        {{$item->purchaseorder->purchaseorder_id}}</a>
+                                                        {{$item->purchaseorder->po_id}}</a>
                                                 @else
                                                     {{$item->delivery->delivery_id}}
                                                 @endif
@@ -133,9 +133,9 @@
                                                     <button type="button" data-toggle="modal" data-target="#edit{{$item->id}}"
                                                             class="btn btn-success btn-sm mt-1"><i
                                                                 class="fa fa-edit"></i></button>
-                                                    <button type="button" id="delete_{{$item->id}}"
+                                                    <a href="{{url('bill/item/delete/'.$item->id)}}" id="delete_{{$item->id}}"
                                                             class="btn btn-danger btn-sm mt-1"><i
-                                                                class="fa fa-minus"></i></button>
+                                                                class="fa fa-minus"></i></a>
                                                     <div id="edit{{$item->id}}" class="modal custom-modal fade" role="dialog">
                                                         <div class="modal-dialog modal-dialog-centered modal-md">
                                                             <div class="modal-content">
@@ -206,21 +206,6 @@
                                                         });
 
                                                     });
-                                                    $(document).on('click', '#delete_{{$item->id}}', function (event) {
-                                                        // alert('hello');
-                                                        $.ajax({
-                                                            type: 'GET',
-                                                            url: "{{url('bill/item/delete/'.$item->id)}}",
-                                                            async: false,
-                                                            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                                                            success: function (data) {
-                                                                console.log(data);
-                                                                location.reload();
-                                                                selectRefresh();
-                                                            }
-                                                        });
-
-                                                    });
                                                 </script>
                                             </td>
                                         </tr>
@@ -233,7 +218,7 @@
                                                 <select name="[]" id="po_id" class="form-control select2 ">
                                                     <option value="">Select Purchase Order</option>
                                                     @foreach($pos as $po)
-                                                        <option value="{{$po->id}}">{{$po->purchaseorder_id}}</option>
+                                                        <option value="{{$po->id}}">{{$po->po_id}}</option>
                                                     @endforeach
                                                 </select>
                                                 @else
@@ -256,13 +241,14 @@
                                             <td></td>
 
                                         </tr>
-                                        @endif
+
                                     <tr>
                                         <td colspan="5">
                                             <button type="button" id="add" class="btn btn-white btn-sm">Add</button>
                                         </td>
                                         <td></td>
                                     </tr>
+                                    @endif
 
                                     <tr>
                                         <td colspan="3" class="text-right">Grand Total</td>

@@ -21,7 +21,7 @@
                 <div class="col-12 my-5">
                     <div class="row">
                         <div class="col-md-4">
-                            <input type="hidden" name="purchaseorder_id" value="{{$purchaseorder_id}}">
+                            <input type="hidden" name="po_id" value="{{$po_id}}">
                             <div class="form-group">
                                 <label for="">Vendor</label>
                                 <select name="vendor_id" id="supplier" class="form-control select2">
@@ -31,7 +31,6 @@
                                 </select>
                             </div>
                         </div>
-                        {{--                @dd()--}}
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="">Purchase Type</label>
@@ -56,6 +55,7 @@
                         <div class="col-md-4">
                             <label for="">Source</label>
                             <select name="rfq_id" id="source" class="select2 form-control">
+                                <option value="">None</option>
                                 @foreach($source as $key=>$val)
                                     <option value="{{$key}}">{{$val}}</option>
                                 @endforeach
@@ -65,6 +65,20 @@
                             <div class="form-group">
                                 <label for="">Deadline</label>
                                 <input type="date" class="form-control" name="deadline" id="received_date" value="{{$po_data[0]['received_date']??''}}">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="">Tag</label>
+                                <select name="tag[]" id="tag" class="form-control select2" multiple>
+                                    @foreach($emps as $key=>$val )
+                                        @if(isset($po_data[0]['emp']))
+                                            <option value="{{$key}}" @foreach($po_data[0]['emp'][0] as $index=>$item) {{$item==$key?'selected':''}} @endforeach>{{$val}}</option>
+                                        @else
+                                            <option value="{{$key}}">{{$val}}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="col-12">
@@ -102,6 +116,7 @@
                                         <td>{{$item->description}}</td>
                                         <td>{{$item->qty??''}}</td>
                                         <td>{{$item->price??''}}</td>
+                                        <td>{{$item->unit??''}}</td>
                                         <td>{{$item->total??''}}
                                         </td>
                                         <td style="min-width: 60px;">
@@ -141,7 +156,7 @@
                                                                         <label for="" class="col-md-3">Description</label>
                                                                         <div class="col-md-9">
                                                                     <textarea name="" id="desc{{$item->id}}" cols="30" rows="2"
-                                                                              class="form-control col-md-8 update{{$item->id}}">{{$item->description}}</textarea>
+                                                                              class="form-control update{{$item->id}}">{{$item->description}}</textarea>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -156,6 +171,14 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
+                                                                   <div class="row">
+                                                                       <label for="" class="col-md-3">Unit</label>
+                                                                       <div class="col-9">
+                                                                           <input type="text" class="form-control" id="unit{{$item->id}}" name="unit" value="{{$item->unit??'Type Purchase Unit'}}">
+                                                                       </div>
+                                                                   </div>
+                                                                </div>
+                                                                <div class="form-group">
                                                                     <div class="row">
                                                                         <label for="" class="col-md-3">Price</label>
                                                                         <div class="col-md-9">
@@ -166,6 +189,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+
                                                                 <div class="form-group">
                                                                     <div class="row">
                                                                         <label for="" class="col-md-3">Total</label>
@@ -190,6 +214,7 @@
                                                 $(document).on('click', '#update_item{{$item->id}}', function (event) {
                                                     var description = $('#desc{{$item->id}}').val();
                                                     var product = $('#product{{$item->id}} option:selected').val();
+                                                    var unit=$('#unit{{$item->id}}').val();
                                                     var qty=$('#qty{{$item->id}}').val();
                                                     var price = $('#price{{$item->id}}').val();
                                                     var total = $('#total{{$item->id}}').val();
@@ -199,7 +224,8 @@
                                                             product_id: product,
                                                             qty:qty,
                                                             price: price,
-                                                            total:total
+                                                            total:total,
+                                                            unit:unit,
 
                                                         },
                                                         type: 'POST',
@@ -304,6 +330,12 @@
 
                         </div>
                     </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="attach">Attachment</label>
+                            <input type="file" class="form-control" name="attach[]" multiple>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-12">
                             <div class="text-center">
@@ -368,6 +400,11 @@
             $('#tax_amount').val(tax_amount);
         });
         $(document).on('change', '#product', function (event) {
+            var emp =new Array();
+            $("#tag").each(function () {
+                // console.log($(this).val()); //works fine
+                emp.push($(this).val());
+            });
             var supplier = $('#supplier option:selected').val();
             var deadline = $('#deadline').val();
             var desc = $('#description').val();
@@ -394,7 +431,8 @@
                     vendor_ref:vendor_ref,
                     received_date:received_date,
                     source:source,
-                    unit:'Unit'
+                    unit:'Unit',
+                    emp:emp,
 
                 },
                 type: 'POST',
