@@ -155,7 +155,7 @@
                                                 {{$item->qty}}
                                             @else
                                                 <input type="text" name="done[]" class="form-control"
-                                                       value="{{$item->qty}}">
+                                                       value="{{$item->demand}}">
 
                                         @endif
                                         </td>
@@ -164,7 +164,7 @@
                                             @if($receipt->is_validate==1)
                                                 {{$item->warehouse->name??''}}
                                                 @else
-                                                <select name="warehouse_id[]" id="" class="select2 form-control">
+                                                <select name="warehouse_id[]" id="" class="select2 form-control" required>
                                                     <option value="">Select Warehouse</option>
                                                     @foreach($warehouse as $key=>$val)
                                                         <option value="{{$key}}">{{$val}}</option>

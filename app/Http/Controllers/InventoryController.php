@@ -142,7 +142,8 @@ class InventoryController extends Controller
        if($receipt->inprogress==1) {
            $rec_item = ProductReceiveItem::where('receipt_id', $id)->get();
            foreach ($rec_item as $item) {
-               $data = ['qty' => $item->qty,
+               $data = [
+                   'qty' => $item->qty??0,
                    'warehouse_id' => $item->warehouse_id,
                    'supplier_id' => $receipt->vendor_id,
                    'variantion_id' => $item->variant_id

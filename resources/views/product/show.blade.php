@@ -301,10 +301,12 @@
         </div>
     </div>
     <script>
-        function generatecode(){
-           var pcode='{{random_int(100000000,999999999)}}';
-           $("#p_code").val(pcode);
-        }
+       $(document).ready(function () {
+           function generatecode(){
+               var pcode='{{random_int(100000000,999999999)}}';
+               $("#p_code").val(pcode);
+           }
+       });
         ClassicEditor.create($('#description')[0], {
             toolbar: ['heading', 'bold', 'italic', 'undo', 'redo', 'numberedList', 'bulletedList', 'insertTable']
         });
