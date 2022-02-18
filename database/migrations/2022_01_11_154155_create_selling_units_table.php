@@ -15,7 +15,7 @@ class CreateSellingUnitsTable extends Migration
     {
         Schema::create('selling_units', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('product_id')->unsigned();
+            $table->bigInteger('variant_id')->unsigned();
             $table->string('unit');
             $table->double('unit_convert_rate');
             $table->tinyInteger('active')->default(1);
