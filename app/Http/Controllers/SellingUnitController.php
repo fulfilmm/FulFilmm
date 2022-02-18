@@ -41,7 +41,7 @@ class SellingUnitController extends Controller
     public function store(Request $request)
     {
         foreach ($request->variant_id as $p_id){
-            $data['product_id']=$p_id;
+            $data['variant_id']=$p_id;
             $data['unit']=$request->unit;
             $data['unit_convert_rate']=$request->unit_convert_rate;
             SellingUnit::create($data);
@@ -85,7 +85,7 @@ class SellingUnitController extends Controller
         $unit=SellingUnit::where('id',$id)->first();
         $unit->unit=$request->unit;
         $unit->unit_convert_rate=$request->unit_convert_rate;
-        $unit->product_id=$request->variant_id;
+        $unit->variant_id=$request->variant_id;
         $unit->update();
         return redirect(route('sellingunits.index'));
     }
