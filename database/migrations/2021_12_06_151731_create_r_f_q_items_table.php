@@ -19,6 +19,7 @@ class CreateRFQItemsTable extends Migration
             $table->bigInteger('product_id')->unsigned();
             $table->text('description')->nullable();
             $table->double('qty');
+            $table->string('unit')->nullable();
             $table->double('price')->nullable();
             $table->string('creation_id');
             $table->double('total')->default(0);

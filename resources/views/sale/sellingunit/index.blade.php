@@ -22,7 +22,7 @@
                <table class="table table-striped custom-table datatable">
                    <thead>
                    <tr>
-                       <th>Product Code</th>
+                       {{--<th>Product Code</th>--}}
                        <th>Product Name</th>
                        <th>Unit</th>
                        <th>Unit Convert Rate</th>
@@ -33,8 +33,8 @@
                    <tbody>
                    @foreach($sellingunits as $item)
                        <tr>
-                           <td><strong>{{$item->variant->product_code}}</strong></td>
-                           <td>{{$item->variant->product_name}}({{$item->variant->variant}})</td>
+                           {{--<td><strong>{{$item->variant->product_code}}</strong></td>--}}
+                           <td>{{$item->variant->name}}</td>
                            <td>{{$item->unit}}</td>
                            <td>{{$item->unit_convert_rate}}</td>
                            <td>{{$item->created_at->toFormattedDateString()}}</td>

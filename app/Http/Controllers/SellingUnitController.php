@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\product;
 use App\Models\product_price;
 use App\Models\ProductVariations;
 use App\Models\SellingUnit;
@@ -27,7 +28,7 @@ class SellingUnitController extends Controller
      */
     public function create()
     {
-        $products=ProductVariations::all();
+        $products=product::all();
         return view('sale.sellingunit.create',compact('products'));
     }
 
@@ -104,9 +105,10 @@ class SellingUnitController extends Controller
     public function price_list(){
 //        dd('je;p');
         $units=SellingUnit::all();
+        $main_product=product::all();
         $products=ProductVariations::all();
         $price_lists=product_price::with('unit','variant')->get();
-        return view('sale.sellingunit.price',compact('units','products','price_lists'));
+        return view('sale.sellingunit.price',compact('units','products','price_lists','main_product'));
     }
     public function store_price(Request $request){
         $this->validate($request,[

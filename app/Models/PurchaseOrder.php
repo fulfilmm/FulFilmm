@@ -10,7 +10,8 @@ class PurchaseOrder extends Model
     use HasFactory;
     protected $fillable=['vendor_id','ordered_date','deadline','po_id',
         'purchase_type','vendor_reference','description','subtotal','discount',
-        'tax_amount','tax_id','grand_total','pr_id','emp_id','receipt_date','paid_bill','is_receipt','attach'
+        'tax_amount','tax_id','grand_total','pr_id','emp_id','receipt_date',
+        'paid_bill','is_receipt','attach','shipping_address','additional_cost'
     ];
     public function vendor(){
         return $this->belongsTo(Customer::class,'vendor_id','id');

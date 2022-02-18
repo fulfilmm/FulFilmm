@@ -27,6 +27,7 @@ use function Livewire\str;
 use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
 use Psy\Util\Str;
+use Tymon\JWTAuth\Claims\Custom;
 
 class ProductController extends Controller
 {
@@ -100,7 +101,8 @@ class ProductController extends Controller
     }
     public function create_variant(){
         $product=product::all()->pluck('name','id')->all();
-        return view('product.variantadd',compact('product'));
+        $supplier=Customer::where('customer_type','Supplier')->get();
+        return view('product.variantadd',compact('product','supplier'));
     }
     public function variant_add(Request $request){
         $this->validate($request,[
@@ -130,6 +132,7 @@ class ProductController extends Controller
         $variation->product_code=$request->product_code;
         $variation->serial_no=$request->serial_no;
         $variation->variant=$request->variant;
+        $variation->supplier_id=$request->supplier_id;
         $variation->exp_date=Carbon::create($request->exp_date);
         $variation->save();
         return redirect(route('products.show',$request->product_id));
@@ -170,6 +173,7 @@ class ProductController extends Controller
         $variation->product_code=$request->product_code;
         $variation->serial_no=$request->serial_no;
         $variation->variant=$request->variant;
+        $variation->supplier_id=$request->supplier_id;
         $variation->exp_date=Carbon::create($request->exp_date);
         $variation->update();
         return redirect(route('products.show',$variation->product_id))->with('success','Product Variant Updated');
@@ -185,8 +189,9 @@ class ProductController extends Controller
     {
         $product=product::with("category",'sub_cat')->where("id",$id)->firstOrFail();
         $variantions=ProductVariations::where('product_id',$product->id)->get();
+        $supplier=Customer::where('customer_type','Supplier')->get();
 //        dd($variantions);
-        return view("product.show",compact("product",'variantions'));
+        return view("product.show",compact("product",'variantions','supplier'));
     }
 
     /**

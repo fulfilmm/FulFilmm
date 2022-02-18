@@ -19,10 +19,23 @@
             <div class="row mt-5">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="variantion_id">Product <span class="text-danger"> * </span></label>
+                        <label for="product">Product Name<span class="text-danger"> * </span></label>
+                        <select  id="product" class="form-control" onchange="giveSelection(this.value)">
+                            @foreach($main_product as $product)
+                                <option value="{{$product->id}}">{{$product->name}}</option>
+                            @endforeach
+                        </select>
+                        @error('variantion_id')
+                        <span class="text-danger">{{$message}}</span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="variantion_id">Variant <span class="text-danger"> * </span></label>
                         <select name="variantion_id" id="variantion_id" class="form-control">
                             @foreach($products as $product)
-                                <option value="{{$product->id}}">{{$product->product->name}} ({{$product->variant}})</option>
+                                <option value="{{$product->id}}">{{$product->variant}}</option>
                             @endforeach
                         </select>
                         @error('variantion_id')
@@ -114,9 +127,9 @@
                 <div class="col-md-4 mb-3">
                     <div class="form-group">
                         <label for="unit">Unit</label>
-                        <select name="sell_unit" id="" class="form-control select col-4">
+                        <select name="sell_unit" id="unit" class="form-control select col-4">
                             @foreach($units as $unit)
-                                <option value="{{$unit->id}}" {{$unit->unit_convert_rate==1?'selected':''}}>{{$unit->unit}}</option>
+                                <option value="{{$unit->id}}" {{$unit->unit_convert_rate==1?'selected':''}} data-option="{{$unit->product_id}}">{{$unit->unit}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -159,8 +172,25 @@
     </div>
     <script>
         $(document).ready(function () {
-           $('select').select2();
+            $('select').select2();
         });
+        var product = document.querySelector('#product');
+        var unit = document.querySelector('#unit');
+        var options2 = unit.querySelectorAll('option');
+        console.log(options3);
+        // alert(product)
+        function giveSelection(selValue) {
+           unit.innerHTML='';
+
+            for(var i = 0; i < options2.length; i++) {
+                if(options2[i].dataset.option === selValue) {
+                    unit.appendChild(options2[i]);
+
+                }
+            }
+        }
+        giveSelection(product.value);
+
         $('#type').change(function () {
            var type=$(this).val();
            if(type=='Damage'||type=='FOC'){

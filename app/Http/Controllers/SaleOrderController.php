@@ -44,7 +44,7 @@ class SaleOrderController extends Controller
         return view('saleorder.index',compact('data'));
     }
     public function create(){
-        $unit_price=product_price::where('sale_type','Whole Sale')->get();
+        $unit_price=product_price::where('sale_type','Whole Sale')->where('active',1)->get();
         $variants=ProductVariations::with('product')->get();
         $taxes=products_tax::all();
         $allcustomers=Customer::all();

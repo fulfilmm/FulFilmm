@@ -375,6 +375,7 @@
                     creation_id: creation_id,
                     desc: desc,
                     emp:emp,
+                    unit:'PCS',
                     type:type
 
                 },

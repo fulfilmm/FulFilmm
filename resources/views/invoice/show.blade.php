@@ -133,7 +133,7 @@
                                 </small>
                                 <div class="mt-3">
                                     <button id="button-payment" class="btn btn-white btn-sm header-button-bottom" data-toggle='modal' data-target='#add_payment'>
-                                        Add Payment
+                                        Cash Receiver
                                     </button>
                                 </div>
                             </div>
@@ -447,7 +447,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="approve">Approver</label>
+                                        <label for="approve">Casher</label>
                                         <select name="approver_id" id="" class="form-control select2">
                                            @foreach($emps as $emp)
                                             @if($emp->department->name=='Finance Department')

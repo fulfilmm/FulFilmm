@@ -25,6 +25,7 @@ class CreateProductVariationsTable extends Migration
             $table->tinyInteger('enable')->default(0);
             $table->text('image')->nullable();
             $table->text('variant')->nullable();
+            $table->bigInteger('supplier_id')->unsigned()->nullable();
             $table->timestamps();
         });
     }

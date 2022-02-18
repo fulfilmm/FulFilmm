@@ -69,7 +69,7 @@ class InvoiceItemController extends Controller
                     'Message' => 'Success'
                 ]);
             }else{
-                $sale_unit = SellingUnit::where('variant_id', $request->variant_id)->where('unit_convert_rate', 1)->first();
+                $sale_unit = SellingUnit::where('variant_id', $variant->product_id)->where('unit_convert_rate', 1)->first();
                 $price = product_price::where('sale_type',$request->inv_type)->where('product_id', $request->variant_id)->first();
                 if($price != null){
                     $items = new OrderItem();
@@ -98,9 +98,9 @@ class InvoiceItemController extends Controller
             }
 //            dd('invoice');
         } else if ($request->type == 'order') {
-            $sale_unit = SellingUnit::where('variant_id', $request->variant_id)->where('unit_convert_rate', 1)->first();
+            $sale_unit = SellingUnit::where('variant_id', $variant->product_id)->where('unit_convert_rate', 1)->first();
            if($sale_unit!=null) {
-               $price = product_price::where('sale_type', 'Whole Sale')->where('unit_id', $sale_unit->id)->first();
+               $price = product_price::where('sale_type', 'Whole Sale')->where('unit_id', $sale_unit->id)->where('active',1)->first();
            }else{
                $price=null;
            }

@@ -9,6 +9,7 @@ use App\Models\DamagedProduct;
 use App\Models\Employee;
 use App\Models\Freeofchare;
 use App\Models\Invoice;
+use App\Models\product;
 use App\Models\ProductVariations;
 use App\Models\SellingUnit;
 use App\Models\Stock;
@@ -51,13 +52,14 @@ class StockTransactionController extends Controller
     {
         $emps = Employee::all();
         $type=['Invoice','FOC','Donation','Simple','Guest','Damage'];
+        $main_product=product::all();
         $products = ProductVariations::with('product')->get();
         $customers =Customer::where('customer_type', 'Lead')->where('status', 'qualified')->get();
         $couriers = Customer::where('customer_type', 'Courier')->get();
         $warehouses = Warehouse::all();
         $invoice=Invoice::all()->pluck('invoice_id','id')->all();
         $units=SellingUnit::all();
-        return view('stock.stockout', compact('emps', 'units','products', 'customers', 'warehouses','couriers','type','invoice'));
+        return view('stock.stockout', compact('emps', 'units','products', 'customers', 'warehouses','couriers','type','invoice','main_product'));
     }
 
     public function stock_in(Request $request)

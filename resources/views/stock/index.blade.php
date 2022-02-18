@@ -24,7 +24,7 @@
                     <h3 class="page-title">Stock Transaction</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Stock Transaction</li>
+                        <li class="breadcrumb-item active"><a href="{{url('stocks/index')}}">Stock Transaction</a></li>
                     </ul>
                 </div>
                 <div class="col-auto float-right ml-auto">
@@ -156,7 +156,12 @@
             jQuery('#end').datetimepicker();
         });
         $(document).ready(function () {
-            $('#stock').DataTable();
+            $('#stock').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+            });
             $('.dataTables_filter input').remove('form-control');
             $('.dataTables_filter input').addClass('rounded');
         });

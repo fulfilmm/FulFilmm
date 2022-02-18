@@ -81,6 +81,7 @@ class RFQItemController extends Controller
         $rfq_item->qty=$request->qty;
         $rfq_item->price=$request->price;
         $rfq_item->total=$request->total;
+        $rfq_item->unit=$request->unit;
         $rfq_item->description=$request->description;
         $rfq_item->save();
 

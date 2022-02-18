@@ -112,6 +112,8 @@ class PurchaseOrderController extends Controller
             $data['tax_id']=$request->tax_id;
             $data['grand_total']=$request->grand_total;
             $data['emp_id']=$request->emp_id;
+            $data['shipping_address']=$request->ship_to;
+            $data['additional_cost']=$request->additional_cost;
             $po=PurchaseOrder::create($data);
             if($request->tag!=null){
                 foreach ($request->tag as $emp){

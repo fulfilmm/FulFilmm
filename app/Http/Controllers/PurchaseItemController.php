@@ -28,6 +28,7 @@ class PurchaseItemController extends Controller
        $item->qty=$request->qty;
        $item->price=$request->price;
        $item->total=$request->total;
+       $item->unit=$request->unit;
        $item->description=$request->description;
        $item->update();
 

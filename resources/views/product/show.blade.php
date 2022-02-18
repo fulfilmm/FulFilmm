@@ -268,7 +268,7 @@
                                            <input type="date" class="form-control" name="exp_date" value="{{\Carbon\Carbon::parse(old('exp_date'))->format('Y-m-d')}}">
                                        </div>
                                    </div>
-                                   <div class="col-md-12">
+                                   <div class="col-md-4">
                                        <div class="form-group">
                                            <label for="">Variant</label>
                                            <input type="text" class="form-control" name="variant" value="{{old('variant')}}" placeholder='Enter this format : "Color:Red Size:XL"'>
@@ -277,7 +277,18 @@
                                            @enderror
                                        </div>
                                    </div>
-                                   <div class="col-md-12">
+                                   <div class="col-md-4">
+                                       <div class="form-group">
+                                           <label for="supplier">Supplier(optional)</label>
+                                           <select name="supplier_id" id="supplier" class="form-control" style="width: 100%">
+                                               <option value="">None</option>
+                                               @foreach($supplier as $sup)
+                                                   <option value="{{$sup->id}}">{{$sup->name}}</option>
+                                                   @endforeach
+                                           </select>
+                                       </div>
+                                   </div>
+                                   <div class="col-md-4">
                                        <div class="form-group">
                                            <label for="">Images</label>
                                            <input type="file" name="picture[]" class="form-control" multiple >

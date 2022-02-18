@@ -26,7 +26,7 @@
                            <label for="pid">Product Name</label>
                            <select name="variant_id[]" id="pid" class="form-control select2" multiple required >
                                @foreach($products as $pd)
-                                   <option value="{{$pd->id}}">{{$pd->product_name}}({{$pd->variant}})</option>
+                                   <option value="{{$pd->id}}">{{$pd->name}}</option>
                                @endforeach
                            </select>
                        </div>

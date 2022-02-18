@@ -289,10 +289,9 @@
                                                 @foreach($unit_price as $item)
                                                 if(unit_id=="{{$item->id}}") {
                                                     var price = "{{$item->price}}";
-                                                }else {
-                                                    var price=$('#price_{{$order->id}}').val();
                                                 }
                                                 @endforeach
+                                                        // alert(price);
                                                 $('#price_{{$order->id}}').val(price);
 
                                                 var quantity = $('#quantity_{{$order->id}}').val();

@@ -63,8 +63,14 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="">Deadline</label>
+                                <label for="">Expected Arrival</label>
                                 <input type="date" class="form-control" name="deadline" id="received_date" value="{{$po_data[0]['received_date']??''}}">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="ship">Ship To</label>
+                                <input type="text" class="form-control" name="ship_to" placeholder="Shipping Address">
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -319,7 +325,11 @@
                                         <input type="hidden" class="form-control" id="tax_amount" name="tax_amount" value="0"></td>
                                     <td></td>
                                 </tr>
-
+                                <tr>
+                                    <td colspan="4" class="text-right">Additional Cost</td>
+                                    <td colspan="2"><input type="number" id="add_cost" class="form-control" name="additional_cost" value="0"></td>
+                                    <td></td>
+                                </tr>
                                 <tr>
                                     <td colspan="4" class="text-right">Grand Total</td>
                                     <td colspan="2"><input type="number" class="form-control" id="grand_total" name="grand_total" value="{{$grand_total??0}}"></td>
@@ -379,8 +389,8 @@
             var tax_amount = parseFloat(total) * (tax_rate / 100);
             var tax_include = parseFloat(total) + tax_amount;
             var discount = $('#discount').val();
-            var deli_fee = $('#deli_fee').val();
-            var grand = tax_include - discount ;
+            var add_cost=$('#add_cost').val();
+            var grand = (tax_include - discount) + add_cost ;
             $('#grand_total').val(parseFloat(grand));
             $('#tax_amount').val(tax_amount);
         });

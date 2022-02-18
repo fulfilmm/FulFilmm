@@ -41,7 +41,7 @@ class RFQController extends Controller
         $confirm=RequestForQuotation::where('status','Confirm Order')->count();
         $tosend=RequestForQuotation::where('status','Daft')->count();
         $waiting=RequestForQuotation::where('status','RFQ Sent')->count();
-        $overdue=RequestForQuotation::whereDate('deadline','<',Carbon::now())->count();
+        $overdue=RequestForQuotation::whereDate('deadline','<',Carbon::now())->where('status','!=','Confirm Order')->count();
 
 //        dd($overdue);
         return view('Purchase.RFQs.index', compact('rfqs','confirm','tosend','waiting','overdue'));

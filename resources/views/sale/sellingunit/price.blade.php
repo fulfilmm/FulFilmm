@@ -148,9 +148,19 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="pid">Product Name</label>
-                                            <select name="product_id[]" id="pid" onchange="giveSelection(this.value)" class="form-control select2 shadow" multiple style="width: 100%" required>
+                                            <select  id="main_pid" onchange="giveSelection(this.value)" class="form-control select2 shadow"  style="width: 100%" required>
+                                                @foreach($main_product as $pd)
+                                                    <option value="{{$pd->id}}">{{$pd->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="pid">Variant</label>
+                                            <select name="product_id[]" id="pid"  class="form-control select2 shadow" multiple style="width: 100%" required>
                                                 @foreach($products as $pd)
-                                                    <option value="{{$pd->id}}">{{$pd->product_name}}({{$pd->variant}})</option>
+                                                    <option value="{{$pd->id}}" data-option="{{$pd->product_id}}">{{$pd->variant}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -233,15 +243,19 @@
                     ]
                 });
             });
-            var product = document.querySelector('#pid');
-            var variant = document.querySelector('#unit_id');
-            var options2 = variant.querySelectorAll('option');
+            var product = document.querySelector('#main_pid');
+            var unit = document.querySelector('#unit_id');
+            var variant = document.querySelector('#pid');
+            var options2 = unit.querySelectorAll('option');
+            var options3 = variant.querySelectorAll('option');
             // alert(product)
             function giveSelection(selValue) {
+                unit.innerHTML = '';
                 variant.innerHTML = '';
                 for(var i = 0; i < options2.length; i++) {
                     if(options2[i].dataset.option === selValue) {
-                        variant.appendChild(options2[i]);
+                        unit.appendChild(options2[i]);
+                        variant.appendChild(options3[i]);
                     }
                 }
             }

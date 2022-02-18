@@ -23,12 +23,16 @@
                            <div class="col-md-6">
                                <div class="form-group">
                                    <label for="warehouse">Product</label>
-                                   <select name="product_id" id="product_id" class="form-control">
-                                       @foreach($products as $product)
-                                           <option value="{{$product->id}}">{{$product->product_name}}({{$product->variant}})
-                                           </option>
-                                       @endforeach
-                                   </select>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend" style="max-width: 40%">
+                                            <select name="" id="type" class="form-control" style="max-width: 100%">
+                                                <option value="Name">Name</option>
+                                                <option value="Code">Code</option>
+                                            </select>
+                                        </div>
+                                        <select name="product_id" id="product_id" class="form-control" style="max-width: 70%">
+                                        </select>
+                                    </div>
                                </div>
                            </div>
                            <div class="col-md-6">
@@ -63,6 +67,12 @@
                                    <input type="number" name="qty" class="form-control">
                                </div>
                            </div>
+                           <div class="col-md-6">
+                               <div class="form-group">
+                                   <label for="value">Valuation</label>
+                                   <input type="number" name="purchase_price" class="form-control" placeholder="Enter Valuation">
+                               </div>
+                           </div>
                        </div>
                        <div class="form-group ">
                            <div class="col-12">
@@ -77,6 +87,17 @@
     <script>
        $(document).ready(function () {
            $('select').select2();
+       });
+       $(document).ready(function () {
+           $("#product_id").html(" @foreach($products as $product)<option value='{{$product->id}}'>{{$product->product_name}} ({{$product->variant}})</option> @endforeach");
+           $("#type").change(function () {
+               var val = $(this).val();
+               if (val == "Name") {
+                   $("#product_id").html(" @foreach($products as $product)<option value='{{$product->id}}'>{{$product->product_name}} ({{$product->variant}})</option> @endforeach");
+               } else if (val == "Code") {
+                   $("#product_id").html("@foreach($products as $product)<option value='{{$product->id}}'>{{$product->product_code}}</option> @endforeach");
+               }
+           });
        });
     </script>
 @endsection

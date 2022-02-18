@@ -30,6 +30,8 @@ class CreatePurchaseOrdersTable extends Migration
             $table->double('grand_total')->default(0);
             $table->bigInteger('emp_id')->unsigned();
             $table->dateTime('receipt_date')->nullable();
+            $table->text('shipping_address')->nullable();
+            $table->double('additional_cost')->default(0);
             $table->tinyInteger('paid_bill')->default(0);
             $table->tinyInteger('is_receipt')->default(0);
             $table->tinyInteger('confirm')->default(0);
