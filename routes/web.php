@@ -376,6 +376,8 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::get('product/export',[ProductController::class,'export'])->name('product.export');
     Route::post('product/import',[ProductController::class,'import'])->name('product.import');
     Route::get('employee/search',[EmployeeController::class,'search'])->name('employee.search');
+    Route::get('sent/mail/{po_id}',[\App\Http\Controllers\PurchaseOrderController::class,'send'])->name('po_mail.prepare');
+    Route::post('po/mail/send',[\App\Http\Controllers\PurchaseOrderController::class,'sending'])->name('po_mail.sent');
 
 });
 

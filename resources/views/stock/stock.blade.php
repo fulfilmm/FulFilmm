@@ -142,7 +142,7 @@
                             <td style="min-width: 100px;">
                                 <select name="" id="unit{{$stock->id}}" class="form-control select">
                                     @foreach($units as $unit)
-                                        @if($unit->variant_id==$stock->variant->id)
+                                        @if($unit->product_id==$stock->variant->product_id)
                                             <option value="{{$unit->unit_convert_rate}}" {{$unit->unit_convert_rate==1?'selected':''}}>{{$unit->unit}}</option>
                                         @endif
                                     @endforeach

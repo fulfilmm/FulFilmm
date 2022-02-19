@@ -42,7 +42,7 @@
                         <label for="variantion_id">Product <span class="text-danger"> * </span></label>
                         <select name="variantion_id" id="variantion_id" class="form-control">
                             @foreach($products as $product)
-                                <option value="{{$product->id}}">{{$product->product->name}} ({{$product->size??''}},{{$product->color??''}},{{$product->other??''}})</option>
+                                <option value="{{$product->id}}">{{$product->product->name}} ({{$product->variant??''}})</option>
                             @endforeach
                         </select>
                     </div>

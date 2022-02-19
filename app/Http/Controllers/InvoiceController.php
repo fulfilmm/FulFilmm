@@ -220,7 +220,7 @@ class InvoiceController extends Controller
                         $stock->qty = $stock->qty - ($item->quantity * $unit->unit_convert_rate);
                         $stock->update();
                     } else {
-                        $unit = SellingUnit::where('id', $item->sell_unit)->first();
+                        $unit = SellingUnit::where('id',1)->first();
                         $stock = Stock::where('variant_id', $item->variant_id)->where('warehouse_id', $request->warehouse_id)->first();
                         $item->inv_id = $newInvoice->id;
                         $item->update();

@@ -15,5 +15,8 @@ class ProductVariations extends Model
     public function stock(){
         return $this->hasMany(Stock::class);
     }
+    public function supplier(){
+        return $this->belongsTo(Customer::class,'supplier_id','id');
+    }
 
 }

@@ -73,7 +73,13 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="">Purchase Price</label>
+                            <input type="number" class="form-control" name="purchase_price">
+                        </div>
+                    </div>
+                    <div class="col-md-8">
                         <div class="form-group">
                             <label for="">Images</label>
                             <input type="file" name="picture[]" class="form-control" multiple >

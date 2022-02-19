@@ -100,6 +100,7 @@
                                <th scope="col" style="min-width: 200px;">Product</th>
                                <th scope="col">Description</th>
                                <th>Quantity</th>
+                               <th>Unit</th>
                                <th>Price</th>
                                <th>Total</th>
                                <th>Action</th>
@@ -114,7 +115,8 @@
                                        </td>
                                        <td>{{$item->description}}</td>
                                        <td>{{$item->qty??''}}</td>
-                                       <td>{{$item->price??''}}</td>
+                                       <td>{{$item->unit}}</td>
+                                       <td>{{$item->price??0}}</td>
                                        <td>{{$item->total??''}}
                                        </td>
                                        <td style="min-width: 60px;">
@@ -170,6 +172,16 @@
                                                                </div>
                                                                <div class="form-group">
                                                                    <div class="row">
+                                                                       <label for="" class="col-md-3">Unit</label>
+                                                                       <div class="col-md-9">
+                                                                           <input type="text" id="unit{{$item->id}}"
+                                                                                  class="form-control update{{$item->id}}"
+                                                                                  name="unit"
+                                                                                  value="{{$item->unit??''}}"></div>
+                                                                   </div>
+                                                               </div>
+                                                               <div class="form-group">
+                                                                   <div class="row">
                                                                        <label for="" class="col-md-3">Price</label>
                                                                        <div class="col-md-9">
                                                                            <input type="number" id="price{{$item->id}}"
@@ -206,13 +218,15 @@
                                                    var qty=$('#qty{{$item->id}}').val();
                                                    var price = $('#price{{$item->id}}').val();
                                                    var total = $('#total{{$item->id}}').val();
+                                                   var unit=$('#unit{{$item->id}}').val();
                                                    $.ajax({
                                                        data: {
                                                            description: description,
                                                            product_id: product,
                                                            qty:qty,
                                                            price: price,
-                                                           total:total
+                                                           total:total,
+                                                           unit:unit
 
                                                        },
                                                        type: 'POST',
@@ -285,7 +299,7 @@
 
                                </tr>
                                <tr>
-                                   <td colspan="6">
+                                   <td colspan="7">
                                        <button type="button" id="add" class="btn btn-white btn-sm">Add</button>
                                    </td>
                                </tr>

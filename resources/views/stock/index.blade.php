@@ -88,7 +88,7 @@
                                 <td>
                                     <select name="" id="unit{{$transaction->id}}" class="form-control select">
                                         @foreach($units as $unit)
-                                            @if($unit->variant_id==$transaction->variant->id)
+                                            @if($unit->product_id==$transaction->variant->product_id)
                                                 <option value="{{$unit->unit_convert_rate}}" {{$unit->unit_convert_rate==1?'selected':''}}>{{$unit->unit}}</option>
                                             @endif
                                         @endforeach

@@ -42,6 +42,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name'=>'create.variant','display_name'=>'Product Variant Create','type'=>'products','guard_name'=>'employee']);
         Permission::create(['name'=>'variant.store','display_name'=>'Product Variant Store','type'=>'products','guard_name'=>'employee']);
         Permission::create(['name'=>'show.variant','display_name'=>'Product Variant Show','type'=>'products','guard_name'=>'employee']);
+        Permission::create(['name'=>'variant.update','display_name'=>'Product Variant update','type'=>'products','guard_name'=>'employee']);
         //ticket
         Permission::create(['name' => 'change_status', 'display_name' => "Can change ticket status",'type'=>'tickets', 'guard_name' => 'employee']);
         Permission::create(['name' => 'reassign', 'display_name' => "Can reassign ticket ", 'type'=>'tickets', 'guard_name' => 'employee']);
@@ -124,6 +125,9 @@ class PermissionSeeder extends Seeder
         //Purchase Orders
         Permission::create(['name'=>'purchase.orders','display_name'=>'Po direct create from RFQ','type'=>'purchaseorders','guard_name'=>'employee']);
         Permission::create(['name'=>'purchaseorders.confirm','display_name'=>'Purchase order confirm','type'=>'purchaseorders','guard_name'=>'employee']);
+        Permission::create(['name'=>'po_mail.prepare','display_name'=>'Purchase order mail prepare','type'=>'purchaseorders','guard_name'=>'employee']);
+        Permission::create(['name'=>'po_mail.sent','display_name'=>'Purchase order mail sending','type'=>'purchaseorders','guard_name'=>'employee']);
+
        //Inventory
         Permission::create(['name'=>'to.stock','display_name'=>'Add to stock from PO','type'=>'inventory','guard_name'=>'employee']);
         Permission::create(['name'=>'inventory.index','display_name'=>'Inventory Index','type'=>'inventory','guard_name'=>'employee']);

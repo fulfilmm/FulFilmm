@@ -24,7 +24,7 @@
                    <div class="col-md-12">
                        <div class="form-group">
                            <label for="pid">Product Name</label>
-                           <select name="variant_id[]" id="pid" class="form-control select2" multiple required >
+                           <select name="product_id[]" id="pid" class="form-control select2" multiple required >
                                @foreach($products as $pd)
                                    <option value="{{$pd->id}}">{{$pd->name}}</option>
                                @endforeach

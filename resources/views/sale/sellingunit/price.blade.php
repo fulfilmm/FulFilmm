@@ -171,7 +171,7 @@
                                             <div class="input-group">
                                                 <select name="unit_id" id="unit_id" class="form-control" required  style="width: 100%">
                                                     @foreach($units as $unit)
-                                                        <option value="{{$unit->id}}" data-option="{{$unit->variant_id}}">{{$unit->unit}}</option>
+                                                        <option value="{{$unit->id}}" data-option="{{$unit->product_id}}">{{$unit->unit}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>

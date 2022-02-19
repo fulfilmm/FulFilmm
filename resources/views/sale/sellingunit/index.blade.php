@@ -34,7 +34,7 @@
                    @foreach($sellingunits as $item)
                        <tr>
                            {{--<td><strong>{{$item->variant->product_code}}</strong></td>--}}
-                           <td>{{$item->variant->name}}</td>
+                           <td>{{$item->product->name}}</td>
                            <td>{{$item->unit}}</td>
                            <td>{{$item->unit_convert_rate}}</td>
                            <td>{{$item->created_at->toFormattedDateString()}}</td>

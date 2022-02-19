@@ -1,5 +1,5 @@
 @extends('layout.mainlayout')
-@section('title',$po->purchaseorder_id)
+@section('title',$po->po_id)
 @section('content')
     <link rel="stylesheet" href="{{url(asset('css/invoice_css/argon.css'))}}">
     <!-- Page Content -->
@@ -82,6 +82,24 @@
                                         <span><i class="fa fa-check"></i></span>
                                     @endif
                                 </div>
+                            </div>
+                        </div>
+                        <div class="timeline-block "><span class="timeline-step badge-danger"><i
+                                        class="la la-cube text-white"></i></span>
+                            <div class="timeline-content">
+                                <h2 class="font-weight-500">
+                                   Sent Mail
+                                </h2>
+                                <small>
+                                    Status:
+                                </small>
+                                <small>
+                                    {{$po->sent==1?'Sent':'Un-Sent'}}
+                                </small><br>
+
+                                    <div class="mt-3">
+                                        <a href="{{url('sent/mail/'.$po->id)}}" class="btn btn-outline-primary btn-sm header-button-top ">{{$po->sent==1?'Re-Send':'Send Mail'}}</a>
+                                    </div>
                             </div>
                         </div>
                         <div class="timeline-block "><span class="timeline-step badge-danger"><i

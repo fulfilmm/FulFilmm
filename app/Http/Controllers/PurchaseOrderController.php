@@ -15,12 +15,14 @@ use App\Models\PurchaseOrder;
 use App\Models\PurchaseOrderItem;
 use App\Models\PurchaseRequest;
 use App\Models\RequestForQuotation;
+use App\Traits\Emailtrait;
 use App\Traits\NotifyTrait;
 use Carbon\Carbon;
 use http\Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
 class PurchaseOrderController extends Controller
@@ -321,5 +323,35 @@ class PurchaseOrderController extends Controller
           }
           return redirect(route('purchaseorders.show',$id));
       }
+    }
+    public function send($id){
+        $po=PurchaseOrder::with('vendor','tax','pr','employee')->where('id',$id)->first();
+        return view('Purchase.PurchaseOrder.mail_prepare',compact('po'));
+    }
+    public function sending(Request $request){
+        if($request->attach!=null){
+            $file = $request->attach;
+            $file_name = $file->getClientOriginalName();
+            $request->attach->move(public_path() . '/attach_file/', $file_name);
+        }
+        $details = array(
+            'email' => $request->email,
+            'subject' => 'Order Mail',
+            'cc' => $request->cc,
+            'content'=>$request->body,
+            'attach' =>$request->attach!=null?public_path() . '/attach_file/' . $file_name:null,
+        );
+        Mail::send('Purchase.PurchaseOrder.sendmail', $details, function ($message) use ($details) {
+            $message->to($details['email']);
+            $message->subject($details['subject']);
+            if ($details['cc'] != null) {
+                $message->cc($details['cc']);
+            }
+            if ($details['attach'] != '') {
+                $message->attach($details['attach']);
+            }
+
+        });
+        return redirect()->back()->with('success','Mail sent');
     }
 }

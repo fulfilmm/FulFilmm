@@ -6,11 +6,11 @@
         <div class="page-header">
             <div class="row">
                 <div class="col-sm-12">
-                    <h3 class="page-title">RFQs Create</h3>
+                    <h3 class="page-title">RFQs Edit</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
                         <li class="breadcrumb-item active"><a href="{{route('purchase_request.index')}}">RFQs</a></li>
-                        <li class="breadcrumb-item active">Create</li>
+                        <li class="breadcrumb-item active">Edit</li>
                     </ul>
                 </div>
             </div>
@@ -55,6 +55,7 @@
                 <div class="col-md-4">
                     <label for="">Source</label>
                     <select name="source" id="source" class="select2 form-control">
+                        <option value="">None</option>
                         @foreach($pr as $key=>$val)
                             <option value="{{$key}}" {{$key==$rfq->purchase_id?'selected':''}}>{{$val}}</option>
                         @endforeach
@@ -80,6 +81,7 @@
                         <th scope="col" style="min-width: 200px;">Product</th>
                         <th scope="col">Description</th>
                         <th>Quantity</th>
+                        <th>Unit</th>
                         <th>Price</th>
                         <th>Total</th>
                         <th>Action</th>
@@ -93,6 +95,7 @@
                                 </td>
                                 <td>{{$item->description}}</td>
                                 <td>{{$item->qty??''}}</td>
+                                <td>{{$item->unit??''}}</td>
                                 <td>{{$item->price??''}}</td>
                                 <td>{{$item->total??''}}
                                 </td>
@@ -148,6 +151,14 @@
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
+                                                         <div class="row">
+                                                             <label for="" class="col-md-3">Unit</label>
+                                                             <div class="col-md-9">
+                                                                 <input type="text" class="form-control" id="unit{{$item->id}}" value="{{$item->unit}}">
+                                                             </div>
+                                                         </div>
+                                                        </div>
+                                                        <div class="form-group">
                                                             <div class="row">
                                                                 <label for="" class="col-md-3">Price</label>
                                                                 <div class="col-md-9">
@@ -185,13 +196,15 @@
                                             var qty=$('#qty{{$item->id}}').val();
                                             var price = $('#price{{$item->id}}').val();
                                             var total = $('#total{{$item->id}}').val();
+                                            var unit=$('#unit{{$item->id}}').val();
                                             $.ajax({
                                                 data: {
                                                     description: description,
                                                     product_id: product,
                                                     qty:qty,
                                                     price: price,
-                                                    total:total
+                                                    total:total,
+                                                    unit:unit
 
                                                 },
                                                 type: 'POST',
@@ -259,7 +272,7 @@
 
                         </tr>
                         <tr>
-                            <td colspan="5">
+                            <td colspan="7">
                                 <button type="button" id="add" class="btn btn-white btn-sm">Add</button>
                             </td>
                         </tr>
@@ -319,6 +332,7 @@
                     total: 0,
                     creation_id: creation_id,
                     rfq_id:creation_id,
+                    unit:'PCS'
 
                 },
                 type: 'POST',

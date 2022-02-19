@@ -133,6 +133,7 @@ class ProductController extends Controller
         $variation->serial_no=$request->serial_no;
         $variation->variant=$request->variant;
         $variation->supplier_id=$request->supplier_id;
+        $variation->purchase_price=$request->purchase_price;
         $variation->exp_date=Carbon::create($request->exp_date);
         $variation->save();
         return redirect(route('products.show',$request->product_id));
@@ -174,6 +175,7 @@ class ProductController extends Controller
         $variation->serial_no=$request->serial_no;
         $variation->variant=$request->variant;
         $variation->supplier_id=$request->supplier_id;
+        $variation->purchase_price=$request->purchase_price;
         $variation->exp_date=Carbon::create($request->exp_date);
         $variation->update();
         return redirect(route('products.show',$variation->product_id))->with('success','Product Variant Updated');

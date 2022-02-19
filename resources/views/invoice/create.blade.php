@@ -288,7 +288,7 @@
 
                                             @foreach($unit_price as $item)
                                                 @if($order->variant_id==$item->product_id)
-                                                    <option value="{{$item->id}}" {{$item->id==$order->sell_unit?'selected':''}}>{{$item->unit->unit}}</option>
+                                                    <option value="{{$item->unit_id}}" {{$item->unit_id==$order->sell_unit?'selected':''}}>{{$item->unit->unit}}</option>
                                                 @endif
                                             @endforeach
                                         </select>
@@ -329,7 +329,7 @@
 
                                         var unit_id=$('#unit{{$order->id}} option:selected').val();
                                         @foreach($unit_price as $item)
-                                        if(unit_id=="{{$item->id}}") {
+                                        if(unit_id=="{{$item->unit_id}}") {
                                             var price = "{{$item->price}}";
                                         }
                                         @endforeach
@@ -355,7 +355,7 @@
                                         $('.select_update').change(function () {
                                             var unit_id=$('#unit{{$order->id}} option:selected').val();
                                             @foreach($unit_price as $item)
-                                            if(unit_id=="{{$item->id}}") {
+                                            if(unit_id=="{{$item->unit_id}}") {
                                                 var price = "{{$item->price}}";
                                             }
                                             @endforeach
