@@ -329,6 +329,7 @@ class PurchaseOrderController extends Controller
         return view('Purchase.PurchaseOrder.mail_prepare',compact('po'));
     }
     public function sending(Request $request){
+        $po=PurchaseOrder::where('id',$request->po_id)->first();
         if($request->attach!=null){
             $file = $request->attach;
             $file_name = $file->getClientOriginalName();
@@ -352,6 +353,8 @@ class PurchaseOrderController extends Controller
             }
 
         });
+        $po->sent=1;
+        $po->update();
         return redirect()->back()->with('success','Mail sent');
     }
 }

@@ -7,6 +7,7 @@
       <div class="col-12 my-5">
           <form action="{{route('po_mail.sent')}}" method="post" enctype="multipart/form-data">
               @csrf
+              <input type="hidden" name="po_id" value="{{$po->id}}">
               <div class="row">
                   <div class="col-md-6">
                       <div class="form-group">

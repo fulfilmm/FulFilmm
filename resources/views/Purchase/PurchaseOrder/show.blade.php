@@ -98,7 +98,7 @@
                                 </small><br>
 
                                     <div class="mt-3">
-                                        <a href="{{url('sent/mail/'.$po->id)}}" class="btn btn-outline-primary btn-sm header-button-top ">{{$po->sent==1?'Re-Send':'Send Mail'}}</a>
+                                        <a href="{{url('sent/mail/'.$po->id)}}" class="btn btn-{{$po->sent==1?'success':'danger'}} btn-sm header-button-top ">{{$po->sent==1?'Re-Send':'Send Mail'}}</a>
                                     </div>
                             </div>
                         </div>
