@@ -49,7 +49,8 @@
                                         <input type="text" class="form-control" id="end" name="end_date"  value="" title="End Date" required>
                                     </div>
                                     <div class="d-flex justify-content-center">
-                                        <button type="submit" data-dismiss="modal" class="btn btn-primary">Export</button>
+                                        <button type="submit" class="btn btn-primary">Export</button>
+                                        <button type="button" data-dismiss="modal" class="btn btn-primary ml-3">Close</button>
                                     </div>
                                 </form>
                             </div>

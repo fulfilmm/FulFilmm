@@ -14,9 +14,9 @@ class EmployeeExport implements FromCollection, WithHeadings, WithMapping
     public $data = [];
     public $exceptKeys = ['department_id'];
 
-    public function __construct()
+    public function __construct($start_date,$end_date)
     {
-        $this->data = Employee::get();
+        $this->data = Employee::whereBetween('created_at',[$start_date,$end_date])->get();
     }
 
     public function collection()

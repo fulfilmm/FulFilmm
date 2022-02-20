@@ -15,25 +15,25 @@
                     </ul>
                 </div>
                 <div class="col-auto float-right ml-auto">
-                    <a href="#" class="btn add-btn btn-sm"  data-toggle="modal" data-target="#stock" data-whatever="@getbootstrap"><i class="fa fa-plus"></i> Add Warehouse</a>
+                    <a href="#" class="btn add-btn btn-sm shadow-sm"  data-toggle="modal" data-target="#stock" data-whatever="@getbootstrap"><i class="fa fa-plus"></i> Add Warehouse</a>
                 </div>
             </div>
         </div>
         <!-- /Page Header -->
 
         @include('warehouse.create')
-        <div class="card">
+        <div class="card shadow">
             <div class="card-header card-header-danger">
                 <h4 class="text-dark"><i class="fa fa-home mr-2"></i>Warehouse</h4>
             </div>
-            <div class="col-12" style="overflow-x: auto">
+            <div class="col-12 my-3" style="overflow-x: auto">
                 <table class="table " id="case">
                     <thead>
                     <tr>
                         <th scope="col">Name</th>
                         <th scope="col">Description</th>
                         <th scope="col">Address</th>
-                        <th scope="col">Stock Balance</th>
+                        <th scope="col">Valuation</th>
                         <th scope="col">Action</th>
                     </tr>
                     </thead>

@@ -385,6 +385,7 @@ class CustomerController extends Controller
             return redirect()->route('customers.index')->with('error', $e->getMessage());
         }
 
+
     }
     public function ChangeContactType(Request $request){
 //        dd($request->all());

@@ -87,6 +87,7 @@ class TransactionController extends Controller
             'account' => 'required',
             'category' => 'required',
             'payment_method' => 'required',
+            'approver_id'=>'required',
             'attachment' => 'mimes:pdf,xlsx,doc,docx,jpg,jpeg,ppt,bip|max:2048',
         ]);
         $new_expense = new Expense();
@@ -216,6 +217,7 @@ class TransactionController extends Controller
                'customer_id' => 'required',
                'category' => 'required',
                'payment_method' => 'required',
+               'approver_id'=>'required',
                'attachment' => 'mimes:pdf,xlsx,doc,docx,jpg,jpeg,ppt,bip'
            ]);
            $new_revenue = new Revenue();

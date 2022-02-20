@@ -259,14 +259,14 @@
         @elseif(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='CEO'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Super Admin')
                    <div class="row">
                        <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                           <a href="{{route('employees.index')}}">
+                           <a href="{{route('tickets.index')}}">
                            <div class="card dash-widget shadow">
                                <div class="card-body">
                                    <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
                                    <div class="dash-widget-info">
-                                       <h3>{{$total_emp}}</h3>
+                                       <h3>{{$items['all_ticket']}}</h3>
                                        <div class="row">
-                                           <span>Total Employees</span>
+                                           <span>Tickets</span>
                                        </div>
                                    </div>
                                </div>
@@ -274,13 +274,13 @@
                            </a>
                        </div>
                        <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                           <a href="{{route('customers.index')}}">
+                           <a href="{{route('approvals.index')}}">
                            <div class="card dash-widget shadow">
                                <div class="card-body">
                                    <span class="dash-widget-icon"><i class="fa fa-money"></i></span>
                                    <div class="dash-widget-info">
-                                       <h3>{{$items['customer']??0}}</h3>
-                                       <span>Contact</span>
+                                       <h3>{{$items['requestation']??0}}</h3>
+                                       <span>Requestation</span>
                                    </div>
                                </div>
                            </div>
@@ -315,6 +315,79 @@
                            </a>
                        </div>
                    </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6 text-center">
+                            <div class="card shadow">
+
+                                <figure class="highcharts-figure my-2">
+                                    <div id="monthly"></div>
+
+                                </figure>
+                            </div>
+                        </div>
+                        <div class="col-md-6 text-center">
+                            <div class="card shadow">
+                                <figure class="highcharts-figure my-2">
+                                    <div id="yearly"></div>
+                                </figure>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card-group m-b-30">
+                            <div class="card">
+                                <a href="{{route('employees.index')}}">
+                                <div class="card-body">
+                                    <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
+                                    <div class="dash-widget-info">
+                                        <h3>{{$total_emp}}</h3>
+                                        <span>Total Employees</span>
+                                    </div>
+                                </div>
+                                </a>
+                            </div>
+                            <div class="card">
+                                <a href="{{route('customers.index')}}">
+                                <div class="card-body">
+                                    <span class="dash-widget-icon"><i class="la la-users"></i></span>
+                                    <div class="dash-widget-info">
+                                        <h3>{{$items['customer']??0}}</h3>
+                                        <span>Contact</span>
+                                    </div>
+                                </div>
+                                </a>
+                            </div>
+                        <div class="card">
+                            <a href="{{route('transactions.index')}}">
+                                <div class="card-body">
+                                    <span class="dash-widget-icon"><i class="la la-users"></i></span>
+                                    <div class="dash-widget-info">
+                                        <h3>{{$items['transaction']??0}}</h3>
+                                        <span>Trasaction</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="card">
+                            <a href="{{route('groups.index')}}">
+                                <div class="card-body">
+                                    <span class="dash-widget-icon"><i class="la la-users"></i></span>
+                                    <div class="dash-widget-info">
+                                        <h3>{{$items['my_groups']??0}}</h3>
+                                        <span>Groups</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
            @elseif(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Employee'&&\Illuminate\Support\Facades\Auth::guard('employee')->user()->department->name=='Sale Department')
             <div class="row">
                 <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
@@ -1032,5 +1105,195 @@
         {{--        </div>--}}
 
     </div>
+    <script>
+
+        var monthly=$("input[name='monthly'] option:checked").val();
+        var chart = Highcharts.chart('monthly', {
+
+            chart: {
+                type: "column"
+            },
+            title: {
+                text: 'Total Revenue'
+            },
+
+            legend: {
+                layout: "vertical",
+                align: 'right',
+                verticalAlign: 'top',
+                x: -40,
+                y: 80,
+                floating: true,
+                borderWidth: 1,
+                backgroundColor:
+                    Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+                shadow: true
+            },
+
+            xAxis: {
+                categories: [{{$year[0]}}, '{{$year[1]}}', '{{$year[2]}}', '{{$year[3]}}', '{{$year[4]}}'],
+                labels: {
+                    x:3
+                }
+            },
+
+            yAxis: {
+                allowDecimals: false,
+                title: {
+                    text: 'Amount'
+                }
+
+            },
+
+            series: [{
+                name: 'Revenue',
+                data: [
+                    {{$year_revenue[$year[0]]->amount??0}},
+                    {{$year_revenue[$year[1]]->amount??0}},
+                    {{$year_revenue[$year[2]]->amount??0}},
+                    {{$year_revenue[$year[3]]->amount??0}},
+                    {{$year_revenue[$year[4]]->amount??0}}
+                ],
+                crosshair: true
+            },
+            ],
+
+            responsive: {
+                rules: [{
+                    condition: {
+                        maxWidth: 500
+                    },
+                    chartOptions: {
+                        legend: {
+                            align: 'center',
+                            verticalAlign: 'bottom',
+                            layout: 'horizontal'
+                        },
+                        yAxis: {
+                            labels: {
+                                align: 'left',
+                                x: 0,
+                                y: -5
+                            },
+                            title: {
+                                text: null
+                            }
+                        },
+                        subtitle: {
+                            text: null
+                        },
+                        credits: {
+                            enabled: false
+                        }
+                    }
+                }]
+            }
+        });
+
+        var chart = Highcharts.chart('yearly', {
+
+            chart: {
+                type: ''
+            },
+            title: {
+                text: 'Yearly Sale and Target'
+            },
+
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                x: -40,
+                y: 80,
+                floating: true,
+                borderWidth: 1,
+                backgroundColor:
+                    Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+                shadow: true
+            },
+            tooltip: {
+                valueSuffix: 'MMK',
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.1f} MMK</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            xAxis: {
+                categories: [{{$year[0]}}, '{{$year[1]}}', '{{$year[2]}}', '{{$year[3]}}', '{{$year[4]}}'],
+                labels: {
+                    x:-2
+                }
+            },
+
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Amount',
+                    align: 'high'
+                },
+                labels: {
+                    overflow: 'justify'
+                }
+            },
+
+            series: [{
+                name: 'Sale Target',
+                data: [
+                    {{$yearly_target[$year[0]]->target??0}},
+                    {{$yearly_target[$year[1]]->target??0}},
+                    {{$yearly_target[$year[2]]->target??0}},
+                    {{$yearly_target[$year[3]]->target??0}},
+                    {{$yearly_target[$year[4]]->target??0}}
+
+                ]
+            }, {
+                name: 'Total Sale',
+                data: [
+                    {{$yearly[$year[0]]->total??0}},
+                    {{$yearly[$year[1]]->total??0}},
+                    {{$yearly[$year[2]]->total??0}},
+                    {{$yearly[$year[3]]->total??0}},
+                    {{$yearly[$year[4]]->total??0}}
+
+                ]
+            }
+            ],
+
+            responsive: {
+                rules: [{
+                    condition: {
+                        maxWidth: 500
+                    },
+                    chartOptions: {
+                        legend: {
+                            align: 'center',
+                            verticalAlign: 'bottom',
+                            layout: 'vertical'
+                        },
+                        yAxis: {
+                            labels: {
+                                align: 'left',
+                                x: 0,
+                                y: -5
+                            },
+                            title: {
+                                text: null
+                            }
+                        },
+                        subtitle: {
+                            text: null
+                        },
+                        credits: {
+                            enabled: false
+                        }
+                    }
+                }]
+            }
+        });
+
+
+    </script>
 @endsection
 

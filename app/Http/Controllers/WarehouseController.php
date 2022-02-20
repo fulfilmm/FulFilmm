@@ -20,14 +20,15 @@ class WarehouseController extends Controller
 
         $warehouse_qty=[];
         foreach ($warehouses as $warehouse){
-            $total_quantiy=Stock::where('warehouse_id',$warehouse->id)->get();
+            $product=Stock::with('variant')->where('warehouse_id',$warehouse->id)->get();
             $total=0;
-            foreach ($total_quantiy as $qty){
-                    $total=$total+$qty->stock_balance;
+            foreach ($product as $item){
+                $valuation=$item->stock_balance*$item->variant->purchase_price??0;
+                $total+=$valuation;
             }
+
             $warehouse_qty[$warehouse->id]=$total;
         }
-
         return view('warehouse.index',compact('warehouses','warehouse_qty'));
     }
 

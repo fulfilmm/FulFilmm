@@ -9,14 +9,12 @@ use App\Models\Employee;
 use App\Models\Invoice;
 use App\Models\OfficeBranch;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\EmployeeExport;
 use App\Imports\EmployeeImport;
 use Exception;
-use Maatwebsite\Excel\Exceptions\LaravelExcelException;
 use Spatie\Permission\Models\Role;
 
 class EmployeeController extends Controller
@@ -84,9 +82,9 @@ class EmployeeController extends Controller
         }
     }
 
-    public function export()
+    public function export(Request $request)
     {
-        return Excel::download(new EmployeeExport, 'employees.xlsx');
+        return Excel::download(new EmployeeExport($request->start_date,$request->end_date), 'employees.xlsx');
     }
     /**
      * Store a newly created resource in storage.

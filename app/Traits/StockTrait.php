@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 trait StockTrait
 {
     public function stockin($request){
-//        dd($request['variantion_id']);
         $main_product=ProductVariations::with('product')->where('id',$request['variantion_id'])->first();
         $stockin=new StockIn();
 //        dd($request);
@@ -19,8 +18,10 @@ trait StockTrait
         $stockin->supplier_id=$request['supplier_id'];
         $stockin->qty=$request['qty'];
         $stockin->save();
-        $main_product->purchase_price=$request['valuation'];
-        $main_product->update();
+       if($request['valuation']!=null){
+           $main_product->purchase_price=$request['valuation'];
+           $main_product->update();
+       }
         $stock=Stock::where('variant_id',$request['variantion_id'])->where('warehouse_id',$request['warehouse_id'])->first();
         if($stock==null){
             $new_stock=new Stock();
