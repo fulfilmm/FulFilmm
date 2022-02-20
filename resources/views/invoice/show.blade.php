@@ -611,7 +611,7 @@
                                             <option value="">Select Courier</option>
                                             @foreach($data['customers'] as $courier)
                                                 @if($courier->customer_type=='Courier')
-                                                <option value="{{$customer->id}}">{{$customer->name}}</option>
+                                                <option value="{{$courier->id}}">{{$courier->name}}</option>
                                                 @endif
                                             @endforeach
                                         </select>
