@@ -391,7 +391,12 @@
                         <div class="card-body">
                             <div class="row">
                                 <input type="hidden" name="advance_id" value="{{isset($advan_pay->id)?$advan_pay->id:''}}">
-
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="">Title</label>
+                                        <input type="text" name="title" class="form-control" placeholder="Type Title">
+                                    </div>
+                                </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="date">Date</label>
@@ -437,11 +442,13 @@
                                             <div class="input-group-prepend" style="width: 12%;">
                                                 <span class="input-group-text"><i class="fa fa-user"></i></span>
                                             </div>
-                                            <select name="customer_id" id="customer_id" class="form-control" style="width: 83%;">
-                                                @foreach($data['customers'] as $customer)
-                                                    <option value="{{$customer->id}}" {{$customer->id==$detail_inv->customer->id?'selected':''}}>{{$customer->name}}</option>
-                                                @endforeach
-                                            </select>
+                                            <input type="hidden" name="customer_id" id="customer_id" value="{{$detail_inv->customer->id}}">
+                                            <input type="text" class="form-control" value="{{$detail_inv->customer->name}}" readonly>
+                                            {{--<select name="customer_id" id="customer_id" class="form-control" style="width: 83%;">--}}
+                                                {{--@foreach($data['customers'] as $customer)--}}
+                                                    {{--<option value="{{$customer->id}}" {{$customer->id==$detail_inv->customer->id?'selected':''}}>{{$customer->name}}</option>--}}
+                                                {{--@endforeach--}}
+                                            {{--</select>--}}
                                         </div>
                                     </div>
                                 </div>
