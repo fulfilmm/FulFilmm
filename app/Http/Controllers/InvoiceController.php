@@ -322,11 +322,11 @@ class InvoiceController extends Controller
         }
         $transaction_amount=0;
 //        $customer=Customer::orWhere('customer_type','Customer')->orWhere('customer_type','Lead')->orWhere('customer_type','Partner')->orWhere('customer_type','Inquery')->get();
-            $customer=Customer::all();
+        $customer=Customer::all();
         $emps = Employee::all();
         $advan_pay=AdvancePayment::with('order')->where('order_id',$detail_inv->order_id)->first();
         $data=['transaction'=>$transaction,'customers'=>$customer,'account'=>$account,'recurring'=>$recurring,'payment_method'=>$payment_method,'category'=>$category];
-
+dd($data);
         return view('invoice.show',compact('detail_inv','advan_pay','invoic_item','company','data','transaction_amount','history','emps'));
     }
 
