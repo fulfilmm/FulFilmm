@@ -216,7 +216,7 @@
                 for(var i = 0; i < options2.length; i++) {
                     if(options2[i].dataset.option === selValue) {
                         unit.appendChild(options2[i]);
-                        // pid.appendChild(options3[i]);
+                        pid.appendChild(options3[i]);
                     }
                 }
             }
