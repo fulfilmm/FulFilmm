@@ -204,6 +204,25 @@
     </div>
     </div>
         <script>
+            var product = document.querySelector('#main_pid');
+            var unit = document.querySelector('#unit_id');
+            var variant = document.querySelector('#pid');
+            var options2 = unit.querySelectorAll('option');
+            var options3 = variant.querySelectorAll('option');
+            // alert(product)
+            function giveSelection(selValue) {
+                unit.innerHTML = '';
+                variant.innerHTML = '';
+                for(var i = 0; i < options2.length; i++) {
+                    if(options2[i].dataset.option === selValue) {
+                        unit.appendChild(options2[i]);
+                        variant.appendChild(options3[i]);
+                    }
+                }
+            }
+            giveSelection(product.value);
+        </script>
+        <script>
             $(document).ready(function () {
                $('select').select2();
                 $('#price_table').DataTable({
@@ -243,22 +262,6 @@
                     ]
                 });
             });
-            var product = document.querySelector('#main_pid');
-            var unit = document.querySelector('#unit_id');
-            var variant = document.querySelector('#pid');
-            var options2 = unit.querySelectorAll('option');
-            var options3 = variant.querySelectorAll('option');
-            // alert(product)
-            function giveSelection(selValue) {
-                unit.innerHTML = '';
-                variant.innerHTML = '';
-                for(var i = 0; i < options2.length; i++) {
-                    if(options2[i].dataset.option === selValue) {
-                        unit.appendChild(options2[i]);
-                        variant.appendChild(options3[i]);
-                    }
-                }
-            }
-            giveSelection(product.value);
+
         </script>
 @endsection
