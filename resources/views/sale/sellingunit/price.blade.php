@@ -216,6 +216,10 @@
                 for(var i = 0; i < options2.length; i++) {
                     if(options2[i].dataset.option === selValue) {
                         unit.appendChild(options2[i]);
+                    }
+                }
+                for(var i = 0; i < options3.length; i++) {
+                    if(options3[i].dataset.option === selValue) {
                         pid.appendChild(options3[i]);
                     }
                 }
