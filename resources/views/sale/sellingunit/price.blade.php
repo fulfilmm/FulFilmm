@@ -206,9 +206,9 @@
         <script>
             var product = document.querySelector('#main_pid');
             var unit = document.querySelector('#unit_id');
-            var pid = document.querySelector('#pid');
+            // var pid = document.querySelector('#pid');
             var options2 = unit.querySelectorAll('option');
-            var options3 = pid.querySelectorAll('option');
+            // var options3 = pid.querySelectorAll('option');
             // alert(product)
             function giveSelection(selValue) {
                 unit.innerHTML = '';
@@ -216,7 +216,7 @@
                 for(var i = 0; i < options2.length; i++) {
                     if(options2[i].dataset.option === selValue) {
                         unit.appendChild(options2[i]);
-                        pid.appendChild(options3[i]);
+                        // pid.appendChild(options3[i]);
                     }
                 }
             }
