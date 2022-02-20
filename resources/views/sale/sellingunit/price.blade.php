@@ -209,7 +209,7 @@
             var pid = document.querySelector('#pid');
             var options2 = unit.querySelectorAll('option');
             var options3 = pid.querySelectorAll('option');
-            console.log(options3);
+            // console.log(options3);
             function giveSelection(selValue) {
                 unit.innerHTML = '';
                 pid.innerHTML = '';
