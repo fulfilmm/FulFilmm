@@ -206,10 +206,10 @@
         <script>
             var product = document.querySelector('#main_pid');
             var unit = document.querySelector('#unit_id');
-            // var pid = document.querySelector('#pid');
+            var pid = document.querySelector('#pid');
             var options2 = unit.querySelectorAll('option');
-            // var options3 = pid.querySelectorAll('option');
-            // alert(product)
+            var options3 = pid.querySelectorAll('option');
+            console.log(options3);
             function giveSelection(selValue) {
                 unit.innerHTML = '';
                 pid.innerHTML = '';
