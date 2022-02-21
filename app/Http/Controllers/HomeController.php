@@ -158,18 +158,18 @@ class HomeController extends Controller
               'my_groups' =>$group,
               'all_ticket'=>$numberOfalltickets,
               'transaction'=>$transaction??0,
-              'total_income'=>$current_year_income[0]->total,
-              'total_expense'=>$current_year_expense[0]->total,
-              'first_term_income'=>$first_6month_income[0]->total,
-              'first_term_expense'=>$first_6month_expense[0]->total,
-              'first_term_profit'=>($first_6month_income[0]->total)-($first_6month_expense[0]->total),
-              'second_term_income'=>$second_6month_income[0]->total,
-              'second_term_expense'=>$second_6month_expense[0]->total,
-              'second_term_profit'=>($second_6month_income[0]->total)-($second_6month_expense[0]->total),
-              'current_month_income'=>$current_month_income[0]->total,
-              'current_month_expense'=>$current_month_expense[0]->total,
-              'current_month_profit'=>($current_month_income[0]->total)-($current_month_expense[0]->total),
-              'profit'=>$current_year_income[0]->total-$current_year_expense[0]->total
+              'total_income'=>$current_year_income[0]->total??0,
+              'total_expense'=>$current_year_expense[0]->total??0,
+              'first_term_income'=>$first_6month_income[0]->total??0,
+              'first_term_expense'=>$first_6month_expense[0]->total??0,
+              'first_term_profit'=>($first_6month_income[0]->total??0)-($first_6month_expense[0]->total??0),
+              'second_term_income'=>$second_6month_income[0]->total??0,
+              'second_term_expense'=>$second_6month_expense[0]->total??0,
+              'second_term_profit'=>($second_6month_income[0]->total??0)-($second_6month_expense[0]->total??0),
+              'current_month_income'=>$current_month_income[0]->total??0,
+              'current_month_expense'=>$current_month_expense[0]->total??0,
+              'current_month_profit'=>($current_month_income[0]->total??0)-($current_month_expense[0]->total??0),
+              'profit'=>$current_year_income[0]->total??0-$current_year_expense[0]->total??0
           ];
 //dd($monthly_expense,$monthly_income,$profit);
           return view('index', compact('items','total_emp','monthly_income','monthly_expense','profit'));
