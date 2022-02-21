@@ -45,6 +45,7 @@ class HomeController extends Controller
         $month = ['Jan', 'Feb', 'March', 'April', 'May', 'June', "July", 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         $monthly_expense=[];
         $monthly_income=[];
+        $current_year_expense=[]
         $profit=[];
       if(Auth::guard('employee')->user()->role->name=='Ticket Admin'){
           $agents=[];
