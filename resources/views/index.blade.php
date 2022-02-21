@@ -1165,168 +1165,170 @@
         {{--        </div>--}}
 
     </div>
-    <script>
-        var chart = Highcharts.chart('yearly', {
+   @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='SuperAdmin'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='CEO')
+       <script>
+           var chart = Highcharts.chart('yearly', {
 
-            chart: {
-                type: ''
-            },
-            title: {
-                text: 'Income,Expense and Profit'
-            },
+               chart: {
+                   type: ''
+               },
+               title: {
+                   text: 'Income,Expense and Profit'
+               },
 
-            legend: {
-                layout: 'vertical',
-                align: 'right',
-                verticalAlign: 'top',
-                x: -40,
-                y: 80,
-                floating: true,
-                borderWidth: 1,
-                backgroundColor:
-                    Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
-                shadow: true
-            },
-            tooltip: {
-                valueSuffix: 'MMK',
-                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                    '<td style="padding:0"><b>{point.y:.1f} MMK</b></td></tr>',
-                footerFormat: '</table>',
-                shared: true,
-                useHTML: true
-            },
-            xAxis: {
-                categories: ['Jan','Feb','March','April','May','June','July','Aug','Sep','Oct','Nov','Dec'],
-                labels: {
-                    x:-2
-                }
-            },
+               legend: {
+                   layout: 'vertical',
+                   align: 'right',
+                   verticalAlign: 'top',
+                   x: -40,
+                   y: 80,
+                   floating: true,
+                   borderWidth: 1,
+                   backgroundColor:
+                       Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+                   shadow: true
+               },
+               tooltip: {
+                   valueSuffix: 'MMK',
+                   headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                   pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                       '<td style="padding:0"><b>{point.y:.1f} MMK</b></td></tr>',
+                   footerFormat: '</table>',
+                   shared: true,
+                   useHTML: true
+               },
+               xAxis: {
+                   categories: ['Jan','Feb','March','April','May','June','July','Aug','Sep','Oct','Nov','Dec'],
+                   labels: {
+                       x:-2
+                   }
+               },
 
-            yAxis: {
-                min: 0,
-                title: {
-                    text: 'Amount',
-                    align: 'high'
-                },
-                labels: {
-                    overflow: 'justify'
-                }
-            },
+               yAxis: {
+                   min: 0,
+                   title: {
+                       text: 'Amount',
+                       align: 'high'
+                   },
+                   labels: {
+                       overflow: 'justify'
+                   }
+               },
 
-            series: [{
-                name: 'Income',
-                data: [
-                    {{$monthly_income['Jan']->total??0}},
-                    {{$monthly_income['Feb']->total??0}},
-                    {{$monthly_income['March']->total??0}},
-                    {{$monthly_income['April']->total??0}},
-                    {{$monthly_income['May']->total??0}},
-                    {{$monthly_income['June']->total??0}},
-                    {{$monthly_income['July']->total??0}},
-                    {{$monthly_income['Aug']->total??0}},
-                    {{$monthly_income['Sep']->total??0}},
-                    {{$monthly_income['Oct']->total??0}},
-                    {{$monthly_income['Nov']->total??0}},
-                    {{$monthly_income['Dec']->total??0}},
-                ]
-            }, {
-                name: 'Expense',
-                data: [
-                    {{$monthly_expense['Jan']->total??0}},
-                    {{$monthly_expense['Feb']->total??0}},
-                    {{$monthly_expense['March']->total??0}},
-                    {{$monthly_expense['April']->total??0}},
-                    {{$monthly_expense['May']->total??0}},
-                    {{$monthly_expense['June']->total??0}},
-                    {{$monthly_expense['July']->total??0}},
-                    {{$monthly_expense['Aug']->total??0}},
-                    {{$monthly_expense['Sep']->total??0}},
-                    {{$monthly_expense['Oct']->total??0}},
-                    {{$monthly_expense['Nov']->total??0}},
-                    {{$monthly_expense['Dec']->total??0}},
+               series: [{
+                   name: 'Income',
+                   data: [
+                       {{$monthly_income['Jan']->total??0}},
+                       {{$monthly_income['Feb']->total??0}},
+                       {{$monthly_income['March']->total??0}},
+                       {{$monthly_income['April']->total??0}},
+                       {{$monthly_income['May']->total??0}},
+                       {{$monthly_income['June']->total??0}},
+                       {{$monthly_income['July']->total??0}},
+                       {{$monthly_income['Aug']->total??0}},
+                       {{$monthly_income['Sep']->total??0}},
+                       {{$monthly_income['Oct']->total??0}},
+                       {{$monthly_income['Nov']->total??0}},
+                       {{$monthly_income['Dec']->total??0}},
+                   ]
+               }, {
+                   name: 'Expense',
+                   data: [
+                       {{$monthly_expense['Jan']->total??0}},
+                       {{$monthly_expense['Feb']->total??0}},
+                       {{$monthly_expense['March']->total??0}},
+                       {{$monthly_expense['April']->total??0}},
+                       {{$monthly_expense['May']->total??0}},
+                       {{$monthly_expense['June']->total??0}},
+                       {{$monthly_expense['July']->total??0}},
+                       {{$monthly_expense['Aug']->total??0}},
+                       {{$monthly_expense['Sep']->total??0}},
+                       {{$monthly_expense['Oct']->total??0}},
+                       {{$monthly_expense['Nov']->total??0}},
+                       {{$monthly_expense['Dec']->total??0}},
 
 
-                ]
-            },{
-                name:'Profit',
-                data:[
-                    {{$profit['Jan']??0}},
-                    {{$profit['Feb']??0}},
-                    {{$profit['March']??0}},
-                    {{$profit['April']??0}},
-                    {{$profit['May']??0}},
-                    {{$profit['June']??0}},
-                    {{$profit['July']??0}},
-                    {{$profit['Aug']??0}},
-                    {{$profit['Sep']??0}},
-                    {{$profit['Oct']??0}},
-                    {{$profit['Nov']??0}},
-                    {{$profit['Dec']??0}},
-                ]
-            }
-            ],
+                   ]
+               },{
+                   name:'Profit',
+                   data:[
+                       {{$profit['Jan']??0}},
+                       {{$profit['Feb']??0}},
+                       {{$profit['March']??0}},
+                       {{$profit['April']??0}},
+                       {{$profit['May']??0}},
+                       {{$profit['June']??0}},
+                       {{$profit['July']??0}},
+                       {{$profit['Aug']??0}},
+                       {{$profit['Sep']??0}},
+                       {{$profit['Oct']??0}},
+                       {{$profit['Nov']??0}},
+                       {{$profit['Dec']??0}},
+                   ]
+               }
+               ],
 
-            responsive: {
-                rules: [{
-                    condition: {
-                        maxWidth: 500
-                    },
-                    chartOptions: {
-                        legend: {
-                            align: 'center',
-                            verticalAlign: 'bottom',
-                            layout: 'vertical'
-                        },
-                        yAxis: {
-                            labels: {
-                                align: 'left',
-                                x: 0,
-                                y: -5
-                            },
-                            title: {
-                                text: null
-                            }
-                        },
-                        subtitle: {
-                            text: null
-                        },
-                        credits: {
-                            enabled: false
-                        }
-                    }
-                }]
-            }
-        });
-        $(document).ready(function () {
-            var current_year=$('input[type=radio]:checked').val();
-            if(current_year==1){
-                $('#total_income').text("{{$items['total_income']??0}}");
-                $('#total_expense').text("{{$items['total_expense']??0}}");
-                $('#total_profit').text("{{$items['profit']??0}}");
-            }
-            $('input[type=radio]').on('change', function() {
-                var type=$(this).val();
-                if(type==1){
-                    $('#total_income').text("{{$items['total_income']??0}}");
-                    $('#total_expense').text("{{$items['total_expense']??0}}");
-                    $('#total_profit').text("{{$items['profit']??0}}");
-                }else if (type==2) {
-                    $('#total_income').text("{{$items['first_term_income']??0}}");
-                    $('#total_expense').text("{{$items['first_term_expense']??0}}");
-                    $('#total_profit').text("{{$items['first_term_profit']??0}}");
-                }else if(type==3){
-                    $('#total_income').text("{{$items['second_term_income']??0}}");
-                    $('#total_expense').text("{{$items['second_term_expense']??0}}");
-                    $('#total_profit').text("{{$items['second_term_profit']??0}}");
-                }else{
-                    $('#total_income').text("{{$items['current_month_income']??0}}");
-                    $('#total_expense').text("{{$items['current_month_expense']??0}}");
-                    $('#total_profit').text("{{$items['current_month_profit']??0}}");
-                }
+               responsive: {
+                   rules: [{
+                       condition: {
+                           maxWidth: 500
+                       },
+                       chartOptions: {
+                           legend: {
+                               align: 'center',
+                               verticalAlign: 'bottom',
+                               layout: 'vertical'
+                           },
+                           yAxis: {
+                               labels: {
+                                   align: 'left',
+                                   x: 0,
+                                   y: -5
+                               },
+                               title: {
+                                   text: null
+                               }
+                           },
+                           subtitle: {
+                               text: null
+                           },
+                           credits: {
+                               enabled: false
+                           }
+                       }
+                   }]
+               }
+           });
+           $(document).ready(function () {
+               var current_year=$('input[type=radio]:checked').val();
+               if(current_year==1){
+                   $('#total_income').text("{{$items['total_income']??0}}");
+                   $('#total_expense').text("{{$items['total_expense']??0}}");
+                   $('#total_profit').text("{{$items['profit']??0}}");
+               }
+               $('input[type=radio]').on('change', function() {
+                   var type=$(this).val();
+                   if(type==1){
+                       $('#total_income').text("{{$items['total_income']??0}}");
+                       $('#total_expense').text("{{$items['total_expense']??0}}");
+                       $('#total_profit').text("{{$items['profit']??0}}");
+                   }else if (type==2) {
+                       $('#total_income').text("{{$items['first_term_income']??0}}");
+                       $('#total_expense').text("{{$items['first_term_expense']??0}}");
+                       $('#total_profit').text("{{$items['first_term_profit']??0}}");
+                   }else if(type==3){
+                       $('#total_income').text("{{$items['second_term_income']??0}}");
+                       $('#total_expense').text("{{$items['second_term_expense']??0}}");
+                       $('#total_profit').text("{{$items['second_term_profit']??0}}");
+                   }else{
+                       $('#total_income').text("{{$items['current_month_income']??0}}");
+                       $('#total_expense').text("{{$items['current_month_expense']??0}}");
+                       $('#total_profit').text("{{$items['current_month_profit']??0}}");
+                   }
 
-            });
-        });
-    </script>
+               });
+           });
+       </script>
+    @endif
 @endsection
 
