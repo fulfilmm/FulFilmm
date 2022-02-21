@@ -70,7 +70,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="ship">Ship To</label>
-                                <input type="text" class="form-control" name="ship_to" placeholder="Shipping Address">
+                                <input type="text" class="form-control" id="ship_to" name="ship_to"  value="{{$po_data[0]['ship_to']??''}}">
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -426,6 +426,7 @@
             var vendor_ref=$('#vendor_ref').val();
             var received_date=$('#received_date').val();
             var source=$('#source option:selected').val();
+            var ship_to=$('#ship_to').val();
             $.ajax({
                 data: {
                     supplier_id: supplier,
@@ -443,6 +444,7 @@
                     source:source,
                     unit:'Unit',
                     emp:emp,
+                    ship_to:ship_to
 
                 },
                 type: 'POST',

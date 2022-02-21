@@ -7,6 +7,7 @@ use App\Exports\EmployeeExport;
 use App\Http\Requests\CompanyRequest;
 use App\Imports\CompanyImport;
 use App\Models\Company;
+use App\Models\Customer;
 use App\Repositories\Contracts\CompanyContract;
 use App\Repositories\Contracts\DepartmentContract;
 use Exception;
@@ -101,7 +102,8 @@ class CompanyController extends Controller
     {
         //
         $record = $this->company_contract->with('parentCompany')->getById($id);
-        return view('company.show', compact('record'));
+        $customers=Customer::where('company_id',$id)->get();
+        return view('company.show', compact('record','customers'));
     }
 
     /**

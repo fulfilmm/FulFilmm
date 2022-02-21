@@ -7,7 +7,7 @@
             @method('put')
             @endif
             <x-forms.basic.input name="name" title="Name" value="{{$role->name ?? old('name')}}" required></x-forms.basic.input>
-          
+          <br>
             <button
             class="btn btn-primary "
             type="submit">

@@ -25,12 +25,24 @@ class SaleReportController extends Controller
                 })
                 ->make(true);
         }
-        $total_sale = DB::table("order_items")
-            ->select(DB::raw("SUM(total) as total"))
-            ->where('state',1)
+        $total_sale = DB::table("invoices")
+            ->select(DB::raw("SUM(grand_total) as total"))
+            ->whereDate('created_at',Carbon::today())
+            ->get();
+        $debt_amount = DB::table("invoices")
+            ->select(DB::raw("SUM(due_amount) as total"))
+            ->whereDate('created_at',Carbon::today())
+            ->get();
+        $income = DB::table("revenues")
+            ->select(DB::raw("SUM(amount) as total"))
+            ->whereDate('created_at',Carbon::today())
+            ->get();
+        $total_reatail_sale = DB::table("invoices")
+            ->select(DB::raw("SUM(grand_total) as total"))
+            ->where('inv_type','Retail')
             ->whereDate('created_at',Carbon::today())
             ->get();
 
-       return view('sale.salereport',compact('total_sale'));
+       return view('sale.salereport',compact('total_sale','income','debt_amount','total_reatail_sale'));
     }
 }

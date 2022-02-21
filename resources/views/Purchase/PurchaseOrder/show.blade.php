@@ -188,6 +188,7 @@
                                     <p class="mb-0 mb-1">{{$po->employee->address}}</p>
                                     <p class="mb-0 mb-1">{{$po->employee->phone}}</p>
                                     <p class="mb-0 mb-2">{{$po->employee->email}}</p>
+                                    <p class="mb-0 mb-2">Shipping To : {{$po->shipping_address}}</p>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-6">

@@ -41,7 +41,7 @@ class InvoiceController extends Controller
     public  $status=['Paid','Unpaid','Pending','Cancel','Draft','Sent'];
     public function index()
     {
-        $allinv=Invoice::with('customer')->get();
+        $allinv=Invoice::with('customer','employee')->get();
         $status=$this->status;
         return view('invoice.index',compact('allinv','status'));
     }
@@ -305,7 +305,7 @@ class InvoiceController extends Controller
             $detail_inv->status='Partial';
             $detail_inv->update();
             $this->add_history($id,'Partial','Change Status '.$detail_inv->invoice_id);
-        }elseif($detail_inv->due_amount!=0 && Carbon::now()>$detail_inv->due_date){
+        }elseif($detail_inv->due_amount!=0 && Carbon::now()>$detail_inv->due_date && $detail_inv->created_at!=$detail_inv->due_date){
             $detail_inv->status='Overdue';
             $detail_inv->update();
             $this->add_history($id,'Overdue','Change Status '.$detail_inv->invoice_id);

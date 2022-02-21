@@ -1,4 +1,5 @@
 @extends('layout.mainlayout')
+@section('title','Role Create')
 @section('content')
 
     <div class="content container-fluid">
@@ -11,7 +12,7 @@
 
         <div class="row justify-content-center">
             <div class="col-xl-8 col-lg-8 col-md-10 col-sm-12 col-12">
-                <div class="card">
+                <div class="card shadow">
                     <div class="card-header">
                         <h4 class="card-title mb-0">Create New Roles</h4>
                     </div>

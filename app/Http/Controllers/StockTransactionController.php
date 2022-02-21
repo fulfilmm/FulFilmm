@@ -9,6 +9,7 @@ use App\Models\DamagedProduct;
 use App\Models\Employee;
 use App\Models\Freeofchare;
 use App\Models\Invoice;
+use App\Models\Notification;
 use App\Models\product;
 use App\Models\ProductVariations;
 use App\Models\SellingUnit;
@@ -29,6 +30,23 @@ class StockTransactionController extends Controller
 {
     use StockTrait;
     use NotifyTrait;
+
+    public function __construct()
+    {
+        $stock=Stock::with('variant')->get();
+        $employees=Employee::all();
+
+        foreach ($stock as $item){
+            if($item->alert_qty >= $item->stock_balance){
+                foreach ($employees as $emp){
+                    $exit_noti=Notification::where('type',$item->id)->where('read_at',null)->where('notify_user_id',$emp->id)->first();
+                    if($emp->role->name=='Stock Manager'&& $exit_noti==null){
+                        $this->addnotify($emp->id,$item->id,$item->variant->product_name.'Only '.$item->stock_balance.' left in stock','stocks','');
+                    }
+                }
+            }
+        }
+    }
 
     public function index()
     {

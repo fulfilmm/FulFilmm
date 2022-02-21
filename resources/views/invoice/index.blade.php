@@ -67,6 +67,7 @@
                                     <tr>
                                         <th>Invoice Number</th>
                                         <th>Client</th>
+                                        <th>Sale Man</th>
                                         <th>Created Date</th>
                                         <th>Due Date</th>
                                         <th>Amount</th>
@@ -84,6 +85,7 @@
                                             @endif
 
                                         <td>{{$invoice->customer->name}}</td>
+                                            <td>{{$invoice->employee->name}}</td>
                                         <td>{{$invoice->created_at->toFormattedDateString()}}</td>
                                         <td>{{\Illuminate\Support\Carbon::parse($invoice->due_date)->toFormattedDateString()}}</td>
                                         <td>{{$invoice->grand_total}}</td>
