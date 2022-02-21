@@ -21,14 +21,16 @@
                         </li>
                     </ul>
                 </div>
-               <div class="col-12">
-                   <div class="float-right">
-                       <input type="radio" name="report_type" class="radio" value="1" checked><label for="" class="ml-2">Current Year</label>
-                       <input type="radio" name="report_type" class="radio" value="2"><label for="" class="ml-2">Jan to June</label>
-                       <input type="radio" name="report_type" class="radio" value="3"><label for="" class="ml-2">July to Dec</label>
-                       <input type="radio" name="report_type" class="radio" value="4"><label for="" class="ml-2">Current Month</label>
-                   </div>
-               </div>
+              @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='SuperAdmin'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='CEO')
+                    <div class="col-12">
+                        <div class="float-right">
+                            <input type="radio" name="report_type" class="radio" value="1" checked><label for="" class="ml-2">Current Year</label>
+                            <input type="radio" name="report_type" class="radio" value="2"><label for="" class="ml-2">Jan to June</label>
+                            <input type="radio" name="report_type" class="radio" value="3"><label for="" class="ml-2">July to Dec</label>
+                            <input type="radio" name="report_type" class="radio" value="4"><label for="" class="ml-2">Current Month</label>
+                        </div>
+                    </div>
+                  @endif
             </div>
 
         </div>
