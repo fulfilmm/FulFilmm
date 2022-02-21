@@ -3,6 +3,11 @@
 @section('title', 'Dashboard')
 
 @section('content')
+    <style>
+        /*.highcharts-credits{*/
+            /*display: none;*/
+        /*}*/
+    </style>
     <div class="p-3">
 
         <!-- Page Header -->
@@ -16,7 +21,16 @@
                         </li>
                     </ul>
                 </div>
+               <div class="col-12">
+                   <div class="float-right">
+                       <input type="radio" name="report_type" class="radio" value="1" checked><label for="" class="ml-2">Current Year</label>
+                       <input type="radio" name="report_type" class="radio" value="2"><label for="" class="ml-2">Jan to June</label>
+                       <input type="radio" name="report_type" class="radio" value="3"><label for="" class="ml-2">July to Dec</label>
+                       <input type="radio" name="report_type" class="radio" value="4"><label for="" class="ml-2">Current Month</label>
+                   </div>
+               </div>
             </div>
+
         </div>
         <!-- /Page Header -->
         @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Ticket Admin')
@@ -257,138 +271,182 @@
                 </div>
             </div>
         @elseif(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='CEO'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Super Admin')
-                   <div class="row">
-                       <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                           <a href="{{route('tickets.index')}}">
-                           <div class="card dash-widget shadow">
-                               <div class="card-body">
-                                   <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
-                                   <div class="dash-widget-info">
-                                       <h3>{{$items['all_ticket']}}</h3>
-                                       <div class="row">
-                                           <span>Tickets</span>
-                                       </div>
-                                   </div>
-                               </div>
-                           </div>
-                           </a>
-                       </div>
-                       <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                           <a href="{{route('approvals.index')}}">
-                           <div class="card dash-widget shadow">
-                               <div class="card-body">
-                                   <span class="dash-widget-icon"><i class="fa fa-money"></i></span>
-                                   <div class="dash-widget-info">
-                                       <h3>{{$items['requestation']??0}}</h3>
-                                       <span>Requestation</span>
-                                   </div>
-                               </div>
-                           </div>
-                           </a>
-                       </div>
-                       <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                           <a href="{{url('sale/activity')}}">
-                           <div class="card dash-widget shadow">
-                               <div class="card-body">
-                                   <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
-                                   <div class="dash-widget-info">
-                                       <h3>{{$items['saleactivity']}}</h3>
-                                       <div class="row">
-                                           <span>Sale Activity</span>
-                                       </div>
-                                   </div>
-                               </div>
-                           </div>
-                           </a>
-                       </div>
-                       <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                           <a href="{{route('meetings.index')}}">
-                           <div class="card dash-widget shadow">
-                               <div class="card-body">
-                                   <span class="dash-widget-icon"><i class="fa fa-money"></i></span>
-                                   <div class="dash-widget-info">
-                                       <h3>{{$items['meeting']??0}}</h3>
-                                       <span>Meeting</span>
-                                   </div>
-                               </div>
-                           </div>
-                           </a>
-                       </div>
-                   </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-6 text-center">
-                            <div class="card shadow">
 
-                                <figure class="highcharts-figure my-2">
-                                    <div id="monthly"></div>
-
-                                </figure>
+            <div class="row" id="total_card">
+                <div class="col-md-4">
+                    <div class="card shadow bg-gradient-info">
+                        <div class="card-body text-white">
+                            <div class="d-flex justify-content-between mb-3">
+                                <div>
+                                    <span class="d-block">Total Income</span>
+                                </div>
+                            </div>
+                            <h3 class="mb-3"><span id="total_income"></span></h3>
+                            <div class="progress mb-2" style="height: 5px;">
+                                <div class="progress-bar bg-white" role="progressbar" style="width: 100%;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         </div>
-                        <div class="col-md-6 text-center">
-                            <div class="card shadow">
-                                <figure class="highcharts-figure my-2">
-                                    <div id="yearly"></div>
-                                </figure>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card shadow bg-gradient-danger">
+                        <div class="card-body text-white">
+                            <div class="d-flex justify-content-between mb-3">
+                                <div>
+                                    <span class="d-block">Total Expense</span>
+                                </div>
+                            </div>
+                            <h3 class="mb-3" id="total_expense"></h3>
+                            <div class="progress mb-2" style="height: 5px;">
+                                <div class="progress-bar bg-white" role="progressbar" style="width: 100%;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card shadow bg-gradient-success">
+                        <div class="card-body text-white">
+                            <div class="d-flex justify-content-between mb-3">
+                                <div>
+                                    <span class="d-block">Profit</span>
+                                </div>
+                            </div>
+                            <h3 class="mb-3" id="total_profit"></h3>
+                            <div class="progress mb-2" style="height: 5px;">
+                                <div class="progress-bar bg-white" role="progressbar" style="width: 100%;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card-group m-b-30">
-                            <div class="card">
-                                <a href="{{route('employees.index')}}">
-                                <div class="card-body">
-                                    <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
-                                    <div class="dash-widget-info">
-                                        <h3>{{$total_emp}}</h3>
-                                        <span>Total Employees</span>
-                                    </div>
-                                </div>
-                                </a>
-                            </div>
-                            <div class="card">
-                                <a href="{{route('customers.index')}}">
-                                <div class="card-body">
-                                    <span class="dash-widget-icon"><i class="la la-users"></i></span>
-                                    <div class="dash-widget-info">
-                                        <h3>{{$items['customer']??0}}</h3>
-                                        <span>Contact</span>
-                                    </div>
-                                </div>
-                                </a>
-                            </div>
-                        <div class="card">
-                            <a href="{{route('transactions.index')}}">
-                                <div class="card-body">
-                                    <span class="dash-widget-icon"><i class="la la-users"></i></span>
-                                    <div class="dash-widget-info">
-                                        <h3>{{$items['transaction']??0}}</h3>
-                                        <span>Trasaction</span>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-
-                        <div class="card">
-                            <a href="{{route('groups.index')}}">
-                                <div class="card-body">
-                                    <span class="dash-widget-icon"><i class="la la-users"></i></span>
-                                    <div class="dash-widget-info">
-                                        <h3>{{$items['my_groups']??0}}</h3>
-                                        <span>Groups</span>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow">
+                    <figure class="highcharts-figure my-2">
+                        <div id="yearly"></div>
+                    </figure>
                 </div>
             </div>
-           @elseif(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Employee'&&\Illuminate\Support\Facades\Auth::guard('employee')->user()->department->name=='Sale Department')
+        </div>
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <a href="{{route('tickets.index')}}">
+                        <div class="card dash-widget shadow">
+                            <div class="card-body">
+                                <span class="dash-widget-icon"><i class="la la-ticket"></i></span>
+                                <div class="dash-widget-info">
+                                    <h3>{{$items['all_ticket']}}</h3>
+                                    <div class="row">
+                                        <span>Tickets</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <a href="{{route('approvals.index')}}">
+                        <div class="card dash-widget shadow">
+                            <div class="card-body">
+                                <span class="dash-widget-icon"><i class="la la-check-circle-o"></i></span>
+                                <div class="dash-widget-info">
+                                    <h3>{{$items['requestation']??0}}</h3>
+                                    <span>Requestation</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <a href="{{url('sale/activity')}}">
+                        <div class="card dash-widget shadow">
+                            <div class="card-body">
+                                <span class="dash-widget-icon"><img
+                                            src="{{url(asset('img/profiles/saleactivity.png'))}}" alt="" width="30"
+                                            height="30"></span>
+                                <div class="dash-widget-info">
+                                    <h3>{{$items['saleactivity']}}</h3>
+                                    <div class="row">
+                                        <span>Sale Activity</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <a href="{{route('meetings.index')}}">
+                        <div class="card dash-widget shadow">
+                            <div class="card-body">
+                                <span class="dash-widget-icon"><i class="la la-calendar"></i></span>
+                                <div class="dash-widget-info">
+                                    <h3>{{$items['meeting']??0}}</h3>
+                                    <span>Meeting</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <a href="{{route('employees.index')}}">
+                        <div class="card dash-widget shadow">
+                            <div class="card-body">
+                                <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
+                                <div class="dash-widget-info">
+                                    <h3>{{$total_emp}}</h3>
+                                    <div class="row">
+                                        <span>Employees</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <a href="{{route('customers.index')}}">
+                        <div class="card dash-widget shadow">
+                            <div class="card-body">
+                                <span class="dash-widget-icon"><i class="la la-users"></i></span>
+                                <div class="dash-widget-info">
+                                    <h3>{{$items['customer']??0}}</h3>
+                                    <span>Contact</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <a href="{{route('transactions.index')}}">
+                        <div class="card dash-widget shadow">
+                            <div class="card-body">
+                                <span class="dash-widget-icon"><i class="la la-retweet"></i></span>
+                                <div class="dash-widget-info">
+                                    <h3>{{$items['transaction']??0}}</h3>
+                                    <div class="row">
+                                        <span>Transactions</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                    <a href="{{route('groups.index')}}">
+                        <div class="card dash-widget shadow">
+                            <div class="card-body">
+                                <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
+                                <div class="dash-widget-info">
+                                    <h3>{{$items['my_groups']??0}}</h3>
+                                    <span>Group</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        @elseif(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Employee'&&\Illuminate\Support\Facades\Auth::guard('employee')->user()->department->name=='Sale Department')
             <div class="row">
                 <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                     <div class="card dash-widget shadow">
@@ -405,7 +463,9 @@
                     <a href="{{url('sale/activity')}}">
                         <div class="card dash-widget shadow">
                             <div class="card-body">
-                                <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
+                                <span class="dash-widget-icon"><img
+                                            src="{{url(asset('img/profiles/saleactivity.png'))}}" alt="" width="30"
+                                            height="30"></span>
                                 <div class="dash-widget-info">
                                     <h3>{{$items['saleactivity']}}</h3>
                                     <div class="row">
@@ -420,7 +480,7 @@
                     <a href="{{route('meetings.index')}}">
                         <div class="card dash-widget shadow">
                             <div class="card-body">
-                                <span class="dash-widget-icon"><i class="la la-money"></i></span>
+                                <span class="dash-widget-icon"><i class="la la-calender"></i></span>
                                 <div class="dash-widget-info">
                                     <h3>{{$items['meeting']}}</h3>
                                     <span>Meeting</span>
@@ -533,21 +593,21 @@
         {{--            <div class="col-md-12">--}}
         {{--                <div class="card-group m-b-30">--}}
         {{--                    <div class="card">--}}
-        {{--                        <div class="card-body">--}}
-        {{--                            <div class="d-flex justify-content-between mb-3">--}}
-        {{--                                <div>--}}
-        {{--                                    <span class="d-block">New Employees</span>--}}
-        {{--                                </div>--}}
-        {{--                                <div>--}}
-        {{--                                    <span class="text-success">+10%</span>--}}
-        {{--                                </div>--}}
-        {{--                            </div>--}}
-        {{--                            <h3 class="mb-3">10</h3>--}}
-        {{--                            <div class="progress mb-2" style="height: 5px;">--}}
-        {{--                                <div class="progress-bar bg-primary" role="progressbar" style="width: 70%;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>--}}
-        {{--                            </div>--}}
-        {{--                            <p class="mb-0">Overall Employees 218</p>--}}
-        {{--                        </div>--}}
+                                {{--<div class="card-body">--}}
+                                    {{--<div class="d-flex justify-content-between mb-3">--}}
+                                        {{--<div>--}}
+                                            {{--<span class="d-block">New Employees</span>--}}
+                                        {{--</div>--}}
+                                        {{--<div>--}}
+                                            {{--<span class="text-success">+10%</span>--}}
+                                        {{--</div>--}}
+                                    {{--</div>--}}
+                                    {{--<h3 class="mb-3">10</h3>--}}
+                                    {{--<div class="progress mb-2" style="height: 5px;">--}}
+                                        {{--<div class="progress-bar bg-primary" role="progressbar" style="width: 70%;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>--}}
+                                    {{--</div>--}}
+                                    {{--<p class="mb-0">Overall Employees 218</p>--}}
+                                {{--</div>--}}
         {{--                    </div>--}}
 
         {{--                    <div class="card">--}}
@@ -1106,97 +1166,13 @@
 
     </div>
     <script>
-
-        var monthly=$("input[name='monthly'] option:checked").val();
-        var chart = Highcharts.chart('monthly', {
-
-            chart: {
-                type: "column"
-            },
-            title: {
-                text: 'Total Revenue'
-            },
-
-            legend: {
-                layout: "vertical",
-                align: 'right',
-                verticalAlign: 'top',
-                x: -40,
-                y: 80,
-                floating: true,
-                borderWidth: 1,
-                backgroundColor:
-                    Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
-                shadow: true
-            },
-
-            xAxis: {
-                categories: [{{$year[0]}}, '{{$year[1]}}', '{{$year[2]}}', '{{$year[3]}}', '{{$year[4]}}'],
-                labels: {
-                    x:3
-                }
-            },
-
-            yAxis: {
-                allowDecimals: false,
-                title: {
-                    text: 'Amount'
-                }
-
-            },
-
-            series: [{
-                name: 'Revenue',
-                data: [
-                    {{$year_revenue[$year[0]]->amount??0}},
-                    {{$year_revenue[$year[1]]->amount??0}},
-                    {{$year_revenue[$year[2]]->amount??0}},
-                    {{$year_revenue[$year[3]]->amount??0}},
-                    {{$year_revenue[$year[4]]->amount??0}}
-                ],
-                crosshair: true
-            },
-            ],
-
-            responsive: {
-                rules: [{
-                    condition: {
-                        maxWidth: 500
-                    },
-                    chartOptions: {
-                        legend: {
-                            align: 'center',
-                            verticalAlign: 'bottom',
-                            layout: 'horizontal'
-                        },
-                        yAxis: {
-                            labels: {
-                                align: 'left',
-                                x: 0,
-                                y: -5
-                            },
-                            title: {
-                                text: null
-                            }
-                        },
-                        subtitle: {
-                            text: null
-                        },
-                        credits: {
-                            enabled: false
-                        }
-                    }
-                }]
-            }
-        });
-
         var chart = Highcharts.chart('yearly', {
 
             chart: {
                 type: ''
             },
             title: {
-                text: 'Yearly Sale and Target'
+                text: 'Income,Expense and Profit'
             },
 
             legend: {
@@ -1221,7 +1197,7 @@
                 useHTML: true
             },
             xAxis: {
-                categories: [{{$year[0]}}, '{{$year[1]}}', '{{$year[2]}}', '{{$year[3]}}', '{{$year[4]}}'],
+                categories: ['Jan','Feb','March','April','May','June','July','Aug','Sep','Oct','Nov','Dec'],
                 labels: {
                     x:-2
                 }
@@ -1239,24 +1215,54 @@
             },
 
             series: [{
-                name: 'Sale Target',
+                name: 'Income',
                 data: [
-                    {{$yearly_target[$year[0]]->target??0}},
-                    {{$yearly_target[$year[1]]->target??0}},
-                    {{$yearly_target[$year[2]]->target??0}},
-                    {{$yearly_target[$year[3]]->target??0}},
-                    {{$yearly_target[$year[4]]->target??0}}
-
+                    {{$monthly_income['Jan']->total??0}},
+                    {{$monthly_income['Feb']->total??0}},
+                    {{$monthly_income['March']->total??0}},
+                    {{$monthly_income['April']->total??0}},
+                    {{$monthly_income['May']->total??0}},
+                    {{$monthly_income['June']->total??0}},
+                    {{$monthly_income['July']->total??0}},
+                    {{$monthly_income['Aug']->total??0}},
+                    {{$monthly_income['Sep']->total??0}},
+                    {{$monthly_income['Oct']->total??0}},
+                    {{$monthly_income['Nov']->total??0}},
+                    {{$monthly_income['Dec']->total??0}},
                 ]
             }, {
-                name: 'Total Sale',
+                name: 'Expense',
                 data: [
-                    {{$yearly[$year[0]]->total??0}},
-                    {{$yearly[$year[1]]->total??0}},
-                    {{$yearly[$year[2]]->total??0}},
-                    {{$yearly[$year[3]]->total??0}},
-                    {{$yearly[$year[4]]->total??0}}
+                    {{$monthly_expense['Jan']->total??0}},
+                    {{$monthly_expense['Feb']->total??0}},
+                    {{$monthly_expense['March']->total??0}},
+                    {{$monthly_expense['April']->total??0}},
+                    {{$monthly_expense['May']->total??0}},
+                    {{$monthly_expense['June']->total??0}},
+                    {{$monthly_expense['July']->total??0}},
+                    {{$monthly_expense['Aug']->total??0}},
+                    {{$monthly_expense['Sep']->total??0}},
+                    {{$monthly_expense['Oct']->total??0}},
+                    {{$monthly_expense['Nov']->total??0}},
+                    {{$monthly_expense['Dec']->total??0}},
 
+
+                ]
+            },{
+                name:'Profit',
+                data:[
+                    {{$profit['Jan']??0}},
+                    {{$profit['Feb']??0}},
+                    {{$profit['March']??0}},
+                    {{$profit['April']??0}},
+                    {{$profit['May']??0}},
+                    {{$profit['June']??0}},
+                    {{$profit['July']??0}},
+                    {{$profit['Aug']??0}},
+                    {{$profit['Sep']??0}},
+                    {{$profit['Oct']??0}},
+                    {{$profit['Nov']??0}},
+                    {{$profit['Dec']??0}},
                 ]
             }
             ],
@@ -1292,8 +1298,35 @@
                 }]
             }
         });
+        $(document).ready(function () {
+            var current_year=$('input[type=radio]:checked').val();
+            if(current_year==1){
+                $('#total_income').text("{{$items['total_income']??0}}");
+                $('#total_expense').text("{{$items['total_expense']??0}}");
+                $('#total_profit').text("{{$items['profit']??0}}");
+            }
+            $('input[type=radio]').on('change', function() {
+                var type=$(this).val();
+                if(type==1){
+                    $('#total_income').text("{{$items['total_income']??0}}");
+                    $('#total_expense').text("{{$items['total_expense']??0}}");
+                    $('#total_profit').text("{{$items['profit']??0}}");
+                }else if (type==2) {
+                    $('#total_income').text("{{$items['first_term_income']??0}}");
+                    $('#total_expense').text("{{$items['first_term_expense']??0}}");
+                    $('#total_profit').text("{{$items['first_term_profit']??0}}");
+                }else if(type==3){
+                    $('#total_income').text("{{$items['second_term_income']??0}}");
+                    $('#total_expense').text("{{$items['second_term_expense']??0}}");
+                    $('#total_profit').text("{{$items['second_term_profit']??0}}");
+                }else{
+                    $('#total_income').text("{{$items['current_month_income']??0}}");
+                    $('#total_expense').text("{{$items['current_month_expense']??0}}");
+                    $('#total_profit').text("{{$items['current_month_profit']??0}}");
+                }
 
-
+            });
+        });
     </script>
 @endsection
 

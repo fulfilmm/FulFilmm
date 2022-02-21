@@ -42,11 +42,10 @@ class HomeController extends Controller
     public function index()
     {
         $id = Auth::id();
-        $current_year = date('Y') + 0;
-        $year = [$current_year - 2,$current_year - 1,$current_year,$current_year + 1, $current_year +2];
-        $yearly=[];
-        $year_revenue=[];
-        $yearly_target=[];
+        $month = ['Jan', 'Feb', 'March', 'April', 'May', 'June', "July", 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        $monthly_expense=[];
+        $monthly_income=[];
+        $profit=[];
       if(Auth::guard('employee')->user()->role->name=='Ticket Admin'){
           $agents=[];
               $allemp=Employee::all();
@@ -78,6 +77,59 @@ class HomeController extends Controller
              $numberOfalltickets=count($this->agent_all_ticket())+$follow_ticket;
              $requestation=Approvalrequest::where('emp_id',Auth::guard('employee')->user()->id)->count();
          }elseif ($user->role->name=='Super Admin'||$user->role->name=='CEO'||$user->role->name=='Manager'){
+             $date=date('Y').'-06-30';
+             $current_year_income = DB::table("revenues")
+                 ->select(DB::raw("SUM(amount) as total"))
+                 ->whereYear('transaction_date', date('Y'))
+                 ->get();
+             $current_year_expense = DB::table("expenses")
+                 ->select(DB::raw("SUM(amount) as total"))
+                 ->whereYear('transaction_date', date('Y'))
+                 ->get();
+             $current_month_income = DB::table("revenues")
+                 ->select(DB::raw("SUM(amount) as total"))
+                 ->whereMonth('transaction_date', date('m'))
+                 ->get();
+             $current_month_expense = DB::table("expenses")
+                 ->select(DB::raw("SUM(amount) as total"))
+                 ->whereMonth('transaction_date', date('m'))
+                 ->get();
+             $first_6month_income = DB::table("revenues")
+                 ->select(DB::raw("SUM(amount) as total"))
+                 ->whereYear('transaction_date', date('Y'))
+                 ->whereDate('transaction_date','<',$date)
+                 ->get();
+             $first_6month_expense = DB::table("expenses")
+                 ->select(DB::raw("SUM(amount) as total"))
+                 ->whereYear('transaction_date', date('Y'))
+                 ->whereDate('transaction_date','<',$date)
+                 ->get();
+             $second_6month_income = DB::table("revenues")
+                 ->select(DB::raw("SUM(amount) as total"))
+                 ->whereYear('transaction_date', date('Y'))
+                 ->whereDate('transaction_date','>',$date)
+                 ->get();
+             $second_6month_expense = DB::table("expenses")
+                 ->select(DB::raw("SUM(amount) as total"))
+                 ->whereYear('transaction_date', date('Y'))
+                 ->whereDate('transaction_date','>',$date)
+                 ->get();
+
+
+             foreach ($month as $key => $value) {
+                 $grand_total = DB::table("revenues")
+                     ->select(DB::raw("SUM(amount) as total"))
+                     ->whereMonth('transaction_date', $key + 1)->whereYear('transaction_date', date('Y'))
+                     ->get();
+                 $monthly_income[$value] = $grand_total[0];
+                 $expense = DB::table("expenses")
+                     ->select(DB::raw("SUM(amount) as total"))
+                     ->whereMonth('transaction_date', $key+1)->whereYear('transaction_date', date('Y'))
+                     ->get();
+                 $monthly_expense[$value] = $expense[0]??0;
+                 $profit[$value]=($grand_total[0]->total??0) - ($expense[0]->total??0);
+
+             }
              $sale_activity=SaleActivity::where('report_to',Auth::guard('employee')->user()->id)->count();
              $numberOfalltickets=ticket::all()->count();
              $group=Group::count();
@@ -85,24 +137,6 @@ class HomeController extends Controller
              $requestation=Approvalrequest::where('approved_id',Auth::guard('employee')->user()->id)
                  ->orWhere('secondary_approved',Auth::guard('employee')->user()->id)
                  ->count();
-             foreach ($year as $key => $value) {
-                 $grand_total = DB::table("invoices")
-                     ->select(DB::raw("SUM(grand_total) as total"))
-                     ->whereYear('invoice_date', $value)
-                     ->get();
-                 $yearly[$value] = $grand_total[0];
-                 $revenue = DB::table("revenues")
-                     ->select(DB::raw("SUM(amount) as amount"))
-                     ->whereYear('transaction_date',$value)
-                     ->get();
-//            dd($revenue);
-                 $year_revenue[$value]=$revenue[0];
-                 $yearly_sale_target = DB::table("sale_targets")
-                     ->select(DB::raw("SUM(target_sale) as target"))
-                     ->where('year',$value)
-                     ->get();
-                 $yearly_target[$value]=$yearly_sale_target[0];
-             }
          }else{
              $requestation=Approvalrequest::where('emp_id',Auth::guard('employee')->user()->id)->count();
              $sale_activity=SaleActivity::where('emp_id',Auth::guard('employee')->user()->id)->count();
@@ -123,10 +157,22 @@ class HomeController extends Controller
               'meeting'=>$meeting,
               'my_groups' =>$group,
               'all_ticket'=>$numberOfalltickets,
-              'transaction'=>$transaction??0
+              'transaction'=>$transaction??0,
+              'total_income'=>$current_year_income[0]->total,
+              'total_expense'=>$current_year_expense[0]->total,
+              'first_term_income'=>$first_6month_income[0]->total,
+              'first_term_expense'=>$first_6month_expense[0]->total,
+              'first_term_profit'=>($first_6month_income[0]->total)-($first_6month_expense[0]->total),
+              'second_term_income'=>$second_6month_income[0]->total,
+              'second_term_expense'=>$second_6month_expense[0]->total,
+              'second_term_profit'=>($second_6month_income[0]->total)-($second_6month_expense[0]->total),
+              'current_month_income'=>$current_month_income[0]->total,
+              'current_month_expense'=>$current_month_expense[0]->total,
+              'current_month_profit'=>($current_month_income[0]->total)-($current_month_expense[0]->total),
+              'profit'=>$current_year_income[0]->total-$current_year_expense[0]->total
           ];
-//dd($items);
-          return view('index', compact('items','total_emp','year','yearly','year_revenue','yearly_target'));
+//dd($monthly_expense,$monthly_income,$profit);
+          return view('index', compact('items','total_emp','monthly_income','monthly_expense','profit'));
       }
     }
     public function agent_all_ticket(){
