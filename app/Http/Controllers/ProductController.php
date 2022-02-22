@@ -41,7 +41,8 @@ class ProductController extends Controller
     public function index()
     {
         $products=product::with('taxes','category','sub_cat','brand')->paginate(10);
-        return view("product.index",compact("products"));
+        $variants=ProductVariations::with('supplier')->get();
+        return view("product.index",compact("products",'variants'));
     }
 
     /**
@@ -190,7 +191,7 @@ class ProductController extends Controller
     public function show($id)
     {
         $product=product::with("category",'sub_cat')->where("id",$id)->firstOrFail();
-        $variantions=ProductVariations::where('product_id',$product->id)->get();
+        $variantions=ProductVariations::with('supplier')->where('product_id',$product->id)->get();
         $supplier=Customer::where('customer_type','Supplier')->get();
 //        dd($variantions);
         return view("product.show",compact("product",'variantions','supplier'));

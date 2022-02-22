@@ -478,7 +478,8 @@ class TicketController extends Controller
             $all_ticket = 1;
         }
         $all_percentage['New'] = round($ticket['New'] / $all_ticket * 100, 2);
-        $all_percentage['Open'] = round(($ticket['Open'] + $ticket['In Progress'] )/ $all_ticket * 100, 2);
+        $all_percentage['Open'] = round($ticket['Open']/ $all_ticket * 100, 2);
+        $all_percentage['In-progress']=round($ticket['In Progress']/ $all_ticket * 100, 2);
         $all_percentage['Solve'] = round(($ticket['Complete'] + $ticket['Close']) / $all_ticket * 100, 2);
         $all_percentage['Pending'] = round($ticket['Pending'] / $all_ticket * 100, 2);
         $all_percentage['Overdue'] = round($ticket['Overdue'] / $all_ticket * 100, 2);
@@ -526,7 +527,7 @@ class TicketController extends Controller
         $company = MainCompany::where('ismaincompany', 1)->first();
         $details = [
 
-            'subject' => $company->name."Ticket notification.",
+            'subject' => $company->name??''."Ticket notification.",
             'type' => $type,
             'name' => $name,
             'id' => $id,

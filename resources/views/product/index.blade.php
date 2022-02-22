@@ -11,7 +11,7 @@
                 <div class="col-sm-12">
                     <h3 class="page-title">Product</h3>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
                         <li class="breadcrumb-item active">Product</li>
                     </ul>
                 </div>
@@ -71,7 +71,8 @@
                         {{--@dd($products)--}}
                         @foreach($products as $product)
                             <tr>
-                                <td><a href="{{route("products.show",$product->id)}}">
+                                <td><button id="collapse{{$product->id}}" class="btn btn-purple btn-sm rounded-circle" type="button" data-toggle="collapse" data-target="#variant{{$product->id}}" style="font-size: 10px;" ><i class="fa fa-plus" id="{{$product->id}}"></i></button>
+                                    <a href="{{route("products.show",$product->id)}}">
                                         <span class="ml-3">{{$product->name}}</span></a></td>
                                 <td>{{$product->category->name??''}}</td>
                                 <td>
@@ -113,6 +114,43 @@
                                     </div>
                                 </td>
                             </tr>
+                            <tr id="variant{{$product->id}}" class="collapse multi-collapse">
+                                <td colspan="5">
+                                    <div>
+                                        <div class="col-12">
+                                            <span class="my-2">{{$product->name}}'s Variants</span>
+                                            <hr>
+                                            <div class="row mb-2">
+                                                <div class="col-md-2"><strong>Product Code</strong></div>
+                                                    <div class="col-md-2"><strong>Variant</strong></div>
+                                                    <div class="col-md-2"><strong>Supplier</strong></div>
+                                                    <div class="col-md-2"><strong>Disable/Enable</strong></div>
+                                                    <div class="col-md-2"><strong>Valuation</strong></div>
+                                                    <div class="col-md-2"><strong>Action</strong></div>
+                                            </div>
+                                                <hr>
+                                           @foreach($variants as $item)
+                                                @if($item->product_id==$product->id)
+                                                    <div class="row">
+                                                        <div class="col-md-2">{{$item->product_code}}</div>
+                                                        <div class="col-md-2">{{$item->variant}}</div>
+                                                        <div class="col-md-2">{{$item->supplier->name??'N/A'}}</div>
+                                                        <div class="col-md-2">{{$item->enable==0?'Disable':'Enable'}}</div>
+                                                        <div class="col-md-2">{{$item->purchase_price??''}}</div>
+                                                        <div class="col-md-2"><a href="{{route('show.variant',$item->id)}}" class="btn btn-white btn-sm"><i class="la la-eye"></i></a></div>
+                                                    </div>
+                                                    @endif
+                                               @endforeach
+                                        </div>
+                                    </div>
+                                </td>
+
+                            </tr>
+                            <script>
+                                $("#collapse{{$product->id}}").click(function () {
+                                    $("#{{$product->id}}").toggleClass("fa-minus");
+                                });
+                            </script>
                         @endforeach
 
                         </tbody>

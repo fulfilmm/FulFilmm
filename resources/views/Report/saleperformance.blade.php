@@ -123,23 +123,23 @@
                         data: [
                             {
                                 name: "New Appointment",
-                                y:{{$data['appointment']}}
+                                y:'{{$data['appointment']}}'
 
                             },
                             {
                                 name: "Meeting",
-                                y: {{$data['meeting']}},
+                                y:'{{$data['meeting']}}',
 
                             },
 
                             {
                                 name: "Proposal",
-                                y: {{$data['proposal']}},
+                                y:'{{$data['proposal']}}',
 
                             },
                             {
                                 name: "Deal Win",
-                                y: {{$data['deal']}},
+                                y:'{{$data['deal']}}',
                             },
 
 
@@ -270,22 +270,22 @@
                     colorByPoint: true,
                     data: [{
                         name: 'New',
-                        y: {{$salepipeline['New']}},
+                        y:'{{$salepipeline['New']}}',
                     }, {
                         name: 'Qualified',
-                        y: {{$salepipeline['Qualified']}}
+                        y: '{{$salepipeline['Qualified']}}'
                     }, {
                         name: 'Quotation',
-                        y: {{$salepipeline['Quotation']}}
+                        y: '{{$salepipeline['Quotation']}}'
                     }, {
                         name: 'Invoicing',
-                        y: {{$salepipeline['Invoicing']}}
+                        y: '{{$salepipeline['Invoicing']}}'
                     }, {
                         name: 'Win',
-                        y: {{$salepipeline['Win']}}
+                        y: '{{$salepipeline['Win']}}'
                     }, {
                         name: 'Lost',
-                        y: {{$salepipeline['Lost']}}
+                        y: '{{$salepipeline['Lost']}}'
                     }
                     ]
                 }]
@@ -326,11 +326,11 @@
                     colorByPoint: true,
                     data: [{
                         name: 'Qualified',
-                        y: {{$data['qualified']}},
+                        y: '{{$data['qualified']}}',
 
                     }, {
                         name: 'Leads',
-                        y:{{$data['unqualified']}}
+                        y:'{{$data['unqualified']}}'
                     },
                     ]
                 }]

@@ -262,7 +262,8 @@ class RFQController extends Controller
             $data = Session::get($session_key) ?? [];
             $rfq_data = Session::get('rfqformdata-' . Auth::guard('employee')->user()->id);
             $pr = PurchaseRequest::all()->pluck('pr_id', 'id')->all();
-            return view('Purchase.RFQs.create', compact('grand_total', 'product', 'items', 'creation_id', 'suppliers', 'data', 'rfq_data', 'pr'));
+            $emps=Employee::all()->pluck('name','id')->all();
+            return view('Purchase.RFQs.create', compact('grand_total', 'product', 'items', 'creation_id', 'suppliers', 'data', 'rfq_data', 'pr','emps'));
         } else {
             return redirect()->back()->with('error', 'This purchase request does not already approve!');
         }

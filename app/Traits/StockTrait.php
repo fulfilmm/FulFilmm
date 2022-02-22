@@ -19,7 +19,7 @@ trait StockTrait
         $stockin->qty=$request['qty'];
         $stockin->save();
        if($request['valuation']!=null){
-           $main_product->purchase_price=$request['valuation'];
+           $main_product->purchase_price=$request['valuation']??0;
            $main_product->update();
        }
         $stock=Stock::where('variant_id',$request['variantion_id'])->where('warehouse_id',$request['warehouse_id'])->first();
