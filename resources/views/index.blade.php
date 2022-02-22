@@ -1167,7 +1167,7 @@
         {{--        </div>--}}
 
     </div>
-   @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='SuperAdmin'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='CEO')
+   @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Super Admin'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='CEO')
        <script>
            var chart = Highcharts.chart('yearly', {
 

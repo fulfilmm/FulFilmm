@@ -45,7 +45,6 @@ class HomeController extends Controller
         $month = ['Jan', 'Feb', 'March', 'April', 'May', 'June', "July", 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         $monthly_expense=[];
         $monthly_income=[];
-        $current_year_expense=[];
         $profit=[];
       if(Auth::guard('employee')->user()->role->name=='Ticket Admin'){
           $agents=[];
@@ -138,28 +137,6 @@ class HomeController extends Controller
              $requestation=Approvalrequest::where('approved_id',Auth::guard('employee')->user()->id)
                  ->orWhere('secondary_approved',Auth::guard('employee')->user()->id)
                  ->count();
-             $items = [
-                 'saleactivity'=>$sale_activity,
-                 'requestation'=>$requestation,
-                 'customer'=>$contact,
-                 'assignment'=>$assignment,
-                 'meeting'=>$meeting,
-                 'my_groups' =>$group,
-                 'all_ticket'=>$numberOfalltickets,
-                 'transaction'=>$transaction??0,
-                 'total_income'=>$current_year_income[0]->total??0,
-                 'total_expense'=>$current_year_expense[0]->total??0,
-                 'first_term_income'=>$first_6month_income[0]->total??0,
-                 'first_term_expense'=>$first_6month_expense[0]->total??0,
-                 'first_term_profit'=>($first_6month_income[0]->total??0)-($first_6month_expense[0]->total??0),
-                 'second_term_income'=>$second_6month_income[0]->total??0,
-                 'second_term_expense'=>$second_6month_expense[0]->total??0,
-                 'second_term_profit'=>($second_6month_income[0]->total??0)-($second_6month_expense[0]->total??0),
-                 'current_month_income'=>$current_month_income[0]->total??0,
-                 'current_month_expense'=>$current_month_expense[0]->total??0,
-                 'current_month_profit'=>($current_month_income[0]->total??0)-($current_month_expense[0]->total??0),
-                 'profit'=>$current_year_income[0]->total??0-$current_year_expense[0]->total??0
-             ];
          }else{
              $requestation=Approvalrequest::where('emp_id',Auth::guard('employee')->user()->id)->count();
              $sale_activity=SaleActivity::where('emp_id',Auth::guard('employee')->user()->id)->count();
@@ -169,20 +146,31 @@ class HomeController extends Controller
              $group=Group::whereHas('employees', function ($query) use ($id) {
                  $query->where('employee_id', $id);
              })->count();
-             $items = [
-                 'saleactivity'=>$sale_activity,
-                 'requestation'=>$requestation,
-                 'customer'=>$contact,
-                 'assignment'=>$assignment,
-                 'meeting'=>$meeting,
-                 'my_groups' =>$group,
-                 'all_ticket'=>$numberOfalltickets,
-                 'transaction'=>$transaction??0,
-             ];
          }
 
-
             $total_emp=Employee::count();
+          $items = [
+              'saleactivity'=>$sale_activity,
+              'requestation'=>$requestation,
+              'customer'=>$contact,
+              'assignment'=>$assignment,
+              'meeting'=>$meeting,
+              'my_groups' =>$group,
+              'all_ticket'=>$numberOfalltickets,
+              'transaction'=>$transaction??0,
+              'total_income'=>$current_year_income[0]->total??0,
+              'total_expense'=>$current_year_expense[0]->total??0,
+              'first_term_income'=>$first_6month_income[0]->total??0,
+              'first_term_expense'=>$first_6month_expense[0]->total??0,
+              'first_term_profit'=>($first_6month_income[0]->total??0)-($first_6month_expense[0]->total??0),
+              'second_term_income'=>$second_6month_income[0]->total??0,
+              'second_term_expense'=>$second_6month_expense[0]->total??0,
+              'second_term_profit'=>($second_6month_income[0]->total??0)-($second_6month_expense[0]->total??0),
+              'current_month_income'=>$current_month_income[0]->total??0,
+              'current_month_expense'=>$current_month_expense[0]->total??0,
+              'current_month_profit'=>($current_month_income[0]->total??0)-($current_month_expense[0]->total??0),
+              'profit'=>$current_year_income[0]->total-$current_year_expense[0]->total??0
+          ];
 //dd($monthly_expense,$monthly_income,$profit);
           return view('index', compact('items','total_emp','monthly_income','monthly_expense','profit'));
       }
