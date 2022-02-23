@@ -331,6 +331,15 @@
                             <div class="row">
                                 <input type="hidden" name="type" value="Expense">
                                 <input type="hidden" name="bill_id" value="{{$bill->id}}">
+                               <div class="col-md-6">
+                                   <div class="form-group">
+                                       <label for="">Title</label>
+                                       <input type="text" class="form-control" name="title" placeholder="Enter Title">
+                                       @error('title')
+                                       <span class="text-danger">{{$message}}</span>
+                                       @enderror
+                                   </div>
+                               </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="date">Date</label>
@@ -397,14 +406,6 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="revenue_description">Description</label>
-                                        <textarea name="description" id="desc" cols="30" rows="5" class="form-control">
-                                   {!! $exp_claim->description??'' !!}
-                                </textarea>
-                                    </div>
-                                </div>
                                 <div class="col-md-6" id="cat_div">
                                     <div class="form-group">
                                         <label for="category">Category</label>
@@ -426,6 +427,15 @@
                                         @enderror
                                     </div>
                                 </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="revenue_description">Description</label>
+                                        <textarea name="description" id="desc" cols="30" rows="5" class="form-control">
+                                   {!! $exp_claim->description??'' !!}
+                                </textarea>
+                                    </div>
+                                </div>
+
                                 <div class="col-md-6">
                                     <label for="recurring">Recurring</label>
                                     <div class="input-group">
@@ -471,7 +481,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group"><label for="reference">Reference</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">

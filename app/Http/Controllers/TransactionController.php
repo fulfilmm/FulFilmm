@@ -79,7 +79,7 @@ class TransactionController extends Controller
      */
     public function expense_store(Request $request)
     {
-//        dd($request->all());
+
         $this->validate($request, [
             'title'=>'required',
             'transaction_date' => 'required',
@@ -88,7 +88,7 @@ class TransactionController extends Controller
             'category' => 'required',
             'payment_method' => 'required',
             'approver_id'=>'required',
-            'attachment' => 'mimes:pdf,xlsx,doc,docx,jpg,jpeg,ppt,bip|max:2048',
+            'attachment' => 'mimes:pdf,xlsx,doc,docx,jpg,jpeg,ppt,bip,|max:2048',
         ]);
         $new_expense = new Expense();
         $new_expense->title=$request->title;
