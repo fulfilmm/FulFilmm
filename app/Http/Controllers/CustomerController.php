@@ -352,6 +352,33 @@ class CustomerController extends Controller
         }
 
         $this->customerContract->updateById($id, $data);
+        if($request->customer_type=='Lead') {
+            $customer = Customer::orderBy('id', 'desc')->first();
+            $last_deal = deal::orderBy('id', 'desc')->first();
+
+            if ($last_deal != null) {
+                // Sum 1 + last id
+                $last_deal->deal_id++;
+                $deal_id = $last_deal->deal_id;
+            } else {
+                $deal_id = 'Deal' . "-0001";
+            }
+            $deal = new deal();
+            $deal->deal_id = $deal_id;
+            $deal->amount = 0;
+            $deal->unit = "MMK";
+            $deal->org_name = $request->company_id;
+            $deal->contact = $customer->id;
+            $deal->sale_stage = $request->status;
+            $deal->lead_title = $request->title;
+            $deal->created_id = Auth::guard('employee')->user()->id;
+            $deal->save();
+            $deal_record = new SalePipelineRecord();
+            $deal_record->state = $request->status;
+            $deal_record->deal_id = $deal->id;
+            $deal_record->emp_id = Auth::guard('employee')->user()->id;
+            $deal_record->save();
+        }
         return redirect()->route('customers.index')->with('success', __('alerts.update_success'));
 
     }

@@ -11,6 +11,7 @@ use App\Models\Employee;
 use App\Models\Freeofchare;
 use App\Models\Group;
 use App\Models\MainCompany;
+use App\Models\OfficeBranch;
 use App\Models\Order;
 use App\Models\order_assign;
 use App\Models\order_comments;
@@ -259,7 +260,8 @@ class SaleOrderController extends Controller
 
     public function generate_invoice($id)
     {
-        $warehouse=Warehouse::all();
+        $Auth=Auth::guard('employee')->user();
+        $warehouse = OfficeBranch::with('warehouse')->where('id', $Auth->office_branch_id)->get();
         $order_data = Order::where('id', $id)->first();
         if ($order_data->status=='Confirm'){
             $ordered_items = OrderItem::where('order_id', $id)->get();

@@ -390,7 +390,7 @@
             var tax_include = parseFloat(total) + tax_amount;
             var discount = $('#discount').val();
             var add_cost=$('#add_cost').val();
-            var grand = (tax_include - discount) + add_cost ;
+            var grand = (tax_include - discount) + parseFloat(add_cost) ;
             $('#grand_total').val(parseFloat(grand));
             $('#tax_amount').val(tax_amount);
         });
