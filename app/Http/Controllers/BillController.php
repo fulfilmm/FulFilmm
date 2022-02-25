@@ -8,9 +8,12 @@ use App\Models\BillItem;
 use App\Models\Customer;
 use App\Models\DeliveryOrder;
 use App\Models\Employee;
+use App\Models\Expense;
 use App\Models\MainCompany;
 use App\Models\PurchaseOrder;
+use App\Models\Transaction;
 use App\Models\TransactionCategory;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -136,6 +139,32 @@ class BillController extends Controller
         $bill=Bill::with('supplier','employee')->where('id',$id)->firstOrFail();
         $bill_item=BillItem::with('purchaseorder','delivery')->where('bill_id',$bill->id)->get();
         $company=MainCompany::where('ismaincompany',true)->first();
+        $expense=Expense::all();
+        $transaction=[];
+        foreach ($expense as $tran){
+            $revenue_transaction=Transaction::with('revenue')->where('revenue_id',$tran->id)->first();
+            if($expense!=null){
+                array_push($transaction,$revenue_transaction);
+            }
+
+        }
+        if($bill->grand_total > $bill->due_amount && $bill->due_amount!=0){
+
+            $bill->status='Partial';
+            $bill->update();
+        }elseif($bill->due_amount!=0 && Carbon::now()>$bill->due_date && $bill->created_at!=$bill->due_date){
+            $bill->status='Overdue';
+            $bill->update();
+        }elseif($bill->due_amount==0){
+
+            $bill->status='Paid';
+            $bill->update();
+        }else{
+
+            $bill->status='Draft';
+            $bill->update();
+        }
+
         return view('transaction.Bill.show',compact('bill','bill_item','company','data'));
     }
 

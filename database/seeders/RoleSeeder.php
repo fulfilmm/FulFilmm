@@ -7,7 +7,26 @@ use Spatie\Permission\Models\Role;
 
 class RoleSeeder extends Seeder
 {
-    protected $roles = ['Super Admin','Ticket Admin','Agent', 'CEO', 'Manager', 'Sales', 'Employee'];
+    protected $roles = [
+        'Super Admin',
+        'Admin Manager',
+        'CEO',
+        'General Manager',
+        'Sale Manager',
+        'Stock Manager',
+        'Finance Manager',
+        'Hr Manager',
+        'Customer Service Manager',
+        'Agent',
+        'Sale',
+        'Employee',
+        'Accountant',
+        'Cashier',
+        'Car Admin',
+        'Car Driver',
+        'Purchaser'
+
+    ];
     /**
      * Run the database seeds.
      *

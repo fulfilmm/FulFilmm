@@ -1,3 +1,8 @@
+<style>
+    #emp_filter{
+        display: none;
+    }
+</style>
 <div class="card shadow">
     {{--  --}}
     <div class="card-header">
@@ -71,4 +76,9 @@
     </div>
 
 </div>
+<script>
+    $(document).ready(function () {
+       $('#emp').DataTable();
+    });
+</script>
 

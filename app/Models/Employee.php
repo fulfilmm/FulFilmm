@@ -24,7 +24,7 @@ class Employee extends Authenticatable implements JWTSubject
 
     protected $fillable = [
         'name', 'department_id', 'role_id', 'phone', 'email',
-        'work_phone', 'can_login','can_post_assignments', 'password', 'join_date','office_branch_id'
+        'work_phone', 'can_login','can_post_assignments', 'password', 'join_date','office_branch_id','empid'
     ];
 
     public function getJWTIdentifier()
@@ -54,6 +54,9 @@ class Employee extends Authenticatable implements JWTSubject
     public function department()
     {
         return $this->belongsTo(Department::class, 'department_id');
+    }
+    public function branch(){
+        return $this->belongsTo(OfficeBranch::class,'office_branch_id','id');
     }
 
 //    public function assignments()

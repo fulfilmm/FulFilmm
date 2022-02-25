@@ -12,11 +12,12 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 class EmployeeExport implements FromCollection, WithHeadings, WithMapping
 {
     public $data = [];
-    public $exceptKeys = ['department_id'];
 
     public function __construct($start_date,$end_date)
     {
-        $this->data = Employee::whereBetween('created_at',[$start_date,$end_date])->get();
+        $this->data = Employee::with('reportperson','branch')
+            ->whereBetween('created_at',[$start_date,$end_date])->get();
+
     }
 
     public function collection()
@@ -25,15 +26,25 @@ class EmployeeExport implements FromCollection, WithHeadings, WithMapping
     }
     public function map($employee): array
     {
-        $employee_array = collect($employee)->except($this->exceptKeys)->toArray();
-        $employee_array['department'] = $employee->department->name;
-        return $employee_array;
+        return [
+            $employee->empid,
+            $employee->name,
+            $employee->phone,
+            $employee->email,
+            $employee->work_phone,
+            $employee->join_date,
+            $employee->reportperson->name??'N/A',
+            $employee->department->name,
+            $employee->role->name??'N/A',
+            $employee->branch->name??'N/A',
+            $employee->created_at
+
+        ];
     }
 
     public function headings(): array
     {
-        $keys =  collect($this->data->first())->except($this->exceptKeys)->keys()->toArray();
-        array_push($keys, 'department');
-        return $keys;
+        $head=['Empid','Name','Phone','Email','Work Phone','Join Date','Report Person','Department','Role','Office Branch','Created Date'];
+        return $head;
     }
 }

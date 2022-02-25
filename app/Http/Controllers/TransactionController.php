@@ -119,7 +119,7 @@ class TransactionController extends Controller
             $bill = Bill::where('id', $request->bill_id)->first();
             $bill->due_amount = $bill->due_amount - $request->amount;
             $bill->update();
-            return redirect(route('bills.show', $request->bill_id))->with('success', 'Add New Revenue Successful');
+            return redirect(route('bills.show', $request->bill_id))->with('success', 'Add New Expense Successful');
         } else {
             return redirect(route('transactions.show', $last_tran->id))->with('success', 'Add New Expense Successful');
         }

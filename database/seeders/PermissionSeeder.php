@@ -117,10 +117,12 @@ class PermissionSeeder extends Seeder
         Permission::create(['name'=>'rfq.prepare','display_name'=>'Purchase Request to RFQs','type'=>'rfqs','guard_name'=>'employee']);
 
         //Bills
+        Permission::create(['name'=>'supplierbills.create','display_name'=>'Bill create from customer view','type'=>'bills','guard_name'=>'employee']);
         Permission::create(['name'=>'supplierbills','display_name'=>'Bill create from customer view','type'=>'bills','guard_name'=>'employee']);
         Permission::create(['name'=>'billitems.store','display_name'=>'Add bill item','type'=>'bills','guard_name'=>'employee']);
         Permission::create(['name'=>'billitems.update','display_name'=>'Update bill item','type'=>'bills','guard_name'=>'employee']);
         Permission::create(['name'=>'po.bill','display_name'=>'Bill direct create form PO','type'=>'bills','guard_name'=>'employee']);
+        Permission::create(['name'=>'delivery.bill','display_name'=>'Bill direct create form delivery','type'=>'bills','guard_name'=>'employee']);
         Permission::create(['name'=>'delivery.bill','display_name'=>'Bill direct create form delivery','type'=>'bills','guard_name'=>'employee']);
         //Purchase Orders
         Permission::create(['name'=>'purchase.orders','display_name'=>'Po direct create from RFQ','type'=>'purchaseorders','guard_name'=>'employee']);

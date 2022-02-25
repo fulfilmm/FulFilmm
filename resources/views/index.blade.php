@@ -22,9 +22,10 @@
                     </ul>
                 </div>
                 @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Super Admin'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='CEO')
+
                     <div class="col-12">
                         <div class="float-right">
-                            <ul class="nav nav-tabs nav-tabs-solid rounded">
+                            <ul class="nav nav-tabs nav-tabs-solid  justify-content-center">
                                 <li class="nav-item"><a class="nav-link active rounded-pill shadow-sm"  onclick="report_type(4)" href="" data-toggle="tab">Current Month</a></li>
                                 <li class="nav-item"><a class="nav-link rounded-pill shadow-sm" href="" onclick="report_type(2)" data-toggle="tab">1st Half Year</a></li>
                                 <li class="nav-item"><a class="nav-link rounded-pill shadow-sm" href="" onclick="report_type(3)" data-toggle="tab">2nd Half Year</a></li>
@@ -46,73 +47,23 @@
 
         </div>
         <!-- /Page Header -->
-        @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Ticket Admin')
+        @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Customer Service Manager')
            @include('Dashboard.ticket_admin')
         @elseif(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='CEO'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Super Admin')
             @include('Dashboard.ceo_admin')
-        @elseif(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Sale')
-        @include('Dashboard.sale')
+            @elseif(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Agent')
+            @include('Dashboard.cs_agent')
+            @elseif(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Sale'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Sale Manager')
+        @include('Dashboard.salemanagerandsale')
+            @elseif(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Stock Manager')
+            @include('Dashboard.stockmanager')
+            @elseif(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Accountant'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Cashier')
+            @include('Dashboard.accountantandcashier')
+            @elseif(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Finance Manager')
+            @include("Dashboard.financemanager")
+
         @else
-            <div class="row">
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                    <a href="{{route('approvals.index')}}">
-                        <div class="card dash-widget shadow">
-                            <div class="card-body">
-                                <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
-                                <div class="dash-widget-info">
-                                    <h3>{{$items['requestation']}}</h3>
-                                    <div class="row">
-                                        <span>Requestation</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                    <a href="{{route('tickets.index')}}">
-                        <div class="card dash-widget shadow">
-                            <div class="card-body">
-                                <span class="dash-widget-icon"><i class="fa fa-ticket"></i></span>
-                                <div class="dash-widget-info">
-                                    <h3>{{$items['all_ticket']}}</h3>
-                                    @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='CEO'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Super Admin')
-                                        <span>Total Tickets</span>
-                                    @else
-                                        <span>My Tickets</span>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                    <a href="{{route('meetings.index')}}">
-                        <div class="card dash-widget shadow">
-                            <div class="card-body">
-                                <span class="dash-widget-icon"><i class="fa fa-money"></i></span>
-                                <div class="dash-widget-info">
-                                    <h3>{{$items['assignment']??0}}</h3>
-                                    <span>Assigment</span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                    <a href="{{route('meetings.index')}}">
-                        <div class="card dash-widget shadow">
-                            <div class="card-body">
-                                <span class="dash-widget-icon"><i class="fa fa-money"></i></span>
-                                <div class="dash-widget-info">
-                                    <h3>{{$items['meeting']??0}}</h3>
-                                    <span>Meeting</span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
+            @include('Dashboard.normalemp_dashboard')
         @endif
 
     </div>

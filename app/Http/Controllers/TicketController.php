@@ -20,6 +20,7 @@ use App\Models\ticket_comments;
 use App\Models\ticket_follower;
 use App\Models\ticket_sender;
 use App\Models\ticketrequest;
+use App\Traits\NotifyTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,6 +29,7 @@ use Illuminate\Validation\ValidationException;
 
 class TicketController extends Controller
 {
+    use NotifyTrait;
     protected $status_color = ['New' => '#49d1b6', 'Open' => '#f2b611', 'Close' => '#4e5450', 'Pending' => '#145402', 'In Progress' => '#2333e8', 'Complete' => '#18b820', 'Overdue' => '#f02416'];
 
 //query select
@@ -178,7 +180,7 @@ class TicketController extends Controller
         if ($request->hasfile('files')) {
             foreach ($request->file('files') as $image) {
                 $name = $image->getClientOriginalName();
-                $image->move(public_path() . '/ticket_picture/', $name,);
+                $image->move(public_path() . '/ticket_picture/', $name);
                 $data[] = $name;
             }
             $ticket->photo = json_encode($data);
@@ -199,7 +201,7 @@ class TicketController extends Controller
 
         //assign_ticket
         if ($request->assignType != 'item0') {
-            $this->assign_ticket($request->assign_id, $ticket->id, $request->assignType);
+            $this->assign_ticket($request->assign_id, $ticket->id, $request->assignType,$request->ticket_id);
         }
 
         //add follower
@@ -338,11 +340,11 @@ class TicketController extends Controller
 
     public function assignee(Request $request)
     {
-        $this->assign_ticket($request->assign_id, $request->ticket_id, $request->assignType);
+        $this->assign_ticket($request->assign_id, $request->id, $request->assignType,$request->ticket_id);
         return redirect()->back()->with('success', 'Success assign ticket');
     }
 
-    public function assign_ticket($assigned_id, $ticket_id, $type)
+    public function assign_ticket($assigned_id, $id, $type,$ticket_id)
     {
         $is_assign= assign_ticket::where("ticket_id", $ticket_id)->first();
 
@@ -350,29 +352,38 @@ class TicketController extends Controller
            $assign_ticket = new assign_ticket();
            if ($type == "agent") {
                $assign_ticket->agent_id = $assigned_id;
-               $assign_ticket->ticket_id = $ticket_id;
+               $assign_ticket->ticket_id = $id;
+               $this->addnotify($assigned_id,'agent',' Assigned to you '.$ticket_id.".",'tickets/'.$id,Auth::guard('employee')->user()->id);
 
            } elseif ($type == 'dept') {
+               $employees=Employee::with('department')->select('id','department_id')->where('department_id',$assigned_id)->get();
                $assign_ticket->dept_id = $assigned_id;
-               $assign_ticket->ticket_id = $ticket_id;
+               $assign_ticket->ticket_id = $id;
+               foreach ($employees as $emp){
+                   $this->addnotify($emp->id,'dept',' Assigned to your '.$emp->department->name .$ticket_id .'.','tickets/'.$id,Auth::guard('employee')->user()->id);
+               }
 
            } elseif ($type == 'group') {
+               $group_members=Group::with('employees')->where('id',$id)->first();
                $assign_ticket->group_id = $assigned_id;
-               $assign_ticket->ticket_id = $ticket_id;
+               $assign_ticket->ticket_id = $id;
+               foreach ($group_members->employees as $emp){
+                   $this->addnotify($emp->id,'dept',' Assigned to your '.$group_members->name .$ticket_id .'.','tickets/'.$id,Auth::guard('employee')->user()->id);
+               }
            }
            $assign_ticket->type_of_assign = $type;
            $assign_ticket->save();
 
            if ($type == 'agent') {
                $emp = Employee::where('id', $assigned_id)->first();
-               $this->mailnoti($emp->email,$emp->name, 'You are Aassigned', $assign_ticket->ticket->ticket_id, $ticket_id);
+               $this->mailnoti($emp->email,$emp->name, 'You are Aassigned', $assign_ticket->ticket->ticket_id, $id);
            } elseif ($type == 'dept') {
                $employee = Employee::where('department_id', $assigned_id)->get();
                $email = [];
                foreach ($employee as $emp) {
                    array_push($email, $emp->email);
                }
-               $this->mailnoti($email, 'Employee of ' . $employee[0]->department->name, 'Your department are Aassigned ', $assign_ticket->ticket->ticket_id, $ticket_id);
+               $this->mailnoti($email, 'Employee of ' . $employee[0]->department->name, 'Your department are Aassigned ', $assign_ticket->ticket->ticket_id, $id);
            }
 
            $ticket_status = ticket::where('id', $ticket_id)->first();
@@ -409,12 +420,14 @@ class TicketController extends Controller
         $assign_ticket->update();
         if($request->assignType=='agent'){
             $emp = Employee::where('id', $request->assign_id)->first();
+            $this->addnotify($emp->id,'dept',' Assigned to your '.$emp->department->name .$assign_ticket->ticket->ticket_id .'.','tickets/'.$assign_ticket->ticket->id,Auth::guard('employee')->user()->id);
             $this->mailnoti($emp->email,$emp->name, 'You are reaassigned', $assign_ticket->ticket->ticket_id,$assign_ticket->ticket->id);
         }elseif($request->assignType=='dept'){
             $employee=Employee::with('department')->where('department_id',$request->assign_id)->get();
            $email=[];
             foreach ($employee as $emp){
                 array_push($email,$emp->email);
+                $this->addnotify($emp->id,'dept',' Assigned to your '.$emp->department->name .$assign_ticket->ticket->ticket_id .'.','tickets/'.$assign_ticket->ticket->id,Auth::guard('employee')->user()->id);
             }
 
             $this->mailnoti($email,'Employee of '.$employee[0]->department->name, 'Your department are reaassigned ', $assign_ticket->ticket->ticket_id,$assign_ticket->ticket->id);
@@ -534,7 +547,7 @@ class TicketController extends Controller
             'ticket_id'=>$ticket_id,
             'from' => Auth::guard('employee')->user()->email,
             'from_name' => Auth::guard('employee')->user()->name,
-            'company' => $company->name,
+            'company' => $company->name??'',
 
         ];
         Mail::send('ticket.mailnoti', $details, function ($message) use ($details,$address) {

@@ -298,7 +298,8 @@
                     <form action="{{$ticket->isassign==1?url('reassign/ticket'):route('tickets.assign')}}"
                           method="POST">
                         @csrf
-                        <input type="hidden" name="ticket_id" id="ticket_id" value="{{$ticket->id}}">
+                        <input type="hidden" name="ticket_id" value="{{$ticket->ticket_id}}">
+                        <input type="hidden" name="id" id="ticket_id" value="{{$ticket->id}}">
                         <div class="input-group m-b-30">
                             <select class="select" id="type" name="assignType">
                                 <option value="item0">Choose Assign Type</option>

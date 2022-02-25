@@ -14,13 +14,11 @@ class CompanyImport implements ToCollection, WithHeadingRow
      */
     public function collection(Collection $collection)
     {
-        // dd($collection);
+
         foreach ($collection as $company) {
             // dd($company);
             $company_data = $company->except('id', 'parent_company', 'parent_company_2')->toArray();
             $company_data['use_company'] = 0;
-            $company_data['parent_company'] = Company::where('name', $company['parent_company'])->first()->id ?? null;
-            $company_data['parent_company_2'] =  Company::where('name', $company['parent_company'])->first()->id ?? null;
 
             Company::create($company_data);
         }

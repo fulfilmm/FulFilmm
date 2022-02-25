@@ -4,138 +4,83 @@
         overflow: scroll;
     }
 </style>
-<div class="row">
-    <div class="col-md-4 col-sm-4 col-6">
-        <div class="card shadow bg-white">
-            <div class="card-body text-dark">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <span class="d-block">New </span>
-                    </div>
-
-                </div>
-                <h3 class="mb-3">{{$status_report['New']}}</h3>
-                <div class="progress mb-2" style="height: 5px;">
-                    <div class="progress-bar bg-dark" role="progressbar"
-                         style="width: {{$report_percentage['New']}}%;"
-                         aria-valuenow="{{$report_percentage['New']}}" aria-valuemin="0"
-                         aria-valuemax="100"></div>
-                </div>
-                <div>
-                    <span class="text-dark">{{$report_percentage['New']}}%</span>
+<div class="row g-3 mb-3 row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4">
+    <div class="col">
+        <div class="alert-secondary alert mb-0 shadow">
+            <a href="{{route('tickets.index')}}">
+            <div class="d-flex align-items-center">
+                <div class="avatar rounded no-thumbnail bg-light text-dark shadow"><i class="fa fa-bell fa-lg"></i></div>
+                <div class="flex-fill ms-3 text-truncate">
+                    <div class="h6 mb-0">New</div>
+                    <span class="small">{{$status_report['New']}}</span>
                 </div>
             </div>
+            </a>
         </div>
     </div>
-    <div class="col-md-4 col-sm-4 col-6">
-        <div class="card shadow bg-warning">
-            <div class="card-body text-white">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <span class="d-block">Open </span>
-                    </div>
-
-                </div>
-                <h3 class="mb-3">{{$status_report['Open']}}</h3>
-
-                <div class="progress mb-2" style="height: 5px;">
-                    <div class="progress-bar bg-dark" role="progressbar"
-                         style="width: {{$report_percentage['Open']}}%;"
-                         aria-valuenow="{{$report_percentage['Open']}}" aria-valuemin="0"
-                         aria-valuemax="100"></div>
-
-                </div>
-                <div>
-                    <span class="text-white">{{$report_percentage['Open']}}%</span>
+    <div class="col">
+        <div class="alert-danger alert mb-0 shadow">
+            <a href="{{route('tickets.index')}}">
+            <div class="d-flex align-items-center">
+                <div class="avatar rounded no-thumbnail bg-danger text-light shadow"><i class="fa fa-envelope-open fa-lg"></i></div>
+                <div class="flex-fill ms-3 text-truncate">
+                    <div class="h6 mb-0">Open</div>
+                    <span class="small">{{$status_report['Open']}}</span>
                 </div>
             </div>
+            </a>
         </div>
     </div>
-    <div class="col-md-4 col-sm-4 col-6">
-        <div class="card shadow bg-gradient-purple">
-            <div class="card-body text-white">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <span class="d-block">In-progress </span>
-                    </div>
-
-                </div>
-                <h3 class="mb-3">{{$status_report['In Progress']}}</h3>
-                <div class="progress mb-2" style="height: 5px;">
-                    <div class="progress-bar bg-dark" role="progressbar"
-                         style="width: {{$report_percentage['In-progress']}}%;"
-                         aria-valuenow="{{$report_percentage['In-progress']}}" aria-valuemin="0"
-                         aria-valuemax="100"></div>
-                </div>
-                <div>
-                    <span class="text-white">{{$report_percentage['Overdue']}}%</span>
+    <div class="col">
+        <div class="alert-warning alert mb-0 shadow">
+            <a href="{{route('tickets.index')}}">
+            <div class="d-flex align-items-center">
+                <div class="avatar rounded no-thumbnail bg-warning text-light shadow"><i class="fa fa-cogs fa-lg"></i></div>
+                <div class="flex-fill ms-3 text-truncate">
+                    <div class="h6 mb-0">In Progress</div>
+                    <span class="small">{{$status_report['In Progress']}}</span>
                 </div>
             </div>
+            </a>
         </div>
     </div>
-    <div class="col-md-4 col-sm-4 col-6">
-        <div class="card shadow bg-info">
-            <div class="card-body text-white">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <span class="d-block">Pending </span>
-                    </div>
-
-                </div>
-                <h3 class="mb-3">{{$status_report['Pending']}}</h3>
-                <div class="progress mb-2" style="height: 5px;">
-                    <div class="progress-bar bg-dark" role="progressbar"
-                         style="width: {{$report_percentage['Pending']}}%;"
-                         aria-valuenow="{{$report_percentage['Pending']}}" aria-valuemin="0"
-                         aria-valuemax="100"></div>
-                </div>
-                <div>
-                    <span class="text-white">{{$report_percentage['Pending']}}%</span>
+    <div class="col">
+        <div class="alert-info alert mb-0 shadow">
+            <a href="{{route('tickets.index')}}">
+            <div class="d-flex align-items-center">
+                <div class="avatar rounded no-thumbnail bg-info text-light shadow"><i class="fa fa-hourglass" aria-hidden="true"></i></div>
+                <div class="flex-fill ms-3 text-truncate">
+                    <div class="h6 mb-0">Pending</div>
+                    <span class="small">{{$status_report['Pending']}}</span>
                 </div>
             </div>
+            </a>
         </div>
     </div>
-    <div class="col-md-4 col-sm-4 col-6">
-        <div class="card shadow bg-gradient-success">
-            <div class="card-body text-white">
-                <div class="d-flex justify-content-between ">
-                    <div>
-                        <span class="d-block">Solved </span>
-                    </div>
-                </div>
-                <h3 class="mb-3">{{$status_report['Complete']+$status_report['Close']}}</h3>
-                <div class="progress mb-2" style="height: 5px;">
-                    <div class="progress-bar bg-dark" role="progressbar"
-                         style="width: {{$report_percentage['Solve']}}%;"
-                         aria-valuenow="{{$report_percentage['Solve']}}" aria-valuemin="0"
-                         aria-valuemax="100"></div>
-                </div>
-                <div>
-                    <span class="text-white">{{$report_percentage['Solve']}}%</span>
+    <div class="col">
+        <div class="alert-success alert mb-0 shadow">
+            <a href="{{route('tickets.index')}}">
+            <div class="d-flex align-items-center">
+                <div class="avatar rounded no-thumbnail bg-success text-light shadow"><i class="fa fa-check" aria-hidden="true"></i></div>
+                <div class="flex-fill ms-3 text-truncate">
+                    <div class="h6 mb-0">Solved</div>
+                    <span class="small">{{$status_report['Complete']+$status_report['Close']}}</span>
                 </div>
             </div>
+            </a>
         </div>
     </div>
-    <div class="col-md-4 col-sm-4 col-6">
-        <div class="card shadow bg-gradient-danger">
-            <div class="card-body text-white">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <span class="d-block">Overdue </span>
-                    </div>
-
-                </div>
-                <h3 class="mb-3">{{$status_report['Overdue']}}</h3>
-                <div class="progress mb-2" style="height: 5px;">
-                    <div class="progress-bar bg-primary" role="progressbar"
-                         style="width: {{$report_percentage['Overdue']}}%;"
-                         aria-valuenow="{{$report_percentage['Overdue']}}" aria-valuemin="0"
-                         aria-valuemax="100"></div>
-                </div>
-                <div>
-                    <span class="text-white">{{$report_percentage['Overdue']}}%</span>
+    <div class="col">
+        <div class="alert-danger alert mb-0 shadow">
+            <a href="{{route('tickets.index')}}">
+            <div class="d-flex align-items-center">
+                <div class="avatar rounded no-thumbnail bg-danger text-light shadow"><i class="fa fa-calendar" aria-hidden="true"></i></div>
+                <div class="flex-fill ms-3 text-truncate">
+                    <div class="h6 mb-0">Over Due</div>
+                    <span class="small">{{$status_report['Overdue']}}</span>
                 </div>
             </div>
+            </a>
         </div>
     </div>
 </div>

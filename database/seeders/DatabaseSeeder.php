@@ -2,14 +2,18 @@
 
 namespace Database\Seeders;
 
+use App\Models\Account;
 use App\Models\case_type;
 use App\Models\Department;
 use App\Models\Employee;
+use App\Models\OfficeBranch;
 use App\Models\priority;
 use App\Models\products_category;
 use App\Models\products_tax;
 use App\Models\status;
 use App\Models\ThemeSetting;
+use App\Models\TransactionCategory;
+use App\Models\Warehouse;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -27,6 +31,7 @@ class DatabaseSeeder extends Seeder
         ThemeSetting::create(['name'=>'Purple','link'=>'purplestyle.css','active'=>0]);
         ThemeSetting::create(['name'=>'Orange','link'=>'orangestyle.css','active'=>0]);
         ThemeSetting::create(['name'=>'Maroon','link'=>'maroonstyle.css','active'=>0]);
+       $warehouse= Warehouse::create(['name'=>'Main Warehouse']);
         products_tax::create(['name'=>'Tax Free','rate'=>0]);
         products_tax::create(['name'=>'Personal Income Tax','rate'=>5]);
         Department::create(['name'=>'Sale Department']);
@@ -35,9 +40,17 @@ class DatabaseSeeder extends Seeder
         Department::create(['name'=>'Finance Department']);
         Department::create(['name'=>'Administration']);
         Department::create(['name'=>'Marketing Department']);
+        Department::create(['name'=>'Warehouse Department']);
+        Department::create(['name'=>'Procurement']);
         products_category::create(['name'=>'Electronic','parent'=>1]);
         products_category::create(['name'=>'Beauty','parent'=>1]);
         products_category::create(['name'=>'Clothes','parent'=>1]);
+        OfficeBranch::create(['name'=>'Head Office','warehouse_id'=>$warehouse->id]);
+        TransactionCategory::create(['name'=>'Invoice']);
+        TransactionCategory::create(['name'=>'Bill']);
+        TransactionCategory::create(['name'=>'General Income']);
+        TransactionCategory::create(['name'=>'General Expense']);
+        Account::create(['name'=>'Main Account','number'=>'2002865657','currency'=>'MMK']);
         $superadmin = Employee::updateOrCreate(
             ['email' => 'admin@gmail.com'],
             [    'empid'=>'Emp-00001',
@@ -45,51 +58,6 @@ class DatabaseSeeder extends Seeder
                 'department_id' => '1',
                 'phone' => '123123',
                 'email' => 'admin@gmail.com',
-                'work_phone' => 'asdasd',
-                'can_login' => true,
-                'password' => bcrypt('123123'),
-                'join_date' => '1999-10-20',
-            ]
-        );
-
-        $ticketadmin = Employee::updateOrCreate(
-            ['email' => 'thomascinpu@gmail.com'],
-            [
-                'empid'=>'Emp-00002',
-                'name' => 'TicketAdmin',
-                'department_id' => '1',
-                'phone' => '123123',
-                'email' => 'thomascinpu@gmail.com',
-                'work_phone' => 'asdasd',
-                'can_login' => true,
-                'password' => bcrypt('123123'),
-                'join_date' => '1999-10-20',
-            ]
-        );
-
-        $ticketagent = Employee::updateOrCreate(
-            ['email' => 'ma.sa.kitaite@gmail.com'],
-            [
-                'empid'=>'Emp-00003',
-                'name' => 'Agent',
-                'department_id' => '1',
-                'phone' => '123123',
-                'email' => 'ma.sa.kitaite@gmail.com',
-                'work_phone' => 'asdasd',
-                'can_login' => true,
-                'password' => bcrypt('123123'),
-                'join_date' => '1999-10-20',
-            ]
-        );
-
-        $ceo = Employee::updateOrCreate(
-            ['email' => 'wailinaung@gmail.com'],
-            [
-                'empid'=>'Emp-00004',
-                'name' => 'Ko Wai Lin(CEO)',
-                'department_id' => '1',
-                'phone' => '123123',
-                'email' => 'wailinaung@gmail.com',
                 'work_phone' => 'asdasd',
                 'can_login' => true,
                 'password' => bcrypt('123123'),
@@ -122,9 +90,6 @@ class DatabaseSeeder extends Seeder
 //        Employee::factory(100)->create();
         // \App\Models\User::factory(10)->create();
         $superadmin->assignRole('Super Admin');
-        $ticketagent->assignRole('Agent');
-        $ticketadmin->assignRole('Ticket Admin');
-        $ceo->assignRole('CEO');
 
 
     }

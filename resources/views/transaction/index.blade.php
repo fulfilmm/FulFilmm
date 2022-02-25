@@ -86,7 +86,11 @@
                                 </td>
                                 <td>
                                     @if($transaction->expense->bill_id!=null)
-                                        @foreach($bill as $key=>$val)@if($key==$transaction->expense->bill_id)<a href="{{$transaction->expensse->bill_id==null?route('transactions.show',$transaction->id):route('bills.show',$transaction->expense->bill_id)}}">{{$val}}</a>@endif @endforeach
+                                        @foreach($bill as $key=>$val)
+                                            @if($key==$transaction->expense->bill_id)
+                                                <a href="{{$transaction->expense->bill_id==null?route('transactions.show',$transaction->id):route('bills.show',$transaction->expense->bill_id)}}">{{$val}}</a>
+                                            @endif
+                                        @endforeach
                                         @else
                                         N/A
                                     @endif

@@ -14,14 +14,14 @@ class RoleAndPermissionSeeder extends Seeder
                 'employees.show',
             ]
         ],
-        'Manager' => [
+        'General Manager' => [
             'resources' => [
                 'employees','comments', 'customers', 'companies', 'departments', 'groups', 'roles', 'permissions'],
 
         ],
-         'Ticket Admin' => [
+         'Customer Service Manager' => [
             'resources' => [
-                'employees', 'tickets','cases','priorities','comments', 'customers', 'companies', 'departments', 'groups', 'roles', 'permissions',
+                'employees', 'tickets','cases','priorities','comments', 'customers', 'companies', 'departments', 'groups',
             ],
             'others' => [
                 'piechart'
@@ -29,7 +29,7 @@ class RoleAndPermissionSeeder extends Seeder
         ],
         'Agent' => [
             'resources' => [
-                'tickets','comments', 'customers', 'companies', 'departments', 'groups', 'roles', 'permissions',
+                'tickets','comments', 'customers', 'companies', 'departments', 'groups',
             ],
             'others' => [
                 'employees.show',
@@ -71,8 +71,6 @@ class RoleAndPermissionSeeder extends Seeder
             $resource . '.edit',
             $resource . '.update',
             $resource . '.destroy',
-            $resource . '.import',
-            $resource . '.export',
             $resource . '.cards'
         ]);
     }

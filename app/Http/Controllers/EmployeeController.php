@@ -30,13 +30,13 @@ class EmployeeController extends Controller
     }
     public function index()
     {
-        $employees = Employee::paginate(20);
+        $employees = Employee::paginate(25);
         $branch=OfficeBranch::all();
         return view('employee.data.lists',compact('employees','branch'));
     }
 
     public function card(){
-        $employees = Employee::orderBy('empid','desc')->paginate(20);
+        $employees = Employee::orderBy('empid','desc')->paginate(25);
         $branch=OfficeBranch::all();
         return view('employee.data.cards', compact('employees','branch'));
     }

@@ -58,7 +58,7 @@
                 <div class="row justify-content-center">
                     <div>
                         {{--@dd($route)--}}
-                        <form action="{{url('customers/import/data')}}" method="POST" enctype="multipart/form-data">
+                        <form action="{{route('employees.import')}}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
                                 <label for="start">File</label>
