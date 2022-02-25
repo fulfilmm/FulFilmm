@@ -8,6 +8,7 @@ use App\Imports\CustomerImport;
 use App\Models\assign_ticket;
 use App\Models\Customer;
 use App\Models\deal;
+use App\Models\DealActivitySchedule;
 use App\Models\Employee;
 use App\Models\Invoice;
 use App\Models\lead_comment;
@@ -261,7 +262,45 @@ class CustomerController extends Controller
     public function update(Request $request, $id)
     {
         //
+
         $customer = Customer::where('id', $id)->first();
+        if($request->customer_type=='Lead') {
+            $customer = Customer::orderBy('id', 'desc')->first();
+            $last_deal = deal::orderBy('id', 'desc')->first();
+
+            if ($last_deal != null) {
+                // Sum 1 + last id
+                $last_deal->deal_id++;
+                $deal_id = $last_deal->deal_id;
+            } else {
+                $deal_id = 'Deal' . "-0001";
+            }
+            $exist_in_deal=deal::where('contact',$id)->first();
+            if($exist_in_deal==null){
+                $deal = new deal();
+                $deal->deal_id = $deal_id;
+                $deal->amount = 0;
+                $deal->unit = "MMK";
+                $deal->org_name = $request->company_id;
+                $deal->contact = $customer->id;
+                $deal->sale_stage = $request->status;
+                $deal->lead_title = $request->title;
+                $deal->created_id = Auth::guard('employee')->user()->id;
+                $deal->save();
+                $deal_record = new SalePipelineRecord();
+                $deal_record->state = $request->status;
+                $deal_record->deal_id = $deal->id;
+                $deal_record->emp_id = Auth::guard('employee')->user()->id;
+                $deal_record->save();
+            }else{
+                $exist_in_deal->sale_stage = $request->status;
+                $exist_in_deal->update();
+                $deal_record =SalePipelineRecord::where('deal_id',$exist_in_deal->id)->first();
+                $deal_record->state = $request->status;
+                $deal_record->emp_id = Auth::guard('employee')->user()->id;
+                $deal_record->update();
+            }
+        }
 
         if (isset($request->profile_img)) {
             if ($request->profile_img != null) {
@@ -350,35 +389,8 @@ class CustomerController extends Controller
 
             ];
         }
-
         $this->customerContract->updateById($id, $data);
-        if($request->customer_type=='Lead') {
-            $customer = Customer::orderBy('id', 'desc')->first();
-            $last_deal = deal::orderBy('id', 'desc')->first();
 
-            if ($last_deal != null) {
-                // Sum 1 + last id
-                $last_deal->deal_id++;
-                $deal_id = $last_deal->deal_id;
-            } else {
-                $deal_id = 'Deal' . "-0001";
-            }
-            $deal = new deal();
-            $deal->deal_id = $deal_id;
-            $deal->amount = 0;
-            $deal->unit = "MMK";
-            $deal->org_name = $request->company_id;
-            $deal->contact = $customer->id;
-            $deal->sale_stage = $request->status;
-            $deal->lead_title = $request->title;
-            $deal->created_id = Auth::guard('employee')->user()->id;
-            $deal->save();
-            $deal_record = new SalePipelineRecord();
-            $deal_record->state = $request->status;
-            $deal_record->deal_id = $deal->id;
-            $deal_record->emp_id = Auth::guard('employee')->user()->id;
-            $deal_record->save();
-        }
         return redirect()->route('customers.index')->with('success', __('alerts.update_success'));
 
     }
@@ -417,7 +429,7 @@ class CustomerController extends Controller
     public function ChangeContactType(Request $request){
 //        dd($request->all());
         foreach ($request->customer_id as $customer_id){
-            $customer=Customer::where('id',$customer_id)->first();
+            $customer=Customer::with('company')->where('id',$customer_id)->first();
            if(isset($request->status)){
 //               dd('true');
                $customer->status=$request->action_Type;
@@ -425,6 +437,43 @@ class CustomerController extends Controller
 //               dd('false');
                $customer->customer_type=$request->action_Type;
            }
+            if($request->action_Type=='Lead') {
+                $last_deal = deal::orderBy('id', 'desc')->first();
+
+                if ($last_deal != null) {
+                    // Sum 1 + last id
+                    $last_deal->deal_id++;
+                    $deal_id = $last_deal->deal_id;
+                } else {
+                    $deal_id = 'Deal' . "-0001";
+                }
+                $exist_in_deal=deal::where('contact',$customer_id)->first();
+                if($exist_in_deal==null){
+                    $deal = new deal();
+                    $deal->deal_id = $deal_id;
+                    $deal->amount = 0;
+                    $deal->unit = "MMK";
+                    $deal->org_name = $customer->company->id;
+                    $deal->contact = $customer->id;
+                    $deal->sale_stage = isset($request->status)?$request->status:'New';
+                    $deal->lead_title = $request->title??$customer->name;
+                    $deal->created_id = Auth::guard('employee')->user()->id;
+                    $deal->save();
+                    $deal_record = new SalePipelineRecord();
+                    $deal_record->state = isset($request->status)?$request->status:'New';
+                    $deal_record->deal_id = $deal->id;
+                    $deal_record->emp_id = Auth::guard('employee')->user()->id;
+                    $deal_record->save();
+                }else{
+
+                    $exist_in_deal->sale_stage = isset($request->status)?$request->status:'New';
+                    $exist_in_deal->update();
+                    $deal_record =SalePipelineRecord::where('deal_id',$exist_in_deal->id)->first();
+                    $deal_record->state =isset($request->status)?$request->status:'New';
+                    $deal_record->emp_id = Auth::guard('employee')->user()->id;
+                    $deal_record->update();
+                }
+            }
             $customer->update();
         }
     }
