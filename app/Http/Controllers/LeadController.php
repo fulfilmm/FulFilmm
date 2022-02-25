@@ -6,11 +6,13 @@ use App\Jobs\leadactivityschedulemail;
 
 use App\Models\Customer;
 
+use App\Models\deal;
 use App\Models\lead_comment;
 use App\Models\lead_follower;
 
 
 use App\Models\next_plan;
+use App\Models\SalePipelineRecord;
 use App\Models\tags_industry;
 use Carbon\Carbon;
 
@@ -116,6 +118,15 @@ class LeadController extends Controller
         $lead=Customer::where("id",$id)->first();
         $lead->status=$request->status;
         $lead->update();
+       if($request->status=='Qualified'){
+           $exist_in_deal=deal::where('contact',$id)->first();
+           $exist_in_deal->sale_stage = isset($request->status)?$request->status:'New';
+           $exist_in_deal->update();
+           $deal_record =SalePipelineRecord::where('deal_id',$exist_in_deal->id)->first();
+           $deal_record->state =isset($request->status)?$request->status:'New';
+           $deal_record->emp_id = Auth::guard('employee')->user()->id;
+           $deal_record->update();
+       }
         return redirect()->back();
     }
 
