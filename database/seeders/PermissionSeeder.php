@@ -123,7 +123,6 @@ class PermissionSeeder extends Seeder
         Permission::create(['name'=>'billitems.update','display_name'=>'Update bill item','type'=>'bills','guard_name'=>'employee']);
         Permission::create(['name'=>'po.bill','display_name'=>'Bill direct create form PO','type'=>'bills','guard_name'=>'employee']);
         Permission::create(['name'=>'delivery.bill','display_name'=>'Bill direct create form delivery','type'=>'bills','guard_name'=>'employee']);
-        Permission::create(['name'=>'delivery.bill','display_name'=>'Bill direct create form delivery','type'=>'bills','guard_name'=>'employee']);
         //Purchase Orders
         Permission::create(['name'=>'purchase.orders','display_name'=>'Po direct create from RFQ','type'=>'purchaseorders','guard_name'=>'employee']);
         Permission::create(['name'=>'purchaseorders.confirm','display_name'=>'Purchase order confirm','type'=>'purchaseorders','guard_name'=>'employee']);
