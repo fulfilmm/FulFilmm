@@ -57,6 +57,7 @@
 <script>
 
     $(document).ready(function(){
+        $('input[type=search]').addClass('rounded-pill');
         $('select').select();
         // Read value on page load
         $("#result b").html($("#customRange").val());

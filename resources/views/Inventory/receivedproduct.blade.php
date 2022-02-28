@@ -1,5 +1,5 @@
 @extends('layout.mainlayout')
-@section('title','RFQs')
+@section('title','Product Receive')
 @section('content')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
     <div class="content container-fluid">
@@ -149,17 +149,26 @@
                                                 <input type="number" name="demand[]" class="form-control"
                                                        value="{{$item->demand}}"></td>
                                         @endif
-                                        <td>{{$item->unit}}</td>
+                                        <td>{{$item->product_unit->unit}}</td>
                                         <td>
                                             @if($receipt->is_validate==1)
                                                 {{$item->qty}}
                                             @else
+                                                @php
+                                                 $receive_qty=($item->product_unit->unit_convert_rate) * ($item->demand);
+                                                @endphp
                                                 <input type="text" name="done[]" class="form-control"
-                                                       value="{{$item->demand}}">
+                                                       value="{{$receive_qty}}">
 
                                         @endif
                                         </td>
-                                        <td>Default Unit</td>
+                                        <td>
+                                            @foreach($sell_unit as $unit)
+                                                @if($item->product->product_id==$unit->product_id)
+                                                    {{$unit->unit}}
+                                                    @endif
+                                                @endforeach
+                                        </td>
                                         <td>
                                             @if($receipt->is_validate==1)
                                                 {{$item->warehouse->name??''}}

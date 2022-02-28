@@ -22,6 +22,12 @@
                 <input type="hidden" name="company_id" value="{{$company->id??''}}">
                 <div class="card-body">
                     <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="no">Account Number</label>
+                                <input type="text" class="form-control" name="account_id" placeholder="Enter Account No.">
+                            </div>
+                        </div>
                         <div class="form-group col-md-6 required">
                             <label for="name" class="form-control-label">Name</label>
                             <div class="input-group input-group-merge ">
@@ -34,14 +40,14 @@
                             </div> <!---->
                         </div>
                         <div class="form-group col-md-6 required">
-                            <label for="number" class="form-control-label">Account Number</label>
+                            <label for="number" class="form-control-label">Bank Account Number</label>
                             <div class="input-group input-group-merge ">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">
                                         <i class="fa fa-pencil"></i>
                                     </span>
                                 </div>
-                                <input data-name="number" placeholder="Enter Account Number" required="required" name="number" type="text" id="number" class="form-control">
+                                <input data-name="number" placeholder="Enter Bank Account Number" required="required" name="number" type="text" id="number" class="form-control">
                             </div> <!---->
                         </div>
                         <div class="form-group col-md-6 required">

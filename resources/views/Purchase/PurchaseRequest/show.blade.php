@@ -30,7 +30,7 @@
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="status">
 
                                 @foreach($statuses as $key=>$val)
-                                    <a class="dropdown-item" href="#" id="status_{{$key}}" role="button" ><i
+                                    <a class="dropdown-item"  id="status_{{$key}}" role="button" ><i
                                                 class="fa fa-dot-circle-o mr-1"
                                                 style="color:{{$val=='New'?'#909396':($val=='Approved'?'#81E886':($val=='Pending'?'#36D8FF':'Red'))}}"></i>{{$val}}
                                     </a>
@@ -39,7 +39,7 @@
                                             @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->id==$prs->approver_id)
                                             $.ajax({
                                                 data: {
-                                                    status:"{{$val}}"
+                                                    status:"{{$val}}",
 
                                                 },
                                                 type: 'POST',

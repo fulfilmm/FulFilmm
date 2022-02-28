@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProductVariations;
 use App\Models\PurchaseOrderItem;
+use App\Models\SellingUnit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -43,7 +45,23 @@ class PurchaseOrderItemController extends Controller
               Session::push("poformdata-".$Auth,$request->all());
           }
       }
-        PurchaseOrderItem::create($request->all());
+      $product_variant=ProductVariations::where('id',$request->variant_id)->first();
+      $unit=SellingUnit::where('product_id',$product_variant->product_id)->where('unit_convert_rate',1)->first();
+        if($unit!=null){
+            PurchaseOrderItem::create(
+                [   'po_id'=>$request->po_id,
+                    'variant_id'=>$request->variant_id,
+                    'description'=>$request->description,
+                    'qty'=>1,
+                    'total'=>$product_variant->purchase_price??0,
+                    'price'=>$product_variant->purchase_price??0,
+                    'creation_id'=>$request->creation_id,
+                    'unit'=>$unit->id
+                ]
+            );
+        }else{
+            return response()->json(['error'=>'Dose not exists any unit']);
+        }
     }
 
     /**
@@ -78,7 +96,6 @@ class PurchaseOrderItemController extends Controller
     public function update(Request $request, $id)
     {
         $po_item=PurchaseOrderItem::where('id',$id)->first();
-        $po_item->variant_id=$request->product_id;
         $po_item->qty=$request->qty;
         $po_item->price=$request->price;
         $po_item->total=$request->total;
@@ -93,8 +110,8 @@ class PurchaseOrderItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        PurchaseOrderItem::where('id',$request->item_id)->first()->delete();
     }
 }

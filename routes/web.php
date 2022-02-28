@@ -320,8 +320,7 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::post('receipt/product/validate/{id}',[InventoryController::class,'product_validate'])->name('product.validate');
     Route::get('reedit/{id}',[InventoryController::class,'reedit'])->name('receipt.rededit');
 
-    Route::resource('bills',BillController::class)->only('store','edit','update','show','index','destroy');//
-    Route::get('bill/create/{supplier_id}',[BillController::class,'create'])->name('supplierbills.create');
+    Route::resource('bills',BillController::class);//
     Route::post('bill/item/store',[\App\Http\Controllers\BillItemController::class,'store'])->name('billitems.store');
     Route::post('bill/item/update/{id}',[\App\Http\Controllers\BillItemController::class,'update'])->name('billitems.update');
     Route::get('bill/item/delete/{id}',[\App\Http\Controllers\BillItemController::class,'destroy'])->name('destroy.billitem');
@@ -451,7 +450,7 @@ Route::resource('request_tickets', RequestTicket::class)->only('create', 'store'
 Route::get('delivery/tracking/{uuid}',[ShippmentController::class,'tracking'])->name('tracking');
 
 //new
-
+Route::resource('bank_transfers',\App\Http\Controllers\BankTransferController::class);
 
 
 
@@ -461,10 +460,3 @@ Route::get('delivery/tracking/{uuid}',[ShippmentController::class,'tracking'])->
 
 
 //Route::get('stockout/show/{id}',[StockTransactionController::class,'show_stockout'])->name('stockout.show');
-
-
-Route::post('backups/upload', ['as'=>'backups.upload', 'uses'=>'BackupsController@upload']);
-Route::post('backups/{fileName}/restore', ['as'=>'backups.restore', 'uses'=>'BackupsController@restore']);
-Route::get('backups/{fileName}/dl', ['as'=>'backups.download', 'uses'=>'BackupsController@download']);
-Route::resource('backups','BackupsController');
-

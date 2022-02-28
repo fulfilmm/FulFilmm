@@ -73,9 +73,17 @@ class HomeController extends Controller
                     ->select(DB::raw("SUM(amount) as total"))
                     ->whereYear('transaction_date', date('Y'))
                     ->get();
+                $current_year_bill = DB::table("bills")
+                    ->select(DB::raw("SUM(grand_total) as total"))
+                    ->whereYear('bill_date', date('Y'))
+                    ->get();
                 $current_year_expense = DB::table("expenses")
                     ->select(DB::raw("SUM(amount) as total"))
                     ->whereYear('transaction_date', date('Y'))
+                    ->get();
+                $current_month_bill = DB::table("bills")
+                    ->select(DB::raw("SUM(grand_total) as total"))
+                    ->whereMonth('bill_date', date('m'))
                     ->get();
                 $current_month_income = DB::table("revenues")
                     ->select(DB::raw("SUM(amount) as total"))
@@ -89,6 +97,10 @@ class HomeController extends Controller
                     ->select(DB::raw("SUM(amount) as total"))
                     ->whereBetween('transaction_date', [$start, $mid])
                     ->get();
+                $first_6month_bill = DB::table("bills")
+                    ->select(DB::raw("SUM(grand_total) as total"))
+                    ->whereBetween('bill_date', [$start, $mid])
+                    ->get();
                 $first_6month_expense = DB::table("expenses")
                     ->select(DB::raw("SUM(amount) as total"))
                     ->whereBetween('transaction_date', [$start, $mid])
@@ -96,6 +108,10 @@ class HomeController extends Controller
                 $second_6month_income = DB::table("revenues")
                     ->select(DB::raw("SUM(amount) as total"))
                     ->whereBetween('transaction_date', [$mid, $end])
+                    ->get();
+                $second_6month_bill = DB::table("bills")
+                    ->select(DB::raw("SUM(grand_total) as total"))
+                    ->whereBetween('bill_date', [$mid, $end])
                     ->get();
                 $second_6month_expense = DB::table("expenses")
                     ->select(DB::raw("SUM(amount) as total"))
@@ -135,16 +151,21 @@ class HomeController extends Controller
                     'all_ticket'=>$numberOfalltickets,
                     'transaction'=>$transaction??0,
                     'total_income'=>$current_year_income[0]->total??0,
+                    'total_bill'=>$current_year_bill[0]->total??0,
                     'total_expense'=>$current_year_expense[0]->total??0,
                     'first_term_income'=>$first_6month_income[0]->total??0,
+                    'first_term_bill'=>$first_6month_bill[0]->total??0,
                     'first_term_expense'=>$first_6month_expense[0]->total??0,
                     'first_term_profit'=>($first_6month_income[0]->total??0)-($first_6month_expense[0]->total??0),
                     'second_term_income'=>$second_6month_income[0]->total??0,
+                    'second_term_bill'=>$second_6month_bill[0]->total??0,
                     'second_term_expense'=>$second_6month_expense[0]->total??0,
                     'second_term_profit'=>($second_6month_income[0]->total??0)-($second_6month_expense[0]->total??0),
                     'current_month_income'=>$current_month_income[0]->total??0,
+                    'current_month_bill'=>$current_month_bill[0]->total??0,
                     'current_month_expense'=>$current_month_expense[0]->total??0,
                     'current_month_profit'=>($current_month_income[0]->total??0)-($current_month_expense[0]->total??0),
+
                     'profit'=>Auth::guard('employee')->user()->role->name=='CEO'||Auth::guard('employee')->user()->role->name=='Super Admin'?$current_year_income[0]->total??0-$current_year_expense[0]->total??0:0,
                 ];
                 return view('index', compact('items','total_emp','monthly_income','monthly_expense','profit','account'));

@@ -360,6 +360,7 @@
                             <a href="#"><i class="la la-money " style="font-size: 18px"></i><span>Logistics Bill</span> <span class="menu-arrow"></span></a>
                             <ul style="display: none;">
                                 <li><a class="{{ Request::is('bills') ? 'active' : '' }}" href="{{route('bills.index')}}" style="text-decoration: none">All Bill</a></li>
+                                <li><a class="{{ Request::is('bills') ? 'active' : '' }}" href="{{route('bills.create')}}" style="text-decoration: none">Create</a></li>
                             </ul>
                         </li>
                         <li class="submenu">

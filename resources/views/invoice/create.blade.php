@@ -73,7 +73,7 @@
                            <div class="col-sm-3 col-md-6">
                                <div class="form-group">
                                    <label for="bill_address">Order ID</label>
-                                   <input type="text" class="form-control shadow-sm"
+                                   <input type="text" class="form-control shadow-sm" id="bill_address"
                                           value="{{isset($order_data)?$order_data->order_id:''}}" readonly>
                                    <input type="hidden" name="order_id" id="order_id" value="{{$order_data->id??''}}">
                                </div>

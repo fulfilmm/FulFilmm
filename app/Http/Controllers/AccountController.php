@@ -47,6 +47,7 @@ class AccountController extends Controller
 
         ]);
         $account=new Account();
+        $account->account_no=$request->account_id;
         $account->name=$request->name;
         $account->number=$request->number;
         $account->currency=$request->currency;

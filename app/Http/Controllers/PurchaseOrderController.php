@@ -15,6 +15,7 @@ use App\Models\PurchaseOrder;
 use App\Models\PurchaseOrderItem;
 use App\Models\PurchaseRequest;
 use App\Models\RequestForQuotation;
+use App\Models\SellingUnit;
 use App\Traits\Emailtrait;
 use App\Traits\NotifyTrait;
 use Carbon\Carbon;
@@ -49,15 +50,17 @@ class PurchaseOrderController extends Controller
         $product=ProductVariations::with('product')->get();
         $suppliers = Customer::where('customer_type', 'Supplier')->get();
         $source=PurchaseRequest::all()->pluck('pr_id','id')->all();
+        $units=SellingUnit::all();
         $session_value = \Illuminate\Support\Str::random(10);
         $Auth = "PO-" . Auth::guard('employee')->user()->id;
+
         if (!Session::has($Auth)) {
             Session::push("$Auth", $session_value);
             $creation_id = Session::get($Auth);
         } else {
             $creation_id = Session::get($Auth);
         }
-        $items=PurchaseOrderItem::where('creation_id', $creation_id)->get();
+        $items=PurchaseOrderItem::with('product_unit','product')->where('creation_id', $creation_id)->get();
         $total = DB::table("purchase_order_items")
             ->select(DB::raw("SUM(total) as total"))
             ->where('creation_id', $creation_id)
@@ -74,7 +77,7 @@ class PurchaseOrderController extends Controller
             $po_id = "PO-00001";
         }
         $emps=Employee::all()->pluck('name','id')->all();
-        return view('Purchase.PurchaseOrder.create',compact('product','suppliers','source','creation_id','po_data','items','taxes','grand_total','po_id','emps'));
+        return view('Purchase.PurchaseOrder.create',compact('product','suppliers','source','creation_id','po_data','items','taxes','grand_total','po_id','emps','units'));
     }
 
     /**
@@ -183,8 +186,9 @@ class PurchaseOrderController extends Controller
             $grand_total = $total[0]->total;
 //        dd($grand_total);
             $taxes = products_tax::all();
+            $units=SellingUnit::all();
 
-            return view('Purchase.PurchaseOrder.edit', compact('product', 'suppliers', 'source', 'items', 'taxes', 'grand_total', 'po'));
+            return view('Purchase.PurchaseOrder.edit', compact('product', 'suppliers', 'source', 'items', 'taxes', 'grand_total', 'po','units'));
         }else{
             return redirect()->back()->with('warning','Does not edit now! Its have been confirmed.');
         }

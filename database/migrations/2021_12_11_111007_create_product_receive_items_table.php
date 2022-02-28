@@ -18,7 +18,7 @@ class CreateProductReceiveItemsTable extends Migration
             $table->bigInteger('variant_id')->unsigned();
             $table->double('demand');
             $table->double('qty')->nullable();
-            $table->string('unit');
+            $table->bigInteger('unit')->unsigned();
             $table->bigInteger('po_id')->unsigned();
             $table->bigInteger('receipt_id')->unsigned();
             $table->double('price');

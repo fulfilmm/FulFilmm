@@ -17,6 +17,7 @@ class CreateAccountsTable extends Migration
             $table->id();
             $table->integer('company_id')->nullable();
             $table->string('name');
+            $table->string('account_no')->unique()->nullable();
             $table->string('number');
             $table->string('currency');
             $table->double('opening_balance', 15, 4)->default('0.0000');

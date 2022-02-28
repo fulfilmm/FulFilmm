@@ -236,7 +236,7 @@
                                                         <td class="d-none d-sm-table-cell">{{$item->description}}</td>
                                                         <td>{{$item->price}}
                                                         <td>{{$item->qty}}</td>
-                                                        <td>{{$item->unit}}</td>
+                                                        <td>{{$item->product_unit->unit??''}}</td>
                                                         <td class="text-right">{{$item->total}}</td>
                                                     </tr>
                                                 @endforeach

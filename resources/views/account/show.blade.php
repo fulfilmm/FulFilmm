@@ -23,10 +23,14 @@
             <ul class="list-group mb-4">
                 <li class="list-group-item d-flex justify-content-between align-items-center border-0 font-weight-600">
                     Account Number
+                    <small>{{$account->account_no}}</small>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center border-0 font-weight-600">
+                    Bank Account
                     <small>{{$account->number}}</small>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center border-0 border-top-1 font-weight-600">
-                    Currencies
+                    Currency Unit
                     <small>{{$account->currency}}</small>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center border-0 border-top-1 font-weight-600">
@@ -56,37 +60,40 @@
             </ul>
         </div>
         <div class="col-xl-9">
-            <div class="row mb--3">
-                <div class="col-md-4">
-                    <div class="card bg-gradient-info border-0">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col"><h5 class="text-uppercase  mb-0 text-white">Incoming</h5>
-                                    <div class="dropdown-divider"></div>
-                                    <span class="h2 font-weight-bold mb-0 text-white">{{$incoming}} {{$account->currency}}</span></div>
+            <div class="row g-3 mb-3 row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4">
+                <div class="col  my-2">
+                    <div class="alert-success alert mb-0 shadow">
+                        <a href="{{url('revenue')}}">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar rounded no-thumbnail bg-success text-light shadow"><i class="fa fa-money fa-lg"></i></div>
+                                <div class="flex-fill ms-3 text-truncate">
+                                    <div class="h6 mb-0">Incoming</div>
+                                    <span class="small">{{$incoming}} {{$account->currency}}</span>
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card bg-primary border-0">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col"><h5 class="text-uppercase mb-0 text-white">Outgoing</h5>
-                                    <div class="dropdown-divider"></div>
-                                    <span class="h2 font-weight-bold mb-0 text-white">{{$outgoing}} {{$account->currency}}</span></div>
+                <div class="col  my-2">
+                    <div class="alert-danger alert mb-0 shadow">
+                        <a href="{{url('expense')}}">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar rounded no-thumbnail bg-danger text-light shadow"><i class="fa fa-credit-card fa-lg"></i></div>
+                                <div class="flex-fill ms-3 text-truncate">
+                                    <div class="h6 mb-0">Outgoing</div>
+                                    <span class="small">{{$outgoing}} {{$account->currency}}</span>
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card bg-success border-0">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col"><h5 class="text-uppercase  mb-0 text-white">Account
-                                        Balance</h5>
-                                    <div class="dropdown-divider"></div>
-                                    <span class="h2 font-weight-bold mb-0 text-white">{{$account->balance}} {{$account->currency}}</span></div>
+                <div class="col  my-2">
+                    <div class="alert-info alert mb-0 shadow">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar rounded no-thumbnail bg-info text-light shadow"><i class="fa fa-bank fa-lg"></i></div>
+                            <div class="flex-fill ms-3 text-truncate">
+                                <div class="h6 mb-0">Account Balance</div>
+                                <span class="small">{{$account->balance}} {{$account->currency}}</span>
                             </div>
                         </div>
                     </div>

@@ -101,7 +101,7 @@
                                 <td>{{$item->description}}</td>
                                 <td>{{$item->qty??''}}</td>
                                 <td>{{$item->price??''}}</td>
-                                <td>{{$item->unit??''}}</td>
+                                <td>{{$item->product_unit->unit??''}}</td>
                                 <td>{{$item->total??''}}
                                 </td>
                                 <td style="min-width: 60px;">
@@ -112,7 +112,8 @@
                                         <button type="button" id="delete_{{$item->id}}"
                                                 class="btn btn-danger btn-sm mt-1"><i
                                                     class="fa fa-minus"></i></button>
-                                        <div id="edit{{$item->id}}" class="modal custom-modal fade" role="dialog">
+                                        <div id="edit{{$item->id}}" class="modal custom-modal fade"
+                                             role="dialog">
                                             <div class="modal-dialog modal-dialog-centered modal-md">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -127,21 +128,21 @@
                                                             <div class="row">
                                                                 <label class="col-md-3">Product</label>
                                                                 <div class="col-md-9">
-                                                                    <select name="[]" id="product{{$item->id}}"
+                                                                    <select name="" id="product{{$item->id}}"
                                                                             class="form-control select2 update{{$item->id}}">
-                                                                        @foreach($product as $p)
-                                                                            <option value="{{$p->id}}" {{$p->id==$item->variant_id?'selected':''}}>{{$p->product->name}} ({{$p->size??''}}{{$p->color??''}} {{$p->other??''}})</option>
-                                                                        @endforeach
+                                                                        <option value="{{$item->product->product_id}}">{{$item->product->product_name}}({{$item->product->variant}})</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
                                                             <div class="row">
-                                                                <label for="" class="col-md-3">Description</label>
+                                                                <label for=""
+                                                                       class="col-md-3">Description</label>
                                                                 <div class="col-md-9">
-                                                                    <textarea name="" id="desc{{$item->id}}" cols="30" rows="2"
-                                                                              class="form-control update{{$item->id}}">{{$item->description}}</textarea>
+                                                                    <textarea name="" id="desc{{$item->id}}" cols="30"
+                                                                              rows="2"
+                                                                              class="form-control update{{$item->id}}"> {!! $item->description  !!}</textarea>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -159,7 +160,13 @@
                                                             <div class="row">
                                                                 <label for="" class="col-md-3">Unit</label>
                                                                 <div class="col-9">
-                                                                    <input type="text" class="form-control" id="unit{{$item->id}}" name="unit" value="{{$item->unit??'Type Purchase Unit'}}">
+                                                                    <select name="unit" id="unit{{$item->id}}" class="form-control select2">
+                                                                        @foreach($units as $p_unit)
+                                                                            @if($item->product->product_id==$p_unit->product_id)
+                                                                                <option value="{{$p_unit->id}}" {{$item->unit==$p_unit->id?'selected':''}}>{{$p_unit->unit}}</option>
+                                                                            @endif
+                                                                        @endforeach
+                                                                    </select>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -174,6 +181,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+
                                                         <div class="form-group">
                                                             <div class="row">
                                                                 <label for="" class="col-md-3">Total</label>
@@ -184,7 +192,8 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <button id="update_item{{$item->id}}" data-dismiss="modal"
+                                                        <button id="update_item{{$item->id}}"
+                                                                data-dismiss="modal"
                                                                 class="btn btn-primary float-right">Save
                                                         </button>
                                                     </div>
@@ -197,19 +206,17 @@
                                     <script>
                                         $(document).on('click', '#update_item{{$item->id}}', function (event) {
                                             var description = $('#desc{{$item->id}}').val();
-                                            var product = $('#product{{$item->id}} option:selected').val();
-                                            var qty=$('#qty{{$item->id}}').val();
-                                            var unit=$('#unit{{$item->id}}').val();
+                                            var unit = $('#unit{{$item->id}} option:selected').val();
+                                            var qty = $('#qty{{$item->id}}').val();
                                             var price = $('#price{{$item->id}}').val();
                                             var total = $('#total{{$item->id}}').val();
                                             $.ajax({
                                                 data: {
                                                     description: description,
-                                                    product_id: product,
-                                                    qty:qty,
+                                                    qty: qty,
                                                     price: price,
-                                                    total:total,
-                                                    unit:unit
+                                                    total: total,
+                                                    unit: unit,
 
                                                 },
                                                 type: 'POST',

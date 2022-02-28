@@ -37,6 +37,17 @@
         </div>
     </div>
     <div class="col my-2">
+        <div class="alert-warning alert mb-0 shadow">
+            <div class="d-flex align-items-center">
+                <div class="avatar rounded no-thumbnail bg-danger text-light shadow"><i class="fa fa-money fa-lg"></i></div>
+                <div class="flex-fill ms-3 text-truncate">
+                    <div class="h6 mb-0">Bill</div>
+                    <span class="small" id="total_bill"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col my-2">
         <div class="alert-info alert mb-0 shadow">
             <a href="{{route('accounts.index')}}">
             <div class="d-flex align-items-center">
@@ -59,6 +70,61 @@
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+        <a href="{{route('employees.index')}}">
+            <div class="card dash-widget ">
+                <div class="card-body">
+                    <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
+                    <div class="dash-widget-info">
+                        <h3>{{$total_emp}}</h3>
+                        <span>Daily Sale</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+        <a href="{{route('customers.index')}}">
+            <div class="card dash-widget ">
+                <div class="card-body">
+                    <span class="dash-widget-icon"><i class="la la-users"></i></span>
+                    <div class="dash-widget-info">
+                        <h3>{{$items['customer']??0}}</h3>
+                        <span>Contact</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+        <a href="{{route('transactions.index')}}">
+            <div class="card dash-widget ">
+                <div class="card-body">
+                    <span class="dash-widget-icon"><i class="la la-retweet"></i></span>
+                    <div class="dash-widget-info">
+                        <h3>{{$items['transaction']??0}}</h3>
+                        <span>Transactions</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+        <a href="{{route('groups.index')}}">
+            <div class="card dash-widget ">
+                <div class="card-body">
+                    <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
+                    <div class="dash-widget-info">
+                        <h3>{{$items['my_groups']??0}}</h3>
+                        <span>Group</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3 ">
         <a href="{{route('tickets.index')}}">

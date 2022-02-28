@@ -14,4 +14,7 @@ class ProductReceiveItem extends Model
     public function warehouse(){
         return $this->belongsTo(Warehouse::class,'warehouse_id','id');
     }
+    public function product_unit(){
+        return $this->belongsTo(SellingUnit::class,'unit','id');
+    }
 }

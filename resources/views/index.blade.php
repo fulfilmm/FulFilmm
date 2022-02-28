@@ -208,6 +208,7 @@
                 $('#total_income').text("{{number_format($items['current_month_income'])??0}}");
                 $('#total_expense').text("{{number_format($items['current_month_expense'])??0}}");
                 $('#total_profit').text("{{number_format($items['current_month_profit'])??0}}");
+                $('#total_bill').text("{{number_format($items['current_month_bill'])??0}}");
 
                 });
             function report_type (val) {
@@ -215,18 +216,22 @@
                     $('#total_income').text("{{number_format($items['total_income'])??0}}");
                     $('#total_expense').text("{{number_format($items['total_expense'])??0}}");
                     $('#total_profit').text("{{number_format($items['profit'])??0}}");
+                    $('#total_bill').text("{{number_format($items['total_bill'])??0}}");
                 } else if (val == 2) {
                     $('#total_income').text("{{number_format($items['first_term_income'])??0}}");
                     $('#total_expense').text("{{number_format($items['first_term_expense'])??0}}");
                     $('#total_profit').text("{{number_format($items['first_term_profit'])??0}}");
+                    $('#total_bill').text("{{number_format($items['first_term_bill'])??0}}");
                 } else if (val == 3) {
                     $('#total_income').text("{{number_format($items['second_term_income'])??0}}");
                     $('#total_expense').text("{{number_format($items['second_term_expense'])??0}}");
                     $('#total_profit').text("{{number_format($items['second_term_profit'])??0}}");
+                    $('#total_bill').text("{{number_format($items['second_term_bill'])??0}}");
                 } else {
                     $('#total_income').text("{{number_format($items['current_month_income'])??0}}");
                     $('#total_expense').text("{{number_format($items['current_month_expense'])??0}}");
                     $('#total_profit').text("{{number_format($items['current_month_profit'])??0}}");
+                    $('#total_bill').text("{{number_format($items['current_month_bill'])??0}}");
                 }
             }
         </script>

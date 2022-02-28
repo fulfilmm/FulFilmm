@@ -27,6 +27,7 @@
                          <th>Deadline</th>
                          <th>Type</th>
                          <th>Supplier</th>
+                         <th>Requester</th>
                          <th>Approver</th>
                          <th>Status</th>
                          <th>Action</th>
@@ -39,6 +40,7 @@
                              <td>{{\Carbon\Carbon::parse($pr->deadline)->toFormattedDateString()}}</td>
                              <td>{{$pr->type}}</td>
                              <td>{{$pr->vendor->name??'N/A'}}</td>
+                             <td>{{$pr->employee->name}}</td>
                              <td>{{$pr->approver->name}}</td>
                              <td>
                                  <div class="dropdown action-label" id="status_div">

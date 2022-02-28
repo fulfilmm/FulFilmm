@@ -20,9 +20,10 @@
                     <table class="table table-striped custom-table" id="account">
                         <thead>
                         <tr>
+                            <th>Account No</th>
                             <th >
                                 Name</th>
-                            <th>Account
+                            <th>Bank Account
                                 Number</th>
                             <th >Current
                                 Balance</th>
@@ -34,6 +35,7 @@
                         <tbody>
                         @foreach($account as $acc)
                             <tr>
+                                <th>{{$acc->account_no??''}}</th>
                                 <td >
                                     <a href="{{route('accounts.show',$acc->id)}}">{{$acc->name}}</a></td>
                                 <td >{{$acc->number}}</td>

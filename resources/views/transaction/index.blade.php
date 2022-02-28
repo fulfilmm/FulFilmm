@@ -124,11 +124,4 @@
     </div>
     {{--<script src="{{url(asset('js/jquery_print.js'))}}"></script>--}}
     {{--<script src="{{url(asset('js/datatable_button.js'))}}"></script>--}}
-    <script>
-        $(document).ready(function () {
-            $('#transaction').DataTable();
-            $('.dataTables_filter input').remove('form-control');
-            $('.dataTables_filter input').addClass('rounded');
-        })
-    </script>
 @endsection

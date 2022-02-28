@@ -37,9 +37,9 @@ class BillController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($supplier_id)
+    public function create()
     {
-        $vendor =Customer::where('id',$supplier_id)->first();
+        $vendor =Customer::all();
 //        dd($vendor);
         $Auth=Auth::guard('employee')->user()->name;
 //        Session::forget('data-'.Auth::guard('employee')->user()->id);
@@ -53,17 +53,7 @@ class BillController extends Controller
         }else{
             $request_id=Session::get($Auth);
         }
-//        $generate_id=Str::uuid();
-        $items=BillItem::with('purchaseorder','delivery')->where('creation_id',$request_id)->get();
-//        dd($orderline);
-        $total = DB::table("bill_items")
-            ->select(DB::raw("SUM(amount) as total"))
-            ->where('creation_id', $request_id)
-            ->get();
-        $grand_total = $total[0]->total;
-        $pos=PurchaseOrder::where('paid_bill',0)->where('vendor_id',$supplier_id)->get();
-        $delivery=DeliveryOrder::where('paid_deli_fee',0)->where('courier_id',$supplier_id)->get();
-        return view('transaction.Bill.create',compact('vendor','data','grand_total','request_id','items','pos','delivery'));
+        return view('transaction.Bill.normalbill',compact('vendor','data','request_id'));
     }
 
     /**

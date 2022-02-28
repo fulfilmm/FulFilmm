@@ -15,4 +15,7 @@ class PurchaseRequest extends Model
     public function approver(){
         return $this->belongsTo(Employee::class,'approver_id','id');
     }
+    public function employee(){
+        return $this->belongsTo(Employee::class,'creator_id','id');
+    }
 }

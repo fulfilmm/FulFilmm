@@ -23,7 +23,7 @@ class CreatePurchaseOrderItemsTable extends Migration
             $table->double('price')->default(0);
             $table->string('creation_id');
             $table->double('total')->default(0);
-            $table->string('unit');
+            $table->bigInteger('unit')->unsigned();
             $table->timestamps();
         });
     }

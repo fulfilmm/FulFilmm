@@ -12,6 +12,7 @@ use App\Models\ProductVariations;
 use App\Models\PurchaseOrder;
 use App\Models\PurchaseOrderItem;
 use App\Models\RequestForQuotation;
+use App\Models\SellingUnit;
 use App\Models\StockIn;
 use App\Models\StockOut;
 use App\Models\StockTransaction;
@@ -73,10 +74,12 @@ class InventoryController extends Controller
     {
         $receipt=ProductReceive::with('purchaseorder','vendor')->where('id',$id)->firstOrFail();
 //        dd($receipt);
-        $receipt_item=ProductReceiveItem::with('product','warehouse')->get();
+        $receipt_item=ProductReceiveItem::with('product','warehouse','product_unit')->get();
+        $sell_unit=SellingUnit::where('unit_convert_rate',1)->get();
+//        dd($receipt_item);
         $product=product::all()->pluck('name','id')->all();
         $warehouse=Warehouse::all()->pluck('name','id')->all();
-        return view('Inventory.receivedproduct',compact('receipt','receipt_item','product','warehouse'));
+        return view('Inventory.receivedproduct',compact('receipt','receipt_item','product','warehouse','sell_unit'));
     }
 
     /**
@@ -120,7 +123,7 @@ class InventoryController extends Controller
     public function product_validate(Request $request,$id){
       $receipt=ProductReceive::where('id',$id)->first();
 //      dd($receipt);
-      $rec_item=ProductReceiveItem::where('receipt_id',$id)->get();
+      $rec_item=ProductReceiveItem::with('product_unit')->where('receipt_id',$id)->get();
       for ($i=0;$i<count($rec_item);$i++){
           $rec_item[$i]->demand=$request->demand[$i];
           $rec_item[$i]->qty=$request->done[$i];

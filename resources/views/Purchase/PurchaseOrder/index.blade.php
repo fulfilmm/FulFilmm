@@ -17,38 +17,47 @@
                 </div>
             </div>
         </div>
-        <div class="col-12">
-            <table class="table dataTable table-border">
-                <thead>
-                <tr>
-                    <th>Order ID</th>
-                    <th>Order Date</th>
-                    <th>Deadline</th>
-                    <th>Type</th>
-                    <th>Supplier</th>
-                    <th>Discount</th>
-                    <th>Total Amount</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach($purchase_orders as $po)
-                    <tr>
-                        <td>{{$po->po_id}}</td>
-                        <td>{{\Carbon\Carbon::parse($po->ordered_date)->toFormattedDateString()}}</td>
-                        <td>{{\Carbon\Carbon::parse($po->deadline)->toFormattedDateString()}}</td>
-                        <td>{{$po->purchase_type}}</td>
-                        <td>{{$po->vendor->name}}</td>
-                        <td>{{$po->discount}}</td>
-                        <td>{{$po->grand_total}}</td>
-                        <td>
-                            <a href="{{route('purchaseorders.edit',$po->id)}}" class="btn btn-white btn-sm"><i class="fa fa-edit"></i></a>
-                            <a href="{{route('purchaseorders.show',$po->id)}}" class="btn btn-white btn-sm"><i class="fa fa-eye"></i></a>
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
-        </div>
+      <div class="card shadow">
+          <div class="col-12 my-3">
+              <table class="table table-hover table-nowrap" id="po_table">
+                  <thead>
+                  <tr>
+                      <th>Order ID</th>
+                      <th>Order Date</th>
+                      <th>Deadline</th>
+                      <th>Ordered Employee</th>
+                      <th>Type</th>
+                      <th>Supplier</th>
+                      <th>Discount</th>
+                      <th>Total Amount</th>
+                      <th>Action</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  @foreach($purchase_orders as $po)
+                      <tr>
+                          <td>{{$po->po_id}}</td>
+                          <td>{{\Carbon\Carbon::parse($po->ordered_date)->toFormattedDateString()}}</td>
+                          <td>{{\Carbon\Carbon::parse($po->deadline)->toFormattedDateString()}}</td>
+                          <td>{{$po->employee->name}}</td>
+                          <td>{{$po->purchase_type}}</td>
+                          <td>{{$po->vendor->name}}</td>
+                          <td>{{$po->discount}}</td>
+                          <td>{{$po->grand_total}}</td>
+                          <td>
+                              <a href="{{route('purchaseorders.edit',$po->id)}}" class="btn btn-white btn-sm"><i class="fa fa-edit"></i></a>
+                              <a href="{{route('purchaseorders.show',$po->id)}}" class="btn btn-white btn-sm"><i class="fa fa-eye"></i></a>
+                          </td>
+                      </tr>
+                  @endforeach
+                  </tbody>
+              </table>
+          </div>
+      </div>
     </div>
+    <script>
+        $(document).ready(function () {
+           $('#po_table').DataTable();
+        });
+    </script>
 @endsection

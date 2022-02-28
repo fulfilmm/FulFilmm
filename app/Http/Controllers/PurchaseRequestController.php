@@ -25,7 +25,7 @@ class PurchaseRequestController extends Controller
      */
     public function index()
     {
-        $purchase_request=PurchaseRequest::orderBy('id', 'desc')->with('approver','vendor')
+        $purchase_request=PurchaseRequest::orderBy('id', 'desc')->with('approver','vendor','employee')
             ->orWhere('creator_id',Auth::guard('employee')->user()->id)
             ->orWhere('approver_id',Auth::guard('employee')->user()->id)
             ->get();
@@ -228,7 +228,7 @@ class PurchaseRequestController extends Controller
         $purchase_request=PurchaseRequest::where('id',$id)->firstorFail();
         $purchase_request->status=$request->status;
         $purchase_request->update();
-        $this->addnotify($request->creator_id,'general',' Requested purchase request id '.$purchase_request->pr_id.'to you','purchase_request/'.$purchase_request->id,$purchase_request->approver_id);
+        $this->addnotify($purchase_request->creator_id,'general',' Requested purchase request id '.$purchase_request->pr_id.'to you','purchase_request/'.$purchase_request->id,$purchase_request->approver_id);
     }
     public function comment(Request $request){
         $pr_cmt=new PurchaseRequestComment();
