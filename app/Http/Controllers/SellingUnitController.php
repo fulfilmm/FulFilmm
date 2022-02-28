@@ -85,7 +85,7 @@ class SellingUnitController extends Controller
         $unit=SellingUnit::where('id',$id)->first();
         $unit->unit=$request->unit;
         $unit->unit_convert_rate=$request->unit_convert_rate;
-        $unit->product_id=$request->product_id;
+//        $unit->product_id=$request->product_id;
         $unit->update();
         return redirect(route('sellingunits.index'));
     }
