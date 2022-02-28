@@ -180,6 +180,22 @@ class HomeController extends Controller
                     ->select(DB::raw("SUM(amount) as total"))
                     ->whereYear('transaction_date', date('Y'))
                     ->get();
+                $current_year_bill = DB::table("bills")
+                    ->select(DB::raw("SUM(grand_total) as total"))
+                    ->whereYear('bill_date', date('Y'))
+                    ->get();
+                $current_month_bill = DB::table("bills")
+                    ->select(DB::raw("SUM(grand_total) as total"))
+                    ->whereMonth('bill_date', date('m'))
+                    ->get();
+                $first_6month_bill = DB::table("bills")
+                    ->select(DB::raw("SUM(grand_total) as total"))
+                    ->whereBetween('bill_date', [$start, $mid])
+                    ->get();
+                $second_6month_bill = DB::table("bills")
+                    ->select(DB::raw("SUM(grand_total) as total"))
+                    ->whereBetween('bill_date', [$mid, $end])
+                    ->get();
                 $current_year_expense = DB::table("expenses")
                     ->select(DB::raw("SUM(amount) as total"))
                     ->whereYear('transaction_date', date('Y'))
@@ -192,6 +208,7 @@ class HomeController extends Controller
                     ->select(DB::raw("SUM(amount) as total"))
                     ->whereMonth('transaction_date', date('m'))
                     ->get();
+
                 $first_6month_income = DB::table("revenues")
                     ->select(DB::raw("SUM(amount) as total"))
                     ->whereBetween('transaction_date', [$start, $mid])
@@ -233,6 +250,10 @@ class HomeController extends Controller
                     ->orWhere('secondary_approved',Auth::guard('employee')->user()->id)
                     ->count();
                 $items = [
+                    'first_term_bill'=>$first_6month_bill[0]->total??0,
+                    'total_bill'=>$current_year_bill[0]->total??0,
+                    'second_term_bill'=>$second_6month_bill[0]->total??0,
+                    'current_month_bill'=>$current_month_bill[0]->total??0,
                     'saleactivity'=>$sale_activity,
                     'requestation'=>$requestation,
                     'customer'=>$contact,
