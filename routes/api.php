@@ -4,6 +4,8 @@ use App\Http\Controllers\Api\ApiAuthController;
 use App\Http\Controllers\Api\ComplainTicket;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\InvoiceController;
+use App\Http\Controllers\Api\CarController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
@@ -26,7 +28,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::middleware(['auth:api'])->prefix('auth')->group(function () {
 
     Route::resource('api_products',App\Http\Controllers\Api\ProductController::class);
-    Route::resource('api_employees',\App\Http\Controllers\Api\EmployeeController::class);
+    Route::resource('api_employees',App\Http\Controllers\Api\EmployeeController::class);
     Route::post('logout',[ApiAuthController::class,'login'])->name('logout');
     Route::resource('api_customers', CustomerController::class);
     Route::resource("api_invoices",InvoiceController::class);
@@ -41,5 +43,9 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
        return response()->json(['role'=>$aa]);
     });
 });
+
+Route::apiResource("car_data", CarController::class);
+
+
 Route::post('/auth/login',[ApiAuthController::class,'login'])->name('login');
 

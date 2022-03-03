@@ -55,6 +55,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ShippmentController;
+use App\Http\Controllers\CarBooking\CarsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -159,6 +160,13 @@ Route::middleware(['auth:employee'])->group(function () {
     Route::get('notification/index',[\App\Http\Controllers\NotificationController::class,'index'])->name('notifications.index');
     Route::get('notification/delete/{id}',[\App\Http\Controllers\NotificationController::class,'destroy'])->name('notifications.delete');
     Route::get('notification/{uuid}',[\App\Http\Controllers\NotificationController::class,'show'])->name('notifications.show');
+
+    //Car Booking System
+    Route::get('/car-list', [CarsController::class, 'index']) -> name('carList');
+
+
+
+
 });
 //Route::resource('saleorders', SaleOrderController::class)->middleware('auth:employee');
 

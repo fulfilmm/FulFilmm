@@ -376,6 +376,23 @@
 
                             </ul>
                         </li>
+
+                        <!------------------------------------- car booking module   --------------------------------------->
+                        
+                        <li class="submenu">
+                            <a href="#"><i class="la la-automobile" style="font-size: 18px;"></i> <span> Cars</span> <span
+                                        class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+
+                                <li><a class="{{ Request::is('/car-list') ? 'active' : '' }}"
+                                       href="{{ route('carList') }}" style="text-decoration: none"> Cars List</a></li>
+
+                            </ul>
+                        </li>
+
+                        <!------------------------------------------------  end  ------------------------------------------------------>
+
+
                         <li class="submenu">
                             <a href="#"><i class="la la-cube"></i> <span>Sale</span> <span
                                         class="menu-arrow"></span></a>

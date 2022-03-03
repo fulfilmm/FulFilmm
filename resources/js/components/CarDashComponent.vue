@@ -1,0 +1,373 @@
+<template>
+  <div class=" container-fluid">
+      <!-- Button trigger modal -->
+
+            <div class=" d-flex flex-row-reverse mt-3">
+                <button type="button" class="btn btn-primary rounded-pill shadow-lg px-3 mb-5" data-toggle="modal" data-target=".bd-example-modal-xl">
+                    Upload New Car Data
+                </button>
+            </div>
+
+            <div class=" container-fluid my-4">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                   
+                      <th scope="col"> License Number</th>
+                      <th scope="col"> Brand </th>
+                      <th scope="col"> Model </th>
+                      <th scope="col"> Status </th>
+                      <th scope="col"> Alert  </th>
+                      <th scope="col"> Detail</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="car in cars" :key="car.id">
+                      
+                      <td> {{car.license_no}}</td>
+                      <td> {{car.brand}}</td>
+                      <td> {{ car.model}}</td>
+                      <td> 
+                        <div  v-if="car.status == 0"> Working </div>  
+                        <div  v-else-if="car.status == 1" class="text-warning"> Maintain </div>
+                        <div  v-else-if="car.status == 2" class="text-danger"> Repair </div>
+                      </td>
+
+                      <td class=""> 
+                        <span class="px-2 py-2 text-sm rounded-pill bg-danger text-white"  v-if="car.license_renew_date <= lastMonth"> License Expire Soon</span>
+                        <span class="px-2 py-2 text-sm rounded-pill bg-success text-white"  v-else> Nothing Happen </span>   
+                      </td>
+                      <td> <button type="button" class=" btn btn-info shodow-md px-3 border-none rounded-pill text-white"> Detail </button> </td>
+                    </tr>
+                    
+                  </tbody>
+                </table>
+            </div>
+      
+               
+                       
+                <!-- upload data Modal -->
+               <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                    <div class="modal-body">
+                    
+                            <form @submit.prevent="store" class="row">
+                                <div class="form-group col-md-6 col-sm-12">
+                                  <input type="text" v-model="car.license_no" class="form-control" placeholder=" Please Fill License Number" aria-describedby="helpId">
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                  <input type="text"  v-model="car.brand" class="form-control" placeholder="Please Fill Car Brand" aria-describedby="helpId">
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                  <input type="text" v-model="car.model"  class="form-control" placeholder="Please Fill Car Model" aria-describedby="helpId">
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                  <input type="text" v-model="car.manufacture" class="form-control" placeholder="Please Fill Manufacturing Company" aria-describedby="helpId">
+                                </div>
+
+                                 <div class="form-group col-md-6 col-sm-12">
+                                  <input type="text" v-model="car.engine" class="form-control" placeholder="Please Fill Engine Type" aria-describedby="helpId">
+                                </div>
+
+                                 <div class="form-group col-md-6 col-sm-12">
+                                  <input type="text" v-model="car.horsepower" class="form-control" placeholder="Please Fill Horsepower" aria-describedby="helpId">
+                                </div>
+
+                                 <div class="form-group col-md-6 col-sm-12">
+                                  <input type="text" v-model="car.chassis" class="form-control" placeholder="Please Fill Chassis" aria-describedby="helpId">
+                                </div>
+
+                                <div class="form-group">
+                                  <input type="text" v-model="car.kilometer" class="form-control" placeholder="Please Fill Original Kilometer" aria-describedby="helpId">
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12 mx-auto d-flex">
+                                      <label for="issue_date" class="mx-4"> License Issue Date</label>
+                                      <date-picker v-model="car.license_issue_date" valueType="format" placeholder="choose date"></date-picker>
+                                </div>
+
+                                 <div class="form-group col-md-6 col-sm-12 mx-auto d-flex">
+                                      <label for="renew_date" class="mx-4"> License Renew Date </label>
+                                      <date-picker v-model="car.license_renew_date" valueType="format" placeholder="choose date"></date-picker>
+                                </div>
+
+
+                                 <div class="form-group col-md-6 col-sm-12">
+                                  <label class="mr-sm-2" for="inlineFormCustomSelect0">Please Add Car Status</label>
+                                  <select class="custom-select mr-sm-2" id="inlineFormCustomSelect0" v-model="car.status">
+                                   
+                                    <option value="0">Working</option>
+                                    <option value="1">Maintain</option>
+                                    <option value="2">Repair</option>
+                                  </select>
+                                </div>
+
+                                 <div class="form-group col-md-6 col-sm-12">
+                                  <label class="mr-sm-2" for="inlineFormCustomSelect">Please Add Fuel Types</label>
+                                  <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" v-model="car.fuel_type">
+                                  
+                                    <option value="0">Petro</option>
+                                    <option value="1">Diesel</option>
+                                  </select>
+                                </div>
+
+                                 <div class="form-group col-md-6 col-sm-12">
+                                      <input type="text" v-model="car.seat" class="form-control" placeholder="Seat" aria-describedby="helpId">
+                                </div>
+
+                                 <div class="form-group col-md-6 col-sm-12">
+                                      <input type="text" v-model="car.purchase_value" class="form-control" placeholder="Purchase Value" aria-describedby="helpId">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="mr-sm-2" for="inlineFormCustomSelect1">Car Types</label>
+                                      <select class="custom-select mr-sm-2" id="inlineFormCustomSelect1" v-model="car.car_type">
+                                       
+                                        <option value="0">Rent</option>
+                                        <option value="1">Own</option>
+                                      </select>
+                                    </div>
+
+                              <div v-if="this.car.car_type == 0" class="col-12">
+                                    <div class="form-group">
+                                      <input type="text" v-model="car.org_owner_name" class="form-control" placeholder="Please Fill Original Owner Name" aria-describedby="helpId">
+                                    </div>
+                                  
+                                  <div class="d-md-flex mx-auto">
+                                         <div class="form-group col-md-6 d-md-flex">
+                                              <label for="contract_date" class="mx-4"> Contract Date</label>
+                                              <date-picker v-model="car.contract_date" valueType="format" placeholder="choose date"></date-picker>
+                                        </div>
+
+                                        <div class="form-group col-md-6 d-md-flex">
+                                              <label for="issue_date" class="mx-4"> Contract Renew Date</label>
+                                               <date-picker v-model="car.renew_date" valueType="format" placeholder="choose date"></date-picker>
+                                        </div>
+                                  </div>
+                                   
+
+                                    <div class=" form-group mb-3">
+                                      <label for="" class="form-label"> Upload Contract</label>
+                                      <input type="file" class="form-control" @change="selectfile">
+                                    </div> 
+
+                                      
+                                    <div class="form-group">
+                                      <label for="" class="form-label"> Input Description</label>
+                                      <textarea class="form-control" v-model="car.description" rows="3"></textarea>
+                                    </div>
+
+                              </div>
+
+                               <div class=" form-group mb-3">
+                                      <label for="" class="form-label"> Upload Attach</label>
+                                      <input type="file" class="form-control" @change="selectfiles" multiple>
+                                    </div> 
+
+                                
+                                <div class="d-flex flex-row-reverse">
+                                  
+
+                                    <button type="button" class="btn btn-danger mx-3" data-dismiss="modal">Close Box</button>
+                                    <button type="submit" class="btn btn-success mx-3">Upload Data</button>
+                               
+                               </div>
+                               
+
+
+                            </form>
+                         
+
+
+                      
+                        
+                    </div>
+                    </div>
+                </div>
+                </div>
+
+                <div>
+              
+               
+            </div>
+  </div>
+</template>
+
+<script>
+
+    //const DatePicker = require('vue2-datepicker')
+    import DatePicker from 'vue2-datepicker';
+    import 'vue2-datepicker/index.css';
+    import moment from 'moment'
+
+    export default {
+
+        components: { DatePicker },
+         data() {
+            return {
+
+                    moment:moment,
+
+                    lastMonth: moment().add(1, 'month').format("YYYY-MM-DD"),
+
+                    openBox: false ,
+
+                    cars:[],
+
+                    car: {              
+                        license_no: null,
+                        brand: null,
+                        model: null,
+                        manufacture: null,
+                        engine:null,
+                        horsepower:null,
+                        chassis:null,
+                        kilometer: null,
+                        upd_kilometer: null,
+                        license_issue_date: '',
+                        license_renew_date: '',
+                        status: null,
+                        fuel_type: null,
+                        seat: null,
+                        purchase_value: null,
+                        car_type: null,
+                        contract_date: '',
+                        org_owner_name: null,
+                        renew_date: '',
+                        contract: null,
+                        attach:[],
+                        description: null,
+                    }
+                
+            };
+            },
+
+            methods: {
+
+              openMe(){
+                  this.openBox= true;
+              },
+
+                reset() {
+                  this.car = {
+                      license_no: null,
+                        brand: null,
+                        model: null,
+                        manufacture: null,
+                        engine:null,
+                        horsepower:null,
+                        chassis:null,
+                        kilometer: null,
+                        upd_kilometer: null,
+                        license_issue_date: '',
+                        license_renew_date: '',
+                        status: null,
+                        fuel_type: null,
+                        seat: null,
+                        purchase_value: null,
+                        car_type: null,
+                        contract_date: '',
+                        org_owner_name: null,
+                        renew_date: '',
+                        contract: null,
+                        attach:null,
+                        description: null,
+                  }
+                },
+
+                close() {
+                  this.openBox = false ;
+                },
+
+                view() {
+                  axios.get("/api/car_data")
+                  .then(response => {
+                    this.cars = response.data
+                  });
+                },
+
+                //for single file
+                selectfile(event) {
+                     this.car.contract = event.target.files[0];
+                },
+
+                //for multiple file
+                selectfiles(event){
+                    let files = event.target.files;
+                    if( !files.length) {
+                      return false;
+                    }
+
+                  for (let i = 0; i < files.length; i++) {
+                    this.car.attach.push( files[i]);
+                    
+                  }
+                  
+                  //console.log(this.car.attach);
+                  
+                },
+
+               
+                
+                store(){
+
+                  const data = new FormData();
+                  data.append('license_no' , this.car.license_no);
+                  data.append('brand' , this.car.brand);
+                  data.append('model', this.car.model);
+                  data.append('manufacture', this.car.manufacture);
+                  data.append('engine', this.car.engine);
+                  data.append('horsepower', this.car.horsepower);
+                  data.append('chassis', this.car.chassis);
+                  data.append('kilometer', this.car.kilometer);
+                  data.append('upd_kilometer', this.car.upd_kilometer);
+                  data.append('license_issue_date', this.car.license_issue_date);
+                  data.append('license_renew_date', this.car.license_renew_date);
+                  data.append('status', this.car.status);
+                  data.append('fuel_type', this.car.fuel_type);
+                  data.append('seat', this.car.seat);
+                  data.append('purchase_value', this.car.purchase_value);
+                  data.append('car_type', this.car.car_type);
+                  data.append('contract_date', this.car.contract_date);
+                  data.append('org_owner_name', this.car.org_owner_name);
+                  data.append('renew_date', this.car.renew_date);
+                  data.append('contract', this.car.contract);
+                  data.append('attach[]', this.car.attach);
+                  data.append('description', this.car.description);
+                  
+                  const config = {
+                                      headers: {
+                                          'content-type': 'multipart/form-data',
+                                          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                      }
+                                  }
+
+                    axios.post("/api/car_data" , data , config)
+                               .then((response) => {
+                                  this.reset();
+                                  this.view();
+                                 //currentObj.success = response.data.success;
+                                 // this.close();
+                                  console.log(response);
+                                 
+                                })
+                              .catch(error => {
+                                  console.log("ERRRR:: ",error.response.data);
+
+                                  });   
+                                    }
+                                },
+
+            created(){
+              this.view();
+            },
+
+            mounted() {
+                console.log('Component mounted.')
+            }
+    }
+</script>
