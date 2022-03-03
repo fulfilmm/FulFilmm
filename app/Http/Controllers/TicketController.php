@@ -469,7 +469,7 @@ class TicketController extends Controller
     public function report_status()
     {
         $all_status = status::all();
-//        dd($all_status);
+        dd($all_status);
         $statuses = [];
         $report_for_agent = $this->agent_all_ticket();
         for ($i = 0; $i < count($all_status); $i++) {
