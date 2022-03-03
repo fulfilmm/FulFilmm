@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
         ThemeSetting::create(['name'=>'Purple','link'=>'purplestyle.css','active'=>0]);
         ThemeSetting::create(['name'=>'Orange','link'=>'orangestyle.css','active'=>0]);
         ThemeSetting::create(['name'=>'Maroon','link'=>'maroonstyle.css','active'=>0]);
-       $warehouse= Warehouse::create(['name'=>'Main Warehouse']);
+       $warehouse= Warehouse::create(['warehouse_id'=>'WH-001','name'=>'Main Warehouse']);
         products_tax::create(['name'=>'Tax Free','rate'=>0]);
         products_tax::create(['name'=>'Personal Income Tax','rate'=>5]);
         Department::create(['name'=>'Sale Department']);
@@ -41,6 +41,8 @@ class DatabaseSeeder extends Seeder
         Department::create(['name'=>'Administration']);
         Department::create(['name'=>'Marketing Department']);
         Department::create(['name'=>'Warehouse Department']);
+        Department::create(['name'=>'CEO Office']);
+        Department::create(['name'=>'MD Office']);
         Department::create(['name'=>'Procurement']);
         products_category::create(['name'=>'Electronic','parent'=>1]);
         products_category::create(['name'=>'Beauty','parent'=>1]);

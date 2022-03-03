@@ -24,6 +24,7 @@
                             <th>Bill Date</th>
                             <th>Due Date</th>
                             <th>Supplier</th>
+                            <th>Status</th>
                             <th>Amount</th>
                             <th>Action</th>
                         </tr>
@@ -35,6 +36,7 @@
                                 <td>{{\Carbon\Carbon::parse($bill->bill_date)->toFormattedDateString()}}</td>
                                 <td>{{\Carbon\Carbon::parse($bill->due_date)->toFormattedDateString()}}</td>
                                 <td>{{$bill->supplier->name}}</td>
+                                <td>{{$bill->status}}</td>
                                 <td>{{$bill->grand_total}}</td>
                                 <td>
                                     <div class="row">

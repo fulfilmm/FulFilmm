@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\EmployeeExport;
 use App\Exports\StockExport;
+use App\Imports\StockImport;
 use App\Models\Customer;
 use App\Models\DamagedProduct;
 use App\Models\Employee;
@@ -22,6 +23,7 @@ use App\Models\Warehouse;
 use App\Traits\NotifyTrait;
 use App\Traits\StockTrait;
 use Carbon\Carbon;
+use http\Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
@@ -276,6 +278,14 @@ class StockTransactionController extends Controller
         $wareshouse=Warehouse::all()->pluck('name','id')->all();
         $history=StockUpdatedHistory::with('stock','variant')->where('stock_id',$id)->get();
         return view('stock.stockupdatehistory',compact('history','units','wareshouse'));
+    }
+    public function import(Request $request){
+        try {
+            Excel::import(new StockImport(), $request->file('import'));
+            return redirect()->route('stocks')->with('success', __('alert.import_success'));
+        } catch (Exception $e) {
+            return redirect()->route('stocks')->with('error', $e->getMessage());
+        }
     }
 
 }

@@ -18,8 +18,13 @@ class CreateProductPricesTable extends Migration
             $table->bigInteger('product_id')->unsigned();
             $table->bigInteger('unit_id')->unsigned();
             $table->string('sale_type');
+            $table->string('rule')->nullable();
+            $table->tinyInteger('multi_price')->default(0);
+            $table->double('min')->nullable();
+            $table->double('max')->nullable();
+            $table->dateTime('start_date')->nullable();
+            $table->dateTime('end_date')->nullable();
             $table->double('price');
-            $table->double('barcode')->nullable();
             $table->tinyInteger('active')->default(1);
             $table->timestamps();
         });

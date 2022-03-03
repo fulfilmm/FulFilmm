@@ -22,6 +22,12 @@
                 @method('put')
                 <div class="card-body">
                     <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="no">Account ID</label>
+                                <input type="text" class="form-control" name="account_id" id="no">
+                            </div>
+                        </div>
                         <div class="form-group col-md-6 required">
                             <label for="name" class="form-control-label">Name</label>
                             <div class="input-group input-group-merge ">

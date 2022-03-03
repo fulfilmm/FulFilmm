@@ -198,12 +198,6 @@
                                                            </div>
                                                            <div class="col-md-4">
                                                                <div class="form-group">
-                                                                   <label for="">Exp Date</label>
-                                                                   <input type="date" class="form-control" name="exp_date" value="{{\Carbon\Carbon::parse($item->exp_date)->format('Y-m-d')}}">
-                                                               </div>
-                                                           </div>
-                                                           <div class="col-md-4">
-                                                               <div class="form-group">
                                                                    <label for="">Variant</label>
                                                                    <input type="text" class="form-control" name="variant" value="{{$item->variant}}" placeholder='Enter this format : "Color:Red Size:XL"'>
                                                                    @error('variant')
@@ -213,19 +207,10 @@
                                                            </div>
                                                            <div class="col-md-4">
                                                                <div class="form-group">
-                                                                   <label for="">Purchase Price</label>
-                                                                   <input type="number" class="form-control" name="purchase_price" value="{{$item->purchase_price}}">
-                                                               </div>
-                                                           </div>
-                                                           <div class="col-md-4">
-                                                               <div class="form-group">
-                                                                   <label for="supplier">Supplier(optional)</label>
-                                                                   <select name="supplier_id" id="supplier" class="form-control" style="width: 100%">
-                                                                       <option value="">None</option>
-                                                                       @foreach($supplier as $sup)
-                                                                           <option value="{{$sup->id}}" {{$item->supplier_id==$sup->id?'selected':''}}>{{$sup->name}}</option>
-                                                                       @endforeach
-                                                                   </select>
+                                                                   <input type="radio" name="pricing_type" value="0" id="single">
+                                                                   <label for="single">Single Price</label>
+                                                                   <input type="radio" name="pricing_type" value="1" id="multi">
+                                                                   <label for="multi">Multi Price</label>
                                                                </div>
                                                            </div>
                                                            <div class="col-md-12">
@@ -266,7 +251,7 @@
                                @csrf
                                <div class="row">
                                    <input type="hidden" name="product_id" value="{{$product->id}}">
-                                   <div class="col-md-4">
+                                   <div class="col-md-6">
                                        <div class="form-group">
                                            <label for="">Product Code</label>
                                            <div class="input-group">
@@ -278,19 +263,13 @@
                                            @enderror
                                        </div>
                                    </div>
-                                   <div class="col-md-4">
+                                   <div class="col-md-6">
                                        <div class="form-group">
                                            <label for="">Serial No.</label>
                                            <input type="text" class="form-control" name="serial_no" value="{{old('serial_no')}}">
                                        </div>
                                    </div>
-                                   <div class="col-md-4">
-                                       <div class="form-group">
-                                           <label for="">Exp Date</label>
-                                           <input type="date" class="form-control" name="exp_date" value="{{\Carbon\Carbon::parse(old('exp_date'))->format('Y-m-d')}}">
-                                       </div>
-                                   </div>
-                                   <div class="col-md-4">
+                                   <div class="col-md-6">
                                        <div class="form-group">
                                            <label for="">Variant</label>
                                            <input type="text" class="form-control" name="variant" value="{{old('variant')}}" placeholder='Enter this format : "Color:Red Size:XL"'>
@@ -299,21 +278,12 @@
                                            @enderror
                                        </div>
                                    </div>
-                                   <div class="col-md-4">
-                                       <div class="form-group">
-                                           <label for="supplier">Supplier(optional)</label>
-                                           <select name="supplier_id" id="supplier" class="form-control" style="width: 100%">
-                                               <option value="">None</option>
-                                               @foreach($supplier as $sup)
-                                                   <option value="{{$sup->id}}">{{$sup->name}}</option>
-                                                   @endforeach
-                                           </select>
-                                       </div>
-                                   </div>
-                                   <div class="col-md-4">
-                                       <div class="form-group">
-                                           <label for="">Purchase Price</label>
-                                           <input type="number" class="form-control" name="purchase_price">
+                                   <div class="col-md-6">
+                                       <div class="form-group mt-5">
+                                           <input type="radio" name="pricing_type" value="0" id="single" checked>
+                                           <label for="single">Single Price</label>
+                                           <input type="radio" name="pricing_type" class="ml-3" value="1" id="multi">
+                                           <label for="multi">Multi Price</label>
                                        </div>
                                    </div>
                                    <div class="col-md-12">

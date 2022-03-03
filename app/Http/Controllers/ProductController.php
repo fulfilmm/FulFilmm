@@ -106,6 +106,7 @@ class ProductController extends Controller
         return view('product.variantadd',compact('product','supplier'));
     }
     public function variant_add(Request $request){
+//        dd($request->all());
         $this->validate($request,[
             'product_code'=>'required',
             'variant'=>'required',
@@ -133,9 +134,7 @@ class ProductController extends Controller
         $variation->product_code=$request->product_code;
         $variation->serial_no=$request->serial_no;
         $variation->variant=$request->variant;
-        $variation->supplier_id=$request->supplier_id;
-        $variation->purchase_price=$request->purchase_price;
-        $variation->exp_date=Carbon::create($request->exp_date);
+        $variation->pricing_type=$request->pricing_type;
         $variation->save();
         return redirect(route('products.show',$request->product_id));
     }
@@ -175,9 +174,7 @@ class ProductController extends Controller
         $variation->product_code=$request->product_code;
         $variation->serial_no=$request->serial_no;
         $variation->variant=$request->variant;
-        $variation->supplier_id=$request->supplier_id;
-        $variation->purchase_price=$request->purchase_price;
-        $variation->exp_date=Carbon::create($request->exp_date);
+        $variation->pricing_type=$request->pricing_type;
         $variation->update();
         return redirect(route('products.show',$variation->product_id))->with('success','Product Variant Updated');
     }

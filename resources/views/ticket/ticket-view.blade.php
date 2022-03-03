@@ -177,6 +177,10 @@
                                         <a href="#" data-toggle="tooltip" data-placement="bottom"
                                            title="{{$assign_ticket->agent->name}}" class="avatar">
                                             <img src="{{url(asset('img/profiles/avatar-02.jpg'))}}" alt=""></a>
+                                        @elseif($assign_ticket->type_of_assign=='group')
+                                        <a href="#" data-toggle="tooltip" data-placement="bottom"
+                                           title="{{$assign_ticket->group->name}}" class="avatar">
+                                            <img src="{{url(asset('img/profiles/avatar-02.jpg'))}}" alt=""> </a>
                                     @else
                                         <a href="#" data-toggle="tooltip" data-placement="bottom"
                                            title="{{$assign_ticket->dept->name}}" class="avatar">
@@ -303,8 +307,9 @@
                         <div class="input-group m-b-30">
                             <select class="select" id="type" name="assignType">
                                 <option value="item0">Choose Assign Type</option>
-                                <option value="dept">Assign To Department</option>
-                                <option value="agent">Assign To Agent</option>
+                                <option value="dept">Department</option>
+                                <option value="group">Group</option>
+                                <option value="agent">Agent</option>
                             </select>
                         </div>
                         <div>
@@ -366,9 +371,13 @@
             $("#type").change(function () {
                 var val = $(this).val();
                 if (val == "dept") {
-                    $("#assign_to").html("@foreach($depts as $dept)<option value='{{$dept->id}}'>{{$dept->name}}</option> @endforeach");
+                    $("#assign_to").html("@foreach($depts as $dept)<option value='{{$dept->id}}' {{old('assign_id')==$dept->id?'selected':''}}>{{$dept->name}}</option> @endforeach");
                 } else if (val == "agent") {
                     $("#assign_to").html(" @foreach($all_emp as $agent)@if($agent->role->name=='Agent')<option value='{{$agent->id}}'>{{$agent->name}}</option> @endif @endforeach");
+                }else if(val=='group'){
+                    $("#assign_to").html("@foreach($group as $key=>$val)<option value='{{$key}}'>{{$val}}</option> @endforeach");
+                }else {
+                    $("#assign_to").html("<option value=''></option>");
                 }
             });
         });

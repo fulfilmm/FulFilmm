@@ -25,9 +25,13 @@ class CreateBillsTable extends Migration
             $table->string('status');
             $table->string('payment_method');
             $table->text('other_information')->nullable();
+            $table->double('discount')->default(0.0);
             $table->double('grand_total');
             $table->double('due_amount');
             $table->bigInteger('emp_id')->unsigned();
+            $table->string('invoice_id')->nullable();
+            $table->dateTime('inv_date')->nullable();
+            $table->string('category')->nullable();
             $table->index(['id','vendor_id']);
             $table->timestamps();
 

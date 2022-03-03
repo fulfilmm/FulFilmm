@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\BankTransactionExport;
 use App\Models\Account;
 use App\Models\Bill;
 use App\Models\Customer;
@@ -12,9 +13,9 @@ use App\Models\MainCompany;
 use App\Models\Revenue;
 use App\Models\Transaction;
 use App\Models\TransactionCategory;
-use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class TransactionController extends Controller
@@ -330,5 +331,8 @@ class TransactionController extends Controller
         }
 
         return redirect(route('transactions.index'));
+    }
+    public function export(Request $request){
+        return Excel::download(new BankTransactionExport($request->start_date,$request->end_date), 'transaction.xlsx');
     }
 }

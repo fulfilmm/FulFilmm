@@ -87,6 +87,9 @@ class BillController extends Controller
         $bill->grand_total=$request->grand_total;
         $bill->due_amount=$request->grand_total;
         $bill->emp_id=Auth::guard('employee')->user()->id;
+        $bill->category=$request->category;
+        $bill->inv_date=$request->inv_date;
+        $bill->invoice_id=$request->invoice_id;
         $bill->save();
         $Auth=Auth::guard('employee')->user()->name;
         $creation_id = Session::get($Auth);

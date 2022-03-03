@@ -17,4 +17,7 @@ class assign_ticket extends Model
     public function ticket(){
         return $this->belongsTo(ticket::class,'ticket_id','id');
     }
+    public function group(){
+        return $this->belongsTo(Group::class,'group_id','id');
+    }
 }

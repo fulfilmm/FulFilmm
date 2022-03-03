@@ -30,6 +30,7 @@
                 <table class="table " id="case">
                     <thead>
                     <tr>
+                        <th>ID</th>
                         <th scope="col">Name</th>
                         <th scope="col">Description</th>
                         <th scope="col">Address</th>
@@ -40,6 +41,7 @@
                     <tbody>
                     @foreach($warehouses as $warehouse)
                         <tr>
+                            <td>{{$warehouse->warehouse_id}}</td>
                             <td><i class="fa fa-home mr-3"></i>{{$warehouse->name}}
                             <td>{{$warehouse->description}}</td>
                             <td>{{$warehouse->address}}</td>

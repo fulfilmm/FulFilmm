@@ -451,6 +451,10 @@ Route::get('delivery/tracking/{uuid}',[ShippmentController::class,'tracking'])->
 
 //new
 Route::resource('bank_transfers',\App\Http\Controllers\BankTransferController::class);
+Route::post('bank/transaction/export',[TransactionController::class,'export'])->name('transactions.export');
+Route::post('stock/import',[StockTransactionController::class,'import'])->name('stocks.import');
+Route::get('add/price',[SellingUnitController::class,'price_add'])->name('add_price');
+Route::get('price/edit/{id}',[SellingUnitController::class,'price_edit'])->name('edit_price');
 
 
 

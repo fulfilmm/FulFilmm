@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateWarehousesTable extends Migration
+class CreateProductStockBatchesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreateWarehousesTable extends Migration
      */
     public function up()
     {
-        Schema::create('warehouses', function (Blueprint $table) {
+        Schema::create('product_stock_batches', function (Blueprint $table) {
             $table->id();
-            $table->string('warehouse_id');
-            $table->string('name');
-            $table->text('address')->nullable();
-            $table->text('description')->nullable();
-            $table->tinyInteger('is_virtual')->default(0);
+            $table->string('batch_no');
+            $table->bigInteger('supplier_id')->unsigned()->nullable();
+            $table->double('qty');
+            $table->double('purchase_price')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +30,6 @@ class CreateWarehousesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('warehouses');
+        Schema::dropIfExists('product_stock_batches');
     }
 }

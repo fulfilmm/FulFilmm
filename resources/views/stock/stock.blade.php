@@ -62,6 +62,7 @@
                     </ul>
                 </div>
                 <div class="col-auto float-right ml-auto">
+                    <button type="button" class="btn btn-outline-primary btn-sm rounded-pill mr-1" data-toggle="modal" data-target="#import"><i class="la la-upload"></i>Import</button>
                     <a data-toggle="modal" data-target="#export"
                        class="btn btn-outline-info rounded-pill btn-sm mr-1"><i
                                 class="fa fa-download mr-1"></i>Export</a>
@@ -102,6 +103,35 @@
                     </div>
                     <a href="{{route('show.transfer')}}" class="btn add-btn btn-sm"><i class="fa fa-plus"></i>Stock
                         Transfer</a>
+                    <div id="import" class="modal custom-modal fade" role="dialog">
+                        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Import</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row justify-content-center">
+                                        <div>
+                                            {{--@dd($route)--}}
+                                            <form action="{{route('stocks.import')}}" method="POST" enctype="multipart/form-data">
+                                                @csrf
+                                                <div class="form-group">
+                                                    <label for="start">File</label>
+                                                    <input type="file" class="form-control" id="file" name="import"  value="" required>
+                                                </div>
+                                                <div class="d-flex justify-content-center">
+                                                    <button type="submit" class="btn btn-primary">Import</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

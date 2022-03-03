@@ -104,31 +104,51 @@ class SellingUnitController extends Controller
     }
     public function price_list(){
 //        dd('je;p');
+        $price_lists=product_price::with('unit','variant')->get();
+        return view('sale.sellingunit.price',compact('price_lists'));
+    }
+    public function price_add(){
         $units=SellingUnit::all();
         $main_product=product::all();
         $products=ProductVariations::all();
-        $price_lists=product_price::with('unit','variant')->get();
-        return view('sale.sellingunit.price',compact('units','products','price_lists','main_product'));
+        return view('sale.sellingunit.price_add',compact('units','main_product','products'));
     }
     public function store_price(Request $request){
+//        dd($request->all());
         $this->validate($request,[
            'product_id'=>'required',
            'unit_id'=>'required',
            'sale_type'=>'required',
-            'price'=>'required'
         ]);
        foreach ($request->product_id as $item){
            $exist_price=product_price::where('product_id',$item)->where('sale_type',$request->sale_type)->where('unit_id',$request->unit_id)->where('active',1)->first();
            $data['product_id']=$item;
            $data['unit_id']=$request->unit_id;
            $data['sale_type']=$request->sale_type;
-           $data['price']=$request->price;
+           $data['price']=$request->single_price;
+           $data['multi_price']=0;
            if($exist_price==null) {
                product_price::create($data);
            }else{
                $exist_price->active=0;
                $exist_price->update();
                product_price::create($data);
+           }
+
+           if($request->type=='multi'){
+             for($i=0;$i<count($request->row_no);$i ++){
+                 $data['product_id']=$item;
+                 $data['unit_id']=$request->unit_id;
+                 $data['sale_type']=$request->sale_type;
+                 $data['price']=$request->price[$i];
+                 $data['multi_price']=1;
+                 $data['rule']=$request->rule[$i];
+                 $data['min']=$request->min_qty[$i];
+                 $data['max']=$request->max_qty[$i];
+                 $data['start_date']=$request->start_date[$i];
+                 $data['end_date']=$request->end_date[$i];
+                     product_price::create($data);
+             }
            }
        }
         return redirect()->back();
