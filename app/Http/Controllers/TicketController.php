@@ -341,12 +341,12 @@ class TicketController extends Controller
     public function assignee(Request $request)
     {
         $this->assign_ticket($request->assign_id, $request->id, $request->assignType,$request->ticket_id);
-        return redirect()->back()->with('success', 'Success assign ticket');
+        return redirect(route('tickets',$request->id))->with('success', 'Success assign ticket');
     }
 
     public function assign_ticket($assigned_id, $id, $type,$ticket_id)
     {
-        $is_assign= assign_ticket::where("ticket_id", $ticket_id)->first();
+        $is_assign= assign_ticket::where("ticket_id", $id)->first();
 
        if($is_assign==null) {
            $assign_ticket = new assign_ticket();
@@ -386,12 +386,12 @@ class TicketController extends Controller
                $this->mailnoti($email, 'Employee of ' . $employee[0]->department->name, 'Your department are Aassigned ', $assign_ticket->ticket->ticket_id, $id);
            }
 
-           $ticket_status = ticket::where('id', $ticket_id)->first();
+           $ticket_status = ticket::where('id', $id)->first();
            $ticket_status->isassign = 1;
            $ticket_status->update();
-           $this->countdown($ticket_id, $assigned_id);
+           $this->countdown($id, $assigned_id);
        }else{
-        return redirect()->back()->with('error','It has been assigned');
+        return redirect(route('tickets',$id))->back()->with('error','It has been assigned');
        }
     }
 
@@ -405,7 +405,8 @@ class TicketController extends Controller
     public function reassign(Request $request)
     {
 //        dd($request->all());
-        $assign_ticket = assign_ticket::with('ticket')->where("ticket_id", $request->ticket_id)->first();
+        $assign_ticket = assign_ticket::with('ticket')->where("ticket_id", $request->id)->first();
+//        dd($assign_ticket);
         if ($request->assignType == "agent") {
             $assign_ticket->agent_id = $request->assign_id;
             $assign_ticket->type_of_assign = $request->assignType;
@@ -553,7 +554,7 @@ class TicketController extends Controller
         Mail::send('ticket.mailnoti', $details, function ($message) use ($details,$address) {
             $message->from($details['from'], $details['company']);
           if(is_array($address)){
-              dd('true');
+//              dd('true');
               foreach ($address as $key=>$val){
                   $message->to($val);
               }
