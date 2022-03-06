@@ -203,7 +203,7 @@
             },
 
             xAxis: {
-                categories: ['Jan', 'Feb', 'March', 'April', 'May', 'June','July','Aug','Sep','Oct','Nov','Dec'],
+                categories: ['Jan', 'Feb', 'Mar', 'April', 'May', 'June','July','Aug','Sep','Oct','Nov','Dec'],
                 labels: {
                     x:3
                 }
@@ -222,7 +222,7 @@
                 data: [
                     {{$monthlysaletarget['Jan']->target??0}},
                     {{$monthlysaletarget['Feb']->target??0}},
-                    {{$monthlysaletarget['March']->target??0}},
+                    {{$monthlysaletarget['Mar']->target??0}},
                     {{$monthlysaletarget['April']->target??0}},
                     {{$monthlysaletarget['May']->target??0}},
                     {{$monthlysaletarget['June']->target??0}},
@@ -239,7 +239,7 @@
                 data: [
                     {{$monthly['Jan']->total??0}},
                     {{$monthly['Feb']->total??0}},
-                    {{$monthly['March']->total??0}},
+                    {{$monthly['Mar']->total??0}},
                     {{$monthly['April']->total??0}},
                     {{$monthly['May']->total??0}},
                     {{$monthly['June']->total??0}},

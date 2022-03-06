@@ -15,7 +15,7 @@ class SaleTargetController extends Controller
 {
     public function index()
     {
-        $month = ['Jan', 'Feb', 'March', 'April', 'May', 'June', "July", 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        $month = ['Jan', 'Feb', 'Mar', 'April', 'May', 'June', "July", 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         $monthly = [];
         $monthlysaletarget = [];
         $current_year = date('Y') + 0;

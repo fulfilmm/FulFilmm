@@ -1,6 +1,7 @@
 <?php
 namespace App\Traits;
 
+use App\Models\ProductStockBatch;
 use App\Models\ProductVariations;
 use App\Models\Stock;
 use App\Models\StockIn;
@@ -11,6 +12,21 @@ trait StockTrait
 {
     public function stockin($request){
         $main_product=ProductVariations::with('product')->where('id',$request['variantion_id'])->first();
+        $last_batch= ProductStockBatch::orderBy('id', 'desc')->where('product_id',$request['variantion_id'])->first();
+
+        if ($last_batch != null) {
+            $last_batch->batch_no++;
+            $batch_no = $last_batch->batch_no;
+        } else {
+            $batch_no = "Batch-00001";
+        }
+        $batch['product_id']=$request['variantion_id'];
+        $batch['batch_no']=$batch_no;
+        $batch['supplier_id']=$request['supplier_id'];
+        $batch['qty']=$request['qty'];
+        $batch['purchase_price']=$request['valuation'];
+        $batch['exp_date']=$request['exp_date'];
+        ProductStockBatch::create($batch);
         $stockin=new StockIn();
 //        dd($request);
         $stockin->variantion_id=$request['variantion_id'];
@@ -18,6 +34,7 @@ trait StockTrait
         $stockin->supplier_id=$request['supplier_id'];
         $stockin->qty=$request['qty'];
         $stockin->save();
+
        if(isset($request['valuation'])){
            if($request['valuation']!=null){
                $main_product->purchase_price=$request['valuation']??0;

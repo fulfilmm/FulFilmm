@@ -136,11 +136,10 @@
                            <th><input type="checkbox" name="all" id="checkall"></th>
                            <th>Product Name</th>
                            <th>Product Code</th>
-                           <th>Supplier</th>
                            <th>Serial Number</th>
                            <th>Variation</th>
                            <th>Disable/Enable</th>
-                           <th>Valuation</th>
+                           <th>Price Rule</th>
                            <th>Created Date</th>
                            <th>Action</th>
 
@@ -154,11 +153,10 @@
                                </td>
                                <td>{{$item->product_name}}</td>
                                <td><a href="{{route('show.variant',$item->id)}}"><strong>{{$item->product_code}}</strong></a></td>
-                               <td>{{$item->supplier->name??'N/A'}}</td>
                                <td>{{$item->serial_no}}</td>
                                <td>{{$item->variant}}</td>
                                <td>{{$item->enable==0?'Disable':'Enable'}}</td>
-                               <td>{{$item->purchase_price??''}}</td>
+                               <td>{{$item->pricing_type?'Multiple Price Rule':'Single Price Rule'}}</td>
                                <td>{{$item->created_at->toFormattedDateString()}}</td>
                                <td>
                                    <div class="row">
@@ -207,9 +205,9 @@
                                                            </div>
                                                            <div class="col-md-4">
                                                                <div class="form-group">
-                                                                   <input type="radio" name="pricing_type" value="0" id="single">
+                                                                   <input type="radio" name="pricing_type" value="0" id="single" {{$item->pricing_type?"":"checked"}}>
                                                                    <label for="single">Single Price</label>
-                                                                   <input type="radio" name="pricing_type" value="1" id="multi">
+                                                                   <input type="radio" name="pricing_type" value="1" id="multi" {{$item->pricing_type?'checked':''}}>
                                                                    <label for="multi">Multi Price</label>
                                                                </div>
                                                            </div>
@@ -334,12 +332,12 @@
             $('select').select2();
             $(document).on('click', '#confirm', function () {
                 var product_id =new Array();
-                $("input:checked").each(function () {
-                    // console.log($(this).val()); //works fine
+                $(".single").each(function () {
+                    console.log($(this).val()); //works fine
                     product_id.push($(this).val());
                 });
                 var action_type=$( "#action_type option:selected" ).val();
-                // alert(action_type);
+                console.log(product_id);
                 $.ajax({
                     type:'POST',
                     data : {action_Type:action_type,product_id:product_id},

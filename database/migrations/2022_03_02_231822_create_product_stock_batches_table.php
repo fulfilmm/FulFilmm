@@ -15,10 +15,12 @@ class CreateProductStockBatchesTable extends Migration
     {
         Schema::create('product_stock_batches', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('product_id')->unsigned();
             $table->string('batch_no');
             $table->bigInteger('supplier_id')->unsigned()->nullable();
             $table->double('qty');
             $table->double('purchase_price')->nullable();
+            $table->dateTime('exp_date');
             $table->timestamps();
         });
     }

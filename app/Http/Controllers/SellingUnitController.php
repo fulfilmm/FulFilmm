@@ -120,19 +120,23 @@ class SellingUnitController extends Controller
            'unit_id'=>'required',
            'sale_type'=>'required',
         ]);
+
        foreach ($request->product_id as $item){
+           $unit=SellingUnit::where('id',$request->unit_id)->first();
+           $unit->active=1;
+           $unit->update();
            $exist_price=product_price::where('product_id',$item)->where('sale_type',$request->sale_type)->where('unit_id',$request->unit_id)->where('active',1)->first();
-           $data['product_id']=$item;
-           $data['unit_id']=$request->unit_id;
-           $data['sale_type']=$request->sale_type;
-           $data['price']=$request->single_price;
-           $data['multi_price']=0;
+           $single_data['product_id']=$item;
+           $single_data['unit_id']=$request->unit_id;
+           $single_data['sale_type']=$request->sale_type;
+           $single_data['price']=$request->single_price;
+           $single_data['multi_price']=0;
            if($exist_price==null) {
-               product_price::create($data);
+               product_price::create($single_data);
            }else{
                $exist_price->active=0;
                $exist_price->update();
-               product_price::create($data);
+               product_price::create($single_data);
            }
 
            if($request->type=='multi'){
@@ -151,7 +155,7 @@ class SellingUnitController extends Controller
              }
            }
        }
-        return redirect()->back();
+        return redirect(route('add.index'));
     }
     public function price_active($status,$id){
         $price=product_price::where('id',$id)->firstOrFail();

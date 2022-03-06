@@ -100,7 +100,7 @@
                     useHTML: true
                 },
                 xAxis: {
-                    categories: ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    categories: ['Jan', 'Feb', 'Mar', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                     labels: {
                         x: -2
                     }
@@ -123,7 +123,7 @@
                     data: [
                         {{$monthly_income['Jan']->total??0}},
                         {{$monthly_income['Feb']->total??0}},
-                        {{$monthly_income['March']->total??0}},
+                        {{$monthly_income['Mar']->total??0}},
                         {{$monthly_income['April']->total??0}},
                         {{$monthly_income['May']->total??0}},
                         {{$monthly_income['June']->total??0}},
@@ -140,7 +140,7 @@
                     data: [
                         {{$monthly_expense['Jan']->total??0}},
                         {{$monthly_expense['Feb']->total??0}},
-                        {{$monthly_expense['March']->total??0}},
+                        {{$monthly_expense['Mar']->total??0}},
                         {{$monthly_expense['April']->total??0}},
                         {{$monthly_expense['May']->total??0}},
                         {{$monthly_expense['June']->total??0}},
@@ -159,7 +159,7 @@
                     data: [
                         {{$profit['Jan']??0}},
                         {{$profit['Feb']??0}},
-                        {{$profit['March']??0}},
+                        {{$profit['Mar']??0}},
                         {{$profit['April']??0}},
                         {{$profit['May']??0}},
                         {{$profit['June']??0}},

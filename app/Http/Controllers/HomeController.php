@@ -50,7 +50,7 @@ class HomeController extends Controller
     {
         $user=Auth::guard('employee')->user();
         $id=Auth::id();
-        $month = ['Jan', 'Feb', 'March', 'April', 'May', 'June', "July", 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        $month = ['Jan', 'Feb', 'Mar', 'April', 'May', 'June', "July", 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         $monthly_expense=[];
         $monthly_income=[];
         $profit=[];

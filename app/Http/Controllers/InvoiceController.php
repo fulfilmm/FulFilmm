@@ -73,14 +73,15 @@ class InvoiceController extends Controller
                 $grand_total = $grand_total + $orderline[$i]->total;
             }
             $status = $this->status;
-            $unit_price = product_price::where('sale_type', 'Whole Sale')->where('active',1)->get();
+            $unit_price=SellingUnit::where('active',1)->get();
+            $prices =product_price::where('sale_type', 'Whole Sale')->where('active',1)->get();
             $dis_promo = DiscountPromotion::where('sale_type', 'Whole Sale')->get();
             $focs = Freeofchare::with('variant')->get();
             $type = 'Whole Sale';
 
             $warehouse = OfficeBranch::with('warehouse')->where('id', $Auth->office_branch_id)->get();
             $aval_product = Stock::with('variant')->where('available', '>', 0)->get();
-            return view('invoice.create', compact('warehouse', 'type', 'request_id', 'allcustomers', 'orderline', 'grand_total', 'status', 'data', 'aval_product', 'taxes', 'unit_price', 'dis_promo', 'focs'));
+            return view('invoice.create', compact('warehouse', 'type', 'request_id', 'allcustomers', 'orderline', 'grand_total', 'status', 'data', 'aval_product', 'taxes', 'unit_price', 'dis_promo', 'focs','prices'));
         }else{
             return redirect()->back()->with('error','Firstly,Fixed your Branch of Office');
     }
@@ -121,14 +122,15 @@ class InvoiceController extends Controller
             $grand_total=$grand_total+$orderline[$i]->total;
         }
         $status=$this->status;
-        $unit_price=product_price::where('sale_type','Rental Sale')->get();
+        $unit_price=SellingUnit::where('active',1)->get();
+        $prices=product_price::where('sale_type','Rental Sale')->get();
         $dis_promo=DiscountPromotion::where('sale_type','Rental Sale')->get();
         $focs=Freeofchare::with('variant')->get();
         $type='Retail Sale';
         $Auth=Auth::guard('employee')->user();
 
         $warehouse=OfficeBranch::with('warehouse')->where('id',$Auth->office_branch_id)->get();
-        return view('invoice.create',compact('warehouse','request_id','allcustomers','orderline','grand_total','status','data','aval_product','taxes','unit_price','dis_promo','focs','type'));
+        return view('invoice.create',compact('warehouse','request_id','allcustomers','orderline','grand_total','status','data','aval_product','taxes','unit_price','dis_promo','focs','type','prices'));
         }else{
             return redirect()->back()->with('error','Firstly,Fixed your Branch of Office');
         }

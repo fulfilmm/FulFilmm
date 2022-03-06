@@ -47,6 +47,12 @@
                            </div>
                            <div class="col-md-6">
                                <div class="form-group">
+                                   <label for="exp_date">Expired Date</label>
+                                   <input type="date" class="form-control" name="exp_date" id="exp_date">
+                               </div>
+                           </div>
+                           <div class="col-md-6">
+                               <div class="form-group">
                                    <label for="warehouse">Warehouse</label>
                                    <select name="warehouse_id" id="warehouse" class="form-control">
                                        @foreach($warehouses as $warehouse)
@@ -55,12 +61,7 @@
                                    </select>
                                </div>
                            </div>
-                           <div class="col-md-6">
-                               <div class="form-group">
-                                   <label for="loca">Location</label>
-                                   <input type="text" class="form-control" name="product_location" placeholder="Enter product location in warehouse">
-                               </div>
-                           </div>
+
                            <div class="col-md-6">
                                <div class="form-group">
                                    <label for="">Quantity</label>
@@ -72,6 +73,12 @@
                                    <label for="value">Valuation</label>
                                    <input type="number" name="purchase_price" class="form-control" placeholder="Enter Valuation">
                                </div>
+                           </div>
+                       </div>
+                       <div class="col-md-12">
+                           <div class="form-group">
+                               <label for="loca">Location</label>
+                               <input type="text" class="form-control" name="product_location" placeholder="Enter product location in warehouse">
                            </div>
                        </div>
                        <div class="form-group ">

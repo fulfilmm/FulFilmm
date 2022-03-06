@@ -18,7 +18,7 @@ class CreateSellingUnitsTable extends Migration
             $table->bigInteger('product_id')->unsigned();
             $table->string('unit');
             $table->double('unit_convert_rate');
-            $table->tinyInteger('active')->default(1);
+            $table->tinyInteger('active')->default(0);
             $table->timestamps();
         });
     }

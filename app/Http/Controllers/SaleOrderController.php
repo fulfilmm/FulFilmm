@@ -21,6 +21,7 @@ use App\Models\product_price;
 use App\Models\products_tax;
 use App\Models\ProductVariations;
 use App\Models\Quotation;
+use App\Models\SellingUnit;
 use App\Models\Stock;
 use App\Models\Warehouse;
 use Carbon\Carbon;
@@ -45,7 +46,8 @@ class SaleOrderController extends Controller
         return view('saleorder.index',compact('data'));
     }
     public function create(){
-        $unit_price=product_price::where('sale_type','Whole Sale')->where('active',1)->get();
+        $unit_price=SellingUnit::where('active',1)->get();
+        $prices =product_price::where('sale_type', 'Whole Sale')->where('active',1)->get();
         $variants=ProductVariations::with('product')->get();
         $taxes=products_tax::all();
         $allcustomers=Customer::all();
@@ -98,7 +100,7 @@ class SaleOrderController extends Controller
         $dis_promo=DiscountPromotion::where('sale_type','Whole Sale')->get();
 //          dd($session_data);
         $data=['customer'=>$allcustomers,'items'=>$items,'grand_total'=>$grand_total,'id'=>$request_id,'products'=>$products,'quotation'=>$quotation, 'variants'=>$variants,'taxes'=>$taxes];
-        return view('saleorder.create',compact('data','session_data','unit_price','dis_promo'));
+        return view('saleorder.create',compact('data','session_data','unit_price','dis_promo','prices'));
     }
     public function store(Request $request){
 //dd($request->all());

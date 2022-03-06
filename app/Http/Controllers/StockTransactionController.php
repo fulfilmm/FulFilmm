@@ -93,7 +93,8 @@ class StockTransactionController extends Controller
             'supplier_id' => $request->supplier_id,
             'variantion_id' => $request->product_id,
             'product_location'=>$request->product_location,
-            'valuation'=>$request->purchase_price
+            'valuation'=>$request->purchase_price,
+            'exp_date'=>$request->exp_date,
         ];
 //        dd($data);
         $this->stockin($data);

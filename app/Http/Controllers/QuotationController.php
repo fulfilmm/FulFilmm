@@ -16,6 +16,7 @@ use App\Models\products_tax;
 use App\Models\ProductVariations;
 use App\Models\Quotation;
 use App\Models\QuotationItem;
+use App\Models\SellingUnit;
 use App\Models\Stock;
 use App\Repositories\Contracts\CompanyContract;
 use App\Repositories\Contracts\CustomerContract;
@@ -66,12 +67,13 @@ class QuotationController extends Controller
             $grand_total = $grand_total + $orderline[$i]->total_amount;
         }
         $deals = deal::where('sale_stage', 'Qualified')->get();
-        $unit_price=product_price::where('sale_type','Whole Sale')->where('active',1)->get();
+        $unit_price=SellingUnit::where('active',1)->get();
+        $prices =product_price::where('sale_type', 'Whole Sale')->where('active',1)->get();
         $aval_product=Stock::with('variant')->where('available','>',0)->get();
         $dis_promo=DiscountPromotion::where('sale_type','Whole Sale')->get();
         $focs=Freeofchare::with('variant')->get();
         $type='Whole Sale';
-        return view("quotation.create", compact('deals','dis_promo' ,'focs',"allcustomers", "request_id", "orderline", 'grand_total', "companies", "unit_price", 'data','variants','taxes','aval_product','type'));
+        return view("quotation.create", compact('deals','dis_promo' ,'focs',"allcustomers", "request_id", "orderline", 'grand_total', "companies", "unit_price", 'data','variants','taxes','aval_product','type','prices'));
     }
     public function retailSale()
     {
