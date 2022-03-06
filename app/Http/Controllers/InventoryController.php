@@ -127,7 +127,6 @@ class InventoryController extends Controller
       for ($i=0;$i<count($rec_item);$i++){
           $rec_item[$i]->demand=$request->demand[$i];
           $rec_item[$i]->qty=$request->done[$i];
-          $rec_item[$i]->warehouse_id=$request->warehouse_id[$i];
           $rec_item[$i]->update();
       }
       $receipt->is_validate=1;

@@ -21,8 +21,8 @@ class CreateProductReceiveItemsTable extends Migration
             $table->bigInteger('unit')->unsigned();
             $table->bigInteger('po_id')->unsigned();
             $table->bigInteger('receipt_id')->unsigned();
+            $table->tinyInteger('is_stocked_in')->default(0);
             $table->double('price');
-            $table->bigInteger('warehouse_id')->unsigned()->nullable();
             $table->foreign('receipt_id')->references('id')->on('product_receives')->onDelete('cascade');
             $table->timestamps();
         });

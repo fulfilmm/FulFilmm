@@ -24,8 +24,8 @@ trait StockTrait
         $batch['batch_no']=$batch_no;
         $batch['supplier_id']=$request['supplier_id'];
         $batch['qty']=$request['qty'];
-        $batch['purchase_price']=$request['valuation'];
-        $batch['exp_date']=$request['exp_date'];
+        $batch['purchase_price']=$request['valuation']??0;
+        $batch['exp_date']=$request['exp_date']??null;
         ProductStockBatch::create($batch);
         $stockin=new StockIn();
 //        dd($request);

@@ -12,6 +12,7 @@ use App\Models\Freeofchare;
 use App\Models\Invoice;
 use App\Models\Notification;
 use App\Models\product;
+use App\Models\ProductReceiveItem;
 use App\Models\ProductVariations;
 use App\Models\SellingUnit;
 use App\Models\Stock;
@@ -98,6 +99,11 @@ class StockTransactionController extends Controller
         ];
 //        dd($data);
         $this->stockin($data);
+        if(isset($request->receive_id)){
+            $product_receive_item=ProductReceiveItem::where('id',$request->receive_id)->first();
+            $product_receive_item->is_stocked_in=1;
+            $product_receive_item->update();
+        }
         return redirect(route('stocks.index'));
     }
 

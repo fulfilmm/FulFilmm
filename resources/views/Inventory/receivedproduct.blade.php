@@ -15,7 +15,7 @@
                 </div>
             </div>
         </div>
-        <form action="{{route('product.validate',$receipt->id)}}" method="post">
+        <form  method="post" name="validate">
             @csrf
             <div class="col-12 border-bottom mb-3">
                 {{--<div class="row my-3">--}}
@@ -33,9 +33,8 @@
                             @endif
                         <button type="button" id="create_pdf" class="btn btn-danger btn-sm">PDF Download</button>
                         <button type="button"  id="print" onclick="printContent('print_me');" class="btn btn-white btn-sm"><i class="fa fa-print"></i>Print</button>
-                        <a href="{{url('add/to/stock/'.$receipt->id)}}" class="btn btn-success btn-sm">Add To Stock</a>
                     @else
-                        <button type="submit" class="btn btn-primary btn-sm">Validate</button>
+                        <button type="submit" formaction="{{route('product.validate',$receipt->id)}}" class="btn btn-primary btn-sm">Validate</button>
                     @endif
                 </div>
             </div>
@@ -116,6 +115,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="row my-5">
                         <div class="col-md-12">
                             <table class="table">
@@ -126,21 +126,15 @@
                                     <th>Demand Unit</th>
                                     <th>Done</th>
                                     <th>Default Unit</th>
-                                    <th>Warehouse</th>
+                                    <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
+                                {{--@dd($receipt_item);--}}
                                 @foreach($receipt_item as $item)
                                     <tr>
                                         <td>
-                                            @foreach($product as $key=>$val)
-                                                @if($key==$item->product->product_id)
-                                                    {{$val}}
-                                                    @if($item->product->color!=null||$item->product->size!=null||$item->product->other!=null)
-                                                        ({{$item->product->color}} {{$item->product->size}} {{$item->product->other}})
-                                                    @endif
-                                                    @endif
-                                                @endforeach
+                                            {{$item->product->product_name}}({{$item->product->variant}})
                                         </td>
                                         <td>
                                             @if($receipt->is_validate==1)
@@ -170,18 +164,91 @@
                                                 @endforeach
                                         </td>
                                         <td>
-                                            @if($receipt->is_validate==1)
-                                                {{$item->warehouse->name??''}}
-                                                @else
-                                                <select name="warehouse_id[]" id="" class="select2 form-control" required>
-                                                    <option value="">Select Warehouse</option>
-                                                    @foreach($warehouse as $key=>$val)
-                                                        <option value="{{$key}}">{{$val}}</option>
-                                                    @endforeach
-                                                </select>
+
+
+                                                <button type="button" class="btn btn-primary btn-sm {{$receipt->is_validate==1?'':'disabled'}} {{$item->is_stocked_in==1?'disabled':''}}" data-toggle="modal" data-target="#stockin_{{$item->id}}">
+                                                   <i class="la la-plus"></i> Stock In
+                                                </button>
+                                        @if($receipt->is_validate==1)
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="stockin_{{$item->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <form method="POST" name="stockin">
+                                                            <div class="modal-body">
+                                                                    @csrf
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <input type="hidden" name="receive_id" value="{{$item->id}}">
+                                                                            <div class="form-group">
+                                                                                <label for="warehouse">Product</label>
+                                                                                <input type="text" class="form-control" value="{{$item->product->product_name}}({{$item->product->variant}})">
+                                                                                <input type="hidden" name="product_id" value="{{$item->variant_id}}">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label for="customer">Supplier</label>
+                                                                                <select name="supplier_id" id="customer" class="form-control">
+                                                                                    <option value="{{$receipt->vendor->id}}">{{$receipt->vendor->name}}</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label for="exp_date">Expired Date</label>
+                                                                                <input type="date" class="form-control" name="exp_date" id="exp_date">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label for="warehouse">Warehouse</label>
+                                                                                <select name="warehouse_id" id="warehouse" class="form-control">
+                                                                                    @foreach($warehouse as $key=>$val)
+                                                                                        <option value="{{$key}}">{{$val}}</option>
+                                                                                    @endforeach
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label for="">Quantity</label>
+                                                                                <input type="number" name="qty" class="form-control" value="{{$item->qty}}">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label for="value">Valuation</label>
+                                                                                <input type="number" name="purchase_price" class="form-control" placeholder="Enter Valuation">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-12">
+                                                                        <div class="form-group">
+                                                                            <label for="loca">Location</label>
+                                                                            <input type="text" class="form-control" name="product_location" placeholder="Enter product location in warehouse">
+                                                                        </div>
+                                                                    </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                <button type="submit" class="btn btn-primary" formaction="{{route('stockin')}}" id="stock_submit">Stock In</button>
+                                                            </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             @endif
                                         </td>
                                     </tr>
+
                                 @endforeach
                                 </tbody>
                             </table>
@@ -190,78 +257,8 @@
                 </div>
             </div>
         </form>
+        <!-- Button trigger modal -->
         <div id="print_me"  style="visibility: hidden">
-            <div id="store" class="modal custom-modal fade" role="dialog">
-                <div class="modal-dialog modal-dialog-centered modal-md">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Store To Stock</h5>
-                            <button type="button" class="close" data-dismiss="modal"
-                                    aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group ">
-                                <div class="row">
-                                    <label class="col-md-3">Product</label>
-                                    <div class="col-md-9">
-                                        <select name="[]" id="product{{$item->id}}"
-                                                class="form-control select2 update{{$item->id}}">
-                                            @foreach($product as $key=>$value)
-                                                <option value="{{$key}}" {{$key==$item->product_id?'selected':''}}>{{$value}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="row">
-                                    <label for="" class="col-md-3">Description</label>
-                                    <div class="col-md-9">
-                                                                    <textarea name="" id="desc{{$item->id}}" cols="30" rows="2"
-                                                                              class="form-control col-md-8 update{{$item->id}}">{{$item->description}}</textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="row">
-                                    <label for="" class="col-md-3">Qty</label>
-                                    <div class="col-md-9">
-                                        <input type="number" id="qty{{$item->id}}"
-                                               class="form-control update{{$item->id}}"
-                                               name="qty"
-                                               value="{{$item->qty??''}}"></div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="row">
-                                    <label for="" class="col-md-3">Price</label>
-                                    <div class="col-md-9">
-                                        <input type="number" id="price{{$item->id}}"
-                                               class="form-control update{{$item->id}}"
-                                               name="price"
-                                               value="{{$item->price??''}}">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="row">
-                                    <label for="" class="col-md-3">Total</label>
-                                    <div class="col-md-9">
-                                        <input class="form-control" type="text"
-                                               id="total{{$item->id}}"
-                                               value="{{$item->total??''}}">
-                                    </div>
-                                </div>
-                            </div>
-                            <button id="update_item{{$item->id}}" data-dismiss="modal"
-                                    class="btn btn-primary float-right">Save
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
     </div>
     <script>
         (function () {
