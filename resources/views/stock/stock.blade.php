@@ -161,7 +161,7 @@
                                 <a href="{{route('show.variant',$stock->variant->id)}}">{{$stock->variant->product_code}}</a>
                             </td>
                             <td>
-                                <a href="{{route('products.show',$stock->variant->product_id)}}">{{$stock->product_name}}</a>
+                                <a href="{{route('products.show',$stock->variant->product_id)}}">{{$stock->variant->product_name}}</a>
                             </td>
                             <td>
                                 <a href="{{route('show.variant',$stock->variant->id)}}">{{$stock->variant->variant??''}}</a>
