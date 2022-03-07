@@ -88,7 +88,12 @@ class StockTransactionController extends Controller
     public function stock_in(Request $request)
     {
         $this->validate($request, [
-            'qty' => 'required'
+            'qty' => 'required',
+            'warehouse_id' => 'required',
+            'supplier_id' => 'required',
+            'product_id' =>'required' ,
+            'purchase_price'=>'required',
+            'exp_date'=>'required',
         ]);
         $data = [
             'qty' => $request->qty,
