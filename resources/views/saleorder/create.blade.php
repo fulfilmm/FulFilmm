@@ -339,9 +339,22 @@
                                             $('#total').val(sum);
                                             $('.select_update').change(function () {
                                                 var unit_id=$('#unit{{$order->id}} option:selected').val();
-                                                @foreach($unit_price as $item)
+                                                @foreach($prices as $item)
                                                 if(unit_id=="{{$item->unit_id}}") {
-                                                    var price = "{{$item->price}}";
+                                                    if('{{$order->variant->pricing_type}}'==1){
+                                                        var qty=$('#quantity_{{$order->id}}').val();
+                                                        if(parseInt("{{$item->min}}")<= qty){
+                                                            var price = "{{$item->price}}";
+                                                        }
+
+
+                                                    }else {
+                                                        if('{{$item->multi_price}}'== 0){
+
+                                                            var price = "{{$item->price}}";
+
+                                                        }
+                                                    }
                                                 }
                                                 @endforeach
                                                         // alert(price);

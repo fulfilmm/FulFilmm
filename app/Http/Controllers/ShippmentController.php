@@ -54,7 +54,7 @@ class ShippmentController extends Controller
         } else {
             $delivery_id = "D-00001";
         }
-        $invoices=Invoice::all();
+        $invoices=Invoice::with('customer','warehouse')->get();
         $customer=Customer::all();
         $courier=Customer::where('customer_type','Courier')->get();
         $warehouse=Warehouse::all()->pluck('name','id')->all();

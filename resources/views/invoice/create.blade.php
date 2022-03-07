@@ -73,7 +73,7 @@
                            <div class="col-sm-3 col-md-6">
                                <div class="form-group">
                                    <label for="bill_address">Order ID</label>
-                                   <input type="text" class="form-control shadow-sm" id="bill_address"
+                                   <input type="text" class="form-control shadow-sm"
                                           value="{{isset($order_data)?$order_data->order_id:''}}" readonly>
                                    <input type="hidden" name="order_id" id="order_id" value="{{$order_data->id??''}}">
                                </div>
@@ -414,16 +414,18 @@
                                         @endif
                                         $('.select_update').change(function () {
                                             var unit_id=$('#unit{{$order->id}} option:selected').val();
-                                            @foreach($unit_price as $item)
+                                            @foreach($prices as $item)
                                             if(unit_id=="{{$item->unit_id}}") {
-                                                if('{{$order->variant->pricing_type}}'){
+                                                if('{{$order->variant->pricing_type}}'==1){
                                                     var qty=$('#quantity_{{$order->id}}').val();
-                                                    if(parseInt("{{$item->min}}")< qty && qty < parseInt('{{$item->max}}')){
+                                                    if(parseInt("{{$item->min}}")<= qty ){
                                                         var price = "{{$item->price}}";
                                                     }
 
                                                 }else {
-                                                    var price = "{{$item->price}}";
+                                                    if('{{$item->multi_price}}'==0) {
+                                                        var price = "{{$item->price}}";
+                                                    }
                                                 }
                                             }
                                             @endforeach
@@ -432,7 +434,6 @@
                                             $('#total_{{$order->id}}').val(0);
                                             @else
                                             $('#price_{{$order->id}}').val(price);
-
                                             var quantity = $('#quantity_{{$order->id}}').val();
                                             var dis_pro=$('#dis_pro{{$order->id}} option:selected').val();
                                             var sub_total =quantity * price;

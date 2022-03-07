@@ -200,9 +200,12 @@
                             <td>{{$stock->alert_qty}}</td>
                             <td>{{\Carbon\Carbon::parse($stock->updated_at)->toFormattedDateString()}}</td>
                             <td>
-                                <button type="button" class="btn btn-white btn-sm" data-toggle="modal"
-                                        data-target="#stock{{$stock->id}}"><i class="la la-edit"></i></button>
-                                <a href="{{url('stock/update/history/'.$stock->id)}}"  title="Stock Updated History" class="btn btn-white btn-sm"><i class="la la-history"></i></a>
+                               <div class="row">
+                                   <a href="{{route('stock.batch',$stock->variant->id)}}" class="btn btn-white">Batch</a>
+                                   <button type="button" class="btn btn-white btn-sm" data-toggle="modal"
+                                           data-target="#stock{{$stock->id}}"><i class="la la-edit"></i></button>
+                                   <a href="{{url('stock/update/history/'.$stock->id)}}"  title="Stock Updated History" class="btn btn-white btn-sm"><i class="la la-history"></i></a>
+                               </div>
                                 <div class="modal fade" id="stock{{$stock->id}}" tabindex="-1" role="dialog"
                                      aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered ">

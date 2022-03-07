@@ -15,6 +15,9 @@ class CreateDeliveryOrdersTable extends Migration
     {
         Schema::create('delivery_orders', function (Blueprint $table) {
             $table->id();
+            $table->string('delivery_type');
+            $table->string('current_state')->nullable();
+            $table->date('pick_date')->nullable();
             $table->tinyInteger('draft')->default('1');
             $table->dateTime('draft_time')->nullable();
             $table->tinyInteger('packing')->default(0);
@@ -28,7 +31,7 @@ class CreateDeliveryOrdersTable extends Migration
             $table->bigInteger('customer_id')->unsigned();
             $table->string('delivery_id')->unique();
             $table->dateTime('delivery_date');
-            $table->double('delivery_fee');
+            $table->double('delivery_fee')->nullable();
             $table->tinyInteger('paid_deli_fee')->default(0);
             $table->bigInteger('warehouse_id')->unsigned();
             $table->text('shipping_address');

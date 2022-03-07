@@ -27,7 +27,6 @@ class CreateStockOutsTable extends Migration
             $table->double('qty');
             $table->text('description')->nullable();
             $table->tinyInteger('approve')->default(0);
-            $table->bigInteger('batch_no')->unsigned();
             $table->timestamps();
         });
     }

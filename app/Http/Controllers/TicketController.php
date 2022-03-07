@@ -308,6 +308,7 @@ class TicketController extends Controller
                 $emp=Employee::where('id',$follower[$i])->first();
                 $ticket=ticket::where('id',$ticket_id)->first();
                 $this->mailnoti($emp->email,$emp->name, 'You are added  as a follower in ', $ticket->ticket_id,$ticket->id);
+                $this->addnotify($emp->id,'follower',' You are added  as a follower in '.$ticket_id.".",'tickets/'.$ticket->id,Auth::guard('employee')->user()->id);
             }
 
 
