@@ -384,8 +384,19 @@
                                         class="menu-arrow"></span></a>
                             <ul style="display: none;">
 
-                                <li><a class="{{ Request::is('/car-list') ? 'active' : '' }}"
-                                       href="{{ route('carList') }}" style="text-decoration: none"> Cars List</a></li>
+                                <li>
+                                    <a class="{{ Request::is('/car-list') ? 'active' : '' }}"
+                                       href="{{ route('carList') }}" style="text-decoration: none"> 
+                                       Cars List
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="{{ Request::is('/maintainance') ? 'active' : '' }}"
+                                       href="{{ route('maintain') }}" style="text-decoration: none"> 
+                                       Maintainance
+                                    </a>
+                                </li>
 
                             </ul>
                         </li>

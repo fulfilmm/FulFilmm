@@ -56,6 +56,7 @@ use App\Http\Controllers\GroupController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ShippmentController;
 use App\Http\Controllers\CarBooking\CarsController;
+use App\Http\Controllers\CarBooking\MaintainController;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,6 +68,8 @@ use App\Http\Controllers\CarBooking\CarsController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+
 
 Route::get('/api/auth/login',function (){
     return redirect('/');
@@ -163,11 +166,21 @@ Route::middleware(['auth:employee'])->group(function () {
 
     //Car Booking System
     Route::get('/car-list', [CarsController::class, 'index']) -> name('carList');
+    Route::get('/car-list/{any}' , [CarsController::class,'show']) -> where('any', '.*');
+    Route::get('/download/{contract}' , [CarsController::class, 'download']);
+    Route::get('/download/car-list/attach/{data}' , [CarsController::class, 'downloadAttach']);
 
+    Route::get('/maintainance' , [ MaintainController::class, 'index']) -> name('maintain');
+    Route::get('/maintain/{any}' , [MaintainController::class, 'show']) -> where('any', '.*');
+    Route::get('/download/maintain/attaches/{data}' , [MaintainController::class, 'download']);
+   
 
 
 
 });
+
+
+
 //Route::resource('saleorders', SaleOrderController::class)->middleware('auth:employee');
 
 Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function () {

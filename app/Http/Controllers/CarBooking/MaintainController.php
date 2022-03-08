@@ -4,9 +4,10 @@ namespace App\Http\Controllers\CarBooking;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Api\CarController;
+use App\Models\CarData;
+use App\Models\MaintainRecord;
 
-class CarsController extends Controller
+class MaintainController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,44 +16,28 @@ class CarsController extends Controller
      */
     public function index()
     {
-        return view('carBooking/index');
+        return view('carBooking/maintain');
     }
 
-    public function download($contract) {
-        $filePath = public_path('/upload/car_list/contract/'.$contract);
-        $fileName = $contract ;
+    
+
+    public function download($data)
+    {
+        $filePath = public_path('/upload/maintain/attach/'.$data);
+        $fileName = $data ;
 
         return response() -> download( $filePath, $fileName);
-    }
+    } 
 
-    public function downloadAttach($data) {
-        $filePath = public_path('/upload/car_list/attach/'.$data);
-        $fileName = $data;
-
-        return response() -> download( $filePath , $fileName);
-    }
- 
-   
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
-    {
+    { 
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+   
     public function store(Request $request)
     {
-       
+        //
     }
 
     /**
@@ -63,9 +48,7 @@ class CarsController extends Controller
      */
     public function show($id)
     {
-        //$data = CarData::find($id);
-
-        return view('carBooking/detail');
+        return view('carBooking/maintainDetail');
     }
 
     /**

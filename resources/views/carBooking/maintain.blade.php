@@ -1,9 +1,9 @@
 @extends("layout.mainlayout")
-@section("title","Car List")
+@section("title","Maintain")
 @section("content")
     <!-- Page Content -->
     <div id="app">
-              <car-component></car-component>
+              <maintain-component></maintain-component>
              
     </div>
     

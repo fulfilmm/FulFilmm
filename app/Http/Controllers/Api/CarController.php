@@ -11,7 +11,14 @@ class CarController extends Controller
     
     public function index()
     {
-        return CarData::orderBy('id', 'desc') -> get();
+        $cars = CarData::with('status')
+                ->orderBy('id', 'desc') -> get();
+
+        foreach ( $cars as $file) {
+            $file->attach = json_decode($file->attach);
+        }
+ 
+        return response() -> json(['cars' => $cars]);
         
     }
 
@@ -30,7 +37,7 @@ class CarController extends Controller
             'upd_kilometer' => 'nullable',
             'license_issue_date' => 'nullable',
             'license_renew_date' => 'nullable',
-            'status' => 'required',
+            
             'fuel_type' => 'required',
             'seat' => 'required',
             'purchase_value' => 'required',
@@ -56,9 +63,12 @@ class CarController extends Controller
         }
 
         if( $request->hasfile('attach')){
+
+            $data = [];
             foreach( $request -> file('attach') as $file ){
-                $name = $file -> getClientOriginalName();
-                $file -> move(public_path().'/upload/car_list/attach', $filename);
+
+                $name = Uniqid().'_'.$file -> getClientOriginalName();
+                $file -> move(public_path().'/upload/car_list/attach', $name);
                 $data[] = $name;
                 $result = json_encode($data);
             }
@@ -84,7 +94,7 @@ class CarController extends Controller
             'upd_kilometer' => $request -> upd_kilometer,
             'license_issue_date' => $request -> license_issue_date,
             'license_renew_date' => $request-> license_renew_date,
-            'status' => $request -> status,
+            
             'fuel_type' => $request -> fuel_type,
             'seat' => $request -> seat,
             'purchase_value' => $request -> purchase_value,
@@ -97,13 +107,16 @@ class CarController extends Controller
             'description' => $request -> description,
         ]);
 
-        return response()->json( $data );
+        return response()->json(['message' => 'New Data Created']);
     }
 
    
     public function show($id)
     {
-        $data = CarData::find($id);
+        $data = CarData::with('status')
+                -> find($id);
+                
+        $data->attach = json_decode($data->attach);
 
         return $data;
     }
@@ -121,7 +134,7 @@ class CarController extends Controller
             'upd_kilometer' => 'nullable',
             'license_issue_date' => 'nullable',
             'license_renew_date' => 'nullable',
-            'status' => 'nullable',
+           
             'fuel_type' => 'nullable',
             'seat' => 'nullable',
             'purchase_value' => 'nullable',

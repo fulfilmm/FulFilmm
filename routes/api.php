@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\ComplainTicket;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\InvoiceController;
 use App\Http\Controllers\Api\CarController;
+use App\Http\Controllers\Api\MaintainController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -45,6 +46,8 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
 });
 
 Route::apiResource("car_data", CarController::class);
+
+Route::apiResource("maintainance", MaintainController::class);
 
 
 Route::post('/auth/login',[ApiAuthController::class,'login'])->name('login');

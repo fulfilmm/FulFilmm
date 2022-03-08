@@ -19,6 +19,7 @@
                       <th scope="col"> Status </th>
                       <th scope="col"> Alert  </th>
                       <th scope="col"> Detail</th>
+                      <th scope="col"> Delete </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -28,16 +29,37 @@
                       <td> {{car.brand}}</td>
                       <td> {{ car.model}}</td>
                       <td> 
-                        <div  v-if="car.status == 0"> Working </div>  
-                        <div  v-else-if="car.status == 1" class="text-warning"> Maintain </div>
-                        <div  v-else-if="car.status == 2" class="text-danger"> Repair </div>
+                
+                        <div>
+                            <div v-if="! car.status.length" class=" text-success text-sm font-weight-bold"> Working</div>
+                            
+                            <div v-else>
+                                 <div v-for="s in car.status" :key="s.id">
+                                    <div  v-if="s.status == 0" class="badge badge-warning"> Maintain </div>
+                                    <div  v-else-if="s.status == 1" class="badge badge-danger" > Repair </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                     
+                       
+                      
+                       
                       </td>
 
                       <td class=""> 
                         <span class="px-2 py-2 text-sm rounded-pill bg-danger text-white"  v-if="car.license_renew_date <= lastMonth"> License Expire Soon</span>
                         <span class="px-2 py-2 text-sm rounded-pill bg-success text-white"  v-else> Nothing Happen </span>   
                       </td>
-                      <td> <button type="button" class=" btn btn-info shodow-md px-3 border-none rounded-pill text-white"> Detail </button> </td>
+
+                      
+                      <td> <a :href="`/car-list/${car.id}`"  class=" btn btn-info shodow-md px-3 border-none rounded-pill text-white"> Detail </a> </td>
+
+                      <td>
+                        <button type="button" class="btn btn-danger rounded-pill" @click="destroy(car.id)"> Delete </button>
+                      </td>
+                    
                     </tr>
                     
                   </tbody>
@@ -53,35 +75,36 @@
                     <div class="modal-body">
                     
                             <form @submit.prevent="store" class="row">
+                              <div class="alert alert-success" v-show="success"> Data Created Successfully</div>
                                 <div class="form-group col-md-6 col-sm-12">
-                                  <input type="text" v-model="car.license_no" class="form-control" placeholder=" Please Fill License Number" aria-describedby="helpId">
+                                  <input type="text" v-model="car.license_no" class="form-control" placeholder=" Please Fill License Number" aria-describedby="helpId" required>
                                 </div>
 
                                 <div class="form-group col-md-6 col-sm-12">
-                                  <input type="text"  v-model="car.brand" class="form-control" placeholder="Please Fill Car Brand" aria-describedby="helpId">
+                                  <input type="text"  v-model="car.brand" class="form-control" placeholder="Please Fill Car Brand" aria-describedby="helpId" required>
                                 </div>
 
                                 <div class="form-group col-md-6 col-sm-12">
-                                  <input type="text" v-model="car.model"  class="form-control" placeholder="Please Fill Car Model" aria-describedby="helpId">
+                                  <input type="text" v-model="car.model"  class="form-control" placeholder="Please Fill Car Model" aria-describedby="helpId" required>
                                 </div>
 
                                 <div class="form-group col-md-6 col-sm-12">
-                                  <input type="text" v-model="car.manufacture" class="form-control" placeholder="Please Fill Manufacturing Company" aria-describedby="helpId">
+                                  <input type="text" v-model="car.manufacture" class="form-control" placeholder="Please Fill Manufacturing Company" aria-describedby="helpId" required>
                                 </div>
 
                                  <div class="form-group col-md-6 col-sm-12">
-                                  <input type="text" v-model="car.engine" class="form-control" placeholder="Please Fill Engine Type" aria-describedby="helpId">
+                                  <input type="text" v-model="car.engine" class="form-control" placeholder="Please Fill Engine Type" aria-describedby="helpId" required>
                                 </div>
 
                                  <div class="form-group col-md-6 col-sm-12">
-                                  <input type="text" v-model="car.horsepower" class="form-control" placeholder="Please Fill Horsepower" aria-describedby="helpId">
+                                  <input type="text" v-model="car.horsepower" class="form-control" placeholder="Please Fill Horsepower" aria-describedby="helpId" required>
                                 </div>
 
                                  <div class="form-group col-md-6 col-sm-12">
-                                  <input type="text" v-model="car.chassis" class="form-control" placeholder="Please Fill Chassis" aria-describedby="helpId">
+                                  <input type="text" v-model="car.chassis" class="form-control" placeholder="Please Fill Chassis" aria-describedby="helpId" required>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group col-md-6 col-sm-12">
                                   <input type="text" v-model="car.kilometer" class="form-control" placeholder="Please Fill Original Kilometer" aria-describedby="helpId">
                                 </div>
 
@@ -96,19 +119,19 @@
                                 </div>
 
 
-                                 <div class="form-group col-md-6 col-sm-12">
+                                 <!-- <div class="form-group col-md-6 col-sm-12">
                                   <label class="mr-sm-2" for="inlineFormCustomSelect0">Please Add Car Status</label>
-                                  <select class="custom-select mr-sm-2" id="inlineFormCustomSelect0" v-model="car.status">
+                                  <select class="custom-select mr-sm-2" id="inlineFormCustomSelect0" v-model="car.status" required>
                                    
                                     <option value="0">Working</option>
                                     <option value="1">Maintain</option>
                                     <option value="2">Repair</option>
                                   </select>
-                                </div>
+                                </div> -->
 
-                                 <div class="form-group col-md-6 col-sm-12">
+                                 <div class="form-group">
                                   <label class="mr-sm-2" for="inlineFormCustomSelect">Please Add Fuel Types</label>
-                                  <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" v-model="car.fuel_type">
+                                  <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" v-model="car.fuel_type" required>
                                   
                                     <option value="0">Petro</option>
                                     <option value="1">Diesel</option>
@@ -116,7 +139,7 @@
                                 </div>
 
                                  <div class="form-group col-md-6 col-sm-12">
-                                      <input type="text" v-model="car.seat" class="form-control" placeholder="Seat" aria-describedby="helpId">
+                                      <input type="text" v-model="car.seat" class="form-control" placeholder="Seat" aria-describedby="helpId" required>
                                 </div>
 
                                  <div class="form-group col-md-6 col-sm-12">
@@ -125,7 +148,7 @@
 
                                 <div class="form-group">
                                     <label class="mr-sm-2" for="inlineFormCustomSelect1">Car Types</label>
-                                      <select class="custom-select mr-sm-2" id="inlineFormCustomSelect1" v-model="car.car_type">
+                                      <select class="custom-select mr-sm-2" id="inlineFormCustomSelect1" v-model="car.car_type" required>
                                        
                                         <option value="0">Rent</option>
                                         <option value="1">Own</option>
@@ -163,11 +186,10 @@
 
                               </div>
 
-                               <div class=" form-group mb-3">
+                                    <div class=" form-group mb-3">
                                       <label for="" class="form-label"> Upload Attach</label>
-                                      <input type="file" class="form-control" @change="selectfiles" multiple>
+                                      <input type="file" class="form-control" @change="selectfiles" ref="files" multiple />
                                     </div> 
-
                                 
                                 <div class="d-flex flex-row-reverse">
                                   
@@ -190,6 +212,9 @@
                 </div>
                 </div>
 
+
+
+
                 <div>
               
                
@@ -210,6 +235,10 @@
          data() {
             return {
 
+                   success: false,
+
+                   errors:{},
+
                     moment:moment,
 
                     lastMonth: moment().add(1, 'month').format("YYYY-MM-DD"),
@@ -218,7 +247,8 @@
 
                     cars:[],
 
-                    car: {              
+                    car: {  
+                        id:'',            
                         license_no: null,
                         brand: null,
                         model: null,
@@ -230,7 +260,7 @@
                         upd_kilometer: null,
                         license_issue_date: '',
                         license_renew_date: '',
-                        status: null,
+                        //status: null,
                         fuel_type: null,
                         seat: null,
                         purchase_value: null,
@@ -265,7 +295,7 @@
                         upd_kilometer: null,
                         license_issue_date: '',
                         license_renew_date: '',
-                        status: null,
+                        //status: null,
                         fuel_type: null,
                         seat: null,
                         purchase_value: null,
@@ -274,7 +304,7 @@
                         org_owner_name: null,
                         renew_date: '',
                         contract: null,
-                        attach:null,
+                        attach:[],
                         description: null,
                   }
                 },
@@ -286,9 +316,11 @@
                 view() {
                   axios.get("/api/car_data")
                   .then(response => {
-                    this.cars = response.data
-                  });
+                    this.cars = response.data.cars;
+                  })
+                  .catch ( err => console.log(err));
                 },
+ 
 
                 //for single file
                 selectfile(event) {
@@ -296,24 +328,26 @@
                 },
 
                 //for multiple file
-                selectfiles(event){
-                    let files = event.target.files;
-                    if( !files.length) {
-                      return false;
-                    }
-
-                  for (let i = 0; i < files.length; i++) {
-                    this.car.attach.push( files[i]);
+                selectfiles(){
+                   
+                  for (let i = 0; i < this.$refs.files.files.length ; i++) {
+                    this.car.attach.push( this.$refs.files.files[i]);
                     
+                    console.log(this.car.attach);
                   }
                   
-                  //console.log(this.car.attach);
+                
                   
                 },
+
 
                
                 
                 store(){
+
+                  var self = this;
+
+                 
 
                   const data = new FormData();
                   data.append('license_no' , this.car.license_no);
@@ -327,7 +361,7 @@
                   data.append('upd_kilometer', this.car.upd_kilometer);
                   data.append('license_issue_date', this.car.license_issue_date);
                   data.append('license_renew_date', this.car.license_renew_date);
-                  data.append('status', this.car.status);
+                  //data.append('status', this.car.status);
                   data.append('fuel_type', this.car.fuel_type);
                   data.append('seat', this.car.seat);
                   data.append('purchase_value', this.car.purchase_value);
@@ -336,7 +370,14 @@
                   data.append('org_owner_name', this.car.org_owner_name);
                   data.append('renew_date', this.car.renew_date);
                   data.append('contract', this.car.contract);
-                  data.append('attach[]', this.car.attach);
+
+                   for ( let i = 0 ; i < this.car.attach.length; i++) {
+                    let file = self.car.attach[i];
+
+                  data.append('attach[' + i + ']', file);
+                  }
+
+                
                   data.append('description', this.car.description);
                   
                   const config = {
@@ -350,17 +391,31 @@
                                .then((response) => {
                                   this.reset();
                                   this.view();
-                                 //currentObj.success = response.data.success;
-                                 // this.close();
+                                  self.$refs.files.value ='';
+                                  //$('#success').html(response.data.message);
+                                  this.success = true ;
                                   console.log(response);
                                  
                                 })
                               .catch(error => {
+                                
+                                     this.errors = error.response.data.errors;
+                                
+                               
                                   console.log("ERRRR:: ",error.response.data);
-
+                                  
                                   });   
-                                    }
-                                },
+                                  },
+
+                  destroy(id){
+                      if(!confirm ('Are You Sure To Delete')) return ;
+                      axios.delete(`/api/car_data/${id}`)
+                      .then((response) => {
+                        this.view();
+                      })
+                  }
+
+            },
 
             created(){
               this.view();

@@ -3,7 +3,7 @@
 @section("content")
     <!-- Page Content -->
     <div id="app">
-              <car-component></car-component>
+              <app-component></app-component>
              
     </div>
     

@@ -26,7 +26,7 @@ class CreateCarDataTable extends Migration
             $table->string('upd_kilometer') -> nullable();
             $table->dateTime('license_issue_date') -> nullable() -> default(null);
             $table->dateTime('license_renew_date') -> nullable() -> default(null);
-            $table->integer('status');
+            $table->integer('status') -> nullable() -> change();
             $table->integer('fuel_type');
             $table->string('seat');
             $table->string('purchase_value') -> nullable();
