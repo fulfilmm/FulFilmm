@@ -357,7 +357,7 @@
 
                         </li>
                         <li class="submenu">
-                            <a href="#"><i class="la la-money " style="font-size: 18px"></i><span>Logistics Bill</span> <span class="menu-arrow"></span></a>
+                            <a href="#"><i class="la la-money " style="font-size: 18px"></i><span>Bills</span> <span class="menu-arrow"></span></a>
                             <ul style="display: none;">
                                 <li><a class="{{ Request::is('bills') ? 'active' : '' }}" href="{{route('bills.index')}}" style="text-decoration: none">All Bill</a></li>
                                 <li><a class="{{ Request::is('bills') ? 'active' : '' }}" href="{{route('bills.create')}}" style="text-decoration: none">Create</a></li>
@@ -373,6 +373,8 @@
 
                                 <li><a class="{{ Request::is('deliveries/create') ? 'active' : '' }}"
                                        href="{{ route('deliveries.create') }}" style="text-decoration: none">Delivery Create</a></li>
+                                <li><a class="{{ Request::is('delivery/transaction') ? 'active' : '' }}"
+                                       href="{{ route('delivery.transaction') }}" style="text-decoration: none">Delivery Transaction</a></li>
 
                             </ul>
                         </li>
@@ -480,6 +482,8 @@
 
                                 <li><a class="{{ Request::is('deliveries') ? 'active' : '' }}"
                                        href="{{ route('deliveries.index') }}" style="text-decoration: none">All Delivery</a></li>
+                                <li><a class="{{ Request::is('delivery/transaction') ? 'active' : '' }}"
+                                       href="{{ route('delivery.transaction') }}" style="text-decoration: none">Delivery Transaction</a></li>
 
                             </ul>
                         <li class="submenu">

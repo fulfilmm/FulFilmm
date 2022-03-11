@@ -40,7 +40,11 @@ class CreateDeliveryOrdersTable extends Migration
             $table->string('estimate_date')->nullable();
             $table->tinyInteger('seen')->default(0);
             $table->bigInteger('emp_id')->unsigned();
-            $table->tinyInteger('cancel')->default(0);
+            $table->string('status')->nullable();
+            $table->string('receiver_phone');
+            $table->text('remark')->nullable();
+            $table->double('amount_to_request')->nullable();
+            $table->tinyInteger('customer_receive_confirm')->default(0);
             $table->timestamps();
         });
     }

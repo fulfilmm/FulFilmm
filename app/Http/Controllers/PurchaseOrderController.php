@@ -36,7 +36,12 @@ class PurchaseOrderController extends Controller
      */
     public function index()
     {
-        $purchase_orders=PurchaseOrder::orderby('id','desc')->with('vendor','tax','pr','employee')->get();
+        if(Auth::guard('employee')->user()->role->name=='CEO'||Auth::guard('employee')->user()->role->name=='Super Admin'){
+            $purchase_orders=PurchaseOrder::orderby('id','desc')->with('vendor','tax','pr','employee')->get();
+        }else{
+            $purchase_orders=PurchaseOrder::orderby('id','desc')->with('vendor','tax','pr','employee')->where('emp_id',Auth::guard('employee')->user()->id)->get();
+
+        }
         return view('Purchase.PurchaseOrder.index',compact('purchase_orders'));
     }
 

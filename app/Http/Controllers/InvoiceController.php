@@ -156,7 +156,6 @@ class InvoiceController extends Controller
             'payment_method'=>'required',
 
         ]);
-//        dd($request->all());
         if($validator->passes()) {
             $prefix = MainCompany::where('ismaincompany', true)->pluck('invoice_prefix', 'id')->first();
             $last_invoice = Invoice::orderBy('id', 'desc')->first();
@@ -208,6 +207,7 @@ class InvoiceController extends Controller
             $newInvoice->due_amount = $request->inv_grand_total;
             $newInvoice->warehouse_id = $request->warehouse_id;
             $newInvoice->inv_type = $request->inv_type;
+            $newInvoice->include_delivery_fee=$request->deli_fee_include=='on'?1:0;
             $newInvoice->emp_id = Auth::guard('employee')->user()->id;
             $Auth = Auth::guard('employee')->user()->name;
             $request_id = Session::get($Auth);

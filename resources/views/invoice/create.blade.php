@@ -38,8 +38,8 @@
                                <div class="form-group">
                                    <label for="">Invoice Type</label>
                                    <select name="invoice_type" id="inv_type" class="form-control">
-                                       <option value="General Invoice">General Invoice</option>
-                                       <option value="Cash On Delivery(COD)">Cash On Delivery</option>
+                                       <option value="General Invoice" {{isset($order_data)?($order_data->invoice_type=='General Invoice'?'selected':''):($data!=null?($data[0]['invoice_type']?'selected':''):'')}}>General Invoice</option>
+                                       <option value="Cash On Delivery(COD)" {{isset($order_data)?($order_data->invoice_type=='Cash On Delivery(COD)'?'selected':''):($data!=null?($data[0]['invoice_type']?'selected':''):'')}}>Cash On Delivery</option>
                                        <option value=""></option>
                                    </select>
                                </div>
@@ -684,6 +684,7 @@
             var inv_grand_total = $('#inv_grand_total').val();
             var payment = $('#payment option:selected').val();
             var status = $('#status option:selected').val();
+            var inv_type = $('#inv_type option:selected').val();
             var title = $('#title').val();
             var order_id = $('#order_id').val();
             $.ajax({
@@ -703,6 +704,7 @@
                     'order_id': order_id,
                     'payment_method': payment,
                     'type': 'invoice',
+                    'invoice_type':inv_type,
                     'inv_type':'{{$type}}'
 
                 },
@@ -747,6 +749,7 @@
             var status = $('#status option:selected').val();
             var title = $('#title').val();
             var order_id = $('#order_id').val();
+            var inv_type = $('#inv_type option:selected').val();
             $.ajax({
                 data: {
                     'variant_id': code,
@@ -764,6 +767,7 @@
                     'order_id': order_id,
                     'payment_method': payment,
                     'type': 'invoice',
+                    'invoice_type':inv_type,
                     'inv_type':'{{$type}}'
 
                 },
@@ -807,6 +811,7 @@
             var status = $('#status option:selected').val();
             var title = $('#title').val();
             var order_id = $('#order_id').val();
+            var inv_type = $('#inv_type option:selected').val();
             $.ajax({
                 data: {
                     'variant_id': foc,
@@ -824,6 +829,7 @@
                     'order_id': order_id,
                     'payment_method': payment,
                     'type': 'invoice',
+                    'invoice_type':inv_type,
                     'foc':1
 
                 },
@@ -874,6 +880,7 @@
                 var inv_type = $('#inv_type option:selected').val();
                 var deli_fee = $('#deli_fee').val();
                 var warehouse=$('#warehouse option:selected').val();
+                var delivery_onoff=$('input[name="delionoff"]:checked').val();
                 $.ajax({
                     data: {
                         'discount': discount,
@@ -896,7 +903,8 @@
                         'invoice_type': inv_type,
                         'delivery_fee': deli_fee,
                         'inv_type':"{{$type}}",
-                        'warehouse_id':warehouse
+                        'warehouse_id':warehouse,
+                        'deli_fee_include':delivery_onoff
                     },
                     type: 'POST',
                     url: "{{route('invoices.store')}}",
@@ -944,6 +952,7 @@
                 var inv_type = $('#inv_type option:selected').val();
                 var deli_fee = $('#deli_fee').val();
                 var warehouse=$('#warehouse option:selected').val();
+                var delivery_onoff=$('input[name="delionoff"]:checked').val();
                 $.ajax({
                     data: {
                         'discount': discount,
@@ -965,7 +974,8 @@
                         'invoice_type': inv_type,
                         'delivery_fee': deli_fee,
                         'inv_type':"{{$type}}",
-                        'warehouse_id':warehouse
+                        'warehouse_id':warehouse,
+                        'deli_fee_include':delivery_onoff
 
                     },
                     type: 'POST',

@@ -91,7 +91,7 @@
                                         @endforeach
                                     </select>
                                 </td>
-                                <td>{{$transaction->exp_date}}</td>
+                                <td>{{\Carbon\Carbon::parse($transaction->exp_date)->toFormattedDateString()}}</td>
                                 <td>{{$transaction->purchase_price}}</td>
                             </tr>
                     @endforeach

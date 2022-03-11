@@ -30,13 +30,15 @@ class CustomerProtal extends Controller
     public function home(){
         $auth_id=Auth::guard('customer')->user()->id;
         $delivery_finish=DeliveryOrder::where('receipt',1)->where('courier_id',Auth::guard('customer')->user()->id)->count();
-        $delivery_unfinish=DeliveryOrder::where('receipt',0)->where('courier_id',Auth::guard('customer')->user()->id)->count();
+        $delivery_unfinish=DeliveryOrder::where('receipt',0)->where('status','!=','cancel')->where('courier_id',Auth::guard('customer')->user()->id)->count();
+        $delivery_cancel=DeliveryOrder::where('status','cancel')->where('courier_id',Auth::guard('customer')->user()->id)->count();
+        $total_delivery=DeliveryOrder::where('courier_id',Auth::guard('customer')->user()->id)->count();
         $total = DB::table("delivery_orders")
             ->select(DB::raw("SUM(delivery_fee) as total"))
            ->where('receipt',1)->where('courier_id',Auth::guard('customer')->user()->id)
             ->get();
             $deli_fee_total=$total[0]->total;
-        $new_deli=DeliveryOrder::with('employee')->where('courier_id',Auth::guard('customer')->user()->id)->where('seen',0)->get();
+            $new_deli=DeliveryOrder::with('employee')->where('courier_id',Auth::guard('customer')->user()->id)->where('seen',0)->get();
             $ticket_count=ticket::where('customer_id',$auth_id)->count();
             $order_count=Order::where('customer_id',$auth_id)->count();
             $invoice_count=Invoice::where('customer_id',$auth_id)->count();
@@ -44,7 +46,7 @@ class CustomerProtal extends Controller
                 ->select(DB::raw("SUM(amount) as total"))
                 ->where('customer_id',$auth_id)
                 ->get();
-        return view('customerprotal.home',compact('ticket_count','order_count','invoice_count','advance','delivery_finish','delivery_unfinish','deli_fee_total','new_deli'));
+        return view('customerprotal.home',compact('ticket_count','order_count','invoice_count','advance','delivery_finish','delivery_unfinish','deli_fee_total','new_deli','delivery_cancel','total_delivery'));
     }
     public function quotation(){
 

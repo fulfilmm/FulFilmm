@@ -6,6 +6,8 @@ use App\Exports\BankTransactionExport;
 use App\Models\Account;
 use App\Models\Bill;
 use App\Models\Customer;
+use App\Models\DeliveryOrder;
+use App\Models\DeliveryPay;
 use App\Models\Employee;
 use App\Models\Expense;
 use App\Models\Invoice;
@@ -248,6 +250,12 @@ class TransactionController extends Controller
                $new_revenue->approve = 1;
            }
            $new_revenue->save();
+           if(isset($request->invoice_id )){
+               $delivery=DeliveryOrder::where('invoice_id',$request->invoice_id)->first();
+               $deli_pay=DeliveryPay::where('delivery_id',$delivery->id)->first();
+               $deli_pay->receiver_invoice_amount=1;
+               $deli_pay->update();
+           }
            $this->transaction_add($request->account, $request->type, null, $new_revenue->id);
            if (isset($request->invoice_id)) {
                $inv = Invoice::where('id', $request->invoice_id)->first();

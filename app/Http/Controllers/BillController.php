@@ -7,6 +7,7 @@ use App\Models\Bill;
 use App\Models\BillItem;
 use App\Models\Customer;
 use App\Models\DeliveryOrder;
+use App\Models\DeliveryPay;
 use App\Models\Employee;
 use App\Models\Expense;
 use App\Models\MainCompany;
@@ -105,6 +106,9 @@ class BillController extends Controller
              $delivery=DeliveryOrder::where('id',$item->delivery_id)->first();
              $delivery->paid_deli_fee=1;
              $delivery->update();
+             $deli_pay=DeliveryPay::where('delivery_id',$item->delivery_id)->first();
+             $deli_pay->paid_delivery_fee=1;
+             $deli_pay->update();
             }
 
         }

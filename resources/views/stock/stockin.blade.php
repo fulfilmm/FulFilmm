@@ -40,7 +40,7 @@
                                    <label for="customer">Supplier</label>
                                    <select name="supplier_id" id="customer" class="form-control">
                                        @foreach($customers as $customer)
-                                           <option value="{{$customer->id}}">{{$customer->name}}</option>
+                                           <option value="{{$customer->id}}" {{old('supplier_id')==$customer->id?'selected':''}}>{{$customer->name}}</option>
                                        @endforeach
                                    </select>
                                </div>
@@ -48,7 +48,7 @@
                            <div class="col-md-6">
                                <div class="form-group">
                                    <label for="exp_date">Expired Date</label>
-                                   <input type="date" class="form-control" name="exp_date" id="exp_date">
+                                   <input type="date" class="form-control" name="exp_date" id="exp_date" value="{{old('exp_date')}}">
                                    @error('exp_date')
                                    <span class="text-danger">{{$message}}</span>
                                    @enderror
@@ -59,7 +59,7 @@
                                    <label for="warehouse">Warehouse</label>
                                    <select name="warehouse_id" id="warehouse" class="form-control">
                                        @foreach($warehouses as $warehouse)
-                                           <option value="{{$warehouse->id}}">{{$warehouse->name}}</option>
+                                           <option value="{{$warehouse->id}}" {{$warehouse->id==old('warehouse_id')?'selected':''}}>{{$warehouse->name}}</option>
                                        @endforeach
                                    </select>
                                </div>
@@ -68,7 +68,7 @@
                            <div class="col-md-6">
                                <div class="form-group">
                                    <label for="">Quantity</label>
-                                   <input type="number" name="qty" class="form-control">
+                                   <input type="number" name="qty" class="form-control" value="{{old('qty')}}">
                                    @error('qty')
                                    <span class="text-danger">{{$message}}</span>
                                    @enderror
@@ -77,23 +77,23 @@
                            <div class="col-md-6">
                                <div class="form-group">
                                    <label for="value">Purchase Price</label>
-                                   <input type="number" name="purchase_price" class="form-control" placeholder="Enter Valuation">
+                                   <input type="number" name="purchase_price" class="form-control" placeholder="Enter Valuation" value="{{old('purchase_price')}}">
                                </div>
                                @error('purchase_price')
                                <span class="text-danger">{{$message}}</span>
                                @enderror
                            </div>
-                       </div>
                        <div class="col-md-12">
                            <div class="form-group">
                                <label for="loca">Location</label>
-                               <input type="text" class="form-control" name="product_location" placeholder="Enter product location in warehouse">
+                               <input type="text" class="form-control" name="product_location" placeholder="Enter product location in warehouse" value="{{old('product_location')}}">
                            </div>
                        </div>
                        <div class="form-group ">
                            <div class="col-12">
                                <button type="submit" class="btn btn-primary text-center">Stock In</button>
                            </div>
+                       </div>
                        </div>
                    </form>
                </div>

@@ -22,7 +22,7 @@
                     <div class="card-header">Delivery Assign</div>
                     <div class="col-12 my-3">
                         <div class="row">
-                            <input type="hidden" name="draft_time" value="{{\Carbon\Carbon::now()}}">
+                            <input type="hidden" name="current_state" value="New">
                             <input type="hidden" name="emp_id"
                                    value="{{\Illuminate\Support\Facades\Auth::guard('employee')->user()->id}}">
                             <div class="col-md-3 col-sm-6 col-6 flex-column">
@@ -64,8 +64,8 @@
                             <div class="col-md-3 col-sm-6 col-6 flex-column">
                                 <div class="form-group">
                                     <label for="customer_name">Customer</label>
-                                    <input type="text" class="form-control" id="customer_name" readonly>
-                                    <input type="hidden" name="customer_id" id="customer_id">
+                                    <input type="text" class="form-control" id="customer_name" name="customer_name" value="{{old('customer_name')}}" readonly>
+                                    <input type="hidden" name="customer_id" id="customer_id" value="{{old('customer_id')}}">
                                     @error('customer_id')
                                     <span class="text-danger">{{$message}}</span>
                                     @enderror
@@ -74,7 +74,7 @@
                             <div class="col-md-3 col-sm-6 col-6 flex-column">
                                 <div class="form-group">
                                     <label for="pickup_date">Pick Up Date</label>
-                                    <input type="date" class="form-control" name="pickup_date" id="pickup_date">
+                                    <input type="date" class="form-control" name="pick_date" id="pickup_date" value="{{old('pick_date')}}">
                                 </div>
                             </div>
                             <div class="col-md-3 col-sm-6 col-6 flex-column">
@@ -103,7 +103,7 @@
                             <div class="col-md-3 col-sm-6 col-6 flex-column">
                                 <div class="form-group">
                                     <label for="phone">Receiver Phone</label>
-                                    <input type="text" class="form-control" name="phone" id="phone">
+                                    <input type="text" class="form-control" name="receiver_phone" id="phone" value="{{old('receiver_phone')}}">
                                 </div>
                             </div>
                             <div class="col-md-3 col-sm-6 col-6 flex-column">
@@ -116,11 +116,11 @@
                                 <span class="text-danger">{{$message}}</span>
                                 @enderror
                             </div>
-                            <div class="col-md-3 col-sm-6 col-6 flex-column">
+                            <div class="col-md-3 col-sm-6 col-6 flex-column" id="delivery_fee">
                                 <div class="form-group">
                                     <label for="">Delivery Fee</label>
                                     <input type="number" class="form-control" name="delivery_fee" id="deli_fee"
-                                           value="{{old('delivery_fee')}}">
+                                           value="{{old('delivery_fee')??0}}">
                                 </div>
                                 @error('delivery_fee')
                                 <span class="text-danger">{{$message}}</span>
@@ -143,21 +143,22 @@
                             <div class="col-md-3 col-sm-6 col-6 flex-column">
                                 <div class="form-group">
                                     <label for="invoice_type">Invoice Type</label>
-                                    <input type="text" class="form-control" name="invoice_type" id="delivery_type">
+                                    <input type="text" class="form-control" name="delivery_type" id="delivery_type" value="{{old('delivery_type')}}">
                                 </div>
                             </div>
                             <div class="col-md-3 col-sm-6 col-6 flex-column">
                                 <div class="form-group">
                                     <label for="amount">Amount To Request</label>
-                                    <input type="text" class="form-control" id="amount" name="amount">
+                                    <input type="text" class="form-control" id="amount" name="amount_to_request" value="{{old('amount_to_request')}}">
                                 </div>
                             </div>
                             <div class="col-md-12 col-sm-12 col-12 flex-column">
                                 <div class="form-group">
                                     <label for="remark">Remark</label>
-                                    <textarea name="remark" id="remark" class="form-control" rows="5"></textarea>
+                                    <textarea name="remark" id="remark" class="form-control" rows="5">{{old('remark')}}</textarea>
                                 </div>
                             </div>
+                            <input type="hidden" name="status" value="New">
                             <input type="hidden" name="uuid" value="{{\Illuminate\Support\Str::uuid()}}">
                             <div class="col-md-12 text-center">
                                 <button type="reset" class="btn btn-danger ">Cancel</button>
@@ -176,14 +177,6 @@
            $('textarea').addClass('shadow-sm');
         });
         $(document).ready(function () {
-            var inv_id=$('#invoice option:selected').val();
-            @foreach($invoices as $invoice)
-            if(inv_id=='{{$invoice->id}}'){
-                $('#customer_name').val('{{$invoice->customer->name}}');
-                $('#customer_id').val('{{$invoice->customer->id}}');
-                $('#phone').val('{{$invoice->customer->phone}}')
-            }
-            @endforeach
             $('#invoice').on('change',function () {
                 var inv_id=$('#invoice option:selected').val();
                 @foreach($invoices as $invoice)
@@ -192,17 +185,17 @@
                     $('#customer_id').val('{{$invoice->customer->id}}');
                     $('#phone').val('{{$invoice->customer->phone}}');
                     $('#address').val('{{$invoice->customer_address}}');
-                    $('#deli_fee').val('{{$invoice->delivery_fee}}');
                     $('#delivery_type').val('{{$invoice->invoice_type}}');
-                    $('#amount').val('{{$invoice->grand_total}}');
-                }else {
-                    $('#customer_name').val('');
-                    $('#customer_id').val('');
-                    $('#phone').val('');
-                    $('#address').val('');
-                    $('#deli_fee').val('');
-                    $('#delivery_type').val('');
-                    $('#amount').val('');
+                    if('{{$invoice->invoice_type}}'=='Cash On Delivery(COD)') {
+                        $('#amount').val('{{$invoice->grand_total}}');
+                    }else {
+                        $('#amount').val(0);
+                    }
+                    if('{{$invoice->include_delivery_fee}}'==1){
+                        $('#deli_fee').val('{{$invoice->delivery_fee}}');
+                    }else {
+                        $('#deli_fee').val('0');
+                    }
                 }
                 @endforeach
             })
