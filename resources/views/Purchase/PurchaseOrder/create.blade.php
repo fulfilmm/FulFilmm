@@ -136,13 +136,13 @@
                                         <td>{{$item->total??''}}
                                         </td>
                                         <td style="min-width: 60px;">
-                                            <div class="row">
+                                            <div class="row justify-content-between">
                                                 <button type="button" data-toggle="modal"
                                                         data-target="#edit{{$item->id}}"
-                                                        class="btn btn-success btn-sm mt-1"><i
+                                                        class="btn btn-success btn-sm mt-1 col"><i
                                                             class="fa fa-edit"></i></button>
                                                 <button type="button" id="delete_{{$item->id}}"
-                                                        class="btn btn-danger btn-sm mt-1"><i
+                                                        class="btn btn-danger btn-sm mt-1 col"><i
                                                             class="fa fa-minus"></i></button>
                                                 <div id="edit{{$item->id}}" class="modal custom-modal fade"
                                                      role="dialog">

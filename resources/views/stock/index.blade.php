@@ -5,13 +5,13 @@
         <form action="{{route('stock.search')}}" method="GET">
 
             <div class="row mt-2">
-                <div class="top-nav-search">
+                <div class="top-nav-search col-md-5 col-sm-5 col-5">
                     <input class="form-control" id="start" type="text" name="start_date" placeholder="Enter Start Date and Time">
                 </div>
-                <div class="top-nav-search">
+                <div class="top-nav-search col-md-5 col-sm-5 col-5">
                     <input class="form-control" id="end" type="text" name="end_date" placeholder="Enter End Date and Time">
                 </div>
-                <button class="btn rounded-circle" type="submit"><i class="fa fa-search"></i></button>
+                <button class="btn rounded-circle col-md-1 col-sm-1 col-1" type="submit"><i class="fa fa-search"></i></button>
             </div>
         </form>
     </div>

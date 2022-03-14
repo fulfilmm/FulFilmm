@@ -204,6 +204,9 @@
                                                                             <div class="form-group">
                                                                                 <label for="exp_date">Expired Date</label>
                                                                                 <input type="date" class="form-control" name="exp_date" id="exp_date">
+                                                                                @error('exp_date')
+                                                                                <span class="text-danger">{{$message}}</span>
+                                                                                @enderror
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-md-6">
@@ -220,12 +223,18 @@
                                                                             <div class="form-group">
                                                                                 <label for="">Quantity</label>
                                                                                 <input type="number" name="qty" class="form-control" value="{{$item->qty}}">
+                                                                                @error('qty')
+                                                                                <span class="text-danger">{{$message}}</span>
+                                                                                @enderror
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-md-6">
                                                                             <div class="form-group">
                                                                                 <label for="value">Purchase Price</label>
-                                                                                <input type="number" name="purchase_price" class="form-control" placeholder="Enter Valuation">
+                                                                                <input type="number" name="purchase_price" class="form-control" placeholder="Enter Purchase Price">
+                                                                                @error('purchase_price')
+                                                                                <span class="text-danger">{{$message}}</span>
+                                                                                @enderror
                                                                             </div>
                                                                         </div>
                                                                          <div class="col-md-12">

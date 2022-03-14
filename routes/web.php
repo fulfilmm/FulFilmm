@@ -487,6 +487,4 @@ Route::get('main/customer',[CustomerController::class,'customer'])->name('custom
 
 
 
-
-
 //Route::get('stockout/show/{id}',[StockTransactionController::class,'show_stockout'])->name('stockout.show');

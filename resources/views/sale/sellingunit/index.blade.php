@@ -27,7 +27,7 @@
                        <th>Unit</th>
                        <th>Unit Convert Rate</th>
                        <th>Created Date</th>
-                       <th></th>
+                       <th>Action</th>
                    </tr>
                    </thead>
                    <tbody>
@@ -39,9 +39,11 @@
                            <td>{{$item->unit_convert_rate}}</td>
                            <td>{{$item->created_at->toFormattedDateString()}}</td>
                            <td>
-                               <div class="row justify-content-center">
-                                   <a href="{{route('sellingunits.edit',$item->id)}}" class="btn btn-success btn-sm"><i class="la la-edit"></i></a>
-                                   <form action="{{route('sellingunits.destroy',$item->id)}}" method="POST">
+                               <div class="row">
+                                  <div class="col-md-2 mr-1">
+                                      <a href="{{route('sellingunits.edit',$item->id)}}" class="btn btn-success btn-sm"><i class="la la-edit"></i></a>
+                                  </div>
+                                   <form action="{{route('sellingunits.destroy',$item->id)}}" method="POST" class="col">
                                        @csrf
                                        @method('Delete')
                                        <button type="submit" class="btn btn-danger btn-sm"><i class="la la-trash"></i></button>

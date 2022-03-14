@@ -6,6 +6,6 @@ const icons = {
 faPhone , faUser , 
 faHouseChimney , faPenToSquare , 
 faFileArrowUp , faPlus , faTrashCan , faXmark , faBackward
-}
+};
 
 export default icons;

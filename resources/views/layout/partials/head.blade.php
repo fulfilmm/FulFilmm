@@ -141,5 +141,8 @@
             body,head,header,h3,.card-title{
                 font-family: 'Inter';
             }
+            a{
+                text-decoration: none;
+            }
         </style>
     </head>

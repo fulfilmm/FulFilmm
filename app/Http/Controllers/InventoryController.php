@@ -74,9 +74,8 @@ class InventoryController extends Controller
     {
         $receipt=ProductReceive::with('purchaseorder','vendor')->where('id',$id)->firstOrFail();
 //        dd($receipt);
-        $receipt_item=ProductReceiveItem::with('product','warehouse','product_unit')->get();
+        $receipt_item=ProductReceiveItem::with('product','warehouse','product_unit')->where('id',$id)->get();
         $sell_unit=SellingUnit::where('unit_convert_rate',1)->get();
-//        dd($receipt_item);
         $product=product::all()->pluck('name','id')->all();
         $warehouse=Warehouse::all()->pluck('name','id')->all();
         return view('Inventory.receivedproduct',compact('receipt','receipt_item','product','warehouse','sell_unit'));
