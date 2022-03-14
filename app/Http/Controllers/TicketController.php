@@ -179,18 +179,18 @@ class TicketController extends Controller
         $ticket->priority = $request->priority;
         if ($request->hasfile('files')) {
             foreach ($request->file('files') as $image) {
-                $name = $image->getClientOriginalName();
-                $image->move(public_path() . '/ticket_picture/', $name);
-                $data[] = $name;
+                $input['filename'] =\Illuminate\Support\Str::random(10).time().'.'.$image->extension();
+                $image->move(public_path() . '/ticket_picture/', $input['filename']);
+                $data[] = $input['filename'];
             }
             $ticket->photo = json_encode($data);
         }
 
         if ($request->hasfile('attachment')) {
             $attach = $request->file('attachment');
-            $attach_name = $attach->getClientOriginalName();
-            $attach->move(public_path() . '/ticket_attach/', $attach_name);
-            $ticket->attachment = $attach_name;
+            $input['filename'] =\Illuminate\Support\Str::random(10).time().'.'.$attach->extension();
+            $attach->move(public_path() . '/ticket_attach/', $input['filename']);
+            $ticket->attachment = $input['filename'];
         }
         $ticket->save();
         if($request->complain_id!=null){
@@ -263,9 +263,10 @@ class TicketController extends Controller
         $comments->comment = $request->comment;
         $doc = $request->attach_file;
         if ($doc != null) {
-            $name = $doc->getClientOriginalName();
-            $request->attach_file->move(public_path() . '/ticket_attach/', $name);
-            $comments->document_file = $name;
+            $attach = $request->file('attach_file');
+            $input['filename'] =\Illuminate\Support\Str::random(10).time().'.'.$attach->extension();
+            $request->attach_file->move(public_path() . '/ticket_attach/', $input['filename']);
+            $comments->document_file = $input['filename'];
         }
         $comments->save();
         return redirect()->back();

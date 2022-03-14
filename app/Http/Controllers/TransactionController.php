@@ -109,11 +109,12 @@ class TransactionController extends Controller
         $new_expense->bill_id = $request->bill_id ?? null;
         if (isset($request->attachment)) {
             if ($request->attachment != null) {
-                $name = $request->attachment->getClientOriginalName();
-                $request->attachment->move(public_path() . '/attach_file', $name);
+                $attach=$request->file('attachment');
+                $input['filename'] =\Illuminate\Support\Str::random(10).time().'.'.$attach->extension();
+                $request->attachment->move(public_path() . '/attach_file', $input['filename']);
 
             }
-            $new_expense->attachment = $name;
+            $new_expense->attachment = $input['filename'];
         }
         $new_expense->save();
         $this->transaction_add($request->account, $request->type, $new_expense->id, null);
@@ -194,11 +195,12 @@ class TransactionController extends Controller
         $revenue->invoice_id=$request->invoice_id;
            if (isset($request->attachment)) {
                if ($request->attachment != null) {
-                   $name = $request->attachment->getClientOriginalName();
-                   $request->attachment->move(public_path() . '/attach_file', $name);
+                   $attach=$request->file('attachment');
+                   $input['filename'] =\Illuminate\Support\Str::random(10).time().'.'.$attach->extension();
+                   $request->attachment->move(public_path() . '/attach_file', $input['filename']);
 
                }
-               $revenue->attachment = $name;
+               $revenue->attachment = $input['filename'];
            }
            $revenue->reference = $request->reference;
         $revenue->update();
@@ -240,11 +242,12 @@ class TransactionController extends Controller
            $new_revenue->currency = $request->currency;
            if (isset($request->attachment)) {
                if ($request->attachment != null) {
-                   $name = $request->attachment->getClientOriginalName();
-                   $request->attachment->move(public_path() . '/attach_file', $name);
+                   $attach=$request->file('attachment');
+                   $input['filename'] =\Illuminate\Support\Str::random(10).time().'.'.$attach->extension();
+                   $request->attachment->move(public_path() . '/attach_file', $input['filename']);
 
                }
-               $new_revenue->attachment = $name;
+               $new_revenue->attachment = $input['filename'];
            }
            if ($request->payment_method == 'Advance Payment') {
                $new_revenue->approve = 1;
@@ -252,9 +255,11 @@ class TransactionController extends Controller
            $new_revenue->save();
            if(isset($request->invoice_id )){
                $delivery=DeliveryOrder::where('invoice_id',$request->invoice_id)->first();
-               $deli_pay=DeliveryPay::where('delivery_id',$delivery->id)->first();
-               $deli_pay->receiver_invoice_amount=1;
-               $deli_pay->update();
+             if($delivery!=null){
+                 $deli_pay=DeliveryPay::where('delivery_id',$delivery->id)->first();
+                 $deli_pay->receiver_invoice_amount=1;
+                 $deli_pay->update();
+             }
            }
            $this->transaction_add($request->account, $request->type, null, $new_revenue->id);
            if (isset($request->invoice_id)) {

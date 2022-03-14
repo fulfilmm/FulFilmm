@@ -7,6 +7,7 @@ use App\Exports\StockExport;
 use App\Imports\StockImport;
 use App\Models\Customer;
 use App\Models\DamagedProduct;
+use App\Models\EcommerceProduct;
 use App\Models\Employee;
 use App\Models\Freeofchare;
 use App\Models\Invoice;
@@ -73,7 +74,7 @@ class StockTransactionController extends Controller
     public function stockout_form()
     {
         $emps = Employee::all();
-        $type=['Invoice','FOC','Donation','Simple','Guest','Damage'];
+        $type=['Invoice','FOC','Donation','Simple','Guest','Damage','E-commerce Stock'];
         $main_product=product::all();
         $products = ProductVariations::with('product')->get();
         $customers =Customer::where('customer_type', 'Lead')->where('status', 'qualified')->get();
@@ -155,8 +156,7 @@ class StockTransactionController extends Controller
         return view('stock.index',compact('stock_transactions','stocks','units'));
     }
     public function approve($id){
-
-        $stock_out=StockOut::where('id',$id)->where('approve',0)->first();
+        $stock_out=StockOut::with('variant')->where('id',$id)->where('approve',0)->first();
         $sell_unit=SellingUnit::where('id',$stock_out->sell_unit)->first();
         if($stock_out->approver_id==Auth::guard('employee')->user()->id){
             $stock=Stock::where('variant_id',$stock_out->variantion_id)->where('warehouse_id',$stock_out->warehouse_id)->first();
@@ -172,7 +172,7 @@ class StockTransactionController extends Controller
             if($stock_out->type=='FOC'){
                 $foc=new Freeofchare();
                 $foc->variant_id=$stock_out->variantion_id;
-                $foc->qty=$stock_out->qty;
+                $foc->qty=$stock_out->qty*$sell_unit->unit_convert_rate;
                 $foc->issuer_id=$stock_out->emp_id;
                 $foc->description=$stock_out->description;
                 $foc->save();
@@ -182,9 +182,33 @@ class StockTransactionController extends Controller
             }elseif($stock_out->type=='Invoice'){
                 $stock->stock_balance = $stock->stock_balance - ($stock_out->qty*$sell_unit->unit_convert_rate);
                 $stock->update();
-            }elseif($stock_out->type=='Damage'){
-                $data=['warehouse_id'=>$stock_out->warehouse_id,'emp_id'=>$stock_out->emp_id,'qty'=>$stock_out->qty,'variant_id'=>$stock_out->variantion_id];
+            }elseif($stock_out->type=='Damage') {
+                $data = ['warehouse_id' => $stock_out->warehouse_id, 'emp_id' => $stock_out->emp_id, 'qty' => $stock_out->qty, 'variant_id' => $stock_out->variantion_id];
                 DamagedProduct::create($data);
+                $stock->available = $stock->available - ($stock_out->qty * $sell_unit->unit_convert_rate);
+                $stock->stock_balance = $stock->stock_balance - ($stock_out->qty * $sell_unit->unit_convert_rate);
+                $stock->update();
+            }elseif ($stock_out->type=='E-commerce Stock'){
+
+               $exists_ecommerce_stock=EcommerceProduct::where('product_id',$stock_out->variantion_id)->first();
+                if($exists_ecommerce_stock==null){
+                    $product=product::with('brand','category')->where('id',$stock_out->variant->product_id)->first();
+                    $ecommerce_stock=new EcommerceProduct();
+                    $ecommerce_stock->product_id=$stock_out->variantion_id;
+                    $ecommerce_stock->name=$stock_out->variant->product_name;
+                    $ecommerce_stock->qty=$stock_out->qty * $sell_unit->unit_convert_rate;
+                    $ecommerce_stock->brand=$product->brand->name;
+                    $ecommerce_stock->save();
+                    $stock->available = $stock->available - ($stock_out->qty * $sell_unit->unit_convert_rate);
+                    $stock->stock_balance = $stock->stock_balance - ($stock_out->qty * $sell_unit->unit_convert_rate);
+                    $stock->update();
+                }else{
+                    $exists_ecommerce_stock->qty=$exists_ecommerce_stock->qty + $stock_out->qty * $sell_unit->unit_convert_rate;
+                    $exists_ecommerce_stock->update();
+                    $stock->available = $stock->available - ($stock_out->qty * $sell_unit->unit_convert_rate);
+                    $stock->stock_balance = $stock->stock_balance - ($stock_out->qty * $sell_unit->unit_convert_rate);
+                    $stock->update();
+                }
                 $stock->available=$stock->available - ($stock_out->qty*$sell_unit->unit_convert_rate);
                 $stock->stock_balance = $stock->stock_balance - ($stock_out->qty*$sell_unit->unit_convert_rate);
                 $stock->update();
@@ -319,6 +343,11 @@ class StockTransactionController extends Controller
         $units=SellingUnit::all();
         $stock_transactions=ProductStockBatch::with('supplier','variant')->where("product_id",$id)->get();
         return view('stock.stockin_batch',compact('stock_transactions','units'));
+    }
+    public function ecommerce_stock(){
+        $units=SellingUnit::all();
+        $ecommerce_stocks=EcommerceProduct::with('variant')->get();
+        return view('stock.ecommerce_stock',compact('ecommerce_stocks','units'));
     }
 
 }

@@ -69,18 +69,18 @@ class RequestTicket extends Controller
         $request_ticket->address=$request->address;
         if ($request->hasfile('files')) {
             foreach ($request->file('files') as $image) {
-                $name = $image->getClientOriginalName();
-                $image->move(public_path() . '/ticket_picture/', $name,);
-                $data[] = $name;
+                $input['filename'] =\Illuminate\Support\Str::random(10).time().'.'.$image->extension();
+                $image->move(public_path() . '/ticket_picture/', $input['filename'],);
+                $data[] = $input['filename'];
             }
             $request_ticket->image = json_encode($data);
         }
 
         if ($request->hasfile('attach_file')) {
             $attach = $request->file('attach_file');
-            $attach_name = $attach->getClientOriginalName();
-            $attach->move(public_path() . '/ticket_attach/', $attach_name);
-            $request_ticket->attach_file = $attach_name;
+            $input['filename'] =\Illuminate\Support\Str::random(10).time().'.'.$attach->extension();
+            $attach->move(public_path() . '/ticket_attach/', $input['filename']);
+            $request_ticket->attach_file = $input['filename'];
         }
         $request_ticket->save();
         return redirect()->back()->with('Complain Posted successful!Thank You.');

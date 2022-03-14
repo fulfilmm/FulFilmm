@@ -216,7 +216,6 @@
                                                                                 </select>
                                                                             </div>
                                                                         </div>
-
                                                                         <div class="col-md-6">
                                                                             <div class="form-group">
                                                                                 <label for="">Quantity</label>
@@ -225,16 +224,16 @@
                                                                         </div>
                                                                         <div class="col-md-6">
                                                                             <div class="form-group">
-                                                                                <label for="value">Valuation</label>
+                                                                                <label for="value">Purchase Price</label>
                                                                                 <input type="number" name="purchase_price" class="form-control" placeholder="Enter Valuation">
                                                                             </div>
                                                                         </div>
-                                                                    </div>
-                                                                    <div class="col-md-12">
+                                                                         <div class="col-md-12">
                                                                         <div class="form-group">
                                                                             <label for="loca">Location</label>
                                                                             <input type="text" class="form-control" name="product_location" placeholder="Enter product location in warehouse">
                                                                         </div>
+                                                                    </div>
                                                                     </div>
                                                             </div>
                                                             <div class="modal-footer">

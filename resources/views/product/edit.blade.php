@@ -134,7 +134,7 @@
                         <div class="col-12">
                             <div class="form-group">
                                 <label for="">Image</label>
-                                <input type="file" name="picture[]" class="form-control" multiple>
+                                <input type="file" name="picture" class="form-control">
                             </div>
                         </div>
                     </div>

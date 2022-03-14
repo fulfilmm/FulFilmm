@@ -67,7 +67,7 @@
                     <div class="col-md-8">
                         <div class="form-group">
                             <label for="">Images</label>
-                            <input type="file" name="picture[]" class="form-control" multiple >
+                            <input type="file" name="picture" class="form-control" >
                         </div>
                     </div>
                     <div class="col-md-12">

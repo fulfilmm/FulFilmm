@@ -100,11 +100,7 @@
                    <div class="col-12 my-3">
                        <h5>Images</h5>
                        <div class="row my-1">
-                          @if($product->image!=null)
-                           @foreach(json_decode($product->image) as $image)
-                               <img src="{{url(asset('/product_picture/'.$image))}}" alt="" class="border mr-2 ml-2" style="max-height:200px;max-width:100%;border: solid">
-                           @endforeach
-                              @endif
+                               <img src="{{url(asset('/product_picture/'.$product->image))}}" alt="" class="border mr-2 ml-2" style="max-height:200px;max-width:100%;border: solid">
                        </div>
                    </div>
 
@@ -134,6 +130,7 @@
                        <thead>
                        <tr>
                            <th><input type="checkbox" name="all" id="checkall"></th>
+                           <th></th>
                            <th>Product Name</th>
                            <th>Product Code</th>
                            <th>Serial Number</th>
@@ -151,6 +148,8 @@
                                <td>
                                    <input type="checkbox"  name="product[]" value="{{$item->id}}" class="single">
                                </td>
+                               <td> <img src="{{url(asset('/product_picture/'.$item->image))}}" alt="" class="border mr-2 ml-2"
+                                         style="max-height:50px;max-width:50px;border: solid"></td>
                                <td>{{$item->product_name}}</td>
                                <td><a href="{{route('show.variant',$item->id)}}"><strong>{{$item->product_code}}</strong></a></td>
                                <td>{{$item->serial_no}}</td>
@@ -214,7 +213,7 @@
                                                            <div class="col-md-12">
                                                                <div class="form-group">
                                                                    <label for="">Images</label>
-                                                                   <input type="file" name="picture[]" class="form-control" multiple >
+                                                                   <input type="file" name="picture" class="form-control" >
                                                                </div>
                                                            </div>
 
@@ -287,7 +286,7 @@
                                    <div class="col-md-12">
                                        <div class="form-group">
                                            <label for="">Images</label>
-                                           <input type="file" name="picture[]" class="form-control" multiple >
+                                           <input type="file" name="picture" class="form-control">
                                        </div>
                                    </div>
                                    <div class="col-md-12">

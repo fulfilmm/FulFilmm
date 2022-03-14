@@ -98,9 +98,9 @@ class PurchaseRequestController extends Controller
         $pr->status='New';
         if(isset($request->file)){
             foreach ($request->file('file') as $attach) {
-                $name = $attach->getClientOriginalName();
-                $attach->move(public_path() . '/attach_file/', $name);
-                $data[] = $name;
+                $input['filename'] =\Illuminate\Support\Str::random(10).time().'.'.$attach->extension();
+                $attach->move(public_path() . '/attach_file/', $input['filename']);
+                $data[] = $input['filename'];
             }
             $pr->attach = json_encode($data);
         }
@@ -194,9 +194,9 @@ class PurchaseRequestController extends Controller
         $pr->type=$request->type;
         if(isset($request->file)){
             foreach ($request->file('file') as $attach) {
-                $name = $attach->getClientOriginalName();
-                $attach->move(public_path() . '/attach_file/', $name);
-                $data[] = $name;
+                $input['filename'] =\Illuminate\Support\Str::random(10).time().'.'.$attach->extension();
+                $attach->move(public_path() . '/attach_file/', $input['filename']);
+                $data[] = $input['filename'];
             }
             $pr->attach = json_encode($data);
         }

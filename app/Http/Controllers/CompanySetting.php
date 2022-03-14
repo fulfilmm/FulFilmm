@@ -6,6 +6,7 @@ use App\Models\Company;
 use App\Models\Emailsetting;
 use App\Models\MainCompany;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 
 class CompanySetting extends Controller
@@ -69,10 +70,10 @@ class CompanySetting extends Controller
         $maincompany->fax=$request->fax;
         $maincompany->web_link=$request->web_link;
         if($request->logo!=null) {
-            $image = $request->logo;
-            $name = $image->getClientOriginalName();
-            $request->logo->move(public_path() . '/img/profiles', $name);
-            $maincompany->logo = $name;
+            $image = $request->file('logo');
+            $input['filename'] =Str::random(10).time().'.'.$image->extension();
+            $request->logo->move(public_path() . '/img/profiles', $input['filename']);
+            $maincompany->logo = $input['filename'];
         }
         $isexit==null?$maincompany->save():$maincompany->update();
         return redirect('/')->with('success','Company Setting up successful!');

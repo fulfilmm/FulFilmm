@@ -458,6 +458,8 @@ Route::get('price/edit/{id}',[SellingUnitController::class,'price_edit'])->name(
 Route::get('stock/batch/{p_id}',[StockTransactionController::class,'batch'])->name('stock.batch');
 Route::get('delivery/transaction',[ShippmentController::class,'transaction'])->name('delivery.transaction');
 Route::get('delivery/customer/receipt/{id}',[ShippmentController::class,'receipt'])->name('receipt.confirm');
+Route::get('ecommerce/stock/index',[StockTransactionController::class,'ecommerce_stock'])->name('ecommerce_stock');
+Route::get('main/customer',[CustomerController::class,'customer'])->name('customer');
 
 
 

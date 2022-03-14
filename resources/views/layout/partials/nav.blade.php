@@ -292,6 +292,8 @@
 
                                         <li><a class="{{ Request::is('stocks') ? 'active' : '' }}"
                                                href="{{ route('stocks') }}" style="text-decoration: none">Stocks</a></li>
+                                        <li><a class="{{ Request::is('ecommerce/stock/index') ? 'active' : '' }}"
+                                               href="{{ route('ecommerce_stock') }}" style="text-decoration: none">E-commerce Stocks</a></li>
 
                                         <li><a class="{{ Request::is('stocks/index') ? 'active' : '' }}" href="{{route('stocks.index')}}" style="text-decoration: none">Stock Transaction</a></li>
                                         <li><a class="{{ Request::is('stockin') ? 'active' : '' }}" href="{{route('showstockin')}}" style="text-decoration: none">
@@ -382,6 +384,8 @@
                             <a href="#"><i class="la la-cube"></i> <span>Sale</span> <span
                                         class="menu-arrow"></span></a>
                             <ul style="display: none;">
+                                <li><a class="{{ Request::is('main/customer') ? 'active' : '' }}"
+                                       href="{{ route('customer') }}" style="text-decoration: none"><i class="la la-calendar mr-1" style="font-size: 18px;"></i>Customers</a></li>
                                 <li><a class="{{ Request::is('selling/report') ? 'active' : '' }}"
                                        href="{{ route('sale.report') }}" style="text-decoration: none"><i class="la la-calendar mr-1" style="font-size: 18px;"></i>Sale Report</a></li>
                                 <li><a class="{{ Request::is('sale/activity') ? 'active' : '' }}"

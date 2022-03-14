@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\EcommerceProduct;
 use App\Models\product;
 use App\Models\products_category;
 use App\Models\products_tax;
@@ -12,8 +13,8 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products=product::with('taxes','category')->get();
-        return response()->json(['product'=>$products]);
+        $ecommerce_stocks=EcommerceProduct::with('variant')->get();
+        return response()->json(['product'=>$ecommerce_stocks]);
     }
 
     /**

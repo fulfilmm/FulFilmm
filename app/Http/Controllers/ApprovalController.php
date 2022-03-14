@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Psy\Util\Str;
 
 class ApprovalController extends Controller
 {
@@ -138,9 +139,9 @@ class ApprovalController extends Controller
         $approval->emp_id=Auth::guard('employee')->user()->id;
         if($request->hasfile('doc_file')) {
             foreach ($request->file('doc_file') as $doc_file) {
-                $name = $doc_file->getClientOriginalName();
-                $doc_file->move(public_path() . '/approval_doc/', $name);
-                $data[] = $name;
+                $input['filename'] =\Illuminate\Support\Str::random(10).time().'.'.$doc_file->extension();
+                $doc_file->move(public_path() . '/approval_doc/', $input['filename']);
+                $data[] = $input['filename'];
             }
             $approval->doc_file=json_encode($data);
         }

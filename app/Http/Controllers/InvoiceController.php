@@ -214,6 +214,9 @@ class InvoiceController extends Controller
             $confirm_order_item = OrderItem::where("creation_id", $request_id)->get();
             if (count($confirm_order_item) != 0) {
                 $newInvoice->save();
+                $customer=Customer::where('id',$request->client_id)->first();
+                $customer->main_customer=1;
+                $customer->update();
                 foreach ($confirm_order_item as $item) {
                     if ($item->foc) {
                         $unit = SellingUnit::where('id', $item->sell_unit)->first();

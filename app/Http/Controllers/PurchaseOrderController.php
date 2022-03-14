@@ -101,7 +101,7 @@ class PurchaseOrderController extends Controller
         try {
             if (isset($request->attach)) {
                 foreach ($request->file('attach') as $attach) {
-                    $input['filename'] = time().'.'.$attach->extension();
+                    $input['filename'] =\Illuminate\Support\Str::random(10).time().'.'.$attach->extension();
                     $attach->move(public_path() . '/attach_file', $input['filename']);
                     $name[]=$input['filename'];
                 }

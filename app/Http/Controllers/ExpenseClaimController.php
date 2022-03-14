@@ -80,9 +80,9 @@ class ExpenseClaimController extends Controller
            $exp_claim->tag_emp = json_encode($request->tag);
            if ($request->hasfile('attach')) {
                foreach ($request->file('attach') as $attach) {
-                   $name = $attach->getClientOriginalName();
-                   $attach->move(public_path() . '/approval_doc/', $name);
-                   $data[] = $name;
+                   $input['filename'] =\Illuminate\Support\Str::random(10).time().'.'.$attach->extension();
+                   $attach->move(public_path() . '/approval_doc/', $input['filename']);
+                   $data[] = $input['filename'];
                }
                $exp_claim->attach = json_encode($data);
            }
