@@ -77,7 +77,7 @@
                 <div class="card-body">
                     <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
                     <div class="dash-widget-info">
-                        <h3>{{$total_emp}}</h3>
+                        <h3>{{$items['daily_sale'][0]->total??0}}</h3>
                         <span>Daily Sale</span>
                     </div>
                 </div>

@@ -50,25 +50,23 @@
                         {{--<td>{{ $em->can_post_assignments ? 'Yes' : 'No' }}</td>--}}
 
                         <td>{{$em->getRoleNames()[0] ?? ''}}</td>
-                        <td style="min-width: 120px;">
-                            <div class="row justify-content-between">
-                                <a class="pr-2 col my-auto btn btn-white btn-sm" title="Show"
-                                   href="{{route('employees.show',$em->id)}}">
-                                    <span class='fa fa-eye'></span>
-                                </a>&nbsp;
-                                <a class="pr-2 col btn btn-success btn-sm" title="Edit"
-                                   href="{{route('employees.edit',$em->id)}}">
-                                    <span class='fa fa-edit'></span>
-                                </a>&nbsp;
-                                <form id="employee-del-{{$em->id}}" action="{{route('employees.destroy',$em->id)}}"
-                                      method="POST" class="col">
-                                    @method('delete')
-                                    @csrf
-                                    <button class="col btn btn-danger btn-sm" data-toggle="tooltip" title="Delete"
-                                            onclick="deleteRecord({{$em->id}})" type="submit"><span
-                                                class='fa fa-trash'></span></button>
-                                </form>
-                            </div>
+                        <td style="display: flex">
+                            <a class="pr-2 my-auto btn btn-white btn-sm" title="Show"
+                               href="{{route('employees.show',$em->id)}}">
+                                <span class='fa fa-eye'></span>
+                            </a>&nbsp;
+                            <a class="pr-2 my-auto btn btn-success btn-sm" title="Edit"
+                               href="{{route('employees.edit',$em->id)}}">
+                                <span class='fa fa-edit'></span>
+                            </a>&nbsp;
+                            <form id="employee-del-{{$em->id}}" action="{{route('employees.destroy',$em->id)}}"
+                                  method="POST">
+                                @method('delete')
+                                @csrf
+                                <button class="btn btn-danger btn-sm" data-toggle="tooltip" title="Delete"
+                                        onclick="deleteRecord({{$em->id}})" type="submit"><span
+                                            class='fa fa-trash'></span></button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach
