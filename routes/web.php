@@ -79,7 +79,6 @@ Route::get('login', [AuthController::class, 'showLoginForm'])->name('show.login'
 Route::get('employee/login',[AuthController::class,'employeelogin']);
 Route::namespace('Auth\Login')->prefix('employees')->as('employees.')->group(function () {
     Route::post('login', [AuthController::class, 'login'])->name('emplogin');
-    Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 });
 //Route::resource('saleorders', SaleOrderController::class)->only('create','store')->middleware('custom_auth');
@@ -92,6 +91,7 @@ Route::get('settings', [SettingsController::class, 'settings'])->name('settings.
 Route::post('update-profile', [SettingsController::class, 'updateProfile'])->name('settings.profile-update')->middleware(['auth:employee']);
 
 Route::middleware(['auth:employee'])->group(function () {
+    Route::post('employee/logout', [AuthController::class, 'logout'])->name('employee.logout');
     Route::get('ticket/comment/delete/{id}', [TicketController::class, 'cmt_delete'])->name('ticket_cmt.delete');
     Route::get('followed/ticket', [TicketController::class, 'followed_ticket'])->name('followed.tickets');
     Route::post('ticket/comment/', [TicketController::class, 'postcomment'])->name('postcomment');

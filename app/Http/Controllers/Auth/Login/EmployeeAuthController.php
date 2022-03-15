@@ -44,6 +44,6 @@ class EmployeeAuthController extends LoginController
     protected function loggedOut(Request $request)
     {
         //
-        return redirect('/login');
+        return redirect('/employee/login');
     }
 }

@@ -308,7 +308,7 @@
                        href="{{route('employees.show',\Illuminate\Support\Facades\Auth::guard('employee')->user()->id)}}">Profile</a>
                     <a class="dropdown-item" href="{{route('password.edit')}}">Change Password</a>
 
-                    <form id="logout-form" action="{{ route('employees.logout') }}" method="POST">
+                    <form id="logout-form" action="{{ route('employee.logout') }}" method="POST">
                         @csrf
                         <button class="dropdown-item"> Logout</button>
 

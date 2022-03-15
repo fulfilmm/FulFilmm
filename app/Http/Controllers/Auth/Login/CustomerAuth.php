@@ -42,7 +42,7 @@ class CustomerAuth extends Controller
     }
     public function logout(Request $request)
     {
-        $this->guard()->logout();
+        $this->guard('customer')->logout();
 
         $request->session()->invalidate();
 
@@ -54,7 +54,7 @@ class CustomerAuth extends Controller
 
         return $request->wantsJson()
             ? new JsonResponse([], 204)
-            : redirect('/');
+            : redirect('/login');
     }
     protected function loggedOut(Request $request)
     {

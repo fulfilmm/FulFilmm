@@ -143,7 +143,7 @@ class EmployeeController extends Controller
      */
     public function show($id)
     {
-        $employee=Employee::with('department','reportperson')->where('id',$id)->first();
+        $employee=Employee::with('department','reportperson')->where('id',$id)->firstOrFail();
         $invoices=Invoice::with('customer')->where('emp_id',$id)->get();
         $grand_total = DB::table("invoices")
             ->select(DB::raw("SUM(grand_total) as total"))
