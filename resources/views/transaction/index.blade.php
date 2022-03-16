@@ -19,10 +19,45 @@
                         <a href="{{route('expense.create')}}" class="btn add-btn ml-2 btn-sm"><i class="fa fa-plus"></i>
                             Add Expense</a>
                     @else
-                        <a href="{{route('expense.create')}}" class="btn add-btn ml-2 btn-sm"><i class="fa fa-plus"></i>
+                        <button type="button" class="btn btn-outline-primary btn-sm shadow-sm" data-toggle="modal" data-target="#export"><i class="la la-download mr-2"></i>Export</button>
+                        <a href="{{route('expense.create')}}" class="btn btn-outline-danger btn-sm shadow-sm"><i class="la la-plus"></i>
                             Add Expense</a>
-                        <a href="{{route('income.create')}}" class="btn add-btn btn-sm"><i class="fa fa-plus"></i> Add
+                        <a href="{{route('income.create')}}" class="btn btn-outline-success btn-sm shadow-sm"><i class="la la-plus"></i> Add
                             Income</a>
+                        <div id="export" class="modal custom-modal fade" role="dialog">
+                            <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Export</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row justify-content-center">
+                                            <div>
+                                                {{--@dd($route)--}}
+                                                <form action="{{route('transactions.export')}}" method="post">
+                                                    @csrf
+                                                    <div class="form-group">
+                                                        <label for="start">Start Date</label>
+                                                        <input type="text" class="form-control" id="start" name="start_date"  value="" title="Start Date" required>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="end">End Date</label>
+                                                        <input type="text" class="form-control" id="end" name="end_date"  value="" title="End Date" required>
+                                                    </div>
+                                                    <div class="d-flex justify-content-center">
+                                                        <button type="submit" class="btn btn-primary">Export</button>
+                                                        <button type="button" data-dismiss="modal" class="btn btn-primary ml-3">Close</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     @endif
                 </div>
             </div>
@@ -122,6 +157,14 @@
             </div>
         </div>
     </div>
+    <script>
+        jQuery(document).ready(function () {
+            'use strict';
+
+            jQuery('#start').datetimepicker();
+            jQuery('#end').datetimepicker();
+        });
+    </script>
     {{--<script src="{{url(asset('js/jquery_print.js'))}}"></script>--}}
     {{--<script src="{{url(asset('js/datatable_button.js'))}}"></script>--}}
 @endsection

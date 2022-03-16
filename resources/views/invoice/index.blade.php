@@ -66,6 +66,8 @@
                                 <thead>
                                     <tr>
                                         <th>Invoice Number</th>
+                                        <th>Sale Type</th>
+                                        <th>Invoice Type</th>
                                         <th>Client</th>
                                         <th>Sale Man</th>
                                         <th>Created Date</th>
@@ -83,7 +85,8 @@
                                             @else
                                             <td><a href="{{route("customer.invoice_show",$invoice->id)}}" >#{{$invoice->invoice_id}}</a></td>
                                             @endif
-
+                                            <td>{{$invoice->inv_type}}</td>
+                                            <td>{{$invoice->invoice_type}}</td>
                                         <td>{{$invoice->customer->name}}</td>
                                             <td>{{$invoice->employee->name}}</td>
                                         <td>{{$invoice->created_at->toFormattedDateString()}}</td>

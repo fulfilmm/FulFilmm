@@ -100,7 +100,7 @@ class CustomerController extends Controller
         if (isset($request->profile_img)) {
             if ($request->profile_img != null) {
                 $image = $request->file('profile_img');
-                $input['imagename'] = time().'.'.$image->extension();
+                $input['imagename'] = Str::random(10).time().'.'.$image->extension();
 
                 $filePath = public_path('/img/profiles');
 
@@ -480,6 +480,10 @@ class CustomerController extends Controller
     public function supplier(){
         $suppliers=Customer::where('customer_type','Supplier')->get();
         return view('customer.supplier',compact('suppliers'));
+    }
+    public function customer(){
+        $customers=Customer::where('main_customer',1)->get();
+        return view('customer.customer',compact('customers'));
     }
 
 }

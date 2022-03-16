@@ -197,7 +197,7 @@
             // remove row
             $(document).on('click', '#removeRow', function () {
                 $(this).closest('#inputFormRow').remove();
-            })
+            });
             ClassicEditor.create($('#desc')[0], {
                 toolbar: ['heading', 'bold', 'italic', 'undo', 'redo', 'numberedList', 'bulletedList', 'insertTable']
             });

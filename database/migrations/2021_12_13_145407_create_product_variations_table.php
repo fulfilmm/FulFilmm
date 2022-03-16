@@ -21,11 +21,10 @@ class CreateProductVariationsTable extends Migration
             $table->text('serial_no')->nullable();
             $table->double('purchase_price')->default(0.0)->nullable();
             $table->string('product_code')->nullable();
-            $table->dateTime('exp_date')->nullable();
             $table->tinyInteger('enable')->default(0);
             $table->text('image')->nullable();
             $table->text('variant')->nullable();
-            $table->bigInteger('supplier_id')->unsigned()->nullable();
+            $table->tinyInteger('pricing_type')->default(0);//1 is multi 0 is single
             $table->timestamps();
         });
     }

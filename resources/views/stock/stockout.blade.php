@@ -62,7 +62,7 @@
                         <label for="approver">Approver <span class="text-danger"> * </span></label>
                         <select name="approver_id" id="approver" class="form-control">
                             @foreach($emps as $emp)
-                                @if($emp->role->name=='Manager')
+                                @if($emp->role->name=='Stock Manager')
                                     <option value="{{$emp->id}}">{{$emp->name}}</option>
                                 @endif
                             @endforeach
@@ -113,7 +113,6 @@
                         @enderror
                     </div>
                 </div>
-
                 <div class="col-md-4 mb-3">
                     <div class="form-group">
                         <label for="qty">Quantity <span class="text-danger"> * </span></label>
@@ -173,16 +172,18 @@
         </form>
     </div>
     <script>
+        $(document).ready(function () {
+            $('select').select2();
+        });
         var product = document.querySelector('#product');
         var unit = document.querySelector('#unit');
         var variant=document.querySelector('#variantion_id');
         var options3=variant.querySelectorAll('option');
         var options2 = unit.querySelectorAll('option');
-
         function giveSelection(selValue) {
             unit.innerHTML = '';
             variant.innerHTML='';
-
+            // variant.appendChild('<option value="2" data-option="1" data-select2-id="4">Black</option>')
             for (var i = 0; i < options2.length; i++) {
                 if (options2[i].dataset.option === selValue) {
                     unit.appendChild(options2[i]);
@@ -198,11 +199,6 @@
         }
 
         giveSelection(product.value);
-    </script>
-    <script>
-        $(document).ready(function () {
-            $('select').select2();
-        });
 
         $('#type').change(function () {
             var type = $(this).val();

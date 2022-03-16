@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Models\DeliveryComment;
 use App\Models\DeliveryOrder;
+use App\Models\DeliveryPay;
 use App\Models\Invoice;
 use App\Models\MainCompany;
 use App\Models\OrderItem;
@@ -14,6 +15,7 @@ use Carbon\Carbon;
 use function GuzzleHttp\Promise\all;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class ShippmentController extends Controller
@@ -31,12 +33,30 @@ class ShippmentController extends Controller
         if(Auth::guard('customer')->check()){
             $deliveries=DeliveryOrder::with('invoice','courier','customer')->where('courier_id',Auth::guard('customer')->user()->id)->get();
             $new_deli=DeliveryOrder::with('employee')->where('courier_id',Auth::guard('customer')->user()->id)->where('seen',0)->get();
+            return view('Inventory.Shippment.index',compact('deliveries','new_deli'));
         }else{
             $deliveries=DeliveryOrder::with('invoice','courier','customer')->get();
-            $new_deli=[];
+            $delivery_finish=DeliveryOrder::where('receipt',1)->count();
+            $delivery_unfinish=DeliveryOrder::where('receipt',0)->where('status','!=','cancel')->count();
+            $delivery_cancel=DeliveryOrder::where('status','cancel')->count();
+            $total_bill = DB::table("delivery_pays")
+                ->select(DB::raw("SUM(delivery_fee) as total"))
+                ->get();
+            $total_receivable = DB::table("delivery_pays")
+                ->select(DB::raw("SUM(invoice_amount) as total"))
+                ->get();
+            return view('Inventory.Shippment.index',compact('deliveries','delivery_unfinish','delivery_finish','delivery_cancel','total_bill','total_receivable'));
         }
 
-        return view('Inventory.Shippment.index',compact('deliveries','new_deli'));
+    }
+
+    public function transaction(){
+       if(Auth::guard('customer')->check()) {
+           $deliveries = DeliveryPay::with('delivery','courier')->where('courier_id', Auth::guard('customer')->user()->id)->get();
+       }else{
+           $deliveries = DeliveryPay::with('delivery','courier')->get();
+       }
+        return view('Inventory.Shippment.deli_pay_transaction',compact('deliveries'));
     }
 
     /**
@@ -54,7 +74,7 @@ class ShippmentController extends Controller
         } else {
             $delivery_id = "D-00001";
         }
-        $invoices=Invoice::all();
+        $invoices=Invoice::with('customer','warehouse')->get();
         $customer=Customer::all();
         $courier=Customer::where('customer_type','Courier')->get();
         $warehouse=Warehouse::all()->pluck('name','id')->all();
@@ -79,11 +99,13 @@ class ShippmentController extends Controller
             'delivery_date'=>'required',
             'delivery_fee'=>'required',
             'warehouse_id'=>'required',
-            'shipping_address'=>'required'
+            'shipping_address'=>'required',
+            'receiver_phone'=>'required',
+            'delivery_type'=>'required'
         ]);
         $customer=Customer::where('id',$request->courier_id)->first();
 //        dd($customer);
-        $delivery=DeliveryOrder::where('invoice_id',$request->invoice_id)->where('cancel',0)->first();
+        $delivery=DeliveryOrder::where('invoice_id',$request->invoice_id)->where('status','cancel')->first();
         if($delivery==null){
            $deli=DeliveryOrder::create($request->all());
            $data['email']=$customer->email;
@@ -201,24 +223,51 @@ class ShippmentController extends Controller
             if($state=='Packing'&& $delivery->packing==0){
                 $delivery->packing=1;
                 $delivery->packing_time=Carbon::now();
+                $delivery->current_state='Packing';
                 $delivery->update();
                 return redirect(route('deliveries.show',$id));
             }elseif ($state=='Delivery' && $delivery->on_way==0){
                 $delivery->on_way=1;
                 $delivery->onway_time=Carbon::now();
+                $delivery->current_state='Delivery';
                 $delivery->update();
                 return redirect(route('deliveries.show',$id));
             }elseif ($state=='Done' && $delivery->receipt==0){
                 $delivery->receipt=1;
                 $delivery->receipt_time=Carbon::now();
+                $delivery->current_state='Done';
                 $delivery->update();
                 return redirect(route('deliveries.show',$id));
             }elseif ($state=='cancel'){
-                $delivery->cancel=1;
+                $delivery->status='cancel';
+                $delivery->current_state='Cancel';
                 $delivery->update();
                 return redirect(route('deliveries.index'))->with('success','Canceled delivery');
-            }elseif($state=='accept'&&$delivery->cancel!=1){
-                $delivery->cancel=0;
+            }elseif($state=='accept'&&$delivery->status!='cancel'){
+                $delivery->status='accept';
+                $delivery->current_state='Accept';
+                $exist_pay=DeliveryPay::where('delivery_id',$delivery->id)->first();
+                if($exist_pay==null){
+                    $deli_data['delivery_id']=$delivery->id;
+                    $deli_data['delivery_code']=$delivery->delivery_id;
+                    if($delivery->invoice->include_delivery_fee){
+                        $deli_data['delivery_fee']=$delivery->delivery_fee;
+                        $deli_data['paid_delivery_fee']=0;
+                    }else{
+                        $deli_data['delivery_fee']=0.0;
+                        $deli_data['paid_delivery_fee']=1;
+                    }
+                    if($delivery->delivery_type=='Cash On Delivery(COD)'){
+                        $deli_data['invoice_amount']=$delivery->amount_to_request;
+                        $deli_data['due_amount']=$delivery->amount_to_request;
+                    }else{
+                        $deli_data['invoice_amount']=$delivery->amount_to_request;
+                        $deli_data['due_amount']=$delivery->amount_to_request;
+                        $deli_data['receiver_invoice_amount']=1;
+                    }
+                    $deli_data['courier_id']=$delivery->courier_id;
+                    DeliveryPay::create($deli_data);
+                }
                 $delivery->update();
                 return redirect(route('deliveries.show',$id))->with('success','Accepted delivery assign');
             }else{
@@ -239,6 +288,13 @@ class ShippmentController extends Controller
     }
     public function tracking($uuid){
         $delivery=DeliveryOrder::with('invoice','courier','customer')->where('uuid',$uuid)->firstOrFail();
-        return view('Inventory.Shippment.tracking',compact('delivery'));
+        $company=MainCompany::where('ismaincompany',true)->first();
+        return view('Inventory.Shippment.tracking',compact('delivery','company'));
+    }
+    public function receipt($id){
+        $delivery=DeliveryOrder::where('id',$id)->first();
+        $delivery->customer_receive_confirm=1;
+        $delivery->update();
+        return redirect('delivery/tracking/'.$delivery->uuid)->with('success','Product Receipt Confirmed!');
     }
 }

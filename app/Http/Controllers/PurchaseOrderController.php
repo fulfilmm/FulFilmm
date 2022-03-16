@@ -36,7 +36,12 @@ class PurchaseOrderController extends Controller
      */
     public function index()
     {
-        $purchase_orders=PurchaseOrder::orderby('id','desc')->with('vendor','tax','pr','employee')->get();
+        if(Auth::guard('employee')->user()->role->name=='CEO'||Auth::guard('employee')->user()->role->name=='Super Admin'){
+            $purchase_orders=PurchaseOrder::orderby('id','desc')->with('vendor','tax','pr','employee')->get();
+        }else{
+            $purchase_orders=PurchaseOrder::orderby('id','desc')->with('vendor','tax','pr','employee')->where('emp_id',Auth::guard('employee')->user()->id)->get();
+
+        }
         return view('Purchase.PurchaseOrder.index',compact('purchase_orders'));
     }
 
@@ -96,7 +101,7 @@ class PurchaseOrderController extends Controller
         try {
             if (isset($request->attach)) {
                 foreach ($request->file('attach') as $attach) {
-                    $input['filename'] = time().'.'.$attach->extension();
+                    $input['filename'] =\Illuminate\Support\Str::random(10).time().'.'.$attach->extension();
                     $attach->move(public_path() . '/attach_file', $input['filename']);
                     $name[]=$input['filename'];
                 }

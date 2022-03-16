@@ -100,14 +100,25 @@
                                     <i class="la la-{{$delivery->receipt==1?'check':''}} text-white"></i>
                                 </span>
                                     <div class="timeline-content">
-                                        <h2 class="font-weight-500">Receipt</h2>
+                                        <h2 class="font-weight-500">Done</h2>
                                        @if($delivery->receipt==1)
                                         <small>
-                                           Receipt Time:{{\Carbon\Carbon::parse($delivery->receipt_time)->toFormattedDateString()}} on {{date('h:i a', strtotime($delivery->receipt_time))}}
+                                           Done Time:{{\Carbon\Carbon::parse($delivery->receipt_time)->toFormattedDateString()}} on {{date('h:i a', strtotime($delivery->receipt_time))}}
                                         </small>
                                         @else
-                                            <small>Not yet in Receipt</small>
+                                            <small>Not yet in Done</small>
                                            @endif
+                                    </div>
+                                </div>
+                            </a>
+                            <a href="" id="receipt">
+                                <div class="timeline-block">
+                                <span class="timeline-step badge-warning">
+                                    <i class="la la-{{$delivery->customer_receive_confirm==1?'check':''}} text-white"></i>
+                                </span>
+                                    <div class="timeline-content">
+                                        <h2 class="font-weight-500">Receipt</h2>
+                                        <a href="{{url('delivery/state/receipt/'.$delivery->id)}}" id="recept" class="btn btn-success btn-sm disabled">Receipt</a>
                                     </div>
                                 </div>
                             </a>

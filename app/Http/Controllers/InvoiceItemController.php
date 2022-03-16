@@ -70,7 +70,7 @@ class InvoiceItemController extends Controller
                 ]);
             }else{
                 $sale_unit = SellingUnit::where('product_id', $variant->product_id)->where('unit_convert_rate', 1)->first();
-                $price = product_price::where('sale_type',$request->inv_type)->where('product_id', $request->variant_id)->first();
+                $price = product_price::where('sale_type',$request->inv_type)->where('product_id', $request->variant_id)->where('multi_price',$variant->pricing_type)->first();
                 if($price != null){
                     $items = new OrderItem();
                     $items->description =$variant->description;
@@ -100,7 +100,7 @@ class InvoiceItemController extends Controller
         } else if ($request->type == 'order') {
             $sale_unit = SellingUnit::where('product_id', $variant->product_id)->where('unit_convert_rate', 1)->first();
            if($sale_unit!=null) {
-               $price = product_price::where('sale_type', 'Whole Sale')->where('unit_id', $sale_unit->id)->where('active',1)->first();
+               $price = product_price::where('sale_type', 'Whole Sale')->where('unit_id', $sale_unit->id)->where('active',1)->where('multi_price',$variant->pricing_type)->first();
            }else{
                $price=null;
            }
@@ -197,7 +197,7 @@ class InvoiceItemController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $id)
+    public function destroy($id)
     {
         $invoice_item = OrderItem::where('id', $id)->first();
         $invoice_item->delete();

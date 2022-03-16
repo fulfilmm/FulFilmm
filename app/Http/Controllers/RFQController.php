@@ -109,9 +109,9 @@ class RFQController extends Controller
         $rfq->type = $request->type;
         if(isset($request->attach)){
             foreach ($request->file('attach') as $attach) {
-                $name = $attach->getClientOriginalName();
-                $attach->move(public_path() . '/attach_file/', $name);
-                $data[] = $name;
+                $input['filename'] =\Illuminate\Support\Str::random(10).time().'.'.$attach->extension();
+                $attach->move(public_path() . '/attach_file/', $input['filename']);
+                $data[] = $input['filename'];
             }
             $rfq->attach = json_encode($data);
         }

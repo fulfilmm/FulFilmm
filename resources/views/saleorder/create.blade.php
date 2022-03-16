@@ -223,9 +223,11 @@
                                         <td>
                                             <select name="" class="select_update" id="unit{{$order->id}}" style="min-width: 100px">
 
+
                                                 @foreach($unit_price as $item)
-                                                    @if($order->variant_id==$item->product_id)
-                                                        <option value="{{$item->id}}" {{$item->id==$order->sell_unit?'selected':''}}>{{$item->unit->unit}}</option>
+                                                    @if($order->variant->product_id==$item->product_id)
+
+                                                        <option value="{{$item->id}}" {{$item->id==$order->sell_unit?'selected':''}}>{{$item->unit}}</option>
                                                     @endif
                                                 @endforeach
                                             </select>
@@ -262,14 +264,65 @@
 
                                     </tr>
                                     <script>
+                                        $(".update_item_{{$order->id}}").keyup(function () {
+                                            var unit_id=$('#unit{{$order->id}} option:selected').val();
+                                            @foreach($prices as $item)
+                                            if(unit_id=="{{$item->unit_id}}") {
+                                                if('{{$order->variant->pricing_type}}'==1){
+                                                    var qty=$('#quantity_{{$order->id}}').val();
+                                                    if(parseInt("{{$item->min}}")<= qty){
+                                                        var price = "{{$item->price}}";
+                                                    }
+
+                                                }else {
+                                                    if('{{$item->multi_price}}'== 0){
+
+                                                        var price = "{{$item->price}}";
+
+                                                    }
+                                                }
+                                            }
+                                            @endforeach
+
+
+                                            @if($order->foc)
+                                            $('#price_{{$order->id}}').val(0);
+                                            $('#total_{{$order->id}}').val(0);
+                                            @else
+                                            $('#price_{{$order->id}}').val(price);
+                                            var quantity = $('#quantity_{{$order->id}}').val();
+                                            var dis_pro=$('#dis_pro{{$order->id}} option:selected').val();
+                                            var sub_total =quantity * price;
+                                            var amount=(dis_pro/100)*sub_total;
+                                            var total=sub_total-amount;
+                                            $('#total_{{$order->id}}').val(total);
+                                            var sum = 0;
+                                            $('.total').each(function() {
+                                                sum += parseFloat($(this).val());
+                                            });
+                                            $('#total').val(sum);
+                                            @endif
+
+                                        });
                                         $(document).ready(function () {
 
                                             var unit_id=$('#unit{{$order->id}} option:selected').val();
-                                            @foreach($unit_price as $item)
-                                            if(unit_id=="{{$item->id}}") {
-                                                var price = "{{$item->price}}";
-                                            }else {
-                                                var price=$('#price_{{$order->id}}').val();
+                                            @foreach($prices as $item)
+                                            if(unit_id=="{{$item->unit_id}}") {
+                                                if('{{$order->variant->pricing_type}}'==1){
+                                                    var qty=$('#quantity_{{$order->id}}').val();
+                                                    if(parseInt("{{$item->min}}")<= qty){
+                                                        var price = "{{$item->price}}";
+                                                    }
+
+
+                                                }else {
+                                                    if('{{$item->multi_price}}'== 0){
+
+                                                        var price = "{{$item->price}}";
+
+                                                    }
+                                                }
                                             }
                                                     @endforeach
 
@@ -286,9 +339,22 @@
                                             $('#total').val(sum);
                                             $('.select_update').change(function () {
                                                 var unit_id=$('#unit{{$order->id}} option:selected').val();
-                                                @foreach($unit_price as $item)
-                                                if(unit_id=="{{$item->id}}") {
-                                                    var price = "{{$item->price}}";
+                                                @foreach($prices as $item)
+                                                if(unit_id=="{{$item->unit_id}}") {
+                                                    if('{{$order->variant->pricing_type}}'==1){
+                                                        var qty=$('#quantity_{{$order->id}}').val();
+                                                        if(parseInt("{{$item->min}}")<= qty){
+                                                            var price = "{{$item->price}}";
+                                                        }
+
+
+                                                    }else {
+                                                        if('{{$item->multi_price}}'== 0){
+
+                                                            var price = "{{$item->price}}";
+
+                                                        }
+                                                    }
                                                 }
                                                 @endforeach
                                                         // alert(price);

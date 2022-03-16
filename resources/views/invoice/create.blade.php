@@ -38,8 +38,8 @@
                                <div class="form-group">
                                    <label for="">Invoice Type</label>
                                    <select name="invoice_type" id="inv_type" class="form-control">
-                                       <option value="General Invoice">General Invoice</option>
-                                       <option value="Cash On Delivery(COD)">Cash On Delivery</option>
+                                       <option value="General Invoice" {{isset($order_data)?($order_data->invoice_type=='General Invoice'?'selected':''):($data!=null?($data[0]['invoice_type']?'selected':''):'')}}>General Invoice</option>
+                                       <option value="Cash On Delivery(COD)" {{isset($order_data)?($order_data->invoice_type=='Cash On Delivery(COD)'?'selected':''):($data!=null?($data[0]['invoice_type']?'selected':''):'')}}>Cash On Delivery</option>
                                        <option value=""></option>
                                    </select>
                                </div>
@@ -73,7 +73,7 @@
                            <div class="col-sm-3 col-md-6">
                                <div class="form-group">
                                    <label for="bill_address">Order ID</label>
-                                   <input type="text" class="form-control shadow-sm" id="bill_address"
+                                   <input type="text" class="form-control shadow-sm"
                                           value="{{isset($order_data)?$order_data->order_id:''}}" readonly>
                                    <input type="hidden" name="order_id" id="order_id" value="{{$order_data->id??''}}">
                                </div>
@@ -252,12 +252,20 @@
                                                 <div class="col-md-4">
                                                     <img src="{{url(asset('product_picture/'.$img[0]??''))}}"
                                                          alt="" style="max-width: 50px;max-height: 50px;">
+                                                    {{--<span class="text-sm" style="font-size: 6px">@foreach($aval_product as $item) @if($item->variant_id==$order->variant_id) Aval: {{$item->available}} @endif @endforeach </span>--}}
                                                 </div>
+                                                @else
+                                                <div class="col-md-4">
+                                                    <img src="{{url(asset('img/profiles/avatar-01.jpg'))}}"
+                                                         alt="" style="max-width: 50px;max-height: 50px;">
+                                                    {{--<span class="badge badge-warning" style="font-size: 9px;">@foreach($aval_product as $item) @if($item->variant_id==$order->variant_id) Available: {{$item->available}} @endif @endforeach </span>--}}
+                                                </div>
+
                                             @endif
+
                                             <div class="col-8">
                                                 <div>
                                                     <span class="font-weight-bold">{{$order->variant->product_name}}</span><br>
-                                                    <span>@foreach($aval_product as $item) @if($item->variant_id==$order->variant_id) Aval: {{$item->available}} @endif @endforeach </span>
                                                 </div>
                                                 <p class="m-0 mt-1">
                                                     {{$order->variant->variant}}
@@ -270,7 +278,7 @@
                                     <td>
                                         <input type="number" name="quantity" id="quantity_{{$order->id}}"
                                                class="form-control update_item_{{$order->id}}"
-                                               value="{{$order->quantity}}" min="0" @foreach($aval_product as $item) @if($item->variant_id==$order->variant_id) max="{{$item->available}}" @endif @endforeach  {{isset($order_data)?'readonly':''}}>
+                                               value="{{$order->quantity}}" min="0"  max="3" {{isset($order_data)?'readonly':''}}>
                                     </td>
                                     <td>
                                         <div class="col-12">
@@ -287,8 +295,8 @@
                                         <select name="" class="select_update" id="unit{{$order->id}}" style="min-width: 100px">
 
                                             @foreach($unit_price as $item)
-                                                @if($order->variant_id==$item->product_id)
-                                                    <option value="{{$item->unit_id}}" {{$item->unit_id==$order->sell_unit?'selected':''}}>{{$item->unit->unit}}</option>
+                                                @if($order->variant->product_id==$item->product_id)
+                                                    <option value="{{$item->id}}" {{$item->id==$order->sell_unit?'selected':''}}>{{$item->unit}}</option>
                                                 @endif
                                             @endforeach
                                         </select>
@@ -324,13 +332,65 @@
                                     </td>
 
                                 </tr>
+{{--                                @dd($unit_price)--}}
                                 <script>
+                                    $(".update_item_{{$order->id}}").keyup(function () {
+                                        var unit_id=$('#unit{{$order->id}} option:selected').val();
+                                        @foreach($prices as $item)
+                                        if(unit_id=="{{$item->unit_id}}") {
+                                            if('{{$order->variant->pricing_type}}'==1){
+                                                var qty=$('#quantity_{{$order->id}}').val();
+                                                if(parseInt("{{$item->min}}")<= qty){
+                                                    var price = "{{$item->price}}";
+                                                }
+
+                                            }else {
+                                                if('{{$item->multi_price}}'== 0){
+
+                                                    var price = "{{$item->price}}";
+
+                                                }
+                                            }
+                                        }
+                                        @endforeach
+
+
+                                        @if($order->foc)
+                                        $('#price_{{$order->id}}').val(0);
+                                        $('#total_{{$order->id}}').val(0);
+                                        @else
+                                        $('#price_{{$order->id}}').val(price);
+                                        var quantity = $('#quantity_{{$order->id}}').val();
+                                        var dis_pro=$('#dis_pro{{$order->id}} option:selected').val();
+                                        var sub_total =quantity * price;
+                                        var amount=(dis_pro/100)*sub_total;
+                                        var total=sub_total-amount;
+                                        $('#total_{{$order->id}}').val(total);
+                                        var sum = 0;
+                                        $('.total').each(function() {
+                                            sum += parseFloat($(this).val());
+                                        });
+                                        $('#total').val(sum);
+                                        @endif
+
+                                    });
                                     $(document).ready(function () {
 
                                         var unit_id=$('#unit{{$order->id}} option:selected').val();
-                                        @foreach($unit_price as $item)
+                                        @foreach($prices as $item)
                                         if(unit_id=="{{$item->unit_id}}") {
-                                            var price = "{{$item->price}}";
+                                            if('{{$order->variant->pricing_type}}'==1){
+                                                var qty=$('#quantity_{{$order->id}}').val();
+                                                if(parseInt("{{$item->min}}")<= qty){
+                                                    var price = "{{$item->price}}";
+                                                }
+
+                                            }else {
+                                                if('{{$item->multi_price}}'==0){
+                                                    var price = "{{$item->price}}";
+                                                }
+
+                                            }
                                         }
                                         @endforeach
 
@@ -354,9 +414,19 @@
                                         @endif
                                         $('.select_update').change(function () {
                                             var unit_id=$('#unit{{$order->id}} option:selected').val();
-                                            @foreach($unit_price as $item)
+                                            @foreach($prices as $item)
                                             if(unit_id=="{{$item->unit_id}}") {
-                                                var price = "{{$item->price}}";
+                                                if('{{$order->variant->pricing_type}}'==1){
+                                                    var qty=$('#quantity_{{$order->id}}').val();
+                                                    if(parseInt("{{$item->min}}")<= qty ){
+                                                        var price = "{{$item->price}}";
+                                                    }
+
+                                                }else {
+                                                    if('{{$item->multi_price}}'==0) {
+                                                        var price = "{{$item->price}}";
+                                                    }
+                                                }
                                             }
                                             @endforeach
                                             @if($order->foc)
@@ -364,7 +434,6 @@
                                             $('#total_{{$order->id}}').val(0);
                                             @else
                                             $('#price_{{$order->id}}').val(price);
-
                                             var quantity = $('#quantity_{{$order->id}}').val();
                                             var dis_pro=$('#dis_pro{{$order->id}} option:selected').val();
                                             var sub_total =quantity * price;
@@ -615,6 +684,7 @@
             var inv_grand_total = $('#inv_grand_total').val();
             var payment = $('#payment option:selected').val();
             var status = $('#status option:selected').val();
+            var inv_type = $('#inv_type option:selected').val();
             var title = $('#title').val();
             var order_id = $('#order_id').val();
             $.ajax({
@@ -634,6 +704,7 @@
                     'order_id': order_id,
                     'payment_method': payment,
                     'type': 'invoice',
+                    'invoice_type':inv_type,
                     'inv_type':'{{$type}}'
 
                 },
@@ -678,6 +749,7 @@
             var status = $('#status option:selected').val();
             var title = $('#title').val();
             var order_id = $('#order_id').val();
+            var inv_type = $('#inv_type option:selected').val();
             $.ajax({
                 data: {
                     'variant_id': code,
@@ -695,6 +767,7 @@
                     'order_id': order_id,
                     'payment_method': payment,
                     'type': 'invoice',
+                    'invoice_type':inv_type,
                     'inv_type':'{{$type}}'
 
                 },
@@ -738,6 +811,7 @@
             var status = $('#status option:selected').val();
             var title = $('#title').val();
             var order_id = $('#order_id').val();
+            var inv_type = $('#inv_type option:selected').val();
             $.ajax({
                 data: {
                     'variant_id': foc,
@@ -755,6 +829,7 @@
                     'order_id': order_id,
                     'payment_method': payment,
                     'type': 'invoice',
+                    'invoice_type':inv_type,
                     'foc':1
 
                 },
@@ -805,6 +880,7 @@
                 var inv_type = $('#inv_type option:selected').val();
                 var deli_fee = $('#deli_fee').val();
                 var warehouse=$('#warehouse option:selected').val();
+                var delivery_onoff=$('input[name="delionoff"]:checked').val();
                 $.ajax({
                     data: {
                         'discount': discount,
@@ -827,7 +903,8 @@
                         'invoice_type': inv_type,
                         'delivery_fee': deli_fee,
                         'inv_type':"{{$type}}",
-                        'warehouse_id':warehouse
+                        'warehouse_id':warehouse,
+                        'deli_fee_include':delivery_onoff
                     },
                     type: 'POST',
                     url: "{{route('invoices.store')}}",
@@ -875,6 +952,7 @@
                 var inv_type = $('#inv_type option:selected').val();
                 var deli_fee = $('#deli_fee').val();
                 var warehouse=$('#warehouse option:selected').val();
+                var delivery_onoff=$('input[name="delionoff"]:checked').val();
                 $.ajax({
                     data: {
                         'discount': discount,
@@ -896,7 +974,8 @@
                         'invoice_type': inv_type,
                         'delivery_fee': deli_fee,
                         'inv_type':"{{$type}}",
-                        'warehouse_id':warehouse
+                        'warehouse_id':warehouse,
+                        'deli_fee_include':delivery_onoff
 
                     },
                     type: 'POST',

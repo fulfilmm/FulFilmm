@@ -7,6 +7,7 @@ use App\Models\Bill;
 use App\Models\BillItem;
 use App\Models\Customer;
 use App\Models\DeliveryOrder;
+use App\Models\DeliveryPay;
 use App\Models\Employee;
 use App\Models\Expense;
 use App\Models\MainCompany;
@@ -87,6 +88,9 @@ class BillController extends Controller
         $bill->grand_total=$request->grand_total;
         $bill->due_amount=$request->grand_total;
         $bill->emp_id=Auth::guard('employee')->user()->id;
+        $bill->category=$request->category;
+        $bill->inv_date=$request->inv_date;
+        $bill->invoice_id=$request->invoice_id;
         $bill->save();
         $Auth=Auth::guard('employee')->user()->name;
         $creation_id = Session::get($Auth);
@@ -102,6 +106,9 @@ class BillController extends Controller
              $delivery=DeliveryOrder::where('id',$item->delivery_id)->first();
              $delivery->paid_deli_fee=1;
              $delivery->update();
+             $deli_pay=DeliveryPay::where('delivery_id',$item->delivery_id)->first();
+             $deli_pay->paid_delivery_fee=1;
+             $deli_pay->update();
             }
 
         }

@@ -100,11 +100,7 @@
                    <div class="col-12 my-3">
                        <h5>Images</h5>
                        <div class="row my-1">
-                          @if($product->image!=null)
-                           @foreach(json_decode($product->image) as $image)
-                               <img src="{{url(asset('/product_picture/'.$image))}}" alt="" class="border mr-2 ml-2" style="max-height:200px;max-width:100%;border: solid">
-                           @endforeach
-                              @endif
+                               <img src="{{url(asset('/product_picture/'.$product->image))}}" alt="" class="border mr-2 ml-2" style="max-height:200px;max-width:100%;border: solid">
                        </div>
                    </div>
 
@@ -134,13 +130,13 @@
                        <thead>
                        <tr>
                            <th><input type="checkbox" name="all" id="checkall"></th>
+                           <th></th>
                            <th>Product Name</th>
                            <th>Product Code</th>
-                           <th>Supplier</th>
                            <th>Serial Number</th>
                            <th>Variation</th>
                            <th>Disable/Enable</th>
-                           <th>Valuation</th>
+                           <th>Price Rule</th>
                            <th>Created Date</th>
                            <th>Action</th>
 
@@ -152,13 +148,14 @@
                                <td>
                                    <input type="checkbox"  name="product[]" value="{{$item->id}}" class="single">
                                </td>
+                               <td> <img src="{{url(asset('/product_picture/'.$item->image))}}" alt="" class="border mr-2 ml-2"
+                                         style="max-height:50px;max-width:50px;border: solid"></td>
                                <td>{{$item->product_name}}</td>
                                <td><a href="{{route('show.variant',$item->id)}}"><strong>{{$item->product_code}}</strong></a></td>
-                               <td>{{$item->supplier->name??'N/A'}}</td>
                                <td>{{$item->serial_no}}</td>
                                <td>{{$item->variant}}</td>
                                <td>{{$item->enable==0?'Disable':'Enable'}}</td>
-                               <td>{{$item->purchase_price??''}}</td>
+                               <td>{{$item->pricing_type?'Multiple Price Rule':'Single Price Rule'}}</td>
                                <td>{{$item->created_at->toFormattedDateString()}}</td>
                                <td>
                                    <div class="row">
@@ -198,12 +195,6 @@
                                                            </div>
                                                            <div class="col-md-4">
                                                                <div class="form-group">
-                                                                   <label for="">Exp Date</label>
-                                                                   <input type="date" class="form-control" name="exp_date" value="{{\Carbon\Carbon::parse($item->exp_date)->format('Y-m-d')}}">
-                                                               </div>
-                                                           </div>
-                                                           <div class="col-md-4">
-                                                               <div class="form-group">
                                                                    <label for="">Variant</label>
                                                                    <input type="text" class="form-control" name="variant" value="{{$item->variant}}" placeholder='Enter this format : "Color:Red Size:XL"'>
                                                                    @error('variant')
@@ -213,25 +204,16 @@
                                                            </div>
                                                            <div class="col-md-4">
                                                                <div class="form-group">
-                                                                   <label for="">Purchase Price</label>
-                                                                   <input type="number" class="form-control" name="purchase_price" value="{{$item->purchase_price}}">
-                                                               </div>
-                                                           </div>
-                                                           <div class="col-md-4">
-                                                               <div class="form-group">
-                                                                   <label for="supplier">Supplier(optional)</label>
-                                                                   <select name="supplier_id" id="supplier" class="form-control" style="width: 100%">
-                                                                       <option value="">None</option>
-                                                                       @foreach($supplier as $sup)
-                                                                           <option value="{{$sup->id}}" {{$item->supplier_id==$sup->id?'selected':''}}>{{$sup->name}}</option>
-                                                                       @endforeach
-                                                                   </select>
+                                                                   <input type="radio" name="pricing_type" value="0" id="single" {{$item->pricing_type?"":"checked"}}>
+                                                                   <label for="single">Single Price</label>
+                                                                   <input type="radio" name="pricing_type" value="1" id="multi" {{$item->pricing_type?'checked':''}}>
+                                                                   <label for="multi">Multi Price</label>
                                                                </div>
                                                            </div>
                                                            <div class="col-md-12">
                                                                <div class="form-group">
                                                                    <label for="">Images</label>
-                                                                   <input type="file" name="picture[]" class="form-control" multiple >
+                                                                   <input type="file" name="picture" class="form-control" >
                                                                </div>
                                                            </div>
 
@@ -266,7 +248,7 @@
                                @csrf
                                <div class="row">
                                    <input type="hidden" name="product_id" value="{{$product->id}}">
-                                   <div class="col-md-4">
+                                   <div class="col-md-6">
                                        <div class="form-group">
                                            <label for="">Product Code</label>
                                            <div class="input-group">
@@ -278,19 +260,13 @@
                                            @enderror
                                        </div>
                                    </div>
-                                   <div class="col-md-4">
+                                   <div class="col-md-6">
                                        <div class="form-group">
                                            <label for="">Serial No.</label>
                                            <input type="text" class="form-control" name="serial_no" value="{{old('serial_no')}}">
                                        </div>
                                    </div>
-                                   <div class="col-md-4">
-                                       <div class="form-group">
-                                           <label for="">Exp Date</label>
-                                           <input type="date" class="form-control" name="exp_date" value="{{\Carbon\Carbon::parse(old('exp_date'))->format('Y-m-d')}}">
-                                       </div>
-                                   </div>
-                                   <div class="col-md-4">
+                                   <div class="col-md-6">
                                        <div class="form-group">
                                            <label for="">Variant</label>
                                            <input type="text" class="form-control" name="variant" value="{{old('variant')}}" placeholder='Enter this format : "Color:Red Size:XL"'>
@@ -299,27 +275,18 @@
                                            @enderror
                                        </div>
                                    </div>
-                                   <div class="col-md-4">
-                                       <div class="form-group">
-                                           <label for="supplier">Supplier(optional)</label>
-                                           <select name="supplier_id" id="supplier" class="form-control" style="width: 100%">
-                                               <option value="">None</option>
-                                               @foreach($supplier as $sup)
-                                                   <option value="{{$sup->id}}">{{$sup->name}}</option>
-                                                   @endforeach
-                                           </select>
-                                       </div>
-                                   </div>
-                                   <div class="col-md-4">
-                                       <div class="form-group">
-                                           <label for="">Purchase Price</label>
-                                           <input type="number" class="form-control" name="purchase_price">
+                                   <div class="col-md-6">
+                                       <div class="form-group mt-5">
+                                           <input type="radio" name="pricing_type" value="0" id="single" checked>
+                                           <label for="single">Single Price</label>
+                                           <input type="radio" name="pricing_type" class="ml-3" value="1" id="multi">
+                                           <label for="multi">Multi Price</label>
                                        </div>
                                    </div>
                                    <div class="col-md-12">
                                        <div class="form-group">
                                            <label for="">Images</label>
-                                           <input type="file" name="picture[]" class="form-control" multiple >
+                                           <input type="file" name="picture" class="form-control">
                                        </div>
                                    </div>
                                    <div class="col-md-12">
@@ -364,12 +331,12 @@
             $('select').select2();
             $(document).on('click', '#confirm', function () {
                 var product_id =new Array();
-                $("input:checked").each(function () {
-                    // console.log($(this).val()); //works fine
+                $(".single").each(function () {
+                    console.log($(this).val()); //works fine
                     product_id.push($(this).val());
                 });
                 var action_type=$( "#action_type option:selected" ).val();
-                // alert(action_type);
+                console.log(product_id);
                 $.ajax({
                     type:'POST',
                     data : {action_Type:action_type,product_id:product_id},

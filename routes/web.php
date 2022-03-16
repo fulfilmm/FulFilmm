@@ -472,6 +472,15 @@ Route::get('delivery/tracking/{uuid}',[ShippmentController::class,'tracking'])->
 
 //new
 Route::resource('bank_transfers',\App\Http\Controllers\BankTransferController::class);
+Route::post('bank/transaction/export',[TransactionController::class,'export'])->name('transactions.export');
+Route::post('stock/import',[StockTransactionController::class,'import'])->name('stocks.import');
+Route::get('add/price',[SellingUnitController::class,'price_add'])->name('add_price');
+Route::get('price/edit/{id}',[SellingUnitController::class,'price_edit'])->name('edit_price');
+Route::get('stock/batch/{p_id}',[StockTransactionController::class,'batch'])->name('stock.batch');
+Route::get('delivery/transaction',[ShippmentController::class,'transaction'])->name('delivery.transaction');
+Route::get('delivery/customer/receipt/{id}',[ShippmentController::class,'receipt'])->name('receipt.confirm');
+Route::get('ecommerce/stock/index',[StockTransactionController::class,'ecommerce_stock'])->name('ecommerce_stock');
+Route::get('main/customer',[CustomerController::class,'customer'])->name('customer');
 
 
 

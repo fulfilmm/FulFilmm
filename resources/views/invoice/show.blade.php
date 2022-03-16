@@ -260,12 +260,14 @@
                                             </div>
 
                                         </li>
+                                        @if($detail_inv->include_delivery_fee)
                                         <li class="list-group-item">
                                             <div class="d-flex justify-content-end ">
                                                 Delivery Fee: <p class="ml-2 mb-0 font-weight-bold"> {{$detail_inv->delivery_fee}} MMK </p>
                                             </div>
 
                                         </li>
+                                        @endif
                                         <li class="list-group-item">
                                             <div class="d-flex justify-content-end mb-2">
                                                 Grand Total: <p class="ml-2 mb-0 font-weight-bold">  {{$detail_inv->grand_total}} MMK</p>

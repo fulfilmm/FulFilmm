@@ -37,6 +37,7 @@ class CreatePurchaseOrdersTable extends Migration
             $table->tinyInteger('confirm')->default(0);
             $table->dateTime('confirm_date')->nullable();
             $table->tinyInteger('sent')->default(0);
+            $table->string('status')->nullable();
             $table->text('attach')->nullable();
             $table->timestamps();
         });

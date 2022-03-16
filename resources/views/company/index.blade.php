@@ -80,7 +80,7 @@
                                     <input type="file" class="form-control" id="file" name="import"  value="" required>
                                 </div>
                                 <div class="d-flex justify-content-center">
-                                    <button type="submit" class="btn btn-primary">Export</button>
+                                    <button type="submit" class="btn btn-primary">Import</button>
                                 </div>
                             </form>
                         </div>

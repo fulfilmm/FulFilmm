@@ -47,6 +47,71 @@
                 </div>
             </div>
         </div>
+        @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
+            <div class="row g-3 mb-3 row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4">
+                <div class="col  my-2">
+                    <div class="alert-success alert mb-0 shadow">
+                        <a href="{{url('revenue')}}">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar rounded no-thumbnail bg-success text-light shadow"><i class="fa fa-dollar fa-lg"></i></div>
+                                <div class="flex-fill ms-3 text-truncate">
+                                    <div class="h6 mb-0">Total Delivery</div>
+                                    <span class="small">{{count($deliveries)}}</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col my-2">
+                    <div class="alert-danger alert mb-0 shadow">
+                        <a href="{{url('expense')}}">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar rounded no-thumbnail bg-danger text-light shadow"><i class="fa fa-credit-card fa-lg"></i></div>
+                                <div class="flex-fill ms-3 text-truncate">
+                                    <div class="h6 mb-0">Done Delivery</div>
+                                    <span class="small" id="total_expense">{{$delivery_finish}}</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col my-2">
+                    <div class="alert-warning alert mb-0 shadow">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar rounded no-thumbnail bg-warning text-light shadow"><i class="fa fa-money fa-lg"></i></div>
+                            <div class="flex-fill ms-3 text-truncate">
+                                <div class="h6 mb-0">Cancel Delivery</div>
+                                <span class="small" id="total_profit">{{$delivery_cancel}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col my-2">
+                    <div class="alert-warning alert mb-0 shadow">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar rounded no-thumbnail bg-danger text-light shadow"><i class="fa fa-money fa-lg"></i></div>
+                            <div class="flex-fill ms-3 text-truncate">
+                                <div class="h6 mb-0">Total Bill</div>
+                                <span class="small" id="total_bill">{{$total_bill[0]->total}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col my-2">
+                    <div class="alert-info alert mb-0 shadow">
+                        <a href="{{route('accounts.index')}}">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar rounded no-thumbnail bg-info text-light shadow"><i class="fa fa-bank" aria-hidden="true"></i></div>
+                                <div class="flex-fill ms-3 text-truncate">
+                                    <div class="h6 mb-0">Receivable Amount</div>
+                                    <span class="small">{{$total_receivable[0]->total??0}}</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            @endif
         <div class="col-12" style="overflow: auto">
             <table class="table ">
                 <thead>
@@ -80,9 +145,10 @@
                             @endif
                         </td>
                         <td style="min-width: 120px;">
+
                            <div class="row">
                                <div class="nav-item dropdown dropdown-action btn btn-outline-white border btn-sm rounded-pill">
-                                   <a href="" class="dropdown-toggle rounded-pill" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-{{$deli->cancel==1?'danger':'success'}} ml-1 mr-1"></i> {{$deli->cancel==1 ?'Cancel' :"Accept"}}</a>
+                                   <a href="" class="dropdown-toggle rounded-pill" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-{{$deli->status=='New'?'info':($deli->cancel=='cancel'?'danger':'success')}} ml-1 mr-1"></i> {{ucfirst($deli->status)}}</a>
                                        <div class="dropdown-menu">
                                            <a class="dropdown-item" href="{{url('delivery/state/cancel/'.$deli->id)}}" >Cancel</a>
                                            <a class="dropdown-item" href="{{url('delivery/state/accept/'.$deli->id)}}">Accept</a>

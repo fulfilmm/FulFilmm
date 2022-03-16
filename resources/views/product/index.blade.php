@@ -59,11 +59,12 @@
                     <table class="table table-striped custom-table mb-0 table-hover" id="product_table">
                         <thead>
                         <tr>
-
+                            <th></th>
+                            <th></th>
                             <th>Name</th>
                             <th>MainCategory</th>
                             <th>Sub Category</th>
-                            <th>Branch</th>
+                            <th>Brand</th>
                             <th>Action</th>
                         </tr>
                         </thead>
@@ -72,8 +73,16 @@
                         @foreach($products as $product)
                             <tr>
                                 <td><button id="collapse{{$product->id}}" class="btn btn-purple btn-sm rounded-circle" type="button" data-toggle="collapse" data-target="#variant{{$product->id}}" style="font-size: 10px;" ><i class="fa fa-plus" id="{{$product->id}}"></i></button>
+                                </td>
+                                <td>
+
+                                    <img src="{{url(asset('/product_picture/'.$product->image))}}" alt="" class="border mr-2 ml-2"
+                                         style="max-height:50px;max-width:50px;border: solid">
+                                </td>
+                                <td>
                                     <a href="{{route("products.show",$product->id)}}">
-                                        <span class="ml-3">{{$product->name}}</span></a></td>
+                                        <span class="ml-3">{{$product->name}}</span></a>
+                                </td>
                                 <td>{{$product->category->name??''}}</td>
                                 <td>
                                     {{$product->sub_cat->name??''}}

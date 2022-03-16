@@ -37,7 +37,42 @@
             <div class="col-md-12">
                 @if(\Illuminate\Support\Facades\Auth::guard('customer')->user()->customer_type=='Courier')
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-3 col-sm-6">
+                            <div class="card shadow">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <span class="d-block">Total Delivery</span>
+                                        </div>
+
+                                    </div>
+                                    <h3 class="mb-3">{{$total_delivery??0}}</h3>
+                                    <div class="progress mb-2" style="height: 5px;">
+                                        <div class="progress-bar bg-primary" role="progressbar" style="width:100%;"
+                                             aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="card shadow">
+                                <a href="{{route('deliveries.index')}}">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between ">
+                                            <div>
+                                                <span class="d-block">In-progress</span>
+                                            </div>
+                                        </div>
+                                        <h3 class="mb-3">{{$delivery_unfinish}}</h3>
+                                        <div class="progress mb-2" style="height: 5px;">
+                                            <div class="progress-bar bg-primary" role="progressbar" style="width:100%;"
+                                                 aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
                             <div class="card shadow">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between">
@@ -54,34 +89,16 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="card shadow">
-                                <a href="{{route('deliveries.index')}}">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between ">
-                                            <div>
-                                                <span class="d-block">Inprogress Delivery </span>
-                                            </div>
-                                        </div>
-                                        <h3 class="mb-3">{{$delivery_unfinish}}</h3>
-                                        <div class="progress mb-2" style="height: 5px;">
-                                            <div class="progress-bar bg-primary" role="progressbar" style="width:100%;"
-                                                 aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3 col-sm-6">
                             <div class="card shadow">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between">
                                         <div>
-                                            <span class="d-block">Total Delivery Fee</span>
+                                            <span class="d-block">Rejected</span>
                                         </div>
 
                                     </div>
-                                    <h3 class="mb-3">{{$deli_fee_total??0}}</h3>
+                                    <h3 class="mb-3">{{$delivery_cancel??0}}</h3>
                                     <div class="progress mb-2" style="height: 5px;">
                                         <div class="progress-bar bg-primary" role="progressbar" style="width:100%;"
                                              aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>

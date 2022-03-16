@@ -39,18 +39,12 @@
                             </div>
                             <div class="row mt-3">
                                 <div class="col-6 text-center mb-2">
-                                    @if($data['customer']->customer_type=='Supplier'||$data['customer']->customer_type=='Courier')
-                                        <a href="{{route('supplierbills.create',$data['customer']->id)}}" class="btn btn-block btn-sm btn-primary">
-                                            <span class="text-white"><i class="fa fa-money mr-2"></i>Paid Bill</span>
-                                        </a>
-                                        @else
                                     <button class="btn btn-block btn-sm btn-primary">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="mr-2" width="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                                         </svg>
                                         <span class="">Message</span>
                                     </button>
-                                        @endif
                                 </div>
                                 <div class="col-6 text-center">
                                     <a href="{{route('customers.edit',$data['customer']->id)}}" class="btn btn-block btn-sm btn-secondary">

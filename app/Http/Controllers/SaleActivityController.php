@@ -107,9 +107,9 @@ class SaleActivityController extends Controller
         $activity->emp_id=Auth::guard('employee')->user()->id;
         if ($request->hasfile('attachment')) {
             foreach ($request->file('attachment') as $attach) {
-                $name = $attach->getClientOriginalName();
-                $attach->move(public_path().'/attach_file/', $name,);
-                $data[]=$name;
+                $input['filename'] =\Illuminate\Support\Str::random(10).time().'.'.$attach->extension();
+                $attach->move(public_path().'/attach_file/', $input['filename']);
+                $data[]=$input['filename'];
 
             }
 //            dd($data);

@@ -73,14 +73,15 @@ class InvoiceController extends Controller
                 $grand_total = $grand_total + $orderline[$i]->total;
             }
             $status = $this->status;
-            $unit_price = product_price::where('sale_type', 'Whole Sale')->where('active',1)->get();
+            $unit_price=SellingUnit::where('active',1)->get();
+            $prices =product_price::where('sale_type', 'Whole Sale')->where('active',1)->get();
             $dis_promo = DiscountPromotion::where('sale_type', 'Whole Sale')->get();
             $focs = Freeofchare::with('variant')->get();
             $type = 'Whole Sale';
 
             $warehouse = OfficeBranch::with('warehouse')->where('id', $Auth->office_branch_id)->get();
             $aval_product = Stock::with('variant')->where('available', '>', 0)->get();
-            return view('invoice.create', compact('warehouse', 'type', 'request_id', 'allcustomers', 'orderline', 'grand_total', 'status', 'data', 'aval_product', 'taxes', 'unit_price', 'dis_promo', 'focs'));
+            return view('invoice.create', compact('warehouse', 'type', 'request_id', 'allcustomers', 'orderline', 'grand_total', 'status', 'data', 'aval_product', 'taxes', 'unit_price', 'dis_promo', 'focs','prices'));
         }else{
             return redirect()->back()->with('error','Firstly,Fixed your Branch of Office');
     }
@@ -121,14 +122,15 @@ class InvoiceController extends Controller
             $grand_total=$grand_total+$orderline[$i]->total;
         }
         $status=$this->status;
-        $unit_price=product_price::where('sale_type','Rental Sale')->get();
+        $unit_price=SellingUnit::where('active',1)->get();
+        $prices=product_price::where('sale_type','Rental Sale')->get();
         $dis_promo=DiscountPromotion::where('sale_type','Rental Sale')->get();
         $focs=Freeofchare::with('variant')->get();
         $type='Retail Sale';
         $Auth=Auth::guard('employee')->user();
 
         $warehouse=OfficeBranch::with('warehouse')->where('id',$Auth->office_branch_id)->get();
-        return view('invoice.create',compact('warehouse','request_id','allcustomers','orderline','grand_total','status','data','aval_product','taxes','unit_price','dis_promo','focs','type'));
+        return view('invoice.create',compact('warehouse','request_id','allcustomers','orderline','grand_total','status','data','aval_product','taxes','unit_price','dis_promo','focs','type','prices'));
         }else{
             return redirect()->back()->with('error','Firstly,Fixed your Branch of Office');
         }
@@ -142,6 +144,7 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
+//        dd($request->all());
         $validator=Validator::make($request->all(),[
            'title'=>'required',
             'client_id'=>'required',
@@ -153,7 +156,6 @@ class InvoiceController extends Controller
             'payment_method'=>'required',
 
         ]);
-//        dd($request->all());
         if($validator->passes()) {
             $prefix = MainCompany::where('ismaincompany', true)->pluck('invoice_prefix', 'id')->first();
             $last_invoice = Invoice::orderBy('id', 'desc')->first();
@@ -205,12 +207,16 @@ class InvoiceController extends Controller
             $newInvoice->due_amount = $request->inv_grand_total;
             $newInvoice->warehouse_id = $request->warehouse_id;
             $newInvoice->inv_type = $request->inv_type;
+            $newInvoice->include_delivery_fee=$request->deli_fee_include=='on'?1:0;
             $newInvoice->emp_id = Auth::guard('employee')->user()->id;
             $Auth = Auth::guard('employee')->user()->name;
             $request_id = Session::get($Auth);
             $confirm_order_item = OrderItem::where("creation_id", $request_id)->get();
             if (count($confirm_order_item) != 0) {
                 $newInvoice->save();
+                $customer=Customer::where('id',$request->client_id)->first();
+                $customer->main_customer=1;
+                $customer->update();
                 foreach ($confirm_order_item as $item) {
                     if ($item->foc) {
                         $unit = SellingUnit::where('id', $item->sell_unit)->first();
@@ -220,7 +226,7 @@ class InvoiceController extends Controller
                         $stock->qty = $stock->qty - ($item->quantity * $unit->unit_convert_rate);
                         $stock->update();
                     } else {
-                        $unit = SellingUnit::where('id',1)->first();
+                        $unit = SellingUnit::where('id',$item->sell_unit)->first();
                         $stock = Stock::where('variant_id', $item->variant_id)->where('warehouse_id', $request->warehouse_id)->first();
                         $item->inv_id = $newInvoice->id;
                         $item->update();

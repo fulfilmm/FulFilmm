@@ -125,9 +125,10 @@ class EmployeeController extends Controller
         $employee->report_to=$request->report_to;
         $employee->gender=$request->gender;
         if($request->profile_img!=null){
-            $name = $request->profile_img->getClientOriginalName();
-            $request->profile_img->move(public_path() . '/img/profiles', $name);
-            $employee->profile_img = $name;
+            $profile =$request->file('profile_img');
+            $input['filename'] =\Illuminate\Support\Str::random(10).time().'.'.$profile->extension();
+            $request->profile_img->move(public_path() . '/img/profiles', $input['filename']);
+            $employee->profile_img = $input['filename'];
         }
         $employee->save();
         $employee->assignRole($request->role_id);
@@ -211,9 +212,10 @@ class EmployeeController extends Controller
         $employee->report_to=$request->report_to;
         $employee->gender=$request->gender;
         if($request->profile_img!=null){
-            $name = $request->profile_img->getClientOriginalName();
-            $request->profile_img->move(public_path() . '/img/profiles', $name);
-            $employee->profile_img = $name;
+            $profile =$request->file('profile_img');
+            $input['filename'] =\Illuminate\Support\Str::random(10).time().'.'.$profile->extension();
+            $request->profile_img->move(public_path() . '/img/profiles', $input['filename']);
+            $employee->profile_img = $input['filename'];
         }
             $employee->update();
             $employee->syncRoles($request->role_id);

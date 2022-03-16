@@ -31,9 +31,9 @@ class MinutesController extends Controller
         $minutes->minutes_text=$request->minutes;
         if ($request->hasfile('attach_file')) {
             foreach ($request->file('attach_file') as $attach) {
-                $name = $attach->getClientOriginalName();
-                $attach->move(public_path() . '/minutes_attach/', $name,);
-                $data[] = $name;
+                $input['filename'] =\Illuminate\Support\Str::random(10).time().'.'.$attach->extension();
+                $attach->move(public_path() . '/minutes_attach/', $input['filename']);
+                $data[] = $input['filename'];
             }
             $attach_names=json_encode($data);
             $minutes->attach_file=$attach_names;
