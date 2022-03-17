@@ -272,12 +272,6 @@
                                     </ul>
                                 </li>
                                 <li class="submenu">
-                                    <a href="#"><i class="la la-cube mr-2" style="font-size: 18px"></i><span> Selling Price</span> <span class="menu-arrow"></span></a>
-                                    <ul style="display: none;">
-                                        <li><a class="{{ Request::is('product/price/index') ? 'active' : '' }}" href="{{route('add.index')}}" style="text-decoration: none">All Price List</a></li>
-                                    </ul>
-                                </li>
-                                <li class="submenu">
                                     <a href="#"><i class="la la-cube mr-2" style="font-size: 18px"></i><span>Supplier</span> <span class="menu-arrow"></span></a>
                                     <ul style="display: none;">
                                         <li><a class="{{ Request::is('suppliers') ? 'active' : '' }}" href="{{route('suppliers')}}" style="text-decoration: none">All Suppliers</a></li>
@@ -412,6 +406,14 @@
                             <a href="#"><i class="la la-cube"></i> <span>Sale</span> <span
                                         class="menu-arrow"></span></a>
                             <ul style="display: none;">
+                                <li><a class="{{ Request::is('barcode/create') ? 'active' : '' }}"
+                                       href="{{ route('barcode.create') }}" style="text-decoration: none"><i class="la la-calendar mr-1" style="font-size: 18px;"></i>Barcode Generate</a></li>
+                                <li class="submenu">
+                                    <a href="#"><i class="la la-cube mr-2" style="font-size: 18px"></i><span> Selling Price</span> <span class="menu-arrow"></span></a>
+                                    <ul style="display: none;">
+                                        <li><a class="{{ Request::is('product/price/index') ? 'active' : '' }}" href="{{route('add.index')}}" style="text-decoration: none">All Price List</a></li>
+                                    </ul>
+                                </li>
                                 <li><a class="{{ Request::is('main/customer') ? 'active' : '' }}"
                                        href="{{ route('customer') }}" style="text-decoration: none"><i class="la la-calendar mr-1" style="font-size: 18px;"></i>Customers</a></li>
                                 <li><a class="{{ Request::is('selling/report') ? 'active' : '' }}"

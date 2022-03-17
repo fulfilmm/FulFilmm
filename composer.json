@@ -20,6 +20,7 @@
         "laravel/ui": "^3.4",
         "livewire/livewire": "^2.3",
         "maatwebsite/excel": "^3.1",
+        "milon/barcode": "^9.0",
         "spatie/laravel-backup": "^6.16",
         "spatie/laravel-permission": "^4.0",
         "tymon/jwt-auth": "^1.0",

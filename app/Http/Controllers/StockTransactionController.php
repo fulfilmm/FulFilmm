@@ -46,7 +46,7 @@ class StockTransactionController extends Controller
                 foreach ($employees as $emp){
                     $exit_noti=Notification::where('type',$item->id)->where('read_at',null)->where('notify_user_id',$emp->id)->first();
                     if($emp->role->name=='Stock Manager'&& $exit_noti==null){
-                        $this->addnotify($emp->id,$item->id,$item->variant->product_name.'Only '.$item->stock_balance.' left in stock','stocks','');
+                        $this->addnotify($emp->id,'stock not enough',$item->variant->product_name.'Only '.$item->stock_balance.' left in stock','stocks',null);
                     }
                 }
             }
@@ -197,7 +197,7 @@ class StockTransactionController extends Controller
                     $ecommerce_stock->product_id=$stock_out->variantion_id;
                     $ecommerce_stock->name=$stock_out->variant->product_name;
                     $ecommerce_stock->qty=$stock_out->qty * $sell_unit->unit_convert_rate;
-                    $ecommerce_stock->brand=$product->brand->name;
+                    $ecommerce_stock->brand=$product->brand->name??'';
                     $ecommerce_stock->save();
                     $stock->available = $stock->available - ($stock_out->qty * $sell_unit->unit_convert_rate);
                     $stock->stock_balance = $stock->stock_balance - ($stock_out->qty * $sell_unit->unit_convert_rate);

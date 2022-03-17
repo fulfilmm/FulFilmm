@@ -64,11 +64,20 @@ class HomeController extends Controller
      //ticket Admin Dashboard
         switch ($user->role->name) {
             case "Super Admin":
+                $year = date('Y');
+                $current_month = date('m');
+                if($current_month<4){
+                    $year = $year-1;
+                }
                 $total_emp=Employee::count();
                 $contact=Customer::count();
-                $start=date('Y').'-04-01';
-                $mid=date('Y').'-09-30';
-                $end=(date('Y')+1).'-03-31';
+                $start=$year.'-04-01';
+                $mid=$year.'-09-30';
+                $end=($year+1).'-03-31';
+                $daily_sale = DB::table("invoices")
+                    ->select(DB::raw("SUM(grand_total) as total"))
+                    ->whereDate('created_at', date('d'))
+                    ->get();
                 $current_year_income = DB::table("revenues")
                     ->select(DB::raw("SUM(amount) as total"))
                     ->whereYear('transaction_date', date('Y'))
@@ -142,6 +151,7 @@ class HomeController extends Controller
                     ->orWhere('secondary_approved',Auth::guard('employee')->user()->id)
                     ->count();
                 $items = [
+                    'daily_sale'=>$daily_sale,
                     'saleactivity'=>$sale_activity,
                     'requestation'=>$requestation,
                     'customer'=>$contact,
@@ -171,11 +181,20 @@ class HomeController extends Controller
                 return view('index', compact('items','total_emp','monthly_income','monthly_expense','profit','account'));
                 break;
             case "CEO":
+                $year = date('Y');
+                $current_month = date('m');
+                if($current_month<4){
+                    $year = $year-1;
+                }
                 $total_emp=Employee::count();
                 $contact=Customer::count();
-                $start=date('Y').'-04-01';
-                $mid=date('Y').'-09-30';
-                $end=(date('Y')+1).'-03-31';
+                $start=$year.'-04-01';
+                $mid=$year.'-09-30';
+                $end=($year+1).'-03-31';
+                $daily_sale = DB::table("invoices")
+                    ->select(DB::raw("SUM(grand_total) as total"))
+                    ->whereDate('created_at', date('d'))
+                    ->get();
                 $current_year_income = DB::table("revenues")
                     ->select(DB::raw("SUM(amount) as total"))
                     ->whereYear('transaction_date', date('Y'))
@@ -250,6 +269,7 @@ class HomeController extends Controller
                     ->orWhere('secondary_approved',Auth::guard('employee')->user()->id)
                     ->count();
                 $items = [
+                    'daily_sale'=>$daily_sale,
                     'first_term_bill'=>$first_6month_bill[0]->total??0,
                     'total_bill'=>$current_year_bill[0]->total??0,
                     'second_term_bill'=>$second_6month_bill[0]->total??0,
