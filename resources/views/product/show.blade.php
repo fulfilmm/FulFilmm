@@ -161,6 +161,11 @@
                                    <div class="row">
                                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#edit{{$item->id}}"><i class="la la-edit"></i></button>
                                        <a href="{{route('show.variant',$item->id)}}" class="btn btn-white btn-sm"><i class="la la-eye"></i></a>
+                                       <form action="{{route('barcode.generate')}}" method="get">
+                                           @csrf
+                                           <input type="hidden" name="product_name" value="{{$item->id}}">
+                                           <button type="submit" class="btn btn-primary btn-sm"><i class="la la-barcode"></i></button>
+                                       </form>
                                    </div>
                                    <div id="edit{{$item->id}}" class="modal custom-modal fade" role="dialog">
                                        <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -308,7 +313,7 @@
     </div>
     <script>
         function generatecode(){
-            var pcode='{{random_int(100000000,999999999)}}';
+            var pcode='{{random_int(10000000,99999999)}}';
             $("#generate_code").val(pcode);
         }
         ClassicEditor.create($('#description')[0], {

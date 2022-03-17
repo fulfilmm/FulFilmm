@@ -29,7 +29,14 @@ class WarehouseController extends Controller
 
             $warehouse_qty[$warehouse->id]=$total;
         }
-        return view('warehouse.index',compact('warehouses','warehouse_qty'));
+        $last_wh = Warehouse::orderBy('id', 'desc')->first();
+        if ($last_wh != null) {
+            $last_wh->warehouse_id++;
+            $warehouse_id = $last_wh->warehouse_id;
+        } else {
+            $warehouse_id = "WH-001";
+        }
+        return view('warehouse.index',compact('warehouses','warehouse_qty','warehouse_id'));
     }
 
     /**

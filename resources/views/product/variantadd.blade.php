@@ -85,7 +85,7 @@
     </div>
     <script>
         function generatecode(){
-            var pcode='{{random_int(100000000,999999999)}}';
+            var pcode='{{random_int(10000000,99999999)}}';
             $("#p_code").val(pcode);
         }
         ClassicEditor.create($('#description')[0], {

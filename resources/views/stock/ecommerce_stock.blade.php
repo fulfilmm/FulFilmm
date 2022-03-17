@@ -1,6 +1,5 @@
 @extends('layout.mainlayout')
 @section('title','Stock')
-
 @section('content')
     <div class="container-fluid">
         <div class="page-header my-3">

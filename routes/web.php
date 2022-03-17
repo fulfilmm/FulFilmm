@@ -481,7 +481,8 @@ Route::get('delivery/transaction',[ShippmentController::class,'transaction'])->n
 Route::get('delivery/customer/receipt/{id}',[ShippmentController::class,'receipt'])->name('receipt.confirm');
 Route::get('ecommerce/stock/index',[StockTransactionController::class,'ecommerce_stock'])->name('ecommerce_stock');
 Route::get('main/customer',[CustomerController::class,'customer'])->name('customer');
-
+Route::get('barcode/generate',[\App\Http\Controllers\BarcodeController::class,'barcode'])->name('barcode.generate');
+Route::get('barcode/create',[\App\Http\Controllers\BarcodeController::class,'barcodecreate'])->name('barcode.create');
 
 
 
