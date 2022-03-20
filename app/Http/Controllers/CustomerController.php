@@ -346,7 +346,8 @@ class CustomerController extends Controller
                 'department'=>$request->department,
                 'position'=>$request->position??null,
                 'status'=>$request->status,
-                'lead_title'=>$request->title
+                'lead_title'=>$request->title,
+                'bio'=>$request->bio
             ];
             if ($request->canlogin == 'on') {
                 $details = array(
@@ -385,7 +386,8 @@ class CustomerController extends Controller
                 'department'=>$request->department,
                 'position'=>$request->position??null,
                 'status'=>$request->status,
-                'lead_title'=>$request->title
+                'lead_title'=>$request->title,
+                'bio'=>$request->bio
 
             ];
         }

@@ -14,7 +14,8 @@ class ProductStockBatch extends Model
         'supplier_id',
         'qty',
         'purchase_price',
-        'exp_date'
+        'exp_date',
+        'warehouse_id'
     ];
     public function supplier(){
         return $this->belongsTo(Customer::class,'supplier_id','id');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProductStockBatch;
 use App\Models\ProductVariations;
 use App\Models\Stock;
 use App\Models\Warehouse;
@@ -20,10 +21,10 @@ class WarehouseController extends Controller
 
         $warehouse_qty=[];
         foreach ($warehouses as $warehouse){
-            $product=Stock::with('variant')->where('warehouse_id',$warehouse->id)->get();
+            $product=ProductStockBatch::where('warehouse_id',$warehouse->id)->get();
             $total=0;
             foreach ($product as $item){
-                $valuation=$item->stock_balance*$item->variant->purchase_price??0;
+                $valuation=$item->qty*$item->purchase_price??0;
                 $total+=$valuation;
             }
 

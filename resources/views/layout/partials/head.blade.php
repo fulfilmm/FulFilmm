@@ -62,6 +62,7 @@
         <script src="{{url(asset('js/http_cdnjs.cloudflare.com_ajax_libs_Chart.js_2.7.3_Chart.js'))}}"></script>
 
         <script src="{{url(asset('js/http_code.highcharts.com_highcharts.src.js'))}}"></script>
+        <script src="{{url(asset('js/highcharts-3d.js'))}}"></script>
 
         <script src="{{url(asset('js/chart_exporting.js'))}}"></script>
         <script src="{{url(asset('js/http_code.highcharts.com_modules_export-data.js'))}}"></script>

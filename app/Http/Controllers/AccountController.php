@@ -41,6 +41,7 @@ class AccountController extends Controller
     {
 //        dd($request->all());
         $this->validate($request,[
+            'account_id'=>'required',
             'name'=>'required',
             'number'=>'required',
             'currency'=>'required',
@@ -53,8 +54,8 @@ class AccountController extends Controller
         $account->currency=$request->currency;
         $account->company_id=$request->company_id;
         $account->bank_address=$request->bank_address;
-        $account->balance=$request->balance;
-        $account->opening_balance=$request->balance;
+        $account->balance=$request->balance??0;
+        $account->opening_balance=$request->balance??0.0;
         $account->enabled=$request->enable??0;
         $account->bank_name=$request->bank_name;
         $account->bank_phone=$request->bank_phone;

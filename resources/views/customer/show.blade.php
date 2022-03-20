@@ -4,12 +4,15 @@
     <style>
         .scroll {
             /*width: 300px;*/
-            height: 550px;
+            height: 800px;
             overflow: scroll;
         }
         .activity_schedule{
-            min-height: 630px;
+            min-height: 800px;
             overflow: scroll;
+        }
+        .row{
+            padding-top: 20px;
         }
 
     </style>
@@ -35,6 +38,10 @@
                                             <p class="mb-0 mt-1 text-muted">{{$data['customer']->company->name}}</p>
                                         </div>
                                     </li>
+                                    <li>
+                                        <h6 class="my-2">Bio</h6>
+                                        <p style="font-size: 12px;">{{$data['customer']->bio}}</p>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="row mt-3">
@@ -56,108 +63,85 @@
                                 </div>
                             </div>
                         </li>
+                    </ul>
+                </div>
+                <div class="card shadow">
+                    <ul class="list-group list-group-flush">
                         <li class="list-group-item">
-                            <table class="table table-borderless mb-0">
-                                <tr>
-                                    <td class="p-0">
-                                        <p class="mb-0 text-muted">Email </p>
-                                    </td>
-                                    <td>
-                                        <p class="mb-0 ">{{$data['customer']->email}}</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="p-0">
-                                        <p class="mb-0 text-muted">Birthday</p>
-                                    </td>
-                                    <td>
-                                        <p class="mb-0 ">{{\Carbon\Carbon::parse($data['customer']->dob)->toFormattedDateString()}}</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="p-0">
-                                        <p class="mb-0 text-muted">Phone</p>
-                                    </td>
-                                    <td>
-                                        <p class="mb-0 ">{{$data['customer']->phone}}</p>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td class="p-0">
-                                        <p class="mb-0 text-muted">State/Region</p>
-                                    </td>
-                                    <td>
-                                        <p class="mb-0 ">{{$data['customer']->region}}</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="p-0">
-                                        <p class="mb-0 text-muted">Address</p>
-                                    </td>
-                                    <td>
-                                        <p class="mb-0 ">{{$data['customer']->address}}</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="p-0">
-                                        <p class="mb-0 text-muted">Contact Level</p>
-                                    </td>
-                                    <td>
-                                        <p class="mb-0 ">{{$data['customer']->customer_type}}</p>
-                                    </td>
-                                </tr>
-                              @if($data['customer']->status=='Qualified' && $data['customer']->customer_type=='Lead')
-                                    <tr>
-                                        <td class="p-0">
-                                            <p class="mb-0 text-muted">Total Invoice</p>
-                                        </td>
-                                        <td>
-                                            <p class="mb-0 ">{{count($data['invoice'])}}</p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-0">
-                                            <p class="mb-0 text-muted">Total Sale</p>
-                                        </td>
-                                        <td>
-                                            <p class="mb-0 ">{{$data['total_sale']}}</p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-0">
-                                            <p class="mb-0 text-muted">Paid</p>
-                                        </td>
-                                        <td>
-                                            <p class="mb-0 ">{{$data['paid_total']}}</p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-0">
-                                            <p class="mb-0 text-muted">Debt</p>
-                                        </td>
-                                        <td>
-                                            <p class="mb-0 ">{{$data['open']}}</p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-0">
-                                            <p class="mb-0 text-muted">Total ticket</p>
-                                        </td>
-                                        <td>
-                                            <p class="mb-0 ">{{count($data['tickets'])}}</p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-0">
-                                            <p class="mb-0 text-muted">Total Deal</p>
-                                        </td>
-                                        <td>
-                                            <p class="mb-0 ">{{count($data['deal'])}}</p>
-                                        </td>
-                                    </tr>
-                                  @endif
-                            </table>
+                            <div class="row">
+                                <div class="col-6">Gender</div>
+                                <div class="col-6">{{$data['customer']->gender}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">Position</div>
+                                <div class="col-6">{{$data['customer']->position??'N/A'}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">Department</div>
+                                <div class="col-6">{{$data['customer']->department??'N/A'}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">Email</div>
+                                <div class="col-6">{{$data['customer']->email}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">Facebook</div>
+                                <div class="col-6">{{$data['customer']->facebook??'N/A'}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">Linkedin</div>
+                                <div class="col-6">{{$data['customer']->linkedin??'N/A'}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">Birthday</div>
+                                <div class="col-6">{{$data['customer']->dob==null?'N/A':\Carbon\Carbon::parse($data['customer']->dob)->toFormattedDateString()}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">Phone</div>
+                                <div class="col-6">{{$data['customer']->phone}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">State/Division</div>
+                                <div class="col-6">{{$data['customer']->region??'N/A'}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">Address</div>
+                                <div class="col-6">{{$data['customer']->address??'N/A'}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">Contact Level</div>
+                                <div class="col-6">{{$data['customer']->customer_type}}</div>
+                            </div>
+                            @if($data['customer']->status=='Qualified' && $data['customer']->customer_type=='Lead')
+                                <div class="row">
+                                    <div class="col-6">Total Invoice</div>
+                                    <div class="col-6">{{count($data['invoice'])}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">Total Sale</div>
+                                    <div class="col-6">{{$data['total_sale']}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">Paid</div>
+                                    <div class="col-6">{{$data['paid_total']}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">Debt</div>
+                                    <div class="col-6">{{$data['open']}}</div>
+                                </div>
+                            @endif
+                            <div class="row">
+                                <div class="col-6">Total ticket</div>
+                                <div class="col-6">{{count($data['tickets'])}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">Total Deal</div>
+                                <div class="col-6">{{count($data['deal'])}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">Report To</div>
+                                <div class="col-6">{{$data['customer']->report_to??'N/A'}} ({{$data['customer']->position_of_report_to??'Unkown Position'}})</div>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -184,7 +168,7 @@
                 </div>
             </div>
             <div class="col-lg-8">
-                <div class="card shadow-lg" style="height: 630px">
+                <div class="card shadow-lg" style="height: 875px">
                     <div class="card-body p-0">
                         <ul class="nav tab-nav-pane nav-tabs pt-2 mb-0" id="mytab">
                             @if($data['customer']->status=='Qualified' && $data['customer']->customer_type=='Lead')

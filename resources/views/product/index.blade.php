@@ -130,23 +130,19 @@
                                             <span class="my-2">{{$product->name}}'s Variants</span>
                                             <hr>
                                             <div class="row mb-2">
-                                                <div class="col-md-2"><strong>Product Code</strong></div>
-                                                    <div class="col-md-2"><strong>Variant</strong></div>
-                                                    <div class="col-md-2"><strong>Supplier</strong></div>
-                                                    <div class="col-md-2"><strong>Disable/Enable</strong></div>
-                                                    <div class="col-md-2"><strong>Valuation</strong></div>
-                                                    <div class="col-md-2"><strong>Action</strong></div>
+                                                <div class="col-md-3"><strong>Product Code</strong></div>
+                                                    <div class="col-md-3"><strong>Variant</strong></div>
+                                                    <div class="col-md-3"><strong>Disable/Enable</strong></div>
+                                                    <div class="col-md-3"><strong>Action</strong></div>
                                             </div>
                                                 <hr>
                                            @foreach($variants as $item)
                                                 @if($item->product_id==$product->id)
                                                     <div class="row">
-                                                        <div class="col-md-2">{{$item->product_code}}</div>
-                                                        <div class="col-md-2">{{$item->variant}}</div>
-                                                        <div class="col-md-2">{{$item->supplier->name??'N/A'}}</div>
-                                                        <div class="col-md-2">{{$item->enable==0?'Disable':'Enable'}}</div>
-                                                        <div class="col-md-2">{{$item->purchase_price??''}}</div>
-                                                        <div class="col-md-2"><a href="{{route('show.variant',$item->id)}}" class="btn btn-white btn-sm"><i class="la la-eye"></i></a></div>
+                                                        <div class="col-md-3">{{$item->product_code}}</div>
+                                                        <div class="col-md-3">{{$item->variant}}</div>
+                                                        <div class="col-md-3">{{$item->enable==0?'Disable':'Enable'}}</div>
+                                                        <div class="col-md-3"><a href="{{route('show.variant',$item->id)}}" class="btn btn-white btn-sm"><i class="la la-eye"></i></a></div>
                                                     </div>
                                                     @endif
                                                @endforeach

@@ -31,6 +31,7 @@ class ReportController extends Controller
 {
     public function SalePerformance()
     {
+
         $dept = Department::where('name', 'Sale Department')->first();
         $employee = Employee::where('department_id', $dept->id)->get();
         $performance = [];
@@ -77,7 +78,7 @@ class ReportController extends Controller
 
         $data = ['appointment' => $appointment, 'deal' => $deal_win, 'proposal' => $proposal, 'meeting' => $meeting, 'lead' => $lead, 'qualified' => $qualified, 'unqualified' => $unqualified, 'quotation' => $quotation, 'win' => $win,
             'still_qualified' => $still_qualified, 'still_quotation' => $still_quotation, 'lost' => $lost];
-
+//        dd($employee);
         return view('Report.saleperformance', compact('data', 'performance', 'employee', 'salepipeline'));
 
     }

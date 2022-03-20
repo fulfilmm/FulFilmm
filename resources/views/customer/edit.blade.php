@@ -84,7 +84,7 @@
                                                 <div class="input-group">
                                                     <input type="date"
                                                            class="form-control vanila-datepicker datepicker-input"
-                                                           id="bod" name="bod" placeholder="Enter Birth Day"
+                                                           id="bod" name="dob" placeholder="Enter Birth Day"
                                                            value="{{\Carbon\Carbon::parse($record->dob)->format('Y-m-d')}}" autocomplete="off">
                                                 </div>
                                             </div>

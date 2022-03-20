@@ -60,9 +60,9 @@
                         <th>Product </th>
                         <th>Variants</th>
                         <th>Warehouse</th>
-                        <td>Stock Balance</td>
-                        <td>Available Stock</td>
-                        <td>Last Updated</td>
+                        <th>Stock Balance</th>
+                        <th>Available Stock</th>
+                        <th>Last Updated</th>
                     </tr>
 
                     </thead>
