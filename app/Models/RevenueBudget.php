@@ -5,8 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TransactionCategory extends Model
+class RevenueBudget extends Model
 {
     use HasFactory;
-    protected $fillable=['name','type'];
+    protected $fillable=['name','year'];
 }

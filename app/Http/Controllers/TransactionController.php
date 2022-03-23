@@ -5,16 +5,20 @@ namespace App\Http\Controllers;
 use App\Exports\BankTransactionExport;
 use App\Models\Account;
 use App\Models\Bill;
+use App\Models\ChartOfAccount;
 use App\Models\Customer;
 use App\Models\DeliveryOrder;
 use App\Models\DeliveryPay;
 use App\Models\Employee;
 use App\Models\Expense;
+use App\Models\ExpenseBudget;
 use App\Models\Invoice;
 use App\Models\MainCompany;
 use App\Models\Revenue;
+use App\Models\RevenueBudget;
 use App\Models\Transaction;
 use App\Models\TransactionCategory;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
@@ -46,32 +50,24 @@ class TransactionController extends Controller
         $account = Account::where('enabled', 1)->get();
         $recurring = ['No', 'Daily', 'Weekly', 'Monthly', 'Yearly'];
         $payment_method = ['Cash', 'eBanking', 'WaveMoney', 'KBZ Pay'];
-        $category = TransactionCategory::all();
+        $category = TransactionCategory::where('type',0)->get();
         $emps = Employee::all();
+        $coas=ChartOfAccount::all();
         $customer = Customer::where('customer_type', 'Supplier')->get();
-        $data = ['emps' => $emps, 'customers' => $customer, 'account' => $account, 'recurring' => $recurring, 'payment_method' => $payment_method, 'category' => $category];
+        $data = ['coas'=>$coas,'emps' => $emps, 'customers' => $customer, 'account' => $account, 'recurring' => $recurring, 'payment_method' => $payment_method, 'category' => $category];
         return view('transaction.expense', compact('data'));
     }
 
     public function expense_index()
     {
-
-        $expense = "Expense";
-        $transactions = Transaction::with('expense', 'revenue', 'account')->where('type', 'Expense')->get();
-        $employees = Employee::all()->pluck('name', 'id')->all();
-        $invoice = Invoice::all()->pluck('invoice_id', 'id')->all();
-        $bill = Bill::all()->pluck('bill_id', 'id')->all();
-        return view('transaction.index', compact('transactions', 'expense', 'employees', 'bill', 'invoice'));
+        $expenses = Expense::with('cat','supplier', 'approver', 'employee','bill','account')->get();
+        return view('transaction.expense_index', compact('expenses'));
     }
 
     public function revenue_index()
     {
-        $revenue = "Revenue";
-        $transactions = Transaction::with('expense', 'revenue', 'account')->where('type', 'Revenue')->get();
-        $employees = Employee::all()->pluck('name', 'id')->all();
-        $invoice = Invoice::all()->pluck('invoice_id', 'id')->all();
-        $bill = Bill::all()->pluck('bill_id', 'id')->all();
-        return view('transaction.index', compact('transactions', 'revenue', 'employees', 'bill', 'invoice'));
+        $revenues =Revenue::with('account','cat','employee','approver','invoice')->get();
+        return view('transaction.revenue_index', compact( 'revenues'));
     }
 
     /**
@@ -103,6 +99,7 @@ class TransactionController extends Controller
         $new_expense->description = $request->description;
         $new_expense->category = $request->category;
         $new_expense->approver_id = $request->approver_id;
+        $new_expense->coa_id=$request->coa_account;
         $new_expense->transaction_date = $request->transaction_date;
         $new_expense->emp_id = Auth::guard('employee')->user()->id;
         $new_expense->currency = $request->currency;
@@ -140,9 +137,11 @@ class TransactionController extends Controller
     {
         $transaction = Transaction::with('expense', 'revenue', 'account')->where('id', $id)->firstOrFail();
         $company = MainCompany::where('ismaincompany', true)->first();
+        $category=TransactionCategory::all();
+        $coas=ChartOfAccount::all();
         $customer = Customer::where('id', $transaction->type == 'Revenue' ? $transaction->revenue->customer_id : $transaction->expense->vendor_id)->first();
         $receiver = Employee::where('id', $transaction->type == 'Revenue' ? $transaction->revenue->emp_id : $transaction->expense->emp_id)->first();
-        return view('transaction.show', compact('transaction', 'customer', 'receiver', 'company'));
+        return view('transaction.show', compact('transaction', 'customer', 'receiver', 'company','category','coas'));
     }
 
     /**
@@ -182,9 +181,10 @@ class TransactionController extends Controller
         $account = Account::where('enabled', 1)->get();
         $recurring = ['No', 'Daily', 'Weekly', 'Monthly', 'Yearly'];
         $payment_method = ['Cash', 'eBanking', 'WaveMoney', 'KBZ Pay'];
-        $category = TransactionCategory::all();
+        $category = TransactionCategory::where('type',1)->get();
+        $coas=ChartOfAccount::all();
         $customer = Customer::orWhere('customer_type', 'Customer')->orWhere('customer_type', 'Lead')->orWhere('customer_type', 'Partner')->orWhere('customer_type', 'Inquery')->get();
-        $data = ['emps' => $emps, 'customers' => $customer, 'account' => $account, 'recurring' => $recurring, 'payment_method' => $payment_method, 'category' => $category];
+        $data = ['coas'=>$coas,'emps' => $emps, 'customers' => $customer, 'account' => $account, 'recurring' => $recurring, 'payment_method' => $payment_method, 'category' => $category];
         return view('transaction.revenue', compact('data'));
     }
 
@@ -237,6 +237,7 @@ class TransactionController extends Controller
            $new_revenue->category = $request->category;
            $new_revenue->approver_id = $request->approver_id;
            $new_revenue->advance_pay_id=$request->advance_id??null;
+           $new_revenue->coa_id=$request->coa_account;
            $new_revenue->transaction_date = $request->transaction_date;
            $new_revenue->emp_id = Auth::guard('employee')->user()->id;
            $new_revenue->currency = $request->currency;
@@ -286,6 +287,7 @@ class TransactionController extends Controller
 
     public function add_category(Request $request)
     {
+//        dd($request->all());
         TransactionCategory::create($request->all());
         return response()->json([
             'Success' => 'New Category Add Success'
@@ -326,6 +328,9 @@ class TransactionController extends Controller
                 $revenue->approve = 1;
                 $revenue->update();
                 $account->update();
+                $rev_budget=RevenueBudget::where('category_id',$revenue->category)->where('year',Carbon::parse($revenue->transaction_date)->format('Y'))->where('month',Carbon::parse($revenue->transaction_date)->format('m'))->first();
+                $rev_budget->actual=$rev_budget->actual + $revenue->amount;
+                $rev_budget->update();
             } else {
                 return redirect('revenue')->with('error', 'You can not approve');
             }
@@ -338,6 +343,9 @@ class TransactionController extends Controller
                 $expense->approve = 1;
                 $expense->update();
                 $account->update();
+                $exp_budget=ExpenseBudget::where('category_id',$expense->category)->where('year',Carbon::parse($expense->transaction_date)->format('Y'))->where('month',Carbon::parse($expense->transaction_date)->format('m'))->first();
+                $exp_budget->actual=$exp_budget->actual??0 + $expense->amount;
+                $exp_budget->update();
             } else {
                 return redirect('expense')->with('error', 'You can not approve');
             }

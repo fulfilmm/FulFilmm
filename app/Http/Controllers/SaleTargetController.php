@@ -15,7 +15,7 @@ class SaleTargetController extends Controller
 {
     public function index()
     {
-        $month = ['Jan', 'Feb', 'Mar', 'April', 'May', 'June', "July", 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        $month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', "Jul", 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         $monthly = [];
         $monthlysaletarget = [];
         $current_year = date('Y') + 0;
@@ -183,7 +183,7 @@ class SaleTargetController extends Controller
         return redirect(route('saletargets.create'));
     }
     public function search(Request $request){
-        $month = ['Jan', 'Feb', 'March', 'April', 'May', 'June', "July", 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        $month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', "Jul", 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         $monthly = [];
         $monthlysaletarget = [];
         foreach ($month as $key => $value) {
@@ -239,7 +239,7 @@ class SaleTargetController extends Controller
         $remaining=$monthly[$request->month]->total-$invoice_revenue[0]->total;
         $search_month=$request->month;
         $searchYear=$request->year;
-        $month = ['Jan', 'Feb', 'March', 'April', 'May', 'June', "July", 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        $month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', "Jul", 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 //        dd($search_month);
         return view('sale.dashboard', compact('monthly', 'yearly', 'year', 'all_income', 'sale_target', 'monthlysaletarget', 'revenue','remaining','yearly_target','search_month','month','searchYear'));
 

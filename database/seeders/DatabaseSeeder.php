@@ -48,11 +48,11 @@ class DatabaseSeeder extends Seeder
         products_category::create(['name'=>'Beauty','parent'=>1]);
         products_category::create(['name'=>'Clothes','parent'=>1]);
         OfficeBranch::create(['name'=>'Head Office','warehouse_id'=>$warehouse->id]);
-        TransactionCategory::create(['name'=>'Invoice']);
-        TransactionCategory::create(['name'=>'Bill']);
-        TransactionCategory::create(['name'=>'General Income']);
-        TransactionCategory::create(['name'=>'General Expense']);
-        Account::create(['name'=>'Main Account','number'=>'2002865657','currency'=>'MMK']);
+        TransactionCategory::create(['name'=>'Invoice','type'=>1]);
+        TransactionCategory::create(['name'=>'Bill','type'=>0]);
+        TransactionCategory::create(['name'=>'General Income','type'=>1]);
+        TransactionCategory::create(['name'=>'General Expense','type'=>0]);
+        Account::create(['account_no'=>'0001','name'=>'Main Account','number'=>'2002865657','currency'=>'MMK']);
         $superadmin = Employee::updateOrCreate(
             ['email' => 'admin@gmail.com'],
             [    'empid'=>'Emp-00001',

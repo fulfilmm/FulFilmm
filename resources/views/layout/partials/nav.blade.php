@@ -208,6 +208,21 @@
                             </ul>
                         </li>
                         <li class="submenu">
+                            <a href="#"><i class="la la-cube"></i> <span>Accounting</span> <span
+                                        class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li>  <a class="{{ Request::is('coatype') ? 'active' : '' }}" href="{{route('coatype.index')}}" style="text-decoration: none"><i class="la la-bank mr-2" style="font-size: 18px"></i><span>Account Type</span> </a></li>
+                                <li>  <a class="{{ Request::is('chartofaccount') ? 'active' : '' }}" href="{{route('chartofaccount.index')}}" style="text-decoration: none"><i class="la la-bank mr-2" style="font-size: 18px"></i><span>Chart Of Account</span> </a></li>
+                                <li>  <a class="{{ Request::is('accounts') ? 'active' : '' }}" href="{{route('accounts.index')}}" style="text-decoration: none"><i class="la la-bank mr-2" style="font-size: 18px"></i><span> Account</span> </a></li>
+                                <li>  <a class="{{ Request::is('revenuebudget') ? 'active' : '' }}" href="{{route('revenuebudget.index')}}" style="text-decoration: none"><i class="la la-dollar mr-2" style="font-size: 18px"></i><span> Revenue Budget</span> </a></li>
+                                <li>  <a class="{{ Request::is('expensebudget') ? 'active' : '' }}" href="{{route('expensebudget.index')}}" style="text-decoration: none"><i class="la la-dollar mr-2" style="font-size: 18px"></i><span> Expense Budget</span> </a></li>
+                                <li >
+                                    <a class="{{ Request::is('transaction/category') ? 'active' : '' }}" href="{{route('transaction.category')}}" style="text-decoration: none"><i class="la la-cube mr-2" style="font-size: 18px"></i><span> Category</span> </a>
+                                </li>
+                            </ul>
+
+                        </li>
+                        <li class="submenu">
                             <a href="#"><i class="la la-cube"></i> <span>Banking</span> <span
                                         class="menu-arrow"></span></a>
                             <ul style="display: none;">

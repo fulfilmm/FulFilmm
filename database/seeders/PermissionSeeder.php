@@ -157,8 +157,8 @@ class PermissionSeeder extends Seeder
         Permission::create(['name'=>'transfer.index','display_name'=>'Stock Transfer Record','type'=>'Stocks','guard_name'=>'employee']);
         Permission::create(['name'=>'stocks','display_name'=>'Stock','type'=>'Stocks','guard_name'=>'employee']);
         //Banking Transaction
-        Permission::create(['name'=>'transaction.approve','display_name'=>'Expense/Revenue transaction approver','type'=>'transactions','guard_name'=>'employee']);
-        Permission::create(['name'=>'advance.maketransaction','display_name'=>'Advance payment to revenue transaction ','type'=>'transactions','guard_name'=>'employee']);
+        Permission::create(['name'=>'transaction.approve','display_name'=>'Expense/Revenue transaction approver','type'=>'transaction','guard_name'=>'employee']);
+        Permission::create(['name'=>'advance.maketransaction','display_name'=>'Advance payment to revenue transaction ','type'=>'transaction','guard_name'=>'employee']);
         Permission::create(['name' => 'income.create', 'display_name' => 'Revenue Add Form', 'type'=>'transaction', "guard_name" => 'employee']);
         Permission::create(['name' => 'revenue', 'display_name' => 'Revenue List View', 'type'=>'transaction', "guard_name" => 'employee']);
         Permission::create(['name' => 'expense', 'display_name' => 'Expense List View', 'type'=>'transaction', "guard_name" => 'employee']);

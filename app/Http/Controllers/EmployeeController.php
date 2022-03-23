@@ -194,32 +194,37 @@ class EmployeeController extends Controller
     public function update(EmployeeRequest $request, Employee $employee)
     {
 //        dd($employee);
+
         $data  = collect($request->validated())->except('role_id')->toArray();
         $data['can_login'] =  $data['can_login'] ?? "0";
         $data['can_post_assignment'] =  $data['can_post_assignments'] ?? "0";
-
-        $employee->name=$data['name'];
-        $employee->email=$data['email'];
-        $employee->phone=$data['phone'];
-        $employee->office_branch_id=$request->office_branch_id;
-        $employee->work_phone=$data['work_phone'];
-        $employee->join_date=$data['join_date'];
-        $employee->department_id=$data['department_id'];
-        $employee->can_login=$data['can_login'];
-        $employee->can_post_assignments=$data['can_post_assignment'];
-        $employee->dob=$request->dob;
-        $employee->address=$request->address;
-        $employee->report_to=$request->report_to;
-        $employee->gender=$request->gender;
-        if($request->profile_img!=null){
-            $profile =$request->file('profile_img');
-            $input['filename'] =\Illuminate\Support\Str::random(10).time().'.'.$profile->extension();
-            $request->profile_img->move(public_path() . '/img/profiles', $input['filename']);
-            $employee->profile_img = $input['filename'];
-        }
+        $email_exit=Employee::where('id','!=',$employee->id)->where('email',$data['email'])->first();
+        if($email_exit==null) {
+            $employee->name = $data['name'];
+            $employee->email = $data['email'];
+            $employee->phone = $data['phone'];
+            $employee->office_branch_id = $request->office_branch_id;
+            $employee->work_phone = $data['work_phone'];
+            $employee->join_date = $data['join_date'];
+            $employee->department_id = $data['department_id'];
+            $employee->can_login = $data['can_login'];
+            $employee->can_post_assignments = $data['can_post_assignment'];
+            $employee->dob = $request->dob;
+            $employee->address = $request->address;
+            $employee->report_to = $request->report_to;
+            $employee->gender = $request->gender;
+            if ($request->profile_img != null) {
+                $profile = $request->file('profile_img');
+                $input['filename'] = \Illuminate\Support\Str::random(10) . time() . '.' . $profile->extension();
+                $request->profile_img->move(public_path() . '/img/profiles', $input['filename']);
+                $employee->profile_img = $input['filename'];
+            }
             $employee->update();
             $employee->syncRoles($request->role_id);
             return redirect('employees')->with('success', __('alert.update_success'));
+        }else{
+            return redirect('employees')->with('error','Email already Exist');
+        }
 
     }
 

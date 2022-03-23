@@ -483,6 +483,11 @@ Route::get('ecommerce/stock/index',[StockTransactionController::class,'ecommerce
 Route::get('main/customer',[CustomerController::class,'customer'])->name('customer');
 Route::get('barcode/generate',[\App\Http\Controllers\BarcodeController::class,'barcode'])->name('barcode.generate');
 Route::get('barcode/create',[\App\Http\Controllers\BarcodeController::class,'barcodecreate'])->name('barcode.create');
+Route::resource('revenuebudget',\App\Http\Controllers\RevenueBudgetController::class);
+Route::resource('expensebudget',\App\Http\Controllers\ExpenseBudgetController::class);
+Route::resource('chartofaccount',\App\Http\Controllers\ChartOfAccountController::class);
+Route::get('coatype',[\App\Http\Controllers\ChartOfAccountController::class,'coatype_index'])->name('coatype.index');
+Route::post('coatype',[\App\Http\Controllers\ChartOfAccountController::class,'coatype'])->name('coatype.store');
 
 
 

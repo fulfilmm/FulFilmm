@@ -20,4 +20,10 @@ class Revenue extends Model
     public function invoice(){
         return $this->belongsTo(Invoice::class,'invoice_id','id');
     }
+    public function account(){
+        return $this->belongsTo(ChartOfAccount::class,'coa_id','id');
+    }
+    public function cat(){
+        return $this->belongsTo(TransactionCategory::class,'category','id');
+    }
 }

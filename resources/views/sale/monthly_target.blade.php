@@ -24,11 +24,11 @@
                         <select id="search-nav-select" class="form-control">
                             <option value='0' data-toggle="#Jan" {{date('M')=='Jan'?"selected":''}}>January</option>
                             <option value='1' data-toggle="#Feb" {{date('M')=='Feb'?"selected":''}}>February</option>
-                            <option value='2' data-toggle="#March" {{date('M')=='March'?"selected":''}}>March</option>
-                            <option value='3' data-toggle="#April" {{date('M')=='April'?"selected":''}}>April</option>
+                            <option value='2' data-toggle="#March" {{date('M')=='Mar'?"selected":''}}>March</option>
+                            <option value='3' data-toggle="#April" {{date('M')=='Apr'?"selected":''}}>April</option>
                             <option value='4' data-toggle="#May" {{date('M')=='May'?"selected":''}}>May</option>
-                            <option value='5' data-toggle="#June" {{date('M')=='June'?"selected":''}}>June</option>
-                            <option value='6' data-toggle="#July" {{date('M')=='July'?"selected":''}}>July</option>
+                            <option value='5' data-toggle="#June" {{date('M')=='Jun'?"selected":''}}>June</option>
+                            <option value='6' data-toggle="#July" {{date('M')=='Jul'?"selected":''}}>July</option>
                             <option value='7' data-toggle="#Aug" {{date('M')=='Aug'?"selected":''}}>August</option>
                             <option value='8' data-toggle="#Sep" {{date('M')=='Sep'?"selected":''}}>September</option>
                             <option value='9' data-toggle="#Oct" {{date('M')=='Oct'?"selected":''}}>October</option>
@@ -109,7 +109,7 @@
                             </thead>
                             <tbody>
                             @foreach($mothly_targets as $target)
-                                @if($target->month=='March')
+                                @if($target->month=='Mar')
                                     <tr>
                                         <td>{{$target->employee->name}}</td>
                                         <td>{{$target->month}}</td>
@@ -136,7 +136,7 @@
                             </thead>
                             <tbody>
                             @foreach($mothly_targets as $target)
-                                @if($target->month=='April')
+                                @if($target->month=='Apr')
                                     <tr>
                                         <td>{{$target->employee->name}}</td>
                                         <td>{{$target->month}}</td>
@@ -190,7 +190,7 @@
                             </thead>
                             <tbody>
                             @foreach($mothly_targets as $target)
-                                @if($target->month=='June')
+                                @if($target->month=='Jun')
                                     <tr>
                                         <td>{{$target->employee->name}}</td>
                                         <td>{{$target->month}}</td>
@@ -217,7 +217,7 @@
                             </thead>
                             <tbody>
                             @foreach($mothly_targets as $target)
-                                @if($target->month=='July')
+                                @if($target->month=='Jul')
                                     <tr>
                                         <td>{{$target->employee->name}}</td>
                                         <td>{{$target->month}}</td>

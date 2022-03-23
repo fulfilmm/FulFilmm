@@ -9,7 +9,7 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h3 class="page-title">Category</h3>
-                    <ul class="breadcrumb">
+                    <ul class="breadcrumb">Revenue
                         <li class="breadcrumb-item"><a href="{{url("/")}}">Dashboard</a></li>
                         <li class="breadcrumb-item active">Category</li>
                     </ul>
@@ -31,13 +31,15 @@
                     <thead>
                     <tr>
                         <th scope="col">Category Name</th>
+                        <th scope="col">Type</th>
                         <th scope="col">Action</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($category as $cat)
                         <tr>
-                            <td><i class="fa fa-bars mr-3"></i>{{$cat->name}}
+                            <td><i class="fa fa-bars mr-3"></i>{{$cat->name}}</td>
+                            <td>{{$cat->type?'Revenue':'Expense'}}</td>
                             <td>
                                 <a href="" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#cat_update{{$cat->id}}" data-whatever="@getbootstrap"><i class="fa fa-edit"></i></a>
                                 <a href="{{route('transaction_category.delete',$cat->id)}}" class="btn btn-danger btn-sm" ><i class="fa fa-trash text-white"></i></a>
