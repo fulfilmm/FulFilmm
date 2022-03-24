@@ -99,7 +99,9 @@ class ReportController extends Controller
                     return $suppliers->name??'';
                 })
                 ->addColumn('unit',function ($data){
-                    $unit=SellingUnit::where('variant_id',$data->stockin->variantion_id)->where('unit_convert_rate',1)->first();
+                   if(!isset($data->stockin->variantion_id)){
+                       $unit=SellingUnit::where('variant_id',$data->stockin->variantion_id)->where('unit_convert_rate',1)->first();
+                   }
                     return $unit->unit??'';
                 })
                 ->make(true);
@@ -214,7 +216,9 @@ class ReportController extends Controller
                     return $formatedDate;
                 })
                 ->addColumn('unit',function ($data){
-                    $unit=SellingUnit::where('variant_id',$data->variant_id)->where('unit_convert_rate',1)->first();
+                    if(!isset($data->stockin->variantion_id)) {
+                        $unit = SellingUnit::where('variant_id', $data->variant_id)->where('unit_convert_rate', 1)->first();
+                    }
                     return $unit->unit??'N/A';
                 })
                 ->make(true);
