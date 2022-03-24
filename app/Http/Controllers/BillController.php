@@ -176,7 +176,13 @@ class BillController extends Controller
      */
     public function edit($id)
     {
-        //
+//        $bill=Bill::with('supplier')->where('id',$id)->first();
+//        $vendor =Customer::all();
+////        dd($vendor);
+//        $category=TransactionCategory::all();
+//        $bill_items = BillItem::where('bill_id', $id)->get();
+//        return view('transaction.Bill.edit',compact('vendor','category','bill','bill_items'));
+        return redirect('404');
     }
 
     /**

@@ -76,10 +76,10 @@
                                 <small>
                                     Created on {{$bill->created_at->toFormattedDateString()}}
                                 </small>
-                                <div class="mt-3"><a href="{{route('bills.edit',$bill->id)}}"
-                                                     class="btn btn-primary btn-sm btn-alone header-button-top">
-                                        Edit
-                                    </a></div>
+                                {{--<div class="mt-3"><a href="{{route('bills.edit',$bill->id)}}"--}}
+                                                     {{--class="btn btn-primary btn-sm btn-alone header-button-top">--}}
+                                        {{--Edit--}}
+                                    {{--</a></div>--}}
                             </div>
                         </div>
                         {{--<div class="timeline-block"><span class="timeline-step badge-danger"><i--}}
