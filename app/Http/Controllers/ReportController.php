@@ -216,7 +216,7 @@ class ReportController extends Controller
                     return $formatedDate;
                 })
                 ->addColumn('unit',function ($data){
-                    if(!isset($data->stockin->variantion_id)) {
+                    if(!isset($data->variant_id)) {
                         $unit = SellingUnit::where('variant_id', $data->variant_id)->where('unit_convert_rate', 1)->first();
                     }
                     return $unit->unit??'N/A';
