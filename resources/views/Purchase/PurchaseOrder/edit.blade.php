@@ -75,7 +75,7 @@
             </div>
             <input type="hidden" id="creation_id" value="{{$po->id}}">
             <div class="row">
-                <div class="col-12">
+                <div class="col-12" style="overflow: auto">
                     <table class="table">
                         <thead>
                         <th scope="col" style="min-width: 200px;">Product</th>

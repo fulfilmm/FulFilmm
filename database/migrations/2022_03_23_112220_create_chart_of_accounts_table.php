@@ -21,6 +21,7 @@ class CreateChartOfAccountsTable extends Migration
             $table->string('group')->nullable();
             $table->string('sub_group')->nullable();
             $table->string('normally')->nullable();
+            $table->double('balance')->default(0.0);
             $table->string('financial_statement')->nullable();
             $table->timestamps();
         });

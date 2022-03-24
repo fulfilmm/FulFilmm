@@ -106,7 +106,7 @@
                     </div>
                     <input type="hidden" id="creation_id" value="{{$creation_id[0]}}">
                     <div class="row mt-5">
-                        <div class="col-12">
+                        <div class="col-12" style="overflow: auto;">
                             <table class="table">
                                 <thead>
                                 <th scope="col" style="min-width: 200px;">Product</th>

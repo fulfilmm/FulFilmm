@@ -18,7 +18,7 @@
             </div>
         </div>
       <div class="card shadow">
-          <div class="col-12 my-3">
+          <div class="col-12 my-3" style="overflow:auto;">
               <table class="table table-hover table-nowrap" id="po_table">
                   <thead>
                   <tr>
