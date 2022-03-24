@@ -12,6 +12,7 @@ use App\Models\DeliveryPay;
 use App\Models\Employee;
 use App\Models\Expense;
 use App\Models\ExpenseBudget;
+use App\Models\ExpenseClaim;
 use App\Models\Invoice;
 use App\Models\MainCompany;
 use App\Models\Revenue;
@@ -114,6 +115,11 @@ class TransactionController extends Controller
             $new_expense->attachment = $input['filename'];
         }
         $new_expense->save();
+        if(isset($request->exp_id)){
+            $exp=ExpenseClaim::where('id',$request->exp_id)->first();
+            $exp->is_claim=1;
+            $exp->update();
+        }
         $this->transaction_add($request->account, $request->type, $new_expense->id, null);
         $last_tran = Transaction::orderBy('id', 'desc')->first();
         if (isset($request->bill_id)) {

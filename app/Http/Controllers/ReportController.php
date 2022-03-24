@@ -96,11 +96,11 @@ class ReportController extends Controller
                 })
                 ->addColumn('supplier', function ($row) {
                     $suppliers = Customer::where('id', $row->stockin->supplier_id)->first();
-                    return $suppliers->name;
+                    return $suppliers->name??'';
                 })
-                ->addColumn('unit',function ($variant){
-                    $unit=SellingUnit::where('variant_id',$variant->stockin->variantion_id)->where('unit_convert_rate',1)->first();
-                    return $unit->unit;
+                ->addColumn('unit',function ($data){
+                    $unit=SellingUnit::where('variant_id',$data->stockin->variantion_id)->where('unit_convert_rate',1)->first();
+                    return $unit->unit??'';
                 })
                 ->make(true);
 
@@ -119,16 +119,16 @@ class ReportController extends Controller
                 })
                 ->addColumn('unit',function ($variant){
                     $unit=SellingUnit::where('id',$variant->stockout->sell_unit)->first();
-                    return $unit->unit;
+                    return $unit->unit??'';
                 })
                 ->addColumn('qty', function ($row) {
                     $unit=SellingUnit::where('id',$row->stockout->sell_unit)->first();
                     $qty=$row->stockout->qty/$unit->unit_convert_rate;
-                    return $qty;
+                    return $qty??0;
                 })
                 ->addColumn('customer', function ($row) {
                     $suppliers = Customer::where('id', $row->stockout-> customer_id)->first();
-                    return $suppliers->name;
+                    return $suppliers->name??'';
                 })
                 ->make(true);
         }
@@ -189,6 +189,9 @@ class ReportController extends Controller
                 ->addColumn('account',function ($data){
                     $account=Transaction::with('account')->where('expense_id',$data->id)->first();
                     return $account->account->name??'N/A';
+                })
+                ->addColumn('supplier',function ($data){
+                    return $data->supplier->name??'N/A';
                 })
                 ->addColumn('transaction',function ($data){
                     if($data->approve==0){

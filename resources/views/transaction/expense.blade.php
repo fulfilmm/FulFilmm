@@ -18,6 +18,7 @@
             <form method="POST" action="{{route('expense.store')}}" accept-charset="UTF-8" id="transaction" role="form" novalidate="novalidate" enctype="multipart/form-data"
                   class="form-loading-button needs-validation">
                 @csrf
+                <input type="hidden" name="exp_id" value="{{$exp_claim->id??''}}">
                 <div class="card-body">
                     <div class="row">
                         <input type="hidden" name="type" value="Expense">

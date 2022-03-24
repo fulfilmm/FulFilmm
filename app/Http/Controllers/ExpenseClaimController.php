@@ -192,8 +192,6 @@ class ExpenseClaimController extends Controller
     }
     public function CashClaim($id){
         $exp_claim=ExpenseClaim::where('id',$id)->firstorFail();
-        $exp_claim->is_claim=1;
-        $exp_claim->update();
         $account=Account::where('enabled',1)->get();
         $recurring=['No','Daily','Weekly','Monthly','Yearly'];
         $payment_method=['Cash','eBanking','WaveMoney','KBZ Pay'];

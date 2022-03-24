@@ -67,6 +67,15 @@ class BillController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request,[
+            'title'=>'required',
+            'grand_total'=>'required',
+            'payment_method'=>'required',
+            'due_date'=>'required',
+            'bill_date'=>'required',
+            'billing_address'=>'required',
+            'vendor_email'=>'required',
+        ]);
 //        dd($request->all());
         $last_bill= Bill::orderBy('id', 'desc')->first();
 

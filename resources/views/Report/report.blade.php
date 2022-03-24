@@ -430,7 +430,7 @@
                             name: 'Account'
                         },
                         {
-                            data:'supplier.name',
+                            data:'supplier',
                             name:'Supplier'
                         },
                         {
