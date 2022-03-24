@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Account;
 use App\Models\Bill;
 use App\Models\BillItem;
+use App\Models\ChartOfAccount;
 use App\Models\Customer;
 use App\Models\DeliveryOrder;
 use App\Models\DeliveryPay;
@@ -54,7 +55,8 @@ class BillController extends Controller
         }else{
             $request_id=Session::get($Auth);
         }
-        return view('transaction.Bill.normalbill',compact('vendor','data','request_id'));
+        $category=TransactionCategory::all();
+        return view('transaction.Bill.normalbill',compact('vendor','data','request_id','category'));
     }
 
     /**
@@ -132,7 +134,8 @@ class BillController extends Controller
         $category=TransactionCategory::all();
         $emps = Employee::all();
         $customer=Customer::where('customer_type','Supplier')->get();
-        $data=['emps'=>$emps,'customers'=>$customer,'account'=>$account,'recurring'=>$recurring,'payment_method'=>$payment_method,'category'=>$category];
+        $coas=ChartOfAccount::all();
+        $data=['coas'=>$coas,'emps'=>$emps,'customers'=>$customer,'account'=>$account,'recurring'=>$recurring,'payment_method'=>$payment_method,'category'=>$category];
         $bill=Bill::with('supplier','employee')->where('id',$id)->firstOrFail();
         $bill_item=BillItem::with('purchaseorder','delivery')->where('bill_id',$bill->id)->get();
         $company=MainCompany::where('ismaincompany',true)->first();
@@ -196,7 +199,9 @@ class BillController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $bill=Bill::where('id',$id)->first();
+        $bill->delete();
+        return redirect('bills')->with('error','Delete successful');
     }
     public function po_to_bill($po_id)
     {

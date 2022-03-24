@@ -42,7 +42,11 @@
                                <div class="col-md-6 col-sm-6">
                                    <div class="form-group">
                                        <label for="cat">Category</label>
-                                       <input type="text" class="form-control" name="category" placeholder="Enter Category">
+                                       <select name="category" id="" class="form-control select">
+                                           @foreach($category as $cat)
+                                               <option value="{{$cat->id}}">{{$cat->name}}</option>
+                                               @endforeach
+                                       </select>
                                    </div>
                                </div>
                                <div class="col-sm-6 col-md-6">
