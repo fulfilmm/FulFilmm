@@ -27,17 +27,29 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 
 Vue.component('car-component', require('./components/CarDashComponent.vue').default);
-Vue.component('maintain-component', require('./components/MaintainComponent.vue').default);
+//Vue.component('car-maintain-component' , require('./components/CarMaintainComponent').default);
+// Vue.component('car-record-componment', require('./components/CarRecordComponent.vue').default);
+ Vue.component('maintain-component', require('./components/MaintainComponent.vue').default);
 
 
 import App from './components/AppComponent'
+import CarList from './components/CarDashComponent';
 import CarDetail from './components/CarDetailComponent'
+import CarMaintain from './components/CarMaintainComponent';
+import CarRecord from './components/CarRecordComponent';
 import MaintainDetail from './components/MaintainDetailComponent'
+import RecordDetail from './components/CarRecordDetailComponent';
 
 const router = new VueRouter({
     mode: 'history',
 
     routes: [
+        {
+            path:'/car-list',
+            name:'car-list',
+            component: CarList,
+
+        },
 
         {
             path:'/car-list/:id',
@@ -46,9 +58,27 @@ const router = new VueRouter({
         },
 
         {
+            path: '/car-list/car-maintain/:id',
+            name: 'car-maintain',
+            component: CarMaintain
+        },
+
+        {
+            path: '/car-list/car-record/:id',
+            name: 'car-record',
+            component: CarRecord
+        },
+
+        {
             path:'/maintain/:id',
             name:'maintain-detail',
             component: MaintainDetail
+        },
+
+        {
+            path:'/car-list/car-record/detail/:id',
+            name: 'record-detail',
+            component: RecordDetail
         }
 
     ],

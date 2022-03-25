@@ -7,26 +7,23 @@
                 </div>
 
                     <div>
-                        <a :href="`/maintainance`" class="text-white text-decoration-none bg-secondary px-3 py-2 my-2 rounded"> <font-awesome-icon icon="backward" /> Back </a>
+                        <router-link :to="`/car-list/car-maintain/`+ maintain.car_id" class="text-white text-decoration-none bg-secondary px-3 py-2 my-2 rounded"> <font-awesome-icon icon="backward" /> Back </router-link>
                     </div>
                  </div>
 
                  <form @submit.prevent="updateForm">
 
                    <div class=" d-flex flex-row-reverse">
-                                <div>
-                                    
-                                </div>
-                                  <button type="button" class="btn btn-success mx-2" @click="edit" v-if="! this.editForm"> <font-awesome-icon icon="pen-to-square" /> </button>
-                            
-                                  <button type="submit" class=" btn btn-white text-info px-3 mx-2" v-if="this.editForm"> <font-awesome-icon icon="fa-file-arrow-up" /> </button>
-                                  <button type="button" class=" btn btn-danger mx-2" @click="close" v-if="this.editForm"> <font-awesome-icon icon=" fa-xmark" /> </button>
-                   </div>
+                                            <button type="button" class="btn btn-success mx-2" @click="edit" v-if="! this.editForm"> <font-awesome-icon icon="pen-to-square" /> </button>
+                                        
+                                            <button type="submit" class=" btn btn-white text-info px-3 mx-2" v-if="this.editForm"> <font-awesome-icon icon="fa-file-arrow-up" /> </button>
+                                            <button type="button" class=" btn btn-danger mx-2" @click="close" v-if="this.editForm"> <font-awesome-icon icon=" fa-xmark" /> </button>
+                    </div>
                   
                   <div class=" p-3 m-3 rounded-lg text-gray bg-white shadow-md">
 
 
-                      <div class="row py-2 my-2 border-bottom">
+                      <!-- <div class="row py-2 my-2 border-bottom">
                         <div class="col">
                             Licanse Number
                         </div>
@@ -37,7 +34,30 @@
                                 <p v-for="c in car" :key="c.id"> {{ c.license_no}} </p>                                   
                             </div>
 
-                    </div>
+                    </div> -->
+                      <div class="row my-2 py-2 border-bottom">
+                            <div class="col h3 font-weight-bold">
+                                Current-Infomation
+                            </div>
+                            <div class="col">
+                                <div v-if=" ! this.editForm">
+                                    <p v-if="maintain.check == 0" class=" h3 text-danger"> Still Maintain </p>
+                                    <p v-if="maintain.check == 1" class=" h3 text-success"> Done </p>
+                                </div>
+
+                                <div v-if=" this.editForm">
+                                    <select class="custom-select mr-sm-2" id="inlineFormCustomSelect0" v-model="maintain.check">
+                                        
+                                        
+                                            <option value="0">Still Maintain</option>
+                                            <option value="1">Done</option>
+                                    </select>
+                                </div>
+                            
+
+                            </div>
+
+                      </div>
 
                       <div class="row my-2 py-2 border-bottom">
                             <div class="col">
@@ -91,7 +111,7 @@
 
                             </div>
 
-                         <div class="row py-2 my-2 border-bottom">
+                         <!-- <div class="row py-2 my-2 border-bottom">
                                 <div class="col">
                                     Case
                                 </div>
@@ -100,7 +120,38 @@
                                             <input type="text" class=" form-control shadow-md" v-model="maintain.case" v-if="this.editForm">
                                     </div>
 
-                            </div>
+                            </div> -->
+                             <div class=" p-3 m-3 rounded-lg text-gray bg-white shadow-md">
+                                <div class="row my-2 py-2 border-bottom">
+                                        <div class="col h3 font-weight-bold">
+                                        Maintain Cases
+                                        </div>
+                                    <table class="table p-3 text-center">
+                                        <thead>
+                                            <tr class=" bg-light ">
+                                                <th> Case </th>
+                                                <th> Expanse </th>
+                                               
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="c in maintain.case" :key="c.id">
+                                                <td scope="row"> {{c.case}}</td>
+                                                <td> {{c.expense}}</td>
+                    
+                                            </tr>
+                                            <tr class=" font-weight-bold h5">
+                                                <td  class="text-right"> Total </td>
+                                                <td scope="row"> {{maintain.total}}</td>
+                                                
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    
+
+                                </div>
+                             </div>
+                                        
 
                              <div class="row my-2 py-2 border-bottom">
                                     <div class="col">
@@ -195,7 +246,7 @@ import DatePicker from 'vue2-datepicker';
             car:{},
         }
     },
-
+ 
     methods: {
          edit(){
             this.editForm = true ;

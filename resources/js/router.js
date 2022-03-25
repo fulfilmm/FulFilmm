@@ -4,7 +4,9 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
 import CarDetail from './components/CarDetailComponent';
-import Example from './components/ExampleComponent';
+import CarMaintain from './components/CarDetailComponent';
+import CarRecord from './components/CarRecordComponent';
+//import Example from './components/ExampleComponent';
 
 
 
@@ -18,10 +20,22 @@ const  routes = [
         },
 
         {
-            path:'/vue/example',
-            name:'Example',
-            component: Example
-        }
+            path: 'car-list/car-maintain/:id',
+            name: 'car.maintain',
+            component: CarMaintain
+        },
+
+        {
+            path: 'car-list/car-record/:id',
+            name: 'car.record',
+            component: CarRecord
+        },
+
+        // {
+        //     path:'car-record/:id',
+        //     name:'Example',
+        //     component: Example
+        // }
 
     ];
 

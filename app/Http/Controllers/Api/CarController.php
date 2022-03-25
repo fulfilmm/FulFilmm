@@ -11,7 +11,7 @@ class CarController extends Controller
     
     public function index()
     {
-        $cars = CarData::with('status')
+        $cars = CarData::with('status' , 'routines')
                 ->orderBy('id', 'desc') -> get();
 
         foreach ( $cars as $file) {
@@ -113,7 +113,7 @@ class CarController extends Controller
    
     public function show($id)
     {
-        $data = CarData::with('status')
+        $data = CarData::with('status' , 'routines')
                 -> find($id);
                 
         $data->attach = json_decode($data->attach);
