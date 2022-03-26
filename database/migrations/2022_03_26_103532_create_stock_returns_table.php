@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStockOutsTable extends Migration
+class CreateStockReturnsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,21 +13,18 @@ class CreateStockOutsTable extends Migration
      */
     public function up()
     {
-        Schema::create('stock_outs', function (Blueprint $table) {
+        Schema::create('stock_returns', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('variantion_id')->unsigned();
-            $table->string('type');
-            $table->bigInteger('emp_id')->unsigned();//select option
+            $table->bigInteger('inv_id')->unsigned()->nullable();
+            $table->text('description')->nullable();
+            $table->bigInteger('variant_id')->unsigned();
             $table->bigInteger('customer_id')->unsigned()->nullable();
-            $table->bigInteger('invoice_id')->unsigned()->nullable();
-            $table->bigInteger('approver_id')->unsigned();
-            $table->bigInteger('courier_id')->unsigned()->nullable();
+            $table->bigInteger('emp_id')->unsigned()->nullable();
+            $table->text('attachment')->nullable();
             $table->bigInteger('warehouse_id')->unsigned()->nullable();
             $table->bigInteger('sell_unit')->unsigned();
             $table->bigInteger('creator_id')->unsigned();
             $table->double('qty');
-            $table->text('description')->nullable();
-            $table->tinyInteger('approve')->default(0);
             $table->timestamps();
         });
     }
@@ -39,6 +36,6 @@ class CreateStockOutsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stock_outs');
+        Schema::dropIfExists('stock_returns');
     }
 }

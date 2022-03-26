@@ -45,6 +45,22 @@ class InvoiceController extends Controller
         $status=$this->status;
         return view('invoice.index',compact('allinv','status'));
     }
+    public function invoice_view($type){
+        $status=$this->status;
+        if($type=='due'){
+            $allinv=Invoice::with('customer','employee')->where('due_amount','!=',0)->get();
+            return view('invoice.due_list',compact('allinv','status'));
+        }elseif ($type=='whole'){
+            $allinv=Invoice::with('customer','employee')->where('invoice_type','Whole Sale')->get();
+            return view('invoice.wholesale',compact('allinv','status'));
+
+        }else{
+            $allinv=Invoice::with('customer','employee')->where('invoice_type','Retail Sale')->get();
+            return view('invoice.retail',compact('allinv','status'));
+
+        }
+
+    }
 
     /**
      * Show the form for creating a new resource.

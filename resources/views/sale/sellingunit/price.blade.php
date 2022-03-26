@@ -59,8 +59,40 @@
                                       @else
                                           <a href="{{url('price/active/'.$item->id)}}" class="btn btn-danger btn-sm mr-1">Inactive</a>
                                       @endif
-                                      <a href="#" class="btn btn-success btn-sm"><i class="la la-edit"></i></a>
+                                      <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#edit{{$item->id}}"><i class="la la-edit"></i></button>
                                       <a href="{{route('sellprice.destroy',$item->id)}}" class="btn btn-danger btn-sm"><i class="la la-trash"></i></a>
+                                          <div id="edit{{$item->id}}" class="modal custom-modal fade" role="dialog">
+                                              <div class="modal-dialog modal-dialog-centered modal-sm">
+                                                  <div class="modal-content">
+                                                      <div class="modal-header border-bottom">
+                                                          <h5 class="modal-title">Update Price</h5>
+                                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                              <span aria-hidden="true">&times;</span>
+                                                          </button>
+                                                      </div>
+                                                      <form action="{{route('sellprice.update',$item->id)}}" method="POST">
+                                                      <div class="modal-body">
+                                                              @csrf
+                                                              <div class="col-md-12">
+                                                                  <div class="row">
+                                                                      <div class="col-md-12">
+                                                                          <div class="form-group">
+                                                                              <label for="price">Unit Price</label>
+                                                                              <input type="number" class="form-control shadow-sm" name="price" value="{{$item->price}}">
+                                                                          </div>
+                                                                      </div>
+                                                                      <div class="col-12 text-center">
+                                                                          <button type="submit" class="btn btn-primary">Submit</button>
+                                                                      </div>
+                                                                  </div>
+                                                              </div>
+
+                                                      </div>
+                                                      </form>
+                                                  </div>
+                                              </div>
+                                          </div>
+
                                   </div>
                               </td>
                           </tr>
@@ -72,7 +104,7 @@
         </div>
         <script>
             $(document).ready(function () {
-               $('select').select2();
+               $('.select2').select2();
                 $('#price_table').DataTable({
                     dom: 'Bfrtip',
                     buttons: [

@@ -19,9 +19,13 @@ class CreateStockTransactionsTable extends Migration
             $table->bigInteger('variant_id')->unsigned();
             $table->bigInteger('stock_in')->unsigned()->nullable();
             $table->bigInteger('stock_out')->unsigned()->nullable();
+            $table->bigInteger('return_id')->unsigned()->nullable();
             $table->bigInteger('warehouse_id')->unsigned();
+            $table->bigInteger('emp_id')->unsigned();
+            $table->bigInteger('creator_id')->unsigned();
             $table->double('balance');
-            $table->tinyInteger('type');
+            $table->bigInteger('contact_id')->unsigned()->nullable();
+            $table->string('type');
             $table->timestamps();
         });
     }

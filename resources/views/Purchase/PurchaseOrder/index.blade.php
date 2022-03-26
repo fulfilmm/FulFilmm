@@ -28,6 +28,7 @@
                       <th>Ordered Employee</th>
                       <th>Type</th>
                       <th>Supplier</th>
+                      <th>Approver</th>
                       <th>Discount</th>
                       <th>Total Amount</th>
                       <th>Action</th>
@@ -42,6 +43,7 @@
                           <td>{{$po->employee->name}}</td>
                           <td>{{$po->purchase_type}}</td>
                           <td>{{$po->vendor->name}}</td>
+                          <td>{{$po->approver_name->name}}</td>
                           <td>{{$po->discount}}</td>
                           <td>{{$po->grand_total}}</td>
                           <td>

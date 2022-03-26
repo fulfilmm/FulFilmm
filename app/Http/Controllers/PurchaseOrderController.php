@@ -37,9 +37,9 @@ class PurchaseOrderController extends Controller
     public function index()
     {
         if(Auth::guard('employee')->user()->role->name=='CEO'||Auth::guard('employee')->user()->role->name=='Super Admin'){
-            $purchase_orders=PurchaseOrder::orderby('id','desc')->with('vendor','tax','pr','employee')->get();
+            $purchase_orders=PurchaseOrder::orderby('id','desc')->with('vendor','tax','pr','employee','approver_name')->get();
         }else{
-            $purchase_orders=PurchaseOrder::orderby('id','desc')->with('vendor','tax','pr','employee')->where('emp_id',Auth::guard('employee')->user()->id)->get();
+            $purchase_orders=PurchaseOrder::orderby('id','desc')->with('vendor','tax','pr','employee','approver_name')->where('emp_id',Auth::guard('employee')->user()->id)->get();
 
         }
         return view('Purchase.PurchaseOrder.index',compact('purchase_orders'));
@@ -81,7 +81,7 @@ class PurchaseOrderController extends Controller
         } else {
             $po_id = "PO-00001";
         }
-        $emps=Employee::all()->pluck('name','id')->all();
+        $emps=Employee::all();
         return view('Purchase.PurchaseOrder.create',compact('product','suppliers','source','creation_id','po_data','items','taxes','grand_total','po_id','emps','units'));
     }
 
@@ -97,6 +97,7 @@ class PurchaseOrderController extends Controller
             'vendor_id'=>'required',
         'ordered_date'=>'required',
         'purchase_type'=>'required',
+            'approver_id'=>'required',
         ]);
         try {
             if (isset($request->attach)) {
@@ -109,6 +110,7 @@ class PurchaseOrderController extends Controller
 
             }
            $data['po_id']=$request->po_id;
+            $data['approver']=$request->approver_id;
             $data['vendor_id']=$request->vendor_id;
             $data['ordered_date']=$request->ordered_date;
             $data['purchase_type']=$request->purchase_type;
@@ -128,7 +130,7 @@ class PurchaseOrderController extends Controller
             if($request->tag!=null){
                 foreach ($request->tag as $emp){
                     $this->addtag($emp,$po->id);
-                    $this->addnotify($emp,'warning',' Added as a follower of '.$request->po_id,'rfqs/'.$po->id,Auth::guard('employee')->user()->id);
+                    $this->addnotify($emp,'warning',' Added as a follower of '.$request->po_id,'purchaseorders/'.$po->id,Auth::guard('employee')->user()->id);
                 }
             }
             Session::forget('poformdata-' . Auth::guard('employee')->user()->id);
@@ -141,6 +143,7 @@ class PurchaseOrderController extends Controller
                 $poitem->update();
             }
             Session::forget($Auth);
+            $this->addnotify($request->approver_id,'warning','Request Purchase Order to you '.$request->po_id,'purchaseorders/'.$po->id,Auth::guard('employee')->user()->id);
             return redirect('purchaseorders');
         }catch (Exception $e){
             return redirect()->back()->with('error',$e->getMessage());
@@ -159,7 +162,7 @@ class PurchaseOrderController extends Controller
      */
     public function show($id)
     {
-        $po=PurchaseOrder::with('vendor','tax','pr','employee')->where('id',$id)->firstOrFail();
+        $po=PurchaseOrder::with('vendor','tax','pr','employee','approver_name')->where('id',$id)->firstOrFail();
         $items=PurchaseOrderItem::with('product')->where('po_id',$po->id)->get();
         $company=MainCompany::where('ismaincompany',true)->first();
         $inventory_receipt=false;
@@ -192,8 +195,9 @@ class PurchaseOrderController extends Controller
 //        dd($grand_total);
             $taxes = products_tax::all();
             $units=SellingUnit::all();
+            $employees=Employee::all();
 
-            return view('Purchase.PurchaseOrder.edit', compact('product', 'suppliers', 'source', 'items', 'taxes', 'grand_total', 'po','units'));
+            return view('Purchase.PurchaseOrder.edit', compact('product', 'suppliers', 'source', 'items', 'taxes', 'grand_total', 'po','units','employees'));
         }else{
             return redirect()->back()->with('warning','Does not edit now! Its have been confirmed.');
         }
@@ -234,39 +238,6 @@ class PurchaseOrderController extends Controller
     {
         //
     }
-//    public function rfq_to_po_create($id){
-//        $rfq=RequestForQuotation::with('source', 'vendor')->where('id', $id)->firstOrFail();
-//        $rfq->status='Done';
-//        $rfq->update();
-//        $product=ProductVariations::with('product')->get();
-//        $suppliers = Customer::where('customer_type', 'Supplier')->get();
-//        $source=RequestForQuotation::all()->pluck('purchase_id','id')->all();
-//        $session_value = \Illuminate\Support\Str::random(10);
-//        $Auth = "PO-" . Auth::guard('employee')->user()->id;
-//        if (!Session::has($Auth)) {
-//            Session::push("$Auth", $session_value);
-//            $creation_id = Session::get($Auth);
-//        } else {
-//            $creation_id = Session::get($Auth);
-//        }
-//        $items=PurchaseOrderItem::where('creation_id', $creation_id)->get();
-//        $total = DB::table("purchase_order_items")
-//            ->select(DB::raw("SUM(total) as total"))
-//            ->where('creation_id', $creation_id)
-//            ->get();
-//        $grand_total = $total[0]->total;
-//        $po_data = Session::get('poformdata-' . Auth::guard('employee')->user()->id);
-//        $taxes=products_tax::all();
-//        $last_po = PurchaseOrder::orderBy('id', 'desc')->first();
-//
-//        if ($last_po != null) {
-//            $last_po->purchaseorder_id++;
-//            $purchaseorder_id = $last_po->purchaseorder_id;
-//        } else {
-//            $purchaseorder_id = "PO-00001";
-//        }
-//        return view('Purchase.PurchaseOrder.create',compact('rfq','product','suppliers','source','creation_id','po_data','items','taxes','purchaseorder_id','grand_total'));
-//    }
     public function receive($id){
         $last_rfq =ProductReceive::orderBy('id', 'desc')->first();
 
@@ -298,40 +269,44 @@ class PurchaseOrderController extends Controller
     }
     public function confirm($id){
         $po=PurchaseOrder::where('id',$id)->first();
-        $po->confirm=1;
-        $po->confirm_date=Carbon::now();
-        $po->update();
-        $already_exist=ProductReceive::where('po_id',$id)->first();
-      if($already_exist==null)
-      {
-          $last_pr = ProductReceive::orderBy('id', 'desc')->first();
+       if($po->approver==Auth::guard('employee')->user()->id){
+           $po->confirm=1;
+           $po->confirm_date=Carbon::now();
+           $po->update();
+           $already_exist=ProductReceive::where('po_id',$id)->first();
+           if($already_exist==null)
+           {
+               $last_pr = ProductReceive::orderBy('id', 'desc')->first();
 
-          if ($last_pr != null) {
-              $last_pr->received_id++;
-              $received_id = $last_pr->received_id;
-          } else {
-              $received_id='WH/IN-0001';
-          }
-          $product_receive=new ProductReceive();
-          $product_receive->vendor_id=$po->vendor_id;
-          $product_receive->received_id=$received_id;
-          $product_receive->receive_date=Carbon::now();
-          $product_receive->po_id=$po->id;
-          $product_receive->emp_id=Auth::guard('employee')->user()->id;
-          $product_receive->save();
-          $items=PurchaseOrderItem::where('po_id',$id)->get();
-          foreach ($items as $item){
-              $recipt_item=new ProductReceiveItem();
-              $recipt_item->variant_id=$item->variant_id;
-              $recipt_item->demand=$item->qty;
-              $recipt_item->po_id=$po->id;
-              $recipt_item->unit=$item->unit;
-              $recipt_item->receipt_id=$product_receive->id;
-              $recipt_item->price=$item->price;
-              $recipt_item->save();
-          }
-          return redirect(route('purchaseorders.show',$id));
-      }
+               if ($last_pr != null) {
+                   $last_pr->received_id++;
+                   $received_id = $last_pr->received_id;
+               } else {
+                   $received_id='WH/IN-0001';
+               }
+               $product_receive=new ProductReceive();
+               $product_receive->vendor_id=$po->vendor_id;
+               $product_receive->received_id=$received_id;
+               $product_receive->receive_date=Carbon::now();
+               $product_receive->po_id=$po->id;
+               $product_receive->emp_id=Auth::guard('employee')->user()->id;
+               $product_receive->save();
+               $items=PurchaseOrderItem::where('po_id',$id)->get();
+               foreach ($items as $item){
+                   $recipt_item=new ProductReceiveItem();
+                   $recipt_item->variant_id=$item->variant_id;
+                   $recipt_item->demand=$item->qty;
+                   $recipt_item->po_id=$po->id;
+                   $recipt_item->unit=$item->unit;
+                   $recipt_item->receipt_id=$product_receive->id;
+                   $recipt_item->price=$item->price;
+                   $recipt_item->save();
+               }
+               return redirect(route('purchaseorders.show',$id));
+           }
+       }else{
+           return redirect(route('purchaseorders.show',$id))->with('error','Your not approver for this purchase order');
+       }
     }
     public function send($id){
         $po=PurchaseOrder::with('vendor','tax','pr','employee')->where('id',$id)->first();

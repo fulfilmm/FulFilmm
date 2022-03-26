@@ -79,7 +79,7 @@
                                         <div class="media">
                                             <div class="media-body">
                                                 <p class="noti-details">{{$alert->notifier->name??\Illuminate\Support\Facades\Auth::guard('employee')->user()->name}}
-                                                    <span class="noti-title"> {{$alert->message}}</span></p>
+                                                    <span class="noti-title" style="font-size: 12px;"> {{$alert->message}}</span></p>
                                                 <p class="noti-time"><span class="notification-time">{{\Carbon\Carbon::parse($alert->created_at)->toFormattedDateString()}} at {{date('h:i a', strtotime(\Carbon\Carbon::parse($alert->created_at)))}}</span>
                                                 </p>
                                             </div>

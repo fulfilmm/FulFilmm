@@ -55,7 +55,7 @@ class StockTransactionController extends Controller
 
     public function index()
     {
-        $stock_transactions = StockTransaction::with('stockin', 'stockout','variant')->get();
+        $stock_transactions = StockTransaction::with('stockin', 'stockout','variant','customer','employee','stockreturn')->get();
         $stocks = Stock::all();
         $units=SellingUnit::all();
 //        dd($stock_transactions);
@@ -134,7 +134,8 @@ class StockTransactionController extends Controller
                 'description'=>$request->description,
                 'invoice_id'=>$request->invoice_id,
                 'type'=>$request->type,
-                'sell_unit'=>$request->sell_unit
+                'sell_unit'=>$request->sell_unit,
+                'creator_id'=>Auth::guard('employee')->user()->id,
             ];
             StockOut::create($data);
             $this->addnotify($request->approver_id,'success','Request stock out to you.','stockout/index',Auth::guard('employee')->user()->id);
@@ -164,7 +165,10 @@ class StockTransactionController extends Controller
             $stock_transaction->stock_out = $stock_out->id;
             $stock_transaction->warehouse_id = $stock_out->warehouse_id;
             $stock_transaction->variant_id=$stock_out->variantion_id;
-            $stock_transaction->type = 0;
+            $stock_transaction->contact_id=$stock_out->customer_id;
+            $stock_transaction->type ="Stock Out";
+            $stock_transaction->emp_id=$stock_out->emp_id;
+            $stock_transaction->creator_id=$stock_out->creator_id;
             $stock_transaction->balance=$stock->stock_balance - $stock_out->qty;
             $stock_transaction->save();
             if($stock_out->type=='FOC'){

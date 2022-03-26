@@ -11,7 +11,7 @@ class StockOut extends Model
     protected $fillable=['qty','customer_id','emp_id',
         'variantion_id','approver_id','courier_id',
         'warehouse_id','description','approve',
-        'invoice_id','type','sell_unit'
+        'invoice_id','type','sell_unit','creator_id'
     ];
     public function variant(){
         return $this->belongsTo(ProductVariations::class,'variantion_id','id');

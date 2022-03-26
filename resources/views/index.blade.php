@@ -21,7 +21,7 @@
                         </li>
                     </ul>
                 </div>
-                @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Super Admin'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='CEO')
+                @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Super Admin'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='CEO'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='General Manager')
 
                     <div class="col-12">
                         <div class="float-right">
@@ -49,7 +49,7 @@
         <!-- /Page Header -->
         @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Customer Service Manager')
            @include('Dashboard.ticket_admin')
-        @elseif(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='CEO'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Super Admin')
+        @elseif(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='CEO'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Super Admin'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='General Manager')
             @include('Dashboard.ceo_admin')
             @elseif(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Agent')
             @include('Dashboard.cs_agent')
@@ -67,7 +67,7 @@
         @endif
 
     </div>
-    @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Super Admin'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='CEO')
+    @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Super Admin'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='CEO'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='General Manager')
         <script>
             var chart = Highcharts.chart('yearly', {
 

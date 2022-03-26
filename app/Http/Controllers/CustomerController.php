@@ -95,8 +95,17 @@ class CustomerController extends Controller
      */
     public function store(CustomerRequest $request)
     {
+        $last_customer = Customer::orderBy('id', 'desc')->first();
 
-        $this->validate($request,['email'=>'unique:customers']);
+        if ($last_customer != null) {
+            $last_customer->customer_id++;
+            $customer_id = $last_customer->customer_id;
+        } else {
+            $customer_id = "CUS-00001";
+        }
+
+        $this->validate($request,['email'=>'unique:customers',
+            'customer_id'=>'unique:customers']);
         if (isset($request->profile_img)) {
             if ($request->profile_img != null) {
                 $image = $request->file('profile_img');
@@ -112,6 +121,7 @@ class CustomerController extends Controller
             }
         }
         $data = [
+            'customer_id'=>$customer_id,
             'profile' => $request->profile_img != null?$input['imagename']:null,
             'name' => $request->name,
             'region' => $request->region,

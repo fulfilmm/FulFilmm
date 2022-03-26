@@ -19,11 +19,6 @@
                                 <li class="breadcrumb-item active">Invoices</li>
                             </ul>
                         </div>
-                       @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
-                            <div class="col-auto float-right ml-auto">
-                                <a href="{{route('invoices.create')}}" class="btn add-btn shadow-sm"><i class="fa fa-plus"></i> Create Invoice</a>
-                            </div>
-                           @endif
                     </div>
                 </div>
                 <!-- /Page Header -->
@@ -73,6 +68,7 @@
                                         <th>Created Date</th>
                                         <th>Due Date</th>
                                         <th>Amount</th>
+                                        <th>Due Amount</th>
                                         <th>Status</th>
                                         <th class="text-right">Action</th>
                                     </tr>
@@ -92,6 +88,7 @@
                                         <td>{{$invoice->created_at->toFormattedDateString()}}</td>
                                         <td>{{\Illuminate\Support\Carbon::parse($invoice->due_date)->toFormattedDateString()}}</td>
                                         <td>{{$invoice->grand_total}}</td>
+                                            <td>{{$invoice->due_amount}}</td>
                                         <td>
                                             <div class="dropdown action-label">
                                                 <a class="btn btn-white btn-sm btn-rounded " href="#" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o mr-1"></i>{{$invoice->status}}</a>

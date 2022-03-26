@@ -53,7 +53,23 @@
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
             <li class="submenu">
-                <a href="#"><i class="la la-check-square-o mr-2"></i><span>Requestation</span> <span
+                <a href="#"><span> Expense Claim</span>
+                    <span
+                            class="menu-arrow"></span></a>
+                <ul style="display: none;">
+
+                    <li><a class="{{ Request::is('expenseclaims') ? 'active' : '' }}"
+                           href="{{ route('expenseclaims.index') }}" style="text-decoration: none">All Expense Claim</a>
+                    </li>
+
+                    <li><a class="{{ Request::is('expenseclaims/create') ? 'active' : '' }}"
+                           href="{{ route('expenseclaims.create') }}" style="text-decoration: none">Submit Expense
+                            Claim</a></li>
+
+                </ul>
+            </li>
+            <li class="submenu">
+                <a href="#"><span>Requestation</span> <span
                             class="menu-arrow"></span></a>
                 <ul style="display: none;">
                     <li><a class="{{ Request::is('approvals') ? 'active' : '' }}"
@@ -65,7 +81,7 @@
                 </ul>
             </li>
             <li class="submenu">
-                <a href="#"><i class="la la-th mr-2" style="font-size: 18px"></i><span> Room</span> <span
+                <a href="#"><span> Room</span> <span
                             class="menu-arrow"></span></a>
                 <ul style="display: none;">
 
@@ -79,7 +95,7 @@
                 </ul>
             </li>
             <li class="submenu">
-                <a href="#"><i class="la la-calendar mr-2" style="font-size: 18px"></i> <span> Meeting</span> <span
+                <a href="#"><span> Meeting</span> <span
                             class="menu-arrow"></span></a>
                 <ul style="display: none;">
 
@@ -229,22 +245,6 @@
         <a href="#"><i class="la la-cube"></i> <span>Banking</span> <span
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
-            <li class="submenu">
-                <a href="#"><i class="la la-building mr-2" style="font-size: 18px;"></i> <span> Expense Claim</span>
-                    <span
-                            class="menu-arrow"></span></a>
-                <ul style="display: none;">
-
-                    <li><a class="{{ Request::is('expenseclaims') ? 'active' : '' }}"
-                           href="{{ route('expenseclaims.index') }}" style="text-decoration: none">All Expense Claim</a>
-                    </li>
-
-                    <li><a class="{{ Request::is('expenseclaims/create') ? 'active' : '' }}"
-                           href="{{ route('expenseclaims.create') }}" style="text-decoration: none">Submit Expense
-                            Claim</a></li>
-
-                </ul>
-            </li>
             <li><a class="{{ Request::is('advancepayments') ? 'active' : '' }}"
                    href="{{ route('advancepayments.index') }}" style="text-decoration: none"><i class="la la-money mr-2"
                                                                                                 style="font-size: 18px"></i>Advance
@@ -287,6 +287,7 @@
 
                 </ul>
             </li>
+
             <li><a class="{{ Request::is('inventory') ? 'active' : '' }}"
                    href="{{ route('inventory.index') }}" style="text-decoration: none"><i class="la la-bar-chart mr-2"
                                                                                           style="font-size: 18px"></i>Inventory</a>
@@ -294,6 +295,30 @@
             <li><a class="{{ Request::is('warehouses') ? 'active' : '' }}"
                    href="{{ route('warehouses.index') }}" style="text-decoration: none"><i class="la la-building mr-2"
                                                                                            style="font-size: 18px"></i>Warehouse</a>
+            </li>
+            <li class="submenu">
+                <a href="#"><i class="la la-users mr-2" style="font-size: 18px"></i><span>Bin Look Up</span> <span
+                            class="menu-arrow"></span></a>
+                <ul style="display: none;">
+                    <li><a class="{{ Request::is('binlookup') ? 'active' : '' }}" href="{{route('binlookup.index')}}"
+                           style="text-decoration: none">All Bin Look Up</a></li>
+                    <li><a class="{{ Request::is('binlookup/create') ? 'active' : '' }}"
+                           href="{{route('binlookup.create')}}" style="text-decoration: none">
+                            Bin Look Up Create</a></li>
+
+                </ul>
+            </li>
+            <li class="submenu">
+                <a href="#"><i class="la la-users mr-2" style="font-size: 18px"></i><span>Stock Return</span> <span
+                            class="menu-arrow"></span></a>
+                <ul style="display: none;">
+                    <li><a class="{{ Request::is('stockreturn') ? 'active' : '' }}" href="{{route('stockreturn.index')}}"
+                           style="text-decoration: none">Stock Return</a></li>
+                    <li><a class="{{ Request::is('stockreturn/create') ? 'active' : '' }}"
+                           href="{{route('stockreturn.create')}}" style="text-decoration: none">
+                            Stock Return Create</a></li>
+
+                </ul>
             </li>
             <li><a class="{{ Request::is('stocks') ? 'active' : '' }}"
                    href="{{ route('stocks') }}" style="text-decoration: none"><i class="la la-cube mr-2"

@@ -2,18 +2,6 @@
 @section('title','Stock Out')
 @section('content')
     <div class="container-fluid">
-        {{--<div class="page-header mt-3">--}}
-        {{--<div class="row align-items-center">--}}
-        {{--<div class="col">--}}
-        {{--<h3 class="page-title">Stock Out</h3>--}}
-        {{--<ul class="breadcrumb">--}}
-        {{--<li class="breadcrumb-item"><a href="{{url("/")}}">Dashboard</a></li>--}}
-        {{--<li class="breadcrumb-item active">Stock</li>--}}
-        {{--<li class="breadcrumb-item active">Out</li>--}}
-        {{--</ul>--}}
-        {{--</div>--}}
-        {{--</div>--}}
-        {{--</div>--}}
         <form action="{{route('stockout')}}" method="POST">
             @csrf
             <div class="row mt-5">

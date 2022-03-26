@@ -20,4 +20,13 @@ class StockTransaction extends Model
     public function variant(){
         return $this->belongsTo(ProductVariations::class,'variant_id','id');
     }
+    public function customer(){
+        return $this->belongsTo(Customer::class,'contact_id','id');
+    }
+    public function employee(){
+        return $this->belongsTo(Employee::class,'emp_id','id');
+    }
+    public function stockreturn(){
+        return $this->belongsTo(StockReturn::class,'return_id','id');
+    }
 }

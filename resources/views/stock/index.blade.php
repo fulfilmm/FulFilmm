@@ -43,12 +43,14 @@
                     <thead>
                     <tr>
                         <th>Date</th>
+                        <th>Supplier/Customer</th>
                         <th>Product</th>
                         <th>Variant</th>
                         <th>Qty</th>
                         <th>Type</th>
                         <th>Warehouse</th>
                         <th>Balance</th>
+                        <th>Employee</th>
                         <th>Unit</th>
                     </tr>
 
@@ -56,11 +58,12 @@
                     <tbody>
                     {{--@dd($stock_transactions)--}}
                     @foreach($stock_transactions as $transaction)
-                        @if($transaction->type==1)
+                        @if($transaction->type=="Stock In")
                             <tr>
                                 <td>
                                    {{\Carbon\Carbon::parse($transaction->created_at)->toFormattedDateString()}}
                                 </td>
+                                <td>{{$transaction->customer->name??'N/A'}}</td>
                                 <td>{{$transaction->product_name}}</td>
                                 <td>{{$transaction->variant->variant??''}}</td>
                                 <td>+ <span id="qty{{$transaction->id}}"></span>
@@ -82,9 +85,10 @@
                                         });
                                     </script>
                                 </td>
-                                <td><span class="badge" style="background-color: #72ff9e">Stock In</span></td>
+                                <td><span class="badge" style="background-color: #72ff9e">{{$transaction->type}}</span></td>
                                 <td>{{$transaction->warehouse->name}}</td>
                                 <td><span id="balance{{$transaction->id}}"></span></td>
+                                <td>{{$transaction->employee->name}}</td>
                                 <td>
                                     <select name="" id="unit{{$transaction->id}}" class="form-control select">
                                         @foreach($units as $unit)
@@ -95,11 +99,12 @@
                                     </select>
                                 </td>
                             </tr>
-                        @else
+                        @elseif($transaction->type=="Stock Out")
                             <tr>
                                 <td>
                                     {{\Carbon\Carbon::parse($transaction->created_at)->toFormattedDateString()}}
                                 </td>
+                                <td>{{$transaction->customer->name??'N/A'}}</td>
                                 <td>{{$transaction->product_name}}</td>
                                 <td>
                                     {{$transaction->variant->variant??''}}
@@ -126,13 +131,60 @@
                                     </script>
                                 </td>
 
-                                <td><span class="badge" style="background-color: #72ff9e">Stock Out</span></td>
+                                <td><span class="badge" style="background-color: #72ff9e">{{$transaction->type}}</span></td>
                                 <td>{{$transaction->warehouse->name}}</td>
                                 <td><span id="outbalance{{$transaction->id}}"></span></td>
+                                <td>{{$transaction->employee->name}}</td>
                                 <td>
                                     <select name="" id="outunit{{$transaction->id}}" class="form-control select">
                                         @foreach($units as $unit)
-                                            @if($unit->variant_id==$transaction->variant->id)
+                                            @if($unit->product_id==$transaction->variant->product_id)
+                                                <option value="{{$unit->unit_convert_rate}}" {{$unit->unit_convert_rate==1?'selected':''}}>{{$unit->unit}}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                </td>
+                            </tr>
+                            @else
+                            <tr>
+                                <td>
+                                    {{\Carbon\Carbon::parse($transaction->created_at)->toFormattedDateString()}}
+                                </td>
+                                <td>{{$transaction->customer->name??'N/A'}}</td>
+                                <td>{{$transaction->product_name}}</td>
+                                <td>
+                                    {{$transaction->variant->variant??''}}
+                                </td>
+
+                                <td>
+                                    + <span id="outqty{{$transaction->id}}"></span>
+                                    <script>
+                                        $(document).ready(function () {
+                                            var qty = '{{$transaction->stockreturn->qty}}';
+                                            var balance='{{$transaction->balance}}';
+                                            $('#outqty{{$transaction->id}}').text(qty);
+                                            $('#outbalance{{$transaction->id}}').text(balance);
+
+                                            $('#outunit{{$transaction->id}}').change(function () {
+                                                var unit = $(this).val();
+                                                var st_bal = Math.round(parseFloat(qty) / parseInt(unit));
+                                                var bal= Math.round(parseFloat(balance) / parseInt(unit));
+                                                $('#outqty{{$transaction->id}}').text(st_bal);
+                                                $('#outbalance{{$transaction->id}}').text(bal);
+
+                                            });
+                                        });
+                                    </script>
+                                </td>
+
+                                <td><span class="badge" style="background-color: #72ff9e">{{$transaction->type}}</span></td>
+                                <td>{{$transaction->warehouse->name}}</td>
+                                <td><span id="outbalance{{$transaction->id}}"></span></td>
+                                <td>{{$transaction->employee->name}}</td>
+                                <td>
+                                    <select name="" id="outunit{{$transaction->id}}" class="form-control select">
+                                        @foreach($units as $unit)
+                                            @if($unit->product_id==$transaction->variant->product_id)
                                                 <option value="{{$unit->unit_convert_rate}}" {{$unit->unit_convert_rate==1?'selected':''}}>{{$unit->unit}}</option>
                                             @endif
                                         @endforeach

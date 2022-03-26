@@ -17,7 +17,7 @@ class Customer extends Authenticatable
         'password',
         'remember_token',
     ];
-    protected $fillable = [
+    protected $fillable = ['customer_id',
         'name', 'phone', 'email', 'company_id',
         'address','gender','emp_id','customer_type',
         'password','profile','bio','can_login','facebook',
