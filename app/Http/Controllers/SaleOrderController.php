@@ -168,6 +168,7 @@ class SaleOrderController extends Controller
     }
     public function edit($id){
         $edit_order=Order::where('id',$id)->first();
+        $prices =product_price::where('sale_type', 'Whole Sale')->where('active',1)->get();
         $variants=ProductVariations::with('product')->get();
         $taxes=products_tax::all();
         $allcustomers=Customer::all();
@@ -208,7 +209,7 @@ class SaleOrderController extends Controller
 
 //          dd($session_data);
         $data=['customer'=>$allcustomers,'items'=>$items,'grand_total'=>$grand_total,'id'=>$items[0]->creation_id,'products'=>$products,'quotation'=>$quotation, 'variants'=>$variants,'taxes'=>$taxes];
-        return view('saleorder.edit',compact('data','session_data','edit_order','unit_price','dis_promo'));
+        return view('saleorder.edit',compact('data','session_data','edit_order','unit_price','dis_promo','prices'));
     }
     public function update(Request $request,$id){
         $order =Order::where('id',$id)->first();
