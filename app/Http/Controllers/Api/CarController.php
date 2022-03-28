@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\CarData;
+use App\Models\MaintainSchedule;
+use App\Models\MaintainRecord;
 
 class CarController extends Controller
 {
@@ -164,5 +166,12 @@ class CarController extends Controller
     {
         $data = CarData::find($id);
         $data -> delete();
+
+        $schedule = MaintainSchedule::where('car_id' , $id);
+        $schedule -> delete();
+
+        $record = MaintainRecord::where('car_id', $id);
+        $record -> delete();
+
     }
 }

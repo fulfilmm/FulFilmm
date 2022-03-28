@@ -389,12 +389,12 @@
                                     </a>
                                 </li>
 
-                                <li>
+                                <!-- <li>
                                     <a class="{{ Request::is('/maintainance') ? 'active' : '' }}"
                                        href="{{ route('maintain') }}" style="text-decoration: none"> 
                                        Maintainance
                                     </a>
-                                </li>
+                                </li> -->
 
                             </ul>
                         </li>

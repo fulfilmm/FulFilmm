@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\InvoiceController;
 use App\Http\Controllers\Api\CarController;
 use App\Http\Controllers\Api\MaintainController;
 use App\Http\Controllers\Api\MaintainCheckController;
+use App\Http\Controllers\Api\Invoice\InvoiceDataController;
 
 use App\Http\Controllers\Api\Ecommerce\ProductAddController;
 use App\Http\Controllers\Api\Ecommerce\ProductPromotionController;
@@ -61,6 +62,8 @@ Route::apiResource("car_data", CarController::class);
 
 Route::apiResource("maintainance", MaintainController::class);
 Route::apiResource("maintain_check", MaintainCheckController::class);
+Route::apiResource("invoice" , InvoiceController::class);
+
 
 
 

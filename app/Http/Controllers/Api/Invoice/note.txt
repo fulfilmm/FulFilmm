@@ -1,0 +1,11 @@
+1st, we need fetch to data from all models which is associate with these process
+
+2nd, we need to post order to order db and order items
+
+3rd, invoice need to update due to invoice error or user's order added.
+
+4th, need to delete order
+
+5th, pending process when order requesting,
+
+6th, invoice design

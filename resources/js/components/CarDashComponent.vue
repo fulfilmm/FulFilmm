@@ -64,9 +64,9 @@
                           <div v-if="data.check == 0">
                             <div v-for="d in JSON.parse(data.case)" :key="d.id">
                              
-                                    {{ d.case}}
-                                    <small class="text-danger" v-if="d.end_date <= lastMonth"> {{ d.end_date }} </small>
-                                    <small class="text-danger" v-else> {{ d.end_date }} </small>
+                                    
+                                    <small class="text-danger" v-if="d.end_date <= lastMonth"> {{ d.case}} || {{ d.end_date }} </small>
+                                    <!--<small class="" v-else>  {{ d.end_date }} </small> -->
                               
                             </div>
                           </div>

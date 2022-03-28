@@ -164,6 +164,9 @@ Route::middleware(['auth:employee'])->group(function () {
     Route::get('notification/delete/{id}',[\App\Http\Controllers\NotificationController::class,'destroy'])->name('notifications.delete');
     Route::get('notification/{uuid}',[\App\Http\Controllers\NotificationController::class,'show'])->name('notifications.show');
 
+
+
+    //**  Route By Nyan  */
     //Car Booking System
     Route::get('/car-list', [CarsController::class, 'index']) -> name('carList');
     Route::get('/car-list/{any}' , [CarsController::class,'show']) -> where('any', '.*');
@@ -176,6 +179,8 @@ Route::middleware(['auth:employee'])->group(function () {
     Route::get('/maintain/{any}' , [MaintainController::class, 'show']) -> where('any', '.*');
     Route::get('/download/maintain/attaches/{data}' , [MaintainController::class, 'download']);
     Route::get('/download/maintain_record/attaches/{data}' , [MaintainController::class, 'downloadRecord']);
+
+    //** end */
    
 
 

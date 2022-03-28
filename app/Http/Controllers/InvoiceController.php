@@ -469,7 +469,7 @@ class InvoiceController extends Controller
        if($old_state==null){
            $history=new InvoiceHistory();
            $history->invoice_id=$id;
-           $history->status=$status;
+           $history->status=$status; 
            $history->description=$desc;
            $history->save();
        }
