@@ -136,7 +136,7 @@ class SaleTargetController extends Controller
     public function create()
     {
         $employee = Employee::where('department_id', 1)->pluck('name', 'id')->all();
-        $month = ['Jan', 'Feb', 'March', 'April', 'May', 'June', "July", 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        $month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', "Jul", 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         $mothly_targets = SaleTarget::with('employee')->where('year', date('Y'))->get();
         $year=[date('Y')+0,date('Y')+1,date('Y')+2];
 
