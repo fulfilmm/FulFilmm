@@ -1,5 +1,5 @@
 @extends('layout.mainlayout')
-@section('title','Inventory Report')
+@section('title','Bin Look Up')
 @section('content')
     <div class="content container-fluid">
         <!-- Page Header -->

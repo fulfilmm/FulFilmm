@@ -6,16 +6,19 @@
 
             <div class="row mt-2">
                 <div class="top-nav-search col-md-5 col-sm-5 col-5">
-                    <input class="form-control" id="start" type="text" name="start_date" placeholder="Enter Start Date and Time">
+                    <input class="form-control" id="start" type="text" name="start_date"
+                           placeholder="Enter Start Date and Time">
                 </div>
                 <div class="top-nav-search col-md-5 col-sm-5 col-5">
-                    <input class="form-control" id="end" type="text" name="end_date" placeholder="Enter End Date and Time">
+                    <input class="form-control" id="end" type="text" name="end_date"
+                           placeholder="Enter End Date and Time">
                 </div>
-                <button class="btn rounded-circle col-md-1 col-sm-1 col-1" type="submit"><i class="fa fa-search"></i></button>
+                <button class="btn rounded-circle col-md-1 col-sm-1 col-1" type="submit"><i class="fa fa-search"></i>
+                </button>
             </div>
         </form>
     </div>
-    @endsection
+@endsection
 @section('content')
     <div class="container-fluid">
         <div class="page-header my-3">
@@ -29,9 +32,9 @@
                 </div>
                 <div class="col-auto float-right ml-auto">
 
-                        <a href="{{route('showstockout')}}" class="btn add-btn ml-2 btn-sm"><i class="fa fa-plus"></i>
-                            Stock Out</a>
-                        <a href="{{route('showstockin')}}" class="btn add-btn btn-sm"><i class="fa fa-plus"></i>Stock In</a>
+                    <a href="{{route('showstockout')}}" class="btn add-btn ml-2 btn-sm"><i class="fa fa-plus"></i>
+                        Stock Out</a>
+                    <a href="{{route('showstockin')}}" class="btn add-btn btn-sm"><i class="fa fa-plus"></i>Stock In</a>
                     {{--@endif--}}
                 </div>
             </div>
@@ -61,7 +64,7 @@
                         @if($transaction->type=="Stock In")
                             <tr>
                                 <td>
-                                   {{\Carbon\Carbon::parse($transaction->created_at)->toFormattedDateString()}}
+                                    {{\Carbon\Carbon::parse($transaction->created_at)->toFormattedDateString()}}
                                 </td>
                                 <td>{{$transaction->customer->name??'N/A'}}</td>
                                 <td>{{$transaction->product_name}}</td>
@@ -70,14 +73,14 @@
                                     <script>
                                         $(document).ready(function () {
                                             var qty = '{{$transaction->stockin->qty}}';
-                                            var balance='{{$transaction->balance}}';
+                                            var balance = '{{$transaction->balance}}';
                                             $('#qty{{$transaction->id}}').text(qty);
                                             $('#balance{{$transaction->id}}').text(balance);
 
                                             $('#unit{{$transaction->id}}').change(function () {
                                                 var unit = $(this).val();
                                                 var st_bal = Math.round(parseFloat(qty) / parseInt(unit));
-                                                var bal= Math.round(parseFloat(balance) / parseInt(unit));
+                                                var bal = Math.round(parseFloat(balance) / parseInt(unit));
                                                 $('#qty{{$transaction->id}}').text(st_bal);
                                                 $('#balance{{$transaction->id}}').text(bal);
 
@@ -85,7 +88,8 @@
                                         });
                                     </script>
                                 </td>
-                                <td><span class="badge" style="background-color: #72ff9e">{{$transaction->type}}</span></td>
+                                <td><span class="badge" style="background-color: #72ff9e">{{$transaction->type}}</span>
+                                </td>
                                 <td>{{$transaction->warehouse->name}}</td>
                                 <td><span id="balance{{$transaction->id}}"></span></td>
                                 <td>{{$transaction->employee->name}}</td>
@@ -115,14 +119,14 @@
                                     <script>
                                         $(document).ready(function () {
                                             var qty = '{{$transaction->stockout->qty}}';
-                                            var balance='{{$transaction->balance}}';
+                                            var balance = '{{$transaction->balance}}';
                                             $('#outqty{{$transaction->id}}').text(qty);
                                             $('#outbalance{{$transaction->id}}').text(balance);
 
                                             $('#outunit{{$transaction->id}}').change(function () {
                                                 var unit = $(this).val();
                                                 var st_bal = Math.round(parseFloat(qty) / parseInt(unit));
-                                                var bal= Math.round(parseFloat(balance) / parseInt(unit));
+                                                var bal = Math.round(parseFloat(balance) / parseInt(unit));
                                                 $('#outqty{{$transaction->id}}').text(st_bal);
                                                 $('#outbalance{{$transaction->id}}').text(bal);
 
@@ -131,7 +135,8 @@
                                     </script>
                                 </td>
 
-                                <td><span class="badge" style="background-color: #72ff9e">{{$transaction->type}}</span></td>
+                                <td><span class="badge" style="background-color: #72ff9e">{{$transaction->type}}</span>
+                                </td>
                                 <td>{{$transaction->warehouse->name}}</td>
                                 <td><span id="outbalance{{$transaction->id}}"></span></td>
                                 <td>{{$transaction->employee->name}}</td>
@@ -145,13 +150,13 @@
                                     </select>
                                 </td>
                             </tr>
-                            @else
+                        @else
                             <tr>
                                 <td>
                                     {{\Carbon\Carbon::parse($transaction->created_at)->toFormattedDateString()}}
                                 </td>
                                 <td>{{$transaction->customer->name??'N/A'}}</td>
-                                <td>{{$transaction->product_name}}</td>
+                                <td>{{$transaction->variant->product_name}}</td>
                                 <td>
                                     {{$transaction->variant->variant??''}}
                                 </td>
@@ -161,14 +166,14 @@
                                     <script>
                                         $(document).ready(function () {
                                             var qty = '{{$transaction->stockreturn->qty}}';
-                                            var balance='{{$transaction->balance}}';
+                                            var balance = '{{$transaction->balance}}';
                                             $('#outqty{{$transaction->id}}').text(qty);
                                             $('#outbalance{{$transaction->id}}').text(balance);
 
                                             $('#outunit{{$transaction->id}}').change(function () {
                                                 var unit = $(this).val();
                                                 var st_bal = Math.round(parseFloat(qty) / parseInt(unit));
-                                                var bal= Math.round(parseFloat(balance) / parseInt(unit));
+                                                var bal = Math.round(parseFloat(balance) / parseInt(unit));
                                                 $('#outqty{{$transaction->id}}').text(st_bal);
                                                 $('#outbalance{{$transaction->id}}').text(bal);
 
@@ -177,7 +182,8 @@
                                     </script>
                                 </td>
 
-                                <td><span class="badge" style="background-color: #72ff9e">{{$transaction->type}}</span></td>
+                                <td><span class="badge" style="background-color: #72ff9e">{{$transaction->type}}</span>
+                                </td>
                                 <td>{{$transaction->warehouse->name}}</td>
                                 <td><span id="outbalance{{$transaction->id}}"></span></td>
                                 <td>{{$transaction->employee->name}}</td>
@@ -217,6 +223,6 @@
             $('.dataTables_filter input').remove('form-control');
             $('.dataTables_filter input').addClass('rounded');
         });
-        </script>
+    </script>
 
 @endsection

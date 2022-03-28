@@ -650,7 +650,7 @@ class HomeController extends Controller
                 return view('index',compact('items'));
                 break;
             case "Car Driver":
-            case "Employee":
+            default:
             $requestation=Approvalrequest::where('emp_id',Auth::guard('employee')->user()->id)->count();
             $myticket=ticket::where('created_emp_id',$user->id)->count();
             $follow_ticket=ticket_follower::where('emp_id',$user->id)->count();

@@ -34,6 +34,7 @@ trait StockTrait
         $stockin->emp_id=Auth::guard('employee')->user()->id;
         $stockin->supplier_id=$request['supplier_id'];
         $stockin->qty=$request['qty'];
+        $stockin->binlookup_id=$request['bin_id'];
         $stockin->save();
 
        if(isset($request['valuation'])){

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\EmployeeExport;
 use App\Exports\StockExport;
 use App\Imports\StockImport;
+use App\Models\BinLookUp;
 use App\Models\Customer;
 use App\Models\DamagedProduct;
 use App\Models\EcommerceProduct;
@@ -68,7 +69,8 @@ class StockTransactionController extends Controller
 //        dd($products);
         $customers = Customer::where('customer_type', 'Supplier')->get();
         $warehouses = Warehouse::all();
-        return view('stock.stockin', compact('products', 'customers', 'warehouses'));
+        $binlook=BinLookUp::all();
+        return view('stock.stockin', compact('products', 'customers', 'warehouses','binlook'));
     }
 
     public function stockout_form()
@@ -103,6 +105,7 @@ class StockTransactionController extends Controller
             'product_location'=>$request->product_location,
             'valuation'=>$request->purchase_price,
             'exp_date'=>$request->exp_date,
+            'bin_id'=>$request->binlookup_id
         ];
 //        dd($data);
         $this->stockin($data);
