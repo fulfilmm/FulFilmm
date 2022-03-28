@@ -292,7 +292,6 @@
                                                         var price=$('#price_{{$order->id}}').val();
 
                                                     }else {
-                                                        alert(unit_id);
                                                         @foreach($prices as $item)
                                                         if(unit_id=="{{$item->unit_id}}") {
                                                             if('{{$order->variant->pricing_type}}'==1){
