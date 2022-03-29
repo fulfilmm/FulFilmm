@@ -582,9 +582,7 @@
                                     <td id="discount_div" colspan="2"><div class="input-group">
                                             <input class="form-control" type="text"
                                                    id="discount" value="0.0">
-                                            <div class="input-group-append">
-                                                <span id="percen"></span>
-                                            </div>
+
                                         </div></td>
                                 </tr>
                                 <tr id="delivery">
@@ -626,100 +624,45 @@
     <script>
         $(document).ready(function () {
             var tax = $('#tax option:selected').val();
-            var sum = $('#total').val();
+            var sum =$('#total').val();
             @foreach($taxes as $tax)
             if (tax == "{{$tax->id}}")
-                var tax_rate = '{{$tax->rate}}';
+                var tax_rate ='{{$tax->rate}}';
                     @endforeach
             var tax_amount = parseFloat(sum) * (parseInt(tax_rate) / 100);
             var discount = $('#discount').val();
             var deli_fee = $('#deli_fee').val();
-            var grand = (parseFloat(sum) + parseFloat(deli_fee) + parseFloat(tax_amount)) - parseFloat(discount);
-            if (isNaN(grand)) {
+            var grand=(parseFloat(sum) + parseFloat(deli_fee) + parseFloat(tax_amount)) - parseFloat(discount);
+            if(isNaN(grand)){
                 $('#total').val('0')
                 $('#grand_total').val('0.0');
-            } else {
-
-                var ammount_dis = $('input[name="amount_discount"]:checked').val();
-                if (ammount_dis == 1) {
-                    var total_amount = 0.0;
-                    var discount_amount = 0.0;
-                    var percen=0;
-                    @foreach($amount_discount as $item)
-                    if (grand < parseFloat('{{$item->min_amount}}')){
-                        discount_amount = (parseFloat({{$item->rate}}) / 100) * grand;
-                        total_amount = grand - discount_amount;
-                        percen='{{$item->rate}}'+'%';-
-
-                    }
-                    @endforeach
-                    $('#discount').val(discount_amount);
-                    $('#percen').text(percen);
-                    $('#grand_total').val(total_amount);
-
-                } else if (ammount_dis ==0) {
-                    $('#grand_total').val(grand);
-                }
-
+            }else {
+                $('#grand_total').val(grand);
             }
 
             $('select').change(function () {
                 var tax = $('#tax option:selected').val();
-                var sum = $('#total').val();
+                var sum =$('#total').val();
                 @foreach($taxes as $tax)
                 if (tax == "{{$tax->id}}")
-                    var tax_rate = '{{$tax->rate}}';
+                    var tax_rate ='{{$tax->rate}}';
                         @endforeach
                 var tax_amount = parseFloat(sum) * (parseInt(tax_rate) / 100);
                 var discount = $('#discount').val();
                 var deli_fee = $('#deli_fee').val();
-                var sub_total = (parseFloat(sum) + parseFloat(deli_fee) + parseFloat(tax_amount)) - parseFloat(discount);
-                var ammount_dis = $('input[name="amount_discount"]:checked').val();
-                if (ammount_dis == 1) {
-                    var total_amount = 0.0;
-                    var discount_amount=0.0;
-                    @foreach($amount_discount as $item)
-                    if ('{{$item->min_amount}}' <= sub_total && sub_total >= '{{$item->max_amount}}') {
-                        discount_amount = (parseFloat({{$item->rate}}) / sub_total) * 100;
-                        total_amount = discount_amount + sub_total;
-
-                    }
-                    @endforeach
-                    $('#discount').val(discount_amount);
-                    $('#grand_total').val(total_amount);
-                } else if (ammount_dis == 0) {
-                    $('#grand_total').val(sub_total);
-                }
-
+                $('#grand_total').val((parseFloat(sum) + parseFloat(deli_fee) + parseFloat(tax_amount)) - parseFloat(discount));
             });
             $('input').keyup(function () {
                 var tax = $('#tax option:selected').val();
-                var sum = $('#total').val();
+                var sum =$('#total').val();
                 @foreach($taxes as $tax)
                 if (tax == "{{$tax->id}}")
-                    var tax_rate = '{{$tax->rate}}';
+                    var tax_rate ='{{$tax->rate}}';
                         @endforeach
                 var tax_amount = parseFloat(sum) * (parseInt(tax_rate) / 100);
                 var discount = $('#discount').val();
                 var deli_fee = $('#deli_fee').val();
-                var sub_total = (parseFloat(sum) + parseFloat(deli_fee) + parseFloat(tax_amount)) - parseFloat(discount);
-                var ammount_dis = $('input[name="amount_discount"]:checked').val();
-                if (ammount_dis == 1) {
-
-                    var total_amount = 0.0;
-                    var discount_amount=0.0
-                    @foreach($amount_discount as $item)
-                    if ('{{$item->min_amount}}' <= sub_total && sub_total >= '{{$item->max_amount}}') {
-                        discount_amount= (parseFloat({{$item->rate}}) / sub_total) * 100;
-                        total_amount = discount_amount + sub_total;
-
-                    }
-                    @endforeach
-                    $('#discount').val(discount_amount);
-                    $('#grand_total').val(total_amount);
-                } else if (ammount_dis === 0) {
-                    $('#grand_total').val(sub_total);
-                }
+                $('#grand_total').val((parseFloat(sum) + parseFloat(deli_fee) + parseFloat(tax_amount)) - parseFloat(discount));
             });
         });
 
@@ -760,21 +703,21 @@
 
         $(document).ready(function () {
             $('#client_id').change(function () {
-                var client_id = $(this).val();
+                var client_id=$(this).val();
                 @foreach($allcustomers as $client)
-                if (client_id == '{{$client->id}}') {
+                if(client_id=='{{$client->id}}'){
                     $('#client_address').val("{{$client->address}}");
                     $('#client_email').val("{{$client->email}}");
                 }
                 @endforeach
-            });
+            }) ;
         });
         $(document).ready(function () {
             $('input[type="radio').change(function () {
-                var deli = $(this).val();
-                if (deli == 'on') {
+                var deli=$(this).val();
+                if(deli=='on'){
                     $('#delivery').show();
-                } else if (deli == 'off') {
+                }else if(deli=='off'){
                     $('#delivery').hide();
                 }
             });
@@ -813,8 +756,8 @@
                     'order_id': order_id,
                     'payment_method': payment,
                     'type': 'invoice',
-                    'invoice_type': inv_type,
-                    'inv_type': '{{$type}}'
+                    'invoice_type':inv_type,
+                    'inv_type':'{{$type}}'
 
                 },
                 type: 'POST',
@@ -834,7 +777,7 @@
                     if (!$.isEmptyObject(data.Error)) {
                         // alert(data.orderempty);
                         swal('Fixed Sale Unit Price ', 'This product does not fixed unit price.', 'error');
-                    } else {
+                    }else {
 
                         location.reload();
                     }
@@ -844,7 +787,7 @@
         });
 
         $(document).on('click', '#add_item_code', function (event) {
-            var code = $('#code option:selected').val();
+            var code=$('#code option:selected').val();
             var invoice_id = $('#invoice_id').val();
             var client_id = $('#client_id').val();
             var client_email = $('#client_email').val();
@@ -876,8 +819,8 @@
                     'order_id': order_id,
                     'payment_method': payment,
                     'type': 'invoice',
-                    'invoice_type': inv_type,
-                    'inv_type': '{{$type}}'
+                    'invoice_type':inv_type,
+                    'inv_type':'{{$type}}'
 
                 },
                 type: 'POST',
@@ -897,7 +840,7 @@
                     if (!$.isEmptyObject(data.Error)) {
                         // alert(data.orderempty);
                         swal('Fixed Sale Unit Price ', 'This product does not fixed unit price.', 'error');
-                    } else {
+                    }else {
 
                         location.reload();
                     }
@@ -906,7 +849,7 @@
 
         });
         $(document).on('click', '#foc_item', function (event) {
-            var foc = $('#foc_id option:selected').val();
+            var foc=$('#foc_id option:selected').val();
             var invoice_id = $('#invoice_id').val();
             var client_id = $('#client_id').val();
             var client_email = $('#client_email').val();
@@ -938,8 +881,8 @@
                     'order_id': order_id,
                     'payment_method': payment,
                     'type': 'invoice',
-                    'invoice_type': inv_type,
-                    'foc': 1
+                    'invoice_type':inv_type,
+                    'foc':1
 
                 },
                 type: 'POST',
@@ -959,7 +902,7 @@
                     if (!$.isEmptyObject(data.Error)) {
                         // alert(data.orderempty);
                         swal('Fixed Sale Unit Price ', 'This product does not fixed unit price.', 'error');
-                    } else {
+                    }else {
 
                         location.reload();
                     }
@@ -988,8 +931,8 @@
                 var tax_amount = $('#tax_amount').val();
                 var inv_type = $('#inv_type option:selected').val();
                 var deli_fee = $('#deli_fee').val();
-                var warehouse = $('#warehouse option:selected').val();
-                var delivery_onoff = $('input[name="delionoff"]:checked').val();
+                var warehouse=$('#warehouse option:selected').val();
+                var delivery_onoff=$('input[name="delionoff"]:checked').val();
                 $.ajax({
                     data: {
                         'discount': discount,
@@ -1011,9 +954,9 @@
                         'payment_method': payment,
                         'invoice_type': inv_type,
                         'delivery_fee': deli_fee,
-                        'inv_type': "{{$type}}",
-                        'warehouse_id': warehouse,
-                        'deli_fee_include': delivery_onoff
+                        'inv_type':"{{$type}}",
+                        'warehouse_id':warehouse,
+                        'deli_fee_include':delivery_onoff
                     },
                     type: 'POST',
                     url: "{{route('invoices.store')}}",
@@ -1060,8 +1003,8 @@
                 var tax_amount = $('#tax_amount').val();
                 var inv_type = $('#inv_type option:selected').val();
                 var deli_fee = $('#deli_fee').val();
-                var warehouse = $('#warehouse option:selected').val();
-                var delivery_onoff = $('input[name="delionoff"]:checked').val();
+                var warehouse=$('#warehouse option:selected').val();
+                var delivery_onoff=$('input[name="delionoff"]:checked').val();
                 $.ajax({
                     data: {
                         'discount': discount,
@@ -1082,9 +1025,9 @@
                         'payment_method': payment,
                         'invoice_type': inv_type,
                         'delivery_fee': deli_fee,
-                        'inv_type': "{{$type}}",
-                        'warehouse_id': warehouse,
-                        'deli_fee_include': delivery_onoff
+                        'inv_type':"{{$type}}",
+                        'warehouse_id':warehouse,
+                        'deli_fee_include':delivery_onoff
 
                     },
                     type: 'POST',
@@ -1115,21 +1058,19 @@
         var options2 = product_name.querySelectorAll('option');
         var options3 = code.querySelectorAll('option');
         console.log(options3);
-
         // alert(product)
         function giveSelection(selValue) {
-            variant.innerHTML = '';
-            code.innerHTML = '';
+            variant.innerHTML='';
+            code.innerHTML='';
 
-            for (var i = 0; i < options2.length; i++) {
-                if (options2[i].dataset.option === selValue) {
+            for(var i = 0; i < options2.length; i++) {
+                if(options2[i].dataset.option === selValue) {
                     variant.appendChild(options2[i]);
                     code.appendChild(options3[i]);
 
                 }
             }
         }
-
         giveSelection(warehouse.value);
         // window.onbeforeunload = closeWindow;
     </script>
