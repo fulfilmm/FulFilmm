@@ -196,6 +196,7 @@ class TransactionController extends Controller
 
     public function store_revenue(Request $request)
     {
+//        dd($request->all());
        if($request->advance_id){
         $revenue=Revenue::where('advance_pay_id',$request->advance_id)->first();
         $revenue->invoice_id=$request->invoice_id;

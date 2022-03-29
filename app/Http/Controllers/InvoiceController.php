@@ -5,6 +5,8 @@ use App\Exports\InvoiceExport;
 use App\Jobs\leadactivityschedulemail;
 use App\Models\Account;
 use App\Models\AdvancePayment;
+use App\Models\AmountDiscount;
+use App\Models\ChartOfAccount;
 use App\Models\Customer;
 use App\Models\DiscountPromotion;
 use App\Models\Employee;
@@ -99,7 +101,8 @@ class InvoiceController extends Controller
 
             $warehouse = OfficeBranch::with('warehouse')->where('id', $Auth->office_branch_id)->get();
             $aval_product = Stock::with('variant')->where('available', '>', 0)->get();
-            return view('invoice.create', compact('warehouse', 'type', 'request_id', 'allcustomers', 'orderline', 'grand_total', 'status', 'data', 'aval_product', 'taxes', 'unit_price', 'dis_promo', 'focs','prices'));
+            $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))->whereDate('end_date','>=',date('Y-m-d'))->where('sale_type','Whole Sale')->get();
+            return view('invoice.create', compact('warehouse', 'type', 'request_id', 'allcustomers', 'orderline', 'grand_total', 'status', 'data', 'aval_product', 'taxes', 'unit_price', 'dis_promo', 'focs','prices','amount_discount'));
         }else{
             return redirect()->back()->with('error','Firstly,Fixed your Branch of Office');
     }
@@ -148,7 +151,8 @@ class InvoiceController extends Controller
         $Auth=Auth::guard('employee')->user();
 
         $warehouse=OfficeBranch::with('warehouse')->where('id',$Auth->office_branch_id)->get();
-        return view('invoice.create',compact('warehouse','request_id','allcustomers','orderline','grand_total','status','data','aval_product','taxes','unit_price','dis_promo','focs','type','prices'));
+        $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))->whereDate('end_date','>=',date('Y-m-d'))->where('inv_type','Retail Sale')->get();
+        return view('invoice.create',compact('warehouse','request_id','allcustomers','orderline','grand_total','status','data','aval_product','taxes','unit_price','dis_promo','focs','type','prices','amount_discount'));
         }else{
             return redirect()->back()->with('error','Firstly,Fixed your Branch of Office');
         }
@@ -314,6 +318,7 @@ class InvoiceController extends Controller
         $recurring=['No','Daily','Weekly','Monthly','Yearly'];
         $payment_method=['Cash','eBanking','WaveMoney','KBZ Pay'];
         $category=TransactionCategory::all();
+        $coas=ChartOfAccount::all();
         $revenue=Revenue::where('invoice_id',$id)->get();
         $history=InvoiceHistory::where('invoice_id',$id)->get();
         $transaction=[];
@@ -349,7 +354,7 @@ class InvoiceController extends Controller
         $customer=Customer::all();
         $emps = Employee::all();
         $advan_pay=AdvancePayment::with('order')->where('order_id',$detail_inv->order_id)->first();
-        $data=['transaction'=>$transaction,'customers'=>$customer,'account'=>$account,'recurring'=>$recurring,'payment_method'=>$payment_method,'category'=>$category];
+        $data=['coas'=>$coas,'transaction'=>$transaction,'customers'=>$customer,'account'=>$account,'recurring'=>$recurring,'payment_method'=>$payment_method,'category'=>$category];
         return view('invoice.show',compact('detail_inv','advan_pay','invoic_item','company','data','transaction_amount','history','emps'));
     }
 

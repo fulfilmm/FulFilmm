@@ -90,6 +90,8 @@ class AmountDiscountController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $dis_amount=AmountDiscount::where('id',$id)->first();
+        $dis_amount->delete();
+        return redirect('discount')->with('success','Deleted  amount discount');
     }
 }
