@@ -69,7 +69,7 @@
                                 <td>{{$transaction->customer->name??'N/A'}}</td>
                                 <td>{{$transaction->product_name}}</td>
                                 <td>{{$transaction->variant->variant??''}}</td>
-                                <td>+ <span id="qty{{$transaction->id}}"></span>
+                                <td><span class="text-success"> + </span><span class="text-success" id="qty{{$transaction->id}}"></span>
                                     <script>
                                         $(document).ready(function () {
                                             var qty = '{{$transaction->stockin->qty}}';
@@ -88,7 +88,7 @@
                                         });
                                     </script>
                                 </td>
-                                <td><span class="badge" style="background-color: #72ff9e">{{$transaction->type}}</span>
+                                <td><span class="text-success">{{$transaction->type}}</span>
                                 </td>
                                 <td>{{$transaction->warehouse->name}}</td>
                                 <td><span id="balance{{$transaction->id}}"></span></td>
@@ -115,7 +115,7 @@
                                 </td>
 
                                 <td>
-                                    - <span id="outqty{{$transaction->id}}"></span>
+                                   <span class="text-danger">-</span> <span class="text-danger" id="outqty{{$transaction->id}}"></span>
                                     <script>
                                         $(document).ready(function () {
                                             var qty = '{{$transaction->stockout->qty}}';
@@ -135,7 +135,7 @@
                                     </script>
                                 </td>
 
-                                <td><span class="badge" style="background-color: #72ff9e">{{$transaction->type}}</span>
+                                <td><span class="text-danger" >{{$transaction->type}}</span>
                                 </td>
                                 <td>{{$transaction->warehouse->name}}</td>
                                 <td><span id="outbalance{{$transaction->id}}"></span></td>
@@ -162,7 +162,7 @@
                                 </td>
 
                                 <td>
-                                    + <span id="outqty{{$transaction->id}}"></span>
+                                    <i class="la la-undo text-primary"></i> <span class="text-primary" id="outqty{{$transaction->id}}"></span>
                                     <script>
                                         $(document).ready(function () {
                                             var qty = '{{$transaction->stockreturn->qty}}';
@@ -182,7 +182,7 @@
                                     </script>
                                 </td>
 
-                                <td><span class="badge" style="background-color: #72ff9e">{{$transaction->type}}</span>
+                                <td><span class="text-primary" >{{$transaction->type}}</span>
                                 </td>
                                 <td>{{$transaction->warehouse->name}}</td>
                                 <td><span id="outbalance{{$transaction->id}}"></span></td>

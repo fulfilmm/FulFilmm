@@ -114,7 +114,7 @@
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
             <li class="submenu">
-                <a href="#"><i class="la la-th-list" style="font-size: 18px;"></i><span> Office Branch</span> <span
+                <a href="#"><span> Office Branch</span> <span
                             class="menu-arrow"></span></a>
                 <ul style="display: none;">
 
@@ -127,7 +127,7 @@
                 </ul>
             </li>
             <li class="submenu">
-                <a href="#"><i class="la la-users mr-2" style="font-size: 18px;"></i><span> Employees</span> <span
+                <a href="#"><span> Employees</span> <span
                             class="menu-arrow"></span></a>
                 <ul style="display: none;">
 
@@ -141,7 +141,7 @@
             </li>
 
             <li class="submenu">
-                <a href="#"><i class="la la-building mr-2" style="font-size: 18px;"></i> <span> Departments</span> <span
+                <a href="#"><span> Departments</span> <span
                             class="menu-arrow"></span></a>
                 <ul style="display: none;">
 
@@ -158,7 +158,7 @@
 
 
             <li class="submenu">
-                <a href="#"><i class="la la-users mr-2"></i><span> Groups</span> <span
+                <a href="#"><span> Groups</span> <span
                             class="menu-arrow"></span></a>
                 <ul style="display: none;">
 
@@ -218,24 +218,22 @@
             <li><a class="{{ Request::is('invoice/view/retail') ? 'active' : '' }}"
                    href="{{ url('invoice/view/retail') }}" style="text-decoration: none">Retail Sale</a></li>
             <li><a class="{{ Request::is('coatype') ? 'active' : '' }}" href="{{route('coatype.index')}}"
-                   style="text-decoration: none"><i class="la la-bank mr-2" style="font-size: 18px"></i><span>Account Type</span>
+                   style="text-decoration: none"><span>Account Type</span>
                 </a></li>
             <li><a class="{{ Request::is('chartofaccount') ? 'active' : '' }}" href="{{route('chartofaccount.index')}}"
-                   style="text-decoration: none"><i class="la la-bank mr-2" style="font-size: 18px"></i><span>Chart Of Account</span>
+                   style="text-decoration: none"><span>Chart Of Account</span>
                 </a></li>
             <li><a class="{{ Request::is('accounts') ? 'active' : '' }}" href="{{route('accounts.index')}}"
-                   style="text-decoration: none"><i class="la la-bank mr-2"
-                                                    style="font-size: 18px"></i><span> Account</span> </a></li>
+                   style="text-decoration: none"><span> Account</span> </a></li>
             <li><a class="{{ Request::is('revenuebudget') ? 'active' : '' }}" href="{{route('revenuebudget.index')}}"
-                   style="text-decoration: none"><i class="la la-dollar mr-2" style="font-size: 18px"></i><span> Revenue Budget</span>
+                   style="text-decoration: none"><span> Revenue Budget</span>
                 </a></li>
             <li><a class="{{ Request::is('expensebudget') ? 'active' : '' }}" href="{{route('expensebudget.index')}}"
-                   style="text-decoration: none"><i class="la la-dollar mr-2" style="font-size: 18px"></i><span> Expense Budget</span>
+                   style="text-decoration: none"><span> Expense Budget</span>
                 </a></li>
             <li>
                 <a class="{{ Request::is('transaction/category') ? 'active' : '' }}"
-                   href="{{route('transaction.category')}}" style="text-decoration: none"><i class="la la-cube mr-2"
-                                                                                             style="font-size: 18px"></i><span> Category</span>
+                   href="{{route('transaction.category')}}" style="text-decoration: none"><span> Category</span>
                 </a>
             </li>
         </ul>
@@ -246,26 +244,21 @@
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
             <li><a class="{{ Request::is('advancepayments') ? 'active' : '' }}"
-                   href="{{ route('advancepayments.index') }}" style="text-decoration: none"><i class="la la-money mr-2"
-                                                                                                style="font-size: 18px"></i>Advance
+                   href="{{ route('advancepayments.index') }}" style="text-decoration: none">Advance
                     Payment</a></li>
             <li>
                 <a class="{{ Request::is('transaction/category') ? 'active' : '' }}"
-                   href="{{route('transaction.category')}}" style="text-decoration: none"><i class="la la-cube mr-2"
-                                                                                             style="font-size: 18px"></i><span> Category</span>
+                   href="{{route('transaction.category')}}" style="text-decoration: none"><span> Category</span>
                 </a>
                 <a class="{{ Request::is('accounts') ? 'active' : '' }}" href="{{route('accounts.index')}}"
-                   style="text-decoration: none"><i class="la la-bank mr-2"
-                                                    style="font-size: 18px"></i><span> Account</span> </a>
+                   style="text-decoration: none"><span> Account</span> </a>
                 <a class="{{ Request::is('transactions') ? 'active' : '' }}" href="{{route('transactions.index')}}"
-                   style="text-decoration: none"><i class="la la-cube mr-2" style="font-size: 18px"></i><span> Transaction</span>
+                   style="text-decoration: none"><span> Transaction</span>
                 </a>
                 <a class="{{ Request::is('revenue') ? 'active' : '' }}" href="{{route('revenue')}}"
-                   style="text-decoration: none"><i class="la la-cube mr-2"
-                                                    style="font-size: 18px"></i><span> Revenue</span> </a>
+                   style="text-decoration: none"><span> Revenue</span> </a>
                 <a class="{{ Request::is('expense') ? 'active' : '' }}" href="{{route('expense')}}"
-                   style="text-decoration: none"><i class="la la-cube mr-2"
-                                                    style="font-size: 18px"></i><span> Expense</span> </a>
+                   style="text-decoration: none"><span> Expense</span> </a>
             </li>
         </ul>
 
@@ -276,7 +269,7 @@
 
         <ul style="display: none;">
             <li class="submenu">
-                <a href="#"><i class="la la-users mr-2" style="font-size: 18px"></i><span>Supplier</span> <span
+                <a href="#"><span>Supplier</span> <span
                             class="menu-arrow"></span></a>
                 <ul style="display: none;">
                     <li><a class="{{ Request::is('suppliers') ? 'active' : '' }}" href="{{route('suppliers')}}"
@@ -289,15 +282,13 @@
             </li>
 
             <li><a class="{{ Request::is('inventory') ? 'active' : '' }}"
-                   href="{{ route('inventory.index') }}" style="text-decoration: none"><i class="la la-bar-chart mr-2"
-                                                                                          style="font-size: 18px"></i>Inventory</a>
+                   href="{{ route('inventory.index') }}" style="text-decoration: none">Inventory</a>
             </li>
             <li><a class="{{ Request::is('warehouses') ? 'active' : '' }}"
-                   href="{{ route('warehouses.index') }}" style="text-decoration: none"><i class="la la-building mr-2"
-                                                                                           style="font-size: 18px"></i>Warehouse</a>
+                   href="{{ route('warehouses.index') }}" style="text-decoration: none">Warehouse</a>
             </li>
             <li class="submenu">
-                <a href="#"><i class="la la-users mr-2" style="font-size: 18px"></i><span>Bin Look Up</span> <span
+                <a href="#"><span>Bin Look Up</span> <span
                             class="menu-arrow"></span></a>
                 <ul style="display: none;">
                     <li><a class="{{ Request::is('binlookup') ? 'active' : '' }}" href="{{route('binlookup.index')}}"
@@ -309,7 +300,7 @@
                 </ul>
             </li>
             <li class="submenu">
-                <a href="#"><i class="la la-users mr-2" style="font-size: 18px"></i><span>Stock Return</span> <span
+                <a href="#"><span>Stock Return</span> <span
                             class="menu-arrow"></span></a>
                 <ul style="display: none;">
                     <li><a class="{{ Request::is('stockreturn') ? 'active' : '' }}" href="{{route('stockreturn.index')}}"
@@ -321,29 +312,23 @@
                 </ul>
             </li>
             <li><a class="{{ Request::is('stocks') ? 'active' : '' }}"
-                   href="{{ route('stocks') }}" style="text-decoration: none"><i class="la la-cube mr-2"
-                                                                                 style="font-size: 18px"></i>Stocks</a>
+                   href="{{ route('stocks') }}" style="text-decoration: none">Stocks</a>
             </li>
             <li><a class="{{ Request::is('ecommerce/stock/index') ? 'active' : '' }}"
-                   href="{{ route('ecommerce_stock') }}" style="text-decoration: none"><i class="la la-cube mr-2"
-                                                                                          style="font-size: 18px"></i>E-commerce
+                   href="{{ route('ecommerce_stock') }}" style="text-decoration: none">E-commerce
                     Stocks</a></li>
             <li><a class="{{ Request::is('stockin') ? 'active' : '' }}" href="{{route('showstockin')}}"
-                   style="text-decoration: none">
-                    <i class="la la-cube mr-2" style="font-size: 18px"></i>Stock In</a></li>
+                   style="text-decoration: none">Stock In</a></li>
             <li><a class="{{ Request::is('stockout/index') ? 'active' : '' }}"
-                   href="{{ route('stock.out.index') }}" style="text-decoration: none"><i class="la la-cube mr-2"
-                                                                                          style="font-size: 18px"></i>Stocks
+                   href="{{ route('stock.out.index') }}" style="text-decoration: none">Stocks
                     Out</a></li>
             <li><a class="{{ Request::is('transfer/index') ? 'active' : '' }}"
-                   href="{{ route('transfer.index') }}" style="text-decoration: none"><i class="la la-exchange mr-2"
-                                                                                         style="font-size: 18px"></i>Stock
-                    Transfer</a></li>
+                   href="{{ route('transfer.index') }}" style="text-decoration: none">Stock Transfer</a></li>
             <li><a class="{{ Request::is('stocks/index') ? 'active' : '' }}" href="{{route('stocks.index')}}"
-                   style="text-decoration: none"><i class="la la-cube mr-2" style="font-size: 18px"></i>Stock
+                   style="text-decoration: none">Stock
                     Transaction</a></li>
             <li class="submenu">
-                <a href="#"><i class="la la-cube mr-2" style="font-size: 18px"></i><span> Product</span> <span
+                <a href="#"><span> Product</span> <span
                             class="menu-arrow"></span></a>
                 <ul style="display: none;">
                     <li><a class="{{ Request::is('product/category') ? 'active' : '' }}" href="{{route('category')}}"
@@ -363,14 +348,11 @@
                 </ul>
             </li>
             <li><a class="{{ Request::is('foc/index') ? 'active' : '' }}" href="{{route('foc.index')}}"
-                   style="text-decoration: none">
-                    <i class="la la-cube mr-2" style="font-size: 18px"></i> FOC Product</a></li>
+                   style="text-decoration: none">FOC Product</a></li>
             <li><a class="{{ Request::is('damage/index') ? 'active' : '' }}"
-                   href="{{ route('damage.index') }}" style="text-decoration: none"><i class="la la- mr-2"
-                                                                                       style="font-size: 18px"></i>Damage
-                    Product</a></li>
+                   href="{{ route('damage.index') }}" style="text-decoration: none">Damage Product</a></li>
             <li class="submenu">
-                <a href="#"><i class="la la-cube mr-2" style="font-size: 18px"></i><span> Selling Unit</span> <span
+                <a href="#"><span> Selling Unit</span> <span
                             class="menu-arrow"></span></a>
                 <ul style="display: none;">
                     <li><a class="{{ Request::is('sellingunits') ? 'active' : '' }}"
@@ -388,7 +370,7 @@
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
             <li class="submenu">
-                <a href="#"><i class="la la-cube mr-2" style="font-size: 18px;"></i><span> Purchase Request</span> <span
+                <a href="#"><span> Purchase Request</span> <span
                             class="menu-arrow"></span></a>
                 <ul style="display: none;">
 
@@ -403,7 +385,7 @@
             </li>
 
             <li class="submenu">
-                <a href="#"><i class="la la-cube mr-2" style="font-size: 18px;"></i> <span>RFQs</span> <span
+                <a href="#"> <span>RFQs</span> <span
                             class="menu-arrow"></span></a>
                 <ul style="display: none;">
 
@@ -416,7 +398,7 @@
                 </ul>
             </li>
             <li class="submenu">
-                <a href="#"><i class="la la-cube mr-2" style="font-size: 18px;"></i> <span>Purchase Order</span> <span
+                <a href="#"><span>Purchase Order</span> <span
                             class="menu-arrow"></span></a>
                 <ul style="display: none;">
 
@@ -484,11 +466,9 @@
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
             <li><a class="{{ Request::is('barcode/create') ? 'active' : '' }}"
-                   href="{{ route('barcode.create') }}" style="text-decoration: none"><i class="la la-calendar mr-1"
-                                                                                         style="font-size: 18px;"></i>Barcode
-                    Generate</a></li>
+                   href="{{ route('barcode.create') }}" style="text-decoration: none">Barcode Generate</a></li>
             <li class="submenu">
-                <a href="#"><i class="la la-cube mr-2" style="font-size: 18px"></i><span> Selling Price</span> <span
+                <a href="#"><span> Selling Price</span> <span
                             class="menu-arrow"></span></a>
                 <ul style="display: none;">
                     <li><a class="{{ Request::is('product/price/index') ? 'active' : '' }}"
@@ -496,28 +476,18 @@
                 </ul>
             </li>
             <li><a class="{{ Request::is('main/customer') ? 'active' : '' }}"
-                   href="{{ route('customer') }}" style="text-decoration: none"><i class="la la-calendar mr-1"
-                                                                                   style="font-size: 18px;"></i>Customers</a>
+                   href="{{ route('customer') }}" style="text-decoration: none">Customers</a>
             </li>
             <li><a class="{{ Request::is('selling/report') ? 'active' : '' }}"
-                   href="{{ route('sale.report') }}" style="text-decoration: none"><i class="la la-calendar mr-1"
-                                                                                      style="font-size: 18px;"></i>Sale
-                    Report</a></li>
+                   href="{{ route('sale.report') }}" style="text-decoration: none">Sale Report</a></li>
             <li><a class="{{ Request::is('sale/activity') ? 'active' : '' }}"
-                   href="{{ route('activity.index') }}" style="text-decoration: none"><i class="la la-calendar mr-1"
-                                                                                         style="font-size: 18px;"></i>Sale
-                    Activity</a></li>
+                   href="{{ route('activity.index') }}" style="text-decoration: none">Sale Activity</a></li>
             <li><a class="{{ Request::is('saletargets/create') ? 'active' : '' }}"
-                   href="{{ route('saletargets.create') }}" style="text-decoration: none"><i class="la la-bullseye mr-1"
-                                                                                             style="font-size: 18px;"></i>
-                    Add Sale Target</a></li>
+                   href="{{ route('saletargets.create') }}" style="text-decoration: none">Sale Target</a></li>
             <li><a class="{{ Request::is('contact/qualified') ? 'active' : '' }}"
-                   href="{{ route('qualified_contact') }}" style="text-decoration: none"><i class="la la-users mr-1"
-                                                                                            style="font-size: 18px;"></i>
-                    Customer</a></li>
+                   href="{{ route('qualified_contact') }}" style="text-decoration: none">Qualified Customer</a></li>
             <li class="submenu">
-                <a href="#"><img src="{{url(asset('img/icon_image/order24.png'))}}" alt="" class="mr-1" width="18px"
-                                 height="18px;"><span> Order</span> <span
+                <a href="#"><span> Order</span> <span
                             class="menu-arrow"></span></a>
                 <ul style="display: none;">
                     <li><a class="{{ Request::is('saleorders') ? 'active' : '' }}"
@@ -527,7 +497,7 @@
                 </ul>
             </li>
             <li class="submenu">
-                <a href="#"><i class="la la-cube mr-2" style="font-size: 18px"></i><span>Promotion and Discount</span>
+                <a href="#"><span>Promotion and Discount</span>
                     <span class="menu-arrow"></span></a>
                 <ul style="display: none;">
                     <li><a class="{{ Request::is('discount_promotions') ? 'active' : '' }}"
@@ -536,6 +506,9 @@
                     <li><a class="{{ Request::is('discount_promotions/create') ? 'active' : '' }}"
                            href="{{route('discount_promotions.create')}}" style="text-decoration: none">
                             Add Promotion and Discount</a></li>
+                    <li><a class="{{ Request::is('discount') ? 'active' : '' }}"
+                           href="{{route('discount.index')}}" style="text-decoration: none">
+                            Amount Discount</a></li>
                 </ul>
             </li>
         </ul>
@@ -545,10 +518,10 @@
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
             <li><a class="{{ Request::is('leads') ? 'active' : '' }}" href="{{route('leads.index')}}"
-                   style="text-decoration: none"><i class="la la-question-circle mr-2"></i> <span>All Leads</span></a>
+                   style="text-decoration: none"><span>All Leads</span></a>
             </li>
             <li class="submenu">
-                <a href="#"><i class="fa fa-handshake-o mr-2" style="font-size: 18px"></i><span> Deal</span> <span
+                <a href="#"><span> Deal</span> <span
                             class="menu-arrow"></span></a>
                 <ul style="display: none;">
                     <li><a class="{{ Request::is('deals') ? 'active' : '' }}" href="{{ route('deals.index') }}"
@@ -560,8 +533,7 @@
                 </ul>
             </li>
             <li class="submenu">
-                <a href="#"><img src="{{url(asset('img/icon_image/quotation.png'))}}" alt="" class="mr-1" width="18px"
-                                 height="18px"><span> Quotation</span> <span
+                <a href="#"><span> Quotation</span> <span
                             class="menu-arrow"></span></a>
                 <ul style="display: none;">
                     <li><a class="{{ Request::is('quotations') ? 'active' : '' }}"

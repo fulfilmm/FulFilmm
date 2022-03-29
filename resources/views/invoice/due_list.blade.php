@@ -1,5 +1,5 @@
 @extends('layout.mainlayout')
-@section('title','Invoices')
+@section('title','Due Invoices')
 @section('content')
     <style>
         #invoice_filter{
@@ -13,11 +13,51 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Invoices</h3>
+                    <h3 class="page-title">Due Invoices</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Invoices</li>
+                        <li class="breadcrumb-item active">Due Invoices</li>
                     </ul>
+                </div>
+                <div class="col-auto float-right ml-auto">
+                    <a data-toggle="modal" data-target="#export"
+                       class="btn btn-outline-info rounded-pill btn-sm mr-1"><i
+                                class="fa fa-download mr-1"></i>Export</a>
+                    <div id="export" class="modal custom-modal fade" role="dialog">
+                        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Export</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row justify-content-center">
+                                        <div>
+                                            {{--@dd($route)--}}
+                                            <form action="{{route('invoices.export','Due')}}" method="GET">
+                                                @csrf
+                                                <div class="form-group">
+                                                    <label for="start">Start Date</label>
+                                                    <input type="text" class="form-control" id="start" name="start_date"
+                                                           value="" title="Start Date" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="end">End Date</label>
+                                                    <input type="text" class="form-control" id="end" name="end_date"
+                                                           value="" title="End Date" required>
+                                                </div>
+                                                <div class="d-flex justify-content-center">
+                                                    <button type="submit"  class="btn btn-primary">Export</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -117,6 +157,12 @@
     </div>
     <!-- /Page Content -->
     <script>
+        jQuery(document).ready(function () {
+            'use strict';
+
+            jQuery('#start').datetimepicker();
+            jQuery('#end').datetimepicker();
+        });
         $(document).ready(function(){
             $.fn.dataTable.ext.search.push(
                 function (settings, data, dataIndex) {

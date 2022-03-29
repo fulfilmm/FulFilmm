@@ -495,5 +495,8 @@ Route::post('coatype',[\App\Http\Controllers\ChartOfAccountController::class,'co
 Route::get('invoice/view/{type}',[InvoiceController::class,'invoice_view'])->name('invoice.list');
 Route::resource('binlookup',\App\Http\Controllers\BinLookUpController::class);
 Route::resource('stockreturn',\App\Http\Controllers\StockReturnController::class);
+Route::get('invoice/export/{type}',[InvoiceController::class,'export'])->name('invoices.export');
+Route::resource('discount',\App\Http\Controllers\AmountDiscountController::class);
+
 
 //Route::get('stockout/show/{id}',[StockTransactionController::class,'show_stockout'])->name('stockout.show');

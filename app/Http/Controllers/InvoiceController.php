@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Exports\InvoiceExport;
 use App\Jobs\leadactivityschedulemail;
 use App\Models\Account;
 use App\Models\AdvancePayment;
@@ -30,6 +31,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 
 class InvoiceController extends Controller
 {
@@ -51,11 +53,11 @@ class InvoiceController extends Controller
             $allinv=Invoice::with('customer','employee')->where('due_amount','!=',0)->get();
             return view('invoice.due_list',compact('allinv','status'));
         }elseif ($type=='whole'){
-            $allinv=Invoice::with('customer','employee')->where('invoice_type','Whole Sale')->get();
+            $allinv=Invoice::with('customer','employee')->where('inv_type','Whole Sale')->get();
             return view('invoice.wholesale',compact('allinv','status'));
 
         }else{
-            $allinv=Invoice::with('customer','employee')->where('invoice_type','Retail Sale')->get();
+            $allinv=Invoice::with('customer','employee')->where('inv_type','Retail Sale')->get();
             return view('invoice.retail',compact('allinv','status'));
 
         }
@@ -139,8 +141,8 @@ class InvoiceController extends Controller
         }
         $status=$this->status;
         $unit_price=SellingUnit::where('active',1)->get();
-        $prices=product_price::where('sale_type','Rental Sale')->get();
-        $dis_promo=DiscountPromotion::where('sale_type','Rental Sale')->get();
+        $prices=product_price::where('sale_type','Retail Sale')->get();
+        $dis_promo=DiscountPromotion::where('sale_type','Retail Sale')->get();
         $focs=Freeofchare::with('variant')->get();
         $type='Retail Sale';
         $Auth=Auth::guard('employee')->user();
@@ -490,5 +492,8 @@ class InvoiceController extends Controller
            $history->save();
        }
 
+    }
+    public function export(Request $request,$type){
+            return Excel::download(new InvoiceExport($request->start_date, $request->end_date,$type),ucfirst($type).' invoice.xlsx');
     }
 }

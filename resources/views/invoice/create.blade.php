@@ -365,6 +365,7 @@
                                         var sub_total =quantity * price;
                                         var amount=(dis_pro/100)*sub_total;
                                         var total=sub_total-amount;
+
                                         $('#total_{{$order->id}}').val(total);
                                         var sum = 0;
                                         $('.total').each(function() {
