@@ -175,20 +175,27 @@ class InvoiceItemController extends Controller
     {
 //        dd($request->all());
         $items = OrderItem::where('id', $id)->first();
-        $items->quantity = $request->quantity;
-        $items->unit_price = $request->unit_price;
-        $items->total = $request->total;
-        $items->sell_unit = $request->sell_unit;
-        $items->discount_promotion = $request->discount_pro;
-        $items->update();
+        $stock_aval=Stock::where('variant_id',$items->variant_id)->first();
+        if($request->quantity <=$stock_aval->available) {
+            $items->quantity = $request->quantity;
+            $items->unit_price = $request->unit_price;
+            $items->total = $request->total;
+            $items->sell_unit = $request->sell_unit;
+            $items->discount_promotion = $request->discount_pro;
+            $items->update();
 //        if($items->order_id!=null){
 //            $order=Order::where('id',$items->order_id)->first();
 //            $order->total_amount=$request->grand_total+$request->total;
 //            $order->update();
 //        }
-        return response()->json([
-            'Message' => 'Success'
-        ]);
+            return response()->json([
+                'Message' => 'Success'
+            ]);
+        }else{
+            return response()->json([
+                'out_of_stock' => 'This item does not have enough quantity. Only '.$stock_aval->available.' left.',
+            ]);
+        }
     }
 
     /**

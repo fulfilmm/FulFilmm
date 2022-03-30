@@ -497,6 +497,7 @@ Route::resource('binlookup',\App\Http\Controllers\BinLookUpController::class);
 Route::resource('stockreturn',\App\Http\Controllers\StockReturnController::class);
 Route::get('invoice/export/{type}',[InvoiceController::class,'export'])->name('invoices.export');
 Route::resource('discount',\App\Http\Controllers\AmountDiscountController::class);
+Route::get('transaction/export',[TransactionController::class,'export'])->name('transactions.export');
 
 
 //Route::get('stockout/show/{id}',[StockTransactionController::class,'show_stockout'])->name('stockout.show');
