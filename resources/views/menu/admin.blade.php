@@ -465,6 +465,10 @@
         <a href="#"><i class="la la-cube"></i> <span>Sale</span> <span
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
+            <li><a class="{{ Request::is('invoice/view/whole') ? 'active' : '' }}"
+                   href="{{ url('invoice/view/whole') }}" style="text-decoration: none">Whole Sale</a></li>
+            <li><a class="{{ Request::is('invoice/view/retail') ? 'active' : '' }}"
+                   href="{{ url('invoice/view/retail') }}" style="text-decoration: none">Retail Sale</a></li>
             <li><a class="{{ Request::is('barcode/create') ? 'active' : '' }}"
                    href="{{ route('barcode.create') }}" style="text-decoration: none">Barcode Generate</a></li>
             <li class="submenu">

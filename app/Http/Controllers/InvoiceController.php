@@ -149,9 +149,8 @@ class InvoiceController extends Controller
         $focs=Freeofchare::with('variant')->get();
         $type='Retail Sale';
         $Auth=Auth::guard('employee')->user();
-
         $warehouse=OfficeBranch::with('warehouse')->where('id',$Auth->office_branch_id)->get();
-        $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))->whereDate('end_date','>=',date('Y-m-d'))->where('inv_type','Retail Sale')->get();
+        $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))->whereDate('end_date','>=',date('Y-m-d'))->where('sale_type','Retail Sale')->get();
         return view('invoice.create',compact('warehouse','request_id','allcustomers','orderline','grand_total','status','data','aval_product','taxes','unit_price','dis_promo','focs','type','prices','amount_discount'));
         }else{
             return redirect()->back()->with('error','Firstly,Fixed your Branch of Office');
