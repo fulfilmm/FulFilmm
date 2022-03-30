@@ -70,9 +70,15 @@
                         <div class="timeline-block">
                             <span class="timeline-step badge-info"><i class="la la-check-circle-o text-white"></i></span>
                             <div class="timeline-content">
+                                <span>Approver :</span>
+                                <img src="{{$po->approver_name->profile_img!=null? url(asset('img/profiles/'.$po->approver_name->profile_img)):url(asset('img/profiles/avatar-01.jpg'))}}"
+                                        alt="" class="avatar avatar-xs rounded-circle"><a
+                                        href="{{route('employees.show',$po->approver_name->id)}}">{{$po->approver_name->name}}</a>
+                            <br>
                                 <small>
                                     Confirmed on {{\Carbon\Carbon::parse($po->confirm_date)->toFormattedDateString()}}
                                 </small>
+
                                 <div class="mt-3">
                                     <a href="{{route('purchaseorders.confirm',$po->id)}}"
                                        class="btn btn-primary btn-sm btn-alone header-button-top  {{$po->confirm==1?'disabled':''}}">

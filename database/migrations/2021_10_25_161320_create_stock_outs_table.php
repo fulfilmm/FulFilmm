@@ -24,6 +24,7 @@ class CreateStockOutsTable extends Migration
             $table->bigInteger('courier_id')->unsigned()->nullable();
             $table->bigInteger('warehouse_id')->unsigned()->nullable();
             $table->bigInteger('sell_unit')->unsigned();
+            $table->bigInteger('creator_id')->unsigned();
             $table->double('qty');
             $table->text('description')->nullable();
             $table->tinyInteger('approve')->default(0);

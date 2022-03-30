@@ -31,7 +31,7 @@
                                 : {{\Carbon\Carbon::parse($transaction->type=='Revenue'?$transaction->revenue->transaction_date:$transaction->expense->transaction_date)->toFormattedDateString()}}</div>
                         </div>
                         <div class="row my-1">
-                            <div class="col-2">Account</div>
+                            <div class="col-2">Bank Account</div>
                             <div class="col-8">
                                 : {{$transaction->account->name??'N/A'}}</div>
                         </div>
@@ -43,7 +43,40 @@
                         <div class="row my-1">
                             <div class="col-2">Category</div>
                             <div class="col-8">
-                                : {{$transaction->type=="Revenue"? $transaction->revenue->category:$transaction->expense->category}}</div>
+
+                                : @if($transaction->type=="Revenue")
+                                    @foreach ($category as $cat)
+                                        @if($cat->id==$transaction->revenue->category)
+                                            {{$cat->name}}
+                                            @endif
+                                        @endforeach
+                                      @else
+                                    @foreach ($category as $cat)
+                                        @if($cat->id==$transaction->expense->category)
+                                            {{$cat->name}}
+                                        @endif
+                                    @endforeach
+                                        @endif
+                        </div>
+                        </div>
+                        <div class="row my-1">
+                            <div class="col-2">Account</div>
+                            <div class="col-8">
+
+                                : @if($transaction->type=="Revenue")
+                                    @foreach ($coas as $coa)
+                                        @if($coa->id==$transaction->revenue->coa_id)
+                                            {{$coa->code.'-'.$coa->name}}
+                                        @endif
+                                    @endforeach
+                                @else
+                                    @foreach ($coas as $coa)
+                                        @if($coa->id==$transaction->expense->coa_id)
+                                            {{$coa->code.'-'.$coa->name}}
+                                        @endif
+                                    @endforeach
+                                @endif
+                            </div>
                         </div>
                         <div class="row my-1">
                             <div class="col-2">Payment Method</div>

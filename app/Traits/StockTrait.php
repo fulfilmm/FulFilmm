@@ -26,6 +26,7 @@ trait StockTrait
         $batch['qty']=$request['qty'];
         $batch['purchase_price']=$request['valuation']??0;
         $batch['exp_date']=$request['exp_date']??null;
+        $batch['warehouse_id']=$request['warehouse_id'];
         ProductStockBatch::create($batch);
         $stockin=new StockIn();
 //        dd($request);
@@ -33,6 +34,7 @@ trait StockTrait
         $stockin->emp_id=Auth::guard('employee')->user()->id;
         $stockin->supplier_id=$request['supplier_id'];
         $stockin->qty=$request['qty'];
+        $stockin->binlookup_id=$request['bin_id'];
         $stockin->save();
 
        if(isset($request['valuation'])){
@@ -66,7 +68,10 @@ trait StockTrait
         $stock_transaction->variant_id=$request['variantion_id'];
         $stock_transaction->warehouse_id=$request['warehouse_id'];
         $stock_transaction->balance=$stock->stock_balance??0 + $request['qty'];
-        $stock_transaction->type=1;
+        $stock_transaction->contact_id=$request['supplier_id'];
+        $stock_transaction->emp_id=Auth::guard('employee')->user()->id;
+        $stock_transaction->creator_id=Auth::guard('employee')->user()->id;
+        $stock_transaction->type="Stock In";
         $stock_transaction->save();
 
     }

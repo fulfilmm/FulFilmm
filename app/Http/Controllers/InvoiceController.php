@@ -1,9 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Exports\InvoiceExport;
 use App\Jobs\leadactivityschedulemail;
 use App\Models\Account;
 use App\Models\AdvancePayment;
+use App\Models\AmountDiscount;
+use App\Models\ChartOfAccount;
 use App\Models\Customer;
 use App\Models\DiscountPromotion;
 use App\Models\Employee;
@@ -30,6 +33,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 
 class InvoiceController extends Controller
 {
@@ -44,6 +48,22 @@ class InvoiceController extends Controller
         $allinv=Invoice::with('customer','employee')->get();
         $status=$this->status;
         return view('invoice.index',compact('allinv','status'));
+    }
+    public function invoice_view($type){
+        $status=$this->status;
+        if($type=='due'){
+            $allinv=Invoice::with('customer','employee')->where('due_amount','!=',0)->get();
+            return view('invoice.due_list',compact('allinv','status'));
+        }elseif ($type=='whole'){
+            $allinv=Invoice::with('customer','employee')->where('inv_type','Whole Sale')->get();
+            return view('invoice.wholesale',compact('allinv','status'));
+
+        }else{
+            $allinv=Invoice::with('customer','employee')->where('inv_type','Retail Sale')->get();
+            return view('invoice.retail',compact('allinv','status'));
+
+        }
+
     }
 
     /**
@@ -81,7 +101,8 @@ class InvoiceController extends Controller
 
             $warehouse = OfficeBranch::with('warehouse')->where('id', $Auth->office_branch_id)->get();
             $aval_product = Stock::with('variant')->where('available', '>', 0)->get();
-            return view('invoice.create', compact('warehouse', 'type', 'request_id', 'allcustomers', 'orderline', 'grand_total', 'status', 'data', 'aval_product', 'taxes', 'unit_price', 'dis_promo', 'focs','prices'));
+            $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))->whereDate('end_date','>=',date('Y-m-d'))->where('sale_type','Whole Sale')->get();
+            return view('invoice.create', compact('warehouse', 'type', 'request_id', 'allcustomers', 'orderline', 'grand_total', 'status', 'data', 'aval_product', 'taxes', 'unit_price', 'dis_promo', 'focs','prices','amount_discount'));
         }else{
             return redirect()->back()->with('error','Firstly,Fixed your Branch of Office');
     }
@@ -123,14 +144,14 @@ class InvoiceController extends Controller
         }
         $status=$this->status;
         $unit_price=SellingUnit::where('active',1)->get();
-        $prices=product_price::where('sale_type','Rental Sale')->get();
-        $dis_promo=DiscountPromotion::where('sale_type','Rental Sale')->get();
+        $prices=product_price::where('sale_type','Retail Sale')->get();
+        $dis_promo=DiscountPromotion::where('sale_type','Retail Sale')->get();
         $focs=Freeofchare::with('variant')->get();
         $type='Retail Sale';
         $Auth=Auth::guard('employee')->user();
-
         $warehouse=OfficeBranch::with('warehouse')->where('id',$Auth->office_branch_id)->get();
-        return view('invoice.create',compact('warehouse','request_id','allcustomers','orderline','grand_total','status','data','aval_product','taxes','unit_price','dis_promo','focs','type','prices'));
+        $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))->whereDate('end_date','>=',date('Y-m-d'))->where('sale_type','Retail Sale')->get();
+        return view('invoice.create',compact('warehouse','request_id','allcustomers','orderline','grand_total','status','data','aval_product','taxes','unit_price','dis_promo','focs','type','prices','amount_discount'));
         }else{
             return redirect()->back()->with('error','Firstly,Fixed your Branch of Office');
         }
@@ -296,6 +317,7 @@ class InvoiceController extends Controller
         $recurring=['No','Daily','Weekly','Monthly','Yearly'];
         $payment_method=['Cash','eBanking','WaveMoney','KBZ Pay'];
         $category=TransactionCategory::all();
+        $coas=ChartOfAccount::all();
         $revenue=Revenue::where('invoice_id',$id)->get();
         $history=InvoiceHistory::where('invoice_id',$id)->get();
         $transaction=[];
@@ -331,7 +353,7 @@ class InvoiceController extends Controller
         $customer=Customer::all();
         $emps = Employee::all();
         $advan_pay=AdvancePayment::with('order')->where('order_id',$detail_inv->order_id)->first();
-        $data=['transaction'=>$transaction,'customers'=>$customer,'account'=>$account,'recurring'=>$recurring,'payment_method'=>$payment_method,'category'=>$category];
+        $data=['coas'=>$coas,'transaction'=>$transaction,'customers'=>$customer,'account'=>$account,'recurring'=>$recurring,'payment_method'=>$payment_method,'category'=>$category];
         return view('invoice.show',compact('detail_inv','advan_pay','invoic_item','company','data','transaction_amount','history','emps'));
     }
 
@@ -474,5 +496,8 @@ class InvoiceController extends Controller
            $history->save();
        }
 
+    }
+    public function export(Request $request,$type){
+            return Excel::download(new InvoiceExport($request->start_date, $request->end_date,$type),ucfirst($type).' invoice.xlsx');
     }
 }

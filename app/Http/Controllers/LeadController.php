@@ -51,6 +51,11 @@ class LeadController extends Controller
 //
     }
     public function activity_schedule(Request $request){
+        $this->validate($request,[
+            'description'=>'required',
+            'date_time'=>'required',
+            'type'=>'required'
+        ]);
         $next_plan=new next_plan();
         $next_plan->description=$request->description;
         $next_plan->type=$request->type;

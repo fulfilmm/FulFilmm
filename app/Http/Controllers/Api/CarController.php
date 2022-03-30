@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Employee;
 use Illuminate\Http\Request;
 use App\Models\CarData;
 use App\Models\MaintainSchedule;
@@ -19,8 +20,27 @@ class CarController extends Controller
         foreach ( $cars as $file) {
             $file->attach = json_decode($file->attach);
         }
- 
-        return response() -> json(['cars' => $cars]);
+        $employees=Employee::with('roles')->get();
+//        $manager=[];
+//        $employee=[];
+//        $driver=[];
+//        $admin_manager=[];
+//        foreach ($employees as $emp){
+//            if($emp->role->name=='Sale Manager'||$emp->role->name=='Stock Manager'||$emp->role->name=='Finance Manager'
+//            ||$emp->role->name=='Hr Manager'||$emp->role->name=='Customer Service Manager'||$emp->role->name=='General Manager'){
+//                array_push($manager,$emp);
+//
+//            }elseif($emp->role->name=='Sale'||$emp->role->name=='Agent'||$emp->role->name=='Employee'||$emp->role->name=='Accountant'||$emp->role->name=='Cashier'||$emp->role->name=='Purchaser'){
+//                array_push($employee,$emp);
+//            }elseif ($emp->role->name=='Admin Manager'||$emp->role->name=='CEO'||$emp->role->name=='Super Admin'||$emp->role->name=='Car Admin'){
+//             array_push($admin_manager,$emp);
+//            }
+//            elseif ($emp->role->name=='Car Driver'){
+//             array_push($driver,$emp);
+//            }
+//        }
+//        $all_emp=['driver'=>$driver,'manager'=>$manager,'employee'=>$employee,'admin'=>$admin_manager];
+        return response() -> json(['cars' => $cars,'employee'=>$employees]);
         
     }
 

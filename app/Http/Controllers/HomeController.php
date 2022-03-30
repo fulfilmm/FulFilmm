@@ -50,7 +50,7 @@ class HomeController extends Controller
     {
         $user=Auth::guard('employee')->user();
         $id=Auth::id();
-        $month = ['Jan', 'Feb', 'Mar', 'April', 'May', 'June', "July", 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        $month = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
         $monthly_expense=[];
         $monthly_income=[];
         $profit=[];
@@ -298,7 +298,122 @@ class HomeController extends Controller
                 return view('index', compact('items','total_emp','monthly_income','monthly_expense','profit','account'));
                 break;
             case "General Manager":
-                dd("GM");
+//                dd("GM");
+                $year = date('Y');
+                $current_month = date('m');
+                if($current_month<4){
+                    $year = $year-1;
+                }
+                $total_emp=Employee::count();
+                $contact=Customer::count();
+                $start=$year.'-04-01';
+                $mid=$year.'-09-30';
+                $end=($year+1).'-03-31';
+                $daily_sale = DB::table("invoices")
+                    ->select(DB::raw("SUM(grand_total) as total"))
+                    ->whereDate('created_at', date('d'))
+                    ->get();
+                $current_year_income = DB::table("revenues")
+                    ->select(DB::raw("SUM(amount) as total"))
+                    ->whereYear('transaction_date', date('Y'))
+                    ->get();
+                $current_year_bill = DB::table("bills")
+                    ->select(DB::raw("SUM(grand_total) as total"))
+                    ->whereYear('bill_date', date('Y'))
+                    ->get();
+                $current_month_bill = DB::table("bills")
+                    ->select(DB::raw("SUM(grand_total) as total"))
+                    ->whereMonth('bill_date', date('m'))
+                    ->get();
+                $first_6month_bill = DB::table("bills")
+                    ->select(DB::raw("SUM(grand_total) as total"))
+                    ->whereBetween('bill_date', [$start, $mid])
+                    ->get();
+                $second_6month_bill = DB::table("bills")
+                    ->select(DB::raw("SUM(grand_total) as total"))
+                    ->whereBetween('bill_date', [$mid, $end])
+                    ->get();
+                $current_year_expense = DB::table("expenses")
+                    ->select(DB::raw("SUM(amount) as total"))
+                    ->whereYear('transaction_date', date('Y'))
+                    ->get();
+                $current_month_income = DB::table("revenues")
+                    ->select(DB::raw("SUM(amount) as total"))
+                    ->whereMonth('transaction_date', date('m'))
+                    ->get();
+                $current_month_expense = DB::table("expenses")
+                    ->select(DB::raw("SUM(amount) as total"))
+                    ->whereMonth('transaction_date', date('m'))
+                    ->get();
+
+                $first_6month_income = DB::table("revenues")
+                    ->select(DB::raw("SUM(amount) as total"))
+                    ->whereBetween('transaction_date', [$start, $mid])
+                    ->get();
+                $first_6month_expense = DB::table("expenses")
+                    ->select(DB::raw("SUM(amount) as total"))
+                    ->whereBetween('transaction_date', [$start, $mid])
+                    ->get();
+                $second_6month_income = DB::table("revenues")
+                    ->select(DB::raw("SUM(amount) as total"))
+                    ->whereBetween('transaction_date', [$mid, $end])
+                    ->get();
+                $second_6month_expense = DB::table("expenses")
+                    ->select(DB::raw("SUM(amount) as total"))
+                    ->whereBetween('transaction_date', [$mid, $end])
+                    ->get();
+
+
+                foreach ($month as $key => $value) {
+                    $grand_total = DB::table("revenues")
+                        ->select(DB::raw("SUM(amount) as total"))
+                        ->whereMonth('transaction_date', $key + 1)->whereYear('transaction_date', date('Y'))
+                        ->get();
+                    $monthly_income[$value] = $grand_total[0];
+                    $expense = DB::table("expenses")
+                        ->select(DB::raw("SUM(amount) as total"))
+                        ->whereMonth('transaction_date', $key+1)->whereYear('transaction_date', date('Y'))
+                        ->get();
+                    $monthly_expense[$value] = $expense[0]??0;
+                    $profit[$value]=($grand_total[0]->total??0) - ($expense[0]->total??0);
+
+                }
+                $sale_activity=SaleActivity::where('report_to',Auth::guard('employee')->user()->id)->count();
+                $numberOfalltickets=ticket::all()->count();
+                $group=Group::count();
+                $account=Account::count();
+                $transaction=Transaction::count();
+                $requestation=Approvalrequest::where('approved_id',Auth::guard('employee')->user()->id)
+                    ->orWhere('secondary_approved',Auth::guard('employee')->user()->id)
+                    ->count();
+                $items = [
+                    'daily_sale'=>$daily_sale,
+                    'first_term_bill'=>$first_6month_bill[0]->total??0,
+                    'total_bill'=>$current_year_bill[0]->total??0,
+                    'second_term_bill'=>$second_6month_bill[0]->total??0,
+                    'current_month_bill'=>$current_month_bill[0]->total??0,
+                    'saleactivity'=>$sale_activity,
+                    'requestation'=>$requestation,
+                    'customer'=>$contact,
+                    'assignment'=>$assignment,
+                    'meeting'=>$meeting,
+                    'my_groups' =>$group,
+                    'all_ticket'=>$numberOfalltickets,
+                    'transaction'=>$transaction??0,
+                    'total_income'=>$current_year_income[0]->total??0,
+                    'total_expense'=>$current_year_expense[0]->total??0,
+                    'first_term_income'=>$first_6month_income[0]->total??0,
+                    'first_term_expense'=>$first_6month_expense[0]->total??0,
+                    'first_term_profit'=>($first_6month_income[0]->total??0)-($first_6month_expense[0]->total??0),
+                    'second_term_income'=>$second_6month_income[0]->total??0,
+                    'second_term_expense'=>$second_6month_expense[0]->total??0,
+                    'second_term_profit'=>($second_6month_income[0]->total??0)-($second_6month_expense[0]->total??0),
+                    'current_month_income'=>$current_month_income[0]->total??0,
+                    'current_month_expense'=>$current_month_expense[0]->total??0,
+                    'current_month_profit'=>($current_month_income[0]->total??0)-($current_month_expense[0]->total??0),
+                    'profit'=>Auth::guard('employee')->user()->role->name=='CEO'||Auth::guard('employee')->user()->role->name=='Super Admin'?$current_year_income[0]->total??0-$current_year_expense[0]->total??0:0,
+                ];
+                return view('index', compact('items','total_emp','monthly_income','monthly_expense','profit','account'));
                 break;
             case "Customer Service Manager":
                 $agents=[];
@@ -535,7 +650,7 @@ class HomeController extends Controller
                 return view('index',compact('items'));
                 break;
             case "Car Driver":
-            case "Employee":
+            default:
             $requestation=Approvalrequest::where('emp_id',Auth::guard('employee')->user()->id)->count();
             $myticket=ticket::where('created_emp_id',$user->id)->count();
             $follow_ticket=ticket_follower::where('emp_id',$user->id)->count();

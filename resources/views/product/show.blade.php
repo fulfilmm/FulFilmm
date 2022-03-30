@@ -35,7 +35,7 @@
         <div class="page-header">
             <div class="row">
                 <div class="col-sm-12">
-                    <h3 class="page-title">Product</h3>
+                    <h3 class="page-title">{{$product->name}}</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url("/")}}">Dashboard</a></li>
                         <li class="breadcrumb-item active"><a href="{{url("/products")}}">Product</a></li>
@@ -148,7 +148,7 @@
                                <td>
                                    <input type="checkbox"  name="product[]" value="{{$item->id}}" class="single">
                                </td>
-                               <td> <img src="{{url(asset('/product_picture/'.$item->image))}}" alt="" class="border mr-2 ml-2"
+                               <td> <img src="{{url(asset('/product_picture/'.$item->image))}}" alt="" class="border-0 mr-2 ml-2"
                                          style="max-height:50px;max-width:50px;border: solid"></td>
                                <td>{{$item->product_name}}</td>
                                <td><a href="{{route('show.variant',$item->id)}}"><strong>{{$item->product_code}}</strong></a></td>

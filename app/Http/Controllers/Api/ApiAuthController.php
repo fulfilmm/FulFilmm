@@ -31,7 +31,6 @@ class ApiAuthController extends Controller
         if (!$token) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-
         return $this->respondWithToken($token);
     }
 

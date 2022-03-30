@@ -2,7 +2,6 @@
 @section('title','Purchase Order')
 @section('content')
     <div class="content container-fluid">
-        <!-- Page Header -->
         <div class="page-header">
             <div class="row">
                 <div class="col-sm-12">
@@ -18,7 +17,7 @@
         <form action="{{route('purchaseorders.update',$po->id)}}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
-            <div class="row">
+                <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="">Vendor</label>
@@ -29,27 +28,28 @@
                         </select>
                     </div>
                 </div>
-                {{--                @dd()--}}
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="">Purchase Type</label>
                         <select name="purchase_type" id="type" class="select2">
                             <option value="Re-Sale" {{$po->purchase_type=='Re-Sale'?'selected':''}}>Re-Sale</option>
-                            <option value="Office Use" {{$po->purchase_type=='Office Use'?'selected':''}}>Office Use</option>
+                            <option value="Office Use" {{$po->purchase_type=='Office Use'?'selected':''}}>Office Use
+                            </option>
                         </select>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="">Ordered Date</label>
-                        <input type="date" name="ordered_date" id="deadline" class="form-control" value="{{\Carbon\Carbon::parse($po->ordered_date)->format('Y-m-d')}}" >
+                        <input type="date" name="ordered_date" id="deadline" class="form-control"
+                               value="{{\Carbon\Carbon::parse($po->ordered_date)->format('Y-m-d')}}">
                     </div>
                 </div>
-
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="">Vendor Reference</label>
-                        <input type="text" class="form-control" name="vendor_reference" id="vendor_ref" value="{{$po->vendor_reference??''}}">
+                        <input type="text" class="form-control" name="vendor_reference" id="vendor_ref"
+                               value="{{$po->vendor_reference??''}}">
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -63,33 +63,46 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="">Deadline</label>
-                        <input type="date" class="form-control" name="deadline" id="received_date" value="{{\Carbon\Carbon::parse($po->deadline)->format('Y-m-d')}}">
+                        <input type="date" class="form-control" name="deadline" id="received_date"
+                               value="{{\Carbon\Carbon::parse($po->deadline)->format('Y-m-d')}}">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="">Approver</label>
+                        <select name="approver_id" id="approver" class="form-control select2">
+                            @foreach($employees as $emp )
+                                @if($emp->role->name=='Manager'||$emp->role->name=='CEO')
+                                    <option value="{{$emp->id}}" {{$po->approver==$emp->id?'selected':''}}>{{$emp->name}}</option>
+                                @endif
+                            @endforeach
+                        </select>
                     </div>
                 </div>
                 <div class="col-12">
                     <label for="">Description</label>
-                    <textarea name="description" id="description" cols="30" rows="5" class="form-control">{{$po->description}}</textarea>
+                    <textarea name="description" id="description" cols="30" rows="5"
+                              class="form-control">{{$po->description}}</textarea>
                 </div>
-                <input type="hidden" name="emp_id" value="{{\Illuminate\Support\Facades\Auth::guard('employee')->user()->id}}">
-
+                <input type="hidden" name="emp_id"
+                       value="{{\Illuminate\Support\Facades\Auth::guard('employee')->user()->id}}">
             </div>
-            <input type="hidden" id="creation_id" value="{{$po->id}}">
-            <div class="row">
-                <div class="col-12">
+                <input type="hidden" id="creation_id" value="{{$po->id}}">
+                <div class="row">
+                    <div class="col-12" style="overflow: auto">
                     <table class="table">
                         <thead>
-                        <th scope="col" style="min-width: 200px;">Product</th>
-                        <th scope="col">Description</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Unit</th>
-                        <th>Total</th>
-                        <th>Action</th>
+                            <th scope="col" style="min-width: 200px;">Product</th>
+                            <th scope="col">Description</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Unit</th>
+                            <th>Total</th>
+                            <th>Action</th>
                         </thead>
                         <tbody id="tbody">
-                        @foreach($items as $item)
-
-                            <tr>
+                            @foreach($items as $item)
+                                <tr>
                                 <td>
                                     @foreach($product as $prd)
                                         @if($prd->id==$item->variant_id)
@@ -130,7 +143,9 @@
                                                                 <div class="col-md-9">
                                                                     <select name="" id="product{{$item->id}}"
                                                                             class="form-control select2 update{{$item->id}}">
-                                                                        <option value="{{$item->product->product_id}}">{{$item->product->product_name}}({{$item->product->variant}})</option>
+                                                                        <option value="{{$item->product->product_id}}">{{$item->product->product_name}}
+                                                                            ({{$item->product->variant}})
+                                                                        </option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -160,7 +175,8 @@
                                                             <div class="row">
                                                                 <label for="" class="col-md-3">Unit</label>
                                                                 <div class="col-9">
-                                                                    <select name="unit" id="unit{{$item->id}}" class="form-control select2">
+                                                                    <select name="unit" id="unit{{$item->id}}"
+                                                                            class="form-control select2">
                                                                         @foreach($units as $p_unit)
                                                                             @if($item->product->product_id==$p_unit->product_id)
                                                                                 <option value="{{$p_unit->id}}" {{$item->unit==$p_unit->id?'selected':''}}>{{$p_unit->unit}}</option>
@@ -261,14 +277,15 @@
                                     </script>
                                 </td>
                             </tr>
-                        @endforeach
-
-                        <tr id="add_row">
+                            @endforeach
+                            <tr id="add_row">
                             <td>
                                 <select name="[]" id="product" class="form-control select2 item_save">
                                     <option value="" selected>Select Product</option>
                                     @foreach($product as $prod)
-                                        <option value="{{$prod->id}}">{{$prod->product->name}} ({{$prod->size??''}}{{$prod->color??''}}{{$prod->other??''}})</option>
+                                        <option value="{{$prod->id}}">{{$prod->product->name}}
+                                            ({{$prod->size??''}}{{$prod->color??''}}{{$prod->other??''}})
+                                        </option>
                                     @endforeach
                                 </select>
                             </td>
@@ -283,44 +300,48 @@
                             <td></td>
 
                         </tr>
-                        <tr>
+                            <tr>
                             <td colspan="6">
                                 <button type="button" id="add" class="btn btn-white btn-sm">Add</button>
                             </td>
                             <td></td>
                         </tr>
-                        <tr>
+                            <tr>
                             <td colspan="3" class="text-right">Subtotal</td>
-                            <td colspan="3"><input type="number" class="form-control" id="subtotal" name="subtotal" value="{{$grand_total}}"></td>
+                            <td colspan="3"><input type="number" class="form-control" id="subtotal" name="subtotal"
+                                                   value="{{$grand_total}}"></td>
                             <td></td>
                         </tr>
-                        <tr>
+                            <tr>
                             <td colspan="3" class="text-right">Discount</td>
-                            <td colspan="3"><input type="number" id="discount" class="form-control" name="discount" value="{{$po->discount}}"></td>
+                            <td colspan="3"><input type="number" id="discount" class="form-control" name="discount"
+                                                   value="{{$po->discount}}"></td>
                             <td></td>
                         </tr>
-                        <tr>
+                            <tr>
                             <td colspan="3" class="text-right">Tax</td>
                             <td colspan="3">
                                 <select name="tax_id" id="tax" class="form-control select2">
                                     @foreach($taxes as $tax)
-                                        <option value="{{$tax->id}}" {{$po->tax_id==$tax->id?'selected':''}}>{{$tax->name}} ({{$tax->rate}} %)</option>
+                                        <option value="{{$tax->id}}" {{$po->tax_id==$tax->id?'selected':''}}>{{$tax->name}}
+                                            ({{$tax->rate}} %)
+                                        </option>
                                     @endforeach
                                 </select>
-                                <input type="hidden" class="form-control" id="tax_amount" name="tax_amount" value="0"></td>
+                                <input type="hidden" class="form-control" id="tax_amount" name="tax_amount" value="0">
+                            </td>
                             <td></td>
                         </tr>
-
-                        <tr>
+                            <tr>
                             <td colspan="3" class="text-right">Grand Total</td>
-                            <td colspan="3"><input type="number" class="form-control" id="grand_total" name="grand_total" value="{{$grand_total??0}}"></td>
+                            <td colspan="3"><input type="number" class="form-control" id="grand_total"
+                                                   name="grand_total" value="{{$grand_total??0}}"></td>
                             <td></td>
                         </tr>
                         </tbody>
                     </table>
-
                 </div>
-            </div>
+                </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
@@ -349,13 +370,13 @@
             var tax = $('#tax option:selected').val();
             @foreach($taxes as $tax)
             if (tax == "{{$tax->id}}")
-                var tax_rate ="{{$tax->rate}}";
+                var tax_rate = "{{$tax->rate}}";
                     @endforeach
             var total = $('#subtotal').val();
             var tax_amount = parseFloat(total) * (tax_rate / 100);
             var tax_include = parseFloat(total) + tax_amount;
             var discount = $('#discount').val();
-            var grand = tax_include - discount ;
+            var grand = tax_include - discount;
             $('#grand_total').val(parseFloat(grand));
             $('#tax_amount').val(tax_amount);
         });
@@ -363,13 +384,13 @@
             var tax = $('#tax option:selected').val();
             @foreach($taxes as $tax)
             if (tax == "{{$tax->id}}")
-                var tax_rate ="{{$tax->rate}}";
+                var tax_rate = "{{$tax->rate}}";
                     @endforeach
             var total = $('#subtotal').val();
             var tax_amount = parseFloat(total) * (tax_rate / 100);
             var tax_include = parseFloat(total) + tax_amount;
             var discount = $('#discount').val();
-            var grand = tax_include - discount ;
+            var grand = tax_include - discount;
             $('#grand_total').val(parseFloat(grand));
             $('#tax_amount').val(tax_amount);
         });
@@ -377,7 +398,7 @@
             var tax = $('#tax option:selected').val();
             @foreach($taxes as $tax)
             if (tax == "{{$tax->id}}") {
-                var tax_rate ="{{$tax->rate}}";
+                var tax_rate = "{{$tax->rate}}";
             }
             @endforeach;
             var total = document.getElementById('subtotal').value;
@@ -395,11 +416,11 @@
             var description = $('#desc').val();
             var product = $('#product option:selected').val();
             var price = $('#price').val();
-            var type=$('#type option:selected').val();
+            var type = $('#type option:selected').val();
             var creation_id = $('#creation_id').val();
-            var vendor_ref=$('#vendor_ref').val();
-            var received_date=$('#received_date').val();
-            var source=$('#source option:selected').val();
+            var vendor_ref = $('#vendor_ref').val();
+            var received_date = $('#received_date').val();
+            var source = $('#source option:selected').val();
             $.ajax({
                 data: {
                     supplier_id: supplier,
@@ -410,12 +431,12 @@
                     price: price,
                     total: 0,
                     creation_id: creation_id,
-                    po_id:creation_id,
+                    po_id: creation_id,
                     desc: desc,
-                    type:type,
-                    vendor_ref:vendor_ref,
-                    received_date:received_date,
-                    source:source
+                    type: type,
+                    vendor_ref: vendor_ref,
+                    received_date: received_date,
+                    source: source
 
                 },
                 type: 'POST',

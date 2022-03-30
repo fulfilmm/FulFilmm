@@ -93,7 +93,7 @@
                    </div>
                    <input type="hidden" id="creation_id" value="{{$creation_id[0]}}">
                    <div class="row my-3">
-                       <div class="col-12">
+                       <div class="col-12" style="overflow: auto">
                            <strong>Items</strong>
                            <table class="table table-hover">
                                <thead>

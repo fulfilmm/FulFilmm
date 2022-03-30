@@ -15,9 +15,7 @@
             </div>
         </div>
         <div class="card">
-            <form method="POST" action="{{route('accounts.store')}}" accept-charset="UTF-8"
-                  id="account" role="form" novalidate="novalidate" enctype="multipart/form-data"
-                  class="form-loading-button">
+            <form method="POST" action="{{route('accounts.store')}}">
                 @csrf
                 <input type="hidden" name="company_id" value="{{$company->id??''}}">
                 <div class="card-body">
@@ -25,7 +23,10 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="no">Account Number</label>
-                                <input type="text" class="form-control" name="account_id" placeholder="Enter Account No.">
+                                <input type="text" class="form-control" name="account_id" placeholder="Enter Account No." value="{{old('account_id')}}" required>
+                                @error('account_id')
+                                <span class="text-danger">{{$message}}</span>
+                                @enderror
                             </div>
                         </div>
                         <div class="form-group col-md-6 required">
@@ -36,7 +37,10 @@
                                         <i class="fa fa-font"></i>
                                     </span>
                                 </div>
-                                <input data-name="name" placeholder="Enter Name" required="required" name="name" type="text" id="name" class="form-control">
+                                <input data-name="name" placeholder="Enter Name" required="required" name="name" type="text" id="name" class="form-control" value="{{old('name')}}">
+                                @error('name')
+                                <span class="text-danger">{{$message}}</span>
+                                @enderror
                             </div> <!---->
                         </div>
                         <div class="form-group col-md-6 required">
@@ -47,14 +51,17 @@
                                         <i class="fa fa-pencil"></i>
                                     </span>
                                 </div>
-                                <input data-name="number" placeholder="Enter Bank Account Number" required="required" name="number" type="text" id="number" class="form-control">
+                                <input data-name="number" placeholder="Enter Bank Account Number" required="required" name="number" type="text" id="number" class="form-control" value="{{old('number')}}">
+                                @error('number')
+                                <span class="text-danger">{{$message}}</span>
+                                @enderror
                             </div> <!---->
                         </div>
                         <div class="form-group col-md-6 required">
                             <label class="form-control-label">Currency</label>
                             <select name="currency" id="currency" class="form-control select">
-                                <option value="MMK">Kyat</option>
-                                <option value="USD">USD</option>
+                                <option value="MMK" {{old('currency')=="MMK"?'selected':''}}>Kyat</option>
+                                <option value="USD" {{old('currency')=='USD'?'selected':''}}>USD</option>
                             </select>
 
                         </div>
@@ -65,7 +72,10 @@
                                     <span class="input-group-text"><i class="fa fa-university"></i>
                                     </span>
                                 </div>
-                                <input data-name="bank_name" placeholder="Enter Bank Name" name="bank_name" type="text" id="bank_name" class="form-control">
+                                <input data-name="bank_name" placeholder="Enter Bank Name" name="bank_name" type="text" id="bank_name" class="form-control" value="{{old('bank_name')}}">
+                                @error('bank_name')
+                                <span class="text-danger">{{$message}}</span>
+                                @enderror
                             </div> <!---->
                         </div>
                         <div class="form-group col-md-6">
@@ -76,7 +86,10 @@
                                         <i class="fa fa-phone"></i>
                                     </span>
                                 </div>
-                                <input data-name="bank_phone" placeholder="Enter Bank Phone" name="bank_phone" type="text" id="bank_phone" class="form-control">
+                                <input data-name="bank_phone" placeholder="Enter Bank Phone" name="bank_phone" type="text" id="bank_phone" class="form-control" value="{{old('bank_phone')}}">
+                                @error('bank_phone')
+                                <span class="text-danger">{{$message}}</span>
+                                @enderror
                             </div> <!---->
                         </div>
                         <div class="form-group col-md-6">
@@ -87,14 +100,21 @@
                                         <i class="fa fa-balance-scale"></i>
                                     </span>
                                 </div>
-                                <input data-name="bank_phone" placeholder="Enter Starting Balance" name="balance" type="text" id="starting_balance" class="form-control">
+                                <input data-name="bank_phone" placeholder="Enter Starting Balance" name="balance" type="text" id="starting_balance" class="form-control" value="{{old('balance')}}">
+                                @error('balance')
+                                <span class="text-danger">{{$message}}</span>
+                                @enderror
                             </div> <!---->
                         </div>
                         <div class="form-group col-md-12">
                             <label for="bank_address" class="form-control-label">Bank Address</label>
-                            <textarea data-name="bank_address" placeholder="Enter Bank Address" rows="3" name="bank_address" cols="50" id="bank_address" class="form-control">
+                            <textarea  placeholder="Enter Bank Address" rows="3" name="bank_address" cols="50" id="bank_address" class="form-control">
+                                {{old('bank_address')}}
 
                             </textarea> <!---->
+                            @error('bank_address')
+                            <span class="text-danger">{{$message}}</span>
+                            @enderror
                         </div>
                         <div class="form-group col-md-6">
                             <div class="custom-control custom-switch">
@@ -116,6 +136,7 @@
                     </div>
                 </div>
             </form>
+
         </div>
     </div>
     <script>

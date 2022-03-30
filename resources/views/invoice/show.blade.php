@@ -474,6 +474,18 @@
                                 </textarea>
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="account">Account</label>
+                                        <div class="input-group">
+                                            <select name="coa_account" id="account" class="form-control">
+                                                @foreach($data['coas'] as $account)
+                                                    <option value="{{$account->id}}" >{{$account->code.'-'.$account->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="col-md-6" id="cat_div">
                                     <div class="form-group">
                                         <label for="category">Category</label>
@@ -483,7 +495,7 @@
                                             </div>
                                             <select name="category" id="category" class="form-control " style="width: 80%" >
                                                 @foreach($data['category'] as $cat)
-                                                    <option value="{{$cat->name}} {{$cat->name==' Invoice'?'selected':''}}">{{$cat->name}}</option>
+                                                    <option value="{{$cat->id}} {{$cat->name==' Invoice'?'selected':''}}">{{$cat->name}}</option>
                                                 @endforeach
                                             </select>
                                             <div class="input-group-prepend" style="width: 10%">

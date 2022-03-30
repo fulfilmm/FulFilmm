@@ -12,6 +12,13 @@
                     <label for="tags">Name</label>
                     <input type="text" id="name" class="form-control" name="tags" >
                 </div>
+                <div class="form-group">
+                    <label for="type">Type</label>
+                    <select name="type" id="type" class="form-control select">
+                        <option value="1">Revenue</option>
+                        <option value="0">Expense</option>
+                    </select>
+                </div>
                 <button type="button" data-dismiss="modal" id="add_category"  class="btn btn-primary float-right">Add</button>
             </div>
         </div>
@@ -21,9 +28,10 @@
     $(document).ready(function() {
         $(document).on('click', '#add_category', function () {
             var name=$("#name").val();
+            var type=$('#type option:selected').val();
             $.ajax({
                 type:'POST',
-                data : {name:name},
+                data : {name:name,type:type},
                 url:'/add/category',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 success:function(data){

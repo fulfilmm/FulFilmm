@@ -42,7 +42,7 @@
 
 <script src="{{asset('plugins/sticky-kit-master/dist/sticky-kit.min.js')}}"></script>
 
-<script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+<script src="{{url(asset('js/datatable_buttons.js'))}}"></script>
 <script src="{{url(asset('js/exportjs/buttons.html5.min.js'))}}"></script>
 <script src="{{url(asset('js/exportjs/buttons.print.min.js'))}}"></script>
 <script src="{{url(asset('js/exportjs/jszip.min.js'))}}"></script>

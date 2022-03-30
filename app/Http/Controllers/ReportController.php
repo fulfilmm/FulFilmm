@@ -31,6 +31,7 @@ class ReportController extends Controller
 {
     public function SalePerformance()
     {
+
         $dept = Department::where('name', 'Sale Department')->first();
         $employee = Employee::where('department_id', $dept->id)->get();
         $performance = [];
@@ -77,7 +78,7 @@ class ReportController extends Controller
 
         $data = ['appointment' => $appointment, 'deal' => $deal_win, 'proposal' => $proposal, 'meeting' => $meeting, 'lead' => $lead, 'qualified' => $qualified, 'unqualified' => $unqualified, 'quotation' => $quotation, 'win' => $win,
             'still_qualified' => $still_qualified, 'still_quotation' => $still_quotation, 'lost' => $lost];
-
+//        dd($employee);
         return view('Report.saleperformance', compact('data', 'performance', 'employee', 'salepipeline'));
 
     }
@@ -95,11 +96,13 @@ class ReportController extends Controller
                 })
                 ->addColumn('supplier', function ($row) {
                     $suppliers = Customer::where('id', $row->stockin->supplier_id)->first();
-                    return $suppliers->name;
+                    return $suppliers->name??'';
                 })
-                ->addColumn('unit',function ($variant){
-                    $unit=SellingUnit::where('variant_id',$variant->stockin->variantion_id)->where('unit_convert_rate',1)->first();
-                    return $unit->unit;
+                ->addColumn('unit',function ($data){
+                   if(!isset($data->stockin->variantion_id)){
+                       $unit=SellingUnit::where('variant_id',$data->stockin->variantion_id)->where('unit_convert_rate',1)->first();
+                   }
+                    return $unit->unit??'';
                 })
                 ->make(true);
 
@@ -118,16 +121,16 @@ class ReportController extends Controller
                 })
                 ->addColumn('unit',function ($variant){
                     $unit=SellingUnit::where('id',$variant->stockout->sell_unit)->first();
-                    return $unit->unit;
+                    return $unit->unit??'';
                 })
                 ->addColumn('qty', function ($row) {
                     $unit=SellingUnit::where('id',$row->stockout->sell_unit)->first();
                     $qty=$row->stockout->qty/$unit->unit_convert_rate;
-                    return $qty;
+                    return $qty??0;
                 })
                 ->addColumn('customer', function ($row) {
                     $suppliers = Customer::where('id', $row->stockout-> customer_id)->first();
-                    return $suppliers->name;
+                    return $suppliers->name??'';
                 })
                 ->make(true);
         }
@@ -189,6 +192,9 @@ class ReportController extends Controller
                     $account=Transaction::with('account')->where('expense_id',$data->id)->first();
                     return $account->account->name??'N/A';
                 })
+                ->addColumn('supplier',function ($data){
+                    return $data->supplier->name??'N/A';
+                })
                 ->addColumn('transaction',function ($data){
                     if($data->approve==0){
                         return 'No';
@@ -210,7 +216,9 @@ class ReportController extends Controller
                     return $formatedDate;
                 })
                 ->addColumn('unit',function ($data){
-                    $unit=SellingUnit::where('variant_id',$data->variant_id)->where('unit_convert_rate',1)->first();
+                    if(!isset($data->variant_id)) {
+                        $unit = SellingUnit::where('variant_id', $data->variant_id)->where('unit_convert_rate', 1)->first();
+                    }
                     return $unit->unit??'N/A';
                 })
                 ->make(true);

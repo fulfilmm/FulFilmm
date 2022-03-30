@@ -1,5 +1,5 @@
 @extends('layout.mainlayout')
-@section('title','Stock Transaction')
+@section('title','Stock Batch')
 @section('search')
     <div class="col-12 mt-1">
         <form action="{{route('stock.search')}}" method="GET">

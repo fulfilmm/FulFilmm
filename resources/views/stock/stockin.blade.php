@@ -83,7 +83,18 @@
                                <span class="text-danger">{{$message}}</span>
                                @enderror
                            </div>
-                       <div class="col-md-12">
+                           <div class="col-md-6">
+                               <div class="form-group">
+                                   <label for="bin">Bin Look</label>
+                                   <select name="binlookup_id" id="bin" class="form-control" style="width: 100%">
+                                       <option value="">None</option>
+                                       @foreach($binlook as $item)
+                                           <option value="{{$item->id}}">{{$item->bin_no}}</option>
+                                           @endforeach
+                                   </select>
+                               </div>
+                           </div>
+                       <div class="col-md-6">
                            <div class="form-group">
                                <label for="loca">Location</label>
                                <input type="text" class="form-control" name="product_location" placeholder="Enter product location in warehouse" value="{{old('product_location')}}">

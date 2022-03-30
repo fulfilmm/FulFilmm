@@ -19,7 +19,7 @@
         </div>
         <div class="col-12">
           <div class="card shadow">
-             <div class="col-12 my-5">
+             <div class="col-12 my-5" style="overflow: auto">
                  <table class="table table-hover table-nowrap" id="pr_table">
                      <thead>
                      <tr>

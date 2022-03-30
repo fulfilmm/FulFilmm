@@ -203,7 +203,7 @@
             },
 
             xAxis: {
-                categories: ['Jan', 'Feb', 'Mar', 'April', 'May', 'June','July','Aug','Sep','Oct','Nov','Dec'],
+                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
                 labels: {
                     x:3
                 }
@@ -223,10 +223,10 @@
                     {{$monthlysaletarget['Jan']->target??0}},
                     {{$monthlysaletarget['Feb']->target??0}},
                     {{$monthlysaletarget['Mar']->target??0}},
-                    {{$monthlysaletarget['April']->target??0}},
+                    {{$monthlysaletarget['Apr']->target??0}},
                     {{$monthlysaletarget['May']->target??0}},
-                    {{$monthlysaletarget['June']->target??0}},
-                    {{$monthlysaletarget['July']->target??0}},
+                    {{$monthlysaletarget['Jun']->target??0}},
+                    {{$monthlysaletarget['Jul']->target??0}},
                     {{$monthlysaletarget['Aug']->target??0}},
                     {{$monthlysaletarget['Sep']->target??0}},
                     {{$monthlysaletarget['Oct']->target??0}},
@@ -240,10 +240,10 @@
                     {{$monthly['Jan']->total??0}},
                     {{$monthly['Feb']->total??0}},
                     {{$monthly['Mar']->total??0}},
-                    {{$monthly['April']->total??0}},
+                    {{$monthly['Apr']->total??0}},
                     {{$monthly['May']->total??0}},
-                    {{$monthly['June']->total??0}},
-                    {{$monthly['July']->total??0}},
+                    {{$monthly['Jun']->total??0}},
+                    {{$monthly['Jul']->total??0}},
                     {{$monthly['Aug']->total??0}},
                     {{$monthly['Sep']->total??0}},
                     {{$monthly['Oct']->total??0}},

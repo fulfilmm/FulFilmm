@@ -39,7 +39,7 @@ class InventoryController extends Controller
         $damage= DB::table("damaged_products")
             ->select(DB::raw("SUM(qty) as qty"))
             ->get();
-        $damage_product=$damage[0]->qty;
+        $damage_product=$damage[0]->qty??0;
         return view('Inventory.inventory',compact('damage_product','to_receipt','allreceipt','deli_order','stock_transactions'));
     }
 

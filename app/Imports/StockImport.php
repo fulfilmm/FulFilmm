@@ -17,11 +17,11 @@ class StockImport implements ToCollection,WithHeadingRow
     */
     public function collection(Collection $collection)
     {
-//        dd($collection);
         foreach ($collection as $stock){
-            $product=ProductVariations::with('product')->where('product_code',$stock['product_code'])->first();
-            $warehouse=Warehouse::where('warehouse_id',$stock['warehouseid'])->first();
+
            try {
+               $product=ProductVariations::with('product')->where('product_code',$stock['product_code'])->first();
+               $warehouse=Warehouse::where('warehouse_id',$stock['warehouse_id'])->first();
                $stock=Stock::where('variant_id',$product->id)->first();
              if($stock!=null){
                  $stock->stock_balance=$stock->stock_balance + $stock['qty'];

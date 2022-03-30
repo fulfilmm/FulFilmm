@@ -197,7 +197,6 @@
             });
         });
         $(document).ready(function () {
-
            $('#stock_tab').click(function () {
                $('#stock_report_table').DataTable({
                    dom: 'Bfrtip',
@@ -430,7 +429,7 @@
                             name: 'Account'
                         },
                         {
-                            data:'supplier.name',
+                            data:'supplier',
                             name:'Supplier'
                         },
                         {

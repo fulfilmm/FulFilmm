@@ -266,24 +266,28 @@
                                     <script>
                                         $(".update_item_{{$order->id}}").keyup(function () {
                                             var unit_id=$('#unit{{$order->id}} option:selected').val();
-                                            @foreach($prices as $item)
-                                            if(unit_id=="{{$item->unit_id}}") {
-                                                if('{{$order->variant->pricing_type}}'==1){
-                                                    var qty=$('#quantity_{{$order->id}}').val();
-                                                    if(parseInt("{{$item->min}}")<= qty){
-                                                        var price = "{{$item->price}}";
-                                                    }
+                                           if(!$('#unit{{$order->id}} option:selected').val()){
+                                               var price=$('#price_{{$order->id}}').val();
 
-                                                }else {
-                                                    if('{{$item->multi_price}}'== 0){
+                                           }else {
+                                               @foreach($prices as $item)
+                                               if(unit_id=="{{$item->unit_id}}") {
+                                                   if('{{$order->variant->pricing_type}}'==1){
+                                                       var qty=$('#quantity_{{$order->id}}').val();
+                                                       if(parseInt("{{$item->min}}")<= qty){
+                                                           var price = "{{$item->price}}";
+                                                       }
 
-                                                        var price = "{{$item->price}}";
+                                                   }else {
+                                                       if('{{$item->multi_price}}'== 0){
 
-                                                    }
-                                                }
-                                            }
-                                            @endforeach
+                                                           var price = "{{$item->price}}";
 
+                                                       }
+                                                   }
+                                               }
+                                               @endforeach
+                                           }
 
                                             @if($order->foc)
                                             $('#price_{{$order->id}}').val(0);

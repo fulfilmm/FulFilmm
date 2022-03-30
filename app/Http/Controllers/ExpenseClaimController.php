@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Jobs\ExpCliamEmailJob;
 use App\Models\Account;
+use App\Models\ChartOfAccount;
 use App\Models\Customer;
 use App\Models\Employee;
 use App\Models\ExpClaimComment;
@@ -191,15 +192,14 @@ class ExpenseClaimController extends Controller
     }
     public function CashClaim($id){
         $exp_claim=ExpenseClaim::where('id',$id)->firstorFail();
-        $exp_claim->is_claim=1;
-        $exp_claim->update();
         $account=Account::where('enabled',1)->get();
         $recurring=['No','Daily','Weekly','Monthly','Yearly'];
         $payment_method=['Cash','eBanking','WaveMoney','KBZ Pay'];
         $category=TransactionCategory::all();
         $emps=Employee::all();
         $customer=Customer::where('customer_type','Supplier')->get();
-        $data=['emps'=>$emps,'customers'=>$customer,'account'=>$account,'recurring'=>$recurring,'payment_method'=>$payment_method,'category'=>$category];
+        $coas=ChartOfAccount::all();
+        $data=['coas'=>$coas,'emps'=>$emps,'customers'=>$customer,'account'=>$account,'recurring'=>$recurring,'payment_method'=>$payment_method,'category'=>$category];
         $this->addnotify($exp_claim->emp_id,'danger','Claimed  expense claim','expenseclaims/'.$exp_claim->id,$exp_claim->financial_approver);
 
         return view('transaction.expense',compact('data','exp_claim'));

@@ -37,7 +37,7 @@
                                         <div class="row justify-content-center">
                                             <div>
                                                 {{--@dd($route)--}}
-                                                <form action="{{route('transactions.export')}}" method="post">
+                                                <form action="{{route('transactions.export')}}" method="GET">
                                                     @csrf
                                                     <div class="form-group">
                                                         <label for="start">Start Date</label>

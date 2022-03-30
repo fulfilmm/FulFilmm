@@ -318,6 +318,9 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::post('transfer',[StockTransactionController::class,'stock_transfer'])->name('stocks.transfer');
     Route::get('transfer/index',[StockTransactionController::class,'transfer_record'])->name('transfer.index');
     Route::get('stocks',[StockTransactionController::class,'stock'])->name('stocks');
+    Route::post('stock/import',[StockTransactionController::class,'import'])->name('stocks.import');
+    Route::get('stock/batch/{p_id}',[StockTransactionController::class,'batch'])->name('stock.batch');
+    Route::get('ecommerce/stock/index',[StockTransactionController::class,'ecommerce_stock'])->name('ecommerce_stock');
     //sale dashboard
     Route::resource('saletargets',SaleTargetController::class);
     Route::get('sale/dashboard',[SaleTargetController::class,'index'])->name('sale.dashboard');
@@ -367,6 +370,8 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::get('product/variant/create',[ProductController::class,'create_variant'])->name('create.variant');
     Route::post('product/variant/store',[ProductController::class,'variant_add'])->name('variant.store');
     Route::post('product/variant/update/{id}',[ProductController::class,'update_variant'])->name('variant.update');
+    Route::get('barcode/generate',[\App\Http\Controllers\BarcodeController::class,'barcode'])->name('barcode.generate');
+    Route::get('barcode/create',[\App\Http\Controllers\BarcodeController::class,'barcodecreate'])->name('barcode.create');
     Route::resource('sellingunits',SellingUnitController::class);
     Route::resource('discount_promotions',DiscountPromotionController::class);
     Route::get('variant/show/{id}',[ProductController::class,'show_variant'])->name('show.variant');
@@ -376,6 +381,8 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::get('stock/export',[StockTransactionController::class,'export'])->name('stock.export');
     Route::get('product/price/index',[SellingUnitController::class,'price_list'])->name('add.index');
     Route::post('product/price/store',[SellingUnitController::class,'store_price'])->name('store.price');
+    Route::get('add/price',[SellingUnitController::class,'price_add'])->name('add_price');
+    Route::get('price/edit/{id}',[SellingUnitController::class,'price_edit'])->name('edit_price');
     Route::get('product/price/delete/{id}',[SellingUnitController::class,'price_destory'])->name('sellprice.destroy');
     Route::post('product/price/update/{id}',[SellingUnitController::class,'update_price'])->name('sellprice.update');
     Route::get('retail/invoice/create',[InvoiceController::class,'retail_inv'])->name('invoice.rental');
@@ -406,6 +413,7 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::get('employee/search',[EmployeeController::class,'search'])->name('employee.search');
     Route::get('sent/mail/{po_id}',[\App\Http\Controllers\PurchaseOrderController::class,'send'])->name('po_mail.prepare');
     Route::post('po/mail/send',[\App\Http\Controllers\PurchaseOrderController::class,'sending'])->name('po_mail.sent');
+    Route::get('main/customer',[CustomerController::class,'customer'])->name('customer');
 
 });
 
@@ -422,6 +430,8 @@ Route::middleware(['meeting_view_relative_emp', 'auth:employee', 'authorize', 'o
 Route::middleware(['guadcheck'])->group(function () {
     Route::resource('deliveries', ShippmentController::class);
     Route::resource('advancepayments',AdvancePaymentController::class)->only('index','show');
+    Route::get('delivery/transaction',[ShippmentController::class,'transaction'])->name('delivery.transaction');
+
 
 });
 Route::middleware(['auth:customer'])->group(function () {
@@ -473,6 +483,7 @@ Route::get('test', function () {
 Route::put('roles/assign-permission/{id}', [RoleController::class, 'assignPermission'])->name('roles.assignPermission');
 Route::get('companies-card', [CompanyController::class, 'card'])->name('companies.cards');
 Route::resource('request_tickets', RequestTicket::class)->only('create', 'store');
+Route::get('delivery/customer/receipt/{id}',[ShippmentController::class,'receipt'])->name('receipt.confirm');
 //list routes
 
 
@@ -480,20 +491,21 @@ Route::get('delivery/tracking/{uuid}',[ShippmentController::class,'tracking'])->
 
 //new
 Route::resource('bank_transfers',\App\Http\Controllers\BankTransferController::class);
-Route::post('bank/transaction/export',[TransactionController::class,'export'])->name('transactions.export');
-Route::post('stock/import',[StockTransactionController::class,'import'])->name('stocks.import');
-Route::get('add/price',[SellingUnitController::class,'price_add'])->name('add_price');
-Route::get('price/edit/{id}',[SellingUnitController::class,'price_edit'])->name('edit_price');
-Route::get('stock/batch/{p_id}',[StockTransactionController::class,'batch'])->name('stock.batch');
-Route::get('delivery/transaction',[ShippmentController::class,'transaction'])->name('delivery.transaction');
-Route::get('delivery/customer/receipt/{id}',[ShippmentController::class,'receipt'])->name('receipt.confirm');
-Route::get('ecommerce/stock/index',[StockTransactionController::class,'ecommerce_stock'])->name('ecommerce_stock');
-Route::get('main/customer',[CustomerController::class,'customer'])->name('customer');
-Route::get('barcode/generate',[\App\Http\Controllers\BarcodeController::class,'barcode'])->name('barcode.generate');
-Route::get('barcode/create',[\App\Http\Controllers\BarcodeController::class,'barcodecreate'])->name('barcode.create');
 
 
 
+
+Route::resource('revenuebudget',\App\Http\Controllers\RevenueBudgetController::class);
+Route::resource('expensebudget',\App\Http\Controllers\ExpenseBudgetController::class);
+Route::resource('chartofaccount',\App\Http\Controllers\ChartOfAccountController::class);
+Route::get('coatype',[\App\Http\Controllers\ChartOfAccountController::class,'coatype_index'])->name('coatype.index');
+Route::post('coatype',[\App\Http\Controllers\ChartOfAccountController::class,'coatype'])->name('coatype.store');
+Route::get('invoice/view/{type}',[InvoiceController::class,'invoice_view'])->name('invoice.list');
+Route::resource('binlookup',\App\Http\Controllers\BinLookUpController::class);
+Route::resource('stockreturn',\App\Http\Controllers\StockReturnController::class);
+Route::get('invoice/export/{type}',[InvoiceController::class,'export'])->name('invoices.export');
+Route::resource('discount',\App\Http\Controllers\AmountDiscountController::class);
+Route::get('transaction/export',[TransactionController::class,'export'])->name('transactions.export');
 
 
 //Route::get('stockout/show/{id}',[StockTransactionController::class,'show_stockout'])->name('stockout.show');

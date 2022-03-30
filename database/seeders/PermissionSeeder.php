@@ -37,12 +37,16 @@ class PermissionSeeder extends Seeder
         Permission::create(['name'=>'foc.index','display_name'=>'FOC Product list view','type'=>'products','guard_name'=>'employee']);
         Permission::create(['name'=>'add.index','display_name'=>'Product price create form','type'=>'products','guard_name'=>'employee']);
         Permission::create(['name'=>'store.price','display_name'=>'Fix product price','type'=>'products','guard_name'=>'employee']);
+        Permission::create(['name'=>'add_price','display_name'=>'Create product price form','type'=>'products','guard_name'=>'employee']);
+        Permission::create(['name'=>'edit_price','display_name'=>'Edit product price form','type'=>'products','guard_name'=>'employee']);
         Permission::create(['name'=>'sellprice.destroy','display_name'=>'Delete product price','type'=>'products','guard_name'=>'employee']);
         Permission::create(['name'=>'sellprice.update','display_name'=>'Update product price','type'=>'products','guard_name'=>'employee']);
         Permission::create(['name'=>'create.variant','display_name'=>'Product Variant Create','type'=>'products','guard_name'=>'employee']);
         Permission::create(['name'=>'variant.store','display_name'=>'Product Variant Store','type'=>'products','guard_name'=>'employee']);
         Permission::create(['name'=>'show.variant','display_name'=>'Product Variant Show','type'=>'products','guard_name'=>'employee']);
         Permission::create(['name'=>'variant.update','display_name'=>'Product Variant update','type'=>'products','guard_name'=>'employee']);
+        Permission::create(['name'=>'barcode.generate','display_name'=>'Product barcode generate','type'=>'products','guard_name'=>'employee']);
+        Permission::create(['name'=>'barcode.create','display_name'=>'Product barcode generate form','type'=>'products','guard_name'=>'employee']);
         //ticket
         Permission::create(['name' => 'change_status', 'display_name' => "Can change ticket status",'type'=>'tickets', 'guard_name' => 'employee']);
         Permission::create(['name' => 'reassign', 'display_name' => "Can reassign ticket ", 'type'=>'tickets', 'guard_name' => 'employee']);
@@ -136,6 +140,8 @@ class PermissionSeeder extends Seeder
         Permission::create(['name'=>'receipt.show','display_name'=>'Product Receive view','type'=>'inventory','guard_name'=>'employee']);
         Permission::create(['name'=>'product.validate','display_name'=>'Validate Product Receive qty','type'=>'inventory','guard_name'=>'employee']);
         Permission::create(['name'=>'receipt.rededit','display_name'=>'Edit Product Receive data','type'=>'inventory','guard_name'=>'employee']);
+        Permission::create(['name'=>'stock.batch','display_name'=>'View stock in with batch','type'=>'inventory','guard_name'=>'employee']);
+        Permission::create(['name'=>'ecommerce_stock','display_name'=>'Stock transfer to e-commerce stock','type'=>'inventory','guard_name'=>'employee']);
 
 
 
@@ -156,9 +162,10 @@ class PermissionSeeder extends Seeder
         Permission::create(['name'=>'stocks.transfer','display_name'=>'Stocks Transfer','type'=>'Stocks','guard_name'=>'employee']);
         Permission::create(['name'=>'transfer.index','display_name'=>'Stock Transfer Record','type'=>'Stocks','guard_name'=>'employee']);
         Permission::create(['name'=>'stocks','display_name'=>'Stock','type'=>'Stocks','guard_name'=>'employee']);
+        Permission::create(['name'=>'stocks.import','display_name'=>'Stock Import','type'=>'Stocks','guard_name'=>'employee']);
         //Banking Transaction
-        Permission::create(['name'=>'transaction.approve','display_name'=>'Expense/Revenue transaction approver','type'=>'transactions','guard_name'=>'employee']);
-        Permission::create(['name'=>'advance.maketransaction','display_name'=>'Advance payment to revenue transaction ','type'=>'transactions','guard_name'=>'employee']);
+        Permission::create(['name'=>'transaction.approve','display_name'=>'Expense/Revenue transaction approver','type'=>'transaction','guard_name'=>'employee']);
+        Permission::create(['name'=>'advance.maketransaction','display_name'=>'Advance payment to revenue transaction ','type'=>'transaction','guard_name'=>'employee']);
         Permission::create(['name' => 'income.create', 'display_name' => 'Revenue Add Form', 'type'=>'transaction', "guard_name" => 'employee']);
         Permission::create(['name' => 'revenue', 'display_name' => 'Revenue List View', 'type'=>'transaction', "guard_name" => 'employee']);
         Permission::create(['name' => 'expense', 'display_name' => 'Expense List View', 'type'=>'transaction', "guard_name" => 'employee']);
@@ -167,6 +174,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'expense.create', 'display_name' => 'Expense Create Form', 'type'=>'transaction', "guard_name" => 'employee']);
         Permission::create(['name' => 'expense.store', 'display_name' => 'Add New Expense', 'type'=>'transaction', "guard_name" => 'employee']);
         Permission::create(['name' => 'transactions.show', 'display_name' => 'Transaction Detail View', 'type'=>'transaction', "guard_name" => 'employee']);
+        Permission::create(['name' => 'transactions.export', 'display_name' => 'Transaction Export', 'type'=>'transaction', "guard_name" => 'employee']);
         //Report
         Permission::create(['name'=>'sale.report','display_name'=>'Sale Report page','type'=>'Report','guard_name'=>'employee']);
         Permission::create(['name'=>'report.stockin','display_name'=>'Daily Stock In Report','type'=>'Report','guard_name'=>'employee']);
@@ -178,6 +186,8 @@ class PermissionSeeder extends Seeder
         Permission::create(['name'=>'reports','display_name'=>'Report Page','type'=>'Report','guard_name'=>'employee']);
         //Quotation route
         Permission::create(['name'=>'quotations.retail','display_name'=>'Retail Sale Quotation Create','type'=>'quotations','guard_name'=>'employee']);
+        Permission::create(['name'=>'customer','display_name'=>'Invoice issued customer','type'=>'customers','guard_name'=>'employee']);
+
 
 
     }

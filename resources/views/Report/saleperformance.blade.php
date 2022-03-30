@@ -52,35 +52,43 @@
             </div>
         </div>
         <div class="row">
-            <figure class="highcharts-figure my-2 col-md-6">
-                <div id="overall"></div>
+            <figure class="highcharts-figure my-2 col-md-6 ">
+                <div id="overall" class="border shadow"></div>
             </figure>
             <figure class="highcharts-figure my-2 col-md-6">
-                <div id="pie"></div>
+                <div id="pie" class="border shadow"></div>
             </figure>
         </div>
         <div class="row">
-            <figure class="highcharts-figure col-md-4">
-                <div id="pie1"></div>
+            <figure class="highcharts-figure col-md-4 shadow-sm">
+                <div id="pie1" class="border shadow"></div>
             </figure>
             <figure class="highcharts-figure col-md-4">
-                <div id="pie2"></div>
+                <div id="pie2" class="border shadow"></div>
             </figure>
             <figure class="highcharts-figure col-md-4">
-                <div id="pie3"></div>
+                <div id="pie3" class="border shadow"></div>
             </figure>
         </div>
         <div class="row">
             <figure class="highcharts-figure col-12">
-                <div id="container"></div>
+                <div id="container" class="border shadow"></div>
             </figure>
         </div>
         <script>
-
+            let colors=['#90b4a9','#54adff','#f6ffab','#800080'];
             Highcharts.chart('overall', {
                 chart: {
-                    type: 'column'
+                    type: 'column',
+                    options3d: {
+                        enabled: true,
+                        alpha: 0,
+                        beta: -6,
+                        depth: 50,
+                        viewDistance: 25
+                    }
                 },
+                colors:colors,
                 title: {
                     text: 'Overall Sale Performance'
                 },
@@ -123,23 +131,23 @@
                         data: [
                             {
                                 name: "New Appointment",
-                                y:'{{$data['appointment']}}'
+                                y:parseFloat({{$data['appointment']}})
 
                             },
                             {
                                 name: "Meeting",
-                                y:'{{$data['meeting']}}',
+                                y:parseFloat({{$data['meeting']}}),
 
                             },
 
                             {
                                 name: "Proposal",
-                                y:'{{$data['proposal']}}',
+                                y:parseFloat({{$data['proposal']}}),
 
                             },
                             {
                                 name: "Deal Win",
-                                y:'{{$data['deal']}}',
+                                y:parseFloat({{$data['deal']}}),
                             },
 
 
@@ -151,7 +159,14 @@
             //
             Highcharts.chart('container', {
                 chart: {
-                    type: 'bar'
+                    type: 'bar',
+                    options3d: {
+                        enabled: true,
+                        alpha: 0,
+                        beta: 0,
+                        depth: 80,
+                        viewDistance: 25
+                    }
                 },
                 title: {
                     text: 'Sale Person Performance Compare Chart'
@@ -169,7 +184,7 @@
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Population (millions)',
+                        text: 'Count',
                         align: 'high'
                     },
                     labels: {
@@ -195,7 +210,7 @@
                     floating: true,
                     borderWidth: 1,
                     backgroundColor:
-                        Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+                        Highcharts.defaultOptions.legend.backgroundColor || '#dbecfd',
                     shadow: true
                 },
                 credits: {
@@ -205,7 +220,7 @@
                     name: 'Appointment',
                     data: [
                        @foreach($employee as $emp)
-                        {{$performance[$emp->id]['appointment']}},
+                        parseFloat({{$performance[$emp->id]['appointment']}}),
                         @endforeach
                     ]
                 },
@@ -213,7 +228,7 @@
                         name: 'Meeting',
                         data: [
                             @foreach($employee as $emp)
-                            {{$performance[$emp->id]['meeting']}},
+                           parseInt( {{$performance[$emp->id]['meeting']}}),
                             @endforeach
                         ]
                     }
@@ -221,27 +236,29 @@
                     name: 'Deal',
                     data: [
                         @foreach($employee as $emp)
-                        {{$performance[$emp->id]['deal']}},
+                        parseInt({{$performance[$emp->id]['deal']}}),
                         @endforeach
                     ]
                 }, {
                     name: 'Proposal',
                     data: [
                         @foreach($employee as $emp)
-                        {{$performance[$emp->id]['proposal']}},
+                        parseInt({{$performance[$emp->id]['proposal']}}),
                         @endforeach
                     ]
                 },
                 ]
             });
 //pie
-            var pipeline=['#989b9e','#000fff','#ffd84d','#800080','#24e832','#ff0000'];
+            var pipeline=['#90b4a9','#5b9cff','#fdffa3','#800080','#72ff99','#ff0000'];
             Highcharts.chart('pie', {
                 chart: {
-                    plotBackgroundColor: pipeline,
-                    plotBorderWidth: null,
-                    plotShadow: false,
-                    type: 'pie'
+                    type: 'pie',
+                    options3d: {
+                        enabled: true,
+                        alpha: 45,
+                        beta: 0
+                    }
                 },
                 colors:pipeline,
                 title: {
@@ -260,9 +277,10 @@
                         allowPointSelect: true,
                         cursor: 'pointer',
                         dataLabels: {
-                            enabled: true,
-                            format: '<b>{point.name}</b>: {point.y:.0f}'
-                        }
+                            enabled: false,
+                            format: '{point.y:.0f}'
+                        },
+                        showInLegend: true,
                     }
                 },
                 series: [{
@@ -270,34 +288,36 @@
                     colorByPoint: true,
                     data: [{
                         name: 'New',
-                        y:'{{$salepipeline['New']}}',
+                        y:parseFloat({{$salepipeline['New']}}),
                     }, {
                         name: 'Qualified',
-                        y: '{{$salepipeline['Qualified']}}'
+                        y: parseFloat({{$salepipeline['Qualified']}})
                     }, {
                         name: 'Quotation',
-                        y: '{{$salepipeline['Quotation']}}'
+                        y: parseFloat({{$salepipeline['Quotation']}})
                     }, {
                         name: 'Invoicing',
-                        y: '{{$salepipeline['Invoicing']}}'
+                        y: parseFloat({{$salepipeline['Invoicing']}})
                     }, {
                         name: 'Win',
-                        y: '{{$salepipeline['Win']}}'
+                        y:parseFloat({{$salepipeline['Win']}})
                     }, {
                         name: 'Lost',
-                        y: '{{$salepipeline['Lost']}}'
+                        y: parseFloat({{$salepipeline['Lost']}})
                     }
                     ]
                 }]
             });
             //pie1
-            var pie1colors = ['#000fff','#989b9e'];
+            var pie1colors = ['#5B9CFF','#fdb5d8'];
             Highcharts.chart('pie1', {
                 chart: {
-                    plotBackgroundColor: pie1colors,
-                    plotBorderWidth: null,
-                    plotShadow: false,
-                    type: 'pie'
+                    type: 'pie',
+                    options3d: {
+                        enabled: true,
+                        alpha: 45,
+                        beta: 0
+                    }
                 },
                 colors:pie1colors,
                 title: {
@@ -316,9 +336,10 @@
                         allowPointSelect: true,
                         cursor: 'pointer',
                         dataLabels: {
-                            enabled: true,
-                            format: '<b>{point.name}</b>: {point.percentage:.0f}%'
-                        }
+                            enabled: false,
+                            format: '{point.percentage:.0f}%'
+                        },
+                        showInLegend: true
                     }
                 },
                 series: [{
@@ -326,23 +347,25 @@
                     colorByPoint: true,
                     data: [{
                         name: 'Qualified',
-                        y: '{{$data['qualified']}}',
+                        y: parseFloat({{$data['qualified']}}),
 
                     }, {
                         name: 'Leads',
-                        y:'{{$data['unqualified']}}'
+                        y:parseFloat({{$data['unqualified']}})
                     },
                     ]
                 }]
             });
             //pie2
-            var pie2colors = ['#ffd84d','#000fff'];
+            var pie2colors = ['#fdffa3','#5B9CFF'];
             Highcharts.chart('pie2', {
                 chart: {
-                    plotBackgroundColor: pie2colors,
-                    plotBorderWidth: null,
-                    plotShadow: false,
-                    type: 'pie'
+                    type: 'pie',
+                    options3d: {
+                        enabled: true,
+                        alpha: 45,
+                        beta: 0
+                    }
                 },
                 title: {
                     text: 'Qualified to Quotation'
@@ -360,9 +383,10 @@
                         allowPointSelect: true,
                         cursor: 'pointer',
                         dataLabels: {
-                            enabled: true,
+                            enabled: false,
                             format: '<b>{point.name}</b>: {point.percentage:.0f}%'
-                        }
+                        },
+                        showInLegend: true,
                     }
                 },
                 colors:pie2colors,
@@ -371,23 +395,25 @@
                     colorByPoint: true,
                     data: [{
                         name: 'Quote',
-                        y:{{$data['quotation']}}
+                        y:parseFloat({{$data['quotation']}})
                     }, {
                         name: 'Qualified',
-                        y:{{$data['still_qualified']}}
+                        y:parseFloat({{$data['still_qualified']}})
                     },
                     ]
                 }]
             });
             //pie3
-            var pie3colors = ['#24e832','#ffd84d','#ff0000'];
+            var pie3colors = ['#72ff99','#fdffa3','#ff0000'];
             Highcharts.chart('pie3', {
 
                 chart: {
-                    plotBackgroundColor: pie3colors,
-                    plotBorderWidth: null,
-                    plotShadow: false,
-                    type: 'pie'
+                    type: 'pie',
+                    options3d: {
+                        enabled: true,
+                        alpha: 45,
+                        beta: 0
+                    }
                 },
                 colors:pie3colors,
 
@@ -406,10 +432,12 @@
                     pie: {
                         allowPointSelect: true,
                         cursor: 'pointer',
+                        depth: 35,
                         dataLabels: {
-                            enabled: true,
+                            enabled: false,
                             format: '<b>{point.name}</b>: {point.percentage:.0f}%'
-                        }
+                        },
+                        showInLegend: true,
                     }
                 },
                 series: [{
@@ -417,13 +445,13 @@
                     colorByPoint: true,
                     data: [ {
                         name: 'Win',
-                        y: {{$data['win']}}
+                        y:parseFloat({{$data['win']}})
                     }, {
                         name: 'Quote',
-                        y: {{$data['still_quotation']}}
+                        y: parseFloat({{$data['still_quotation']}})
                     },{
                         name:'Lost',
-                        y:{{$data['lost']}}
+                        y:parseFloat({{$data['lost']}})
                     }
                     ]
                 }]

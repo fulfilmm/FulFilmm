@@ -29,20 +29,29 @@
                                    <div class="form-group">
                                        <label for="title">Title</label>
                                        <input type="text" class="form-control" name="title" id="title"
-                                              value="{{isset($po_to_bill)?'':$data[0]['title']??''}}">
-                                       <span class="text-danger title_err"></span>
+                                              value="{{old('title')}}">
+                                       @error('title')
+                                       <span class="text-danger">{{$message}}</span>
+                                       @enderror
                                    </div>
                                </div>
                                <div class="col-md-6 col-sm-6">
                                    <div class="form-group">
                                        <label for="amount">Amount</label>
-                                       <input type="number" class="form-control" name="grand_total" id="amount">
+                                       <input type="number" class="form-control" name="grand_total" id="amount" value="{{old('grand_total')}}">
+                                       @error('grand_total')
+                                       <span class="text-danger">{{$message}}</span>
+                                       @enderror
                                    </div>
                                </div>
                                <div class="col-md-6 col-sm-6">
                                    <div class="form-group">
                                        <label for="cat">Category</label>
-                                       <input type="text" class="form-control" name="category" placeholder="Enter Category">
+                                       <select name="category" id="" class="form-control select">
+                                           @foreach($category as $cat)
+                                               <option value="{{$cat->id}}">{{$cat->name}}</option>
+                                               @endforeach
+                                       </select>
                                    </div>
                                </div>
                                <div class="col-sm-6 col-md-6">
@@ -69,7 +78,9 @@
                                    <div class="form-group">
                                        <label for="bill_date">Bill date <span class="text-danger">*</span></label>
                                        <input type="date" class="form-control" name="bill_date"  id="bill_date" value="{{isset($po_to_bill)?'':($data[0]['billing_date']??'')}}">
-
+                                       @error('bill_date')
+                                       <span class="text-danger">{{$message}}</span>
+                                       @enderror
                                    </div>
                                </div>
                                <div class="col-6">
@@ -88,6 +99,9 @@
                                    <div class="form-group">
                                        <label for="due_date">Due Date <span class="text-danger">*</span></label>
                                        <input class="form-control" name="due_date" type="date" id="due_date" value="{{isset($po_to_bill)?'':($data[0]['due_date']??'')}}">
+                                       @error('due_date')
+                                       <span class="text-danger">{{$message}}</span>
+                                       @enderror
                                    </div>
                                </div>
                                <div class="col-sm-6 col-md-6">

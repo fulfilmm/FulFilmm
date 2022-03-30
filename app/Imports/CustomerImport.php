@@ -19,6 +19,7 @@ class CustomerImport implements ToCollection,WithHeadingRow
         foreach ($customers as $customer) {
             $company_id = Company::where('name', $customer['company'])->first()->id;
             Customer::create([
+                'customer_id'=>$customer['customer_id'],
                 'name' => $customer['name'],
                 'phone' => $customer['phone'],
                 'email' => $customer['email'],

@@ -85,12 +85,28 @@
                             <div class="form-group">
                                 <label for="">Tag</label>
                                 <select name="tag[]" id="tag" class="form-control select2" multiple>
-                                    @foreach($emps as $key=>$val )
+                                    @foreach($emps as $emp )
                                         @if(isset($po_data[0]['emp']))
-                                            <option value="{{$key}}" @foreach($po_data[0]['emp'][0] as $index=>$item) {{$item==$key?'selected':''}} @endforeach>{{$val}}</option>
+                                            <option value="{{$emp->id}}" @foreach($po_data[0]['emp'][0] as $index=>$item) {{$item==$emp->id?'selected':''}} @endforeach>{{$emp->name}}</option>
                                         @else
-                                            <option value="{{$key}}">{{$val}}</option>
+                                            <option value="{{$emp->id}}">{{$emp->name}}</option>
                                         @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="">Approver</label>
+                                <select name="approver_id" id="approver" class="form-control select2" >
+                                    @foreach($emps as $emp )
+                                       @if($emp->role->name=='Manager'||$emp->role->name=='CEO')
+                                            @if(isset($po_data[0]['approver']))
+                                                <option value="{{$emp->id}}" {{$po_data[0]['approver']=$emp->id?'selected':''}} >{{$emp->name}}</option>
+                                            @else
+                                                <option value="{{$emp->id}}">{{$emp->name}}</option>
+                                            @endif
+                                           @endif
                                     @endforeach
                                 </select>
                             </div>
@@ -106,7 +122,7 @@
                     </div>
                     <input type="hidden" id="creation_id" value="{{$creation_id[0]}}">
                     <div class="row mt-5">
-                        <div class="col-12">
+                        <div class="col-12" style="overflow: auto;">
                             <table class="table">
                                 <thead>
                                 <th scope="col" style="min-width: 200px;">Product</th>
@@ -136,13 +152,13 @@
                                         <td>{{$item->total??''}}
                                         </td>
                                         <td style="min-width: 60px;">
-                                            <div class="row justify-content-between">
+                                            <div class="row">
                                                 <button type="button" data-toggle="modal"
                                                         data-target="#edit{{$item->id}}"
-                                                        class="btn btn-success btn-sm mt-1 col"><i
+                                                        class="btn btn-success btn-sm mt-1"><i
                                                             class="fa fa-edit"></i></button>
                                                 <button type="button" id="delete_{{$item->id}}"
-                                                        class="btn btn-danger btn-sm mt-1 col"><i
+                                                        class="btn btn-danger btn-sm mt-1 "><i
                                                             class="fa fa-minus"></i></button>
                                                 <div id="edit{{$item->id}}" class="modal custom-modal fade"
                                                      role="dialog">
@@ -451,6 +467,7 @@
             var received_date = $('#received_date').val();
             var source = $('#source option:selected').val();
             var ship_to = $('#ship_to').val();
+            var approver=$('#approver option:selected').val();
             $.ajax({
                 data: {
                     supplier_id: supplier,
@@ -467,7 +484,8 @@
                     received_date: received_date,
                     source: source,
                     emp: emp,
-                    ship_to: ship_to
+                    ship_to: ship_to,
+                    approver:approver
 
                 },
                 type: 'POST',

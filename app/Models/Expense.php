@@ -17,4 +17,13 @@ class Expense extends Model
     public function employee(){
         return $this->belongsTo(Employee::class,'emp_id','id');
     }
+    public function bill(){
+        return $this->belongsTo(Bill::class,'bill_id','id');
+    }
+    public function account(){
+        return $this->belongsTo(ChartOfAccount::class,'coa_id','id');
+    }
+    public function cat(){
+        return $this->belongsTo(TransactionCategory::class,'category','id');
+    }
 }

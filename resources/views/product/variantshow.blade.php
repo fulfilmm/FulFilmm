@@ -6,7 +6,7 @@
         <div class="page-header">
             <div class="row">
                 <div class="col-sm-12">
-                    <h3 class="page-title">Product Variant</h3>
+                    <h3 class="page-title">{{$product->product_name}} ({{$product->variant}})</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url("/")}}">Dashboard</a></li>
                         <li class="breadcrumb-item active"><a href="{{url("/products")}}">Product</a></li>
@@ -100,7 +100,7 @@
                 <div class="col-12 my-3">
                     <h5>Images</h5>
                     <div class="row my-1">
-                        <img src="{{url(asset('/product_picture/'.$product->image))}}" alt="" class="border mr-2 ml-2"
+                        <img src="{{url(asset('/product_picture/'.$product->image))}}" alt="" class="border-0 mr-2 ml-2"
                              style="max-height:200px;max-width:100%;border: solid">
 
                     </div>

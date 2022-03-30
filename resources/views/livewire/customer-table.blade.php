@@ -10,6 +10,7 @@
             <table class="table table-nowrap datatable mb-0 table-hover">
                 <thead>
                     <tr><th></th>
+                        <th>ID</th>
                         <th>Name</th>
                         <th>Phone No</th>
                         <th>Email</th>
@@ -22,6 +23,7 @@
                     @foreach ($customers as $customer)
                         <tr>
                             <td><input type="checkbox" data-toggle="tooltip" title="Change Customer Type" class="checkbox" name="checked_customer[]" value="{{$customer->id}}"></td>
+                            <td>{{$customer->customer_id}}</td>
                             <td><a href="{{route('customers.show',$customer->id)}}"><img src="{{$customer->profile!=null? url(asset('img/profiles/'.$customer->profile)):url(asset('img/profiles/avatar-01.jpg'))}}" alt="" class="avatar chat-avatar-sm">{{$customer->name}}</a></td>
                             <td>{{ $customer->phone }}</td>
                             <td>{{ $customer->email }}</td>
@@ -47,17 +49,21 @@
     <div class="card-footer">
         <div class="form-group col-md-4 col-12 float-left" id="action">
             <div class="input-group">
-                <select name="type" id="type" class="form-control">
-                    <option value="">Select Customer Type</option>
-                    <option value="Customer">Customer</option>
-                    <option value="Lead">Lead</option>
-                    <option value="In Query">In Query</option>
-                    <option value="Partner">Partner</option>
-                    <option value="Competitor">Competitor</option>
-                    <option value="Supplier">Supplier</option>
-                    <option value="Courier">Courier</option>
-                </select>
-                <button type="button" data-toggle="tooltip" title="Change type of Customer" id="type_change" class="btn btn-white"><i class="fa fa-save"></i></button>
+               <div class="row">
+                   <select name="type" id="type" class="form-control">
+                       <option value="">Select Customer Type</option>
+                       <option value="Customer">Customer</option>
+                       <option value="Lead">Lead</option>
+                       <option value="In Query">In Query</option>
+                       <option value="Partner">Partner</option>
+                       <option value="Competitor">Competitor</option>
+                       <option value="Supplier">Supplier</option>
+                       <option value="Courier">Courier</option>
+                   </select>
+                   <div class="input-group-prepend">
+                       <button type="button" data-toggle="tooltip" title="Change type of Customer" id="type_change" class="btn btn-white"><i class="fa fa-save"></i></button>
+                   </div>
+               </div>
             </div>
         </div>
     </div>

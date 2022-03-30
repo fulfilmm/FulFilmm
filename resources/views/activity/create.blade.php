@@ -147,7 +147,7 @@
                                 <select name="report_to" id="report" class="form-control">
                                     @foreach($emps as $emp)
                                         @if($emp->id!=\Illuminate\Support\Facades\Auth::guard('employee')->user()->id && ($emp->role->name=='Manager'||$emp->role->name=='CEO'))
-                                        <option value="{{$emp->id}}" {{old('report_to')==$emp->id?'selected':''}}>{{$emp->name}}</option>
+                                        <option value="{{$emp->id}}" {{\Illuminate\Support\Facades\Auth::guard('employee')->user()->report_to==$emp->id?'selected':''}}>{{$emp->name}}</option>
                                         @endif
                                     @endforeach
                                 </select>

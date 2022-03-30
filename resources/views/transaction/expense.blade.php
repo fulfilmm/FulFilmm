@@ -18,6 +18,7 @@
             <form method="POST" action="{{route('expense.store')}}" accept-charset="UTF-8" id="transaction" role="form" novalidate="novalidate" enctype="multipart/form-data"
                   class="form-loading-button needs-validation">
                 @csrf
+                <input type="hidden" name="exp_id" value="{{$exp_claim->id??''}}">
                 <div class="card-body">
                     <div class="row">
                         <input type="hidden" name="type" value="Expense">
@@ -58,7 +59,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="account">Account</label>
+                                <label for="account">Bank Account</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fa fa-bank"></i></span>
@@ -66,6 +67,24 @@
                                     <select name="account" id="account" class="form-control">
                                         @foreach($data['account'] as $account)
                                             <option value="{{$account->id}}">{{$account->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                @error('account')
+                                <span class="text-danger">{{$message}}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="account">Account</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-bank"></i></span>
+                                    </div>
+                                    <select name="coa_account" id="account" class="form-control">
+                                        @foreach($data['coas'] as $account)
+                                            <option value="{{$account->id}}">{{$account->code.'-'.$account->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -134,7 +153,7 @@
                                     </div>
                                     <select name="category" id="category" class="form-control">
                                         @foreach($data['category'] as $cat)
-                                            <option value="{{$cat->name}}">{{$cat->name}}</option>
+                                            <option value="{{$cat->id}}">{{$cat->name}}</option>
                                         @endforeach
                                     </select>
                                     <div class="input-group-prepend">

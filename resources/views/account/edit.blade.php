@@ -25,7 +25,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="no">Account ID</label>
-                                <input type="text" class="form-control" name="account_id" id="no">
+                                <input type="text" class="form-control" name="account_id" id="no" value="{{$account->account_no}}" required>
                             </div>
                         </div>
                         <div class="form-group col-md-6 required">
@@ -36,7 +36,7 @@
                                         <i class="fa fa-font"></i>
                                     </span>
                                 </div>
-                                <input data-name="name" placeholder="Enter Name" required="required" name="name" type="text" id="name" value="{{$account->name}}" class="form-control">
+                                <input data-name="name" placeholder="Enter Name" required="required" name="name" type="text" id="name" value="{{$account->name}}" class="form-control" >
                             </div> <!---->
                         </div>
                         <div class="form-group col-md-6 required">
@@ -121,7 +121,7 @@
     </div>
     <script>
         $(document).ready(function () {
-            $('#starting_balance').on('change',function () {
+            $('#starting_balance').keyup(function () {
                 var open_balance=$('#starting_balance').val();
                 $('#balance').val(open_balance);
             })

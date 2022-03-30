@@ -16,6 +16,7 @@ class CreateTransactionCategoriesTable extends Migration
         Schema::create('transaction_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->tinyInteger('type');//1 is revenue and 0 is expense
             $table->timestamps();
         });
     }

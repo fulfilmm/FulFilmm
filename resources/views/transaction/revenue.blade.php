@@ -53,11 +53,23 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="account">Account</label>
+                                <label for="account">Bank Account</label>
                                 <div class="input-group">
                                     <select name="account" id="account" class="form-control">
                                         @foreach($data['account'] as $account)
                                             <option value="{{$account->id}}" {{isset($advance->acount_id)?($advance->account_id==$account->id?'selected':''):''}}>{{$account->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="account">Account</label>
+                                <div class="input-group">
+                                    <select name="coa_account" id="account" class="form-control">
+                                        @foreach($data['coas'] as $account)
+                                            <option value="{{$account->id}}" >{{$account->code.'-'.$account->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -97,7 +109,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="payment_method">Casher</label>
+                                <label for="payment_method">Cashier</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fa fa-user"></i></span>
@@ -122,7 +134,7 @@
                                     </div>
                                     <select name="category" id="category" class="form-control" style="width: 90%">
                                         @foreach($data['category'] as $cat)
-                                            <option value="{{$cat->name}}">{{$cat->name}}</option>
+                                            <option value="{{$cat->id}}">{{$cat->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>

@@ -1,5 +1,5 @@
 @extends(\Illuminate\Support\Facades\Auth::guard('employee')->check()?'layout.mainlayout':'layouts.app')
-@section('title','Order Create')
+@section('title','Order Edit')
 @section('content')
     {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>--}}
 
@@ -286,6 +286,50 @@
 
                                             </tr>
                                             <script>
+                                                $(".update_item_{{$order->id}}").keyup(function () {
+                                                    var unit_id=$('#unit{{$order->id}} option:selected').val();
+                                                    if(!$('#unit{{$order->id}} option:selected').val()){
+                                                        var price=$('#price_{{$order->id}}').val();
+
+                                                    }else {
+                                                        @foreach($prices as $item)
+                                                        if(unit_id=="{{$item->unit_id}}") {
+                                                            if('{{$order->variant->pricing_type}}'==1){
+                                                                var qty=$('#quantity_{{$order->id}}').val();
+                                                                if(parseInt("{{$item->min}}")<= qty){
+                                                                    var price = "{{$item->price}}";
+                                                                }
+
+                                                            }else {
+                                                                if('{{$item->multi_price}}'== 0){
+
+                                                                    var price = "{{$item->price}}";
+
+                                                                }
+                                                            }
+                                                        }
+                                                        @endforeach
+                                                    }
+
+                                                    @if($order->foc)
+                                                    $('#price_{{$order->id}}').val(0);
+                                                    $('#total_{{$order->id}}').val(0);
+                                                    @else
+                                                    $('#price_{{$order->id}}').val(price);
+                                                    var quantity = $('#quantity_{{$order->id}}').val();
+                                                    var dis_pro=$('#dis_pro{{$order->id}} option:selected').val();
+                                                    var sub_total =quantity * price;
+                                                    var amount=(dis_pro/100)*sub_total;
+                                                    var total=sub_total-amount;
+                                                    $('#total_{{$order->id}}').val(total);
+                                                    var sum = 0;
+                                                    $('.total').each(function() {
+                                                        sum += parseFloat($(this).val());
+                                                    });
+                                                    $('#total').val(sum);
+                                                    @endif
+
+                                                });
                                                 $(document).ready(function () {
 
                                                     var unit_id=$('#unit{{$order->id}} option:selected').val();
@@ -339,6 +383,7 @@
                                                             }
                                                         }
                                                         @endforeach
+                                                        // alert(price);
                                                         $('#price_{{$order->id}}').val(price);
 
                                                         var quantity = $('#quantity_{{$order->id}}').val();
@@ -381,24 +426,7 @@
                                                         $('#total_{{$order->id}}').val(0);
                                                                 @else
                                                         var quantity = $('#quantity_{{$order->id}}').val();
-                                                        @foreach($prices as $item)
-                                                        if(unit_id=="{{$item->unit_id}}") {
-                                                            if('{{$order->variant->pricing_type}}'==1){
-                                                                var qty=$('#quantity_{{$order->id}}').val();
-                                                                if(parseInt("{{$item->min}}")<= qty){
-                                                                    var price = "{{$item->price}}";
-                                                                }
-
-
-                                                            }else {
-                                                                if('{{$item->multi_price}}'== 0){
-
-                                                                    var price = "{{$item->price}}";
-
-                                                                }
-                                                            }
-                                                        }
-                                                                @endforeach
+                                                        var price = $('#price_{{$order->id}}').val();
                                                         var dis_pro=$('#dis_pro{{$order->id}} option:selected').val();
                                                         var sub_total =quantity * price??0;
                                                         var amount=(dis_pro/100)*sub_total;
@@ -685,7 +713,7 @@
 
                             } else if ($.isEmptyObject(data.error)) {
                                 console.log(data);
-                                swal('Order Crete', 'Order Create Succes', 'success');
+                                swal('Order Update', 'Order Update Success', 'success');
 
                                 window.location.href = "/saleorders";
                             } else {
