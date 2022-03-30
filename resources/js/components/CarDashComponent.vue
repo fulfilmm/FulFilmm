@@ -21,7 +21,6 @@
                       <th scope="col"> Notice</th>
                       <th scope="col"> Maintain </th>
                       <th scope="col"> Schedule </th>
-                   
                       <th scope="col"> Detail</th>
                       <th scope="col"> Delete </th>
                     </tr>
