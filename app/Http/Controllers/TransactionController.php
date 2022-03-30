@@ -19,6 +19,7 @@ use App\Models\Revenue;
 use App\Models\RevenueBudget;
 use App\Models\Transaction;
 use App\Models\TransactionCategory;
+use App\Traits\NotifyTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,6 +28,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class TransactionController extends Controller
 {
+    use NotifyTrait;
     /**
      * Display a listing of the resource.
      *
@@ -121,6 +123,7 @@ class TransactionController extends Controller
             $exp->update();
         }
         $this->transaction_add($request->account, $request->type, $new_expense->id, null);
+        $this->addnotify($request->approver_id,'noti','Add new expense','expense',Auth::guard('employee')->user()->id);
         $last_tran = Transaction::orderBy('id', 'desc')->first();
         if (isset($request->bill_id)) {
             $bill = Bill::where('id', $request->bill_id)->first();
@@ -270,6 +273,7 @@ class TransactionController extends Controller
              }
            }
            $this->transaction_add($request->account, $request->type, null, $new_revenue->id);
+           $this->addnotify($request->approver_id,'noti','Add new revenue','revenue',Auth::guard('employee')->user()->id);
            if (isset($request->invoice_id)) {
                $inv = Invoice::where('id', $request->invoice_id)->first();
                $inv->due_amount = $inv->due_amount - $request->amount;
