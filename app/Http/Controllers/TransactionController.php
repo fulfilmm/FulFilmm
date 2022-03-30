@@ -335,9 +335,9 @@ class TransactionController extends Controller
                 $revenue->approve = 1;
                 $revenue->update();
                 $account->update();
-                $rev_budget=RevenueBudget::where('category_id',$revenue->category)->where('year',Carbon::parse($revenue->transaction_date)->format('Y'))->where('month',Carbon::parse($revenue->transaction_date)->format('m'))->first();
-                $rev_budget->actual=$rev_budget->actual + $revenue->amount;
-                $rev_budget->update();
+//                $rev_budget=RevenueBudget::where('category_id',$revenue->category)->where('year',Carbon::parse($revenue->transaction_date)->format('Y'))->where('month',Carbon::parse($revenue->transaction_date)->format('m'))->first();
+//                $rev_budget->actual=$rev_budget->actual + $revenue->amount;
+//                $rev_budget->update();
             } else {
                 return redirect('revenue')->with('error', 'You can not approve');
             }
@@ -350,9 +350,9 @@ class TransactionController extends Controller
                 $expense->approve = 1;
                 $expense->update();
                 $account->update();
-                $exp_budget=ExpenseBudget::where('category_id',$expense->category)->where('year',Carbon::parse($expense->transaction_date)->format('Y'))->where('month',Carbon::parse($expense->transaction_date)->format('m'))->first();
-                $exp_budget->actual=$exp_budget->actual??0 + $expense->amount;
-                $exp_budget->update();
+//                $exp_budget=ExpenseBudget::where('category_id',$expense->category)->where('year',Carbon::parse($expense->transaction_date)->format('Y'))->where('month',Carbon::parse($expense->transaction_date)->format('m'))->first();
+//                $exp_budget->actual=$exp_budget->actual??0 + $expense->amount;
+//                $exp_budget->update();
             } else {
                 return redirect('expense')->with('error', 'You can not approve');
             }
