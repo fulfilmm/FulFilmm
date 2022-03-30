@@ -18,6 +18,10 @@
                       <th scope="col"> Model </th>
                       <th scope="col"> Status </th>
                       <th scope="col"> Alert  </th>
+                      <th scope="col"> Notice</th>
+                      <th scope="col"> Maintain </th>
+                      <th scope="col"> Schedule </th>
+                   
                       <th scope="col"> Detail</th>
                       <th scope="col"> Delete </th>
                     </tr>
@@ -35,29 +39,58 @@
                             
                             <div v-else>
                                  <div v-for="s in car.status" :key="s.id">
-                                    <div  v-if="s.status == 0" class="badge badge-warning"> Maintain </div>
-                                    <div  v-else-if="s.status == 1" class="badge badge-danger" > Repair </div>
+                                   <div v-if="s.check == 0">
+                                        <div  v-if="s.status == 0" class="badge badge-warning rounded-pill"> Maintain </div>
+                                         <div  v-else-if="s.status == 1" class="badge badge-danger rounded-pill" > Repair </div>
+                                   </div>
+                                   <!-- <div v-else>
+                                      <p class="text-success text-sm font-weight-bold"> Working</p>
+                                   </div> -->
+                                    
                                 </div>
                             </div>
                             
                         </div>
-
-                     
-                       
-                      
                        
                       </td>
 
                       <td class=""> 
-                        <span class="px-2 py-2 text-sm rounded-pill bg-danger text-white"  v-if="car.license_renew_date <= lastMonth"> License Expire Soon</span>
-                        <span class="px-2 py-2 text-sm rounded-pill bg-success text-white"  v-else> Nothing Happen </span>   
+                        <span class="badge badge-danger rounded-pill"  v-if="car.license_renew_date <= lastMonth"> License Expire Soon</span>
+                        <span class="badge badge-success rounded-pill"  v-else> Nothing Happen </span>   
                       </td>
 
-                      
-                      <td> <a :href="`/car-list/${car.id}`"  class=" btn btn-info shodow-md px-3 border-none rounded-pill text-white"> Detail </a> </td>
+                      <td class="">
+                        <div v-for="data in car.routines" :key="data.id">
+                          <div v-if="data.check == 0">
+                            <div v-for="d in JSON.parse(data.case)" :key="d.id">
+                             
+                                    
+                                    <small class="text-danger" v-if="d.end_date <= lastMonth"> {{ d.case}} || {{ d.end_date }} </small>
+                                    <!--<small class="" v-else>  {{ d.end_date }} </small> -->
+                              
+                            </div>
+                          </div>
+                         </div>
+                             
+
+
+                              
+
+                      </td>
 
                       <td>
-                        <button type="button" class="btn btn-danger rounded-pill" @click="destroy(car.id)"> Delete </button>
+                          <a :href="`/car-list/car-maintain/${car.id}`" class="btn btn-success rounded-pill text-white"> <font-awesome-icon icon="fa-solid fa-clipboard-list" /> </a>
+                      </td>
+
+                        <td>
+                          <a :href="`/car-list/car-record/${car.id}`" class="btn btn-secondary rounded-pill text-white"> <font-awesome-icon icon="fa-solid fa-notes-medical" /> </a>
+                        </td>
+
+                      
+                      <td> <a :href="`/car-list/${car.id}`"  class=" btn btn-info rounded-pill text-white"> <font-awesome-icon icon="fa-circle-info" /> </a> </td>
+
+                      <td>
+                        <button type="button" class="btn btn-danger rounded-pill" @click="destroy(car.id)"> <font-awesome-icon icon="fa-trash-can" />  </button>
                       </td>
                     
                     </tr>
@@ -78,6 +111,7 @@
                               <div class="alert alert-success" v-show="success"> Data Created Successfully</div>
                                 <div class="form-group col-md-6 col-sm-12">
                                   <input type="text" v-model="car.license_no" class="form-control" placeholder=" Please Fill License Number" aria-describedby="helpId" required>
+                                  <small class="text-danger font-weight-bold font-italic text-left">  Required  </small>
                                 </div>
 
                                 <div class="form-group col-md-6 col-sm-12">

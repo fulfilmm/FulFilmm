@@ -9,7 +9,7 @@ class MaintainRecord extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['status','car_id','case', 'description', 'kilometer', 'workshop','service_date','driver', 'attaches'];
+    protected $fillable = ['status','car_id','case', 'description', 'kilometer', 'workshop','service_date','driver', 'attaches','total','check'];
     
     
     public function car()

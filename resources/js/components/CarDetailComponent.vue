@@ -7,7 +7,7 @@
             </div>
 
             <div>
-                <a :href="`/car-list`" class="text-white bg-secondary px-3 py-2 my-2 rounded text-decoration-none"> <font-awesome-icon icon="backward" /> Back </a>
+                <router-link :to="`/car-list`" class="text-white bg-secondary px-3 py-2 my-2 rounded text-decoration-none"> <font-awesome-icon icon="backward" /> Back </router-link>
             </div>
 
               <form @submit.prevent="updateData">
@@ -215,8 +215,12 @@
                             
                             <div>
                                  <div v-for="s in car.status" :key="s.id">
-                                    <div  v-if="s.status == 0" class="badge badge-warning"> Maintain </div>
-                                    <div  v-else-if="s.status == 1" class="badge badge-danger" > Repair </div>
+                                     <div v-if="s.check == 0">
+                                         <div  v-if="s.status == 0" class="badge badge-warning"> Maintain </div>
+                                         <div  v-else-if="s.status == 1" class="badge badge-danger" > Repair </div>
+                                     </div>
+                                     
+                                   
                                 </div>
                             </div>
 

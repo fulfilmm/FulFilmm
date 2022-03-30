@@ -6,6 +6,12 @@ use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\InvoiceController;
 use App\Http\Controllers\Api\CarController;
 use App\Http\Controllers\Api\MaintainController;
+use App\Http\Controllers\Api\MaintainCheckController;
+use App\Http\Controllers\Api\Invoice\InvoiceDataController;
+
+use App\Http\Controllers\Api\Ecommerce\ProductAddController;
+use App\Http\Controllers\Api\Ecommerce\ProductPromotionController;
+use App\Http\Controllers\Api\Ecommerce\ProductBannerController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -43,11 +49,27 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
        $aa=\Illuminate\Support\Facades\Auth::guard('api')->user()->role->name;
        return response()->json(['role'=>$aa]);
     });
+
+    
+    // Api for Ecommerce Application
+    Route::apiResource('ecommerce_products_add', ProductAddController::class);
+    Route::apiResource('ecommerce_products_promotion', ProductPromotionController::class);
+    Route::apiResource('ecommerce_banner', ProductBannerController::class);
 });
 
+//Api for Car
 Route::apiResource("car_data", CarController::class);
 
 Route::apiResource("maintainance", MaintainController::class);
+Route::apiResource("maintain_check", MaintainCheckController::class);
+Route::apiResource("invoice" , InvoiceController::class);
+
+
+
+
+
+
+
 
 
 Route::post('/auth/login',[ApiAuthController::class,'login'])->name('login');

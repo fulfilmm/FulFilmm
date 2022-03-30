@@ -6,13 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use App\Models\CarData;
+use App\Models\MaintainSchedule;
+use App\Models\MaintainRecord;
 
 class CarController extends Controller
 {
     
     public function index()
     {
-        $cars = CarData::with('status')
+        $cars = CarData::with('status' , 'routines')
                 ->orderBy('id', 'desc') -> get();
 
         foreach ( $cars as $file) {
@@ -133,7 +135,7 @@ class CarController extends Controller
    
     public function show($id)
     {
-        $data = CarData::with('status')
+        $data = CarData::with('status' , 'routines')
                 -> find($id);
                 
         $data->attach = json_decode($data->attach);
@@ -184,5 +186,12 @@ class CarController extends Controller
     {
         $data = CarData::find($id);
         $data -> delete();
+
+        $schedule = MaintainSchedule::where('car_id' , $id);
+        $schedule -> delete();
+
+        $record = MaintainRecord::where('car_id', $id);
+        $record -> delete();
+
     }
 }

@@ -29,6 +29,14 @@ class MaintainController extends Controller
         return response() -> download( $filePath, $fileName);
     } 
 
+    public function downloadRecord($data)
+    {
+        $filePath = public_path('/upload/maintain/maintain_check/attaches/'.$data);
+        $fileName = $data;
+
+        return response() -> download($filePath, $fileName);
+    }
+
     public function create()
     { 
         //

@@ -44,7 +44,8 @@ class MaintainController extends Controller
             'service_date' => 'required',
             'driver' => 'required',
             'attaches' => 'required',
-
+            'total' => 'required',
+ 
         ]);
 
         if( $request->hasfile('attaches')){
@@ -53,7 +54,7 @@ class MaintainController extends Controller
             foreach( $request -> file('attaches') as $file ){
 
                 $name = Uniqid().'_'.$file -> getClientOriginalName();
-                $file -> move(public_path().'/upload/maintain/attach', $name);
+                $file -> move(public_path().'/upload/maintain/attach/', $name);
                 $data[] = $name;
                 $result = json_encode($data);
             }
@@ -69,6 +70,7 @@ class MaintainController extends Controller
             'service_date' => $request -> service_date,
             'driver' => $request -> driver,
             'attaches' => $result,
+            'total' => $request -> total,
 
         ]);
 
@@ -86,6 +88,7 @@ class MaintainController extends Controller
     {
         $maintain = MaintainRecord::find($id);
         $maintain->attaches = json_decode($maintain->attaches);
+        $maintain->case = json_decode($maintain->case);
         
 
         $car = CarData::where('id', $id) ->get();
@@ -107,13 +110,14 @@ class MaintainController extends Controller
             'service_date' => 'nullable',
             'driver' => 'nullable',
             'attaches' => 'nullable',
+            'check' => 'nullable',
 
         ]);
 
         $maintain = MaintainRecord::find($id);
 
         $maintain -> update( $request -> only ('status','case','description', 'kilometer', 
-                                                'workshop', 'service_date', 'driver'));
+                                                'workshop', 'service_date', 'driver','check'));
         
         return $maintain;
     

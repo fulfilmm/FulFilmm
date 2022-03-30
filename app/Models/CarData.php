@@ -20,4 +20,12 @@ class CarData extends Model
     {
         return $this->hasMany(MaintainRecord::class, 'car_id');
     }
+
+    public function routines()
+    {
+        return $this -> hasMany(MaintainSchedule::class, 'car_id');
+    }
+
+    
+  
 } 
