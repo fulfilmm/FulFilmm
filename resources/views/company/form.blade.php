@@ -80,64 +80,12 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-4">
-        <div class="card shadow">
-            <div class="card-header">
-                Social Media
-            </div>
-          <div class="col-12">
-              <div class="row my-3">
-                  <div class="col-md-12">
-                      <div class="form-group">
-                          <label for="web_link">Web Link</label>
-                          <div class="input-group">
-                              <div class="input-group-prepend">
-                                  <span class="input-group-text"><i class="fa fa-globe"></i></span>
-                              </div>
-                              <input type="text" id="web_link" class="form-control" name="web_link" value="{{$record->web_link ?? old('web_link')}}"  title="Web Link">
-                          </div>
-                      </div>
-                  </div>
-                  <div class="col-md-12">
-                      <div class="form-group">
-                          <label for="linkedin">Linkedin</label>
-                          <div class="input-group">
-                              <div class="input-group-prepend">
-                                  <span class="input-group-text"><i class="fa fa-linkedin-square"></i></span>
-                              </div>
-                              <input type="text" class="form-control" id="linkedin" name="linkedin" value="{{$record->linkedin ?? old('linkedin')}}"
-                                     title="Linkedin">
-                          </div>
-                      </div>
-                  </div>
-                  <div class="col-md-12">
-                      <div class="form-group">
-                          <label for="facebook_page">Facebook</label>
-                          <div class="input-group">
-                              <div class="input-group-prepend">
-                                  <span class="input-group-text"><i class="fa fa-facebook-square"></i></span>
-                              </div>
-                              <input type="text" id="facebook_page" class="form-control" name="facebook_page" value="{{$record->facebook_page ?? old('facebook_page')}}"
-                                     title="Facebook Page" >
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-        </div>
-        <div class="card shadow">
-            <div class="col-12">
-                <button class="btn btn-primary col-12 my-3" type="submit">@if(isset($record))Update @else Create @endif</button>
-                <a href="{{route('companies.index')}}" class="btn btn-secondary col-12 mb-3">Cancel</a>
-            </div>
-        </div>
-    </div>
     <div class="col-md-8 ">
         <div class="card shadow">
             <div class="card-header">
                 Others
             </div>
-        <div class="col-12">
+            <div class="col-12">
             <div class="row my-3">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -205,6 +153,58 @@
                 </div>
             </div>
         </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow">
+            <div class="card-header">
+                Social Media
+            </div>
+            <div class="col-12">
+                <div class="row my-3">
+                    <div class="col-md-12 col-12">
+                        <div class="form-group">
+                            <label for="web_link">Web Link</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-globe"></i></span>
+                                </div>
+                                <input type="text" id="web_link" class="form-control" name="web_link" value="{{$record->web_link ?? old('web_link')}}"  title="Web Link">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-12">
+                        <div class="form-group">
+                            <label for="linkedin">Linkedin</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-linkedin-square"></i></span>
+                                </div>
+                                <input type="text" class="form-control" id="linkedin" name="linkedin" value="{{$record->linkedin ?? old('linkedin')}}"
+                                       title="Linkedin">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-12">
+                        <div class="form-group">
+                            <label for="facebook_page">Facebook</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-facebook-square"></i></span>
+                                </div>
+                                <input type="text" id="facebook_page" class="form-control" name="facebook_page" value="{{$record->facebook_page ?? old('facebook_page')}}"
+                                       title="Facebook Page" >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card shadow">
+            <div class="col-12">
+                <button class="btn btn-primary col-12 my-3" type="submit">@if(isset($record))Update @else Create @endif</button>
+                <a href="{{route('companies.index')}}" class="btn btn-secondary col-12 mb-3">Cancel</a>
+            </div>
         </div>
     </div>
 </div>

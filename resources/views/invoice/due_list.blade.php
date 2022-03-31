@@ -168,7 +168,7 @@
                 function (settings, data, dataIndex) {
                     var min = $('#min').datepicker("getDate");
                     var max = $('#max').datepicker("getDate");
-                    var startDate = new Date(data[3]);
+                    var startDate = new Date(data[5]);
                     if (min == null && max == null) { return true; }
                     if (min == null && startDate <= max) { return true;}
                     if(max == null && startDate >= min) {return true;}
@@ -189,14 +189,14 @@
         $(document).ready(function() {
             $('#filter_id').keyup(function () {
                 var table = $('#invoice').DataTable();
-                table.column(1).search($(this).val()).draw();
+                table.column(0).search($(this).val()).draw();
 
             });
         });
         $(document).ready(function() {
             $('#filter_status').on('change', function () {
                 var table = $('#invoice').DataTable();
-                table.column(6).search($(this).val()).draw();
+                table.column(9).search($(this).val()).draw();
 
             });
         });

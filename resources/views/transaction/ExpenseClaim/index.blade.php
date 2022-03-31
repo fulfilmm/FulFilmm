@@ -47,39 +47,41 @@
                     </div>
 
                 </div>
-                <table class="table table-striped custom-table mb-0" id="exp_claim">
-                    <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Title</th>
-                        <th>Employee</th>
-                        <th>Amount</th>
-                        <th>Approver</th>
-                        <th>Status</th>
-                        <th>Is Claim</th>
-                        <th>Action</th>
-                    </tr>
+                <div class="col-12" style="overflow:auto;">
+                    <table class="table table-striped custom-table mb-0" id="exp_claim">
+                        <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Title</th>
+                            <th>Employee</th>
+                            <th>Amount</th>
+                            <th>Approver</th>
+                            <th>Status</th>
+                            <th>Is Claim</th>
+                            <th>Action</th>
+                        </tr>
 
-                    </thead>
-                    <tbody>
-                    @foreach($expense_claim as $expense)
-                    <tr>
-                        <td>{{\Carbon\Carbon::parse($expense->date)->toFormattedDateString()}}</td>
-                        <td><a href="{{route('expenseclaims.show',$expense->id)}}">{{$expense->title??''}}</a></td>
-                    <td>{{$expense->employee->name}}</td>
-                    <td>{{$expense->total}}</td>
-                    <td>{{$expense->approver->name}}</td>
-                    <td>{{$expense->status}}</td>
-                        <td>{{$expense->is_claim?'Yes':'No'}}</td>
-                        <td>
-                            {{--<a href="" class="btn btn-primary btn-s"><i class="fa fa-edit"></i></a>--}}
-                            <a href="{{route('expenseclaims.show',$expense->id)}}" class="btn btn-white btn-s"><i class="fa fa-eye"></i></a>
-                            {{--<a href="" class="btn btn-danger btn-s"><i class="fa fa-trash"></i></a>--}}
-                        </td>
-                    </tr>
-                    @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        @foreach($expense_claim as $expense)
+                            <tr>
+                                <td>{{\Carbon\Carbon::parse($expense->date)->toFormattedDateString()}}</td>
+                                <td><a href="{{route('expenseclaims.show',$expense->id)}}">{{$expense->title??''}}</a></td>
+                                <td>{{$expense->employee->name}}</td>
+                                <td>{{$expense->total}}</td>
+                                <td>{{$expense->approver->name}}</td>
+                                <td>{{$expense->status}}</td>
+                                <td>{{$expense->is_claim?'Yes':'No'}}</td>
+                                <td>
+                                    {{--<a href="" class="btn btn-primary btn-s"><i class="fa fa-edit"></i></a>--}}
+                                    <a href="{{route('expenseclaims.show',$expense->id)}}" class="btn btn-white btn-sm"><i class="fa fa-eye"></i></a>
+                                    {{--<a href="" class="btn btn-danger btn-s"><i class="fa fa-trash"></i></a>--}}
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

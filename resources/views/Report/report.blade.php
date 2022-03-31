@@ -36,7 +36,7 @@
         <!-- /Page Header -->
         <div class="col-md-12 col-sm-12 col-12 card shadow">
             <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade active show my-3" id="sale" role="tabpanel" aria-labelledby="home-tab">
+                <div class="tab-pane fade active show my-3" id="sale" role="tabpanel" aria-labelledby="home-tab" style="overflow: auto">
                     <table id="sale_table" class="table table-hover table-nowrap "  style="width: 100%">
                         <thead>
                         <tr>
@@ -80,7 +80,7 @@
 
                     </table>
                 </div>
-                <div class="tab-pane fade" id="stockin_tab" role="tabpanel" aria-labelledby="home-tab">
+                <div class="tab-pane fade" id="stockin_tab" role="tabpanel" aria-labelledby="home-tab" style="overflow: auto">
                     <table id="stockin" class="table col-12" style="width: 100%">
                         <thead>
                         <tr>
@@ -97,7 +97,7 @@
                         </thead>
                     </table>
                 </div>
-                <div class="tab-pane fade " id="stockoutReport" role="tabpanel" aria-labelledby="home-tab">
+                <div class="tab-pane fade " id="stockoutReport" role="tabpanel" aria-labelledby="home-tab" style="overflow: auto">
                     <table id="stockout" class="table dataTable"  style="width: 100%">
                         <thead>
                         <tr>
@@ -114,7 +114,7 @@
                         </thead>
                     </table>
                 </div>
-                <div class="tab-pane fade" id="revenue" role="tabpanel" aria-labelledby="contact-tab">
+                <div class="tab-pane fade" id="revenue" role="tabpanel" aria-labelledby="contact-tab" style="overflow: auto">
                     <table id="income" class="table col-12" style="width: 100%">
                         <thead>
                         <tr>
@@ -129,10 +129,8 @@
                         </tr>
                         </thead>
                     </table>
-                    <table class="table" id="summary">
-                    </table>
                 </div>
-                <div class="tab-pane fade" id="expense" role="tabpanel" aria-labelledby="contact-tab">
+                <div class="tab-pane fade" id="expense" role="tabpanel" aria-labelledby="contact-tab" style="overflow: auto">
                     <table id="expense_table" class="table col-12" style="width: 100%">
                         <thead>
                         <tr>
@@ -147,10 +145,8 @@
                         </tr>
                         </thead>
                     </table>
-                    <table class="table" id="summary">
-                    </table>
                 </div>
-                <div class="tab-pane fade" id="stock_report" role="tabpanel" aria-labelledby="contact-tab">
+                <div class="tab-pane fade" id="stock_report" role="tabpanel" aria-labelledby="contact-tab" style="overflow: auto">
                     <table class="table" id="stock_report_table" style="width: 100%">
                         <thead>
                         <tr>
@@ -167,7 +163,7 @@
                         </thead>
                     </table>
                 </div>
-                <div class="tab-pane fade" id="advance_pay" role="tabpanel" aria-labelledby="contact-tab">
+                <div class="tab-pane fade" id="advance_pay" role="tabpanel" aria-labelledby="contact-tab" style="overflow: auto">
                     <table class="table" id="advance_payment_table" style="width: 100%">
                         <thead>
                         <tr>

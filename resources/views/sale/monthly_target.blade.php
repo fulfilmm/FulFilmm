@@ -24,11 +24,11 @@
                         <select id="search-nav-select" class="form-control">
                             <option value='0' data-toggle="#Jan" {{date('M')=='Jan'?"selected":''}}>January</option>
                             <option value='1' data-toggle="#Feb" {{date('M')=='Feb'?"selected":''}}>February</option>
-                            <option value='2' data-toggle="#March" {{date('M')=='Mar'?"selected":''}}>March</option>
-                            <option value='3' data-toggle="#April" {{date('M')=='Apr'?"selected":''}}>April</option>
+                            <option value='2' data-toggle="#Mar" {{date('M')=='Mar'?"selected":''}}>March</option>
+                            <option value='3' data-toggle="#Apr" {{date('M')=='Apr'?"selected":''}}>April</option>
                             <option value='4' data-toggle="#May" {{date('M')=='May'?"selected":''}}>May</option>
-                            <option value='5' data-toggle="#June" {{date('M')=='Jun'?"selected":''}}>June</option>
-                            <option value='6' data-toggle="#July" {{date('M')=='Jul'?"selected":''}}>July</option>
+                            <option value='5' data-toggle="#Jun" {{date('M')=='Jun'?"selected":''}}>June</option>
+                            <option value='6' data-toggle="#Jul" {{date('M')=='Jul'?"selected":''}}>July</option>
                             <option value='7' data-toggle="#Aug" {{date('M')=='Aug'?"selected":''}}>August</option>
                             <option value='8' data-toggle="#Sep" {{date('M')=='Sep'?"selected":''}}>September</option>
                             <option value='9' data-toggle="#Oct" {{date('M')=='Oct'?"selected":''}}>October</option>
@@ -41,7 +41,7 @@
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane fade" id="Jan" role="tabpanel" aria-labelledby="nav-home-tab">
 
-                    <div class="col-12">
+                    <div class="col-12" style="overflow: auto">
                         <table class="table table-striped custom-table mb-0 datatable">
                             <thead>
                             <tr>
@@ -69,7 +69,7 @@
 
                 </div>
                 <div class="tab-pane fade" id="Feb" role="tabpanel" aria-labelledby="nav-profile-tab">
-                    <div class="col-12">
+                    <div class="col-12"style="overflow: auto">
                         <table class="table table-striped custom-table mb-0 datatable">
                             <thead>
                             <tr>
@@ -95,8 +95,8 @@
                         </table>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="March" role="tabpanel" aria-labelledby="nav-contact-tab">
-                    <div class="col-12">
+                <div class="tab-pane fade" id="Mar" role="tabpanel" aria-labelledby="nav-contact-tab">
+                    <div class="col-12"style="overflow: auto">
                         <table class="table table-striped custom-table mb-0 datatable">
                             <thead>
                             <tr>
@@ -122,8 +122,8 @@
                         </table>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="April" role="tabpanel" aria-labelledby="nav-contact-tab">
-                    <div class="col-12">
+                <div class="tab-pane fade" id="Apr" role="tabpanel" aria-labelledby="nav-contact-tab">
+                    <div class="col-12"style="overflow: auto">
                         <table class="table table-striped custom-table mb-0 datatable">
                             <thead>
                             <tr>
@@ -150,7 +150,7 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="May" role="tabpanel" aria-labelledby="nav-contact-tab">
-                    <div class="col-12">
+                    <div class="col-12"style="overflow: auto">
                         <table class="table table-striped custom-table mb-0 datatable">
                             <thead>
                             <tr>
@@ -176,8 +176,8 @@
                         </table>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="June" role="tabpanel" aria-labelledby="nav-contact-tab">
-                    <div class="col-12">
+                <div class="tab-pane fade" id="Jun" role="tabpanel" aria-labelledby="nav-contact-tab">
+                    <div class="col-12"style="overflow: auto">
                         <table class="table table-striped custom-table mb-0 datatable">
                             <thead>
                             <tr>
@@ -203,8 +203,8 @@
                         </table>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="July" role="tabpanel" aria-labelledby="nav-contact-tab">
-                    <div class="col-12">
+                <div class="tab-pane fade" id="Jul" role="tabpanel" aria-labelledby="nav-contact-tab">
+                    <div class="col-12"style="overflow: auto">
                         <table class="table table-striped custom-table mb-0 datatable">
                             <thead>
                             <tr>
@@ -231,7 +231,7 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="Aug" role="tabpanel" aria-labelledby="nav-contact-tab">
-                    <div class="col-12">
+                    <div class="col-12"style="overflow: auto">
                         <table class="table table-striped custom-table mb-0 datatable">
                             <thead>
                             <tr>
@@ -258,7 +258,7 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="Sep" role="tabpanel" aria-labelledby="nav-contact-tab">
-                    <div class="col-12">
+                    <div class="col-12"style="overflow: auto">
                         <table class="table table-striped custom-table mb-0 datatable">
                             <thead>
                             <tr>
@@ -285,7 +285,7 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="Oct" role="tabpanel" aria-labelledby="nav-contact-tab">
-                    <div class="col-12">
+                    <div class="col-12"style="overflow: auto">
                         <table class="table table-striped custom-table mb-0 datatable">
                             <thead>
                             <tr>
@@ -312,7 +312,7 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="Nov" role="tabpanel" aria-labelledby="nav-contact-tab">
-                    <div class="col-12">
+                    <div class="col-12"style="overflow: auto">
                         <table class="table table-striped custom-table mb-0 datatable">
                             <thead>
                             <tr>
@@ -339,7 +339,7 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="Dec" role="tabpanel" aria-labelledby="nav-contact-tab">
-                    <div class="col-12">
+                    <div class="col-12"style="overflow: auto">
                         <table class="table table-striped custom-table mb-0 datatable">
                             <thead>
                             <tr>
@@ -454,10 +454,10 @@
 
             $(document).ready(function() {
                 $('select').select2();
+                $("#{{date('M')}}").addClass('show');
+                $("#{{date('M')}}").addClass('active');
             });
         $(document).ready(function () {
-            $("#{{date('M')}}").addClass('show');
-            $("#{{date('M')}}").addClass('active');
             $('#search-nav-select').on('change', function() {
                 $('.tab-pane').removeClass('show');
                 $('.tab-pane').removeClass('active');

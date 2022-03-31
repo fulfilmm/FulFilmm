@@ -415,7 +415,7 @@
 
     </li><!--Purchase-->
     <li class="submenu">
-        <a href="#"><i class="la la-money " style="font-size: 18px"></i><span>Bills</span> <span
+        <a href="#"><i class="la la-money " ></i><span>Bills</span> <span
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
             <li><a class="{{ Request::is('bills') ? 'active' : '' }}" href="{{route('bills.index')}}"
@@ -425,7 +425,7 @@
         </ul>
     </li><!--Bill -->
     <li class="submenu">
-        <a href="#"><i class="la la-truck" style="font-size: 18px;"></i> <span>Delivery</span> <span
+        <a href="#"><i class="la la-truck"></i> <span>Delivery</span> <span
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
 
@@ -441,7 +441,7 @@
         </ul>
     </li><!-- Delivery -->
     <li class="submenu">
-        <a href="#"><i class="la la-automobile" style="font-size: 18px;"></i> <span> Cars</span> <span
+        <a href="#"><i class="la la-automobile" ></i> <span> Cars</span> <span
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
 
