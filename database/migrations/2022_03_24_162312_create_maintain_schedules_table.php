@@ -20,10 +20,10 @@ class CreateMaintainSchedulesTable extends Migration
             $table->string('driver')->nullable();
             $table->string('workshop')->nullable();
             $table->string('kilometer')->nullable();
-            $table->string('attaches') -> nullable();
+            $table->string('attaches')->nullable();
             //$table->string('total')->nullable();
-            $table->integer('check') -> default(0);
-            $table->text('note') -> nullable();
+            $table->integer('check')->default(0);
+            $table->text('note')->nullable();
             $table->timestamps();
         });
     }

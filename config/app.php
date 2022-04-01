@@ -180,6 +180,7 @@ return [
         App\Providers\RepositoryServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
+        Sarfraznawaz2005\BackupManager\ServiceProvider::class,
     ],
 
     /*
@@ -235,6 +236,7 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'DNS1D' => Milon\Barcode\Facades\DNS1DFacade::class,
         'DNS2D' => Milon\Barcode\Facades\DNS2DFacade::class,
+        'BackupManager' => Sarfraznawaz2005\BackupManager\Facades\BackupManager::class,
 
 
     ],
