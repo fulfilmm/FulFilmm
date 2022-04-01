@@ -260,9 +260,9 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="">Discount With Amount</label><br>
-                                            <input type="radio" name="amount_discount" checked value="1">
+                                            <input type="radio" name="amount_discount"  value="1">
                                             <label for="">ON</label>
-                                            <input type="radio" name="amount_discount" value="0">
+                                            <input type="radio" name="amount_discount" checked value="0">
                                             <label for="">Off</label>
                                         </div>
                                     </div>
@@ -590,7 +590,7 @@
                                     <td id="total_div" colspan="2"><input class="form-control" type="number" id="total">
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr id="dis_row">
                                     <th colspan="7" class="text-right"><span class="mt-5">Discount</span></th>
 
                                     <td id="discount_div" colspan="2"><div class="input-group">
@@ -664,7 +664,7 @@
                       if(sum > parseFloat('{{$item->min_amount}}') && sum < parseFloat('{{$item->max_amount}}')){
                           var discount=(parseInt('{{$item->rate}}')/100)*sum;
                           var sub_total=grand - discount;
-                          $('#percentage').show();
+                          $('#dis_row').show();
                           $('#discount').val(discount);
                           $('#percentage').text('{{$item->rate}}'+'%');
                           $('#grand_total').val(sub_total);
@@ -672,8 +672,7 @@
                       @endforeach
                   }
                 }else {
-                    $('#discount').val('0.0');
-                    $('#percentage').hide();
+                    $('#dis_row').hide();
                     $('#grand_total').val(grand);
                 }
             }
@@ -698,7 +697,7 @@
                         if(sum > parseFloat('{{$item->min_amount}}') && sum < parseFloat('{{$item->max_amount}}')){
                             var discount=(parseInt('{{$item->rate}}')/100)*sum;
                             var sub_total=grand - discount;
-                            $('#percentage').show();
+                            $('#dis_row').show();
                             $('#discount').val(discount);
                             $('#percentage').text('{{$item->rate}}'+'%');
                             $('#grand_total').val(sub_total);
@@ -707,7 +706,7 @@
                     }
                 }else {
                     $('#discount').val('0.0');
-                    $('#percentage').hide();
+                    $('#dis_row').hide();
                     $('#grand_total').val(grand);
                 }
 
@@ -726,13 +725,14 @@
                 var grand=(parseFloat(sum) + parseFloat(deli_fee) + parseFloat(tax_amount));
                 if(on_off==1){
                     if('{{$amount_discount->isEmpty()}}'){
+                        swal('Empty Amount Discount', 'Amount Discount Empty', 'error');
                         $('#grand_total').val(grand);
                     }else{
                         @foreach($amount_discount as $item)
                         if(sum > parseFloat('{{$item->min_amount}}') && sum < parseFloat('{{$item->max_amount}}')){
                             var discount=(parseInt('{{$item->rate}}')/100)*sum;
                             var sub_total=grand - discount;
-                            $('#percentage').show();
+                            $('#dis_row').show();
                             $('#discount').val(discount);
                             $('#percentage').text('{{$item->rate}}'+'%');
                             $('#grand_total').val(sub_total);
@@ -742,7 +742,7 @@
                 }else {
 
                     $('#discount').val('0.0');
-                    $('#percentage').hide();
+                    $('#dis_row').hide();
                     $('#grand_total').val(grand);
                 }
 
@@ -767,7 +767,7 @@
                         if(sum > parseFloat('{{$item->min_amount}}') && sum < parseFloat('{{$item->max_amount}}')){
                             var discount=(parseInt('{{$item->rate}}')/100)*sum;
                             var sub_total=grand - discount;
-                            $('#percentage').show();
+                            $('#dis_row').show();
                             $('#discount').val(discount);
                             $('#percentage').text('{{$item->rate}}'+'%');
                             $('#grand_total').val(sub_total);
@@ -775,6 +775,8 @@
                         @endforeach
                     }
                 }else {
+                    $('#percentage').hide();
+                    $('#dis_row').hide();
                     $('#grand_total').val(grand);
                 }
 
