@@ -582,6 +582,8 @@
             </li>
             <li><a class="{{ Request::is('product/tax') ? 'active' : '' }}"
                    href="{{ route('taxes') }}" style="text-decoration: none">Tax Setting</a></li>
+            <li><a class="{{ Request::is('backupmanager') ? 'active' : '' }}"
+                   href="{{url('backupmanager')}}" style="text-decoration: none">Database Backup</a></li>
         </ul>
     </li><!--Setting-->
 </ul>

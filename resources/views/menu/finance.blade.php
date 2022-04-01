@@ -349,5 +349,16 @@
             </li>
         </ul>
     </li>
+    <li class="submenu">
+        <a href="#"><i class="la la-ticket"></i> <span>Complain System</span> <span
+                    class="menu-arrow"></span></a>
+        <ul style="display: none;">
+
+            <li><a class="{{ Request::is('tickets') ? 'active' : '' }}"
+                   href="{{ route('tickets.index') }}"> style="text-decoration: none" My Created Ticket</a></li>
+            <li><a class="{{ Request::is('followed') ? 'active' : '' }}"
+                   href="{{ route('followed.tickets') }}" style="text-decoration: none">My Follow Ticket</a></li>
+        </ul>
+    </li>
 
 </ul>
