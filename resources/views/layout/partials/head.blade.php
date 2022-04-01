@@ -18,8 +18,8 @@
         
 
         <!--------------------- Vue Link ----------------------->
-        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
-        <script src="{{ mix('js/app.js') }}" defer></script>
+        {{--<link rel="stylesheet" href="{{ mix('css/app.css') }}">--}}
+{{--        <script src="{{ mix('js/app.js') }}" defer></script>--}}
 
         <!-- Fontawesome CSS -->
         <link rel="stylesheet" href="{{url(asset("/css/font-awesome.min.css"))}}">
