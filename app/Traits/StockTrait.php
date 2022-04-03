@@ -61,6 +61,12 @@ trait StockTrait
             $product_variant=ProductVariations::where('id',$request['variantion_id'])->first();
             $product_variant->update();
         }
+        $product=ProductStockBatch::all();
+        $total=0;
+        foreach ($product as $item){
+            $valuation=$item->qty*$item->purchase_price??0;
+            $total+=$valuation;
+        }
         $stock_transaction=new StockTransaction();
 //        dd($request['variantion_id']);
         $stock_transaction->product_name=$main_product->product->name;
@@ -71,6 +77,10 @@ trait StockTrait
         $stock_transaction->contact_id=$request['supplier_id'];
         $stock_transaction->emp_id=Auth::guard('employee')->user()->id;
         $stock_transaction->creator_id=Auth::guard('employee')->user()->id;
+        $stock_transaction->purchase_price=$request['valuation']??0;
+        $stock_transaction->sale_value=$request['valuation']* $request['qty'];
+        $stock_transaction->inventory_value=$total;
+        $stock_transaction->qty=$request['qty'];
         $stock_transaction->type="Stock In";
         $stock_transaction->save();
 

@@ -13,9 +13,9 @@ class PermissionSeeder extends Seeder
      * @return void
      */
     protected $permissions = [
-        'approvals','cases','comments','companysettings', 'companies', 'customers','deals','departments',
-        'employees','groups','invoices','leads','meetings','minutes',
-        'products','permissions','priorities','quotations','quotation_items','roles','rooms','senders','tickets','accounts','expenseclaims','rfqs','purchase_request',
+        'approvals','binlookup','cases','comments','companysettings', 'companies', 'customers','deals','departments',
+        'discount','employees','groups','invoices','leads','meetings','minutes',
+        'products','permissions','priorities','quotations','quotation_items','roles','rooms','senders','stockreturn','tickets','accounts','expenseclaims','rfqs','purchase_request',
         'purchaseorders','bills','sellingunits','discount_promotions','advancepayments','officebranch','product_brand'
     ];
     public function run()
@@ -187,6 +187,9 @@ class PermissionSeeder extends Seeder
         //Quotation route
         Permission::create(['name'=>'quotations.retail','display_name'=>'Retail Sale Quotation Create','type'=>'quotations','guard_name'=>'employee']);
         Permission::create(['name'=>'customer','display_name'=>'Invoice issued customer','type'=>'customers','guard_name'=>'employee']);
+        //invoice
+        Permission::create(['name'=>'invoice.list','display_name'=>'Invoice four type of list view','type'=>'invoices','guard_name'=>'employee']);
+
 
 
 

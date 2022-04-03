@@ -89,7 +89,7 @@
                                 </td>
                                 <td>{{$product->brand->name??'None'}}</td>
                                 <td class="text-center">
-
+                                    <a href="{{route("products.show",$product->id)}}" class="btn btn-warning btn-sm"><i class="la la-eye"></i></a>
                                     <a class="btn btn-white btn-sm" href="{{route("products.edit",$product->id)}}" ><i class="fa fa-pencil"></i> </a>
                                     <a class="btn btn-secondary btn-sm" href="{{url("product/duplicate/$product->id")}}" ><i class="fa fa-copy"></i> </a>
                                     <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#delete_product{{$product->id}}"><i class="fa fa-trash-o"></i> </a>

@@ -50,6 +50,7 @@
                             <td>{{$quotation->grand_total}}</td>
                             <td class="text-center">
                                 <div class="row">
+                                    <a href="{{route('quotations.show',$quotation->id)}}" class="btn btn-success btn-sm"><i class="la la-eye"></i></a>
                                     <a type="button" class="btn btn-primary btn-sm mr-2" href="{{route("quotations.edit",$quotation->id)}}"><i class="fa fa-pencil"></i></a>
                                     <a href="{{url('quotations/delete/'.$quotation->id)}}" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
                                 </div>

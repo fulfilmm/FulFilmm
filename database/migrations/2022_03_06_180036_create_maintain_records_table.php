@@ -24,6 +24,8 @@ class CreateMaintainRecordsTable extends Migration
             $table->dateTime('service_date');
             $table->unsignedBigInteger('driver');
             $table->string('attaches');
+            $table->integer('total');
+            $table->integer('check')->default(0);
             $table->timestamps();
         });
     }

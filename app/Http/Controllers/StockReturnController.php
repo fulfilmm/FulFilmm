@@ -6,6 +6,7 @@ use App\Models\Customer;
 use App\Models\Employee;
 use App\Models\Invoice;
 use App\Models\product;
+use App\Models\ProductStockBatch;
 use App\Models\ProductVariations;
 use App\Models\SellingUnit;
 use App\Models\Stock;
@@ -70,6 +71,15 @@ class StockReturnController extends Controller
         $stockreturn=StockReturn::create($data);
         $stock=Stock::where('variant_id',$request->variant_id)->first();
         $unit=SellingUnit::where('product_id',$request->variant_id)->first();
+        $stock->stock_balance=$stock->stock_balance + ($request->qty*$unit->unit_convert_rate);
+        $stock->available=$stock->available + ($request->qty*$unit->unit_convert_rate);
+        $stock->update();
+        $product=ProductStockBatch::all();
+        $total=0;
+        foreach ($product as $item){
+            $valuation=$item->qty*$item->purchase_price??0;
+            $total+=$valuation;
+        }
         $stock_transaction = new StockTransaction();
      try{
          $stock_transaction->product_name = $request->mainproduct;
@@ -79,15 +89,14 @@ class StockReturnController extends Controller
          $stock_transaction->contact_id=$request->customer_id;
          $stock_transaction->type ="Stock Return";
          $stock_transaction->emp_id=$request->emp_id;
+         $stock_transaction->qty=$request->qty*$unit->unit_convert_rate;
          $stock_transaction->creator_id=Auth::guard('employee')->user()->id;
          $stock_transaction->balance=$stock->stock_balance + ($request->qty*$unit->unit_convert_rate);
+         $stock_transaction->inventory_value=$total;
          $stock_transaction->save();
      }catch (\Exception $e){
          return redirect('stockreturn')->with('success',$e->getMessage());
      }
-        $stock->stock_balance=$stock->stock_balance + ($request->qty*$unit->unit_convert_rate);
-        $stock->available=$stock->available + ($request->qty*$unit->unit_convert_rate);
-        $stock->update();
         return redirect('stockreturn')->with('success','Stock Return Created');
 
     }

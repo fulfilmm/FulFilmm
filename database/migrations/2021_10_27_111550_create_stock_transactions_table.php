@@ -23,7 +23,11 @@ class CreateStockTransactionsTable extends Migration
             $table->bigInteger('warehouse_id')->unsigned();
             $table->bigInteger('emp_id')->unsigned();
             $table->bigInteger('creator_id')->unsigned();
+            $table->string('purchase_price')->nullable();
+            $table->double('sale_value')->nullable();
+            $table->double('inventory_value')->nullable();
             $table->double('balance');
+            $table->double('qty');
             $table->bigInteger('contact_id')->unsigned()->nullable();
             $table->string('type');
             $table->timestamps();

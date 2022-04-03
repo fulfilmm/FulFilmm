@@ -13,7 +13,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 card shadow">
+        <div class="col-12 card shadow" style="overflow: auto">
            <table class="table table-nowrap table-hover">
                <thead>
                <tr>

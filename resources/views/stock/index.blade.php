@@ -1,5 +1,5 @@
 @extends('layout.mainlayout')
-@section('title','Stock Transaction')
+@section('title','Stock Leger')
 @section('search')
     <div class="col-12 mt-1">
         <form action="{{route('stock.search')}}" method="GET">
@@ -24,10 +24,10 @@
         <div class="page-header my-3">
             <div class="row">
                 <div class="col-sm-12">
-                    <h3 class="page-title">Stock Transaction</h3>
+                    <h3 class="page-title">Stock Leger</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active"><a href="{{url('stocks/index')}}">Stock Transaction</a></li>
+                        <li class="breadcrumb-item active"><a href="{{url('stocks/index')}}">Stock Leger</a></li>
                     </ul>
                 </div>
                 <div class="col-auto float-right ml-auto">
@@ -53,6 +53,9 @@
                         <th>Type</th>
                         <th>Warehouse</th>
                         <th>Balance</th>
+                        <th>Price</th>
+                        <th>Sale Value</th>
+                        <th>Inventory Value</th>
                         <th>Employee</th>
                         <th>Unit</th>
                     </tr>
@@ -92,6 +95,9 @@
                                 </td>
                                 <td>{{$transaction->warehouse->name}}</td>
                                 <td><span id="balance{{$transaction->id}}"></span></td>
+                                <td>{{$transaction->purchase_price}}</td>
+                                <td>{{$transaction->sale_value}}</td>
+                                <td>{{$transaction->inventory_value}}</td>
                                 <td>{{$transaction->employee->name}}</td>
                                 <td>
                                     <select name="" id="unit{{$transaction->id}}" class="form-control select">
@@ -118,7 +124,7 @@
                                    <span class="text-danger">-</span> <span class="text-danger" id="outqty{{$transaction->id}}"></span>
                                     <script>
                                         $(document).ready(function () {
-                                            var qty = '{{$transaction->stockout->qty}}';
+                                            var qty = '{{$transaction->qty}}';
                                             var balance = '{{$transaction->balance}}';
                                             $('#outqty{{$transaction->id}}').text(qty);
                                             $('#outbalance{{$transaction->id}}').text(balance);
@@ -134,11 +140,13 @@
                                         });
                                     </script>
                                 </td>
-
                                 <td><span class="text-danger" >{{$transaction->type}}</span>
                                 </td>
                                 <td>{{$transaction->warehouse->name}}</td>
                                 <td><span id="outbalance{{$transaction->id}}"></span></td>
+                                <td>{{$transaction->purchase_price}}</td>
+                                <td>{{$transaction->sale_value}}</td>
+                                <td>{{$transaction->inventory_value}}</td>
                                 <td>{{$transaction->employee->name}}</td>
                                 <td>
                                     <select name="" id="outunit{{$transaction->id}}" class="form-control select">
@@ -165,7 +173,7 @@
                                     <i class="la la-undo text-primary"></i> <span class="text-primary" id="outqty{{$transaction->id}}"></span>
                                     <script>
                                         $(document).ready(function () {
-                                            var qty = '{{$transaction->stockreturn->qty}}';
+                                            var qty = '{{$transaction->qty}}';
                                             var balance = '{{$transaction->balance}}';
                                             $('#outqty{{$transaction->id}}').text(qty);
                                             $('#outbalance{{$transaction->id}}').text(balance);
@@ -181,11 +189,13 @@
                                         });
                                     </script>
                                 </td>
-
                                 <td><span class="text-primary" >{{$transaction->type}}</span>
                                 </td>
                                 <td>{{$transaction->warehouse->name}}</td>
                                 <td><span id="outbalance{{$transaction->id}}"></span></td>
+                                <td>{{$transaction->purchase_price}}</td>
+                                <td>{{$transaction->sale_value}}</td>
+                                <td>{{$transaction->inventory_value}}</td>
                                 <td>{{$transaction->employee->name}}</td>
                                 <td>
                                     <select name="" id="outunit{{$transaction->id}}" class="form-control select">

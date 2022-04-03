@@ -19,6 +19,7 @@ use App\Models\ProductStockBatch;
 use App\Models\ProductVariations;
 use App\Models\SellingUnit;
 use App\Models\Stock;
+use App\Models\StockLeger;
 use App\Models\StockOut;
 use App\Models\StockTransaction;
 use App\Models\StockTransferRecord;
@@ -120,7 +121,7 @@ class StockTransactionController extends Controller
     public function stockout(Request $request)
     {
 //        dd($request->all());
-        $this->validate($request, ['qty' => 'required','type'=>'required']);
+        $this->validate($request, ['qty' => 'required','type'=>'required','variantion_id'=>'required']);
         $stock=Stock::where('variant_id',$request->variantion_id)->where('warehouse_id',$request->warehouse_id)->first();
         $unit=SellingUnit::where('id',$request->sell_unit)->first();
         if($stock->stock_balance < ($request->qty*$unit->unit_convert_rate)){
@@ -162,18 +163,8 @@ class StockTransactionController extends Controller
         $stock_out=StockOut::with('variant')->where('id',$id)->where('approve',0)->first();
         if($stock_out->approver_id==Auth::guard('employee')->user()->id){
             $stock=Stock::where('variant_id',$stock_out->variantion_id)->where('warehouse_id',$stock_out->warehouse_id)->first();
+           $current_bal=$stock->stock_balance;
             $main_product = ProductVariations::with('product')->where('id', $stock_out->variantion_id)->first();
-            $stock_transaction = new StockTransaction();
-            $stock_transaction->product_name = $main_product->product->name;
-            $stock_transaction->stock_out = $stock_out->id;
-            $stock_transaction->warehouse_id = $stock_out->warehouse_id;
-            $stock_transaction->variant_id=$stock_out->variantion_id;
-            $stock_transaction->contact_id=$stock_out->customer_id;
-            $stock_transaction->type ="Stock Out";
-            $stock_transaction->emp_id=$stock_out->emp_id;
-            $stock_transaction->creator_id=$stock_out->creator_id;
-            $stock_transaction->balance=$stock->stock_balance - $stock_out->qty;
-            $stock_transaction->save();
             if($stock_out->type=='FOC'){
                 $foc=new Freeofchare();
                 $foc->variant_id=$stock_out->variantion_id;
@@ -181,18 +172,9 @@ class StockTransactionController extends Controller
                 $foc->issuer_id=$stock_out->emp_id;
                 $foc->description=$stock_out->description;
                 $foc->save();
-                $stock->available=$stock->available - $stock_out->qty;
-                $stock->stock_balance = $stock->stock_balance - $stock_out->qty;
-                $stock->update();
-            }elseif($stock_out->type=='Invoice'){
-                $stock->stock_balance = $stock->stock_balance - $stock_out->qty;
-                $stock->update();
             }elseif($stock_out->type=='Damage') {
                 $data = ['warehouse_id' => $stock_out->warehouse_id, 'emp_id' => $stock_out->emp_id, 'qty' => $stock_out->qty, 'variant_id' => $stock_out->variantion_id];
                 DamagedProduct::create($data);
-                $stock->available = $stock->available - $stock_out->qty;
-                $stock->stock_balance = $stock->stock_balance - $stock_out->qty ;
-                $stock->update();
             }elseif ($stock_out->type=='E-commerce Stock'){
 
                $exists_ecommerce_stock=EcommerceProduct::where('product_id',$stock_out->variantion_id)->first();
@@ -204,23 +186,10 @@ class StockTransactionController extends Controller
                     $ecommerce_stock->qty=$stock_out->qty;
                     $ecommerce_stock->brand=$product->brand->name??'';
                     $ecommerce_stock->save();
-                    $stock->available = $stock->available - $stock_out->qty;
-                    $stock->stock_balance = $stock->stock_balance - $stock_out->qty;
-                    $stock->update();
                 }else{
                     $exists_ecommerce_stock->qty=$exists_ecommerce_stock->qty + $stock_out->qty;
                     $exists_ecommerce_stock->update();
-                    $stock->available = $stock->available - $stock_out->qty;
-                    $stock->stock_balance = $stock->stock_balance - $stock_out->qty;
-                    $stock->update();
                 }
-                $stock->available=$stock->available - $stock_out->qty;
-                $stock->stock_balance = $stock->stock_balance - $stock_out->qty;
-                $stock->update();
-            }else{
-                $stock->available=$stock->available -$stock_out->qty;
-                $stock->stock_balance = $stock->stock_balance - $stock_out->qty;
-                $stock->update();
             }
 
             $stock_out->approve=1;
@@ -228,16 +197,76 @@ class StockTransactionController extends Controller
             $batches=ProductStockBatch::where('product_id',$stock_out->variantion_id)->get();
             $remaing=$stock_out->qty;
             foreach ($batches as $batch){
-                if($batch->qty > $remaing){
-                    $batch->qty=$batch->qty - $remaing;
-                    $remaing=0;
-                    $batch->update();
-                    break;
-                }else{
-                    $remaing=$remaing - $batch->qty;
-                    $batch->qty=0;
-                    $batch->update();
-                }
+               if($batch->qty!=0){
+                   if($batch->qty >= $remaing){
+                       $batch->qty=$batch->qty - $remaing;
+                       $qty=$remaing;
+                       $remaing=0;
+                       $batch->update();
+                       $product=ProductStockBatch::all();
+                       $total=0;
+                       foreach ($product as $item){
+                           $valuation=$item->qty*$item->purchase_price??0;
+                           $total+=$valuation;
+                       }
+                       $stock_transaction = new StockTransaction();
+                       $stock_transaction->product_name = $main_product->product->name;
+                       $stock_transaction->stock_out = $stock_out->id;
+                       $stock_transaction->warehouse_id = $stock_out->warehouse_id;
+                       $stock_transaction->variant_id=$stock_out->variantion_id;
+                       $stock_transaction->contact_id=$stock_out->customer_id;
+                       $stock_transaction->qty=$qty;
+                       $stock_transaction->type ="Stock Out";
+                       $stock_transaction->emp_id=$stock_out->emp_id;
+                       $stock_transaction->creator_id=$stock_out->creator_id;
+                       $stock_transaction->balance=$stock->stock_balance-$qty;
+                       $stock_transaction->purchase_price=$batch->purchase_price;
+                       $stock_transaction->sale_value=$qty*$batch->purchase_price;
+                       $stock_transaction->inventory_value=$total;
+                       $stock_transaction->save();
+                       if($stock_out->type=='Invoice'){
+                           $stock->stock_balance = $stock->stock_balance - $qty;
+                       }else{
+                           $stock->available=$stock->available - $qty;
+                           $stock->stock_balance = $stock->stock_balance - $qty;
+                       }
+                       $stock->update();
+                   }else{
+                       $qty=$batch->qty;
+                       $remaing=$remaing - $batch->qty;
+                       $batch->qty=0;
+                       $batch->update();
+                       $product=ProductStockBatch::all();
+                       $total=0;
+                       foreach ($product as $item){
+                           $valuation=$item->qty*$item->purchase_price??0;
+                           $total+=$valuation;
+                       }
+                       $stock_transaction = new StockTransaction();
+                       $stock_transaction->product_name = $main_product->product->name;
+                       $stock_transaction->stock_out = $stock_out->id;
+                       $stock_transaction->warehouse_id = $stock_out->warehouse_id;
+                       $stock_transaction->variant_id=$stock_out->variantion_id;
+                       $stock_transaction->contact_id=$stock_out->customer_id;
+                       $stock_transaction->qty=$qty;
+                       $stock_transaction->type ="Stock Out";
+                       $stock_transaction->emp_id=$stock_out->emp_id;
+                       $stock_transaction->creator_id=$stock_out->creator_id;
+                       $stock_transaction->balance=$stock->stock_balance-$qty;
+                       $stock_transaction->purchase_price=$batch->purchase_price;
+                       $stock_transaction->sale_value=$qty*$batch->purchase_price;
+                       $stock_transaction->inventory_value=$total;
+                       $stock_transaction->save();
+                       if($stock_out->type=='Invoice'){
+                           $stock->stock_balance = $stock->stock_balance - $qty;
+                       }else{
+                           $stock->available=$stock->available - $qty;
+                           $stock->stock_balance = $stock->stock_balance - $qty;
+                       }
+
+                       $stock->update();
+                   }
+               }
             }
             return redirect(route('stock.out.index'));
         }else{
@@ -354,5 +383,9 @@ class StockTransactionController extends Controller
         $ecommerce_stocks=EcommerceProduct::with('variant')->get();
         return view('stock.ecommerce_stock',compact('ecommerce_stocks','units'));
     }
+//    public function stock_leger(){
+//        $data=StockLeger::with('warehouse','unit')->get();
+//        return view('stock.leger',compact('data'));
+//    }
 
 }

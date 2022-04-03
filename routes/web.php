@@ -415,6 +415,14 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::post('po/mail/send',[\App\Http\Controllers\PurchaseOrderController::class,'sending'])->name('po_mail.sent');
     Route::get('main/customer',[CustomerController::class,'customer'])->name('customer');
 
+
+    Route::get('invoice/view/{type}',[InvoiceController::class,'invoice_view'])->name('invoice.list');
+    Route::resource('binlookup',\App\Http\Controllers\BinLookUpController::class);
+    Route::resource('stockreturn',\App\Http\Controllers\StockReturnController::class);
+    Route::get('invoice/export/{type}',[InvoiceController::class,'export'])->name('invoices.export');
+    Route::resource('discount',\App\Http\Controllers\AmountDiscountController::class);
+    Route::get('transaction/export',[TransactionController::class,'export'])->name('transactions.export');
+
 });
 
 //Route::resource('inqueries',InqueryController::class)->only('create','store');
@@ -500,12 +508,7 @@ Route::resource('expensebudget',\App\Http\Controllers\ExpenseBudgetController::c
 Route::resource('chartofaccount',\App\Http\Controllers\ChartOfAccountController::class);
 Route::get('coatype',[\App\Http\Controllers\ChartOfAccountController::class,'coatype_index'])->name('coatype.index');
 Route::post('coatype',[\App\Http\Controllers\ChartOfAccountController::class,'coatype'])->name('coatype.store');
-Route::get('invoice/view/{type}',[InvoiceController::class,'invoice_view'])->name('invoice.list');
-Route::resource('binlookup',\App\Http\Controllers\BinLookUpController::class);
-Route::resource('stockreturn',\App\Http\Controllers\StockReturnController::class);
-Route::get('invoice/export/{type}',[InvoiceController::class,'export'])->name('invoices.export');
-Route::resource('discount',\App\Http\Controllers\AmountDiscountController::class);
-Route::get('transaction/export',[TransactionController::class,'export'])->name('transactions.export');
+
 
 
 //Route::get('stockout/show/{id}',[StockTransactionController::class,'show_stockout'])->name('stockout.show');
