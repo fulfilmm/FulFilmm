@@ -123,17 +123,67 @@
                     class="menu-arrow"></span></a>
 
         <ul style="display: none;">
+            <li class="submenu">
+                <a href="#"><span>Supplier</span> <span
+                            class="menu-arrow"></span></a>
+                <ul style="display: none;">
+                    <li><a class="{{ Request::is('suppliers') ? 'active' : '' }}" href="{{route('suppliers')}}"
+                           style="text-decoration: none">All Suppliers</a></li>
+                    <li><a class="{{ Request::is('customers/create') ? 'active' : '' }}"
+                           href="{{route('customers.create')}}" style="text-decoration: none">
+                            Supplier Create</a></li>
+
+                </ul>
+            </li>
 
             <li><a class="{{ Request::is('inventory') ? 'active' : '' }}"
-                   href="{{ route('inventory.index') }}" style="text-decoration: none"><i class="la la-bar-chart mr-2"
-                                                                                          style="font-size: 18px"></i>Inventory</a>
+                   href="{{ route('inventory.index') }}" style="text-decoration: none">Inventory</a>
             </li>
             <li><a class="{{ Request::is('warehouses') ? 'active' : '' }}"
-                   href="{{ route('warehouses.index') }}" style="text-decoration: none"><i class="la la-building mr-2"
-                                                                                           style="font-size: 18px"></i>Warehouse</a>
+                   href="{{ route('warehouses.index') }}" style="text-decoration: none">Warehouse</a>
             </li>
             <li class="submenu">
-                <a href="#"><i class="la la-cube mr-2" style="font-size: 18px"></i><span> Product</span> <span
+                <a href="#"><span>Bin Look Up</span> <span
+                            class="menu-arrow"></span></a>
+                <ul style="display: none;">
+                    <li><a class="{{ Request::is('binlookup') ? 'active' : '' }}" href="{{route('binlookup.index')}}"
+                           style="text-decoration: none">All Bin Look Up</a></li>
+                    <li><a class="{{ Request::is('binlookup/create') ? 'active' : '' }}"
+                           href="{{route('binlookup.create')}}" style="text-decoration: none">
+                            Bin Look Up Create</a></li>
+
+                </ul>
+            </li>
+            <li class="submenu">
+                <a href="#"><span>Stock Return</span> <span
+                            class="menu-arrow"></span></a>
+                <ul style="display: none;">
+                    <li><a class="{{ Request::is('stockreturn') ? 'active' : '' }}" href="{{route('stockreturn.index')}}"
+                           style="text-decoration: none">Stock Return</a></li>
+                    <li><a class="{{ Request::is('stockreturn/create') ? 'active' : '' }}"
+                           href="{{route('stockreturn.create')}}" style="text-decoration: none">
+                            Stock Return Create</a></li>
+
+                </ul>
+            </li>
+            <li><a class="{{ Request::is('stocks') ? 'active' : '' }}"
+                   href="{{ route('stocks') }}" style="text-decoration: none">Stocks</a>
+            </li>
+            <li><a class="{{ Request::is('ecommerce/stock/index') ? 'active' : '' }}"
+                   href="{{ route('ecommerce_stock') }}" style="text-decoration: none">E-commerce
+                    Stocks</a></li>
+            <li><a class="{{ Request::is('stockin') ? 'active' : '' }}" href="{{route('showstockin')}}"
+                   style="text-decoration: none">Stock In</a></li>
+            <li><a class="{{ Request::is('stockout/index') ? 'active' : '' }}"
+                   href="{{ route('stock.out.index') }}" style="text-decoration: none">Stocks
+                    Out</a></li>
+            <li><a class="{{ Request::is('transfer/index') ? 'active' : '' }}"
+                   href="{{ route('transfer.index') }}" style="text-decoration: none">Stock Transfer</a></li>
+            <li><a class="{{ Request::is('stocks/index') ? 'active' : '' }}" href="{{route('stocks.index')}}"
+                   style="text-decoration: none">Stock
+                    Transaction</a></li>
+            <li class="submenu">
+                <a href="#"><span> Product</span> <span
                             class="menu-arrow"></span></a>
                 <ul style="display: none;">
                     <li><a class="{{ Request::is('product/category') ? 'active' : '' }}" href="{{route('category')}}"
@@ -150,14 +200,14 @@
                     <li><a class="{{ Request::is('product/variant/create') ? 'active' : '' }}"
                            href="{{route('create.variant')}}" style="text-decoration: none">
                             Product Variant Add</a></li>
-                    <li><a class="{{ Request::is('foc/index') ? 'active' : '' }}" href="{{route('foc.index')}}"
-                           style="text-decoration: none">
-                            FOC Product</a></li>
                 </ul>
             </li>
-
+            <li><a class="{{ Request::is('foc/index') ? 'active' : '' }}" href="{{route('foc.index')}}"
+                   style="text-decoration: none">FOC Product</a></li>
+            <li><a class="{{ Request::is('damage/index') ? 'active' : '' }}"
+                   href="{{ route('damage.index') }}" style="text-decoration: none">Damage Product</a></li>
             <li class="submenu">
-                <a href="#"><i class="la la-cube mr-2" style="font-size: 18px"></i><span> Selling Unit</span> <span
+                <a href="#"><span> Selling Unit</span> <span
                             class="menu-arrow"></span></a>
                 <ul style="display: none;">
                     <li><a class="{{ Request::is('sellingunits') ? 'active' : '' }}"
@@ -167,53 +217,9 @@
                             Add Unit</a></li>
                 </ul>
             </li>
-            <li class="submenu">
-                <a href="#"><i class="la la-cube mr-2" style="font-size: 18px"></i><span>Supplier</span> <span
-                            class="menu-arrow"></span></a>
-                <ul style="display: none;">
-                    <li><a class="{{ Request::is('suppliers') ? 'active' : '' }}" href="{{route('suppliers')}}"
-                           style="text-decoration: none">All Suppliers</a></li>
-                    <li><a class="{{ Request::is('customers/create') ? 'active' : '' }}"
-                           href="{{route('customers.create')}}" style="text-decoration: none">
-                            Supplier Create</a></li>
-
-                </ul>
-            </li>
-            <li class="submenu">
-                <a href="#"><i class="la la-cube mr-2" style="font-size: 18px"></i><span>Stock Transaction</span> <span
-                            class="menu-arrow"></span></a>
-                <ul style="display: none;">
-
-                    <li><a class="{{ Request::is('stocks') ? 'active' : '' }}"
-                           href="{{ route('stocks') }}" style="text-decoration: none">Stocks</a></li>
-                    <li><a class="{{ Request::is('ecommerce/stock/index') ? 'active' : '' }}"
-                           href="{{ route('ecommerce_stock') }}" style="text-decoration: none">E-commerce Stocks</a>
-                    </li>
-
-                    <li><a class="{{ Request::is('stocks/index') ? 'active' : '' }}" href="{{route('stocks.index')}}"
-                           style="text-decoration: none">Stock Transaction</a></li>
-                    <li><a class="{{ Request::is('stockin') ? 'active' : '' }}" href="{{route('showstockin')}}"
-                           style="text-decoration: none">
-                            Stock In</a></li>
-                    <li><a class="{{ Request::is('stockout/index') ? 'active' : '' }}"
-                           href="{{ route('stock.out.index') }}" style="text-decoration: none">Stocks Out</a></li>
-                    <li><a class="{{ Request::is('stockout') ? 'active' : '' }}" href="{{route('showstockout')}}"
-                           style="text-decoration: none">
-                            Create Stockout</a></li>
-
-                </ul>
-            </li>
-            <li><a class="{{ Request::is('transfer/index') ? 'active' : '' }}"
-                   href="{{ route('transfer.index') }}" style="text-decoration: none"><i class="la la-exchange mr-2"
-                                                                                         style="font-size: 18px"></i>Stock
-                    Transfer</a></li>
-            <li><a class="{{ Request::is('damage/index') ? 'active' : '' }}"
-                   href="{{ route('damage.index') }}" style="text-decoration: none"><i class="la la-cube mr-2"
-                                                                                       style="font-size: 18px"></i>Damage
-                    Product</a></li>
         </ul>
 
-    </li>
+    </li><!--Stock -->
     <li class="submenu">
         <a href="#"><i class="la la-shopping-cart"></i> <span>Purchase</span> <span
                     class="menu-arrow"></span></a>
