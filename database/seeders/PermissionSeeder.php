@@ -13,7 +13,7 @@ class PermissionSeeder extends Seeder
      * @return void
      */
     protected $permissions = [
-        'binlookup', 'cases', 'comments', 'companysettings', 'companies', 'customers', 'deals', 'departments',
+        'approvals', 'binlookup', 'cases', 'comments', 'companysettings', 'companies', 'customers', 'deals', 'departments',
         'discount', 'employees', 'groups', 'invoices', 'leads', 'meetings', 'minutes',
         'products', 'permissions', 'priorities', 'quotations', 'quotation_items', 'roles', 'rooms', 'senders', 'stockreturn', 'tickets', 'accounts', 'expenseclaims', 'rfqs', 'purchase_request',
         'purchaseorders', 'bills', 'sellingunits', 'discount_promotions', 'advancepayments', 'officebranch', 'product_brand'
