@@ -14,7 +14,7 @@ class InvoiceDataController extends Controller
      */
     public function index()
     {
-        return view('invoiceData/index');
+//        return view('invoiceData/index');
     }
 
     /**

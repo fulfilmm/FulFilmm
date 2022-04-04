@@ -17,9 +17,8 @@ class OfficeBranchController extends Controller
      */
     public function index()
     {
-        $office_branch=OfficeBranch::with('warehouse')->get();
-        $warehouse=Warehouse::all();
-        return view('OfficeBranch.index',compact('office_branch','warehouse'));
+        $office_branch=OfficeBranch::all();
+        return view('OfficeBranch.index',compact('office_branch'));
     }
 
     /**
@@ -29,8 +28,7 @@ class OfficeBranchController extends Controller
      */
     public function create()
     {
-        $warehouse=Warehouse::all();
-        return view('OfficeBranch.create',compact('warehouse'));
+        return view('OfficeBranch.create');
     }
 
     /**
@@ -42,7 +40,6 @@ class OfficeBranchController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'warehouse_id'=>'required',
             'name'=>'required',
             'address'=>'required',
         ]);

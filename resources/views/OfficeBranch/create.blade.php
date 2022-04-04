@@ -5,7 +5,7 @@
         <div class="page-header">
             <div class="row">
                 <div class="col-sm-12">
-                    <h3 class="page-title">Office</h3>
+                    <h3 class="page-title">Office Branch</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
                         <li class="breadcrumb-item active">Office Branch</li>
@@ -19,23 +19,13 @@
                 @csrf
                 <div class="col-md-8 offset-md-2 card shadow">
                     <div class="row my-5">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label for="name">Name</label>
                                 <input type="text" id="name" name="name" class="form-control shadow-sm" value="{{old('name')}}">
                                 @error('name')
                                 <span class="text-danger">{{$message}}</span>
                                 @enderror
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="warehouse">Warehouse</label>
-                                <select name="warehouse_id" id="warehouse" class="select">
-                                    @foreach($warehouse as $item)
-                                        <option value="{{$item->id}}">{{$item->name}}</option>
-                                    @endforeach
-                                </select>
                             </div>
                         </div>
                         <div class="col-md-12">

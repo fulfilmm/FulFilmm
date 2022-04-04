@@ -34,27 +34,35 @@
                         <th scope="col">Name</th>
                         <th scope="col">Description</th>
                         <th scope="col">Address</th>
+                        <th scope="col">Mobile Warehouse</th>
+                        <th scope="col">Main Warehouse</th>
                         <th scope="col">Valuation</th>
+                        <th scope="col">Branch</th>
                         <th scope="col">Action</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($warehouses as $warehouse)
                         <tr>
-                            <td>{{$warehouse->warehouse_id}}</td>
-                            <td><i class="fa fa-home mr-3"></i>{{$warehouse->name}}
-                            <td>{{$warehouse->description}}</td>
-                            <td>{{$warehouse->address}}</td>
-                            <td>@foreach($warehouse_qty as $key=>$val)
+                            <td style="min-width: 150px;">{{$warehouse->warehouse_id}}</td>
+                            <td style="min-width: 150px;"><i class="fa fa-home mr-3"></i>{{$warehouse->name}}
+                            <td style="min-width: 150px;">{{$warehouse->description}}</td>
+                            <td style="min-width: 150px;">{{$warehouse->address}}</td>
+                            <td style="min-width: 150px;">{{$warehouse->mobile_warehouse?'Yes':'No'}}</td>
+                            <td style="min-width: 150px;">{{$warehouse->main_warehouse->name??'N/A'}}</td>
+                            <td style="min-width: 150px;">@foreach($warehouse_qty as $key=>$val)
                                     @if($key==$warehouse->id)
                                         {{$val}}
                                     @endif
                                     @endforeach
                             </td>
-                            <td>
-                                <a href="" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#stock{{$warehouse->id}}" data-whatever="@getbootstrap"><i class="fa fa-edit"></i></a>
-                                <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete{{$warehouse->id}}"><i class="fa fa-trash text-white"></i></a>
-                                <a href="{{route('warehouses.show',$warehouse->id)}}" class="btn btn-white btn-sm"><i class="fa fa-eye"></i></a>
+                            <td style="min-width: 150px;">{{$warehouse->branch->name}}</td>
+                            <td style="min-width: 150px;">
+                               <div class="row">
+                                   <a href="" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#stock{{$warehouse->id}}" data-whatever="@getbootstrap"><i class="fa fa-edit"></i></a>
+                                   <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete{{$warehouse->id}}"><i class="fa fa-trash text-white"></i></a>
+                                   <a href="{{route('warehouses.show',$warehouse->id)}}" class="btn btn-white btn-sm"><i class="fa fa-eye"></i></a>
+                               </div>
                             </td>
                         </tr>
                         @include('warehouse.edit')

@@ -159,7 +159,7 @@
                             <select name="" id="warehouse" class="form-control select2"
                                     onchange="giveSelection(this.value)">
                                 @foreach($warehouse as $item)
-                                    <option value="{{$item->warehouse_id}}">{{$item->warehouse->name}}</option>
+                                    <option value="{{$item->id}}">{{$item->name}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -651,6 +651,7 @@
             var deli_fee = $('#deli_fee').val();
             var grand=(parseFloat(sum) + parseFloat(deli_fee) + parseFloat(tax_amount));
             if(isNaN(grand)){
+                $('#dis_row').hide();
                 $('#total').val('0');
                 $('#grand_total').val('0.0');
             }else {

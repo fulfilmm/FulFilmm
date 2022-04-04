@@ -66,7 +66,7 @@ Route::apiResource("maintainance", MaintainController::class);
 Route::apiResource("maintain_check", MaintainCheckController::class);
 
 // Api for Invoice
-Route::apiResource("invoice" , InvoiceDataController::class);
+//Route::apiResource("invoice" , InvoiceDataController::class);
 Route::get('invoice/sendmail/{id}',[InvoiceDataController::class , 'sending_form']);
 
 Route::post("invoice/mail/send" , [InvoiceDataController::class, 'email']);

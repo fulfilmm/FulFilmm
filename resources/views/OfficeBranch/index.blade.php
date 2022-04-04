@@ -19,7 +19,6 @@
                <tr>
                    <th>Branch Name</th>
                    <th>Address</th>
-                   <th>Warehouse</th>
                    <th>Action</th>
                </tr>
                </thead>
@@ -28,7 +27,6 @@
                     <tr>
                         <td>{{$branch->name}}</td>
                         <td>{{$branch->address}}</td>
-                        <td>{{$branch->warehouse->name}}</td>
                         <td>
                             <div class="row">
                                 <a href="{{route('officebranch.show',$branch->id)}}" class="btn btn-white btn-sm"><i class="fa fa-eye"></i></a>
@@ -53,16 +51,6 @@
                                                         <div class="form-group">
                                                             <label for="name">Name</label>
                                                             <input type="text" class="form-control" name="name" value="{{$branch->name}}">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="form-group">
-                                                            <label for="warehouse">Warehouse</label>
-                                                            <select name="warehouse_id" id="warehouse" class="form-control">
-                                                                @foreach($warehouse as $item)
-                                                                    <option value="{{$item->id}}"{{$item->id==$branch->warehouse_id?'selected':''}}>{{$item->name}}</option>
-                                                                @endforeach
-                                                            </select>
                                                         </div>
                                                     </div>
                                                     <div class="col-12">

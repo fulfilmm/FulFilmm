@@ -211,12 +211,12 @@
         <ul style="display: none;">
             <li><a class="{{ Request::is('invoices') ? 'active' : '' }}"
                    href="{{ route('invoices.index') }}" style="text-decoration: none">All Invoice</a></li>
-            <li><a class="{{ Request::is('invoice/view/due') ? 'active' : '' }}"
-                   href="{{ url('invoice/view/'.'due') }}" style="text-decoration: none">Due Invoice</a></li>
-            <li><a class="{{ Request::is('invoice/view/whole') ? 'active' : '' }}"
-                   href="{{ url('invoice/view/whole') }}" style="text-decoration: none">Whole Sale</a></li>
-            <li><a class="{{ Request::is('invoice/view/retail') ? 'active' : '' }}"
-                   href="{{ url('invoice/view/retail') }}" style="text-decoration: none">Retail Sale</a></li>
+            <li><a class="{{ Request::is('inv/view/due') ? 'active' : '' }}"
+                   href="{{ url('inv/view/'.'due') }}" style="text-decoration: none">Due Invoice</a></li>
+            <li><a class="{{ Request::is('inv/view/whole') ? 'active' : '' }}"
+                   href="{{ url('inv/view/whole') }}" style="text-decoration: none">Whole Sale</a></li>
+            <li><a class="{{ Request::is('inv/view/retail') ? 'active' : '' }}"
+                   href="{{ url('inv/view/retail') }}" style="text-decoration: none">Retail Sale</a></li>
             <li><a class="{{ Request::is('coatype') ? 'active' : '' }}" href="{{route('coatype.index')}}"
                    style="text-decoration: none"><span>Account Type</span>
                 </a></li>
@@ -465,10 +465,10 @@
         <a href="#"><i class="la la-cube"></i> <span>Sale</span> <span
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
-            <li><a class="{{ Request::is('invoice/view/whole') ? 'active' : '' }}"
-                   href="{{ url('invoice/view/whole') }}" style="text-decoration: none">Whole Sale</a></li>
-            <li><a class="{{ Request::is('invoice/view/retail') ? 'active' : '' }}"
-                   href="{{ url('invoice/view/retail') }}" style="text-decoration: none">Retail Sale</a></li>
+            <li><a class="{{ Request::is('inv/view/whole') ? 'active' : '' }}"
+                   href="{{ url('inv/view/whole') }}" style="text-decoration: none">Whole Sale</a></li>
+            <li><a class="{{ Request::is('inv/view/retail') ? 'active' : '' }}"
+                   href="{{ url('inv/view/retail') }}" style="text-decoration: none">Retail Sale</a></li>
             <li><a class="{{ Request::is('barcode/create') ? 'active' : '' }}"
                    href="{{ route('barcode.create') }}" style="text-decoration: none">Barcode Generate</a></li>
             <li class="submenu">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\OfficeBranch;
 use App\Models\ProductStockBatch;
 use App\Models\ProductVariations;
 use App\Models\Stock;
@@ -17,8 +18,8 @@ class WarehouseController extends Controller
      */
     public function index()
     {
-        $warehouses=Warehouse::all();
-
+        $warehouses=Warehouse::with('branch','main_warehouse')->get();
+        $branches=OfficeBranch::all();
         $warehouse_qty=[];
         foreach ($warehouses as $warehouse){
             $product=ProductStockBatch::where('warehouse_id',$warehouse->id)->get();
@@ -37,7 +38,7 @@ class WarehouseController extends Controller
         } else {
             $warehouse_id = "WH-001";
         }
-        return view('warehouse.index',compact('warehouses','warehouse_qty','warehouse_id'));
+        return view('warehouse.index',compact('warehouses','warehouse_qty','warehouse_id','branches'));
     }
 
     /**
@@ -58,7 +59,11 @@ class WarehouseController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,['name'=>'required']);
+        $this->validate($request,[
+            'name'=>'required',
+            'warehouse_id'=>'required',
+            'branch_id'=>'required'
+        ]);
         Warehouse::create($request->all());
         return redirect(route('warehouses.index'));
     }

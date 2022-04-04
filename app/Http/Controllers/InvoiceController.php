@@ -74,6 +74,7 @@ class InvoiceController extends Controller
      */
     public function create()
     {
+
         $Auth=Auth::guard('employee')->user();
         if($Auth->office_branch_id!=null){
             $allcustomers = Customer::all();
@@ -101,7 +102,7 @@ class InvoiceController extends Controller
             $focs = Freeofchare::with('variant')->get();
             $type = 'Whole Sale';
 
-            $warehouse = OfficeBranch::with('warehouse')->where('id', $Auth->office_branch_id)->get();
+            $warehouse =Warehouse::where('branch_id', $Auth->office_branch_id)->get();
             $aval_product = Stock::with('variant')->where('available', '>', 0)->get();
             $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))->whereDate('end_date','>=',date('Y-m-d'))->where('sale_type','Whole Sale')->get();
             return view('invoice.create', compact('warehouse', 'type', 'request_id', 'allcustomers', 'orderline', 'grand_total', 'status', 'data', 'aval_product', 'taxes', 'unit_price', 'dis_promo', 'focs','prices','amount_discount'));

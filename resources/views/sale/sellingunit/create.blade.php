@@ -33,7 +33,7 @@
                    </div>
                    <div class="col-md-12">
                        <div class="form-group">
-                           <label for="unit">Unit</label>
+                           <label for="unit">Unit Name</label>
                            <input type="text" name="unit" id="unit" class="form-control shadow-sm" placeholder="Enter Selling Unit" required>
                        </div>
                    </div>

@@ -59,8 +59,6 @@
                        <div class="col-md-6 col-6 my-2">: {{$branch->name}}</div>
                        <div class="col-md-6 col-6 my-2">Address</div>
                        <div class="col-md-6 col-6 my-2">: {{$branch->address}}</div>
-                       <div class="col-md-6 col-6 my-2">Warehouse</div>
-                       <div class="col-md-6 col-6 my-2">: {{$branch->warehouse->name}}</div>
                    </div>
                </div>
                <div class="col-md-6 col-12">

@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\Account;
 use App\Models\case_type;
+use App\Models\Company;
+use App\Models\Customer;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\OfficeBranch;
@@ -52,22 +54,39 @@ class DatabaseSeeder extends Seeder
         TransactionCategory::create(['name'=>'Bill','type'=>0]);
         TransactionCategory::create(['name'=>'General Income','type'=>1]);
         TransactionCategory::create(['name'=>'General Expense','type'=>0]);
-        Account::create(['account_no'=>'0001','name'=>'Main Account','number'=>'2002865657','currency'=>'MMK']);
+        $cuscom=Company::create(['name'=>'Customer Company','email'=>'oranger@gmail.com','phone'=>'09786543278','address'=>'Yangon','business_type'=>'Trading']);
+        $supcom=Company::create(['name'=>'Supplier Company','email'=>'supplier@gmail.com','phone'=>'09786543278','address'=>'Yangon','business_type'=>'Trading']);
+        Account::create(['account_no'=>'0001','name'=>'Main Account','number'=>'2002865657','currency'=>'MMK','enabled'=>1]);
         $superadmin = Employee::updateOrCreate(
             ['email' => 'admin@gmail.com'],
             [    'empid'=>'Emp-00001',
-                'name' => 'SuperAdmin',
+                'name' => 'Super Admin',
                 'department_id' => '1',
-                'phone' => '123123',
+                'phone' => '098786546788',
                 'email' => 'admin@gmail.com',
-                'work_phone' => 'asdasd',
+                'work_phone' => '098758654',
                 'can_login' => true,
                 'office_branch_id'=>$branch->id,
                 'password' => bcrypt('123123'),
                 'join_date' => '1999-10-20',
             ]
         );
-
+        $CEO = Employee::updateOrCreate(
+            ['email' => 'wailinaung.mandalay@gmail.com'],
+            [    'empid'=>'Emp-00002',
+                'name' => 'Ko Wai (CEO)',
+                'department_id' => '1',
+                'phone' => '09997836738',
+                'email' =>'wailinaung.mandalay@gmail.com',
+                'work_phone' => '098764656778',
+                'can_login' => true,
+                'office_branch_id'=>$branch->id,
+                'password' => bcrypt('123123'),
+                'join_date' => '1999-10-20',
+            ]
+        );
+        Customer::create(['customer_id'=>'CUS-00001', 'name'=>'Mr Chris', 'phone'=>'09867766767', 'email'=>'chris@gmail.com', 'company_id'=>$cuscom->id,'emp_id'=>$superadmin->id,'customer_type'=>'Customer','gender'=>'Male']);
+        Customer::create(['customer_id'=>'CUS-00002', 'name'=>'Miss Ma Sa', 'phone'=>'0925986767', 'email'=>'ma.sa.kitaite@gmail.com', 'company_id'=>$supcom->id,'emp_id'=>$superadmin->id,'customer_type'=>'Supplier','gender'=>'Female']);
         case_type::create(['name'=>'Problem One']);
         case_type::create(['name'=>'Problem Two']);
         case_type::create(['name'=>'Problem Three']);
@@ -93,6 +112,8 @@ class DatabaseSeeder extends Seeder
 //        Employee::factory(100)->create();
         // \App\Models\User::factory(10)->create();
         $superadmin->assignRole('Super Admin');
+        $CEO->assignRole('CEO');
+
 
 
     }

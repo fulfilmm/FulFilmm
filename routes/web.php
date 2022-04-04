@@ -422,7 +422,7 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::get('main/customer',[CustomerController::class,'customer'])->name('customer');
 
 
-    Route::get('invoice/view/{type}',[InvoiceController::class,'invoice_view'])->name('invoice.list');
+    Route::get('inv/view/{type}',[InvoiceController::class,'invoice_view'])->name('invoice.list');
     Route::resource('binlookup',\App\Http\Controllers\BinLookUpController::class);
     Route::resource('stockreturn',\App\Http\Controllers\StockReturnController::class);
     Route::get('invoice/export/{type}',[InvoiceController::class,'export'])->name('invoices.export');
