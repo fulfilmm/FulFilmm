@@ -1,4 +1,3 @@
-
 <div class="main-wrapper">
     <div class="sidebar" id="sidebar">
         <div class="sidebar-inner slimscroll">
