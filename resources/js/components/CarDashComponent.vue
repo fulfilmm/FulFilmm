@@ -65,7 +65,8 @@
                             <div v-for="d in JSON.parse(data.case)" :key="d.id">
                              
                                     
-                                    <small class="text-danger" v-if="d.end_date <= lastMonth"> {{ d.case}} || {{ d.end_date }} </small>
+                                    <small v-if="d.end_date <= lastMonth"> 
+                                        <span class="font-weight-bolder"> {{ d.case}} </span> will expire at <span class="text-danger font-weight-bold"> {{ d.end_date }} </span> </small>
                                     <!--<small class="" v-else>  {{ d.end_date }} </small> -->
                               
                             </div>
@@ -73,7 +74,7 @@
                          </div>
                              
 
-
+    
                               
 
                       </td>

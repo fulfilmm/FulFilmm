@@ -378,7 +378,7 @@
                         <!------------------------------------- car booking module   --------------------------------------->
                         
                         <li class="submenu">
-                            <a href="#"><i class="la la-automobile" style="font-size: 18px;"></i> <span> Cars</span> <span
+                            <a href="#"><i class="la la-automobile" style="font-size: 18px;"></i> <span> Cars </span> <span
                                         class="menu-arrow"></span></a>
                             <ul style="display: none;">
 
@@ -432,6 +432,10 @@
                                                href="{{ route('invoices.create') }}" style="text-decoration: none">Whole Sale</a></li>
                                         <li><a class="{{ Request::is('rental/invoice/crate') ? 'active' : '' }}"
                                                href="{{ route('invoice.rental') }}" style="text-decoration: none">Retail Sale</a></li>
+
+                                        <hr>
+                                        <li><a class="{{ Request::is('invoice_vue') ? 'active' : '' }}"
+                                               href="{{ route('invoice_vue.index') }}" style="text-decoration: none"> Invoice Data</a></li>
                                     </ul>
                                 </li>
                                 <li class="submenu">

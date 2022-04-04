@@ -55,8 +55,10 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ShippmentController;
+
 use App\Http\Controllers\CarBooking\CarsController;
 use App\Http\Controllers\CarBooking\MaintainController;
+use App\Http\Controllers\Invoice\InvoiceDataController;
 
 /*
 |--------------------------------------------------------------------------
@@ -181,6 +183,10 @@ Route::middleware(['auth:employee'])->group(function () {
     Route::get('/download/maintain_record/attaches/{data}' , [MaintainController::class, 'downloadRecord']);
 
     //** end */
+
+    //Invoice Route
+    Route::get('/invoice_vue' , [InvoiceDataController::class, 'index']) -> name('invoice_vue.index');
+    Route::get('invoice/{any}', [InvoiceDataController::class,'show']) -> where('any', '.*'); 
    
 
 

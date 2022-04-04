@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\CarController;
 use App\Http\Controllers\Api\MaintainController;
 use App\Http\Controllers\Api\MaintainCheckController;
 use App\Http\Controllers\Api\Invoice\InvoiceDataController;
+use App\Http\Controllers\Api\Invoice\InvoiceDataItemController;
 
 use App\Http\Controllers\Api\Ecommerce\ProductAddController;
 use App\Http\Controllers\Api\Ecommerce\ProductPromotionController;
@@ -39,6 +40,7 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
     Route::post('logout',[ApiAuthController::class,'login'])->name('logout');
     Route::resource('api_customers', CustomerController::class);
     Route::resource("api_invoices",InvoiceController::class);
+    Route::apiResource("invoice" , InvoiceDataController::class);
 //    Route::resource("invoice_items",InvoiceItemController::class);
 //    Route::get("invoice/sendmail/{id}",[InvoiceController::class,'sending_form'])->name('invoice.sendmail');
 //    Route::post("invoice/mail/send",[InvoiceController::class,'email'])->name('send');
@@ -62,7 +64,14 @@ Route::apiResource("car_data", CarController::class);
 
 Route::apiResource("maintainance", MaintainController::class);
 Route::apiResource("maintain_check", MaintainCheckController::class);
-Route::apiResource("invoice" , InvoiceController::class);
+
+// Api for Invoice
+Route::apiResource("invoice" , InvoiceDataController::class);
+Route::get('invoice/sendmail/{id}',[InvoiceDataController::class , 'sending_form']);
+
+Route::post("invoice/mail/send" , [InvoiceDataController::class, 'email']);
+Route::post('invoice/status/{id}', [InvoiceDataController::class, 'status_change']);
+Route::get('retail/invoice/create' , [InvoiceDataController::class, 'retail_inv']);
 
 
 

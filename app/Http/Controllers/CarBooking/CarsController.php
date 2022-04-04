@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\CarData;
 use App\Models\MaintainRecord;
-use App\MOdels\MaintainCheck;
+use App\Models\MaintainCheck;
 
 class CarsController extends Controller
 {
