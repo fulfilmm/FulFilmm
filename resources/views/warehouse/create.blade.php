@@ -23,6 +23,9 @@
                         <input type="checkbox" class="mr-2" name="is_virtual" value="1"><label for="">Virtual Warehouse</label>
                     </div>
                     <div class="form-group">
+                        <input type="checkbox" class="mr-2" name="is_mobile" value="1"><label for="">Is Mobile Warehouse</label>
+                    </div>
+                    <div class="form-group">
                         <label for="address">Address</label>
                         <input type="text" class="form-control" id="address" name="address" placeholder="Enter Address">
                     </div>

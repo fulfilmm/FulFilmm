@@ -11,6 +11,43 @@
                         <li class="breadcrumb-item active">Office Branch</li>
                     </ul>
                 </div>
+                <div class="col-auto float-right ml-auto">
+                    <button type="button" data-toggle="modal" data-target="#add_emp" class="btn btn-primary rounded-pill" >Add Employee</button>
+                    <div id="add_emp" class="modal custom-modal fade" role="dialog">
+                        <div class="modal-dialog modal-dialog-centered modal-sm">
+                            <div class="modal-content">
+                                <div class="modal-header border-bottom">
+                                    <h5 class="modal-title">Add Employee</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{{route('empadd.office')}}" method="post">
+                                        @csrf
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <input type="hidden" name="branch_id" value="{{$branch->id}}">
+                                           <div class="form-group">
+                                               <label for="emp">Employee</label>
+                                               <select name="emp_id[]" id="emp" class="form-control select2" multiple style="width: 100%;">
+                                                   @foreach($employees as $emp)
+                                                       <option value="{{$emp->id}}">{{$emp->name}}</option>
+                                                       @endforeach
+                                               </select>
+                                           </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group text-center">
+                                        <button type="submit" id="add" class="btn btn-primary">Add</button>
+                                    </div>
+                                </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col-12 card shadow">
@@ -26,7 +63,9 @@
                        <div class="col-md-6 col-6 my-2">: {{$branch->warehouse->name}}</div>
                    </div>
                </div>
-               <div class="col-md-6 col-12"></div>
+               <div class="col-md-6 col-12">
+
+               </div>
            </div>
         </div>
         <div class="col-12 card shadow">
@@ -57,4 +96,9 @@
             </table>
         </div>
     </div>
+    <script>
+        $(document).ready(function () {
+           $('.select2').select2();
+        });
+    </script>
 @endsection

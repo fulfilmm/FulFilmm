@@ -43,6 +43,7 @@ class CreateInvoicesTable extends Migration
             $table->double('delivery_fee');
             $table->bigInteger('order_id')->unsigned()->nullable();
             $table->double('due_amount');
+            $table->bigInteger('branch_id')->unsigned();
             $table->softDeletes();
             $table->timestamps();
         });

@@ -19,6 +19,7 @@
                     <th>Work Phone</th>
                     <th>Department</th>
                     <th>Join Date</th>
+                    <th>Office</th>
                     <th>Can login</th>
                     {{--<th>Can post assignments</th>--}}
 
@@ -26,6 +27,7 @@
                     <th>Action</th>
                 </tr>
                 </thead>
+{{--                @dd($employees)--}}
                 @foreach ($employees as $em)
                     <tr>
                         <td style="min-width: 200px"><img
@@ -39,6 +41,7 @@
                         <td>{{ $em->work_phone }}</td>
                         <td>{{ $em->department->name }}</td>
                         <td>{{ $em->join_date }}</td>
+                        <td>{{$em->branch->name??'N/A'}}</td>
                         <td>{{ $em->can_login ? 'Yes' : 'No' }}</td>
                         {{--<td>{{ $em->can_post_assignments ? 'Yes' : 'No' }}</td>--}}
 

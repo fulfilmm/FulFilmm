@@ -22,10 +22,12 @@ class EmployeeTable extends Component
     {
         return view('livewire.employee-table', [
             'employees' => Employee::where('name', 'like', "%$this->search_key%")
-            ->with(['department' => function($q) {
-                $q->withTrashed();
-            }])
-            ->paginate(20),
-            'branch'=>OfficeBranch::all()]);
-        }
+                ->with(['department' => function ($q) {
+                    $q->withTrashed();
+                },'branch'=>function($q){
+                    $q->get();
+                }])
+                ->paginate(20)
+        ]);
     }
+}

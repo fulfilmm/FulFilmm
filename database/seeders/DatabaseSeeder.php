@@ -31,7 +31,8 @@ class DatabaseSeeder extends Seeder
         ThemeSetting::create(['name'=>'Purple','link'=>'purplestyle.css','active'=>0]);
         ThemeSetting::create(['name'=>'Orange','link'=>'orangestyle.css','active'=>0]);
         ThemeSetting::create(['name'=>'Maroon','link'=>'maroonstyle.css','active'=>0]);
-       $warehouse= Warehouse::create(['warehouse_id'=>'WH-001','name'=>'Main Warehouse']);
+        $branch=OfficeBranch::create(['name'=>'Head Office','address'=>'Yangon']);
+        Warehouse::create(['warehouse_id'=>'WH-001','name'=>'Main Warehouse','address'=>'Yangon','description'=>'Main Warehouse','branch_id'=>$branch->id]);
         products_tax::create(['name'=>'Tax Free','rate'=>0]);
         products_tax::create(['name'=>'Personal Income Tax','rate'=>5]);
         Department::create(['name'=>'Sale Department']);
@@ -47,7 +48,6 @@ class DatabaseSeeder extends Seeder
         products_category::create(['name'=>'Electronic','parent'=>1]);
         products_category::create(['name'=>'Beauty','parent'=>1]);
         products_category::create(['name'=>'Clothes','parent'=>1]);
-        OfficeBranch::create(['name'=>'Head Office','warehouse_id'=>$warehouse->id]);
         TransactionCategory::create(['name'=>'Invoice','type'=>1]);
         TransactionCategory::create(['name'=>'Bill','type'=>0]);
         TransactionCategory::create(['name'=>'General Income','type'=>1]);

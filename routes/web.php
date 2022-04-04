@@ -509,6 +509,8 @@ Route::resource('chartofaccount',\App\Http\Controllers\ChartOfAccountController:
 Route::get('coatype',[\App\Http\Controllers\ChartOfAccountController::class,'coatype_index'])->name('coatype.index');
 Route::post('coatype',[\App\Http\Controllers\ChartOfAccountController::class,'coatype'])->name('coatype.store');
 
+Route::post('emp/add/office',[OfficeBranchController::class,'add_emp'])->name('empadd.office');
+
 
 
 //Route::get('stockout/show/{id}',[StockTransactionController::class,'show_stockout'])->name('stockout.show');

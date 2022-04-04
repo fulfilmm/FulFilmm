@@ -36,7 +36,7 @@ class EmployeeController extends Controller
     }
 
     public function card(){
-        $employees = Employee::orderBy('empid','desc')->paginate(25);
+        $employees = Employee::with('branch')->orderBy('empid','desc')->paginate(25);
         $branch=OfficeBranch::all();
         return view('employee.data.cards', compact('employees','branch'));
     }

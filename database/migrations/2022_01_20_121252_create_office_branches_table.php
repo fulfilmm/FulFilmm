@@ -15,7 +15,6 @@ class CreateOfficeBranchesTable extends Migration
     {
         Schema::create('office_branches', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('warehouse_id')->unsigned();
             $table->string('name');
             $table->string('address')->nullable();
             $table->timestamps();

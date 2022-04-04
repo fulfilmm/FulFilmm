@@ -105,7 +105,7 @@ class OfficeBranchController extends Controller
         $office->delete();
         return redirect()->back();
     }
-    public function addemp(Request $request){
+    public function add_emp(Request $request){
         foreach ($request->emp_id as $emp_id){
             $employee=Employee::where('id',$emp_id)->first();
             $employee->office_branch_id=$request->branch_id;

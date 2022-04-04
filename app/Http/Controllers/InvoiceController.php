@@ -231,6 +231,7 @@ class InvoiceController extends Controller
             $newInvoice->inv_type = $request->inv_type;
             $newInvoice->include_delivery_fee=$request->deli_fee_include=='on'?1:0;
             $newInvoice->emp_id = Auth::guard('employee')->user()->id;
+            $newInvoice->brand_id=Auth::guard('employee')->user()->office_branch_id;
             $Auth = Auth::guard('employee')->user()->name;
             $request_id = Session::get($Auth);
             $confirm_order_item = OrderItem::where("creation_id", $request_id)->get();
