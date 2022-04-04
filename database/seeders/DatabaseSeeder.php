@@ -62,6 +62,7 @@ class DatabaseSeeder extends Seeder
                 'email' => 'admin@gmail.com',
                 'work_phone' => 'asdasd',
                 'can_login' => true,
+                'office_branch_id'=>$branch->id,
                 'password' => bcrypt('123123'),
                 'join_date' => '1999-10-20',
             ]

@@ -19,7 +19,7 @@ use App\Models\OrderItem;
 use App\Models\MainCompany;
 use App\Models\product;
 use App\Models\product_price;
-use App\Models\products_tax;
+use App\Models\products_tax; 
 use App\Models\ProductVariations;
 use App\Models\Revenue;
 use App\Models\SellingUnit;
@@ -48,7 +48,7 @@ class InvoiceController extends Controller
     {
         $allinv=Invoice::with('customer','employee')->get();
         $status=$this->status;
-        return view('invoice.index',compact('allinv','status'));
+        return view('invoice.index',compact('allinv','status')); 
     }
     public function invoice_view($type){
         $status=$this->status;
@@ -70,7 +70,7 @@ class InvoiceController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response 
      */
     public function create()
     {
@@ -96,6 +96,7 @@ class InvoiceController extends Controller
             $status = $this->status;
             $unit_price=SellingUnit::where('active',1)->get();
             $prices =product_price::where('sale_type', 'Whole Sale')->where('active',1)->get();
+            //dd($prices);
             $dis_promo = DiscountPromotion::where('sale_type', 'Whole Sale')->get();
             $focs = Freeofchare::with('variant')->get();
             $type = 'Whole Sale';

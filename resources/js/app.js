@@ -9,11 +9,11 @@ require('./bootstrap');
 window.Vue = require('vue').default;
 
 import Vue from 'vue';
-//import router from './router.js';
-//import router from 'vue-router' 
 
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
+
+import store from './store';
 
 import icons from './fontawesome'
 
@@ -23,13 +23,14 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 library.add({ ...icons });
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
- 
+
 
 
 Vue.component('car-component', require('./components/CarDashComponent.vue').default);
 //Vue.component('car-maintain-component' , require('./components/CarMaintainComponent').default);
 // Vue.component('car-record-componment', require('./components/CarRecordComponent.vue').default);
- Vue.component('maintain-component', require('./components/MaintainComponent.vue').default);
+Vue.component('maintain-component', require('./components/MaintainComponent.vue').default);
+Vue.component('invoice-component' , require('./components/invoice/InvoiceComponent.vue'). default);
 
 
 import App from './components/AppComponent'
@@ -39,6 +40,8 @@ import CarMaintain from './components/CarMaintainComponent';
 import CarRecord from './components/CarRecordComponent';
 import MaintainDetail from './components/MaintainDetailComponent'
 import RecordDetail from './components/CarRecordDetailComponent';
+
+import InvoiceDetail from './components/invoice/InvoiceDetailComponent';
 
 const router = new VueRouter({
     mode: 'history',
@@ -79,6 +82,11 @@ const router = new VueRouter({
             path:'/car-list/car-record/detail/:id',
             name: 'record-detail',
             component: RecordDetail
+        },
+        {
+            path:'/invoice/:id',
+            name: 'invoice-detail',
+            component: InvoiceDetail
         }
 
     ],
@@ -88,5 +96,5 @@ const app = new Vue({
     el: '#app',
     components:{App},
     router,
-    
-});
+    store
+})

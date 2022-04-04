@@ -71,6 +71,7 @@ class InvoiceItemController extends Controller
             }else{
                 $sale_unit = SellingUnit::where('product_id', $variant->product_id)->where('unit_convert_rate', 1)->first();
                 $price = product_price::where('sale_type',$request->inv_type)->where('product_id', $request->variant_id)->where('multi_price',$variant->pricing_type)->first();
+                //dd($price);
                 if($price != null){
                     $items = new OrderItem();
                     $items->description =$variant->description;
@@ -95,7 +96,7 @@ class InvoiceItemController extends Controller
                 }else {
                     return response()->json(['Error' => 'This product is does not fixed price']);
                 }
-            }
+            } 
 //            dd('invoice');
         } else if ($request->type == 'order') {
             $sale_unit = SellingUnit::where('product_id', $variant->product_id)->where('unit_convert_rate', 1)->first();
