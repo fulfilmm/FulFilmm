@@ -41,27 +41,30 @@
                         <thead>
                         <tr>
                             <th>Date</th>
-                            <th>Invoice ID</th>
                             <th>Product Code</th>
                             <th>Product</th>
                             <th>Variant</th>
                             <th>Qty</th>
                             <th>Unit</th>
                             <th>Unit Price</th>
+                            <th>Warehouse</th>
                             <th>Total</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($items as $item)
+                        </tr><tbody>
+
+                        @foreach($data as $item)
                             <tr>
                                 <td>{{$item->created_at->toFormattedDateString()}}</td>
-                                <td>{{$item->invoice->invoice_id}}</td>
                                 <td>{{$item->variant->product_code}}</td>
                                 <td>{{$item->variant->product_name}}</td>
                                 <td>{{$item->variant->variant}}</td>
                                 <td>{{$item->quantity}}</td>
                                 <td>{{$item->unit->unit}}</td>
                                 <td>{{$item->unit_price}}</td>
+                                <td>@foreach($warehouse as $key=>$val)
+                                        @if($key==$item->invoice->warehouse_id)
+                                            {{$val}}
+                                            @endif
+                                    @endforeach</td>
                                 <td>{{$item->total}}</td>
                             </tr>
                             @endforeach
@@ -75,6 +78,7 @@
                             <td></td>
                             <td>Total</td>
                             <td>{{$total_sale[0]->total}}</td>
+                            <td></td>
                         </tr>
                         </tbody>
 

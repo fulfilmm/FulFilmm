@@ -21,6 +21,7 @@ use App\Models\StockIn;
 use App\Models\StockOut;
 use App\Models\StockTransaction;
 use App\Models\Transaction;
+use App\Models\Warehouse;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -120,21 +121,13 @@ class ReportController extends Controller
                     return $formatedDate;
                 })
                 ->addColumn('unit',function ($variant){
-                   if(isset($variant->stockout->sell_unit)) {
                        $unit = SellingUnit::where('id', $variant->stockout->sell_unit)->first();
                        return $unit->unit ?? '';
-                   }else{
-                       return '';
-                   }
                 })
                 ->addColumn('qty', function ($row) {
-                    if(isset($variant->stockout->sell_unit)) {
                         $unit=SellingUnit::where('id',$row->stockout->sell_unit)->first();
                         $qty=$row->stockout->qty/$unit->unit_convert_rate;
                         return $qty??0;
-                    }else{
-                        return '';
-                    }
 
                 })
                 ->addColumn('customer', function ($row) {
@@ -190,7 +183,23 @@ class ReportController extends Controller
             ->whereDate('created_at',Carbon::today())
             ->get();
         $items=OrderItem::with('variant','unit','invoice')->where('inv_id','!=',null)->whereDate('created_at',Carbon::today())->get();
-        return view('Report.report',compact('items','total_sale'));
+       $data=[];
+       $i=0;
+        foreach ($items as $item){
+            if(isset($data[$item->variant->product_code."_".$i])){
+                if($data[$item->variant->product_code."_".$i]->unit_price==$item->unit_price) {
+                    $data[$item->variant->product_code."_".$i]->quantity += $item->quantity;
+                    $data[$item->variant->product_code."_".$i]->total += $item->total;
+                }else{
+                    $i ++;
+                    $data[$item->variant->product_code.'_'.$i]=$item;
+                }
+            }else{
+                $data[$item->variant->product_code."_".$i]=$item;
+            }
+        }
+        $warehouse=Warehouse::all()->pluck('name','id')->all();
+        return view('Report.report',compact('items','total_sale','warehouse','data'));
     }
     public function expense_report(Request $request){
         if ($request->ajax()) {
