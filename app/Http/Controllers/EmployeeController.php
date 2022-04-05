@@ -193,8 +193,6 @@ class EmployeeController extends Controller
      */
     public function update(EmployeeRequest $request, Employee $employee)
     {
-//        dd($employee);
-
         $data  = collect($request->validated())->except('role_id')->toArray();
         $data['can_login'] =  $data['can_login'] ?? "0";
         $data['can_post_assignment'] =  $data['can_post_assignments'] ?? "0";
@@ -210,6 +208,7 @@ class EmployeeController extends Controller
             $employee->can_login = $data['can_login'];
             $employee->can_post_assignments = $data['can_post_assignment'];
             $employee->dob = $request->dob;
+            $employee->mobile_seller=$data['mobile_seller']??0;
             $employee->address = $request->address;
             $employee->report_to = $request->report_to;
             $employee->gender = $request->gender;

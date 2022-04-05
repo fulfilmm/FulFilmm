@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api\Invoice;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request; 
+use App\Models\OfficeBranch;
+use App\Models\Warehouse;
+use Illuminate\Http\Request;
 
 use App\Models\Customer;
 use App\Models\Invoice;
@@ -30,6 +32,16 @@ class InvoiceDataController extends Controller
     public $status = ['Paid' , 'Unpaid', 'Pending', 'Cancel'];
     public function index()
     {
+        $Auth=Auth::guard('api')->user();
+        if($Auth->mobile_seller==1){
+            $warehouse =Warehouse::where('branch_id', $Auth->office_branch_id)
+                ->where('mobile_warehouse',1)
+                ->get();
+        }else{
+            $warehouse =Warehouse::where('branch_id', $Auth->office_branch_id)
+                ->where('mobile_warehouse',0)
+                ->get();
+        }
             $all_inv = Invoice::with('customer') 
                         ->get();
             $customers = Customer::with('company')
@@ -41,7 +53,7 @@ class InvoiceDataController extends Controller
             $status = $this -> status;
 
             return response() -> json(['all_inv' => $all_inv,'customers' => $customers,'status' => $status ,
-                                         'products' => $products, 'focs' => $focs]);
+                                         'products' => $products, 'focs' => $focs,'warehouses'=>$warehouse]);
         
     }
 

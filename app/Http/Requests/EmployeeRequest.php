@@ -34,6 +34,7 @@ class EmployeeRequest extends FormRequest
             'phone' => 'required',
             'work_phone' => 'required',
             'join_date' => 'required',
+            'mobile_seller'=>'nullable',
 
         ];
     }

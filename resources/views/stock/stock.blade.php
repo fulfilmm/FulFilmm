@@ -201,8 +201,8 @@
                             <td>
                                <div class="row">
                                    <a href="{{route('stock.batch',$stock->variant->id)}}" class="btn btn-white">Batch</a>
-                                   <button type="button" class="btn btn-white btn-sm" data-toggle="modal"
-                                           data-target="#stock{{$stock->id}}"><i class="la la-edit"></i></button>
+                                   <button type="button" class="btn btn-white btn-sm edit" data-toggle="modal"
+                                           data-target="#stock{{$stock->id}}" ><i class="la la-edit"></i></button>
                                    <a href="{{url('stock/update/history/'.$stock->id)}}"  title="Stock Updated History" class="btn btn-white btn-sm"><i class="la la-history"></i></a>
                                </div>
                                 <div class="modal fade" id="stock{{$stock->id}}" tabindex="-1" role="dialog"
@@ -231,7 +231,7 @@
                                                         <div class="col-md-6 col-12">
                                                             <div class="form-group">
                                                                 <label for="address">Current Stock Balance</label>
-                                                                <input type="text" class="form-control" id="address"
+                                                                <input type="text" class="form-control" id="current_balance{{$stock->id}}"
                                                                        name="before_stock"
                                                                        value="{{$stock->stock_balance}}">
                                                             </div>
@@ -239,24 +239,8 @@
                                                         <div class="col-md-6 col-12">
                                                             <div class="form-group">
                                                                 <label for="address">Update Stock Balance</label>
-                                                                <input type="text" class="form-control" id="address"
+                                                                <input type="text" class="form-control" id="update_balance{{$stock->id}}"
                                                                        name="update_stock">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6 col-12">
-                                                            <div class="form-group">
-                                                                <label for="aval">Current Available Stock</label>
-                                                                <input type="text" class="form-control"
-                                                                       name="before_aval" id="aval"
-                                                                       value="{{$stock->available}}">
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-6 col-12">
-                                                            <div class="form-group">
-                                                                <label for="aval">Updated Available Stock</label>
-                                                                <input type="text" class="form-control"
-                                                                       name="after_aval">
                                                             </div>
                                                         </div>
                                                         <div class="col-12">
@@ -277,6 +261,17 @@
                                                     </div>
 
                                                 </form>
+                                                <script>
+                                                    $('#update_balance{{$stock->id}}').keyup(function () {
+                                                        var current_bal=$('#current_balance{{$stock->id}}').val();
+                                                        var update_bal=$('#update_balance{{$stock->id}}').val();
+                                                        if(parseFloat(update_bal) > parseFloat(current_bal)){
+                                                            swal('Warning','Cannot enter a number greater than the current stock balance!','warning');
+                                                            $(this).val(current_bal);
+                                                        }
+
+                                                    });
+                                                </script>
                                             </div>
                                         </div>
                                     </div>
@@ -303,6 +298,9 @@
             $('#stock').DataTable();
             $('.dataTables_filter input').remove('form-control');
             $('.dataTables_filter input').addClass('rounded');
+        });
+        $('.edit').click(function () {
+            swal('Warning','If you wanna edit stock,you must to stop all stock transaction!','warning');
         });
     </script>
 

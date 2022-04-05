@@ -23,4 +23,7 @@ class Invoice extends Model
     public function warehouse(){
         return $this->belongsTo(Warehouse::class,'warehouse_id','id');
     }
+    public function branch(){
+        return $this->belongsTo(OfficeBranch::class,'branch_id','id');
+    }
 }

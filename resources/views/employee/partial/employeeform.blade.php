@@ -28,20 +28,15 @@
                 <div class="col-md-12 mt-3">
                     <div class="form-group">
                         <label for="gender">Gender</label>
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="input-group">
-                                    <input type="radio" id="gender" class="mr-2 ml-3" name="gender" value="Male">
-                                    <label for="Male">Male</label>
-                                </div>
-                            </div>
-                           <div class="col-6">
-                               <div class="input-group">
-                                   <input type="radio" id="gender" class="mr-2 ml-3" name="gender" value="Female">
-                                   <label for="Female">Female</label>
-                               </div>
-                           </div>
+                        <div class="input-group">
+                            <input type="radio" id="gender" class="mr-2 ml-3" name="gender" value="Male">
+                            <label for="Male">Male</label>
                         </div>
+                        <div class="input-group">
+                            <input type="radio" id="gender" class="mr-2 ml-3" name="gender" value="Female">
+                            <label for="Female">Female</label>
+                        </div>
+                        <hr>
                         <div class="input-group ">
                             <div class="checkbox">
                                 <label for="can_login">
@@ -50,6 +45,12 @@
                                 </label>
                             </div>
                         </div>
+                        <div class="input-group">
+                            <label for="mobile_seller">
+                            <input type="checkbox" name="mobile_seller" value="1" {{isset( $employee->mobile_seller) ?  $employee->mobile_seller === 1 ? 'checked' : '' : ''}}>
+                                Mobile Sale Man</label>
+                        </div>
+
                     </div>
                 </div>
                 <div class="col-md-12">

@@ -397,21 +397,26 @@ class StockTransactionController extends Controller
     }
     public function  update(Request $request,$id){
         $stock=Stock::where('id',$id)->first();
-        $update_hist=new StockUpdatedHistory();
-        $update_hist->variant_id=$stock->variant_id;
-        $update_hist->stock_id=$id;
-        $update_hist->emp_id=Auth::guard('employee')->user()->id;
-        $update_hist->before_balance=$request->before_stock;
-        $update_hist->updated_balance=$request->update_stock??$request->before_stock;
-        $update_hist->before_aval=$request->before_aval;
-        $update_hist->updated_aval=$request->after_aval??$request->before_aval;
-        $update_hist->warehouse_id=$stock->warehouse_id;
-        $update_hist->save();
-        $stock->stock_balance=$request->update_stock??$request->before_stock;
-        $stock->available=$request->after_aval??$request->before_aval;
-        $stock->alert_qty=$request->alert_qty;
-        $stock->update();
-        return redirect('stocks')->with('success','Stock Updated Successful');
+        if($stock->stock_balance<$request->update_stock){
+            return redirect('stocks')->with('error','Cannot enter a number greater than the current stock balance');
+        }else{
+//            dd($request->all());
+            $update_hist=new StockUpdatedHistory();
+            $update_hist->variant_id=$stock->variant_id;
+            $update_hist->stock_id=$id;
+            $update_hist->emp_id=Auth::guard('employee')->user()->id;
+            $update_hist->before_balance=$request->before_stock;
+            $update_hist->updated_balance=$request->update_stock??$request->before_stock;
+            $update_hist->before_aval=$stock->available;
+            $update_hist->updated_aval=$request->update_stock??$request->before_stock;
+            $update_hist->warehouse_id=$stock->warehouse_id;
+            $update_hist->save();
+            $stock->stock_balance=$request->update_stock??$request->before_stock;
+            $stock->available=$request->update_stock??$request->before_stock;
+            $stock->alert_qty=$request->alert_qty;
+            $stock->update();
+            return redirect('stocks')->with('success','Stock Updated Successful');
+        }
     }
     public function history($id){
         $units=SellingUnit::all();

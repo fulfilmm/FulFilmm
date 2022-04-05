@@ -46,21 +46,22 @@ class InvoiceController extends Controller
     public  $status=['Paid','Unpaid','Pending','Cancel','Draft','Sent'];
     public function index()
     {
-        $allinv=Invoice::with('customer','employee')->get();
+        $allinv=Invoice::with('customer','employee','branch')->get();
         $status=$this->status;
+//        dd($allinv);
         return view('invoice.index',compact('allinv','status')); 
     }
     public function invoice_view($type){
         $status=$this->status;
         if($type=='due'){
-            $allinv=Invoice::with('customer','employee')->where('due_amount','!=',0)->get();
+            $allinv=Invoice::with('customer','employee','branch')->where('due_amount','!=',0)->get();
             return view('invoice.due_list',compact('allinv','status'));
         }elseif ($type=='whole'){
-            $allinv=Invoice::with('customer','employee')->where('inv_type','Whole Sale')->get();
+            $allinv=Invoice::with('customer','employee','branch')->where('inv_type','Whole Sale')->get();
             return view('invoice.wholesale',compact('allinv','status'));
 
         }else{
-            $allinv=Invoice::with('customer','employee')->where('inv_type','Retail Sale')->get();
+            $allinv=Invoice::with('customer','employee','branch')->where('inv_type','Retail Sale')->get();
             return view('invoice.retail',compact('allinv','status'));
 
         }
@@ -102,7 +103,11 @@ class InvoiceController extends Controller
             $focs = Freeofchare::with('variant')->get();
             $type = 'Whole Sale';
 
-            $warehouse =Warehouse::where('branch_id', $Auth->office_branch_id)->get();
+          if(Auth::guard('employee')->user()->mobile_seller==1){
+              $warehouse =Warehouse::where('branch_id', $Auth->office_branch_id)->where('mobile_warehouse',1)->get();
+          }else{
+              $warehouse =Warehouse::where('branch_id', $Auth->office_branch_id)->where('mobile_warehouse',0)->get();
+          }
             $aval_product = Stock::with('variant')->where('available', '>', 0)->get();
             $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))->whereDate('end_date','>=',date('Y-m-d'))->where('sale_type','Whole Sale')->get();
             return view('invoice.create', compact('warehouse', 'type', 'request_id', 'allcustomers', 'orderline', 'grand_total', 'status', 'data', 'aval_product', 'taxes', 'unit_price', 'dis_promo', 'focs','prices','amount_discount'));
@@ -233,7 +238,7 @@ class InvoiceController extends Controller
             $newInvoice->inv_type = $request->inv_type;
             $newInvoice->include_delivery_fee=$request->deli_fee_include=='on'?1:0;
             $newInvoice->emp_id = Auth::guard('employee')->user()->id;
-            $newInvoice->brand_id=Auth::guard('employee')->user()->office_branch_id;
+            $newInvoice->branch_id=Auth::guard('employee')->user()->office_branch_id;
             $Auth = Auth::guard('employee')->user()->name;
             $request_id = Session::get($Auth);
             $confirm_order_item = OrderItem::where("creation_id", $request_id)->get();

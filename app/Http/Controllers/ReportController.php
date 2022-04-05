@@ -86,7 +86,7 @@ class ReportController extends Controller
     public function stockin(Request $request)
     {
         if ($request->ajax()) {
-            $stock_in = StockTransaction::with('stockin', 'stockout', 'variant', 'warehouse')->where('type', 1)->whereDate('created_at', Carbon::today())->get();
+            $stock_in = StockTransaction::with('stockin', 'stockout', 'variant', 'warehouse')->where('type', 'Stock In')->whereDate('created_at', Carbon::today())->get();
 
             return Datatables::of($stock_in)
                 ->addIndexColumn()
@@ -112,7 +112,7 @@ class ReportController extends Controller
     public function stockout(Request $request)
     {
         if ($request->ajax()) {
-            $stock_out = StockTransaction::with('stockin', 'stockout', 'variant', 'warehouse')->where('type', 0)->whereDate('created_at', Carbon::today())->get();
+            $stock_out = StockTransaction::with('stockin', 'stockout', 'variant', 'warehouse')->where('type', 'Stock Out')->whereDate('created_at', Carbon::today())->get();
             return Datatables::of($stock_out)
                 ->addIndexColumn()
                 ->editColumn('created_at', function ($data) {
@@ -120,17 +120,30 @@ class ReportController extends Controller
                     return $formatedDate;
                 })
                 ->addColumn('unit',function ($variant){
-                    $unit=SellingUnit::where('id',$variant->stockout->sell_unit)->first();
-                    return $unit->unit??'';
+                   if(isset($variant->stockout->sell_unit)) {
+                       $unit = SellingUnit::where('id', $variant->stockout->sell_unit)->first();
+                       return $unit->unit ?? '';
+                   }else{
+                       return '';
+                   }
                 })
                 ->addColumn('qty', function ($row) {
-                    $unit=SellingUnit::where('id',$row->stockout->sell_unit)->first();
-                    $qty=$row->stockout->qty/$unit->unit_convert_rate;
-                    return $qty??0;
+                    if(isset($variant->stockout->sell_unit)) {
+                        $unit=SellingUnit::where('id',$row->stockout->sell_unit)->first();
+                        $qty=$row->stockout->qty/$unit->unit_convert_rate;
+                        return $qty??0;
+                    }else{
+                        return '';
+                    }
+
                 })
                 ->addColumn('customer', function ($row) {
-                    $suppliers = Customer::where('id', $row->stockout-> customer_id)->first();
-                    return $suppliers->name??'';
+                    if(isset($row->stockout-> customer_id)) {
+                        $suppliers = Customer::where('id', $row->stockout->customer_id)->first();
+                        return $suppliers->name ?? '';
+                    }else{
+                        return '';
+                    }
                 })
                 ->make(true);
         }

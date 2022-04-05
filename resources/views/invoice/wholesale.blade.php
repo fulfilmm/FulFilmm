@@ -66,22 +66,32 @@
 
         <!-- Search Filter -->
         <div class="row filter-row">
-            <div class="col-sm-6 col-md-3">
+            <div class="col-sm-6 col-md-2">
                 <div class="form-group">
                     <input class="form-control form-control-md  shadow-sm" type="text" id="filter_id" name='id' placeholder="Type Invocie ID">
                 </div>
             </div>
-            <div class="col-sm-6 col-md-3">
+            <div class="col-sm-6 col-md-2">
                 <div class="form-group ">
                     <input class="form-control form-control-md shadow-sm" type="text" name="min" id="min" placeholder="Enter Start Date">
                 </div>
             </div>
-            <div class="col-sm-6 col-md-3">
+            <div class="col-sm-6 col-md-2">
                 <div class="form-group">
                     <input class="form-control shadow-sm form-control-md" type="text" id="max" name="max" placeholder="Enter End Date">
                 </div>
             </div>
-            <div class="col-sm-6 col-md-3">
+            <div class="col-sm-6 col-md-2">
+                <div class="form-group">
+                    <input class="form-control shadow-sm form-control-md" type="text" id="branch" name="branch" placeholder="Type Office Branch Name">
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-2">
+                <div class="form-group">
+                    <input class="form-control shadow-sm form-control-md" type="text" id="customer_name" name="customer_name" placeholder="Type Customer Name">
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-2">
                 <div class="form-group">
                     <select class="select form-control-md" id="filter_status">
                         <option value="" disabled>Select Status</option>
@@ -94,6 +104,7 @@
             </div>
 
         </div>
+        <hr>
         <!-- /Search Filter -->
         <div class="row">
             <div class="col-md-12">
@@ -111,6 +122,7 @@
                             <th>Amount</th>
                             <th>Due Amount</th>
                             <th>Status</th>
+                            <th>Office Branch</th>
                             <th class="text-right">Action</th>
                         </tr>
                         </thead>
@@ -136,6 +148,7 @@
                                         {{--<a class="btn btn-white btn-sm btn-rounded "  href="#" data-toggle="modal" data-target="#change_status{{$invoice->id}}"></a>--}}
                                     </div>
                                 </td>
+                                    <td><a href="{{url('officebranch/'.$invoice->branch->id)}}">{{$invoice->branch->name}}</a></td>
                                 @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
                                     @include('invoice.inv_statuschange')
 
@@ -193,6 +206,20 @@
             $('#filter_id').keyup(function () {
                 var table = $('#invoice').DataTable();
                 table.column(0).search($(this).val()).draw();
+
+            });
+        });
+        $(document).ready(function() {
+            $('#branch').keyup(function () {
+                var table = $('#invoice').DataTable();
+                table.column(10).search($(this).val()).draw();
+
+            });
+        });
+        $(document).ready(function() {
+            $('#customer_name').keyup(function () {
+                var table = $('#invoice').DataTable();
+                table.column(3).search($(this).val()).draw();
 
             });
         });

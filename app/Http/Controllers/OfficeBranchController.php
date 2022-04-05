@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\EmployeeRequest;
 use App\Models\Employee;
+use App\Models\Invoice;
 use App\Models\OfficeBranch;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
@@ -59,9 +60,13 @@ class OfficeBranchController extends Controller
      */
     public function show($id)
     {
+        $status=['Paid','Unpaid','Pending','Cancel','Draft','Sent'];
         $branch=OfficeBranch::where('id',$id)->first();
         $employees=Employee::all();
-        return view('OfficeBranch.show',compact('branch','employees'));
+        $branch_employees=Employee::where('office_branch_id',$id)->get();
+        $invoices=Invoice::with('customer','employee','branch')->where('branch_id',$id)->get();
+        $warehouse=Warehouse::where('branch_id',$id)->get();
+        return view('OfficeBranch.show',compact('branch','employees','invoices','branch_employees','warehouse','status'));
     }
 
     /**
