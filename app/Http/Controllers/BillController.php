@@ -228,25 +228,21 @@ class BillController extends Controller
             $Auth = Auth::guard('employee')->user()->name;
 //        Session::forget('data-'.Auth::guard('employee')->user()->id);
 //        Session::forget($Auth);
-            $session_value = \Illuminate\Support\Str::random(10);
-            if (!Session::has($Auth)) {
-                Session::push("$Auth", $session_value.$po->po_id);
-                $request_id = Session::get($Auth);
-            } else {
-                $request_id = Session::get($Auth);
-            }
+            $request_id=$po->po_id;
             $item_exist=BillItem::where('po_id',$po->id)->first();
            if($item_exist==null){
                $items = new BillItem();
                $items->po_id = $po->id;
                $items->amount = $po->grand_total;
                $items->type = 'Purchase';
-               $items->creation_id = $request_id[0];
+               $items->creation_id =$po->po_id;
                $items->save();
            }
 //        $generate_id=Str::uuid();
-            $items = BillItem::with('purchaseorder', 'delivery')->where('creation_id', $request_id)->get();
-//        dd($orderline);
+            $items = BillItem::with('purchaseorder', 'delivery')->where('creation_id', $po->po_id)->get();
+
+//           dd($items);
+////        dd($orderline);
 
             $total = DB::table("bill_items")
                 ->select(DB::raw("SUM(amount) as total"))

@@ -151,7 +151,7 @@
                                                                         <div class="row">
                                                                             <label for="item_id{{$item->id}}" class="col-md-3">Item ID</label>
                                                                             <div class="col-md-9">
-                                                                                <input type="text" name="item_id" id="item_id{{$item->id}}" class="form-control" value="{{$item->po_id!=null?$item->purchaseorder->purchaseorder_id:$item->delivery->delivery_id}}" readonly>
+                                                                                <input type="text" name="item_id" id="item_id{{$item->id}}" class="form-control" value="{{$item->po_id!=null?$item->purchaseorder->po_id:$item->delivery->delivery_id}}" readonly>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -160,7 +160,7 @@
                                                                             <label for="desc{{$item->id}}" class="col-md-3">Description</label>
                                                                             <div class="col-md-9">
                                                                     <textarea name="" id="desc{{$item->id}}" cols="30" rows="2"
-                                                                              class="form-control col-md-8 update{{$item->id}}">{{$item->description}}</textarea>
+                                                                              class="form-control update{{$item->id}}">{{$item->description}}</textarea>
                                                                             </div>
                                                                         </div>
                                                                     </div>
