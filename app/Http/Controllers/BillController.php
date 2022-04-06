@@ -108,18 +108,6 @@ class BillController extends Controller
         foreach ($bill_items as $item) {
             $item->bill_id = $bill->id;
             $item->update();
-            if($item->type=="Purchase"){
-                $po=PurchaseOrder::where('id',$item->po_id)->first();
-                $po->paid_bill=1;
-                $po->update();
-            }elseif ($item->type=='Delivery'){
-             $delivery=DeliveryOrder::where('id',$item->delivery_id)->first();
-             $delivery->paid_deli_fee=1;
-             $delivery->update();
-             $deli_pay=DeliveryPay::where('delivery_id',$item->delivery_id)->first();
-             $deli_pay->paid_delivery_fee=1;
-             $deli_pay->update();
-            }
 
         }
         Session::forget('bill-'.Auth::guard('employee')->user()->id);
@@ -163,9 +151,22 @@ class BillController extends Controller
             $bill->status='Overdue';
             $bill->update();
         }elseif($bill->due_amount==0){
-
             $bill->status='Paid';
             $bill->update();
+            foreach ($bill_item as $item){
+                if($item->po_id!=null){
+                    $po=PurchaseOrder::where('id',$item->po_id)->first();
+                    $po->paid_bill=1;
+                    $po->update();
+                }elseif($item->delivery_id!=null){
+                    $delivery=DeliveryOrder::where('id',$item->delivery_id)->first();
+                    $delivery->paid_deli_fee=1;
+                    $delivery->update();
+                    $deli_pay=DeliveryPay::where('delivery_id',$item->delivery_id)->first();
+                    $deli_pay->paid_delivery_fee=1;
+                    $deli_pay->update();
+                }
+            }
         }else{
 
             $bill->status='Draft';

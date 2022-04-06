@@ -123,7 +123,7 @@
                                 </small>
                                 <div class="mt-3">
                                     <button id="button-payment" class="btn btn-success btn-sm header-button-bottom" data-toggle='modal' data-target='#add_payment'>
-                                        Add Expense
+                                        Make Payment
                                     </button>
                                 </div>
                             </div>
