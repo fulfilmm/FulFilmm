@@ -1,6 +1,5 @@
 
 <script src="{{url(asset('js/mdtimepicker.js'))}}"></script>
-<script src="{{url(asset('js/swalalert.js'))}}"></script>
 <script src="{{url(asset('js/jquery_ui1_11_0.js'))}}"></script>
 <!-- Bootstrap Core JS -->
 <script src="{{asset('js/popper.min.js')}}"></script>
@@ -54,6 +53,7 @@
     <!-- Custom JS -->
 
     <script src="{{asset('js/style.js')}}"></script>
+<script src="{{url(asset('js/swalalert.js'))}}"></script>
 <script>
 
     $(document).ready(function(){
@@ -140,4 +140,5 @@
         }
     });
 </script>
+
     {{-- <script src="{{asset('js/app.js')}}"></script> --}}

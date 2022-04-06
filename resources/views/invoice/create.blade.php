@@ -58,9 +58,9 @@
                             </div>
                             <div class="col-sm-4 col-md-4">
                                 <div class="form-group">
-                                    <label for="due_date">Due Date <span class="text-danger">*</span></label>
-                                    <input class="form-control shadow-sm" type="date" id="due_date"
-                                           value="{{isset($data[0]['due_date'])?$data[0]['due_date']:\Carbon\Carbon::now()->format('Y-m-d')}}">
+                                    <label for="due_date">Payment Terms <span class="text-danger">*</span></label>
+                                    <input class="form-control shadow-sm" type="date" id="due_date" min="{{$due_default->format('Y-m-d')}}"
+                                           value="{{isset($data[0]['due_date'])?$data[0]['due_date']:$due_default->format('Y-m-d')}}">
                                 </div>
                             </div>
                         </div>
@@ -91,7 +91,7 @@
                                     <select class="form-control" id="client_id">
                                         <option value="">Select Client</option>
                                         @foreach($allcustomers as $client)
-                                            <option value="{{$client->id}}" {{isset($order_data)?($client->id==$order_data->customer_id?'selected':''):($data!=null?($data[0]['client_id']?'selected':''):'')}}>{{$client->name}}</option>
+                                            <option value="{{$client->id}}" {{isset($order_data)?($client->id==$order_data->customer_id?'selected':''):($data!=null?($data[0]['client_id']==$client->id?'selected':''):'')}}>{{$client->name}}</option>
                                         @endforeach
                                     </select>
                                     <span class="text-danger client_id_err"></span>
@@ -382,6 +382,7 @@
                                     {{--                                @dd($unit_price)--}}
                                     <script>
                                         $(".update_item_{{$order->id}}").keyup(function () {
+                                            var customer_id=$('#client_id option:selected').val();
                                             var unit_id = $('#unit{{$order->id}} option:selected').val();
                                             @foreach($prices as $item)
                                             if (unit_id == "{{$item->unit_id}}") {
@@ -419,11 +420,18 @@
                                                 sum += parseFloat($(this).val());
                                             });
                                             $('#total').val(sum);
+                                            @foreach($allcustomers as $client)
+                                            if('{{$client->id}}'==customer_id){
+                                                if((parseFloat(sum)+parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')){
+                                                    noti_alert();
+                                                }
+                                            }
+                                            @endforeach
                                             @endif
 
                                         });
                                         $(document).ready(function () {
-
+                                            var customer_id=$('#client_id option:selected').val();
                                             var unit_id = $('#unit{{$order->id}} option:selected').val();
                                             @foreach($prices as $item)
                                             if (unit_id == "{{$item->unit_id}}") {
@@ -522,6 +530,7 @@
                                         });
                                         $(document).ready(function () {
                                             $(".update_item_{{$order->id}}").keyup(function () {
+                                                var customer_id=$('#client_id option:selected').val();
                                                 @if($order->foc)
                                                 $('#price_{{$order->id}}').val(0);
                                                 $('#total_{{$order->id}}').val(0);
@@ -538,6 +547,13 @@
                                                     sum += parseFloat($(this).val());
                                                 });
                                                 $('#total').val(sum);
+                                                @foreach($allcustomers as $client)
+                                                if('{{$client->id}}'==customer_id){
+                                                    if((parseFloat(sum)+parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')){
+                                                        noti_alert();
+                                                    }
+                                                }
+                                                @endforeach
                                                 @endif
                                             });
                                         });
@@ -639,47 +655,13 @@
         {{--                            <input type="hidden" id="generate_id" value="{{$generate_id}}">--}}
     </div>
     <script>
-        $(document).ready(function () {
-            var tax = $('#tax option:selected').val();
-            var sum =$('#total').val();
-            @foreach($taxes as $tax)
-            if (tax == "{{$tax->id}}")
-                var tax_rate ='{{$tax->rate}}';
-                    @endforeach
-            var tax_amount = parseFloat(sum) * (parseInt(tax_rate) / 100);
-            // var discount = $('#discount').val();
-            var deli_fee = $('#deli_fee').val();
-            var grand=(parseFloat(sum) + parseFloat(deli_fee) + parseFloat(tax_amount));
-            if(isNaN(grand)){
-                $('#dis_row').hide();
-                $('#total').val('0');
-                $('#grand_total').val('0.0');
-            }else {
-                var on_off=$('input[name="amount_discount"]:checked').val();
-                if(on_off==1){
+        function noti_alert(){
+            swal('Credit Limit Alert','This Customer credit is reach to limit','warning');
+        }
 
-                  if('{{$amount_discount->isEmpty()}}'){
-                      $('#grand_total').val(grand);
-                  }else{
-                      @foreach($amount_discount as $item)
-                      if(sum > parseFloat('{{$item->min_amount}}') && sum < parseFloat('{{$item->max_amount}}')){
-                          var discount=(parseInt('{{$item->rate}}')/100)*sum;
-                          var sub_total=grand - discount;
-                          $('#dis_row').show();
-                          $('#discount').val(discount);
-                          $('#percentage').text('{{$item->rate}}'+'%');
-                          $('#grand_total').val(sub_total);
-                      }
-                      @endforeach
-                  }
-                }else {
-                    $('#dis_row').hide();
-                    $('#grand_total').val(grand);
-                }
-            }
-
-            $('select').change(function () {
+        $('select').change(function () {
                 var tax = $('#tax option:selected').val();
+                var customer_id = $('#client_id option:selected').val();
                 var sum =$('#total').val();
                 @foreach($taxes as $tax)
                 if (tax == "{{$tax->id}}")
@@ -693,6 +675,14 @@
                 if(on_off==1){
                     if('{{$amount_discount->isEmpty()}}'){
                         $('#grand_total').val(grand);
+                        @foreach($allcustomers as $client)
+                        if('{{$client->id}}'==customer_id){
+                            if((parseFloat(grand)+parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')){
+                                noti_alert();
+                            }
+                        }
+                        @endforeach
+
                     }else{
                         @foreach($amount_discount as $item)
                         if(sum > parseFloat('{{$item->min_amount}}') && sum < parseFloat('{{$item->max_amount}}')){
@@ -702,6 +692,13 @@
                             $('#discount').val(discount);
                             $('#percentage').text('{{$item->rate}}'+'%');
                             $('#grand_total').val(sub_total);
+                            @foreach($allcustomers as $client)
+                            if('{{$client->id}}'==customer_id){
+                                if((parseFloat(grand)+parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')){
+                                    noti_alert();
+                                }
+                            }
+                            @endforeach
                         }
                         @endforeach
                     }
@@ -709,10 +706,18 @@
                     $('#discount').val('0.0');
                     $('#dis_row').hide();
                     $('#grand_total').val(grand);
+                    @foreach($allcustomers as $client)
+                    if('{{$client->id}}'==customer_id){
+                        if((parseFloat(grand)+parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')){
+                            noti_alert();
+                        }
+                    }
+                    @endforeach
                 }
 
             });
-            $('input[name="amount_discount"]').change(function () {
+        $('input[name="amount_discount"]').change(function () {
+                var customer_id = $('#client_id option:selected').val();
                 var tax = $('#tax option:selected').val();
                 var sum =$('#total').val();
                 @foreach($taxes as $tax)
@@ -745,11 +750,19 @@
                     $('#discount').val('0.0');
                     $('#dis_row').hide();
                     $('#grand_total').val(grand);
+                    @foreach($allcustomers as $client)
+                    if ('{{$client->id}}' == customer_id) {
+                        if ((parseFloat(grand) + parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')) {
+                            noti_alert();
+                        }
+                    }
+                    @endforeach
                 }
 
             });
-            $('input').keyup(function () {
+        $('input').keyup(function () {
                 var tax = $('#tax option:selected').val();
+                var customer_id = $('#client_id optioin:selected').val();
                 var sum =$('#total').val();
                 @foreach($taxes as $tax)
                 if (tax == "{{$tax->id}}")
@@ -763,6 +776,13 @@
                 if(on_off==1){
                     if('{{$amount_discount->isEmpty()}}'){
                         $('#grand_total').val(grand);
+                        @foreach($allcustomers as $client)
+                        if ('{{$client->id}}' == customer_id) {
+                            if ((parseFloat(grand) + parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')) {
+                               noti_alert()
+                            }
+                        }
+                        @endforeach
                     }else{
                         @foreach($amount_discount as $item)
                         if(sum > parseFloat('{{$item->min_amount}}') && sum < parseFloat('{{$item->max_amount}}')){
@@ -772,6 +792,13 @@
                             $('#discount').val(discount);
                             $('#percentage').text('{{$item->rate}}'+'%');
                             $('#grand_total').val(sub_total);
+                            @foreach($allcustomers as $client)
+                            if ('{{$client->id}}' == customer_id) {
+                                if ((parseFloat(grand) + parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')) {
+                                    noti_alert()
+                                }
+                            }
+                            @endforeach
                         }
                         @endforeach
                     }
@@ -779,11 +806,23 @@
                     $('#percentage').hide();
                     $('#dis_row').hide();
                     $('#grand_total').val(grand);
+                    @foreach($allcustomers as $client)
+                    if ('{{$client->id}}' == customer_id) {
+                        if ((parseFloat(grand) + parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')) {
+                            @foreach($allcustomers as $client)
+                            if ('{{$client->id}}' == customer_id) {
+                                if ((parseFloat(grand) + parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')) {
+                                    noti_alert();
+                                }
+                            }
+                            @endforeach
+                        }
+                    }
+                    @endforeach
                 }
 
 
             });
-        });
 
         $(document).ready(function () {
             $('#product_code').hide();
@@ -1195,5 +1234,97 @@
     </script>
 
     <!-- /Page Content -->
-
+    <script>
+        $(document).ready(function () {
+            var tax = $('#tax option:selected').val();
+            var sum = $('#total').val();
+            var customer_id=$('#client_id option:selected').val();
+            @foreach($taxes as $tax)
+            if (tax == "{{$tax->id}}")
+                var tax_rate = '{{$tax->rate}}';
+                    @endforeach
+            var tax_amount = parseFloat(sum) * (parseInt(tax_rate) / 100);
+            // var discount = $('#discount').val();
+            var deli_fee = $('#deli_fee').val();
+            var grand = (parseFloat(sum) + parseFloat(deli_fee) + parseFloat(tax_amount));
+            if (isNaN(grand)) {
+                $('#dis_row').hide();
+                $('#total').val('0');
+                $('#grand_total').val('0.0');
+                @foreach($allcustomers as $client)
+                if ('{{$client->id}}' == customer_id) {
+                    if ((parseFloat(grand) + parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')) {
+                        @foreach($allcustomers as $client)
+                        if ('{{$client->id}}' == customer_id) {
+                            if ((parseFloat(grand) + parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')) {
+                                noti_alert();
+                            }
+                        }
+                        @endforeach
+                    }
+                }
+                @endforeach
+            } else {
+                var on_off = $('input[name="amount_discount"]:checked').val();
+                if (on_off == 1) {
+                    if ('{{$amount_discount->isEmpty()}}') {
+                        $('#grand_total').val(grand);
+                        @foreach($allcustomers as $client)
+                        if ('{{$client->id}}' == customer_id) {
+                            if ((parseFloat(grand) + parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')) {
+                                @foreach($allcustomers as $client)
+                                if ('{{$client->id}}' == customer_id) {
+                                    if ((parseFloat(grand) + parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')) {
+                                        noti_alert();
+                                    }
+                                }
+                                @endforeach
+                            }
+                        }
+                        @endforeach
+                    } else {
+                        @foreach($amount_discount as $item)
+                        if (sum > parseFloat('{{$item->min_amount}}') && sum < parseFloat('{{$item->max_amount}}')) {
+                            var discount = (parseInt('{{$item->rate}}') / 100) * sum;
+                            var sub_total = grand - discount;
+                            $('#dis_row').show();
+                            $('#discount').val(discount);
+                            $('#percentage').text('{{$item->rate}}' + '%');
+                            $('#grand_total').val(sub_total);
+                            @foreach($allcustomers as $client)
+                            if ('{{$client->id}}' == customer_id) {
+                                if ((parseFloat(grand) + parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')) {
+                                    @foreach($allcustomers as $client)
+                                    if ('{{$client->id}}' == customer_id) {
+                                        if ((parseFloat(grand) + parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')) {
+                                            noti_alert();
+                                        }
+                                    }
+                                    @endforeach
+                                }
+                            }
+                            @endforeach
+                        }
+                        @endforeach
+                    }
+                } else {
+                    $('#grand_total').val(grand);
+                    $('#dis_row').hide();
+                    @foreach($allcustomers as $client)
+                    if ('{{$client->id}}' == customer_id) {
+                        if ((parseFloat(grand) + parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')) {
+                            @foreach($allcustomers as $client)
+                            if ('{{$client->id}}' == customer_id) {
+                                if ((parseFloat(grand) + parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')) {
+                                    noti_alert();
+                                }
+                            }
+                            @endforeach
+                        }
+                    }
+                    @endforeach
+                }
+            }
+        });
+    </script>
 @endsection

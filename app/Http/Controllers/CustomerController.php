@@ -143,6 +143,7 @@ class CustomerController extends Controller
             'department'=>$request->department,
             'position'=>$request->position??null,
             'status'=>$request->status,
+            'credit_limit'=>$request->credit_limit,
             'lead_title'=>$request->title
 
         ];
@@ -271,7 +272,7 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+//        dd($request->all());
 
         $customer = Customer::where('id', $id)->first();
         if($request->customer_type=='Lead') {
@@ -356,6 +357,7 @@ class CustomerController extends Controller
                 'department'=>$request->department,
                 'position'=>$request->position??null,
                 'status'=>$request->status,
+                'credit_limit'=>$request->credit_limit,
                 'lead_title'=>$request->title,
                 'bio'=>$request->bio
             ];

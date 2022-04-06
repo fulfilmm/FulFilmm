@@ -121,6 +121,7 @@
                             <th>Due Date</th>
                             <th>Amount</th>
                             <th>Due Amount</th>
+                            <th>Customer Credit</th>
                             <th>Status</th>
                             <th>Office Branch</th>
                             <th class="text-right">Action</th>
@@ -142,6 +143,7 @@
                                 <td>{{\Illuminate\Support\Carbon::parse($invoice->due_date)->toFormattedDateString()}}</td>
                                 <td>{{$invoice->grand_total}}</td>
                                 <td>{{$invoice->due_amount}}</td>
+                                    <td><span class="text-{{$invoice->customer->current_credit>$invoice->customer->credit_limit?'danger':''}}" title="Red Color is over credit limit">{{$invoice->customer->current_credit}}</span></td>
                                 <td>
                                     <div class="dropdown action-label">
                                         <a class="btn btn-white btn-sm btn-rounded " href="#" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o mr-1"></i>{{$invoice->status}}</a>

@@ -38,6 +38,26 @@
                                         <textarea name="bio" class="form-control" id="bio" rows="10"
                                                   placeholder="Enter Bio">{{$record->bio}}</textarea>
                                     </div>
+                                    <div class="col-md-12 my-3">
+                                        <label class="form-label font-weight-bold text-muted text-uppercase">Gender<span
+                                                    class="text-danger">*</span></label><br>
+                                        <div class="form-check form-check-inline">
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" id="male" name="gender" value="Male"
+                                                       class="custom-control-input" checked>
+                                                <label class="custom-control-label" for="male"><i
+                                                            class="fa fa-male"></i> Male </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" id="female" name="gender" value="Female"
+                                                       class="custom-control-input">
+                                                <label class="custom-control-label" for="female"><i
+                                                            class="fa fa-female"></i> Female </label>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-md-8">
                                     <div class="row g-3 date-icon-set-modal">
@@ -56,25 +76,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label font-weight-bold text-muted text-uppercase">Gender<span
-                                                        class="text-danger">*</span></label><br>
-                                            <div class="form-check form-check-inline">
-                                                <div class="custom-control custom-radio custom-control-inline">
-                                                    <input type="radio" id="male" name="gender" value="Male"
-                                                           class="custom-control-input" checked>
-                                                    <label class="custom-control-label" for="male"><i
-                                                                class="fa fa-male"></i> Male </label>
-                                                </div>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <div class="custom-control custom-radio custom-control-inline">
-                                                    <input type="radio" id="female" name="gender" value="Female"
-                                                           class="custom-control-input">
-                                                    <label class="custom-control-label" for="female"><i
-                                                                class="fa fa-female"></i> Female </label>
-                                                </div>
-                                            </div>
+                                        <div class="col-md-6 col-sm-6 col-12">
+                                            <label for="credit">Credit Limit</label>
+                                            <input type="number" class="form-control" name="credit_limit" id="credit" value="{{$record->credit_limit??0.0}}">
                                         </div>
                                         <div class="col-md-6 mb-3 position-relative">
                                             <div class="form-group">

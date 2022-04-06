@@ -80,6 +80,26 @@
                                    placeholder="Enter Phone">
                         </div>
                     </div>
+                    <div class="col-md-6 col-sm-6 col-12">
+                        <div class="form-group">
+                            <label for="credit">Credit Limit</label>
+                            <input type="number" class="form-control" name="credit_limit" value="{{old('credit_limit')}}">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3" id="refesh_div">
+                        <label for="customer_type" class="form-label font-weight-bold text-muted text-uppercase">
+                            Type</label>
+                        <select name="customer_type" id="customer_type" class="form-control">
+                            <option value="Customer">Customer</option>
+                            <option value="Lead">Lead</option>
+                            <option value="In Query">In Query</option>
+                            <option value="Partner">Partner</option>
+                            <option value="Competitor">Competitor</option>
+                            <option value="Supplier">Supplier</option>
+                            <option value="Courier">Courier</option>
+                        </select>
+                    </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label font-weight-bold text-muted text-uppercase">Gender<span
                                     class="text-danger">*</span></label><br>
@@ -100,19 +120,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 mb-3" id="refesh_div">
-                        <label for="customer_type" class="form-label font-weight-bold text-muted text-uppercase">
-                            Type</label>
-                        <select name="customer_type" id="customer_type" class="form-control">
-                            <option value="Customer">Customer</option>
-                            <option value="Lead">Lead</option>
-                            <option value="In Query">In Query</option>
-                            <option value="Partner">Partner</option>
-                            <option value="Competitor">Competitor</option>
-                            <option value="Supplier">Supplier</option>
-                            <option value="Courier">Courier</option>
-                        </select>
-                    </div>
 
                 </div>
             </div>
@@ -129,7 +136,7 @@
                    <div class="input-group">
                        <input type="date"
                               class="form-control vanila-datepicker datepicker-input"
-                              id="bod" name="bod" placeholder="Enter Birth Day"
+                              id="bod" min="{{\Carbon\Carbon::today()->format('Y-m-d')}}" name="bod" placeholder="Enter Birth Day"
                               autocomplete="off">
                    </div>
                </div>

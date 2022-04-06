@@ -230,7 +230,7 @@ class BillController extends Controller
 //        Session::forget($Auth);
             $session_value = \Illuminate\Support\Str::random(10);
             if (!Session::has($Auth)) {
-                Session::push("$Auth", $session_value);
+                Session::push("$Auth", $session_value.$po->po_id);
                 $request_id = Session::get($Auth);
             } else {
                 $request_id = Session::get($Auth);

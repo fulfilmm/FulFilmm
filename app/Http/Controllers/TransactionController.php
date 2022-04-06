@@ -218,6 +218,8 @@ class TransactionController extends Controller
                $inv = Invoice::where('id', $request->invoice_id)->first();
                $inv->due_amount = $inv->due_amount - $request->amount;
                $inv->update();
+               $customer=Customer::where('id',$inv->customer_id)->first();
+               $customer->update();
                return redirect(route('invoices.show', $request->invoice_id))->with('success', 'Add New Revenue Successful');
            } else {
                $last_tran = Transaction::orderBy('id', 'desc')->first();
@@ -331,7 +333,8 @@ class TransactionController extends Controller
     public function account_update($id, $type)
     {
         if ($type == 'Revenue') {
-            $revenue = Revenue::where('id', $id)->first();
+            $revenue = Revenue::with('invoice')->where('id', $id)->first();
+
             if ($revenue->approver_id == Auth::guard('employee')->user()->id) {
                 $transaction = Transaction::where('revenue_id', $revenue->id)->first();
                 $account = Account::where('id', $transaction->account_id)->first();
@@ -339,6 +342,11 @@ class TransactionController extends Controller
                 $revenue->approve = 1;
                 $revenue->update();
                 $account->update();
+                if(isset($revenue->invoice->customer_id)){
+                    $customer=Customer::where('id',$revenue->invoice->customer_id)->first();
+                    $customer->current_credit=$customer->current_credit-$revenue->amount;
+                    $customer->update();
+                }
 //                $rev_budget=RevenueBudget::where('category_id',$revenue->category)->where('year',Carbon::parse($revenue->transaction_date)->format('Y'))->where('month',Carbon::parse($revenue->transaction_date)->format('m'))->first();
 //                $rev_budget->actual=$rev_budget->actual + $revenue->amount;
 //                $rev_budget->update();

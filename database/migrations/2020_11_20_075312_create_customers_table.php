@@ -41,6 +41,8 @@ class CreateCustomersTable extends Migration
             $table->string('status')->nullable();
             $table->string('lead_title')->nullable();
             $table->string('customer_type');
+            $table->double('credit_limit')->default(0);
+            $table->double('current_credit')->default(0);
             $table->string('case')->nullable();
             $table->tinyInteger('main_customer')->default(0);
             $table->rememberToken();

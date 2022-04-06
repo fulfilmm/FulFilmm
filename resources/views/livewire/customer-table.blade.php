@@ -14,6 +14,8 @@
                         <th>Name</th>
                         <th>Phone No</th>
                         <th>Email</th>
+                        <th>Credit Limit</th>
+                        <th>Credit Amount</th>
                         <th>Company</th>
                         <th>Type</th>
                         <th>Action</th>
@@ -27,6 +29,8 @@
                             <td><a href="{{route('customers.show',$customer->id)}}"><img src="{{$customer->profile!=null? url(asset('img/profiles/'.$customer->profile)):url(asset('img/profiles/avatar-01.jpg'))}}" alt="" class="avatar chat-avatar-sm">{{$customer->name}}</a></td>
                             <td>{{ $customer->phone }}</td>
                             <td>{{ $customer->email }}</td>
+                            <td>{{$customer->credit_limit??0}}</td>
+                            <td><span class="text-{{$customer->current_credit>$customer->credit_limit?'danger':''}}">{{$customer->current_credit??0}}</span></td>
                             <td>{{ $customer->company->name }}</td>
                             <td>{{$customer->customer_type}}</td>
                             <td style="display: flex">
