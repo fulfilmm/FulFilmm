@@ -227,7 +227,7 @@ class BillController extends Controller
 //        dd($vendor);
             $Auth = Auth::guard('employee')->user()->name;
 //        Session::forget('data-'.Auth::guard('employee')->user()->id);
-//        Session::forget($Auth);
+        Session::forget($Auth);
             $session_value = \Illuminate\Support\Str::random(10);
             if (!Session::has($Auth)) {
                 Session::push("$Auth", $session_value.$po->po_id);
