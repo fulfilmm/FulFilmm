@@ -103,9 +103,8 @@ class BillController extends Controller
         $bill->inv_date=$request->inv_date;
         $bill->invoice_id=$request->invoice_id;
         $bill->save();
-        $Auth=Auth::guard('employee')->user()->name;
-        $creation_id = Session::get($Auth);
-        $bill_items = BillItem::where('creation_id', $creation_id)->get();
+        $bill_items = BillItem::where('creation_id', $request->creation_id)->get();
+//        dd($bill_items);
         foreach ($bill_items as $item) {
             $item->bill_id = $bill->id;
             $item->update();
@@ -123,7 +122,6 @@ class BillController extends Controller
             }
 
         }
-        Session::forget($Auth);
         Session::forget('bill-'.Auth::guard('employee')->user()->id);
         return redirect(route('bills.show',$bill->id));
 
@@ -254,6 +252,7 @@ class BillController extends Controller
 
             $pos = PurchaseOrder::where('paid_bill', 0)->where('vendor_id', $po->vendor_id)->get();
             $delivery = DeliveryOrder::where('paid_deli_fee', 0)->where('courier_id', $po->vendor_id)->get();
+//            dd($request_id);
             return view('transaction.Bill.create', compact('vendor', 'grand_total', 'request_id', 'items', 'po_to_bill', 'pos', 'delivery'));
         }else{
             return redirect()->back()->with('warning','Already Created Bill');
@@ -266,24 +265,14 @@ class BillController extends Controller
         if ($delivery != null) {
             $vendor = Customer::where('id', $delivery->courier_id)->first();
 //        dd($vendor);
-            $Auth = Auth::guard('employee')->user()->name;
-//        Session::forget('data-'.Auth::guard('employee')->user()->id);
-//        Session::forget($Auth);
-            $session_value = \Illuminate\Support\Str::random(10);
-            if (!Session::has($Auth)) {
-                Session::push("$Auth", $session_value);
-                $request_id = Session::get($Auth);
-            } else {
-                $request_id = Session::get($Auth);
-            }
-//        dd($delivery);
+          $request_id=$delivery->delivery_id;
             $exist_item=BillItem::where('delivery_id',$deli_id)->first();
            if($exist_item==null){
                $items = new BillItem();
                $items->delivery_id = $deli_id;
                $items->amount = $delivery->delivery_fee;
                $items->type = 'Delivery';
-               $items->creation_id = $request_id[0];
+               $items->creation_id = $request_id;
                $items->save();
            }
 
@@ -297,6 +286,8 @@ class BillController extends Controller
                 ->get();
 
             $grand_total = $total[0]->total;
+            $delivery->paid_deli_fee=1;
+            $delivery->update();
             return view('transaction.Bill.deliverybill', compact('vendor', 'grand_total', 'request_id', 'items', 'delivery'));
         }else{
             return redirect()->back()->with('warning','Already Created Bill');

@@ -20,8 +20,9 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="">Vendor</label>
+                        <label for="">Vendor(optional)</label>
                         <select name="vendor_id" id="supplier" class="form-control select2">
+                            <option value="">None</option>
                             @foreach($suppliers as $supplier)
                                 <option value="{{$supplier->id}}" {{isset($rfq_data)?($rfq_data[0]['supplier_id']==$supplier->id?'selected':''):''}}>{{$supplier->name}}</option>
                             @endforeach

@@ -16,7 +16,7 @@ class CreateRequestForQuotationsTable extends Migration
         Schema::create('request_for_quotations', function (Blueprint $table) {
             $table->id();
             $table->string('purchase_id')->unique();
-            $table->bigInteger('vendor_id')->unsigned();
+            $table->bigInteger('vendor_id')->unsigned()->nullable();
             $table->bigInteger('pr_id')->unsigned()->nullable();
             $table->dateTime('receipt_date');
             $table->dateTime('deadline');

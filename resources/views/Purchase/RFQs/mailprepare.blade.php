@@ -23,16 +23,20 @@
                        <div class="row">
                            <div class="col-md-4">
                                <div class="form-group">
-                                   <label for="">Email Address</label>
-                                   <input type="email" name="email" class="form-control" value="{{$rfq->vendor->email}}">
+                                   <label for="">Supplier</label>
+                                   <select name="email" id="" class="form-control select2">
+                                      @foreach($supplier as $sup)
+                                       <option value="{{$sup->email}}">{{$sup->name}}({{$sup->email}})</option>
+                                          @endforeach
+                                   </select>
                                </div>
                            </div>
                        </div>
-                        <input type="hidden" name="vendor_name" value="{{$rfq->vendor->name}}">
+                        <input type="hidden" name="vendor_name" value="">
                         <div class="form-group">
                             <label for="">Body</label>
                             <textarea name="body" id="description" cols="30" rows="10" class="form-group">
-                                   Dear {{$rfq->vendor->name}},
+                                   Dear,
                                </textarea>
                         </div>
                         <div class="form-group">

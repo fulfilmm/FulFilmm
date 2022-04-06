@@ -125,6 +125,7 @@ class PurchaseOrderController extends Controller
             $data['grand_total']=$request->grand_total;
             $data['emp_id']=$request->emp_id;
             $data['shipping_address']=$request->ship_to;
+            $data['status']='New';
             $data['additional_cost']=$request->additional_cost??0;
             $po=PurchaseOrder::create($data);
             if($request->tag!=null){
@@ -238,40 +239,13 @@ class PurchaseOrderController extends Controller
     {
         //
     }
-    public function receive($id){
-        $last_rfq =ProductReceive::orderBy('id', 'desc')->first();
-
-        if ($last_rfq != null) {
-            $last_rfq->received_id++;
-            $received_id = $last_rfq->received_id;
-        } else {
-            $received_id = "WH/IN/"."00001";
-        }
-        $po=PurchaseOrder::where('id',$id)->first();
-        $rfq_items = PurchaseOrderItem::with('product')->where('rfq_id', $id)->get();
-        $product_receive=new ProductReceive();
-        $product_receive->received_id=$received_id;
-        $product_receive->schedule_date=Carbon::now();
-        $product_receive->deadline=$po->deadline;
-        $product_receive->po=$po->id;
-        $product_receive->vendor_id=$po->vendor_id;
-        $product_receive->save();
-        foreach ($rfq_items as $item){
-            $rece_item=new ProductReceiveItem();
-            $rece_item->product_id=$item->product_id;
-            $rece_item->demand=$item->qty;
-            $rece_item->qty=$item->qty;
-            $rece_item->po_id=$po->id;
-            $rece_item->receipt_id=$product_receive->id;
-            $rece_item->save();
-        }
-
-    }
     public function confirm($id){
+
         $po=PurchaseOrder::where('id',$id)->first();
        if($po->approver==Auth::guard('employee')->user()->id){
            $po->confirm=1;
            $po->confirm_date=Carbon::now();
+           $po->status='Confirmed';
            $po->update();
            $already_exist=ProductReceive::where('po_id',$id)->first();
            if($already_exist==null)
@@ -302,8 +276,10 @@ class PurchaseOrderController extends Controller
                    $recipt_item->price=$item->price;
                    $recipt_item->save();
                }
-               return redirect(route('purchaseorders.show',$id));
+
            }
+           return redirect(route('purchaseorders.show',$id));
+
        }else{
            return redirect(route('purchaseorders.show',$id))->with('error','Your not approver for this purchase order');
        }

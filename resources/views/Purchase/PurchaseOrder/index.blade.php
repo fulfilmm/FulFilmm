@@ -29,6 +29,10 @@
                       <th>Type</th>
                       <th>Supplier</th>
                       <th>Approver</th>
+                      <th>Status</th>
+                      <th>Bill Status</th>
+                      <th>Receipt Status</th>
+                      <th>Mail Status</th>
                       <th>Discount</th>
                       <th>Total Amount</th>
                       <th>Action</th>
@@ -44,6 +48,10 @@
                           <td>{{$po->purchase_type}}</td>
                           <td>{{$po->vendor->name}}</td>
                           <td>{{$po->approver_name->name}}</td>
+                          <td>{{$po->status}}</td>
+                          <td>{{$po->paid_bill?'Paid':'Unpaid'}}</td>
+                          <td>{{$po->is_receipt?'Receipted':'Un Receipted'}}</td>
+                          <td>{{$po->sent?'Sent':'Unsent'}}</td>
                           <td>{{$po->discount}}</td>
                           <td>{{$po->grand_total}}</td>
                           <td>

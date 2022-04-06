@@ -130,6 +130,9 @@ class InventoryController extends Controller
       }
       $receipt->is_validate=1;
       $receipt->update();
+      $po=PurchaseOrder::where('id',$receipt->po_id)->first();
+      $po->is_receipt=1;
+      $po->update();
       return redirect(route('receipt.show',$id));
     }
     public function reedit($id){
@@ -158,7 +161,7 @@ class InventoryController extends Controller
            $receipt->inprogress = 0;
            $receipt->update();
 
-           $po = PurchaseOrder::where('id', $receipt->po_id)->first();
+           $po =PurchaseOrder::where('id', $receipt->po_id)->first();
            $po->is_receipt = 1;
            $po->update();
 

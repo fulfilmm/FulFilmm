@@ -44,7 +44,10 @@
                               </div>
                               <div class="col-4">
                                   <span class="float-right">Request For Quotation</span><br>
-                                  <h4 class="float-right">{{$rfq->purchase_id}}</h4>
+                                  <h4 class="float-right">{{$rfq->purchase_id}}</h4><br>
+                              </div>
+                              <div class="col">
+                                  <h5 class="float-right">Status: {{$rfq->status}}</h5>
                               </div>
                               <hr>
                               <div class="col-md-6">

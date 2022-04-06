@@ -89,7 +89,7 @@ class RFQController extends Controller
         $this->validate($request,[
            'receive_date'=>'required',
            'type'=>'required',
-           'vendor_id'=>'required',
+           'vendor_id'=>'nullable',
            'deadline'=>'required',
         ]);
 //        dd($request->all());
@@ -278,7 +278,8 @@ class RFQController extends Controller
     public function prepareemail($id)
     {
         $rfq = RequestForQuotation::with('vendor')->where('id', $id)->first();
-        return view('Purchase.RFQs.mailprepare', compact('rfq'));
+        $supplier=Customer::all();
+        return view('Purchase.RFQs.mailprepare', compact('rfq','supplier'));
     }
 
     /**

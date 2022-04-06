@@ -50,7 +50,7 @@
                                 </select>
                             </div>
                         </div>
-                        <input type="hidden" id="creation_id" name="creation_id" class="form-control" value="{{$request_id[0]}}" readonly>
+                        <input type="hidden" id="creation_id" name="creation_id" class="form-control" value="{{$request_id}}" readonly>
                         <div class="col-sm-6 col-md-3">
                             <div class="form-group">
                                 <label for="bill_date">Bill date <span class="text-danger">*</span></label>

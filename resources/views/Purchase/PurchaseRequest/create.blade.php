@@ -23,9 +23,9 @@
                    <div class="row">
                        <div class="col-md-3">
                            <div class="form-group">
-                               <label for="">Supplier <span class="text-danger">*</span></label>
+                               <label for="">Supplier(optional)</label>
                                <select name="vendor_id" id="supplier" class="form-control select2">
-                                   <option value="">Select Supplier</option>
+                                   <option value="">None</option>
                                    @foreach($suppliers as $supplier)
                                        <option value="{{$supplier->id}}" {{isset($pr_data)?($pr_data[0]['supplier_id']==$supplier->id?'selected':''):''}}>{{$supplier->name}}</option>
                                    @endforeach

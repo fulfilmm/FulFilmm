@@ -56,8 +56,6 @@
              <th>{{$rfq->purchase_id}}</th>
          </tr>
          <tr>
-             <td>Vendor</td>
-             <th style="font-size: 14px;width: 300px">{{$rfq->vendor->name}}</th>
              <td>Deadline</td>
              <th style="font-size: 14px;">{{\Carbon\Carbon::parse($rfq->deadline)->toFormattedDateString()}}</th>
              <td></td>
