@@ -26,6 +26,9 @@
                                 <option value="{{$supplier->id}}" {{isset($rfq_data)?($rfq_data[0]['supplier_id']==$supplier->id?'selected':''):''}}>{{$supplier->name}}</option>
                             @endforeach
                         </select>
+                        @error('vendor_id')
+                        <span class="text-danger">{{$message}}</span>
+                        @enderror
                     </div>
                 </div>
                 {{--                @dd()--}}
@@ -36,12 +39,19 @@
                             <option value="Re-Sale" {{isset($rfq_data)?($rfq_data[0]['type']=='Re-Sale'?'selected':''):''}}>Re-Sale</option>
                             <option value="Office Use" {{isset($rfq_data)?($rfq_data[0]['type']=='Office Use'?'selected':''):''}}>Office Use</option>
                         </select>
+                        @error('type')
+                        <span class="text-danger">{{$message}}</span>
+                        @enderror
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="">Deadline</label>
                         <input type="date" name="deadline" id="deadline" class="form-control" value="{{$rfq_data[0]['deadline']??''}}" >
+
+                        @error('deadline')
+                        <span class="text-danger">{{$message}}</span>
+                        @enderror
                     </div>
                 </div>
 
@@ -49,6 +59,9 @@
                     <div class="form-group">
                         <label for="">Vendor Reference</label>
                         <input type="text" class="form-control" name="vendor_reference" id="vendor_ref" value="{{$rfq_data[0]['vendor_ref']??''}}">
+                        @error('vendor_reference')
+                        <span class="text-danger">{{$message}}</span>
+                        @enderror
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -59,11 +72,17 @@
                         <option value="{{$key}}">{{$val}}</option>
                             @endforeach
                     </select>
+                    @error('source')
+                    <span class="text-danger">{{$message}}</span>
+                    @enderror
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="">Receipt Date</label>
                         <input type="date" class="form-control" name="receive_date" id="received_date" value="{{$rfq_data[0]['received_date']??''}}">
+                        @error('receive_date')
+                        <span class="text-danger">{{$message}}</span>
+                        @enderror
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -78,11 +97,17 @@
                                 @endif
                             @endforeach
                         </select>
+                        @error('tag')
+                        <span class="text-danger">{{$message}}</span>
+                        @enderror
                     </div>
                 </div>
                 <div class="col-12">
                     <label for="">Description</label>
                     <textarea name="description" id="description" cols="30" rows="5" class="form-control">{{$rfq_data[0]['desc']??''}}</textarea>
+                    @error('description')
+                    <span class="text-danger">{{$message}}</span>
+                    @enderror
                 </div>
 
             </div>

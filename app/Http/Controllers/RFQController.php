@@ -86,6 +86,12 @@ class RFQController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request,[
+           'receive_date'=>'required',
+           'type'=>'required',
+           'vendor_id'=>'required',
+           'deadline'=>'required',
+        ]);
 //        dd($request->all());
         $last_rfq = RequestForQuotation::orderBy('id', 'desc')->first();
 
