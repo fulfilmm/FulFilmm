@@ -12,11 +12,12 @@
                 <a href="#"> <span> Report</span> <span
                             class="menu-arrow"></span></a>
                 <ul style="display: none;">
-                    <li><a class="{{ Request::is('reports') ? 'active' : '' }}"
-                           href="{{ route('reports') }}" style="text-decoration: none">Daily Report</a></li>
+                    <li><a class="{{ Request::is('selling/report') ? 'active' : '' }}"
+                           href="{{ route('sale.report') }}" style="text-decoration: none">Sale Report</a></li>
                     <li><a class="{{ Request::is('sale/performance') ? 'active' : '' }}"
-                           href="{{ route('report.saleprformance') }}" style="text-decoration: none">Sale Performance
-                            Report</a></li>
+                           href="{{ route('report.saleprformance') }}" style="text-decoration: none">Sale Performance</a></li>
+                    <li><a class="{{ Request::is('stock/report') ? 'active' : '' }}"
+                           href="{{ route('report.stock') }}" style="text-decoration: none">Stock Report</a></li>
 
                 </ul>
             </li>

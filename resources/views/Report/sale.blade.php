@@ -4,102 +4,18 @@
     <!-- Page Content -->
     <div class="content container-fluid">
         <!-- Page Header -->
-        <div class="row">
-            <ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded nav-justified my-2" id="myTab" role="tablist">
-                <li class="nav-item mx-2" role="presentation" style="background-color: #e9e9e9;border-radius: 50px;">
-                    <a class="nav-link text-sm active" id="sale_report" data-toggle="tab" href="#sale" role="tab" aria-controls="home" aria-selected="true">Sale</a>
-                </li>
-                <li class="nav-item mx-2" role="presentation" style="background-color: #e9e9e9;border-radius: 50px;">
-                    <a class="nav-link text-sm" id="stockin_report" data-toggle="tab" href="#stockin_tab" role="tab" aria-controls="home" aria-selected="true">StockIn</a>
-                </li>
-                <li class="nav-item mx-2" role="presentation" style="background-color: #e9e9e9;border-radius: 50px;">
-                    <a class="nav-link text-sm" id="stockout_report" data-toggle="tab" href="#stockoutReport" role="tab" aria-controls="profile" aria-selected="false">StockOut</a>
-                </li>
-                <li class="nav-item mx-2" role="presentation" style="background-color: #e9e9e9;border-radius: 50px;">
-                    <a class="nav-link text-sm" id="stock_tab" data-toggle="tab" href="#stock_report" role="tab" aria-controls="contact" aria-selected="false">StockBalance</a>
-                </li>
-                <li class="nav-item mx-2" role="presentation" style="background-color: #e9e9e9;border-radius: 50px;">
-                    <a class="nav-link text-sm" id='total_income' data-toggle="tab" href="#revenue" role="tab" aria-controls="contact" aria-selected="false">Revenue</a>
-                </li>
-                <li class="nav-item mx-2" role="presentation" style="background-color: #e9e9e9;border-radius: 50px;">
-                    <a class="nav-link text-sm" id="expense_tab" data-toggle="tab" href="#expense" role="tab" aria-controls="contact" aria-selected="false">Expense</a>
-                </li>
-                <li class="nav-item mx-2" role="presentation" style="background-color: #e9e9e9;border-radius: 50px;">
-                    <a class="nav-link text-sm" id="advance_payment" data-toggle="tab" href="#advance_pay" role="tab" aria-controls="contact" aria-selected="false">AdvancePay</a>
-                </li>
-                {{--<li class="nav-item mx-2" role="presentation" style="background-color: #e9e9e9;border-radius: 50px;">--}}
-                    {{--<a class="nav-link text-sm" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Deposit</a>--}}
-                {{--</li>--}}
-            </ul>
-        </div>
 
         <!-- /Page Header -->
+        <div class="col-12">
+
+        </div>
         <div class="col-md-12 col-sm-12 col-12 card shadow">
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade active show my-3" id="sale" role="tabpanel" aria-labelledby="home-tab" style="overflow: auto">
-                    <table id="sale_table" class="table table-hover table-nowrap "  style="width: 100%">
-                        <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Product Code</th>
-                            <th>Product</th>
-                            <th>Variant</th>
-                            <th>Qty</th>
-                            <th>Unit</th>
-                            <th>Unit Price</th>
-                            <th>Warehouse</th>
-                            <th>Total</th>
-                        </tr><tbody>
 
-                        @foreach($data as $item)
-                            <tr>
-                                <td>{{$item->created_at->toFormattedDateString()}}</td>
-                                <td>{{$item->variant->product_code}}</td>
-                                <td>{{$item->variant->product_name}}</td>
-                                <td>{{$item->variant->variant}}</td>
-                                <td>{{$item->quantity}}</td>
-                                <td>{{$item->unit->unit}}</td>
-                                <td>{{$item->unit_price}}</td>
-                                <td>@foreach($warehouse as $key=>$val)
-                                        @if($key==$item->invoice->warehouse_id)
-                                            {{$val}}
-                                            @endif
-                                    @endforeach</td>
-                                <td>{{$item->total}}</td>
-                            </tr>
-                            @endforeach
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>Total</td>
-                            <td>{{$total_sale[0]->total}}</td>
-                            <td></td>
-                        </tr>
-                        </tbody>
-
-                    </table>
                 </div>
                 <div class="tab-pane fade" id="stockin_tab" role="tabpanel" aria-labelledby="home-tab" style="overflow: auto">
-                    <table id="stockin" class="table col-12" style="width: 100%">
-                        <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Product Code</th>
-                            <th>Product</th>
-                            <th>Variant</th>
-                            <th>Qty</th>
-                            <th>Unit</th>
-                            <th>Warehouse</th>
-                            <th>Supplier</th>
 
-                        </tr>
-                        </thead>
-                    </table>
                 </div>
                 <div class="tab-pane fade " id="stockoutReport" role="tabpanel" aria-labelledby="home-tab" style="overflow: auto">
                     <table id="stockout" class="table dataTable"  style="width: 100%">

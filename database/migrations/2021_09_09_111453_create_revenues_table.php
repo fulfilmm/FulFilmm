@@ -32,6 +32,7 @@ class CreateRevenuesTable extends Migration
             $table->string('currency');
             $table->bigInteger('coa_id')->unsigned();
             $table->bigInteger('advance_pay_id')->unsigned()->nullable();
+            $table->bigInteger('branch_id')->unsigned();
             $table->timestamps();
             $table->softDeletes();
         });

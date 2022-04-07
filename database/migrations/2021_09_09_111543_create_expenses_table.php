@@ -31,6 +31,7 @@ class CreateExpensesTable extends Migration
             $table->bigInteger('emp_id');
             $table->bigInteger('coa_id')->unsigned();
             $table->string('currency');
+            $table->bigInteger('branch_id')->unsigned();
             $table->timestamps();
             $table->softDeletes();
         });

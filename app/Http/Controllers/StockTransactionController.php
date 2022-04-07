@@ -291,89 +291,91 @@ class StockTransactionController extends Controller
             return redirect()->back()->with('warning','Does not need to transfer in same warehouse');
         }else{
             $stock=Stock::where('variant_id',$request->variantion_id)->where('warehouse_id',$request->current_warehouse_id)->first();
-            if($stock->stock_balance < $request->qty){
-                return redirect()->back()->with('warning','Not Enough Product!Maximum Product is '.$stock->stock_balance);
-            }else {
+           if($stock!=null){
+               return redirect()->back()->with('warning','Not Enough Product!Maximum Product is '.$stock->stock_balance??0);
+           }else{
+               if($stock->stock_balance < $request->qty){
+                   return redirect()->back()->with('warning','Not Enough Product!Maximum Product is '.$stock->stock_balance);
+               }else {
 //               dd($request->all());
-                $product_exist=Stock::where('variant_id',$request->variantion_id)->where('warehouse_id',$request->transfer_warehouse_id)->first();
+                   $product_exist=Stock::where('variant_id',$request->variantion_id)->where('warehouse_id',$request->transfer_warehouse_id)->first();
 //              dd('here');
-                if($product_exist==null) {
+                   if($product_exist==null) {
 //                   dd('inner create stock');
-                    $new_stock = new Stock();
-                    $new_stock->product_name=$stock->product_name;
-                    $new_stock->variant_id=$request->variantion_id;
-                    $new_stock->warehouse_id=$request->transfer_warehouse_id;
-                    $new_stock->stock_balance=$request->qty;
-                    $new_stock->available=$request->qty;
-                    $new_stock->save();
+                       $new_stock = new Stock();
+                       $new_stock->product_name=$stock->product_name;
+                       $new_stock->variant_id=$request->variantion_id;
+                       $new_stock->warehouse_id=$request->transfer_warehouse_id;
+                       $new_stock->stock_balance=$request->qty;
+                       $new_stock->available=$request->qty;
+                       $new_stock->save();
 
-                }else{
-                    $product_exist->stock_balance=$product_exist->stock_balance + $request->qty;
-                    $product_exist->available=$product_exist->stock_balance + $request->qty;
-                    $product_exist->update();
-                }
+                   }else{
+                       $product_exist->stock_balance=$product_exist->stock_balance + $request->qty;
+                       $product_exist->available=$product_exist->stock_balance + $request->qty;
+                       $product_exist->update();
+                   }
 
-                $out_batch=ProductStockBatch::where('product_id',$request->variantion_id)->where('warehouse_id',$request->current_warehouse_id)->get();
-                $remaing=$request->qty;
-                foreach ($out_batch as $batch){
-                    if($batch->qty!=0){
-                        if($batch->qty >= $remaing){
-                            $last_batch= ProductStockBatch::orderBy('id', 'desc')->where('product_id',$request['variantion_id'])->first();
+                   $out_batch=ProductStockBatch::where('product_id',$request->variantion_id)->where('warehouse_id',$request->current_warehouse_id)->get();
+                   $remaing=$request->qty;
+                   foreach ($out_batch as $batch){
+                       if($batch->qty!=0){
+                           if($batch->qty >= $remaing){
+                               $last_batch= ProductStockBatch::orderBy('id', 'desc')->where('product_id',$request['variantion_id'])->first();
 
-                            if ($last_batch != null) {
-                                $last_batch->batch_no++;
-                                $batch_no = $last_batch->batch_no;
-                            } else {
-                                $batch_no = "Batch-00001";
-                            }
-                            $batch->qty=$batch->qty - $remaing;
-                            $remaing=0;
-                            $batch->update();
-                            $data['product_id']=$request->variantion_id;
-                            $data['batch_no']=$batch_no;
-                            $data['supplier_id']=$batch->supplier_id;
-                            $data['qty']=$request->qty;
-                            $data['purchase_price']=$batch->purchase_price;
-                            $data['exp_date']=$batch->exp_date;
-                            $data['warehouse_id']=$request->transfer_warehouse_id;
-                            ProductStockBatch::create($data);
-                        }else{
-                            $last_batch= ProductStockBatch::orderBy('id', 'desc')->where('product_id',$request['variantion_id'])->first();
+                               if ($last_batch != null) {
+                                   $last_batch->batch_no++;
+                                   $batch_no = $last_batch->batch_no;
+                               } else {
+                                   $batch_no = "Batch-00001";
+                               }
+                               $batch->qty=$batch->qty - $remaing;
+                               $remaing=0;
+                               $batch->update();
+                               $data['product_id']=$request->variantion_id;
+                               $data['batch_no']=$batch_no;
+                               $data['supplier_id']=$batch->supplier_id;
+                               $data['qty']=$request->qty;
+                               $data['purchase_price']=$batch->purchase_price;
+                               $data['exp_date']=$batch->exp_date;
+                               $data['warehouse_id']=$request->transfer_warehouse_id;
+                               ProductStockBatch::create($data);
+                           }else{
+                               $last_batch= ProductStockBatch::orderBy('id', 'desc')->where('product_id',$request['variantion_id'])->first();
 
-                            if ($last_batch != null) {
-                                $last_batch->batch_no++;
-                                $batch_no = $last_batch->batch_no;
-                            } else {
-                                $batch_no = "Batch-00001";
-                            }
-                            $remaing=$remaing - $batch->qty;
-                            $data['qty']=$batch->qty;
-                            $batch->qty=0;
-                            $batch->update();
-                            $data['product_id']=$request->variantion_id;
-                            $data['batch_no']=$batch_no;
-                            $data['supplier_id']=$batch->supplier_id;
-                            $data['purchase_price']=$batch->purchase_price;
-                            $data['exp_date']=$batch->exp_date;
-                            $data['warehouse_id']=$request->transfer_warehouse_id;
-                            ProductStockBatch::create($data);
+                               if ($last_batch != null) {
+                                   $last_batch->batch_no++;
+                                   $batch_no = $last_batch->batch_no;
+                               } else {
+                                   $batch_no = "Batch-00001";
+                               }
+                               $remaing=$remaing - $batch->qty;
+                               $data['qty']=$batch->qty;
+                               $batch->qty=0;
+                               $batch->update();
+                               $data['product_id']=$request->variantion_id;
+                               $data['batch_no']=$batch_no;
+                               $data['supplier_id']=$batch->supplier_id;
+                               $data['purchase_price']=$batch->purchase_price;
+                               $data['exp_date']=$batch->exp_date;
+                               $data['warehouse_id']=$request->transfer_warehouse_id;
+                               ProductStockBatch::create($data);
 
-                        }
-                    }
-                }
-
-
-                $transfer_record=new StockTransferRecord();
-                $transfer_record->product_name=$stock->product_name;
-                $transfer_record->variant_id=$request->variantion_id;
-                $transfer_record->from_warehouse=$request->current_warehouse_id;
-                $transfer_record->to_warehouse=$request->transfer_warehouse_id;
-                $transfer_record->qty=$request->qty;
-                $transfer_record->save();
-                $stock->stock_balance=$stock->stock_balance- $request->qty;
-                $stock->update();
+                           }
+                       }
+                   }
+                   $transfer_record=new StockTransferRecord();
+                   $transfer_record->product_name=$stock->product_name;
+                   $transfer_record->variant_id=$request->variantion_id;
+                   $transfer_record->from_warehouse=$request->current_warehouse_id;
+                   $transfer_record->to_warehouse=$request->transfer_warehouse_id;
+                   $transfer_record->qty=$request->qty;
+                   $transfer_record->save();
+                   $stock->stock_balance=$stock->stock_balance- $request->qty;
+                   $stock->update();
 //
-            }
+               }
+           }
 
             return redirect(route('transfer.index'));
         }

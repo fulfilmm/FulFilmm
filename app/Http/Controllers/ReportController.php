@@ -12,6 +12,8 @@ use App\Models\Employee;
 use App\Models\Expense;
 use App\Models\next_plan;
 use App\Models\OrderItem;
+use App\Models\ProductVariations;
+use App\Models\PurchaseOrder;
 use App\Models\Quotation;
 use App\Models\Revenue;
 use App\Models\SalePipelineRecord;
@@ -84,148 +86,76 @@ class ReportController extends Controller
 
     }
 
-    public function stockin(Request $request)
+    public function stock(Request $request)
     {
-        if ($request->ajax()) {
-            $stock_in = StockTransaction::with('stockin', 'stockout', 'variant', 'warehouse')->where('type', 'Stock In')->whereDate('created_at', Carbon::today())->get();
 
-            return Datatables::of($stock_in)
-                ->addIndexColumn()
-                ->editColumn('created_at', function ($data) {
-                    $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->toFormattedDateString();
-                    return $formatedDate;
-                })
-                ->addColumn('supplier', function ($row) {
-                    $suppliers = Customer::where('id', $row->stockin->supplier_id)->first();
-                    return $suppliers->name??'';
-                })
-                ->addColumn('unit',function ($data){
-                   if(!isset($data->stockin->variantion_id)){
-                       $unit=SellingUnit::where('variant_id',$data->stockin->variantion_id)->where('unit_convert_rate',1)->first();
-                   }
-                    return $unit->unit??'';
-                })
-                ->make(true);
+        $products=ProductVariations::all();
+        $items=[];
 
+        if(isset($request->start)){
+            $start=Carbon::parse($request->start)->startOfDay();
+            $end=Carbon::parse($request->end)->endOfDay();
+           if(isset($request->warehouse_id)){
+               $stock_transactions = StockTransaction::with('stockin', 'stockout','variant','customer','employee','stockreturn')->whereBetween('created_at',[$start,$end])->where('warehouse_id',$request->warehouse_id)->get();
+           }else{
+               $stock_transactions = StockTransaction::with('stockin', 'stockout','variant','customer','employee','stockreturn')->whereBetween('created_at',[$start,$end])->get();
+           }
+        }else{
+            $start=Carbon::today()->startOfDay();
+            $end=Carbon::today()->endOfDay();
+            $stock_transactions = StockTransaction::with('stockin', 'stockout','variant','customer','employee','stockreturn')->whereBetween('created_at',[$start,$end])->get();
         }
-    }
 
-    public function stockout(Request $request)
-    {
-        if ($request->ajax()) {
-            $stock_out = StockTransaction::with('stockin', 'stockout', 'variant', 'warehouse')->where('type', 'Stock Out')->whereDate('created_at', Carbon::today())->get();
-            return Datatables::of($stock_out)
-                ->addIndexColumn()
-                ->editColumn('created_at', function ($data) {
-                    $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->toFormattedDateString();
-                    return $formatedDate;
-                })
-                ->addColumn('unit',function ($variant){
-                       $unit = SellingUnit::where('id', $variant->stockout->sell_unit)->first();
-                       return $unit->unit ?? '';
-                })
-                ->addColumn('qty', function ($row) {
-                        $unit=SellingUnit::where('id',$row->stockout->sell_unit)->first();
-                        $qty=$row->stockout->qty/$unit->unit_convert_rate;
-                        return $qty??0;
+        foreach ($products as $prod){
 
-                })
-                ->addColumn('customer', function ($row) {
-                    if(isset($row->stockout-> customer_id)) {
-                        $suppliers = Customer::where('id', $row->stockout->customer_id)->first();
-                        return $suppliers->name ?? '';
-                    }else{
-                        return '';
+            foreach ($stock_transactions as $tran){
+                if($tran->variant_id==$prod->id){
+                    $stock=Stock::where('variant_id',$prod->id)->first();
+                    if($tran->type=='Stock In'){
+                        $items[$prod->product_code]=$prod;
+                        $items[$prod->product_code]['in']+=$tran->qty;
+                        $items[$prod->product_code]['out']+=0;
+                        $items[$prod->product_code]['bal']=$stock->stock_balance;
+
+                    }elseif ($tran->type=='Stock Out'){
+                        $items[$prod->product_code]=$prod;
+                        $items[$prod->product_code]['out']+=$tran->qty;
+                        $items[$prod->product_code]['in']+=0;
+                        $items[$prod->product_code]['bal']=$stock->stock_balance;
                     }
-                })
-                ->make(true);
-        }
-    }
-
-    public function stockreportSearch(Request $request)
-    {
-        $stock_out = StockOut::with('variant')->whereBetween('created_at', [Carbon::parse($request->start_date), Carbon::parse($request->end_date)])->get();
-        $stock_in = StockIn::with('variant')->whereBetween('created_at', [Carbon::parse($request->start_date), Carbon::parse($request->end_date)])->get();
-    }
-
-    public function totalsale()
-    {
-
-    }
-    public function todayincome(Request $request){
-        if ($request->ajax()) {
-            $income = Revenue::with('invoice','customer','employee','approver')->whereDate('transaction_date',Carbon::today())->get();
-            return Datatables::of($income)
-                ->addIndexColumn()
-                ->editColumn('created_at', function ($data) {
-                    $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->toFormattedDateString();
-                    return $formatedDate;
-                })
-                ->addColumn('account',function ($data){
-                    $account=Transaction::with('account')->where('revenue_id',$data->id)->first();
-                    return $account->account->name??'N/A';
-                })
-                ->addColumn('transaction',function ($data){
-                    if($data->approve==0){
-                        return 'No';
-                    }else{
-                        return 'Yes';
-                    }
-                })
-                ->make(true);
-        }
-    }
-
-    public function reportpage()
-    {
-        $total_sale = DB::table("invoices")
-            ->select(DB::raw("SUM(total) as total"))
-            ->whereDate('created_at',Carbon::today())
-            ->get();
-        $items=OrderItem::with('variant','unit','invoice')->where('inv_id','!=',null)->whereDate('created_at',Carbon::today())->get();
-       $data=[];
-       $i=0;
-        foreach ($items as $item){
-            if(isset($data[$item->variant->product_code."_".$i])){
-                if($data[$item->variant->product_code."_".$i]->unit_price==$item->unit_price) {
-                    $data[$item->variant->product_code."_".$i]->quantity += $item->quantity;
-                    $data[$item->variant->product_code."_".$i]->total += $item->total;
-                }else{
-                    $i ++;
-                    $data[$item->variant->product_code.'_'.$i]=$item;
                 }
-            }else{
-                $data[$item->variant->product_code."_".$i]=$item;
             }
+
         }
         $warehouse=Warehouse::all()->pluck('name','id')->all();
-        return view('Report.report',compact('items','total_sale','warehouse','data'));
+        $search_warehouse=$request->warehouse_id;
+        return view('Report.stock',compact('items','start','end','warehouse','search_warehouse'));
     }
-    public function expense_report(Request $request){
-        if ($request->ajax()) {
+    public function credit_purchase(Request $request){
+        $purchase=PurchaseOrder::where('paid_bill',0)->get();
+        foreach ($purchase as $item){
+//            $item
+        }
+
+    }
+    public function payment_purchase(Request $request){
+
+    }
+    public function reportpage()
+    {
+
+    }
+    public function expense(Request $request){
+        if(isset($request->start)){
+            $start=Carbon::parse($request->start)->startOfDay();
+            $end=Carbon::parse($request->end)->endOfDay();
             $expense = Expense::with( 'supplier', 'employee', 'approver')->whereDate('transaction_date', Carbon::today())->get();
-            return Datatables::of($expense)
-                ->addIndexColumn()
-                ->editColumn('created_at', function ($data) {
-                    $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->toFormattedDateString();
-                    return $formatedDate;
-                })
-                ->addColumn('account',function ($data){
-                    $account=Transaction::with('account')->where('expense_id',$data->id)->first();
-                    return $account->account->name??'N/A';
-                })
-                ->addColumn('supplier',function ($data){
-                    return $data->supplier->name??'N/A';
-                })
-                ->addColumn('transaction',function ($data){
-                    if($data->approve==0){
-                        return 'No';
-                    }else{
-                        return 'Yes';
-                    }
-                })
-                ->make(true);
-                }
+        }else{
+            $expense = Expense::with( 'supplier', 'employee', 'approver')->whereDate('transaction_date', Carbon::today())->get();
+        }
+        $account=Transaction::with('account')->where('type','expense')->get();
+
+        return view('Report.expense',compact('expense','account'));
     }
     public function stock_report(Request $request){
 

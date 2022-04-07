@@ -398,17 +398,17 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::get('stock/update/history/{id}',[StockTransactionController::class,'history'])->name('update.history');
     Route::get('stock/transaction/search',[StockTransactionController::class,'stockfilter'])->name('stock.search');
     Route::get('price/{status}/{id}',[SellingUnitController::class,'price_active'])->name('price.active');
-    Route::get('selling/report',[SaleReportController::class,'sale_report'])->name('sale.report');
     Route::resource('advancepayments',AdvancePaymentController::class)->only('create','store','edit','update','destroy');
     Route::resource('officebranch',OfficeBranchController::class);
     Route::get('transaction/approve/{id}/{type}',[TransactionController::class,'account_update'])->name('transaction.approve');
     Route::get('advance/make/transaction/{id}',[AdvancePaymentController::class,'maketransaction'])->name('advance.maketransaction');
 //Report route
-    Route::get('stock/in/report',[ReportController::class,'stockin'])->name('report.stockin');
-    Route::get('stock/out/report',[ReportController::class,'stockout'])->name('report.stockout');
-    Route::get('daily/income/report',[ReportController::class,'todayincome'])->name('report.income');
-    Route::get('daily/expense/report',[ReportController::class,'expense_report'])->name('report.expense');
-    Route::get('daily/stock/report',[ReportController::class,'stock_report'])->name('report.stock');
+    Route::get('selling/report',[SaleReportController::class,'sale_report'])->name('sale.report');
+    Route::get('income/report',[ReportController::class,'income'])->name('report.income');
+    Route::get('expense/report',[ReportController::class,'expense'])->name('report.expense');
+    Route::get('credit/purchase/report',[ReportController::class,'credit_purchase'])->name('credit.purchase');
+    Route::get('payment/purchase/report',[ReportController::class,'payment_purchase'])->name('payment.purchase');
+    Route::get('stock/report',[ReportController::class,'stock'])->name('report.stock');
     Route::get('daily/advancepayment/report',[ReportController::class,'advancedaily'])->name('report.advancepay');
     Route::get('reports',[ReportController::class,'reportpage'])->name('reports');
     Route::get('retail/sale/quotation',[QuotationController::class,'retailSale'])->name('quotations.retail');
