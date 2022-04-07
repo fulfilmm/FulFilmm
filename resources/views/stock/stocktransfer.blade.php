@@ -67,4 +67,10 @@
             </div>
         </form>
     </div>
+
+    <script>
+        $(document).ready(function () {
+            $('select').select2();
+        });
+    </script>
 @endsection
