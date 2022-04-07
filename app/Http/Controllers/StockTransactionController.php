@@ -291,8 +291,8 @@ class StockTransactionController extends Controller
             return redirect()->back()->with('warning','Does not need to transfer in same warehouse');
         }else{
             $stock=Stock::where('variant_id',$request->variantion_id)->where('warehouse_id',$request->current_warehouse_id)->first();
-           if($stock!=null){
-               return redirect()->back()->with('warning','Not Enough Product!Maximum Product is '.$stock->stock_balance??0);
+           if($stock==null){
+               return redirect()->back()->with('warning','Not Enough Product!Maximum Product is 0');
            }else{
                if($stock->stock_balance < $request->qty){
                    return redirect()->back()->with('warning','Not Enough Product!Maximum Product is '.$stock->stock_balance);
