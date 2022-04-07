@@ -281,7 +281,7 @@ class StockTransactionController extends Controller
     }
     public function transfer(){
         $warehouse=Warehouse::all()->pluck('name','id')->all();
-        $products=ProductVariations::with('product')->get();
+        $products=Stock::with('variant')->get();
         return view('stock.stocktransfer',compact('warehouse','products'));
     }
     public function stock_transfer(Request $request){
