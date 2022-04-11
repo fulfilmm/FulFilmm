@@ -159,7 +159,9 @@
                             <select name="" id="warehouse" class="form-control select2"
                                     onchange="giveSelection(this.value)">
                                 @foreach($warehouse as $item)
-                                    <option value="{{$item->id}}">{{$item->name}}</option>
+                                  @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->warehouse_id==$item->id)
+                                        <option value="{{$item->id}}">{{$item->name}}</option>
+                                      @endif
                                 @endforeach
                             </select>
                         </div>
@@ -205,7 +207,7 @@
                                                 <div class="input-group">
                                                     <select name="" id="variant" class="form-control"
                                                             style="width: 80%">
-                                                        <option value="" data-option="{{$item->warehouse_id}}">Search
+                                                        <option value="">Search
                                                             Product Name
                                                         </option>
                                                         @foreach($aval_product as $item)

@@ -68,6 +68,19 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
+                                        <label for="branch">Office Branch</label>
+                                        <select name="branch_id" id="branch" class="form-control">
+                                            @foreach($branch as $item)
+                                                <option value="{{$item->id}}">{{$item->name}}</option>
+                                                @endforeach
+                                        </select>
+                                    </div>
+                                    @error('branch_id')
+                                    <span class="text-danger">{{$message}}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
                                         <label for="price">Unit Price</label>
                                         <input type="number" class="form-control shadow-sm" name="single_price" placeholder="Enter Unit Price">
                                     </div>

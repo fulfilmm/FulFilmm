@@ -30,6 +30,7 @@ class CreateEmployeesTable extends Migration
             $table->string('password', 128)->nullable();
             $table->bigInteger('office_branch_id')->nullable()->unsigned();
             $table->string('profile_img')->nullable();
+            $table->bigInteger('warehouse_id')->unsigned()->nullable();
             $table->tinyInteger('mobile_seller')->default(0);// 0 is not mobile seller and 1 is mobile seller
             $table->rememberToken();
             $table->date('join_date');

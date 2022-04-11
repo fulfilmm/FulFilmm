@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\OfficeBranch;
 use App\Models\product;
 use App\Models\product_price;
 use App\Models\ProductVariations;
@@ -105,14 +106,15 @@ class SellingUnitController extends Controller
     public function price_list(){
 //        dd('je;p');
         $units=SellingUnit::all();
-        $price_lists=product_price::with('unit','variant')->get();
+        $price_lists=product_price::with('unit','variant','branch')->get();
         return view('sale.sellingunit.price',compact('price_lists','units'));
     }
     public function price_add(){
         $units=SellingUnit::all();
         $main_product=product::all();
         $products=ProductVariations::all();
-        return view('sale.sellingunit.price_add',compact('units','main_product','products'));
+        $branch=OfficeBranch::all();
+        return view('sale.sellingunit.price_add',compact('units','main_product','products','branch'));
     }
     public function store_price(Request $request){
 //        dd($request->all());
@@ -120,6 +122,7 @@ class SellingUnitController extends Controller
            'product_id'=>'required',
            'unit_id'=>'required',
            'sale_type'=>'required',
+            'branch_id'=>'required'
         ]);
 
        foreach ($request->product_id as $item){
@@ -132,6 +135,7 @@ class SellingUnitController extends Controller
                $single_data['unit_id']=$request->unit_id;
                $single_data['sale_type']=$request->sale_type;
                $single_data['price']=$request->single_price;
+               $single_data['branch_id']=$request->branch_id;
                $single_data['multi_price']=0;
                if($exist_price==null) {
                    product_price::create($single_data);
@@ -154,6 +158,7 @@ class SellingUnitController extends Controller
                  $data['max']=$request->max_qty[$i];
                  $data['start_date']=$request->start_date[$i];
                  $data['end_date']=$request->end_date[$i];
+                 $data['branch_id']=$request->branch_id;
                      product_price::create($data);
              }
            }

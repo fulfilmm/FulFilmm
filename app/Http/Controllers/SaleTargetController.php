@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use App\Models\Invoice;
+use App\Models\PurchaseOrder;
 use App\Models\SaleTarget;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -17,11 +18,15 @@ class SaleTargetController extends Controller
     {
         $month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', "Jul", 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         $monthly = [];
+        $cos=[];
         $monthlysaletarget = [];
         $current_year = date('Y') + 0;
         $yearly = [];
         $yearly_target=[];
         $all_income = [];
+        $receivable=[];
+        $payable=[];
+        $gp=[];
         $year = [$current_year - 2,$current_year - 1,$current_year,$current_year + 1, $current_year +2];
         if(Auth::guard('employee')->user()->role->name=='CEO'||Auth::guard('employee')->user()->role->name=='Manager'||Auth::guard('employee')->user()->role->name=='Super Admin')
         {
@@ -36,6 +41,23 @@ class SaleTargetController extends Controller
                     ->where('month', $value)->where('year', date('Y'))
                     ->get();
                 $monthlysaletarget[$value] = $sale_target[0]??0;
+                $cost_of_sale=DB::table('purchase_orders')
+                    ->select(DB::raw("SUM(grand_total) as total"))
+                    ->whereMonth('ordered_date', $key + 1)->whereYear('created_at', date('Y'))
+                    ->get();
+                $cos[$value]=$cost_of_sale[0]->total??0;
+                $gp[$value]=$monthly[$value]->total-$cos[$value];
+                $monthly_payable=DB::table('purchase_orders')
+                    ->select(DB::raw("SUM(payable_amount) as total"))
+                    ->whereMonth('created_at', $key + 1)->whereYear('created_at', date('Y'))
+                    ->get();
+                $monthly_receiable = DB::table("invoices")
+                    ->select(DB::raw("SUM(due_amount) as total"))
+                    ->whereMonth('invoice_date', $key + 1)->whereYear('invoice_date', date('Y'))
+                    ->get();
+                $receivable[$value]=$monthly_receiable[0]->total??0;
+
+                $payable[$value]=$monthly_payable[0]->total??0;
 
             }
             foreach ($year as $key => $value) {
@@ -50,25 +72,6 @@ class SaleTargetController extends Controller
                     ->get();
                 $yearly_target[$value]=$yearly_sale_target[0];
             }
-            $income = DB::table("revenues")
-                ->select(DB::raw("SUM(amount) as total"))
-                ->whereYear('transaction_date', date('Y'))->whereMonth('transaction_date',date('M'))
-                ->get();
-            $all_income[date('Y')] = $income[0];
-            $revenue = DB::table("revenues")
-                ->select(DB::raw("SUM(amount) as total"))
-                ->whereMonth('transaction_date', date('m'))
-                ->get();
-            $all_income[date('Y')] = $income[0];
-            $sale_target = DB::table("sale_targets")
-                ->select(DB::raw("SUM(target_sale) as target"))
-                ->where('month', date('M'))->where('year', date('Y'))
-                ->get();
-            $invoice_revenue = DB::table("revenues")
-                ->select(DB::raw("SUM(amount) as total"))
-                ->whereMonth('transaction_date', date('m'))->where('invoice_id','!=',null)
-                ->get();
-            $remaining=$monthly[date('M')]->total-$invoice_revenue[0]->total;
         }else{
             //monthly
             $auth=Auth::guard('employee')->user();
@@ -129,8 +132,8 @@ class SaleTargetController extends Controller
 
 
 
-
-        return view('sale.dashboard', compact('monthly', 'yearly', 'year', 'all_income', 'sale_target', 'monthlysaletarget', 'revenue','remaining','yearly_target','month'));
+//dd($gp);
+        return view('sale.dashboard', compact('monthly', 'yearly', 'year', 'sale_target', 'monthlysaletarget','yearly_target','month','cos','gp','payable','receivable'));
     }
 
     public function create()
@@ -186,18 +189,38 @@ class SaleTargetController extends Controller
         $month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', "Jul", 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         $monthly = [];
         $monthlysaletarget = [];
+        $receivable=[];
+        $payable=[];
+        $cos=[];
+        $gp=[];
         foreach ($month as $key => $value) {
             $grand_total = DB::table("invoices")
                 ->select(DB::raw("SUM(grand_total) as total"))
-                ->whereMonth('invoice_date', $key + 1)->whereYear('invoice_date',$request->year)
+                ->whereMonth('invoice_date', $key + 1)->whereYear('invoice_date', $request->year)
                 ->get();
             $monthly[$value] = $grand_total[0];
-
             $sale_target = DB::table("sale_targets")
                 ->select(DB::raw("SUM(target_sale) as target"))
                 ->where('month', $value)->where('year',$request->year)
                 ->get();
-            $monthlysaletarget[$value] = $sale_target[0];
+            $monthlysaletarget[$value] = $sale_target[0]??0;
+            $cost_of_sale=DB::table('purchase_orders')
+                ->select(DB::raw("SUM(grand_total) as total"))
+                ->whereMonth('ordered_date', $key + 1)->whereYear('created_at',$request->year)
+                ->get();
+            $cos[$value]=$cost_of_sale[0]->total??0;
+            $gp[$value]=$monthly[$value]->total-$cos[$value];
+            $monthly_payable=DB::table('purchase_orders')
+                ->select(DB::raw("SUM(payable_amount) as total"))
+                ->whereMonth('created_at', $key + 1)->whereYear('created_at',$request->year)
+                ->get();
+            $monthly_receiable = DB::table("invoices")
+                ->select(DB::raw("SUM(due_amount) as total"))
+                ->whereMonth('invoice_date', $key + 1)->whereYear('invoice_date', $request->year)
+                ->get();
+            $receivable[$value]=$monthly_receiable[0]->total??0;
+
+            $payable[$value]=$monthly_payable[0]->total??0;
 
         }
         $current_year = date('Y') + 0;
@@ -216,32 +239,11 @@ class SaleTargetController extends Controller
                 ->get();
             $yearly_target[$value]=$yearly_sale_target[0];
         }
-//        dd($yearly_target);
-        $all_income = [];
-        $income = DB::table("revenues")
-            ->select(DB::raw("SUM(amount) as total"))
-            ->whereYear('transaction_date',$request->year)
-            ->get();
-        $all_income[date('Y')] = $income[0];
-        $revenue = DB::table("revenues")
-            ->select(DB::raw("SUM(amount) as total"))
-            ->whereMonth('transaction_date',$request->month)
-            ->get();
-        $all_income[date('Y')] = $income[0];
-        $sale_target = DB::table("sale_targets")
-            ->select(DB::raw("SUM(target_sale) as target"))
-            ->where('month',$request->month)->where('year',$request->year)
-            ->get();
-        $invoice_revenue = DB::table("revenues")
-            ->select(DB::raw("SUM(amount) as total"))
-            ->whereMonth('transaction_date',$request->month)->where('invoice_id','!=',null)
-            ->get();
-        $remaining=$monthly[$request->month]->total-$invoice_revenue[0]->total;
         $search_month=$request->month;
         $searchYear=$request->year;
         $month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', "Jul", 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 //        dd($search_month);
-        return view('sale.dashboard', compact('monthly', 'yearly', 'year', 'all_income', 'sale_target', 'monthlysaletarget', 'revenue','remaining','yearly_target','search_month','month','searchYear'));
+        return view('sale.dashboard', compact('monthly', 'yearly', 'year', 'sale_target', 'monthlysaletarget','yearly_target','search_month','month','searchYear','gp','receivable','payable'));
 
     }
 }

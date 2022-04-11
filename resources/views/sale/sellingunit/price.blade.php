@@ -29,6 +29,7 @@
                           <th>Variants</th>
                           <th>Pricing Type</th>
                           <th>Sale Type</th>
+                          <th>Office</th>
                           <th>Rule Description</th>
                           <th>Range</th>
                           <th>Unit</th>
@@ -46,6 +47,7 @@
                               <td>{{$item->variant->variant}}</td>
                               <td>{{$item->multi_price?'Multiple Price Rule':'Single Price Rule'}}</td>
                               <td>{{$item->sale_type}}</td>
+                              <td>{{$item->branch->name}}</td>
                               <td>{{$item->rule}}</td>
                               <td>{{$item->min}} - {{$item->max}}</td>
                               <td>{{$item->unit->unit}}</td>

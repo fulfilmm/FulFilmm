@@ -25,6 +25,7 @@ class CreateProductPricesTable extends Migration
             $table->dateTime('start_date')->nullable();
             $table->dateTime('end_date')->nullable();
             $table->double('price');
+            $table->bigInteger('branch_id')->unsigned();
             $table->tinyInteger('active')->default(1);
             $table->timestamps();
         });

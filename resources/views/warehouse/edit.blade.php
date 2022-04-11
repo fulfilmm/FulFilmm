@@ -20,6 +20,16 @@
                         <label for="address">Address</label>
                         <input type="text" class="form-control" id="address" name="address" value="{{$warehouse->address}}">
                     </div>
+                    <div class="col-md-6 col-sm-6 col-12">
+                        <div class="form-group">
+                            <label for="branch">Office Branch</label>
+                            <select name="branch_id" id="branch" class="form-control select2">
+                                @foreach($branches as $branch)
+                                    <option value="{{$branch->id}}" {{$branch->id==$warehouse->branch_id?'selected':''}}>{{$branch->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label for="desc">Description</label>
                         <textarea name="description" id="desc" cols="30" rows="10" class="form-control">{{$warehouse->description}}</textarea>

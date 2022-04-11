@@ -97,7 +97,7 @@ class InvoiceController extends Controller
             }
             $status = $this->status;
             $unit_price=SellingUnit::where('active',1)->get();
-            $prices =product_price::where('sale_type', 'Whole Sale')->where('active',1)->get();
+            $prices =product_price::where('sale_type', 'Whole Sale')->where('active',1)->where('branch_id',$Auth->office_branch_id)->get();
             //dd($prices);
             $dis_promo = DiscountPromotion::where('sale_type', 'Whole Sale')->get();
             $focs = Freeofchare::with('variant')->get();

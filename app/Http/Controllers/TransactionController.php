@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\BankTransactionExport;
 use App\Models\Account;
 use App\Models\Bill;
+use App\Models\BillItem;
 use App\Models\ChartOfAccount;
 use App\Models\Customer;
 use App\Models\DeliveryOrder;
@@ -15,12 +16,14 @@ use App\Models\ExpenseBudget;
 use App\Models\ExpenseClaim;
 use App\Models\Invoice;
 use App\Models\MainCompany;
+use App\Models\PurchaseOrder;
 use App\Models\Revenue;
 use App\Models\RevenueBudget;
 use App\Models\Transaction;
 use App\Models\TransactionCategory;
 use App\Traits\NotifyTrait;
 use Carbon\Carbon;
+use http\Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
@@ -92,8 +95,9 @@ class TransactionController extends Controller
             'approver_id'=>'required',
             'attachment' => 'mimes:pdf,xlsx,doc,docx,jpg,jpeg,ppt,bip,|max:2048',
         ]);
+    try {
         $new_expense = new Expense();
-        $new_expense->title=$request->title;
+        $new_expense->title = $request->title;
         $new_expense->vendor_id = $request->customer_id;
         $new_expense->amount = $request->amount;
         $new_expense->reference = $request->reference;
@@ -102,22 +106,26 @@ class TransactionController extends Controller
         $new_expense->description = $request->description;
         $new_expense->category = $request->category;
         $new_expense->approver_id = $request->approver_id;
-        $new_expense->coa_id=$request->coa_account;
+        $new_expense->coa_id = $request->coa_account;
         $new_expense->transaction_date = $request->transaction_date;
         $new_expense->emp_id = Auth::guard('employee')->user()->id;
-        $new_expense->branch_id=Auth::guard('employee')->user()->branch_office_id;
+        $new_expense->branch_id = Auth::guard('employee')->user()->office_branch_id;
         $new_expense->currency = $request->currency;
         $new_expense->bill_id = $request->bill_id ?? null;
+//        dd($new_expense);
         if (isset($request->attachment)) {
             if ($request->attachment != null) {
-                $attach=$request->file('attachment');
-                $input['filename'] =\Illuminate\Support\Str::random(10).time().'.'.$attach->extension();
+                $attach = $request->file('attachment');
+                $input['filename'] = \Illuminate\Support\Str::random(10) . time() . '.' . $attach->extension();
                 $request->attachment->move(public_path() . '/attach_file', $input['filename']);
 
             }
             $new_expense->attachment = $input['filename'];
         }
         $new_expense->save();
+    }catch (\Exception $e){
+        return redirect()->back()->with('error',$e->getMessage());
+    }
         if(isset($request->exp_id)){
             $exp=ExpenseClaim::where('id',$request->exp_id)->first();
             $exp->is_claim=1;
@@ -238,35 +246,40 @@ class TransactionController extends Controller
                'approver_id'=>'required',
                'attachment' => 'mimes:pdf,xlsx,doc,docx,jpg,jpeg,ppt,bip'
            ]);
-           $new_revenue = new Revenue();
-           $new_revenue->title=$request->title;
-           $new_revenue->customer_id = $request->customer_id;
-           $new_revenue->amount = $request->amount;
-           $new_revenue->invoice_id = $request->invoice_id ?? null;
-           $new_revenue->reference = $request->reference;
-           $new_revenue->recurring = $request->recurring;
-           $new_revenue->payment_method = $request->payment_method;
-           $new_revenue->description = $request->description;
-           $new_revenue->category = $request->category;
-           $new_revenue->approver_id = $request->approver_id;
-           $new_revenue->advance_pay_id=$request->advance_id??null;
-           $new_revenue->coa_id=$request->coa_account;
-           $new_revenue->transaction_date = $request->transaction_date;
-           $new_revenue->emp_id = Auth::guard('employee')->user()->id;
-           $new_revenue->currency = $request->currency;
-           if (isset($request->attachment)) {
-               if ($request->attachment != null) {
-                   $attach=$request->file('attachment');
-                   $input['filename'] =\Illuminate\Support\Str::random(10).time().'.'.$attach->extension();
-                   $request->attachment->move(public_path() . '/attach_file', $input['filename']);
 
-               }
-               $new_revenue->attachment = $input['filename'];
-           }
-           if ($request->payment_method == 'Advance Payment') {
-               $new_revenue->approve = 1;
-           }
-           $new_revenue->save();
+          try {
+              $new_revenue = new Revenue();
+              $new_revenue->title = $request->title;
+              $new_revenue->customer_id = $request->customer_id;
+              $new_revenue->amount = $request->amount;
+              $new_revenue->invoice_id = $request->invoice_id ?? null;
+              $new_revenue->reference = $request->reference;
+              $new_revenue->recurring = $request->recurring;
+              $new_revenue->payment_method = $request->payment_method;
+              $new_revenue->description = $request->description;
+              $new_revenue->category = $request->category;
+              $new_revenue->approver_id = $request->approver_id;
+              $new_revenue->advance_pay_id = $request->advance_id ?? null;
+              $new_revenue->coa_id = $request->coa_account;
+              $new_revenue->transaction_date = $request->transaction_date;
+              $new_revenue->emp_id = Auth::guard('employee')->user()->id;
+              $new_revenue->currency = $request->currency;
+              if (isset($request->attachment)) {
+                  if ($request->attachment != null) {
+                      $attach = $request->file('attachment');
+                      $input['filename'] = \Illuminate\Support\Str::random(10) . time() . '.' . $attach->extension();
+                      $request->attachment->move(public_path() . '/attach_file', $input['filename']);
+
+                  }
+                  $new_revenue->attachment = $input['filename'];
+              }
+              if ($request->payment_method == 'Advance Payment') {
+                  $new_revenue->approve = 1;
+              }
+              $new_revenue->save();
+          }catch (\Exception $e){
+              return redirect()->back()->with('error',$e->getMessage());
+          }
            if(isset($request->invoice_id )){
                $delivery=DeliveryOrder::where('invoice_id',$request->invoice_id)->first();
              if($delivery!=null){
@@ -333,6 +346,7 @@ class TransactionController extends Controller
 
     public function account_update($id, $type)
     {
+//        dd($type);
         if ($type == 'Revenue') {
             $revenue = Revenue::with('invoice')->where('id', $id)->first();
 
@@ -363,6 +377,14 @@ class TransactionController extends Controller
                 $expense->approve = 1;
                 $expense->update();
                 $account->update();
+                if($expense->bill_id!=null) {
+                    $items= BillItem::where('bill_id',$expense->bill_id)->get();
+                    foreach ($items as $item){
+                        $po=PurchaseOrder::where('id',$item->po_id)->first();
+                        $po->payable_amount=$po->payable_amount-$expense->amount;
+                        $po->update();
+                    }
+                    }
 //                $exp_budget=ExpenseBudget::where('category_id',$expense->category)->where('year',Carbon::parse($expense->transaction_date)->format('Y'))->where('month',Carbon::parse($expense->transaction_date)->format('m'))->first();
 //                $exp_budget->actual=$exp_budget->actual??0 + $expense->amount;
 //                $exp_budget->update();

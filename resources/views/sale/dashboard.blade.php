@@ -98,19 +98,19 @@
         </div>
         </form>
         <div class="row g-3 mb-3 row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4">
-            <div class="col  my-2">
-                <div class="alert-success alert mb-0 shadow">
-                    <a href="{{url('saletargets/create')}}">
-                        <div class="d-flex align-items-center">
-                            <div class="avatar rounded no-thumbnail bg-success text-light shadow"><i class="fa fa-bullseye fa-lg"></i></div>
-                            <div class="flex-fill ms-3 text-truncate">
-                                <div class="h6 mb-0">{{isset($search_month)?$monthlysaletarget[$search_month]->target??0:$monthlysaletarget[date('M')]->target??0}}</div>
-                                <span class="small">Sale Target ({{$search_month??date('M')}})</span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
+            {{--<div class="col  my-2">--}}
+                {{--<div class="alert-success alert mb-0 shadow">--}}
+                    {{--<a href="{{url('saletargets/create')}}">--}}
+                        {{--<div class="d-flex align-items-center">--}}
+                            {{--<div class="avatar rounded no-thumbnail bg-success text-light shadow"><i class="fa fa-bullseye fa-lg"></i></div>--}}
+                            {{--<div class="flex-fill ms-3 text-truncate">--}}
+                                {{--<div class="h6 mb-0">{{isset($search_month)?$monthlysaletarget[$search_month]->target??0:$monthlysaletarget[date('M')]->target??0}}</div>--}}
+                                {{--<span class="small">Sale Target ({{$search_month??date('M')}})</span>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                    {{--</a>--}}
+                {{--</div>--}}
+            {{--</div>--}}
             <div class="col my-2">
                 <div class="alert-info alert mb-0 shadow">
                     <a href="{{route('invoices.index')}}">
@@ -130,8 +130,21 @@
                         <div class="d-flex align-items-center">
                             <div class="avatar rounded no-thumbnail bg-warning text-light shadow"><i class="fa fa-money fa-lg"></i></div>
                             <div class="flex-fill ms-3 text-truncate">
-                                <div class="h6 mb-0">Revenue({{$search_month??date('M')}})</div>
-                                <span class="small">{{$revenue[0]->total??0}}</span>
+                                <div class="h6 mb-0">Cost Of Sale({{$search_month??date('M')}})</div>
+                                <span class="small">{{isset($search_cos)?$cos[$search_cos]->total??0:$cos[date('M')]??0}}</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col my-2">
+                <div class="alert-white alert mb-0 shadow">
+                    <a href="{{route('invoices.index')}}">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar rounded no-thumbnail bg-success text-light shadow"><i class="fa fa-credit-card" aria-hidden="true"></i></div>
+                            <div class="flex-fill ms-3 text-truncate">
+                                <div class="h6 mb-0">Gross Profit</div>
+                                <span class="small">{{isset($search_month)?$gp[$search_month]:$gp[date('M')]}}</span>
                             </div>
                         </div>
                     </a>
@@ -143,8 +156,21 @@
                         <div class="d-flex align-items-center">
                             <div class="avatar rounded no-thumbnail bg-danger text-light shadow"><i class="fa fa-credit-card" aria-hidden="true"></i></div>
                             <div class="flex-fill ms-3 text-truncate">
-                                <div class="h6 mb-0">Remaining</div>
-                                <span class="small">{{$remaining}}</span>
+                                <div class="h6 mb-0">Payable</div>
+                                <span class="small">{{isset($search_month)?$payable[$search_month]:$payable[date('M')]??0}}</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col my-2">
+                <div class="alert-info alert mb-0 shadow">
+                    <a href="{{route('invoices.index')}}">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar rounded no-thumbnail bg-purple text-light shadow"><i class="fa fa-credit-card" aria-hidden="true"></i></div>
+                            <div class="flex-fill ms-3 text-truncate">
+                                <div class="h6 mb-0">Receivable</div>
+                                <span class="small">{{isset($search_month)?$receivable[$search_month]:$receivable[date('M')]}}</span>
                             </div>
                         </div>
                     </a>

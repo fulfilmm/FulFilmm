@@ -39,6 +39,7 @@ class CreatePurchaseOrdersTable extends Migration
             $table->tinyInteger('sent')->default(0);
             $table->string('status')->nullable();
             $table->text('attach')->nullable();
+            $table->double('payable_amount')->default(0);
             $table->bigInteger('approver')->unsigned();
             $table->timestamps();
         });

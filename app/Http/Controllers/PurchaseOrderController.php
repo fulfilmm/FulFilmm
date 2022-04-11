@@ -125,6 +125,7 @@ class PurchaseOrderController extends Controller
             $data['grand_total']=$request->grand_total;
             $data['emp_id']=$request->emp_id;
             $data['shipping_address']=$request->ship_to;
+            $data['payable_amount']=$request->grand_total;
             $data['status']='New';
             $data['additional_cost']=$request->additional_cost??0;
             $po=PurchaseOrder::create($data);
