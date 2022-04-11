@@ -105,6 +105,7 @@ class TransactionController extends Controller
         $new_expense->coa_id=$request->coa_account;
         $new_expense->transaction_date = $request->transaction_date;
         $new_expense->emp_id = Auth::guard('employee')->user()->id;
+        $new_expense->branch_id=Auth::guard('employee')->user()->branch_office_id;
         $new_expense->currency = $request->currency;
         $new_expense->bill_id = $request->bill_id ?? null;
         if (isset($request->attachment)) {
