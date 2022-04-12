@@ -82,7 +82,7 @@
                         <select name="report_to" id="report_to" class="form-control">
                             <option value="">Select Report Person</option>
                             @foreach($all_employee as $key=>$val)
-                                <option value="{{$key}}">{{$val}}</option>
+                                <option value="{{$key}}" {{isset($employee)?($key==$employee->report_to?'selected':''):old('report_to')}}>{{$val}}</option>
                                 @endforeach
                         </select>
                     </div>
@@ -98,7 +98,7 @@
                            <label for="wh_id">Warehouse</label>
                            <select name="warehouse_id" id="wh_id" class="form-control">
                                @foreach($warehouse as $item)
-                                   <option value="{{$item->id}}">{{$item->warehouse_id}}-{{$item->name}}</option>
+                                   <option value="{{$item->id}}" {{isset($employee)?($employee->warehouse_id==$item->id?'selected':''):old('warehouse_id')}}>{{$item->warehouse_id}}-{{$item->name}}</option>
                                    @endforeach
                            </select>
                        </div>
