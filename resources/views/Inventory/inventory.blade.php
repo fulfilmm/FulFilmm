@@ -125,7 +125,7 @@
                                    </thead>
                                    <tbody>
                                    @foreach($stock_transactions as $stockin)
-                                       @if($stockin->type==1)
+                                       @if($stockin->type=='Stock In')
                                            <tr>
                                                <td><a href="{{route('show.variant',$stockin->variant->id)}}">{{$stockin->variant->product_code}}</a></td>
                                                <td>{{$stockin->variant->product_name}}</td>
@@ -161,7 +161,7 @@
                                    </thead>
                                    <tbody>
                                    @foreach($stock_transactions as $stockout)
-                                       @if($stockout->type==0)
+                                       @if($stockout->type=='Stock Out')
                                            <tr>
                                                <td><a href="{{route('show.variant',$stockout->variant->id)}}">{{$stockout->variant->product_code}}</a></td>
                                                <td>{{$stockout->variant->product_name}}</td>
