@@ -108,6 +108,7 @@ class WarehouseController extends Controller
         $stocks->is_virtual=$request->is_virtual??0;
         $stocks->address=$request->address;
         $stocks->branch_id=$request->branch_id;
+        $stocks->mobile_warehouse=$request->mobile_warehouse??0;
         $stocks->update();
         return redirect()->back();
     }

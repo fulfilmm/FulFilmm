@@ -15,19 +15,25 @@
                         <label for="dept_name">Warehouse Name:</label><br>
                         <input type="text" id="dept_name" class="form-control mb-3"  name="name" value="{{$warehouse->name}}">
                     </div>
-                    <input type="checkbox" class="mr-2" name="is_virtual" value="1"><label for="">Virtual Warehouse</label>
                     <div class="form-group">
                         <label for="address">Address</label>
                         <input type="text" class="form-control" id="address" name="address" value="{{$warehouse->address}}">
                     </div>
+                    <div class="form-group">
+                        <label for="branch">Office Branch</label>
+                        <select name="branch_id" id="branch{{$warehouse->id}}" class="form-control select2" style="width: 100%">
+                            @foreach($branches as $branch)
+                                <option value="{{$branch->id}}" {{$branch->id==$warehouse->branch_id?'selected':''}}>{{$branch->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <div class="col-md-6 col-sm-6 col-12">
                         <div class="form-group">
-                            <label for="branch">Office Branch</label>
-                            <select name="branch_id" id="branch" class="form-control select2">
-                                @foreach($branches as $branch)
-                                    <option value="{{$branch->id}}" {{$branch->id==$warehouse->branch_id?'selected':''}}>{{$branch->name}}</option>
-                                @endforeach
-                            </select>
+                            <input type="checkbox" class="mr-2" name="is_virtual" value="1" {{$warehouse->is_virtual?'checked':''}}><label for="">Virtual Warehouse</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" class="mr-2" name="mobile_warehouse" id="ismobile" value="1" {{$warehouse->mobile_warehouse?"checked":''}}><label for="">Is Mobile
+                                Warehouse</label>
                         </div>
                     </div>
                     <div class="form-group">
