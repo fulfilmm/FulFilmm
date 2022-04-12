@@ -12,7 +12,7 @@
                    style="text-decoration: none">
                     Sale Dashboard</a></li>
         </ul>
-    </li>//dashboarad
+    </li>
     <li class="submenu">
         <a href="#"><i class="la la-th-list" style="font-size: 18px;"></i><span> Contact</span> <span
                     class="menu-arrow"></span></a>
@@ -24,7 +24,7 @@
             <li><a class="{{ Request::is('customers/create') ? 'active' : '' }}"
                    href="{{ route('customers.create') }}" style="text-decoration: none">Create Contact</a></li>
         </ul>
-    </li>//contact
+    </li>
     <li class="submenu">
         <a href="#"><i class="la la-building" style="font-size: 18px;"></i><span> Company</span> <span
                     class="menu-arrow"></span></a>
@@ -37,7 +37,7 @@
                    href="{{ route('companies.create') }}" style="text-decoration: none">Create Company</a></li>
 
         </ul>
-    </li>//company
+    </li>
     <li class="submenu">
         <a href="#"><i class="la la-group"></i> <span>Operation</span> <span
                     class="menu-arrow"></span></a>
@@ -82,7 +82,7 @@
             </li>
         </ul>
 
-    </li>//Operation
+    </li>
     <li class="submenu">
         <a href="#"><i class="la la-group"></i> <span>People</span> <span
                     class="menu-arrow"></span></a>
@@ -147,7 +147,7 @@
             </li>
         </ul>
 
-    </li>//People
+    </li>
     <li class="submenu">
         <a href="#"><i class="la la-ticket"></i> <span>Complain System</span> <span
                     class="menu-arrow"></span></a>
@@ -178,7 +178,7 @@
             {{--                                <li><a class="{{ Request::is('tickets/create') ? 'active' : '' }}" href="{{ route('tickets.create') }}">Create Ticket</a></li>--}}
             {{--                            @endif--}}
         </ul>
-    </li>//Complaint
+    </li>
     <li class="submenu">
         <a href="#"><i class="la la-truck" style="font-size: 18px;"></i> <span>Delivery</span> <span
                     class="menu-arrow"></span></a>
@@ -194,7 +194,7 @@
             </li>
 
         </ul>
-    </li>//Deleviry
+    </li>
     <li class="submenu">
         <a href="#"><i class="la la-cube"></i> <span>Sales</span> <span
                     class="menu-arrow"></span></a>
@@ -268,7 +268,7 @@
                 </ul>
             </li>
         </ul>
-    </li>//Sale
+    </li>
     <li class="submenu">
         <a href="#"><i class="la la-cube"></i> <span>CRM</span> <span
                     class="menu-arrow"></span></a>
@@ -305,7 +305,7 @@
             </li>
 
         </ul>
-    </li>//CRm
+    </li>
     <li class="submenu">
         <a href="#"><i class="la la-pie-chart" style="font-size: 18px"></i> <span> Report</span> <span
                     class="menu-arrow"></span></a>
@@ -317,5 +317,5 @@
             </li>
 
         </ul>
-    </li>//Report
+    </li>
 </ul>
