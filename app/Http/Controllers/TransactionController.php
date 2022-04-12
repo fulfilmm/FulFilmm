@@ -262,7 +262,8 @@ class TransactionController extends Controller
               $new_revenue->advance_pay_id = $request->advance_id ?? null;
               $new_revenue->coa_id = $request->coa_account;
               $new_revenue->transaction_date = $request->transaction_date;
-              $new_revenue->emp_id = Auth::guard('employee')->user()->id;
+              $new_revenue->emp_id = Auth::guard('employee')->user()->id;	
+	      $new_revenue->branch_id=Auth::guard('employee')->user()->office_branch_id;
               $new_revenue->currency = $request->currency;
               if (isset($request->attachment)) {
                   if ($request->attachment != null) {
