@@ -318,6 +318,42 @@ class StockTransactionController extends Controller
                     return redirect()->back()->with('warning', 'Not Enough Product!Maximum Product is ' . $stock->stock_balance);
                 } else {
 //
+                    $product_exist = Stock::where('variant_id', $request->variantion_id)->where('warehouse_id', $request->transfer_warehouse_id)->first();
+//              dd('here');
+                    if ($product_exist == null) {
+//                   dd('inner create stock');
+                        $new_stock = new Stock();
+                        $new_stock->product_name = $stock->product_name;
+                        $new_stock->variant_id = $request->variantion_id;
+                        $new_stock->warehouse_id = $request->transfer_warehouse_id;
+                        $new_stock->ontheway_qty=$request->qty;
+                        $new_stock->stock_balance=$new_stock->stock_balance??0;
+                        $new_stock->available=$new_stock->available??0;
+                        $new_stock->cos=$product_exist->cos;
+                        $new_stock->save();
+
+                    } else {
+                        $product_exist->ontheway_qty += $request->qty;
+                        $product_exist->update();
+                    }
+
+                    $out_batch = ProductStockBatch::where('product_id', $request->variantion_id)->where('warehouse_id', $request->current_warehouse_id)->get();
+                    $remaing = $request->qty;
+                    foreach ($out_batch as $batch) {
+                        if ($batch->qty != 0) {
+                            if ($batch->qty >= $remaing) {
+                                $batch->qty = $batch->qty - $remaing;
+                                $remaing = 0;
+                                $batch->update();
+                            } else {
+                                $remaing = $remaing - $batch->qty;
+                                $data['qty'] = $batch->qty;
+                                $batch->qty = 0;
+                                $batch->update();
+
+                            }
+                        }
+                    }
                     $transfer_record = new StockTransferRecord();
                     $transfer_record->product_name = $stock->product_name;
                     $transfer_record->variant_id = $request->variantion_id;
@@ -325,7 +361,11 @@ class StockTransactionController extends Controller
                     $transfer_record->to_warehouse = $request->transfer_warehouse_id;
                     $transfer_record->qty = $request->qty;
                     $transfer_record->receiver_id = $request->approver_id;
+                    $transfer_record->validate_qty=$request->qty;
                     $transfer_record->save();
+                    $stock->stock_balance = $stock->stock_balance - $request->qty;
+                    $stock->available = $stock->available - $request->qty;
+                    $stock->update();
                     $this->addnotify($request->approver_id,'noti','Request to accept stock transfer','transfer/index',Auth::guard('employee')->user()->id);
 //
                 }
@@ -420,29 +460,16 @@ class StockTransactionController extends Controller
     public function confirm($id)
     {
         $stock_transfer = StockTransferRecord::where('id', $id)->first();
-        $stock = Stock::where('variant_id', $stock_transfer->variant_id)->where('warehouse_id', $stock_transfer->from_warehouse)->first();
-        if ($stock != null) {
             if ($stock_transfer->receiver_id == Auth::guard('employee')->user()->id) {
                 $product_exist = Stock::where('variant_id', $stock_transfer->variant_id)->where('warehouse_id', $stock_transfer->to_warehouse)->first();
 //              dd('here');
-                if ($product_exist == null) {
-//                   dd('inner create stock');
-                    $new_stock = new Stock();
-                    $new_stock->product_name = $stock->product_name;
-                    $new_stock->variant_id = $stock_transfer->variant_id;
-                    $new_stock->warehouse_id = $stock_transfer->to_warehouse;
-                    $new_stock->stock_balance = $stock_transfer->qty;
-                    $new_stock->available = $stock_transfer->qty;
-                    $new_stock->save();
-
-                } else {
-                    $product_exist->stock_balance = $product_exist->stock_balance + $stock_transfer->qty;
-                    $product_exist->available = $product_exist->available + $stock_transfer->qty;
+                    $product_exist->stock_balance = $product_exist->stock_balance + $stock_transfer->validate_qty;
+                    $product_exist->available = $product_exist->available + $stock_transfer->validate_qty;
+                    $product_exist->ontheway_qty-=$stock_transfer->validate_qty;
                     $product_exist->update();
-                }
 
                 $out_batch = ProductStockBatch::where('product_id', $stock_transfer->variant_id)->where('warehouse_id', $stock_transfer->from_warehouse)->get();
-                $remaing = $stock_transfer->qty;
+                $remaing = $stock_transfer->validate_qty;
                 foreach ($out_batch as $batch) {
                     if ($batch->qty != 0) {
                         if ($batch->qty >= $remaing) {
@@ -454,13 +481,10 @@ class StockTransactionController extends Controller
                             } else {
                                 $batch_no = "Batch-00001";
                             }
-                            $batch->qty = $batch->qty - $remaing;
-                            $remaing = 0;
-                            $batch->update();
                             $data['product_id'] = $stock_transfer->variant_id;
                             $data['batch_no'] = $batch_no;
                             $data['supplier_id'] = $batch->supplier_id;
-                            $data['qty'] = $stock_transfer->qty;
+                            $data['qty'] = $stock_transfer->validate_qty;
                             $data['purchase_price'] = $batch->purchase_price;
                             $data['exp_date'] = $batch->exp_date;
                             $data['warehouse_id'] = $stock_transfer->to_warehouse;
@@ -474,10 +498,7 @@ class StockTransactionController extends Controller
                             } else {
                                 $batch_no = "Batch-00001";
                             }
-                            $remaing = $remaing - $batch->qty;
                             $data['qty'] = $batch->qty;
-                            $batch->qty = 0;
-                            $batch->update();
                             $data['product_id'] = $stock_transfer->variant_id;
                             $data['batch_no'] = $batch_no;
                             $data['supplier_id'] = $batch->supplier_id;
@@ -489,18 +510,19 @@ class StockTransactionController extends Controller
                         }
                     }
                 }
-                $stock->stock_balance = $stock->stock_balance - $stock_transfer->qty;
-                $stock->available = $stock->available - $stock_transfer->qty;
-                $stock->update();
                 $stock_transfer->receipt = 1;
                 $stock_transfer->update();
                 return redirect()->back()->with('success','Stock Transfer Receipted');
             } else {
                 return redirect()->back()->with('error', 'You are not receiver');
             }
-        }
-        else{
-        }
+    }
+    public function transfer_validate(Request $request,$id){
+        $transfer=StockTransferRecord::where('id',$id)->first();
+        $transfer->validate_qty=$request->validate_qty;
+        $transfer->validated=1;
+        $transfer->update();
+        return redirect('transfer/index')->with('success','Stock transfer qty validated');
     }
 
 }

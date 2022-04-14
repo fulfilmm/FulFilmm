@@ -22,6 +22,8 @@ class CreateStockTransferRecordsTable extends Migration
             $table->double('qty');
             $table->bigInteger('receiver_id')->unsigned();
             $table->tinyInteger('receipt')->default(0);
+            $table->double('validate_qty')->default(0);
+            $table->tinyInteger('validated')->default(0);
             $table->timestamps();
         });
     }

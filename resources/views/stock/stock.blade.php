@@ -146,6 +146,7 @@
                         <th style="min-width: 100px">Unit</th>
                         <td style="min-width: 100px">Balance</td>
                         <td style="min-width: 100px">Available</td>
+                        <th style="min-width: 100px">On the Way Qty</th>
                         <td style="min-width: 100px">Alert Qty</td>
                         <td style="min-width: 100px">Last Updated</td>
                         <td style="min-width: 100px">Action</td>
@@ -183,19 +184,24 @@
                                     $(document).ready(function () {
                                         var stock_bal = '{{$stock->stock_balance}}';
                                         var stock_val = '{{$stock->available}}';
+                                        var ontheway='{{$stock->ontheway_qty}}';
                                         $('#stock_balance{{$stock->id}}').text(stock_bal);
                                         $('#stock_avl{{$stock->id}}').text(stock_val);
+                                        $('#ontheway{{$stock->id}}').text(ontheway);
                                         $('#unit{{$stock->id}}').change(function () {
                                             var unit = $(this).val();
                                             var st_bal = Math.round(parseFloat(stock_bal) / parseInt(unit));
                                             var st_val = Math.round(parseFloat(stock_val) / parseInt(unit));
+                                            var ontheway = Math.round(parseFloat(ontheway) / parseInt(unit));
                                             $('#stock_balance{{$stock->id}}').text(st_bal);
                                             $('#stock_avl{{$stock->id}}').text(st_val);
+                                            $('#ontheway{{$stock->id}}').text(ontheway);
 
                                         });
                                     });
                                 </script>
                             </td>
+                            <td><span id="ontheway{{$stock->id}}"></span></td>
                             <td>{{$stock->alert_qty}}</td>
                             <td>{{\Carbon\Carbon::parse($stock->updated_at)->toFormattedDateString()}}</td>
                             <td>

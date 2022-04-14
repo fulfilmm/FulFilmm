@@ -140,7 +140,7 @@
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 success: function (data) {
                     console.log(data);
-                    $("#contact_div").load(location.href + " #contact_div>* ");
+                    loc
                 },
                 error: function(xhr, status, error)
                 {
