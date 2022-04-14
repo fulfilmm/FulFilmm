@@ -231,6 +231,8 @@
                    href="{{ route('qualified_contact') }}" style="text-decoration: none"><i class="la la-users mr-1"
                                                                                             style="font-size: 18px;"></i>
                     Customer</a></li>
+            <li><a class="{{ Request::is('transfer/index') ? 'active' : '' }}"
+                   href="{{ route('transfer.index') }}" style="text-decoration: none">Stock Transfer</a></li>
             <li class="submenu">
                 <a href="#"><img src="{{url(asset('img/icon_image/invoice.png'))}}" alt="" width="18px" height="18px"
                                  class="mr-1"><span> Invoice</span> <span
