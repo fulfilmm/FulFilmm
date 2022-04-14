@@ -396,13 +396,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="">Title</label>
-                                        <input type="text" name="title" class="form-control" placeholder="Type Title">
+                                        <input type="text" name="title" class="form-control" placeholder="Type Title" value="{{old('title')}}">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="date">Date</label>
-                                        <input type="date" id="date" name="transaction_date" class="form-control">
+                                        <input type="date" id="date" name="transaction_date" class="form-control" value="{{old('transaction_date')??\Carbon\Carbon::today()->format('Y-m-d')}}">
                                     </div>
                                 </div>
                                 <div class="col-md-6">

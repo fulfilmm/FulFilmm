@@ -71,6 +71,7 @@ class SaleTargetController extends Controller
                     ->where('year',$value)
                     ->get();
                 $yearly_target[$value]=$yearly_sale_target[0];
+
             }
         }else{
             //monthly
@@ -87,6 +88,16 @@ class SaleTargetController extends Controller
                     ->where('month', $value)->where('year', date('Y'))->where('emp_id',$auth->id)
                     ->get();
                 $monthlysaletarget[$value] = $sale_target[0];
+                $cost_of_sale=DB::table('invoices')
+                    ->select(DB::raw("SUM(invoice_cos) as total"))
+                    ->whereMonth('invoice_date', $key + 1)->whereYear('invoice_date', date('Y'))
+                    ->where('emp_id',Auth::guard('employee')->user()->id)
+                    ->get();
+                $cos[$value]=$cost_of_sale[0]->total??0;
+                $gp[$value]=$monthly[$value]->total-$cos[$value];
+                $receivable[$value]=$monthly_receiable[0]->total??0;
+
+                $payable[$value]=$monthly_payable[0]->total??0;
 
             }
 

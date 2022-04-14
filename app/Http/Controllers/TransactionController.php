@@ -281,7 +281,7 @@ class TransactionController extends Controller
               if(isset($request->invoice_id)){
                   $inv=Invoice::where('id',$request->invoice_id)->first();
                   $employee=Employee::where('id',$inv->emp_id)->first();
-                  $employee->amount_in_hand=$request->amount;
+                  $employee->amount_in_hand+=$request->amount;
                   $employee->update();
               }
           }catch (\Exception $e){
