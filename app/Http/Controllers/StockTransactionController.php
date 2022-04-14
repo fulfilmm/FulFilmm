@@ -319,7 +319,7 @@ class StockTransactionController extends Controller
                 } else {
 //
                     $product_exist = Stock::where('variant_id', $request->variantion_id)->where('warehouse_id', $request->transfer_warehouse_id)->first();
-//              dd('here');
+//              dd($product_exist);
                     if ($product_exist == null) {
 //                   dd('inner create stock');
                         $new_stock = new Stock();
@@ -329,7 +329,7 @@ class StockTransactionController extends Controller
                         $new_stock->ontheway_qty=$request->qty;
                         $new_stock->stock_balance=$new_stock->stock_balance??0;
                         $new_stock->available=$new_stock->available??0;
-                        $new_stock->cos=$product_exist->cos;
+                        $new_stock->cos=$stock->cos;
                         $new_stock->save();
 
                     } else {
