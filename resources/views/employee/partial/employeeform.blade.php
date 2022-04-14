@@ -129,7 +129,7 @@
                                <label for="">Office</label>
                                <select name="office_branch_id" id="" class="select form-control">
                                    @foreach($office as $item)
-                                       <option value="{{$item->id}}">{{$item->name}}</option>
+                                       <option value="{{$item->id}}" {{isset($employee)?($employee->office_branch_id==$item->id?'selected':''):old('office_branch_id')}}>{{$item->name}}</option>
                                    @endforeach
                                </select>
                            </div>
