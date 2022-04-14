@@ -26,7 +26,7 @@ class StocktransferRecordAddColumn extends Migration
      */
     public function down()
     {
-        Schema::table('stock_transfer_record', function (Blueprint $table) {
+        Schema::table('stock_transfer_records', function (Blueprint $table) {
             $table->drop('validate_qty');
             $table->drop('validated');
         });
