@@ -49,16 +49,12 @@
                             <div class="col-md-6 mb-3">
                                 <label for="company_id" class="form-label font-weight-bold text-muted text-uppercase">Company
                                     Name<span class="text-danger">*</span></label>
-                                <div class="input-group company_field" id="company_div">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fa fa-building"></i></span>
-                                    </div>
-                                    <select name="company_id" id="contact_company_id" class="form-control">
+                                <div class="input-group company_field">
+                                    <select name="company_id" id="contact_company_id" class="form-control" style="width: 100%">
                                         @foreach($companies as $key=>$val)
                                             <option value="{{$key}}">{{$val}}</option>
                                         @endforeach
                                     </select>
-                                    <button type="button" data-toggle="modal" data-target="#add_new_company" class="btn btn-white"><i class="fa fa-plus"></i></button>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
@@ -90,7 +86,7 @@
                                 <label for="customer_type"
                                        class="form-label font-weight-bold text-muted text-uppercase">
                                     Type</label>
-                                <select name="customer_type" id="customer_type" class="form-control">
+                                <select name="customer_type" id="customer_type" class="form-control" style="width: 100%;">
                                     <option value="Customer">Customer</option>
                                     <option value="Lead">Lead</option>
                                     <option value="In Query">In Query</option>
@@ -101,16 +97,10 @@
                                 </select>
                             </div>
                             <div class="col-md-6 mb-3">
-
-                            </div>
-                            <div class="col-md-6 mb-3" id="priority">
-
-                            </div>
-                            <div class="col-md-6 mb-3" id="tag_industry">
-
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <input type="hidden" name="canlogin" id="canlogin" value="off">
+                                <div class="form-group">
+                                    <label for="credit_limit">Credit Limit</label>
+                                    <input type="number" class="form-control" name="credit_limit" value="0">
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -143,7 +143,7 @@ class CustomerController extends Controller
             'department'=>$request->department,
             'position'=>$request->position??null,
             'status'=>$request->status,
-            'credit_limit'=>$request->credit_limit,
+            'credit_limit'=>$request->credit_limit??0,
             'lead_title'=>$request->title
 
         ];

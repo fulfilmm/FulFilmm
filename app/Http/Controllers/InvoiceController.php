@@ -7,6 +7,7 @@ use App\Models\Account;
 use App\Models\AdvancePayment;
 use App\Models\AmountDiscount;
 use App\Models\ChartOfAccount;
+use App\Models\Company;
 use App\Models\Customer;
 use App\Models\DiscountPromotion;
 use App\Models\Employee;
@@ -112,7 +113,8 @@ class InvoiceController extends Controller
             $aval_product = Stock::with('variant')->where('available', '>', 0)->get();
             $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))->whereDate('end_date','>=',date('Y-m-d'))->where('sale_type','Whole Sale')->get();
             $due_default=Carbon::today()->addDay(1);
-            return view('invoice.create', compact('warehouse', 'type', 'request_id', 'allcustomers', 'orderline', 'grand_total', 'status', 'data', 'aval_product', 'taxes', 'unit_price', 'dis_promo', 'focs','prices','amount_discount','due_default'));
+            $companies=Company::all()->pluck('name','id')->all();
+            return view('invoice.create', compact('warehouse', 'type', 'request_id', 'allcustomers', 'orderline', 'grand_total', 'status', 'data', 'aval_product', 'taxes', 'unit_price', 'dis_promo', 'focs','prices','amount_discount','due_default','companies'));
         }else{
             return redirect()->back()->with('error','Firstly,Fixed your Branch of Office');
     }
@@ -166,7 +168,8 @@ class InvoiceController extends Controller
             }
         $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))->whereDate('end_date','>=',date('Y-m-d'))->where('sale_type','Retail Sale')->get();
             $due_default=Carbon::today()->addDay(1);
-        return view('invoice.create',compact('warehouse','request_id','allcustomers','orderline','grand_total','status','data','aval_product','taxes','unit_price','dis_promo','focs','type','prices','amount_discount','due_default'));
+            $companies=Company::all()->pluck('name','id')->all();
+        return view('invoice.create',compact('warehouse','request_id','allcustomers','orderline','grand_total','status','data','aval_product','taxes','unit_price','dis_promo','focs','type','prices','amount_discount','due_default','companies'));
         }else{
             return redirect()->back()->with('error','Firstly,Fixed your Branch of Office');
         }

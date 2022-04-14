@@ -85,15 +85,20 @@
                                     <input type="hidden" name="order_id" id="order_id" value="{{$order_data->id??''}}">
                                 </div>
                             </div>
-                            <div class="col-sm-6 col-md-6">
+                            <div class="col-sm-6 col-md-6" id="contact_div">
                                 <div class="form-group">
                                     <label for="client_id">Client <span class="text-danger">*</span></label>
-                                    <select class="form-control" id="client_id">
-                                        <option value="">Select Client</option>
-                                        @foreach($allcustomers as $client)
-                                            <option value="{{$client->id}}" {{isset($order_data)?($client->id==$order_data->customer_id?'selected':''):($data!=null?($data[0]['client_id']==$client->id?'selected':''):'')}}>{{$client->name}}</option>
-                                        @endforeach
-                                    </select>
+                                   <div class="input-group">
+                                       <select class="form-control" id="client_id">
+                                           <option value="">Select Client</option>
+                                           @foreach($allcustomers as $client)
+                                               <option value="{{$client->id}}" {{isset($order_data)?($client->id==$order_data->customer_id?'selected':''):($data!=null?($data[0]['client_id']==$client->id?'selected':''):'')}}>{{$client->name}}</option>
+                                           @endforeach
+                                       </select>
+                                       <div class="input-group-append">
+                                           <button type="button" class="btn btn-white" data-toggle="modal" data-target="#add_contact"><i class="la la-plus"></i></button>
+                                       </div>
+                                   </div>
                                     <span class="text-danger client_id_err"></span>
                                 </div>
                             </div>
@@ -654,6 +659,7 @@
                 </div>
             </div>
         </div>
+        @include('customer.quickcustomer')
         {{--                            <input type="hidden" id="generate_id" value="{{$generate_id}}">--}}
     </div>
     <script>
