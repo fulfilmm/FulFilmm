@@ -278,6 +278,12 @@ class TransactionController extends Controller
                   $new_revenue->approve = 1;
               }
               $new_revenue->save();
+              if(isset($request->invoice_id)){
+                  $inv=Invoice::where('id',$request->invoice_id)->first();
+                  $employee=Employee::where('id',$inv->emp_id)->first();
+                  $employee->amount_in_hand=$request->amount;
+                  $employee->update();
+              }
           }catch (\Exception $e){
               return redirect()->back()->with('error',$e->getMessage());
           }
@@ -362,6 +368,9 @@ class TransactionController extends Controller
                     $customer=Customer::where('id',$revenue->invoice->customer_id)->first();
                     $customer->current_credit=$customer->current_credit-$revenue->amount;
                     $customer->update();
+                    $employee=Employee::where('id',$revenue->invoice->emp_id)->first();
+                    $employee->amount_in_hand=$employee->amount_in_hand-$revenue->amount;
+                    $employee->update();
                 }
 //                $rev_budget=RevenueBudget::where('category_id',$revenue->category)->where('year',Carbon::parse($revenue->transaction_date)->format('Y'))->where('month',Carbon::parse($revenue->transaction_date)->format('m'))->first();
 //                $rev_budget->actual=$rev_budget->actual + $revenue->amount;

@@ -20,6 +20,7 @@
                     <th>Department</th>
                     <th>Join Date</th>
                     <th>Office</th>
+                    <th>In Hand Amount</th>
                     <th>Can login</th>
                     {{--<th>Can post assignments</th>--}}
 
@@ -42,6 +43,7 @@
                         <td>{{ $em->department->name }}</td>
                         <td>{{ $em->join_date }}</td>
                         <td>{{$em->branch->name??'N/A'}}</td>
+                        <td>{{$em->amount_in_hand}}</td>
                         <td>{{ $em->can_login ? 'Yes' : 'No' }}</td>
                         {{--<td>{{ $em->can_post_assignments ? 'Yes' : 'No' }}</td>--}}
 

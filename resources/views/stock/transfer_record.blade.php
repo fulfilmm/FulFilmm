@@ -1,5 +1,5 @@
 @extends('layout.mainlayout')
-@section('title','Add Revenue')
+@section('title','Stock Transfer')
 @section('content')
     <div class="container-fluid">
         <div class="page-header my-3">
@@ -29,6 +29,7 @@
                         <th>Qty</th>
                         <th>From</th>
                         <th>To</th>
+                        <th>Status</th>
                     </tr>
 
                     </thead>
@@ -44,6 +45,11 @@
                                 <td>{{number_format($transfer->qty)}}</td>
                                 <td>{{$transfer->from->name}}</td>
                                 <td>{{$transfer->to->name}}</td>
+                                <td>@if($transfer->receipt==0)<a href="{{url('stock/transfer/receipt/'.$transfer->id)}}" class="btn btn-warning btn-sm">Receipt</a>
+                                @else
+                                    Receipted
+                                    @endif
+
                             </tr>
                     @endforeach
                     </tbody>

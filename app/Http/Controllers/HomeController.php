@@ -548,6 +548,13 @@ class HomeController extends Controller
                 $myticket=ticket::where('created_emp_id',$user->id)->count();
                 $follow_ticket=ticket_follower::where('emp_id',$user->id)->count();
                 $emp_ticket=$myticket+$follow_ticket;
+                $revenue=Revenue::with('invoice')->where('invoice_id','!=',null)->where('approve',1)->get();
+                $transferred_amount=0;
+                foreach ($revenue as $inv_item){
+                    if($inv_item->invoice->emp_id==Auth::guard('employee')->user()->id){
+                        $transferred_amount+=$inv_item->amount;
+                    }
+                }
                 $items=[
                     'saleactivity'=>$sale_activity,
                     'my_groups'=>$group,
@@ -557,6 +564,7 @@ class HomeController extends Controller
                     'all_ticket'=>$emp_ticket,
                     'requestation'=>$requestation,
                     'invoice'=>$saleMan_invoice,
+                    'transferred_amount'=>$transferred_amount,
 
                 ];
                 return view('index',compact('items'));

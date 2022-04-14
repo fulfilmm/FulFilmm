@@ -54,8 +54,8 @@
                         <th>Warehouse</th>
                         <th>Balance</th>
                         <th>Price</th>
-                        <th>Sale Value</th>
-                        <th>Inventory Value</th>
+                        <th>Purchase/Sale Value</th>
+                        <th>Total Stock Value</th>
                         <th>Employee</th>
                         <th>Unit</th>
                     </tr>

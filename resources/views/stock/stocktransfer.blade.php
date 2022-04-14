@@ -14,63 +14,84 @@
                 </div>
             </div>
         </div>
-        <form action="{{route('stocks.transfer')}}" method="post">
-            {{csrf_field()}}
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="warehouse">Current Warehouse <span class="text-danger"> * </span></label>
-                        <select name="current_warehouse_id" id="current_warehouse" class="form-control">
-                            @foreach($warehouse as $key=>$val)
-                                <option value={{$key}}>{{$val}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="warehouse">Transfer Warehouse <span class="text-danger"> * </span></label>
-                        <select name="transfer_warehouse_id" id="warehouse" class="form-control">
-                            @foreach($warehouse as $key=>$val)
-                                <option value={{$key}}>{{$val}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="variantion_id">Product <span class="text-danger"> * </span></label>
-                        <select name="variantion_id" id="variantion_id" class="form-control">
-                            @foreach($products as $product)
-                                <option value="{{$product->variant->id}}">{{$product->variant->product_name}} ({{$product->variant->variant??''}})</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <div class="form-group">
-                        <label for="qty">Quantity <span class="text-danger"> * </span></label>
-                        <input type="number" name="qty" class="form-control">
-                    </div>
-                    @error('qty')
-                    <span class="text-danger">{{$message}}</span>
-                    @enderror
-                </div>
-                <div class="col-12">
-                    <div class="form-group ">
-                        <div class="col-12">
-                            <button type="submit" class="btn btn-primary text-center">Stock Transfer</button>
-                        </div>
+        <div class="col-md-8 offset-md-2 col-sm-8 offset-sm-2 col-12">
+            <div class="card shadow">
+                <div class="col-12 my-3">
+                    <form action="{{route('stocks.transfer')}}" method="post">
+                        {{csrf_field()}}
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="warehouse">Current Warehouse <span class="text-danger"> * </span></label>
+                                    <select name="current_warehouse_id" id="current_warehouse" class="form-control">
+                                        @foreach($warehouse as $key=>$val)
+                                            <option value={{$key}} {{old('current_warehouse_id')==$key?'selected':''}}>{{$val}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="warehouse">Transfer Warehouse <span class="text-danger"> * </span></label>
+                                    <select name="transfer_warehouse_id" id="warehouse" class="form-control" >
+                                        @foreach($warehouse as $key=>$val)
+                                            <option value={{$key}} {{old('transfer_warehouse_id')==$key?'selected':''}}>{{$val}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="variantion_id">Product <span class="text-danger"> * </span></label>
+                                    <select name="variantion_id" id="variantion_id" class="form-control">
+                                        @foreach($products as $item)
+                                        <option value="{{$item->id}}">{{$item->product_name}} ({{$item->variant}})</option>
+                                            @endforeach
+                                    </select>
+                                    @error('variantion_id')
+                                    <span class="text-danger">{{$message}}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <div class="form-group">
+                                    <label for="receiver">Receiver</label>
+                                    <select name="approver_id" id="approver" class="form-control">
+                                        @foreach($employees as $emp)
+                                            <option value="{{$emp->id}}">{{$emp->name}}</option>
+                                            @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <div class="form-group">
+                                    <label for="qty">Quantity <span class="text-danger"> * </span></label>
+                                    <input type="number" name="qty" class="form-control" value={{old('qty')}}>
+                                </div>
+                                @error('qty')
+                                <span class="text-danger">{{$message}}</span>
+                                @enderror
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group ">
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-primary text-center">Stock Transfer</button>
+                                    </div>
 
-                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-        </form>
+
+        </div>
     </div>
 
     <script>
         $(document).ready(function () {
             $('select').select2();
+
         });
     </script>
 @endsection

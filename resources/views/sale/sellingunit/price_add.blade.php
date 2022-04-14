@@ -69,7 +69,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="branch">Office Branch</label>
-                                        <select name="branch_id" id="branch" class="form-control">
+                                        <select name="branch_id[]" id="branch" class="form-control" multiple>
                                             @foreach($branch as $item)
                                                 <option value="{{$item->id}}">{{$item->name}}</option>
                                                 @endforeach

@@ -19,6 +19,7 @@
                <tr>
                    <th>Branch Name</th>
                    <th>Address</th>
+                   <th>Parent Branch</th>
                    <th>Action</th>
                </tr>
                </thead>
@@ -27,11 +28,13 @@
                     <tr>
                         <td>{{$branch->name}}</td>
                         <td>{{$branch->address}}</td>
+                        <td>{{$branch->parent->name??'N/A'}}</td>
                         <td>
                             <div class="row">
                                 <a href="{{route('officebranch.show',$branch->id)}}" class="btn btn-white btn-sm"><i class="fa fa-eye"></i></a>
                                 <button type="button" data-toggle="modal" data-target="#edit_{{$branch->id}}" class="btn btn-white btn-sm"><i class="la la-edit"></i></button>
                                 <button type="button" data-toggle="modal" data-target="#delete_{{$branch->id}}" class="btn btn-white btn-sm"><i class="la la-trash"></i></button>
+                                <a href="{{url('branch/report/'.$branch->id)}}" class="btn btn-white btn-sm">Report</a>
                             </div>
                             <div id="edit_{{$branch->id}}" class="modal custom-modal fade" role="dialog">
                                 <div class="modal-dialog modal-dialog-centered modal-md">

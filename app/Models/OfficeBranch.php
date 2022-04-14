@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class OfficeBranch extends Model
 {
     use HasFactory;
-    protected $fillable=['name','address'];
-    public function warehouse(){
-        return $this->belongsTo(Warehouse::class,'warehouse_id','id');
+    protected $fillable=['name','address','type','parent_branch'];
+    public function parent(){
+        return $this->belongsTo(OfficeBranch::class,'parent_branch','id');
     }
 }

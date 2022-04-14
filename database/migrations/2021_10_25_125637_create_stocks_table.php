@@ -21,6 +21,7 @@ class CreateStocksTable extends Migration
             $table->double('alert_qty')->default(0)->nullable();
             $table->bigInteger('variant_id')->unsigned();
             $table->bigInteger('warehouse_id')->unsigned();
+            $table->double('cos')->default(0);
             $table->text('product_location')->nullable();
             $table->timestamps();
         });

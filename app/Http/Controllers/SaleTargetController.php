@@ -41,9 +41,9 @@ class SaleTargetController extends Controller
                     ->where('month', $value)->where('year', date('Y'))
                     ->get();
                 $monthlysaletarget[$value] = $sale_target[0]??0;
-                $cost_of_sale=DB::table('purchase_orders')
-                    ->select(DB::raw("SUM(grand_total) as total"))
-                    ->whereMonth('ordered_date', $key + 1)->whereYear('created_at', date('Y'))
+                $cost_of_sale=DB::table('invoices')
+                    ->select(DB::raw("SUM(invoice_cos) as total"))
+                    ->whereMonth('invoice_date', $key + 1)->whereYear('invoice_date', date('Y'))
                     ->get();
                 $cos[$value]=$cost_of_sale[0]->total??0;
                 $gp[$value]=$monthly[$value]->total-$cos[$value];
@@ -108,21 +108,11 @@ class SaleTargetController extends Controller
                 ->whereYear('transaction_date', date('Y'))->whereMonth('transaction_date',date('M'))
                 ->get();
             $all_income[date('Y')] = $income[0];
-            $revenue = DB::table("revenues")
-                ->select(DB::raw("SUM(amount) as total"))
-                ->whereMonth('transaction_date', date('m'))->where('emp_id',$auth->id)
-                ->get();
             $all_income[date('Y')] = $income[0];
             $sale_target = DB::table("sale_targets")
                 ->select(DB::raw("SUM(target_sale) as target"))
                 ->where('month', date('M'))->where('year', date('Y'))->where('emp_id',$auth->id)
                 ->get();
-            $invoice_revenue = DB::table("revenues")
-                ->select(DB::raw("SUM(amount) as total"))
-                ->whereMonth('transaction_date', date('m'))->where('invoice_id','!=',null)
-                ->where('emp_id',$auth->id)
-                ->get();
-            $remaining=$monthly[date('M')]->total-$invoice_revenue[0]->total;
         }
 
 
@@ -204,9 +194,9 @@ class SaleTargetController extends Controller
                 ->where('month', $value)->where('year',$request->year)
                 ->get();
             $monthlysaletarget[$value] = $sale_target[0]??0;
-            $cost_of_sale=DB::table('purchase_orders')
-                ->select(DB::raw("SUM(grand_total) as total"))
-                ->whereMonth('ordered_date', $key + 1)->whereYear('created_at',$request->year)
+            $cost_of_sale=DB::table('invoices')
+                ->select(DB::raw("SUM(invoice_cos) as total"))
+                ->whereMonth('invoice_date', $key + 1)->whereYear('invoice_date',$request->year)
                 ->get();
             $cos[$value]=$cost_of_sale[0]->total??0;
             $gp[$value]=$monthly[$value]->total-$cos[$value];
@@ -223,6 +213,7 @@ class SaleTargetController extends Controller
             $payable[$value]=$monthly_payable[0]->total??0;
 
         }
+//        dd($cos);
         $current_year = date('Y') + 0;
         $yearly = [];
         $yearly_target=[];
@@ -243,7 +234,8 @@ class SaleTargetController extends Controller
         $searchYear=$request->year;
         $month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', "Jul", 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 //        dd($search_month);
-        return view('sale.dashboard', compact('monthly', 'yearly', 'year', 'sale_target', 'monthlysaletarget','yearly_target','search_month','month','searchYear','gp','receivable','payable'));
+//        dd($cos);
+        return view('sale.dashboard', compact('monthly', 'yearly', 'year', 'sale_target', 'monthlysaletarget','yearly_target','search_month','month','searchYear','gp','receivable','payable','cos'));
 
     }
 }

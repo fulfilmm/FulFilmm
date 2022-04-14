@@ -28,6 +28,7 @@ class CreateOrderItemsTable extends Migration
             $table->foreign('inv_id')->references('id')->on('invoices')->onDelete('cascade');
             $table->string('creation_id');
             $table->tinyInteger('state');
+            $table->double('cos_total')->nullable();
             $table->boolean('foc')->default(false);
             $table->index(['id']);
             $table->timestamps();

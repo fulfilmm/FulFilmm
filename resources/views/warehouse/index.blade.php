@@ -45,7 +45,7 @@
                     @foreach($warehouses as $warehouse)
                         <tr>
                             <td style="min-width: 150px;">{{$warehouse->warehouse_id}}</td>
-                            <td style="min-width: 150px;"><i class="fa fa-home mr-3"></i>{{$warehouse->name}}
+                            <td style="min-width: 150px;">{{$warehouse->name}}</td>
                             <td style="min-width: 150px;">{{$warehouse->description}}</td>
                             <td style="min-width: 150px;">{{$warehouse->address}}</td>
                             <td style="min-width: 150px;">{{$warehouse->mobile_warehouse?'Yes':'No'}}</td>

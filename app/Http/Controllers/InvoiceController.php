@@ -30,6 +30,7 @@ use App\Models\Warehouse;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -153,7 +154,7 @@ class InvoiceController extends Controller
         }
         $status=$this->status;
         $unit_price=SellingUnit::where('active',1)->get();
-        $prices=product_price::where('sale_type','Retail Sale')->get();
+        $prices=product_price::where('sale_type','Retail Sale')->where('active',1)->where('branch_id',$Auth->office_branch_id)->get();
         $dis_promo=DiscountPromotion::where('sale_type','Retail Sale')->get();
         $focs=Freeofchare::with('variant')->get();
         $type='Retail Sale';
@@ -266,11 +267,20 @@ class InvoiceController extends Controller
                         $unit = SellingUnit::where('id',$item->sell_unit)->first();
                         $stock = Stock::where('variant_id', $item->variant_id)->where('warehouse_id', $request->warehouse_id)->first();
                         $item->inv_id = $newInvoice->id;
+                        $item->cos_total=$item->quantity*$stock->cos;
                         $item->update();
                         $stock->available = $stock->available - ($item->quantity * $unit->unit_convert_rate);
+
                         $stock->update();
                     }
                 }
+
+                $inv_item= DB::table("order_items")
+                    ->select(DB::raw("SUM(cos_total) as total"))
+                    ->where('inv_id',$newInvoice->id)
+                    ->get();
+                $newInvoice->invoice_cos=$inv_item[0]->total;
+                $newInvoice->update();
                 if (isset($request->order_id)) {
                     $order_item = OrderItem::where('order_id', $request->order_id)->get();
                     $grand_total = 0;

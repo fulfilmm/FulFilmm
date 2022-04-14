@@ -516,6 +516,8 @@ Route::get('coatype',[\App\Http\Controllers\ChartOfAccountController::class,'coa
 Route::post('coatype',[\App\Http\Controllers\ChartOfAccountController::class,'coatype'])->name('coatype.store');
 
 Route::post('emp/add/office',[OfficeBranchController::class,'add_emp'])->name('empadd.office');
+Route::get('branch/report/{branch_id}',[OfficeBranchController::class,'report'])->name('branch.report');
+Route::get('stock/transfer/receipt/{id}',[StockTransactionController::class,'confirm'])->name('stock_transfer.confirm');
 
 
 

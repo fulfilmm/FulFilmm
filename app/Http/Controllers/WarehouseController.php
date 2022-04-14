@@ -19,7 +19,9 @@ class WarehouseController extends Controller
     public function index()
     {
         $warehouses=Warehouse::with('branch','main_warehouse')->get();
-        $branches=OfficeBranch::all();
+        $branches=OfficeBranch::where('warehouse_created',0)->get();
+
+//        dd($branches);
         $warehouse_qty=[];
         foreach ($warehouses as $warehouse){
             $product=ProductStockBatch::where('warehouse_id',$warehouse->id)->get();
@@ -65,6 +67,9 @@ class WarehouseController extends Controller
             'branch_id'=>'required'
         ]);
         Warehouse::create($request->all());
+        $branch=OfficeBranch::where('id',$request->branch_id)->first();
+        $branch->warehouse_created=1;
+        $branch->update();
         return redirect(route('warehouses.index'));
     }
 

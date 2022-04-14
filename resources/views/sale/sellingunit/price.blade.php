@@ -19,6 +19,35 @@
             </div>
         </div>
         <div class="col-12">
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="branch_name">Filter By Office Branch</label>
+                        <select name="" id="branch_name" class="form-control select2">
+                            <option value="">All</option>
+                            @foreach($branch as $key=>$val)
+                                <option value="{{$val}}">{{$val}}</option>
+                                @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="sale_type">Filter By Sale Type</label>
+                        <select name="" id="sale_type" class="form-control select2">
+                            <option value="">All</option>
+                            <option value="Whole Sale">Whole Sale</option>
+                            <option value="Retail Sale">Retail Sale</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="product_code">Filter By Product Code</label>
+                        <input type="text" class="form-control" id="product_code">
+                    </div>
+                </div>
+            </div>
            <div class="card shadow">
               <div class="col-12 my-5" style="overflow: auto">
                   <table class="table table-nowrap table-hover my-5" id="price_table">
@@ -105,6 +134,27 @@
            </div>
         </div>
         <script>
+            $(document).ready(function() {
+                $('#branch_name').on('change', function () {
+                    var table = $('#price_table').DataTable();
+                    table.column(5).search($(this).val()).draw();
+
+                });
+            });
+            $(document).ready(function() {
+                $('#sale_type').on('change', function () {
+                    var table = $('#price_table').DataTable();
+                    table.column(4).search($(this).val()).draw();
+
+                });
+            });
+            $(document).ready(function() {
+                $('#product_code').keyup(function () {
+                    var table = $('#price_table').DataTable();
+                    table.column(0).search($(this).val()).draw();
+
+                });
+            });
             $(document).ready(function () {
                $('.select2').select2();
                 $('#price_table').DataTable({

@@ -12,6 +12,18 @@ trait StockTrait
 {
     public function stockin($request){
         $main_product=ProductVariations::with('product')->where('id',$request['variantion_id'])->first();
+        $all_qty=ProductStockBatch::where('warehouse_id',$request['warehouse_id'])->where('product_id',$request['variantion_id'])
+            ->get();
+        $sum_price=0;
+        $total_qty=0;
+        foreach ($all_qty as $item){
+            $sum_price+=$item->qty * $item->purchase_price;
+            $total_qty+=$item->qty;
+        }
+        $sum_price+=$request['qty']*$request['valuation'];
+        $total_qty+=$request['qty'];
+        $cos_of_sale=$sum_price/$total_qty;
+//        dd($sum_price,$total_qty);
         $last_batch= ProductStockBatch::orderBy('id', 'desc')->where('product_id',$request['variantion_id'])->first();
 
         if ($last_batch != null) {
@@ -44,6 +56,7 @@ trait StockTrait
            }
        }
         $stock=Stock::where('variant_id',$request['variantion_id'])->where('warehouse_id',$request['warehouse_id'])->first();
+
         if($stock==null){
             $new_stock=new Stock();
             $new_stock->product_name=$main_product->product->name;
@@ -52,16 +65,18 @@ trait StockTrait
             $new_stock->stock_balance=$request['qty']??0;
             $new_stock->available=$request['qty']??0;
             $new_stock->alert_qty=$request['alert_qty']??0;
+            $new_stock->cos=$cos_of_sale;
             $new_stock->product_location=$request['product_location']??null;
             $new_stock->save();
         }else{
             $stock->stock_balance=$stock->stock_balance + $request['qty']??0;
             $stock->available=$stock->available+$request['qty']??0;
+            $stock->cos=$cos_of_sale;
             $stock->update();
             $product_variant=ProductVariations::where('id',$request['variantion_id'])->first();
             $product_variant->update();
         }
-        $product=ProductStockBatch::all();
+        $product=ProductStockBatch::where('warehouse_id',$request['warehouse_id'])->get();
         $total=0;
         foreach ($product as $item){
             $valuation=$item->qty*$item->purchase_price??0;

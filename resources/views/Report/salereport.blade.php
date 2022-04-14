@@ -9,8 +9,7 @@
                     <h3 class="page-title">Sale Report</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                        <li class="breadcrumb-item active"><a href="{{route('purchase_request.index')}}">Sale Report</a>
-                        </li>
+                        <li class="breadcrumb-item active">Sale Report</li>
                     </ul>
                 </div>
             </div>
@@ -178,4 +177,9 @@
             </table>
         </div>
     </div>
+    <script>
+        $(document).ready(function () {
+            $('select').select2();
+        });
+    </script>
 @endsection

@@ -1,4 +1,4 @@
-<div class="row g-3 row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4">
+<div class="row g-3 row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4 my-3">
     <div class="col  my-2">
         <div class="alert-success alert mb-0 shadow">
             <a href="{{route('invoices.index')}}">
@@ -7,6 +7,32 @@
                     <div class="flex-fill ms-3 text-truncate">
                         <div class="h6 mb-0">Invoice</div>
                         <span class="small">{{$items['invoice']}}</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col  my-2">
+        <div class="alert-success alert mb-0 shadow">
+            <a href="{{route('employees.index')}}">
+                <div class="d-flex align-items-center">
+                    <div class="avatar rounded no-thumbnail bg-success text-light shadow"><i class="fa fa-file-text fa-lg"></i></div>
+                    <div class="flex-fill ms-3 text-truncate">
+                        <div class="h6 mb-0">In Hand Amount</div>
+                        <span class="small">{{\Illuminate\Support\Facades\Auth::guard('employee')->user()->amount_in_hand}}</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col  my-2">
+        <div class="alert-success alert mb-0 shadow">
+            <a href="{{route('employees.index')}}">
+                <div class="d-flex align-items-center">
+                    <div class="avatar rounded no-thumbnail bg-success text-light shadow"><i class="fa fa-file-text fa-lg"></i></div>
+                    <div class="flex-fill ms-3 text-truncate">
+                        <div class="h6 mb-0">Transferred Amount</div>
+                        <span class="small">{{$items['transferred_amount']??0}}</span>
                     </div>
                 </div>
             </a>
@@ -38,6 +64,11 @@
             </a>
         </div>
     </div>
+
+
+
+</div>
+<div class="row g-3 row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4 my-3">
     <div class="col  my-2">
         <div class="alert-success alert mb-0 shadow">
             <a href="{{url('sale/activity')}}">
@@ -51,10 +82,6 @@
             </a>
         </div>
     </div>
-
-
-</div>
-<div class="row g-3 row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4">
     <div class="col my-2">
         <div class="alert-warning alert mb-0 shadow">
             <a href="{{route('meetings.index')}}">

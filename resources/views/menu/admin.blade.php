@@ -18,6 +18,8 @@
                            href="{{ route('report.saleprformance') }}" style="text-decoration: none">Sale Performance</a></li>
                     <li><a class="{{ Request::is('stock/report') ? 'active' : '' }}"
                            href="{{ route('report.stock') }}" style="text-decoration: none">Stock Report</a></li>
+                    <li><a class="{{ Request::is('officebranch') ? 'active' : '' }}"
+                           href="{{ route('officebranch.index') }}" style="text-decoration: none;">Branch</a></li>
 
                 </ul>
             </li>

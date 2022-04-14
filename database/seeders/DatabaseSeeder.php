@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
         ThemeSetting::create(['name'=>'Purple','link'=>'purplestyle.css','active'=>0]);
         ThemeSetting::create(['name'=>'Orange','link'=>'orangestyle.css','active'=>0]);
         ThemeSetting::create(['name'=>'Maroon','link'=>'maroonstyle.css','active'=>0]);
-        $branch=OfficeBranch::create(['name'=>'Head Office','address'=>'Yangon']);
+        $branch=OfficeBranch::create(['name'=>'Head Office','address'=>'Yangon','type'=>'Branch']);
         Warehouse::create(['warehouse_id'=>'WH-001','name'=>'Main Warehouse','address'=>'Yangon','description'=>'Main Warehouse','branch_id'=>$branch->id]);
         products_tax::create(['name'=>'Tax Free','rate'=>0]);
         products_tax::create(['name'=>'Personal Income Tax','rate'=>5]);

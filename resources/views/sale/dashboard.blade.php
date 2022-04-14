@@ -60,26 +60,28 @@
         </div>
         <!-- /Page Header -->
         <form action="{{route('search.saledashboard')}}" method="GET">
-        <div class="row">
-            <div class="col-md-3">
+        <div class="row justify-content-between">
+
                @if(isset($search_month))
+                <div class="col">
                     <div class="form-group">
                         <a href="{{route('saletargets.index')}}" class="btn btn-primary col-12 shadow"><i class="fa fa-backward mr-3"></i>Back To Current Month</a>
                     </div>
+                </div>
                    @endif
-            </div>
-                <div class="col-md-3">
+
+                <div class="col">
                     <div class="form-group">
-                        <select name="month"  id="" class="form-control shadow">
+                        <select name="month"  id="month" class="form-control shadow">
                             @foreach($month as $key=>$val)
                                 <option value="{{$val}}"{{isset($search_month)?($search_month==$val?'selected':''):($val==date('M')?'selected':'')}}>{{$val}}</option>
                             @endforeach
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col">
                     <div class="form-group">
-                        <select name="year"  id="" class="form-control shadow">
+                        <select name="year"  id="year" class="form-control shadow">
                             <option value="{{date('Y')-2}}" {{isset($searchYear)?($searchYear==date('Y')-2?'selected':''):''}}>{{date('Y')-2}}</option>
                             <option value="{{date('Y')-1}}" {{isset($searchYear)?($searchYear==date('Y')-1?'selected':''):''}}>{{date('Y')-1}}</option>
                             <option value="{{date('Y')}}" {{isset($searchYear)?($searchYear==date('Y')?'selected':''):'selected'}}>{{date('Y')}}</option>
@@ -88,7 +90,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col">
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary col-12 shadow">Search</button>
                     </div>
@@ -131,8 +133,9 @@
                             <div class="avatar rounded no-thumbnail bg-warning text-light shadow"><i class="fa fa-money fa-lg"></i></div>
                             <div class="flex-fill ms-3 text-truncate">
                                 <div class="h6 mb-0">Cost Of Sale({{$search_month??date('M')}})</div>
-                                <span class="small">{{isset($search_cos)?$cos[$search_cos]->total??0:$cos[date('M')]??0}}</span>
+                                <span class="small">{{isset($search_month)?$cos[$search_month]??0:$cos[date('M')]??0}}</span>
                             </div>
+                            {{--@dd($search_month)--}}
                         </div>
                     </a>
                 </div>
@@ -202,9 +205,14 @@
     </div>
     <!-- /Page Content -->
 {{--@dd($year[0])--}}
-
     <script>
-
+        $(document).ready(function () {
+            $(document).ready(function () {
+                $('select').select2();
+            });
+        });
+    </script>
+    <script>
         var monthly=$("input[name='monthly'] option:checked").val();
         var chart = Highcharts.chart('monthly', {
 
@@ -276,7 +284,41 @@
                     {{$monthly['Nov']->total??0}},
                     {{$monthly['Dec']->total??0}}
                 ]
-            }
+            },
+                {
+                    name: 'Cost Of Sale',
+                    data: [
+                        {{$cos['Jan']??0}},
+                        {{$cos['Feb']??0}},
+                        {{$cos['Mar']??0}},
+                        {{$cos['Apr']??0}},
+                        {{$cos['May']??0}},
+                        {{$cos['Jun']??0}},
+                        {{$cos['Jul']??0}},
+                        {{$cos['Aug']??0}},
+                        {{$cos['Sep']??0}},
+                        {{$cos['Oct']??0}},
+                        {{$cos['Nov']??0}},
+                        {{$cos['Dec']??0}}
+                    ]
+                },
+                {
+                    name: 'Gross Profit',
+                    data: [
+                        {{$gp['Jan']??0}},
+                        {{$gp['Feb']??0}},
+                        {{$gp['Mar']??0}},
+                        {{$gp['Apr']??0}},
+                        {{$gp['May']??0}},
+                        {{$gp['Jun']??0}},
+                        {{$gp['Jul']??0}},
+                        {{$gp['Aug']??0}},
+                        {{$gp['Sep']??0}},
+                        {{$gp['Oct']??0}},
+                        {{$gp['Nov']??0}},
+                        {{$gp['Dec']??0}}
+                    ]
+                }
             ],
 
             responsive: {

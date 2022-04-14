@@ -6,7 +6,11 @@ use App\Http\Requests\EmployeeRequest;
 use App\Models\Employee;
 use App\Models\Invoice;
 use App\Models\OfficeBranch;
+use App\Models\SellingUnit;
+use App\Models\Stock;
+use App\Models\StockTransaction;
 use App\Models\Warehouse;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class OfficeBranchController extends Controller
@@ -18,7 +22,7 @@ class OfficeBranchController extends Controller
      */
     public function index()
     {
-        $office_branch=OfficeBranch::all();
+        $office_branch=OfficeBranch::with('parent')->get();
         return view('OfficeBranch.index',compact('office_branch'));
     }
 
@@ -29,7 +33,8 @@ class OfficeBranchController extends Controller
      */
     public function create()
     {
-        return view('OfficeBranch.create');
+        $branches=OfficeBranch::all();
+        return view('OfficeBranch.create',compact('branches'));
     }
 
     /**
@@ -114,5 +119,33 @@ class OfficeBranchController extends Controller
             $employee->update();
         }
         return redirect(route('employees.index'))->with('success','Add office branch success');
+    }
+    public function report(Request $request,$id){
+        $status=['Paid','Unpaid','Pending','Cancel','Draft','Sent'];
+        $branch=OfficeBranch::where('id',$id)->first();
+        $units = SellingUnit::all();
+        $warehouse = Warehouse::where('branch_id', $id)->first();
+        $stocks = Stock::where('warehouse_id', $warehouse->id)->get();
+        if($request->start) {
+            $start = Carbon::parse($request->start)->startOfDay();
+            $end = Carbon::parse($request->end)->endOfDay();
+            $invoices = Invoice::with('customer', 'employee', 'branch')->where('branch_id', $id)->whereBetween('created_at',[$start,$end])->get();
+            $stock_transactions = StockTransaction::with('stockin', 'stockout', 'variant', 'customer', 'employee', 'stockreturn')
+                ->where('warehouse_id', $warehouse->id)
+                ->whereBetween('created_at',[$start,$end])
+                ->get();
+        }else{
+            $start=Carbon::today()->startOfDay();
+            $end=Carbon::today()->endOfDay();
+            $invoices = Invoice::with('customer', 'employee', 'branch')->where('branch_id', $id)
+                ->whereBetween('created_at',[$start,$end])
+                ->get();
+            $stock_transactions = StockTransaction::with('stockin', 'stockout', 'variant', 'customer', 'employee', 'stockreturn')
+                ->where('warehouse_id', $warehouse->id)
+                ->whereBetween('created_at',[$start,$end])
+                ->get();
+        }
+        return view('Report.branchreport',compact('stocks','invoices','stock_transactions','start','end','status','units','branch'));
+
     }
 }
