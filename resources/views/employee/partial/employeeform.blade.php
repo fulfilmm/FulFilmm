@@ -40,14 +40,14 @@
                         <div class="input-group ">
                             <div class="checkbox">
                                 <label for="can_login">
-                                    <input type="checkbox" value='1' name="can_login" id="can_login" {{isset( $employee->can_login) ?  $employee->can_login === 1 ? 'checked' : '' : ''}}>
+                                    <input type="checkbox" value='1' name="can_login" id="can_login" {{isset( $employee->can_login) ?  $employee->can_login == 1 ? 'checked' : '' : ''}}>
                                     Can login
                                 </label>
                             </div>
                         </div>
                         <div class="input-group">
                             <label for="mobile_seller">
-                            <input type="checkbox" name="mobile_seller" value="1" {{isset( $employee->mobile_seller) ?  $employee->mobile_seller === 1 ? 'checked' : '' : ''}}>
+                            <input type="checkbox" name="mobile_seller" value="1" {{isset( $employee->mobile_seller) ?  $employee->mobile_seller == 1 ? 'checked' : '' : ''}}>
                                 Mobile Sale Man</label>
                         </div>
 
