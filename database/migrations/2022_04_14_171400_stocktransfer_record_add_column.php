@@ -13,9 +13,10 @@ class StocktransferRecordAddColumn extends Migration
      */
     public function up()
     {
-        Schema::table('stock_transfer_record', function (Blueprint $table) {
+        Schema::table('stock_transfer_records', function (Blueprint $table) {
             $table->double('validate_qty')->default(0);
             $table->tinyInteger('validated')->default(0);
+
         });
     }
 
