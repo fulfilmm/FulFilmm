@@ -140,7 +140,7 @@
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 success: function (data) {
                     console.log(data);
-                    loc
+                    location.reload();
                 },
                 error: function(xhr, status, error)
                 {
