@@ -526,15 +526,23 @@ class HomeController extends Controller
                 $myticket=ticket::where('created_emp_id',$user->id)->count();
                 $follow_ticket=ticket_follower::where('emp_id',$user->id)->count();
                 $emp_ticket=$myticket+$follow_ticket;
+                $monthly_receiable = DB::table("invoices")
+                    ->select(DB::raw("SUM(due_amount) as total"))
+                    ->get();
+                $stock_balance=DB::table("stocks")
+                    ->select(DB::raw("SUM(stock_balance) as total"))
+                    ->get();
                 $items=[
                     'saleactivity'=>$sale_activity,
                     'my_groups'=>$group,
                     'meeting'=>$meeting,
                     'customer'=>$customer,
                     'assignment'=>$assignment,
+                    'invoice'=>$invoice,
                     'all_ticket'=>$emp_ticket,
                     'requestation'=>$requestation,
-                    'invoice'=>$invoice
+                    'stock_balance'=>$stock_balance[0]->total,
+                    'receivable'=>$monthly_receiable[0]->total
                 ];
                 return view('index',compact('items'));
                 break;
@@ -555,6 +563,14 @@ class HomeController extends Controller
                         $transferred_amount+=$inv_item->amount;
                     }
                 }
+                $stock_balance=DB::table("stocks")
+                    ->select(DB::raw("SUM(stock_balance) as total"))
+                    ->where('warehouse_id',Auth::guard('employee')->user()->warehouse_id)
+                    ->get();
+                $monthly_receiable = DB::table("invoices")
+                    ->select(DB::raw("SUM(due_amount) as total"))
+                    ->where('emp_id',Auth::guard('employee')->user()->id)
+                    ->get();
                 $items=[
                     'saleactivity'=>$sale_activity,
                     'my_groups'=>$group,
@@ -565,6 +581,8 @@ class HomeController extends Controller
                     'requestation'=>$requestation,
                     'invoice'=>$saleMan_invoice,
                     'transferred_amount'=>$transferred_amount,
+                    'stock_balance'=>$stock_balance[0]->total,
+                    'receivable'=>$monthly_receiable[0]->total
 
                 ];
                 return view('index',compact('items'));

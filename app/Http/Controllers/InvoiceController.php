@@ -48,7 +48,11 @@ class InvoiceController extends Controller
     public  $status=['Paid','Unpaid','Pending','Cancel','Draft','Sent'];
     public function index()
     {
-        $allinv=Invoice::with('customer','employee','branch')->get();
+        if(Auth::guard('employee')->user()->role->name=='Super Admin'|| Auth::guard('employee')->user()->role->name=='CEO'||Auth::guard('employee')->user()->role->name=='Sale Manager' ){
+            $allinv=Invoice::with('customer','employee','branch')->get();
+        }else{
+            $allinv=Invoice::with('customer','employee','branch')->where('emp_id',Auth::guard('employee')->user()->id)->get();
+        }
         $status=$this->status;
 //        dd($allinv);
         return view('invoice.index',compact('allinv','status')); 

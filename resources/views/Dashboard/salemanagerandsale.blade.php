@@ -38,6 +38,34 @@
             </a>
         </div>
     </div>
+</div>
+<div class="row g-3 row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4 my-3">
+    <div class="col  my-2">
+        <div class="alert-success alert mb-0 shadow">
+            <a href="{{route('employees.index')}}">
+                <div class="d-flex align-items-center">
+                    <div class="avatar rounded no-thumbnail bg-success text-light shadow"><i class="fa fa-file-text fa-lg"></i></div>
+                    <div class="flex-fill ms-3 text-truncate">
+                        <div class="h6 mb-0">Receivable</div>
+                        <span class="small">{{$items['receivable']??0}}</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col  my-2">
+        <div class="alert-success alert mb-0 shadow">
+            <a href="{{\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Sale'?route('warehouses.show',\Illuminate\Support\Facades\Auth::guard('employee')->user()->warehouse_id):route('warehouses.index')}}">
+                <div class="d-flex align-items-center">
+                    <div class="avatar rounded no-thumbnail bg-success text-light shadow"><i class="fa fa-file-text fa-lg"></i></div>
+                    <div class="flex-fill ms-3 text-truncate">
+                        <div class="h6 mb-0">Stock Balance</div>
+                        <span class="small">{{$items['stock_balance']??0}}</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
     <div class="col  my-2">
         <div class="alert-success alert mb-0 shadow">
             <a href="{{route('approvals.index')}}">
@@ -51,6 +79,8 @@
             </a>
         </div>
     </div>
+</div>
+<div class="row g-3 row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4 my-3">
     <div class="col  my-2">
         <div class="alert-success alert mb-0 shadow">
             <a href="{{route('customers.index')}}">
@@ -64,11 +94,6 @@
             </a>
         </div>
     </div>
-
-
-
-</div>
-<div class="row g-3 row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4 my-3">
     <div class="col  my-2">
         <div class="alert-success alert mb-0 shadow">
             <a href="{{url('sale/activity')}}">
@@ -95,6 +120,8 @@
             </a>
         </div>
     </div>
+</div>
+<div class="row g-3 row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4 my-3">
     <div class="col my-2">
         <div class="alert-info alert mb-0 shadow">
             <a href="{{route('meetings.index')}}">

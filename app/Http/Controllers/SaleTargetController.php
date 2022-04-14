@@ -93,6 +93,14 @@ class SaleTargetController extends Controller
                     ->whereMonth('invoice_date', $key + 1)->whereYear('invoice_date', date('Y'))
                     ->where('emp_id',Auth::guard('employee')->user()->id)
                     ->get();
+                $monthly_payable=DB::table('purchase_orders')
+                    ->select(DB::raw("SUM(payable_amount) as total"))
+                    ->whereMonth('created_at', $key + 1)->whereYear('created_at', date('Y'))
+                    ->get();
+                $monthly_receiable = DB::table("invoices")
+                    ->select(DB::raw("SUM(due_amount) as total"))
+                    ->whereMonth('invoice_date', $key + 1)->whereYear('invoice_date', date('Y'))
+                    ->get();
                 $cos[$value]=$cost_of_sale[0]->total??0;
                 $gp[$value]=$monthly[$value]->total-$cos[$value];
                 $receivable[$value]=$monthly_receiable[0]->total??0;
