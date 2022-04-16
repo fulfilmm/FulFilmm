@@ -432,36 +432,42 @@ class InvoiceController extends Controller
             return redirect(route('invoices.show',$id))->with('success','Invoice Marked');
         }else{
             $update_Invoice=Invoice::where('id',$id)->first();
-            $update_Invoice->title=$request->title;
-            $update_Invoice->customer_id=$request->client_id;
-            $update_Invoice->email=$request->client_email;
-            $update_Invoice->customer_address=$request->client_address;
-            $update_Invoice->billing_address=$request->bill_address;
-            $update_Invoice->invoice_date=Carbon::create($request->inv_date);
-            $update_Invoice->due_date=Carbon::create($request->due_date);
-            $update_Invoice->other_information=$request->more_info;
-            $update_Invoice->grand_total=$request->inv_grand_total;
-            $update_Invoice->status="Daft";
-            $update_Invoice->order_id=$request->order_id;
-            $update_Invoice->send_email=isset($request->save_type)?1:0;
-            $update_Invoice->payment_method=$request->payment_method;
-            $update_Invoice->tax_id=$request->tax_id;
-            $update_Invoice->total=$request->total;
-            $update_Invoice->discount=$request->discount;
-            $update_Invoice->tax_amount=$request->tax_amount;
-            $update_Invoice->invoice_type=$request->invoice_type;
-            $update_Invoice->delivery_fee=$request->delivery_fee;
-            $update_Invoice->due_amount=$request->inv_grand_total;
-            $update_Invoice->warehouse_id=$request->warehouse_id;
-            $update_Invoice->inv_type=$request->inv_type;
-            $update_Invoice->emp_id=Auth::guard('employee')->user()->id;
-            $customer=Customer::where('id',$request->client_id)->first();
-            $customer->current_credit=$customer->current_credit-$update_Invoice->amount;
-            $customer->update();
-            $update_Invoice->update();
-            $update_cus=Customer::where('id',$request->client_id)->first();
-            $update_cus->current_credit+=$request->inv_grand_total;
-            $update_cus->update();
+            if($update_Invoice->status=='Draft'){
+
+                $customer=Customer::where('id',$update_Invoice->customer_id)->first();
+                $customer->current_credit-=$update_Invoice->amount;
+                $customer->update();
+                $update_Invoice->title=$request->title;
+                $update_Invoice->customer_id=$request->client_id;
+                $update_Invoice->email=$request->client_email;
+                $update_Invoice->customer_address=$request->client_address;
+                $update_Invoice->billing_address=$request->bill_address;
+                $update_Invoice->invoice_date=Carbon::create($request->inv_date);
+                $update_Invoice->due_date=Carbon::create($request->due_date);
+                $update_Invoice->other_information=$request->more_info;
+                $update_Invoice->grand_total=$request->inv_grand_total;
+                $update_Invoice->status="Daft";
+                $update_Invoice->order_id=$request->order_id;
+                $update_Invoice->send_email=isset($request->save_type)?1:0;
+                $update_Invoice->payment_method=$request->payment_method;
+                $update_Invoice->tax_id=$request->tax_id;
+                $update_Invoice->total=$request->total;
+                $update_Invoice->discount=$request->discount;
+                $update_Invoice->tax_amount=$request->tax_amount;
+                $update_Invoice->invoice_type=$request->invoice_type;
+                $update_Invoice->delivery_fee=$request->delivery_fee;
+                $update_Invoice->due_amount=$request->inv_grand_total;
+                $update_Invoice->warehouse_id=$request->warehouse_id;
+                $update_Invoice->inv_type=$request->inv_type;
+                $update_Invoice->update();
+                $update_cus=Customer::where('id',$request->client_id)->first();
+                $update_cus->current_credit+=$request->inv_grand_total;
+                $update_cus->update();
+            }else{
+                return response()->json([
+                    'url'=>url('invoices/'.$update_Invoice->id)
+                ]);
+            }
         }
         return response()->json([
             'url'=>url('invoices/'.$update_Invoice->id)
