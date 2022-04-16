@@ -377,7 +377,13 @@ class StockTransactionController extends Controller
 
     public function transfer_record()
     {
-        $transfers = StockTransferRecord::with('variant', 'from', 'to')->get();
+        $auth=Auth::guard('employee')->user();
+        if($auth->role->name=='CEO'||$auth->role->name=='Super Admin'){
+            $transfers = StockTransferRecord::with('variant', 'from', 'to')->get();
+        }else{
+            $warehouse=Warehouse::where('branch_id',$auth->office_branch_id)->first();
+            $transfers = StockTransferRecord::with('variant', 'from', 'to')->orWhere('to_warehouse',$warehouse->id)->orWhere('from_warehouse',$warehouse->id)->get();
+        }
 //        dd($transfers);
         return view('stock.transfer_record', compact('transfers'));
     }

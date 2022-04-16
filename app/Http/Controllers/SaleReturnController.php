@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\Customer;
 use App\Models\Employee;
 use App\Models\Invoice;
 use App\Models\SaleReturn;
@@ -51,7 +52,9 @@ class SaleReturnController extends Controller
             'amount'=>'required',
 
         ]);
-
+        $customer=Customer::where('id',$request->customer_id)->first();
+        $customer->current_credit-=$request->amount;
+        $customer->update();
         $data=$request->all();
         if ($request->attachment != null) {
             $attachment = $request->file('attachment');
