@@ -202,6 +202,6 @@ class ExpenseClaimController extends Controller
         $data=['coas'=>$coas,'emps'=>$emps,'customers'=>$customer,'account'=>$account,'recurring'=>$recurring,'payment_method'=>$payment_method,'category'=>$category];
         $this->addnotify($exp_claim->emp_id,'danger','Claimed  expense claim','expenseclaims/'.$exp_claim->id,$exp_claim->financial_approver);
 
-        return view('transaction.expense',compact('data','exp_claim'));
+        return view('transaction.Expense.create',compact('data','exp_claim'));
     }
 }
