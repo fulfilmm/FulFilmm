@@ -1,5 +1,5 @@
 @extends("layout.mainlayout")
-@section("title","Expense Record")
+@section("title","My Expense")
 @section("content")
     <!-- Page Content -->
     <div class="content container-fluid">
