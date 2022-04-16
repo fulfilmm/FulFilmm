@@ -23,7 +23,7 @@ class Customer extends Authenticatable
         'password','profile','bio','can_login','facebook',
         'linkedin','dob','report_to','position_of_report_to',
         'priority','is_qualified','tags_id','lead_title',
-        'department','position','status','lead_title','credit_limit','current_credit'
+        'department','position','status','lead_title','credit_limit','current_credit','region'
     ];
 
 

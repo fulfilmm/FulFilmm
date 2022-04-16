@@ -403,6 +403,7 @@ class CustomerController extends Controller
 
             ];
         }
+//        dd($data);
         $this->customerContract->updateById($id, $data);
 
         return redirect()->route('customers.index')->with('success', __('alerts.update_success'));

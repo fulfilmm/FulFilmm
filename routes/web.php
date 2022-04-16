@@ -425,7 +425,7 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::get('inv/view/{type}',[InvoiceController::class,'invoice_view'])->name('invoice.list');
     Route::resource('binlookup',\App\Http\Controllers\BinLookUpController::class);
     Route::resource('stockreturn',\App\Http\Controllers\StockReturnController::class);
-    Route::get('invoice/export/{type}',[InvoiceController::class,'export'])->name('invoices.export');
+    Route::get('inv/export/{type}',[InvoiceController::class,'export'])->name('invoices.export');
     Route::resource('discount',\App\Http\Controllers\AmountDiscountController::class);
     Route::get('transaction/export',[TransactionController::class,'export'])->name('transactions.export');
 
@@ -519,6 +519,14 @@ Route::post('emp/add/office',[OfficeBranchController::class,'add_emp'])->name('e
 Route::get('branch/report/{branch_id}',[OfficeBranchController::class,'report'])->name('branch.report');
 Route::get('stock/transfer/receipt/{id}',[StockTransactionController::class,'confirm'])->name('stock_transfer.confirm');
 Route::post('stock/transfer/validate/{id}',[StockTransactionController::class,'transfer_validate'])->name('stock_transfer.validate');
+Route::resource('expense_record',\App\Http\Controllers\ExpensesRecordController::class);
+Route::get('revenue/delete/{id}',[TransactionController::class,'revenue_delete'])->name('revenue.delete');
+Route::get('revenue/edit/{id}',[TransactionController::class,'revenue_edit'])->name('revenue.edit');
+Route::post('revenue/update/{id}',[TransactionController::class,'revenue_update'])->name('revenue.update');
+Route::get('expense/delete/{id}',[TransactionController::class,'expense_delete'])->name('expense.delete');
+Route::get('expense/edit/{id}',[TransactionController::class,'expense_edit'])->name('expense.edit');
+Route::post('expense/update/{id}',[TransactionController::class,'expense_update'])->name('expense.update');
+
 
 
 

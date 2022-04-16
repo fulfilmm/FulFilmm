@@ -39,8 +39,27 @@
         <a href="#"><i class="la la-group"></i> <span>Operation</span> <span
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
+            <li><a class="{{ Request::is('expense_record') ? 'active' : '' }}"
+                   href="{{ route('expense_record.index') }}" style="text-decoration: none">Expense Record</a></li>
+            <li>
             <li class="submenu">
-                <a href="#"><i class="la la-check-square-o mr-2"></i><span>Requestation</span> <span
+                <a href="#"><span> Expense Claim</span>
+                    <span
+                            class="menu-arrow"></span></a>
+                <ul style="display: none;">
+
+                    <li><a class="{{ Request::is('expenseclaims') ? 'active' : '' }}"
+                           href="{{ route('expenseclaims.index') }}" style="text-decoration: none">All Expense Claim</a>
+                    </li>
+
+                    <li><a class="{{ Request::is('expenseclaims/create') ? 'active' : '' }}"
+                           href="{{ route('expenseclaims.create') }}" style="text-decoration: none">Submit Expense
+                            Claim</a></li>
+
+                </ul>
+            </li>
+            <li class="submenu">
+                <a href="#"><span>Requestation</span> <span
                             class="menu-arrow"></span></a>
                 <ul style="display: none;">
                     <li><a class="{{ Request::is('approvals') ? 'active' : '' }}"
@@ -50,10 +69,9 @@
                     <li><a class="{{ Request::is('approvals/request/me') ? 'active' : '' }}"
                            href="{{ route('request.me') }}" style="text-decoration: none">Approval</a></li>
                 </ul>
-
             </li>
             <li class="submenu">
-                <a href="#"><i class="la la-th mr-2" style="font-size: 18px"></i><span> Room</span> <span
+                <a href="#"><span> Room</span> <span
                             class="menu-arrow"></span></a>
                 <ul style="display: none;">
 
@@ -67,7 +85,7 @@
                 </ul>
             </li>
             <li class="submenu">
-                <a href="#"><i class="la la-calendar mr-2" style="font-size: 18px"></i> <span> Meeting</span> <span
+                <a href="#"><span> Meeting</span> <span
                             class="menu-arrow"></span></a>
                 <ul style="display: none;">
 
@@ -79,7 +97,9 @@
                 </ul>
             </li>
         </ul>
-    </li>
+
+
+    </li><!-- Operation -->
     <li class="submenu">
         <a href="#"><i class="la la-cube"></i> <span>Accounting</span> <span
                     class="menu-arrow"></span></a>

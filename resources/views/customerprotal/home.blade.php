@@ -37,143 +37,124 @@
             <div class="col-md-12">
                 @if(\Illuminate\Support\Facades\Auth::guard('customer')->user()->customer_type=='Courier')
                     <div class="row">
-                        <div class="col-md-3 col-sm-6">
-                            <div class="card shadow">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between">
-                                        <div>
-                                            <span class="d-block">Total Delivery</span>
-                                        </div>
-
-                                    </div>
-                                    <h3 class="mb-3">{{$total_delivery??0}}</h3>
-                                    <div class="progress mb-2" style="height: 5px;">
-                                        <div class="progress-bar bg-primary" role="progressbar" style="width:100%;"
-                                             aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-sm-6">
-                            <div class="card shadow">
+                        <div class="col  my-2">
+                            <div class="alert-success alert mb-0 shadow">
                                 <a href="{{route('deliveries.index')}}">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between ">
-                                            <div>
-                                                <span class="d-block">In-progress</span>
-                                            </div>
-                                        </div>
-                                        <h3 class="mb-3">{{$delivery_unfinish}}</h3>
-                                        <div class="progress mb-2" style="height: 5px;">
-                                            <div class="progress-bar bg-primary" role="progressbar" style="width:100%;"
-                                                 aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar rounded no-thumbnail bg-success text-light shadow"><i class="fa fa-file-text fa-lg"></i></div>
+                                        <div class="flex-fill ms-3 text-truncate">
+                                            <div class="h6 mb-0">Total Delivery</div>
+                                            <span class="small">{{$total_delivery??0}}</span>
                                         </div>
                                     </div>
                                 </a>
                             </div>
                         </div>
-                        <div class="col-md-3 col-sm-6">
-                            <div class="card shadow">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between">
-                                        <div>
-                                            <span class="d-block">Finish Delivery</span>
+                        <div class="col  my-2">
+                            <div class="alert-success alert mb-0 shadow">
+                                <a href="{{route('deliveries.index')}}">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar rounded no-thumbnail bg-success text-light shadow"><i class="fa fa-file-text fa-lg"></i></div>
+                                        <div class="flex-fill ms-3 text-truncate">
+                                            <div class="h6 mb-0">In-progress Delivery</div>
+                                            <span class="small">{{$delivery_unfinish}}</span>
                                         </div>
-
                                     </div>
-                                    <h3 class="mb-3">{{$delivery_finish}}</h3>
-                                    <div class="progress mb-2" style="height: 5px;">
-                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 100%;"
-                                             aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
+                                </a>
                             </div>
                         </div>
-                        <div class="col-md-3 col-sm-6">
-                            <div class="card shadow">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between">
-                                        <div>
-                                            <span class="d-block">Rejected</span>
+                        <div class="col  my-2">
+                            <div class="alert-success alert mb-0 shadow">
+                                <a href="{{route('deliveries.index')}}">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar rounded no-thumbnail bg-success text-light shadow"><i class="fa fa-file-text fa-lg"></i></div>
+                                        <div class="flex-fill ms-3 text-truncate">
+                                            <div class="h6 mb-0">Finish Delivery</div>
+                                            <span class="small">{{$delivery_finish}}</span>
                                         </div>
-
                                     </div>
-                                    <h3 class="mb-3">{{$delivery_cancel??0}}</h3>
-                                    <div class="progress mb-2" style="height: 5px;">
-                                        <div class="progress-bar bg-primary" role="progressbar" style="width:100%;"
-                                             aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col  my-2">
+                            <div class="alert-success alert mb-0 shadow">
+                                <a href="{{route('deliveries.index')}}">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar rounded no-thumbnail bg-success text-light shadow"><i class="fa fa-file-text fa-lg"></i></div>
+                                        <div class="flex-fill ms-3 text-truncate">
+                                            <div class="h6 mb-0">Rejected</div>
+                                            <span class="small">{{$delivery_cancel??0}}</span>
+                                        </div>
                                     </div>
-                                </div>
+                                </a>
                             </div>
                         </div>
                     </div>
                     @else
                     <div class="row">
-                        <div class="col-md-3">
-                            <div class="card shadow">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between">
-                                        <div>
-                                            <span class="d-block">Advance and Deposit Amount</span>
+                        <div class="col  my-2">
+                            <div class="alert-success alert mb-0 shadow">
+                                <a href="{{url('advancepayments')}}">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar rounded no-thumbnail bg-success text-light shadow"><i class="fa fa-money fa-lg"></i></div>
+                                        <div class="flex-fill ms-3 text-truncate">
+                                            <div class="h6 mb-0">Advance Amount</div>
+                                            <span class="small">{{$advance_amount??0.0}}</span>
                                         </div>
-
                                     </div>
-                                    <h3 class="mb-3">{{$advance_amount??0.0}}</h3>
-                                    <div class="progress mb-2" style="height: 5px;">
-                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 100%;"
-                                             aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
+                                </a>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="card shadow">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between ">
-                                            <div>
-                                                <span class="d-block">Ticket</span>
-                                            </div>
-                                        </div>
-                                        <h3 class="mb-3">{{$ticket_count??0}}</h3>
-                                        <div class="progress mb-2" style="height: 5px;">
-                                            <div class="progress-bar bg-primary" role="progressbar" style="width:100%;"
-                                                 aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="col  my-2">
+                            <div class="alert-success alert mb-0 shadow">
+                                <a href="{{url('customer/ticket')}}">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar rounded no-thumbnail bg-success text-light shadow"><i class="fa fa-ticket fa-lg"></i></div>
+                                        <div class="flex-fill ms-3 text-truncate">
+                                            <div class="h6 mb-0">Ticket</div>
+                                            <span class="small">{{$ticket_count??0}}</span>
                                         </div>
                                     </div>
+                                </a>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="card shadow">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between">
-                                        <div>
-                                            <span class="d-block">Total Invoice</span>
+                        <div class="col  my-2">
+                            <div class="alert-success alert mb-0 shadow">
+                                <a href="{{url('customer/invoice')}}">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar rounded no-thumbnail bg-success text-light shadow"><i class="fa fa-file-text fa-lg"></i></div>
+                                        <div class="flex-fill ms-3 text-truncate">
+                                            <div class="h6 mb-0">Total Invoice</div>
+                                            <span class="small">{{$invoice_count??0}}</span>
                                         </div>
-
                                     </div>
-                                    <h3 class="mb-3">{{$invoice_count??0}}</h3>
-                                    <div class="progress mb-2" style="height: 5px;">
-                                        <div class="progress-bar bg-primary" role="progressbar" style="width:100%;"
-                                             aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
+                                </a>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="card shadow">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between">
-                                        <div>
-                                            <span class="d-block">Orders</span>
+                        <div class="col  my-2">
+                            <div class="alert-success alert mb-0 shadow">
+                                <a href="{{url('orders')}}">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar rounded no-thumbnail bg-success text-light shadow"><i class="fa fa-file-text fa-lg"></i></div>
+                                        <div class="flex-fill ms-3 text-truncate">
+                                            <div class="h6 mb-0">Orders</div>
+                                            <span class="small">{{$order_count??0}}</span>
                                         </div>
-
                                     </div>
-                                    <h3 class="mb-3">{{$order_count??0}}</h3>
-                                    <div class="progress mb-2" style="height: 5px;">
-                                        <div class="progress-bar bg-primary" role="progressbar" style="width:100%;"
-                                             aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col  my-2">
+                            <div class="alert-success alert mb-0 shadow">
+                                <a href="{{url('orders')}}">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar rounded no-thumbnail bg-success text-light shadow"><i class="fa fa-credit-card fa-lg"></i></div>
+                                        <div class="flex-fill ms-3 text-truncate">
+                                            <div class="h6 mb-0">Credit Amount</div>
+                                            <span class="small">{{\Illuminate\Support\Facades\Auth::guard('customer')->user()->current_credit??0}}</span>
+                                        </div>
                                     </div>
-                                </div>
+                                </a>
                             </div>
                         </div>
                     </div>

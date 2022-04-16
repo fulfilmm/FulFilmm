@@ -526,6 +526,10 @@ class HomeController extends Controller
                 $myticket=ticket::where('created_emp_id',$user->id)->count();
                 $follow_ticket=ticket_follower::where('emp_id',$user->id)->count();
                 $emp_ticket=$myticket+$follow_ticket;
+                $emp_expense=DB::table("emp_expenses")
+                    ->select(DB::raw("SUM(amount) as total"))
+                    ->where('emp_id',Auth::guard('employee')->user()->id)
+                    ->get();
                 $monthly_receiable = DB::table("invoices")
                     ->select(DB::raw("SUM(due_amount) as total"))
                     ->get();
@@ -542,7 +546,8 @@ class HomeController extends Controller
                     'all_ticket'=>$emp_ticket,
                     'requestation'=>$requestation,
                     'stock_balance'=>$stock_balance[0]->total,
-                    'receivable'=>$monthly_receiable[0]->total
+                    'receivable'=>$monthly_receiable[0]->total,
+                    'expense'=>$emp_expense[0]->total??0
                 ];
                 return view('index',compact('items'));
                 break;
@@ -567,6 +572,10 @@ class HomeController extends Controller
                     ->select(DB::raw("SUM(stock_balance) as total"))
                     ->where('warehouse_id',Auth::guard('employee')->user()->warehouse_id)
                     ->get();
+                $emp_expense=DB::table("emp_expenses")
+                    ->select(DB::raw("SUM(amount) as total"))
+                    ->where('emp_id',Auth::guard('employee')->user()->id)
+                    ->get();
                 $monthly_receiable = DB::table("invoices")
                     ->select(DB::raw("SUM(due_amount) as total"))
                     ->where('emp_id',Auth::guard('employee')->user()->id)
@@ -582,7 +591,8 @@ class HomeController extends Controller
                     'invoice'=>$saleMan_invoice,
                     'transferred_amount'=>$transferred_amount,
                     'stock_balance'=>$stock_balance[0]->total,
-                    'receivable'=>$monthly_receiable[0]->total
+                    'receivable'=>$monthly_receiable[0]->total,
+                    'expense'=>$emp_expense[0]->total??0
 
                 ];
                 return view('index',compact('items'));

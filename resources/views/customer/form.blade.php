@@ -143,12 +143,8 @@
            </div>
            <div class="col-md-6 mb-3">
                <label for="region"
-                      class="form-label font-weight-bold text-muted text-uppercase">State/Division</label>
-               <select name="region" id="region" class="form-control">
-                   @foreach($state as $key=>$val)
-                       <option value="{{$val}}">{{$val}}</option>
-                   @endforeach
-               </select>
+                      class="form-label font-weight-bold text-muted text-uppercase">Region</label>
+               <input type="text" class="form-control" id="region" name="region" value="{{old('region')}}">
            </div>
 
            <div class="col-md-6 mb-3">

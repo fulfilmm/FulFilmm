@@ -19,6 +19,8 @@ class CreateTransactionsTable extends Migration
             $table->string('type');
             $table->bigInteger('revenue_id')->unsigned()->nullable();
             $table->bigInteger('expense_id')->unsigned()->nullable();
+            $table->foreign('revenue_id')->references('id')->on('revenues')->onDelete('cascade');
+            $table->foreign('expense_id')->references('id')->on('expenses')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -32,6 +32,7 @@
                         <th>Approve</th>
                         <th>Approver Name</th>
                         <th>Issuer</th>
+                        <th>Action</th>
                     </tr>
 
                     </thead>
@@ -43,19 +44,32 @@
                             <td>
                                 {{\Carbon\Carbon::parse($transaction->transaction_date)->toFormattedDateString()}}
                             </td>
-                            <td>@if($transaction->bill_id!=null)<a href="{{route('bills.show',$transaction->bill->id)}}">{{$transaction->bill->bill_id}}</a>@else N/A @endif</td>
+                            <td>@if($transaction->bill_id!=null)<a
+                                        href="{{route('bills.show',$transaction->bill->id)}}">{{$transaction->bill->bill_id}}</a>@else
+                                    N/A @endif</td>
                             <td>{{$transaction->title}}</td>
                             <td>{{number_format($transaction->amount)}}</td>
                             <td>{{$transaction->cat->name}}</td>
                             <td>
                                 @if($transaction->approve==0)
-                                    <a href="{{url('transaction/approve/'.$transaction->id.'/expense')}}" class="btn btn-white btn-white btn-sm">Approve</a>
+                                    <a href="{{url('transaction/approve/'.$transaction->id.'/expense')}}"
+                                       class="btn btn-white btn-white btn-sm">Approve</a>
                                 @else
                                     <button type="button" class="btn btn-success btn-sm disabled">Approved</button>
                                 @endif
                             </td>
                             <td>{{$transaction->approver->name}}</td>
                             <td>{{$transaction->employee->name}}</td>
+                            <td>
+                                <div class="row">
+                                    <a href="{{$transaction->invoice_id==null?route('transactions.show',$transaction->id):route('invoices.show',$transaction->invoice_id)}}"
+                                       class="btn btn-white btn-sm"><i class="la la-eye"></i></a>
+                                    <a href="{{route('expense.edit',$transaction->id)}}" class="btn btn-primary btn-sm"><i
+                                                class="la la-edit"></i></a>
+                                    <a href="{{route('expense.delete',$transaction->id)}}"
+                                       class="btn btn-primary btn-sm"><i class="la la-trash"></i></a>
+                                </div>
+                            </td>
                         </tr>
                     @endforeach
                     </tbody>

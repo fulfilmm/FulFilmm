@@ -32,6 +32,7 @@
                         <th>Approve</th>
                         <th>Approver Name</th>
                         <th>Receiver</th>
+                        <th>Action</th>
                     </tr>
 
                     </thead>
@@ -56,6 +57,11 @@
                                 </td>
                                 <td>{{$transaction->approver->name}}</td>
                                 <td>{{$transaction->employee->name}}</td>
+                               <td>
+                                <a href="{{$transaction->invoice_id==null?route('transactions.show',$transaction->id):route('invoices.show',$transaction->invoice_id)}}" class="btn btn-white btn-sm"><i class="la la-eye"></i></a>
+                                   <a href="{{route('revenue.edit',$transaction->id)}}" class="btn btn-primary btn-sm"><i class="la la-edit"></i></a>
+                                   <a href="{{route('revenue.delete',$transaction->id)}}" class="btn btn-primary btn-sm"><i class="la la-trash"></i></a>
+                               </td>
                             </tr>
                     @endforeach
                     </tbody>

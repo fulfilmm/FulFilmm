@@ -92,7 +92,7 @@
                                        <select class="form-control" id="client_id">
                                            <option value="">Select Client</option>
                                            @foreach($allcustomers as $client)
-                                               <option value="{{$client->id}}" {{isset($order_data)?($client->id==$order_data->customer_id?'selected':''):($data!=null?($data[0]['client_id']==$client->id?'selected':''):'')}}>{{$client->name}}</option>
+                                               <option value="{{$client->id}}" {{isset($order_data)?($client->id==$order_data->customer_id?'selected':''):($data!=null?($data[0]['client_id']==$client->id?'selected':''):'')}}>{{$client->name}}{{$client->region!=null?'('.$client->region.')':''}}</option>
                                            @endforeach
                                        </select>
                                        <div class="input-group-append">

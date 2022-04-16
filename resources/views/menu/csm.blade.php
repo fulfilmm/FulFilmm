@@ -37,8 +37,27 @@
         <a href="#"><i class="la la-group"></i> <span>Operation</span> <span
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
+            <li><a class="{{ Request::is('expense_record') ? 'active' : '' }}"
+                   href="{{ route('expense_record.index') }}" style="text-decoration: none">Expense Record</a></li>
+            <li>
             <li class="submenu">
-                <a href="#"><i class="la la-check-square-o mr-2"></i><span>Requestation</span> <span
+                <a href="#"><span> Expense Claim</span>
+                    <span
+                            class="menu-arrow"></span></a>
+                <ul style="display: none;">
+
+                    <li><a class="{{ Request::is('expenseclaims') ? 'active' : '' }}"
+                           href="{{ route('expenseclaims.index') }}" style="text-decoration: none">All Expense Claim</a>
+                    </li>
+
+                    <li><a class="{{ Request::is('expenseclaims/create') ? 'active' : '' }}"
+                           href="{{ route('expenseclaims.create') }}" style="text-decoration: none">Submit Expense
+                            Claim</a></li>
+
+                </ul>
+            </li>
+            <li class="submenu">
+                <a href="#"><span>Requestation</span> <span
                             class="menu-arrow"></span></a>
                 <ul style="display: none;">
                     <li><a class="{{ Request::is('approvals') ? 'active' : '' }}"
@@ -50,18 +69,21 @@
                 </ul>
             </li>
             <li class="submenu">
-                <a href="#"><i class="la la-th mr-2" style="font-size: 18px"></i><span> Room</span> <span class="menu-arrow"></span></a>
+                <a href="#"><span> Room</span> <span
+                            class="menu-arrow"></span></a>
                 <ul style="display: none;">
 
-                    <li><a class="{{ Request::is('rooms') ? 'active' : '' }}" href="{{route('rooms.index')}}" style="text-decoration: none">Rooms</a></li>
-                    <li><a class="{{ Request::is('booking') ? 'active' : '' }}" href="{{route('booking')}}" style="text-decoration: none">Room Booking</a></li>
+                    <li><a class="{{ Request::is('rooms') ? 'active' : '' }}" href="{{route('rooms.index')}}"
+                           style="text-decoration: none">Rooms</a></li>
+                    <li><a class="{{ Request::is('booking') ? 'active' : '' }}" href="{{route('booking')}}"
+                           style="text-decoration: none">Room Booking</a></li>
                     {{--                            <li><a class="{{ Request::is('cases') ? 'active' : '' }}" href="{{ route('cases.index') }}">All Cases</a></li>--}}
                     {{--                            <li><a class="{{ Request::is('priority') ? 'active' : '' }}" href="{{ route('priorities.index') }}">All Priority</a></li>--}}
 
                 </ul>
             </li>
             <li class="submenu">
-                <a href="#"><i class="la la-calendar mr-2" style="font-size: 18px"></i> <span> Meeting</span> <span
+                <a href="#"><span> Meeting</span> <span
                             class="menu-arrow"></span></a>
                 <ul style="display: none;">
 
@@ -74,7 +96,8 @@
             </li>
         </ul>
 
-    </li>
+
+    </li><!-- Operation -->
     <li class="submenu">
         <a href="#"><i class="la la-group"></i> <span>People</span> <span
                     class="menu-arrow"></span></a>

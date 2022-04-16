@@ -29,7 +29,8 @@ class CustomerRequest extends FormRequest
             'email' => 'required',
             'company_id' => 'required',
             'profile_img' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'credit_limit'=>'nullable'
+            'credit_limit'=>'nullable',
+            'region'=>'nullable'
         ];
     }
 

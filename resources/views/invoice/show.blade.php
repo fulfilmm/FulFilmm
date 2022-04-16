@@ -412,7 +412,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fa fa-money"></i></span>
                                             </div>
-                                            <input type="text" class="form-control" id="amount" name="amount" value="{{$detail_inv->due_amount}}">
+                                            <input type="number" class="form-control" id="amount" name="amount" value="{{$detail_inv->due_amount}}" min="0" max="{{$detail_inv->due_amount}}">
                                             <div class="input-group-prepend">
                                                 <select name="currency" id="" class="select">
                                                     <option value="MMK">MMK</option>
@@ -678,6 +678,15 @@
 
         <script src="{{url(asset('js/html2pdf.js'))}}"></script>
         <script>
+            $(document).ready(function () {
+               $('#amount').keyup(function () {
+                   var amount=$('#amount').val();
+                   if(amount>parseFloat('{{$detail_inv->due_amount}}')){
+                       swal('Warning','You can not type  greater than current due amount ({{$detail_inv->due_amount}})','warning');
+                       $('#amount').val('{{$detail_inv->due_amount}}');
+                   }
+               }) ;
+            });
             function printContent(el){
                 // document.title = ;
                 var restorepage = $('body').html();

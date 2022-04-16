@@ -102,6 +102,12 @@
                                     <input type="number" class="form-control" name="credit_limit" value="0">
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="region">Region</label>
+                                    <input type="text" class="form-control" name="region" value="{{old('region')}}">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

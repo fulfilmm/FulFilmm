@@ -8,6 +8,7 @@ use App\Models\product_price;
 use App\Models\ProductVariations;
 use App\Models\SellingUnit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SellingUnitController extends Controller
 {
@@ -106,15 +107,24 @@ class SellingUnitController extends Controller
     public function price_list(){
 //        dd('je;p');
         $units=SellingUnit::all();
-        $price_lists=product_price::with('unit','variant','branch')->get();
-        $branch=OfficeBranch::all()->pluck('name','id')->all();
+        if(Auth::guard('employee')->user()->role->name=='Super Admin'||Auth::guard('employee')->user()->role->name=='CEO'){
+            $price_lists=product_price::with('unit','variant','branch')->get();
+            $branch=OfficeBranch::all()->pluck('name','id')->all();
+        }else{
+            $price_lists=product_price::with('unit','variant','branch')->where('branch_id',Auth::guard('employee')->user()->office_branch_id)->get();
+            $branch=OfficeBranch::where('id',Auth::guard('employee')->user()->office_branch_id)->pluck('name','id')->all();
+        }
         return view('sale.sellingunit.price',compact('price_lists','units','branch'));
     }
     public function price_add(){
         $units=SellingUnit::all();
         $main_product=product::all();
         $products=ProductVariations::all();
-        $branch=OfficeBranch::all();
+        if(Auth::guard('employee')->user()->role->name=='Super Admin'||Auth::guard('employee')->user()->role->name=='CEO'){
+            $branch=OfficeBranch::all()->pluck('name','id')->all();
+        }else{
+            $branch=OfficeBranch::select('id','name')->where('id',Auth::guard('employee')->user()->office_branch_id)->get();
+        }
         return view('sale.sellingunit.price_add',compact('units','main_product','products','branch'));
     }
     public function store_price(Request $request){

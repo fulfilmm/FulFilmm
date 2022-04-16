@@ -33,6 +33,9 @@
         <a href="#"><i class="la la-group"></i> <span>Operation</span> <span
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
+            <li><a class="{{ Request::is('expense_record') ? 'active' : '' }}"
+                   href="{{ route('expense_record.index') }}" style="text-decoration: none">Expense Record</a></li>
+            <li>
             <li class="submenu">
                 <a href="#"><span> Expense Claim</span>
                     <span
@@ -88,6 +91,7 @@
                 </ul>
             </li>
         </ul>
+
 
     </li><!-- Operation -->
 
