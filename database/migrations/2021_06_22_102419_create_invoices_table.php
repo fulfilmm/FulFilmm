@@ -45,6 +45,7 @@ class CreateInvoicesTable extends Migration
             $table->double('due_amount');
             $table->bigInteger('branch_id')->unsigned();
             $table->double('invoice_cos')->nullable();
+            $table->tinyInteger('cancel')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

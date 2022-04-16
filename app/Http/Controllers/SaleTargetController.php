@@ -34,6 +34,7 @@ class SaleTargetController extends Controller
                 $grand_total = DB::table("invoices")
                     ->select(DB::raw("SUM(grand_total) as total"))
                     ->whereMonth('invoice_date', $key + 1)->whereYear('invoice_date', date('Y'))
+                    ->where('cancel',0)
                     ->get();
                 $monthly[$value] = $grand_total[0];
                 $sale_target = DB::table("sale_targets")
@@ -43,6 +44,7 @@ class SaleTargetController extends Controller
                 $monthlysaletarget[$value] = $sale_target[0]??0;
                 $cost_of_sale=DB::table('invoices')
                     ->select(DB::raw("SUM(invoice_cos) as total"))
+                    ->where('cancel',0)
                     ->whereMonth('invoice_date', $key + 1)->whereYear('invoice_date', date('Y'))
                     ->get();
                 $cos[$value]=$cost_of_sale[0]->total??0;
@@ -53,6 +55,7 @@ class SaleTargetController extends Controller
                     ->get();
                 $monthly_receiable = DB::table("invoices")
                     ->select(DB::raw("SUM(due_amount) as total"))
+                    ->where('cancel',0)
                     ->whereMonth('invoice_date', $key + 1)->whereYear('invoice_date', date('Y'))
                     ->get();
                 $receivable[$value]=$monthly_receiable[0]->total??0;
@@ -81,6 +84,7 @@ class SaleTargetController extends Controller
                     ->select(DB::raw("SUM(grand_total) as total"))
                     ->whereMonth('invoice_date', $key + 1)->whereYear('invoice_date', date('Y'))
                     ->where('emp_id',$auth->id)
+                    ->where('cancel',0)
                     ->get();
                 $monthly[$value] = $grand_total[0];
                 $sale_target = DB::table("sale_targets")
@@ -90,6 +94,7 @@ class SaleTargetController extends Controller
                 $monthlysaletarget[$value] = $sale_target[0];
                 $cost_of_sale=DB::table('invoices')
                     ->select(DB::raw("SUM(invoice_cos) as total"))
+                    ->where('cancel',0)
                     ->whereMonth('invoice_date', $key + 1)->whereYear('invoice_date', date('Y'))
                     ->where('emp_id',Auth::guard('employee')->user()->id)
                     ->get();
@@ -99,6 +104,7 @@ class SaleTargetController extends Controller
                     ->get();
                 $monthly_receiable = DB::table("invoices")
                     ->select(DB::raw("SUM(due_amount) as total"))
+                    ->where('cancel',0)
                     ->whereMonth('invoice_date', $key + 1)->whereYear('invoice_date', date('Y'))
                     ->get();
                 $cos[$value]=$cost_of_sale[0]->total??0;

@@ -526,6 +526,8 @@ Route::post('revenue/update/{id}',[TransactionController::class,'revenue_update'
 Route::get('expense/delete/{id}',[TransactionController::class,'expense_delete'])->name('expense.delete');
 Route::get('expense/edit/{id}',[TransactionController::class,'expense_edit'])->name('expense.edit');
 Route::post('expense/update/{id}',[TransactionController::class,'expense_update'])->name('expense.update');
+Route::get('inv/cancel/{id}',[InvoiceController::class,'cancel'])->name('invoice.cancel');
+Route::resource('sale_return',\App\Http\Controllers\SaleReturnController::class);
 
 
 

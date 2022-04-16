@@ -13,7 +13,7 @@
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
             <li><a class="{{ Request::is('expense_record') ? 'active' : '' }}"
-                   href="{{ route('expense_record.index') }}" style="text-decoration: none">Expense Record</a></li>
+                   href="{{ route('expense_record.index') }}" style="text-decoration: none">My Expense</a></li>
             <li>
             <li class="submenu">
                 <a href="#"><span> Expense Claim</span>

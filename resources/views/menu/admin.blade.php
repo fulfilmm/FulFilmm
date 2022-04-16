@@ -56,7 +56,7 @@
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
             <li><a class="{{ Request::is('expense_record') ? 'active' : '' }}"
-                   href="{{ route('expense_record.index') }}" style="text-decoration: none">Expense Record</a></li>
+                   href="{{ route('expense_record.index') }}" style="text-decoration: none">My Expense</a></li>
             <li>
             <li class="submenu">
                 <a href="#"><span> Expense Claim</span>
@@ -224,6 +224,8 @@
                    href="{{ url('inv/view/whole') }}" style="text-decoration: none">Whole Sale</a></li>
             <li><a class="{{ Request::is('inv/view/retail') ? 'active' : '' }}"
                    href="{{ url('inv/view/retail') }}" style="text-decoration: none">Retail Sale</a></li>
+            <li><a class="{{ Request::is('sale_return') ? 'active' : '' }}"
+                   href="{{ route('sale_return.index') }}" style="text-decoration: none">Sale Return</a></li>
             <li><a class="{{ Request::is('coatype') ? 'active' : '' }}" href="{{route('coatype.index')}}"
                    style="text-decoration: none"><span>Account Type</span>
                 </a></li>

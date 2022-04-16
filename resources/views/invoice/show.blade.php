@@ -44,9 +44,16 @@
     <div class="row mt-3" style="font-size: inherit !important;">
         <div class="col-md-2">
             Status
-            <br> <strong><span class="float-left"><span class="text-dark badge badge-{{$detail_inv->status=='Paid'?'success':($detail_inv->status=='Partial'?'warning':($detail_inv->status=='Daft'?'white':'danger'))}}">
+            <br> @if($detail_inv->cancel==1)
+                <strong><span class="float-left"><span class="text-white badge badge-danger">
+                       Cancel
+                    </span></span></strong>
+                @else
+                <strong><span class="float-left"><span class="text-dark badge badge-{{$detail_inv->status=='Paid'?'success':($detail_inv->status=='Partial'?'warning':($detail_inv->status=='Daft'?'white':'danger'))}}">
                        {{$detail_inv->status}}
-                    </span></span></strong> <br><br></div>
+                    </span></span></strong>
+            @endif
+            <br><br></div>
         <div class="col-md-2">
             Customer
             <br> <strong><span class="float-left"><a href="{{route('customers.show',$detail_inv->customer->id)}}">
@@ -73,7 +80,7 @@
                     {{\Illuminate\Support\Carbon::parse($detail_inv->due_date)->toFormattedDateString()}}               </span></strong> <br><br></div>
     </div>
 
-   @if($detail_inv->due_amount!=0)
+   @if($detail_inv->due_amount!=0 && $detail_inv->cancel!=1)
             <div class="card">
                 <div class="card-body">
                     <div data-timeline-content="axis" data-timeline-axis-style="dashed" class="timeline timeline-one-side">
@@ -363,13 +370,13 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {{--@foreach($data['transaction'] as $transaction)--}}
-                                      {{--<tr class="row">--}}
-                                          {{--<td class="col-xs-4 col-sm-4">{{\Carbon\Carbon::parse($transaction->revenue->transaction_date)->toFormattedDateString()}}</td>--}}
-                                          {{--<td class="col-xs-4 col-sm-4">{{$transaction->revenue->amount??'N/A'}}</td>--}}
-                                          {{--<td class="col-xs-4 col-sm-4 d-none d-sm-block">{{$transaction->account->name}}</td>--}}
-                                      {{--</tr>--}}
-                                    {{--@endforeach--}}
+                                @foreach($data['transaction'] as $transaction)
+                                      <tr class="row">
+                                          <td class="col-xs-4 col-sm-4">{{\Carbon\Carbon::parse($transaction->revenue->transaction_date)->toFormattedDateString()}}</td>
+                                          <td class="col-xs-4 col-sm-4">{{$transaction->revenue->amount??'N/A'}}</td>
+                                          <td class="col-xs-4 col-sm-4 d-none d-sm-block">{{$transaction->account->name}}</td>
+                                      </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

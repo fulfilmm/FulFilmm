@@ -352,6 +352,7 @@ class InvoiceController extends Controller
         $category=TransactionCategory::all();
         $coas=ChartOfAccount::all();
         $revenue=Revenue::where('invoice_id',$id)->get();
+//        dd($revenue);
         $history=InvoiceHistory::where('invoice_id',$id)->get();
         $transaction=[];
         foreach ($revenue as $tran){
@@ -532,5 +533,11 @@ class InvoiceController extends Controller
     }
     public function export(Request $request,$type){
             return Excel::download(new InvoiceExport($request->start_date, $request->end_date,$type),ucfirst($type).' invoice.xlsx');
+    }
+    public function cancel($id){
+        $invoice=Invoice::where('id',$id)->first();
+        $invoice->cancel=1;
+        $invoice->update();
+        return redirect('invoices')->with('success',"This invoice is cancelled");
     }
 }

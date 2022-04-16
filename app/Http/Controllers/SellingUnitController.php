@@ -141,7 +141,11 @@ class SellingUnitController extends Controller
                 $unit->active=1;
                 $unit->update();
                 if(isset($request->single_price)){
-                    $exist_price=product_price::where('product_id',$item)->where('sale_type',$request->sale_type)->where('unit_id',$request->unit_id)->where('active',1)->first();
+                    $exist_price=product_price::where('product_id',$item)->where('sale_type',$request->sale_type)
+                        ->where('unit_id',$request->unit_id)
+                        ->where('active',1)
+                        ->where('branch_id',$branch_id)
+                        ->first();
                     $single_data['product_id']=$item;
                     $single_data['unit_id']=$request->unit_id;
                     $single_data['sale_type']=$request->sale_type;

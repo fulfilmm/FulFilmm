@@ -25,6 +25,7 @@
                     <table class="table table-nowrap table-nowrap">
                         <thead>
                         <tr>
+                            <th>Employee</th>
                             <th>Title</th>
                             <th>Amount</th>
                             <th>Description</th>
@@ -36,6 +37,7 @@
                         <tbody>
                            @foreach($emp_expeneses as $record)
                             <tr>
+                                <td>{{$record->employee->name}}</td>
                                 <td>{{$record->title}}</td>
                                 <td>{{$record->amount??0}}</td>
                                 <td>{{$record->description??''}}</td>

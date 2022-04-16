@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\EmpExpense;
+use App\Models\Account;
+use App\Models\Employee;
+use App\Models\Invoice;
+use App\Models\SaleReturn;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class ExpensesRecordController extends Controller
+class SaleReturnController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,12 +17,11 @@ class ExpensesRecordController extends Controller
      */
     public function index()
     {
-        if(Auth::guard('employee')->user()->role->name=='Super Admin' || Auth::guard('employee')->user()->role->name=='CEO'){
-            $emp_expeneses=EmpExpense::with('employee')->get();
-        }else{
-            $emp_expeneses=EmpExpense::with('employee')->where('emp_id',Auth::guard('employee')->user()->id)->get();
-        }
-        return view('employee.ExpenseRecord.index',compact('emp_expeneses'));
+        $sale_returns=SaleReturn::with('saleman','customer','branch','invoice','cashier')->get();
+        $invoices=Invoice::with('customer','employee','branch')->where('cancel',1)->get();
+        $account=Account::all();
+        $employee=Employee::all();
+        return view('sale.SaleReturn.index',compact('sale_returns','invoices','account','employee'));
     }
 
     /**
@@ -30,7 +31,7 @@ class ExpensesRecordController extends Controller
      */
     public function create()
     {
-
+        //
     }
 
     /**
@@ -43,28 +44,32 @@ class ExpensesRecordController extends Controller
     {
 //        dd($request->all());
         $this->validate($request,[
-            'title'=>'required',
-            'amount'=>'required'
+            'invoice_id'=>'required',
+            'customer_id'=>'required',
+            'sale_man_id'=>'required',
+            'branch_id'=>'required',
+            'amount'=>'required',
+
         ]);
+
         $data=$request->all();
-        $data['emp_id']=Auth::guard('employee')->user()->id;
         if ($request->attachment != null) {
             $attachment = $request->file('attachment');
             $input['filename'] = \Illuminate\Support\Str::random(10) . time() . '.' . $attachment->extension();
             $request->attachment->move(public_path() . '/attach_file', $input['filename']);
             $data['attach']= $input['filename'];
         }
-        EmpExpense::create($data);
-        return redirect('expense_record')->with('success','Add new expenses');
+        SaleReturn::create($data);
+        return redirect('sale_return')->with('success','Added new Sale Return');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\SaleReturn  $saleReturnController
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(SaleReturn $saleReturnController)
     {
         //
     }
@@ -72,10 +77,10 @@ class ExpensesRecordController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\SaleReturn  $saleReturnController
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(SaleReturn $saleReturnController)
     {
         //
     }
@@ -84,26 +89,22 @@ class ExpensesRecordController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\SaleReturn  $saleReturnController
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, SaleReturn $saleReturnController)
     {
-        $exp_record=EmpExpense::where('id',$id)->first();
-        $exp_record->update($request->all());
-        return redirect('expense_record')->with('success','Expense Record Updated');
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\SaleReturn  $saleReturnController
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(SaleReturn $saleReturnController)
     {
-        $exp_record=EmpExpense::where('id',$id)->first();
-        $exp_record->delete();
-        return redirect('expense_record')->with('success','Expense record deleted');
+        //
     }
 }
