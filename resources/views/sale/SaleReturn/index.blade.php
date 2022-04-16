@@ -1,5 +1,5 @@
 @extends("layout.mainlayout")
-@section("title","Sale Return")
+@section("title","Sales Return")
 @section("content")
     <!-- Page Content -->
     <div class="content container-fluid">
@@ -8,10 +8,10 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Sale Return</h3>
+                    <h3 class="page-title">Sales Return</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url("/")}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Sale Return</li>
+                        <li class="breadcrumb-item active">Sales Return</li>
                     </ul>
                 </div>
                 <div class="col-auto float-right ml-auto">

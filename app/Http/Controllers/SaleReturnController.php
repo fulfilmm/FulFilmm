@@ -92,9 +92,18 @@ class SaleReturnController extends Controller
      * @param  \App\Models\SaleReturn  $saleReturnController
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, SaleReturn $saleReturnController)
+    public function update(Request $request, $id)
     {
-        //
+        $sale_return=SaleReturn::where('id',$id)->first();
+        $data=$request->all();
+        if ($request->attachment != null) {
+            $attachment = $request->file('attachment');
+            $input['filename'] = \Illuminate\Support\Str::random(10) . time() . '.' . $attachment->extension();
+            $request->attachment->move(public_path() . '/attach_file', $input['filename']);
+            $data['attach']= $input['filename'];
+        }
+        $sale_return->update($data);
+        return redirect('sale_return')->with('success','Updated Success');
     }
 
     /**

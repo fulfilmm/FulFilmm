@@ -28,16 +28,16 @@
     <input type="text" class="form-control" id="amount{{$record->id}}" name="amount" value="" readonly>
 </div>
 <div class="form-group">
-    <label for="account">Account</label>
-    <select name="account_id" id="account" class="form-control" style="width: 100%;">
+    <label for="account">Account</label><br>
+    <select name="account_id" id="account{{$record->id}}" class="form-control" style="width: 100%;">
         @foreach($account as $acc)
             <option value="{{$acc->id}}" {{$acc->id==$record->account_id?'selected':''}}>{{$acc->account_no}}-{{$acc->name}}</option>
         @endforeach
     </select>
 </div>
 <div class="form-group">
-    <label for="cashier">Cashier</label>
-    <select name="cashier_id" id="cashier" class="form-control" style="width: 100%;">
+    <label for="cashier">Cashier</label><br>
+    <select name="cashier_id" id="cashier{{$record->id}}" class="form-control" style="width: 100%;">
         @foreach($employee as $emp)
             @if($emp->department->name=='Finance Department')
                 <option value="{{$emp->id}}" {{$record->cashier_id==$emp->id?'selected':''}}>{{$emp->empid}}-{{$emp->name}}</option>

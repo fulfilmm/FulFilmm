@@ -455,7 +455,13 @@ class InvoiceController extends Controller
             $update_Invoice->warehouse_id=$request->warehouse_id;
             $update_Invoice->inv_type=$request->inv_type;
             $update_Invoice->emp_id=Auth::guard('employee')->user()->id;
+            $customer=Customer::where('id',$request->client_id)->first();
+            $customer->current_credit=$customer->current_credit-$update_Invoice->amount;
+            $customer->update();
             $update_Invoice->update();
+            $update_cus=Customer::where('id',$request->client_id)->first();
+            $update_cus->current_credit+=$request->inv_grand_total;
+            $update_cus->update();
         }
         return response()->json([
             'url'=>url('invoices/'.$update_Invoice->id)
