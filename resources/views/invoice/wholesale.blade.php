@@ -67,42 +67,56 @@
 
         <!-- Search Filter -->
         <div class="row filter-row">
-            <div class="col-sm-6 col-md-2">
+            <div class="col">
                 <div class="form-group">
-                    <input class="form-control form-control-md  shadow-sm" type="text" id="filter_id" name='id'
-                           placeholder="Type Invocie ID">
+                    <input class="form-control form-control-md  shadow-sm" type="text" id="filter_id" name='id' placeholder="Type Invocie ID">
                 </div>
             </div>
-            <div class="col-sm-6 col-md-2">
+            <div class="col">
                 <div class="form-group ">
-                    <input class="form-control form-control-md shadow-sm" type="text" name="min" id="min"
-                           placeholder="Enter Start Date">
+                    <input class="form-control form-control-md shadow-sm" type="text" name="min" id="min" placeholder="Enter Start Date">
                 </div>
             </div>
-            <div class="col-sm-6 col-md-2">
+            <div class="col">
                 <div class="form-group">
-                    <input class="form-control shadow-sm form-control-md" type="text" id="max" name="max"
-                           placeholder="Enter End Date">
+                    <input class="form-control shadow-sm form-control-md" type="text" id="max" name="max" placeholder="Enter End Date">
                 </div>
             </div>
-            <div class="col-sm-6 col-md-2">
+            <div class="col">
+                <div class="col">
+                    <div class="form-group">
+                        <select class="select form-control-md" id="branch">
+                            <option value="" disabled>Select Status</option>
+                            <option value="">All</option>
+                            @foreach($branch as $key=>$val)
+                                <option value="{{$val}}"> {{$val}} </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
                 <div class="form-group">
-                    <input class="form-control shadow-sm form-control-md" type="text" id="branch" name="branch"
-                           placeholder="Type Office Branch Name">
+                    <input class="form-control shadow-sm form-control-md" type="text" id="customer_name" name="customer_name" placeholder="Type Customer Name">
                 </div>
             </div>
-            <div class="col-sm-6 col-md-2">
-                <div class="form-group">
-                    <input class="form-control shadow-sm form-control-md" type="text" id="customer_name"
-                           name="customer_name" placeholder="Type Customer Name">
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-2">
+            <div class="col">
                 <div class="form-group">
                     <select class="select form-control-md" id="filter_status">
                         <option value="" disabled>Select Status</option>
                         <option value="">All</option>
                         @foreach($status as $key=>$val)
+                            <option value="{{$val}}"> {{$val}} </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <select class="select form-control-md" id="filter_zone">
+                        <option value="" disabled>Select Status</option>
+                        <option value="">All</option>
+                        @foreach($zone as $key=>$val)
                             <option value="{{$val}}"> {{$val}} </option>
                         @endforeach
                     </select>
@@ -290,38 +304,22 @@
             jQuery('#start').datetimepicker();
             jQuery('#end').datetimepicker();
         });
-        $(document).ready(function () {
+        $(document).ready(function(){
             $.fn.dataTable.ext.search.push(
                 function (settings, data, dataIndex) {
                     var min = $('#min').datepicker("getDate");
                     var max = $('#max').datepicker("getDate");
                     var startDate = new Date(data[5]);
-                    if (min == null && max == null) {
-                        return true;
-                    }
-                    if (min == null && startDate <= max) {
-                        return true;
-                    }
-                    if (max == null && startDate >= min) {
-                        return true;
-                    }
-                    if (startDate <= max && startDate >= min) {
-                        return true;
-                    }
+                    if (min == null && max == null) { return true; }
+                    if (min == null && startDate <= max) { return true;}
+                    if(max == null && startDate >= min) {return true;}
+                    if (startDate <= max && startDate >= min) { return true; }
                     return false;
                 }
             );
 
-            $("#min").datepicker({
-                onSelect: function () {
-                    table.draw();
-                }, changeMonth: true, changeYear: true
-            });
-            $("#max").datepicker({
-                onSelect: function () {
-                    table.draw();
-                }, changeMonth: true, changeYear: true
-            });
+            $("#min").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
+            $("#max").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
             var table = $('#invoice').DataTable();
 
             // Event listener to the two range filtering inputs to redraw on input
@@ -329,31 +327,38 @@
                 table.draw();
             });
         });
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('#filter_id').keyup(function () {
                 var table = $('#invoice').DataTable();
                 table.column(0).search($(this).val()).draw();
 
             });
         });
-        $(document).ready(function () {
-            $('#branch').keyup(function () {
+        $(document).ready(function() {
+            $('#filter_status').on('change', function () {
                 var table = $('#invoice').DataTable();
                 table.column(10).search($(this).val()).draw();
 
             });
         });
-        $(document).ready(function () {
-            $('#customer_name').keyup(function () {
+        $(document).ready(function() {
+            $('#filter_zone').on('change', function () {
                 var table = $('#invoice').DataTable();
-                table.column(3).search($(this).val()).draw();
+                table.column(11).search($(this).val()).draw();
 
             });
         });
-        $(document).ready(function () {
-            $('#filter_status').on('change', function () {
+        $(document).ready(function() {
+            $('#branch').on('change', function () {
                 var table = $('#invoice').DataTable();
-                table.column(9).search($(this).val()).draw();
+                table.column(12).search($(this).val()).draw();
+
+            });
+        });
+        $(document).ready(function() {
+            $('#customer_name').keyup(function () {
+                var table = $('#invoice').DataTable();
+                table.column(3).search($(this).val()).draw();
 
             });
         });

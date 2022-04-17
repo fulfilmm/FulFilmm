@@ -46,31 +46,50 @@ class InvoiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public  $status=['Paid','Unpaid','Pending','Cancel','Draft','Sent'];
+    public  $status=['Paid','Partial','Unpaid','Pending','Cancel','Draft'];
     public function index()
     {
+        $zone=SaleZone::all()->pluck('name','id')->all();
+        $branch=OfficeBranch::all()->pluck('name','id')->all();
         if(Auth::guard('employee')->user()->role->name=='Super Admin'|| Auth::guard('employee')->user()->role->name=='CEO'||Auth::guard('employee')->user()->role->name=='Sale Manager'||Auth::guard('employee')->user()->role->name=='Cashier' ){
-            $allinv=Invoice::with('customer','employee','branch')->get();
+            $allinv=Invoice::with('customer','employee','branch','zone')->get();
         }else{
-            $allinv=Invoice::with('customer','employee','branch')->where('emp_id',Auth::guard('employee')->user()->id)->get();
+            $allinv=Invoice::with('customer','employee','branch','zone')->where('emp_id',Auth::guard('employee')->user()->id)->get();
         }
         $status=$this->status;
 //        dd($allinv);
-        return view('invoice.index',compact('allinv','status')); 
+        return view('invoice.index',compact('allinv','status','zone','branch'));
     }
     public function invoice_view($type){
         $status=$this->status;
+        $branch=OfficeBranch::all()->pluck('name','id')->all();
+        $zone=SaleZone::all()->pluck('name','id')->all();
+        if(Auth::guard('employee')->user()->role->name=='Super Admin'|| Auth::guard('employee')->user()->role->name=='CEO'||Auth::guard('employee')->user()->role->name=='Sale Manager'||Auth::guard('employee')->user()->role->name=='Cashier' ){
         if($type=='due'){
             $allinv=Invoice::with('customer','employee','branch')->where('due_amount','!=',0)->get();
-            return view('invoice.due_list',compact('allinv','status'));
+            return view('invoice.due_list',compact('allinv','status','branch','zone'));
         }elseif ($type=='whole'){
             $allinv=Invoice::with('customer','employee','branch')->where('inv_type','Whole Sale')->get();
-            return view('invoice.wholesale',compact('allinv','status'));
+            return view('invoice.wholesale',compact('allinv','status','branch','zone'));
 
         }else{
             $allinv=Invoice::with('customer','employee','branch')->where('inv_type','Retail Sale')->get();
-            return view('invoice.retail',compact('allinv','status'));
+            return view('invoice.retail',compact('allinv','status','zone','branch','zone'));
 
+        }
+        }else{
+            if($type=='due'){
+                $allinv=Invoice::with('customer','employee','branch','zone')->where('due_amount','!=',0)->where('emp_id',Auth::guard('employee')->user()->id)->get();
+                return view('invoice.due_list',compact('allinv','status','branch','zone'));
+            }elseif ($type=='whole'){
+                $allinv=Invoice::with('customer','employee','branch','zone')->where('inv_type','Whole Sale')->where('emp_id',Auth::guard('employee')->user()->id)->get();
+                return view('invoice.wholesale',compact('allinv','status','branch','zone'));
+
+            }else{
+                $allinv=Invoice::with('customer','employee','branch','zone')->where('inv_type','Retail Sale')->where('emp_id',Auth::guard('employee')->user()->id)->get();
+                return view('invoice.retail',compact('allinv','status','zone','branch'));
+
+            }
         }
 
     }

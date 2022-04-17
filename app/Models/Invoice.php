@@ -26,4 +26,7 @@ class Invoice extends Model
     public function branch(){
         return $this->belongsTo(OfficeBranch::class,'branch_id','id');
     }
+    public function zone(){
+        return $this->belongsTo(SaleZone::class,'zone_id','id');
+    }
 }
