@@ -18,12 +18,36 @@ class Customer extends Authenticatable
         'remember_token',
     ];
     protected $fillable = ['customer_id',
-        'name', 'phone', 'email', 'company_id',
-        'address','gender','emp_id','customer_type',
-        'password','profile','bio','can_login','facebook',
-        'linkedin','dob','report_to','position_of_report_to',
-        'priority','is_qualified','tags_id','lead_title',
-        'department','position','status','lead_title','credit_limit','current_credit','region'
+        'name',
+        'phone',
+        'email',
+        'company_id',
+        'address',
+        'gender',
+        'emp_id',
+        'customer_type',
+        'password',
+        'profile',
+        'bio',
+        'can_login',
+        'facebook',
+        'linkedin',
+        'dob',
+        'report_to',
+        'position_of_report_to',
+        'priority',
+        'is_qualified',
+        'tags_id',
+        'lead_title',
+        'department',
+        'position',
+        'status',
+        'lead_title',
+        'credit_limit',
+        'current_credit',
+        'region',
+        'zone_id',
+        'branch_id'
     ];
 
 
@@ -31,5 +55,11 @@ class Customer extends Authenticatable
     public function company()
     {
         return $this->belongsTo(Company::class);
+    }
+    public function branch(){
+        return $this->belongsTo(OfficeBranch::class);
+    }
+    public function zone(){
+        return $this->belongsTo(SaleZone::class);
     }
 }

@@ -70,8 +70,8 @@
                                     <div class="form-group">
                                         <label for="branch">Office Branch</label>
                                         <select name="branch_id[]" id="branch" class="form-control" multiple>
-                                            @foreach($branch as $item)
-                                                <option value="{{$item->id}}">{{$item->name}}</option>
+                                            @foreach($branch as $key=>$val)
+                                                <option value="{{$key}}">{{$val}}</option>
                                                 @endforeach
                                         </select>
                                     </div>
@@ -89,7 +89,7 @@
                                    <div class="form-group">
                                        <input type="radio" id="price_multi" name="type" onclick="price_type(1)" value="multi">
                                        <label for="price_multi">Multiple Price</label>
-                                       <input type="radio" id="price_single" name="type" onclick="price_type(0)" value="single">
+                                       <input type="radio" id="price_single" name="type" onclick="price_type(0)" checked value="single">
                                        <label for="price_single">Single Price</label>
                                    </div>
                                </div>

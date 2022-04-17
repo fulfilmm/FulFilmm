@@ -140,7 +140,7 @@
                 </div>
             </div>
             <div class="col-md-3 ">
-                <div class="card shadow">
+                <div class="card shadow" style="height: 530px;">
                     <div class="col-12">
                         <div class="form-group mt-4">
                             <label for="payment">Payment Type</label>
@@ -170,19 +170,22 @@
                                 @endforeach
                             </select>
                         </div>
+                        {{--@dd($data)--}}
+                        <div class="form-group">
+                            <label for="zone">Zone (Optional)</label>
+                            <select name="zone_id" id="inv_zone" class="form-control select2" style="width: 100%">
+                                <option value="">None</option>
+                                @foreach($zone as $key=>$val)
+                                    <option value="{{$key}}" >{{$val}}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="form-group col-md-12 mt-4">
                             <input type="radio" class="mr-1" name="delionoff" id="on" value="on" checked><label for="">Delivery
                                 Fee</label><br>
                             <input type="radio" class="mr-1" name="delionoff" id="off" value="off"><label for="">Not
                                 Delivery Fee</label>
                         </div>
-                    </div>
-                </div>
-                <div class="card shadow">
-                    <div class="col-12 my-3">
-                        <button class="btn btn-primary m-r-10 my-3 col-12" type="button" id="saveAndsend">Save & Send
-                        </button>
-                        <button class="btn btn-primary my-3 col-12" type="button" id="save">Save</button>
                     </div>
                 </div>
             </div>
@@ -606,8 +609,6 @@
                                         });
                                     </script>
                                 @endforeach
-
-
                                 <tr>
                                     <th colspan="7" class="text-right"><span class="mt-5">Total</span></th>
                                     <td id="total_div" colspan="2"><input class="form-control" type="number" id="total">
@@ -656,6 +657,17 @@
                             </table>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 offset-3 my-3">
+            <div class="row">
+                <div class="col-6">
+                    <button class="btn btn-primary my-3 col-12" type="button" id="saveAndsend">Save & Send
+                    </button>
+                </div>
+                <div class="col-6">
+                    <button class="btn btn-primary my-3 col-12" type="button" id="save">Save</button>
                 </div>
             </div>
         </div>
@@ -905,6 +917,7 @@
             var inv_type = $('#inv_type option:selected').val();
             var title = $('#title').val();
             var order_id = $('#order_id').val();
+            var zone=$('#inv_zone option:selected').val();
             $.ajax({
                 data: {
                     'variant_id': variant_id,
@@ -923,7 +936,8 @@
                     'payment_method': payment,
                     'type': 'invoice',
                     'invoice_type':inv_type,
-                    'inv_type':'{{$type}}'
+                    'inv_type':'{{$type}}',
+                    'inv_zone':zone
 
                 },
                 type: 'POST',
@@ -968,6 +982,7 @@
             var title = $('#title').val();
             var order_id = $('#order_id').val();
             var inv_type = $('#inv_type option:selected').val();
+            var zone=$('#inv_zone option:selected').val();
             $.ajax({
                 data: {
                     'variant_id': code,
@@ -986,7 +1001,8 @@
                     'payment_method': payment,
                     'type': 'invoice',
                     'invoice_type':inv_type,
-                    'inv_type':'{{$type}}'
+                    'inv_type':'{{$type}}',
+                    'inv_zone':zone
 
                 },
                 type: 'POST',
@@ -1030,6 +1046,7 @@
             var title = $('#title').val();
             var order_id = $('#order_id').val();
             var inv_type = $('#inv_type option:selected').val();
+            var zone=$('#inv_zone option:selected').val();
             $.ajax({
                 data: {
                     'variant_id': foc,
@@ -1048,7 +1065,8 @@
                     'payment_method': payment,
                     'type': 'invoice',
                     'invoice_type':inv_type,
-                    'foc':1
+                    'foc':1,
+                    'inv_zone':zone
 
                 },
                 type: 'POST',
@@ -1099,6 +1117,7 @@
                 var deli_fee = $('#deli_fee').val();
                 var warehouse=$('#warehouse option:selected').val();
                 var delivery_onoff=$('input[name="delionoff"]:checked').val();
+                var zone=$('#inv_zone option:selected').val();
                 $.ajax({
                     data: {
                         'discount': discount,
@@ -1122,7 +1141,8 @@
                         'delivery_fee': deli_fee,
                         'inv_type':"{{$type}}",
                         'warehouse_id':warehouse,
-                        'deli_fee_include':delivery_onoff
+                        'deli_fee_include':delivery_onoff,
+                        'zone_id':zone,
                     },
                     type: 'POST',
                     url: "{{route('invoices.store')}}",
@@ -1171,6 +1191,7 @@
                 var deli_fee = $('#deli_fee').val();
                 var warehouse=$('#warehouse option:selected').val();
                 var delivery_onoff=$('input[name="delionoff"]:checked').val();
+                var zone=$('#inv_zone option:selected').val();
                 $.ajax({
                     data: {
                         'discount': discount,
@@ -1193,7 +1214,8 @@
                         'delivery_fee': deli_fee,
                         'inv_type':"{{$type}}",
                         'warehouse_id':warehouse,
-                        'deli_fee_include':delivery_onoff
+                        'deli_fee_include':delivery_onoff,
+                        'zone_id':zone
 
                     },
                     type: 'POST',

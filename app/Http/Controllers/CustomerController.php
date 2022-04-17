@@ -14,9 +14,11 @@ use App\Models\Invoice;
 use App\Models\lead_comment;
 use App\Models\lead_follower;
 use App\Models\next_plan;
+use App\Models\OfficeBranch;
 use App\Models\OrderItem;
 use App\Models\Quotation;
 use App\Models\SalePipelineRecord;
+use App\Models\SaleZone;
 use App\Models\tags_industry;
 use App\Models\ticket;
 use App\Models\ticket_sender;
@@ -84,7 +86,8 @@ class CustomerController extends Controller
         $last_tag = tags_industry::orderBy('id', 'desc')->first();
         $companies = $this->company_contract->all()->pluck('name', 'id')->all();
         $parent_companies = $this->company_contract->parentCompanies()->pluck('name', 'id')->all();
-        return view('customer.create', compact('companies', 'state', 'last_tag', 'tags','parent_companies'));
+        $zone=SaleZone::all()->pluck('name','id')->all();
+        return view('customer.create', compact('companies', 'state', 'last_tag', 'tags','parent_companies','zone'));
     }
 
     /**
@@ -95,6 +98,9 @@ class CustomerController extends Controller
      */
     public function store(CustomerRequest $request)
     {
+        if(Auth::guard('employee')->user()->office_branch_id==null){
+            return redirect()->back()->with('danger','You must did not connect any branch office');
+        }
         $last_customer = Customer::orderBy('id', 'desc')->first();
 
         if ($last_customer != null) {
@@ -124,6 +130,8 @@ class CustomerController extends Controller
             'customer_id'=>$customer_id,
             'profile' => $request->profile_img != null?$input['imagename']:null,
             'name' => $request->name,
+            'branch_id'=>Auth::guard('employee')->user()->office_branch_id,
+            'zone_id'=>$request->zone_id,
             'region' => $request->region,
             'phone' => $request->phone,
             'email' => $request->email,
@@ -260,7 +268,9 @@ class CustomerController extends Controller
         $record = $this->customerContract->getById($id);
         $companies = $this->company_contract->all()->pluck('name', 'id')->all();
         $state = $this->state;
-        return view('customer.edit', compact('record', 'companies', 'state', 'tags', 'last_tag'));
+        $branch=OfficeBranch::all()->pluck('name','id')->all();
+        $zone=SaleZone::all()->pluck('name','id')->all();
+        return view('customer.edit', compact('record', 'companies', 'state', 'tags', 'last_tag','zone','branch'));
     }
 
     /**
@@ -347,8 +357,10 @@ class CustomerController extends Controller
                 'facebook' => $request->facebook,
                 'linkedin' => $request->linkedin,
                 'dob' => $request->dob,
+                'branch_id'=>$request->branch_id,
+                'zone_id'=>$request->zone_id,
                 'report_to' => $request->report_to,
-                'position_of_report_to' => $request->position,
+                'position_of_report_to' => $request->position_of_report_to,
                 "priority" => $request->priority,
                 "tags_id" => $request->tag_industry,
                 "emp_id" => Auth::guard('employee')->user()->id,
@@ -388,8 +400,9 @@ class CustomerController extends Controller
                 'facebook' => $request->facebook,
                 'linkedin' => $request->linkedin,
                 'dob' => $request->dob,
+                'zone_id'=>$request->zone_id,
                 'report_to' => $request->report_to,
-                'position_of_report_to' => $request->position,
+                'position_of_report_to' => $request->position_of_report_to,
                 "priority" => $request->priority,
                 "tags_id" => $request->tag_industry,
                 "emp_id" => Auth::guard('employee')->user()->id,

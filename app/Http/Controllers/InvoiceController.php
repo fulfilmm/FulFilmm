@@ -23,6 +23,7 @@ use App\Models\product_price;
 use App\Models\products_tax; 
 use App\Models\ProductVariations;
 use App\Models\Revenue;
+use App\Models\SaleZone;
 use App\Models\SellingUnit;
 use App\Models\Stock;
 use App\Models\Transaction;
@@ -118,7 +119,8 @@ class InvoiceController extends Controller
             $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))->whereDate('end_date','>=',date('Y-m-d'))->where('sale_type','Whole Sale')->get();
             $due_default=Carbon::today()->addDay(1);
             $companies=Company::all()->pluck('name','id')->all();
-            return view('invoice.create', compact('warehouse', 'type', 'request_id', 'allcustomers', 'orderline', 'grand_total', 'status', 'data', 'aval_product', 'taxes', 'unit_price', 'dis_promo', 'focs','prices','amount_discount','due_default','companies'));
+            $zone=SaleZone::all()->pluck('name','id')->all();
+            return view('invoice.create', compact('zone','warehouse', 'type', 'request_id', 'allcustomers', 'orderline', 'grand_total', 'status', 'data', 'aval_product', 'taxes', 'unit_price', 'dis_promo', 'focs','prices','amount_discount','due_default','companies'));
         }else{
             return redirect()->back()->with('error','Firstly,Fixed your Branch of Office');
     }
@@ -173,7 +175,8 @@ class InvoiceController extends Controller
         $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))->whereDate('end_date','>=',date('Y-m-d'))->where('sale_type','Retail Sale')->get();
             $due_default=Carbon::today()->addDay(1);
             $companies=Company::all()->pluck('name','id')->all();
-        return view('invoice.create',compact('warehouse','request_id','allcustomers','orderline','grand_total','status','data','aval_product','taxes','unit_price','dis_promo','focs','type','prices','amount_discount','due_default','companies'));
+            $zone=SaleZone::all()->pluck('name','id')->all();
+        return view('invoice.create',compact('zone','warehouse','request_id','allcustomers','orderline','grand_total','status','data','aval_product','taxes','unit_price','dis_promo','focs','type','prices','amount_discount','due_default','companies'));
         }else{
             return redirect()->back()->with('error','Firstly,Fixed your Branch of Office');
         }
@@ -250,6 +253,7 @@ class InvoiceController extends Controller
             $newInvoice->due_amount = $request->inv_grand_total;
             $newInvoice->warehouse_id = $request->warehouse_id;
             $newInvoice->inv_type = $request->inv_type;
+            $newInvoice->zone_id=$request->zone_id;
             $newInvoice->include_delivery_fee=$request->deli_fee_include=='on'?1:0;
             $newInvoice->emp_id = Auth::guard('employee')->user()->id;
             $newInvoice->branch_id=Auth::guard('employee')->user()->office_branch_id;
@@ -409,11 +413,18 @@ class InvoiceController extends Controller
             $grand_total=$grand_total+$orderline[$i]->total;
         }
         $status=$this->status;
-        $unit_price=product_price::where('sale_type',$invoice->inv_type)->get();
+        $unit_price=SellingUnit::where('active',1)->get();
+        if($invoice->inv_type=='Retail Sale') {
+            $prices = product_price::where('sale_type', 'Retail Sale')->where('active', 1)->where('branch_id', Auth::guard('employee')->user()->office_branch_id)->get();
+            $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))->whereDate('end_date','>=',date('Y-m-d'))->where('sale_type','Retail Sale')->get();
+        }else{
+            $prices = product_price::where('sale_type', 'Whole Sale')->where('active', 1)->where('branch_id', Auth::guard('employee')->user()->office_branch_id)->get();
+            $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))->whereDate('end_date','>=',date('Y-m-d'))->where('sale_type','Whole Sale')->get();
+        }
         $dis_promo=DiscountPromotion::where('sale_type',$invoice->inv_type)->get();
         $focs=Freeofchare::with('variant')->get();
         $warehouse=Warehouse::all();
-       return view('invoice.edit',compact('warehouse','allcustomers','orderline','grand_total','status','aval_product','taxes','unit_price','dis_promo','focs','invoice'));
+       return view('invoice.edit',compact('warehouse','allcustomers','orderline','grand_total','status','aval_product','taxes','unit_price','dis_promo','focs','invoice','prices','amount_discount'));
     }
 
     /**
@@ -463,15 +474,19 @@ class InvoiceController extends Controller
                 $update_cus=Customer::where('id',$request->client_id)->first();
                 $update_cus->current_credit+=$request->inv_grand_total;
                 $update_cus->update();
+                return response()->json([
+                    'url'=>url('invoices/'.$update_Invoice->id)
+                ]);
             }else{
                 return response()->json([
+                    'message'=>'Invoice can only editable in draft status',
                     'url'=>url('invoices/'.$update_Invoice->id)
                 ]);
             }
         }
-        return response()->json([
-            'url'=>url('invoices/'.$update_Invoice->id)
-        ]);
+//        return response()->json([
+//            'url'=>url('invoices/'.$update_Invoice->id)
+//        ]);
     }
 
     /**

@@ -80,6 +80,40 @@
                                             <label for="credit">Credit Limit</label>
                                             <input type="number" class="form-control" name="credit_limit" id="credit" value="{{$record->credit_limit??0.0}}">
                                         </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="zone">Branch</label>
+                                                <div class="input-group">
+                                                    <select name="branch_id" id="zone" class="form-control">
+                                                        <option value="">None</option>
+                                                        @foreach($branch as $key=>$val)
+                                                            <option value="{{$key}}" {{$record->branch_id==$key?'selected':''}}>{{$val}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    <div class="input-group-append">
+                                                        <button type="button" class="btn btn-white" data-toggle="modal" data-target="#add_zone"><i class="la la-plus"></i></button>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="zone">Sale Zone</label>
+                                                <div class="input-group">
+                                                    <select name="zone_id" id="zone" class="form-control">
+                                                        <option value="">None</option>
+                                                        @foreach($zone as $key=>$val)
+                                                            <option value="{{$key}}" {{$record->zone_id==$key?'selected':''}}>{{$val}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    <div class="input-group-append">
+                                                        <button type="button" class="btn btn-white" data-toggle="modal" data-target="#add_zone"><i class="la la-plus"></i></button>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="col-md-6 mb-3 position-relative">
                                             <div class="form-group">
                                                 <label for="bod"
@@ -165,7 +199,7 @@
                                             <label for="position"
                                                    class="form-label font-weight-bold text-muted text-uppercase">Report
                                                 Person's Position</label>
-                                            <input type="text" class="form-control" id="position" name="position"
+                                            <input type="text" class="form-control" id="position" name="position_of_report_to"
                                                    placeholder="Enter report person's position"
                                                    value="{{$record->position_of_report_to}}">
                                         </div>
@@ -310,7 +344,7 @@
                         </div>
                 </div>
                 </form>
-
+                @include('customer.addzone')
                 <div id="industry_add" class="modal custom-modal fade" data-backdrop="true" tabindex="-1" role="dialog"
                      style="overflow:hidden">
                     <div class="modal-dialog modal-dialog modal-sm modal-dialog-centered">

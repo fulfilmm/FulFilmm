@@ -94,10 +94,17 @@
                                 <small>
                                     Created on {{$detail_inv->created_at->toFormattedDateString()}}
                                 </small>
-                                <div class="mt-3"><a href="{{route('invoices.edit',$detail_inv->id)}}"
-                                                     class="btn btn-primary btn-sm btn-alone header-button-top">
-                                        Edit
-                                    </a></div>
+                                <div class="mt-3">
+                                    @if($detail_inv->status=='Draft'&&$detail_inv->mark_sent==0)
+                                        <a href="{{route('invoices.edit',$detail_inv->id)}}"
+                                           class="btn btn-primary btn-sm btn-alone header-button-top">
+                                            Edit
+                                        </a>
+
+                                        @else
+                                        <button type="button" id="edit" class="btn btn-danger btn-sm">Unable to Edit</button>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                         <div class="timeline-block"><span class="timeline-step badge-danger"><i
@@ -596,7 +603,7 @@
                                         <label for="approver">Approver <span class="text-danger"> * </span></label>
                                         <select name="approver_id" id="approver" class="form-control select">
                                             @foreach($emps as $emp)
-                                                @if($emp->role->name=='Manager')
+                                                @if($emp->role->name=='Stock Manager')
                                                     <option value="{{$emp->id}}">{{$emp->name}}</option>
                                                 @endif
                                             @endforeach
@@ -685,6 +692,11 @@
 
         <script src="{{url(asset('js/html2pdf.js'))}}"></script>
         <script>
+            $('#edit').on('click',function () {
+               if('{{$detail_inv->status}}'!='Draft'){
+                   swal('Unable to edit','Invoice can only editable in daft status','error')
+               }
+            });
             $(document).ready(function () {
                $('#amount').keyup(function () {
                    var amount=$('#amount').val();

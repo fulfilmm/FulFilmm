@@ -474,6 +474,9 @@
         <a href="#"><i class="la la-cube"></i> <span>Sale</span> <span
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
+
+            <li><a class="{{ Request::is('salezone') ? 'active' : '' }}"
+                   href="{{route('salezone.index')}}" style="text-decoration: none">Sale Zone</a></li>
             <li><a class="{{ Request::is('inv/view/whole') ? 'active' : '' }}"
                    href="{{ url('inv/view/whole') }}" style="text-decoration: none">Whole Sale</a></li>
             <li><a class="{{ Request::is('inv/view/retail') ? 'active' : '' }}"

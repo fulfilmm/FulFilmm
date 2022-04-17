@@ -50,6 +50,15 @@
                             </div>
                             <div class="col-md-6 col-sm-6 col-12">
                                 <div class="form-group">
+                                    <label for="type">Stock Return Type</label>
+                                    <select name="warehouse_return" id="return_type" class="form-control">
+                                        <option value="0">Customer Return</option>
+                                        <option value="1">Warehouse Return</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-12" id="customer_div">
+                                <div class="form-group">
                                     <label for="customer">Customer</label>
                                     <select name="customer_id" id="customer" class="form-control select2">
                                         <option value="">None</option>
@@ -71,6 +80,20 @@
                                         @endforeach
                                     </select>
                                     @error('emp_id')
+                                    <span class="text-danger">{{$message}}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-12" id="from_warehouse">
+                                <div class="form-group">
+                                    <label for="warehouse">Return From Warehouse</label>
+                                    <select name="transfer_warehouse" id="warehouse_return" class="form-control select2">
+                                        <option value="">None</option>
+                                        @foreach($warehouse as $item)
+                                            <option value="{{$item->id}}" {{old('warehouse_id')==$item->id?'selected':''}}>{{$item->name}}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('warehouse_id')
                                     <span class="text-danger">{{$message}}</span>
                                     @enderror
                                 </div>
@@ -145,6 +168,24 @@
         </div>
     </div>
     <script>
+        $(document).ready(function () {
+           $('select').select2();
+
+        });
+        $(document).ready(function () {
+            $('#from_warehouse').hide();
+            $('#return_type').change(function () {
+                var warehouse_id=$('#return_type option:selected').val();
+                if(warehouse_id==1){
+                    $('#from_warehouse').show();
+                    $('#customer_div').hide();
+                }else{
+                    $('#from_warehouse').hide();
+                    $('#customer_div').show();
+                }
+            });
+        });
+
         var product = document.querySelector('#product');
         var unit = document.querySelector('#unit_id');
         var variant=document.querySelector('#variant');

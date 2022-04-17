@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddColumnCancel extends Migration
+class AddColumnIntoInvoice extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddColumnCancel extends Migration
     public function up()
     {
         Schema::table('invoices', function (Blueprint $table) {
-            $table->tinyInteger('cancel')->default(0);
+            $table->bigInteger('zone_id')->unsigned()->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class AddColumnCancel extends Migration
     public function down()
     {
         Schema::table('invoices', function (Blueprint $table) {
-            $table->drop('cancel');
+            $table->drop('zone_id');
         });
     }
 }

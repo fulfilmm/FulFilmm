@@ -119,6 +119,8 @@
                             <th>Created Date</th>
                             <th>Due Date</th>
                             <th>Due Amount</th>
+                            <th>Region</th>
+                            <th>Sale Zone</th>
                             <th>Customer Credit</th>
                             <th>Status</th>
                             <th>Office Branch</th>
@@ -213,6 +215,24 @@
                                         {{$invoice->due_amount}}
                                     @endif
                                 </td>
+                                    <td>
+                                        @if($invoice->cancel==1)
+                                            <strike>
+                                                {{$invoice->customer->region??'N/A'}}
+                                            </strike>
+                                        @else
+                                            {{$invoice->customer->region??'N/A'}}
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($invoice->cancel==1)
+                                            <strike>
+                                                {{$invoice->zone->name??'N/A'}}
+                                            </strike>
+                                        @else
+                                            {{$invoice->zone->name??'N/A'}}
+                                        @endif
+                                    </td>
                                 <td>
                                     @if($invoice->cancel==1)
                                         <strike>

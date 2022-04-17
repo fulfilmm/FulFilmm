@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddColumnInInvoice extends Migration
+class AddColumnIntoStockReturn extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddColumnInInvoice extends Migration
      */
     public function up()
     {
-        Schema::table('invoice', function (Blueprint $table) {
-            $table->tinyInteger('sale_return')->default(0);
+        Schema::table('stock_returns', function (Blueprint $table) {
+            $table->bigInteger('transfer_warehouse')->unsigned()->nullable();
         });
     }
 
@@ -25,8 +25,8 @@ class AddColumnInInvoice extends Migration
      */
     public function down()
     {
-        Schema::table('invoice', function (Blueprint $table) {
-            $table->drop('sale_return');
+        Schema::table('stock_returns', function (Blueprint $table) {
+            $table->drop('transfer_warehouse');
         });
     }
 }

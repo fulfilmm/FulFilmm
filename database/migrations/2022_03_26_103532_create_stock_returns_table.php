@@ -24,6 +24,8 @@ class CreateStockReturnsTable extends Migration
             $table->bigInteger('warehouse_id')->unsigned()->nullable();
             $table->bigInteger('sell_unit')->unsigned();
             $table->bigInteger('creator_id')->unsigned();
+            $table->tinyInteger('warehouse_return')->default(0);
+            $table->bigInteger('transfer_warehouse')->unsigned()->nullable();
             $table->double('qty');
             $table->timestamps();
         });

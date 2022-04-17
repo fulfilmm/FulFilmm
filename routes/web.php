@@ -514,6 +514,8 @@ Route::resource('expensebudget',\App\Http\Controllers\ExpenseBudgetController::c
 Route::resource('chartofaccount',\App\Http\Controllers\ChartOfAccountController::class);
 Route::get('coatype',[\App\Http\Controllers\ChartOfAccountController::class,'coatype_index'])->name('coatype.index');
 Route::post('coatype',[\App\Http\Controllers\ChartOfAccountController::class,'coatype'])->name('coatype.store');
+Route::post('coatype/update/{id}',[\App\Http\Controllers\ChartOfAccountController::class,'type_update'])->name('coatype.update');
+Route::get('coatype/delete/{id}',[\App\Http\Controllers\ChartOfAccountController::class,'type_destory'])->name('coatype.delete');
 
 Route::post('emp/add/office',[OfficeBranchController::class,'add_emp'])->name('empadd.office');
 Route::get('branch/report/{branch_id}',[OfficeBranchController::class,'report'])->name('branch.report');
@@ -528,7 +530,8 @@ Route::get('expense/edit/{id}',[TransactionController::class,'expense_edit'])->n
 Route::post('expense/update/{id}',[TransactionController::class,'expense_update'])->name('expense.update');
 Route::get('inv/cancel/{id}',[InvoiceController::class,'cancel'])->name('invoice.cancel');
 Route::resource('sale_return',\App\Http\Controllers\SaleReturnController::class);
-
+Route::resource('salezone',\App\Http\Controllers\SaleZoneController::class);
+Route::get('daily/report',[ReportController::class,'daily'])->name('daily.report');
 
 
 

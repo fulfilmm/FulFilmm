@@ -120,6 +120,23 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="form-group">
+                            <label for="zone">Sale Zone</label>
+                            <div class="input-group">
+                                <select name="zone_id" id="zone" class="form-control">
+                                    <option value="">None</option>
+                                    @foreach($zone as $key=>$val)
+                                        <option value="{{$key}}">{{$val}}</option>
+                                    @endforeach
+                                </select>
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-white" data-toggle="modal" data-target="#add_zone"><i class="la la-plus"></i></button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
             </div>

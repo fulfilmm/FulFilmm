@@ -108,4 +108,15 @@ class ChartOfAccountController extends Controller
         COAType::create($request->all());
         return redirect('coatype')->with('success','Add new Account Type');
     }
+    public function type_update(Request $request,$id){
+        $account_type=COAType::where('id',$id)->first();
+        $account_type->name=$request->name;
+        $account_type->update();
+        return redirect()->back()->with('success','Updated Successful');
+    }
+    public function type_destory($id){
+        $account_type=COAType::where('id',$id)->first();
+        $account_type->delete();
+        return redirect()->back()->with('sucess','Account Type Deleted');
+    }
 }

@@ -143,7 +143,7 @@ class ReportController extends Controller
     }
     public function reportpage()
     {
-
+        return view('report');
     }
     public function expense(Request $request){
         if(isset($request->start)){
@@ -191,5 +191,6 @@ class ReportController extends Controller
                 })
                 ->make(true);
         }
+
 
 }

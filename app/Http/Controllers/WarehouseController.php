@@ -24,10 +24,10 @@ class WarehouseController extends Controller
 //        dd($branches);
         $warehouse_qty=[];
         foreach ($warehouses as $warehouse){
-            $product=ProductStockBatch::where('warehouse_id',$warehouse->id)->get();
+            $product=Stock::where('warehouse_id',$warehouse->id)->get();
             $total=0;
             foreach ($product as $item){
-                $valuation=$item->qty*$item->purchase_price??0;
+                $valuation=$item->stock_balance*$item->cos??0;
                 $total+=$valuation;
             }
 

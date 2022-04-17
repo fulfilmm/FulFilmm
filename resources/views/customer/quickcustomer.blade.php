@@ -82,20 +82,7 @@
                                            placeholder="Enter Phone">
                                 </div>
                             </div>
-                            <div class="col-md-6 mb-3" id="refesh_div">
-                                <label for="customer_type"
-                                       class="form-label font-weight-bold text-muted text-uppercase">
-                                    Type</label>
-                                <select name="customer_type" id="customer_type" class="form-control" style="width: 100%;">
-                                    <option value="Customer">Customer</option>
-                                    <option value="Lead">Lead</option>
-                                    <option value="In Query">In Query</option>
-                                    <option value="Partner">Partner</option>
-                                    <option value="Competitor">Competitor</option>
-                                    <option value="Supplier">Supplier</option>
-                                    <option value="Courier">Courier</option>
-                                </select>
-                            </div>
+                            <input type="hidden" name="customer_type" value="Customer">
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label for="credit_limit">Credit Limit</label>
@@ -106,6 +93,17 @@
                                 <div class="form-group">
                                     <label for="region">Region</label>
                                     <input type="text" class="form-control" name="region" value="{{old('region')}}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="zone">Zone (Optional)</label>
+                                    <select name="zone_id" id="zone" class="form-control" style="width: 100%">
+                                        <option value="">None</option>
+                                        @foreach($zone as $key=>$val)
+                                            <option value="{{$key}}">{{$val}}</option>
+                                            @endforeach
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -130,6 +128,7 @@
             var phone = $('#contact_phone').val();
             var type = $('#customer_type option:selected').val();
             var can_login=$('#canlogin').val();
+            var zone=$('#zone option:selected').val();
             $.ajax({
                 type: 'POST',
                 data: {
@@ -139,7 +138,8 @@
                     email: email,
                     company_id: company_id,
                     customer_type: type,
-                    canlogin:can_login
+                    canlogin:can_login,
+                    zone_id:zone
 
                 },
                 url: "{{route('customers.store')}}",
