@@ -676,7 +676,7 @@
     </div>
     <script>
         function noti_alert(){
-            swal('Credit Limit Alert','This Customer credit is reach to limit','warning');
+
         }
 
         $('select').change(function () {
@@ -1192,52 +1192,65 @@
                 var warehouse=$('#warehouse option:selected').val();
                 var delivery_onoff=$('input[name="delionoff"]:checked').val();
                 var zone=$('#inv_zone option:selected').val();
-                $.ajax({
-                    data: {
-                        'discount': discount,
-                        'total': total,
-                        'tax_id': tax_id,
-                        'tax_amount': tax_amount,
-                        'order_id': order_id,
-                        'title': title,
-                        'client_id': client_id,
-                        'client_email': client_email,
-                        'inv_date': inv_date,
-                        'due_date': due_date,
-                        'client_address': client_address,
-                        'more_info': more_info,
-                        'bill_address': bill_address,
-                        'inv_grand_total': inv_grand_total,
-                        'status': status,
-                        'payment_method': payment,
-                        'invoice_type': inv_type,
-                        'delivery_fee': deli_fee,
-                        'inv_type':"{{$type}}",
-                        'warehouse_id':warehouse,
-                        'deli_fee_include':delivery_onoff,
-                        'zone_id':zone
+                swal({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Confirm!'
+                }).then(function(){
+                    $.ajax({
+                        data: {
+                            'discount': discount,
+                            'total': total,
+                            'tax_id': tax_id,
+                            'tax_amount': tax_amount,
+                            'order_id': order_id,
+                            'title': title,
+                            'client_id': client_id,
+                            'client_email': client_email,
+                            'inv_date': inv_date,
+                            'due_date': due_date,
+                            'client_address': client_address,
+                            'more_info': more_info,
+                            'bill_address': bill_address,
+                            'inv_grand_total': inv_grand_total,
+                            'status': status,
+                            'payment_method': payment,
+                            'invoice_type': inv_type,
+                            'delivery_fee': deli_fee,
+                            'inv_type':"{{$type}}",
+                            'warehouse_id':warehouse,
+                            'deli_fee_include':delivery_onoff,
+                            'zone_id':zone
 
-                    },
-                    type: 'POST',
-                    url: "{{route('invoices.store')}}",
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    success: function (data) {
-                        if (!$.isEmptyObject(data.orderempty)) {
-                            swal('Empty Item', 'You invoice does not have any item.', 'error');
+                        },
+                        type: 'POST',
+                        url: "{{route('invoices.store')}}",
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        success: function (data) {
+                            if (!$.isEmptyObject(data.orderempty)) {
+                                swal('Empty Item', 'You invoice does not have any item.', 'error');
 
-                        } else if ($.isEmptyObject(data.error)) {
-                            console.log(data);
-                            swal('Invoice Create', 'Invoice Create Success', 'success');
+                            } else if ($.isEmptyObject(data.error)) {
+                                console.log(data);
+                                swal('Invoice Create', 'Invoice Create Success', 'success');
 
-                            window.location = data.url;
-                        } else {
-                            $.each(data.error, function (key, value) {
-                                console.log(key);
-                                $('.' + key + '_err').text(value);
-                            });
+                                window.location = data.url;
+                            } else {
+                                $.each(data.error, function (key, value) {
+                                    console.log(key);
+                                    $('.' + key + '_err').text(value);
+                                });
+                            }
                         }
-                    }
+                    });
+                }).catch(function(reason){
+                    alert("The alert was dismissed by the user: "+reason);
                 });
+
             });
         });
         var warehouse = document.querySelector('#warehouse');

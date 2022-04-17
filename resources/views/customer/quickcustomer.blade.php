@@ -126,7 +126,6 @@
             var company_id = $('#contact_company_id option:selected').val();
             var email = $('#contact_email').val();
             var phone = $('#contact_phone').val();
-            var type = $('#customer_type option:selected').val();
             var can_login=$('#canlogin').val();
             var zone=$('#zone option:selected').val();
             $.ajax({
@@ -137,7 +136,6 @@
                     phone: phone,
                     email: email,
                     company_id: company_id,
-                    customer_type: type,
                     canlogin:can_login,
                     zone_id:zone
 
