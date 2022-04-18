@@ -20,6 +20,7 @@
                     </ul>
                 </div>
                 <div class="col-auto float-right ml-auto">
+                    <a href="{{url('retail/invoice/create')}}" class="btn add-btn shadow-sm"><i class="fa fa-plus"></i>New Invoice</a>
                     <a data-toggle="modal" data-target="#export"
                        class="btn btn-outline-info mr-1"><i
                                 class="fa fa-download mr-1"></i>Export</a>

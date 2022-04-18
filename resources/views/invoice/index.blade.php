@@ -20,6 +20,8 @@
                             </ul>
                         </div>
                         <div class="col-auto float-right ml-auto">
+                            <a href="{{route('invoices.create')}}" class="btn add-btn shadow-sm mr-2"><i class="fa fa-plus"></i>New Whole Sale Invoice</a>
+                            <a href="{{url('retail/invoice/create')}}" class="btn add-btn shadow-sm mr-2"><i class="fa fa-plus"></i>New Retail Sale Invoice</a>
                             <a data-toggle="modal" data-target="#export"
                                class="btn btn-outline-info mr-1"><i
                                         class="fa fa-download mr-1"></i>Export</a>
