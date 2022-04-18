@@ -27,7 +27,7 @@
     </div>
     <div class="col  my-2">
         <div class="alert-success alert mb-0 shadow">
-            <a href="{{route('customers.index')}}">
+            {{--<a href="{{route('warehouses.index')}}">--}}
                 <div class="d-flex align-items-center">
                     <div class="avatar rounded no-thumbnail bg-success text-light shadow"><i class="fa fa-cube fa-lg"></i></div>
                     <div class="flex-fill ms-3 text-truncate">
@@ -35,12 +35,12 @@
                         <span class="small">{{$items['no_product_item']}}</span>
                     </div>
                 </div>
-            </a>
+            {{--</a>--}}
         </div>
     </div>
     <div class="col  my-2">
         <div class="alert-success alert mb-0 shadow">
-            <a href="{{url('sale/activity')}}">
+            <a href="{{url('warehouses.index')}}">
                 <div class="d-flex align-items-center">
                     <div class="avatar rounded no-thumbnail bg-success text-light shadow"><i class="fa fa-dollar fa-lg"></i></div>
                     <div class="flex-fill ms-3 text-truncate">
