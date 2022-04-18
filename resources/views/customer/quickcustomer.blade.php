@@ -89,21 +89,28 @@
                                     <input type="number" class="form-control" name="credit_limit" value="0">
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 mb-3">
                                 <div class="form-group">
-                                    <label for="region">Region</label>
-                                    <input type="text" class="form-control" name="region" value="{{old('region')}}">
+                                    <label for="region_id">Region</label>
+                                    <select name="region_id" id="quick_region_id" class="form-control select2" onchange="selectregion(this.value)" style="width: 100%">
+                                        <option value="">None</option>
+                                        @foreach($region as $item)
+                                            <option value="{{$item->id}}">{{$item->name}}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 mb-3">
                                 <div class="form-group">
-                                    <label for="zone">Zone (Optional)</label>
-                                    <select name="zone_id" id="zone" class="form-control" style="width: 100%">
-                                        <option value="">None</option>
-                                        @foreach($zone as $key=>$val)
-                                            <option value="{{$key}}">{{$val}}</option>
+                                    <label for="zone">Sale Zone</label>
+                                    <div class="input-group">
+                                        <select name="zone_id" id="quick_zone" class="form-control select2" style="width: 100%">
+                                            <option value="">None</option>
+                                            @foreach($zone as $item)
+                                                <option value="{{$item->id}}" data-option="{{$item->region_id}}">{{$item->name}}</option>
                                             @endforeach
-                                    </select>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -158,4 +165,20 @@
             });
         });
     });
+    var quick_region = document.querySelector('#quick_region_id');
+    var quick_zone = document.querySelector('#quick_zone');
+    var quick_zone_optoion = quick_zone.querySelectorAll('option');
+    // console.log(options3);
+    // alert(product)
+    function selectregion(selValue) {
+        quick_zone.innerHTML='';
+
+        for(var i = 0; i < quick_zone_optoion.length; i++) {
+            if(quick_zone_optoion[i].dataset.option === selValue) {
+                quick_zone.appendChild(quick_zone_optoion[i]);
+
+            }
+        }
+    }
+    selectregion(quick_region.value);
 </script>
