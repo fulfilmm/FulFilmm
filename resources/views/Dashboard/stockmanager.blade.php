@@ -1,7 +1,7 @@
 <div class="row g-3 row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4">
     <div class="col  my-2">
         <div class="alert-success alert mb-0 shadow">
-            <a href="{{route('invoices.index')}}">
+            <a href="{{route('warehouse.index')}}">
                 <div class="d-flex align-items-center">
                     <div class="avatar rounded no-thumbnail bg-success text-light shadow"><i class="fa fa-home fa-lg"></i></div>
                     <div class="flex-fill ms-3 text-truncate">
