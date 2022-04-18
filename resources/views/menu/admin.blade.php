@@ -216,6 +216,10 @@
         <a href="#"><i class="la la-cube"></i> <span>Accounting</span> <span
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
+            <li><a class="{{ Request::is('main/customer') ? 'active' : '' }}"
+                   href="{{ route('customer') }}" style="text-decoration: none"><i class="la la-calendar mr-1"
+                                                                                   style="font-size: 18px;"></i>Customers</a>
+            </li>
             <li><a class="{{ Request::is('invoices') ? 'active' : '' }}"
                    href="{{ route('invoices.index') }}" style="text-decoration: none">All Invoice</a></li>
             <li><a class="{{ Request::is('inv/view/due') ? 'active' : '' }}"
@@ -277,6 +281,8 @@
                     class="menu-arrow"></span></a>
 
         <ul style="display: none;">
+            <li><a class="{{ Request::is('barcode/create') ? 'active' : '' }}"
+                   href="{{ route('barcode.create') }}" style="text-decoration: none">Barcode Generate</a></li>
             <li class="submenu">
                 <a href="#"><span>Supplier</span> <span
                             class="menu-arrow"></span></a>
@@ -477,12 +483,12 @@
 
             <li><a class="{{ Request::is('salezone') ? 'active' : '' }}"
                    href="{{route('salezone.index')}}" style="text-decoration: none">Sale Zone</a></li>
+            <li><a class="{{ Request::is('region') ? 'active' : '' }}"
+                   href="{{route('region.index')}}" style="text-decoration: none">Sale Regioin</a></li>
             <li><a class="{{ Request::is('inv/view/whole') ? 'active' : '' }}"
                    href="{{ url('inv/view/whole') }}" style="text-decoration: none">Whole Sale</a></li>
             <li><a class="{{ Request::is('inv/view/retail') ? 'active' : '' }}"
                    href="{{ url('inv/view/retail') }}" style="text-decoration: none">Retail Sale</a></li>
-            <li><a class="{{ Request::is('barcode/create') ? 'active' : '' }}"
-                   href="{{ route('barcode.create') }}" style="text-decoration: none">Barcode Generate</a></li>
             <li class="submenu">
                 <a href="#"><span> Selling Price</span> <span
                             class="menu-arrow"></span></a>

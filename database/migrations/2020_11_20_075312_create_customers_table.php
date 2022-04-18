@@ -28,7 +28,7 @@ class CreateCustomersTable extends Migration
             $table->string('facebook')->nullable();
             $table->string('linkedin')->nullable();
             $table->dateTime('dob')->nullable();
-            $table->string('region')->nullable();
+            $table->bigInteger('region_id')->unsigned()->nullable();
             $table->string('report_to')->nullable();
             $table->string('position_of_report_to')->nullable();
             $table->string("priority")->nullable()->nullable();

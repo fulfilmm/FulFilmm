@@ -172,11 +172,20 @@
                         </div>
                         {{--@dd($data)--}}
                         <div class="form-group">
+                            <label for="zone">Region (Optional)</label>
+                            <select name="region" id="region_id" class="form-control select2" onchange="region(this.value)"style="width: 100%">
+                                <option value="">None</option>
+                                @foreach($region as $item)
+                                    <option value="{{$item->id}}">{{$item->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label for="zone">Zone (Optional)</label>
                             <select name="zone_id" id="inv_zone" class="form-control select2" style="width: 100%">
                                 <option value="">None</option>
-                                @foreach($zone as $key=>$val)
-                                    <option value="{{$key}}" >{{$val}}</option>
+                                @foreach($zone as $item)
+                                    <option value="{{$item->id}}" data-option="{{$item->region_id}}" >{{$item->name}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -918,6 +927,7 @@
             var title = $('#title').val();
             var order_id = $('#order_id').val();
             var zone=$('#inv_zone option:selected').val();
+            var region=$('#region_id option:selected').val();
             $.ajax({
                 data: {
                     'variant_id': variant_id,
@@ -937,7 +947,8 @@
                     'type': 'invoice',
                     'invoice_type':inv_type,
                     'inv_type':'{{$type}}',
-                    'inv_zone':zone
+                    'inv_zone':zone,
+                    'region_id':region
 
                 },
                 type: 'POST',
@@ -983,6 +994,7 @@
             var order_id = $('#order_id').val();
             var inv_type = $('#inv_type option:selected').val();
             var zone=$('#inv_zone option:selected').val();
+            var region=$('#region_id option:selected').val();
             $.ajax({
                 data: {
                     'variant_id': code,
@@ -1002,7 +1014,8 @@
                     'type': 'invoice',
                     'invoice_type':inv_type,
                     'inv_type':'{{$type}}',
-                    'inv_zone':zone
+                    'inv_zone':zone,
+                    'region_id':region
 
                 },
                 type: 'POST',
@@ -1047,6 +1060,7 @@
             var order_id = $('#order_id').val();
             var inv_type = $('#inv_type option:selected').val();
             var zone=$('#inv_zone option:selected').val();
+            var region=$('#region_id option:selected').val();
             $.ajax({
                 data: {
                     'variant_id': foc,
@@ -1066,7 +1080,8 @@
                     'type': 'invoice',
                     'invoice_type':inv_type,
                     'foc':1,
-                    'inv_zone':zone
+                    'inv_zone':zone,
+                    'region_id':region
 
                 },
                 type: 'POST',
@@ -1118,6 +1133,7 @@
                 var warehouse=$('#warehouse option:selected').val();
                 var delivery_onoff=$('input[name="delionoff"]:checked').val();
                 var zone=$('#inv_zone option:selected').val();
+                var region=$('#region_id option:selected').val();
                 $.ajax({
                     data: {
                         'discount': discount,
@@ -1143,6 +1159,7 @@
                         'warehouse_id':warehouse,
                         'deli_fee_include':delivery_onoff,
                         'zone_id':zone,
+                        'region_id':region
                     },
                     type: 'POST',
                     url: "{{route('invoices.store')}}",
@@ -1192,6 +1209,7 @@
                 var warehouse=$('#warehouse option:selected').val();
                 var delivery_onoff=$('input[name="delionoff"]:checked').val();
                 var zone=$('#inv_zone option:selected').val();
+                var region=$('#region_id option:selected').val();
                 swal({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
@@ -1224,7 +1242,8 @@
                             'inv_type':"{{$type}}",
                             'warehouse_id':warehouse,
                             'deli_fee_include':delivery_onoff,
-                            'zone_id':zone
+                            'zone_id':zone,
+                            'region_id':region
 
                         },
                         type: 'POST',
@@ -1273,6 +1292,26 @@
             }
         }
         giveSelection(warehouse.value);
+
+
+
+
+        var region_id = document.querySelector('#region_id');
+        var zone_id = document.querySelector('#inv_zone');
+        var zone_optoion = zone_id.querySelectorAll('option');
+        console.log(options3);
+        // alert(product)
+        function region(selValue) {
+            inv_zone.innerHTML='';
+
+            for(var i = 0; i < zone_optoion.length; i++) {
+                if(zone_optoion[i].dataset.option === selValue) {
+                    inv_zone.appendChild(zone_optoion[i]);
+
+                }
+            }
+        }
+        region(region_id.value);
         // window.onbeforeunload = closeWindow;
     </script>
 

@@ -45,7 +45,7 @@ class Customer extends Authenticatable
         'lead_title',
         'credit_limit',
         'current_credit',
-        'region',
+        'region_id',
         'zone_id',
         'branch_id'
     ];
@@ -61,5 +61,8 @@ class Customer extends Authenticatable
     }
     public function zone(){
         return $this->belongsTo(SaleZone::class);
+    }
+    public function region(){
+        return $this->belongsTo(Region::class);
     }
 }

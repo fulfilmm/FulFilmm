@@ -28,8 +28,9 @@
                         <th>Bill ID</th>
                         <th>Title</th>
                         <th>Amount</th>
+                        <th>Supplier</th>
                         <th>Category</th>
-                        <th>Approve</th>
+                        <th>Status</th>
                         <th>Approver Name</th>
                         <th>Issuer</th>
                         <th>Action</th>
@@ -37,6 +38,7 @@
 
                     </thead>
                     <tbody>
+{{--                    @dd($expenses)--}}
                     @foreach($expenses as $transaction)
                         <tr>
                             <td>{{$transaction->account->code}}</td>
@@ -44,11 +46,13 @@
                             <td>
                                 {{\Carbon\Carbon::parse($transaction->transaction_date)->toFormattedDateString()}}
                             </td>
-                            <td>@if($transaction->bill_id!=null)<a
-                                        href="{{route('bills.show',$transaction->bill->id)}}">{{$transaction->bill->bill_id}}</a>@else
+                            <td>
+                                @if($transaction->bill_id!=null)
+                                    <a href="{{route('bills.show',$transaction->bill_id)}}">{{$transaction->bill->bill_id}}</a>@else
                                     N/A @endif</td>
                             <td>{{$transaction->title}}</td>
                             <td>{{number_format($transaction->amount)}}</td>
+                            <td>{{$transaction->supplier->name}}</td>
                             <td>{{$transaction->cat->name}}</td>
                             <td>
                                 @if($transaction->approve==0)
@@ -60,7 +64,7 @@
                             </td>
                             <td>{{$transaction->approver->name}}</td>
                             <td>{{$transaction->employee->name}}</td>
-                            <td>
+                            <td style="width: 150px;">
                                 <div class="row">
                                     <a href="{{$transaction->invoice_id==null?route('transactions.show',$transaction->id):route('invoices.show',$transaction->invoice_id)}}"
                                        class="btn btn-white btn-sm"><i class="la la-eye"></i></a>

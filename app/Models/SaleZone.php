@@ -8,5 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class SaleZone extends Model
 {
     use HasFactory;
-    protected $fillable=['name'];
+    protected $fillable=['name','region_id'];
+    public function region(){
+        return $this->belongsTo(Region::class);
+    }
 }

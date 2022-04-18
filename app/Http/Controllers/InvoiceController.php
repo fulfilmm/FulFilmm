@@ -22,6 +22,7 @@ use App\Models\product;
 use App\Models\product_price;
 use App\Models\products_tax; 
 use App\Models\ProductVariations;
+use App\Models\Region;
 use App\Models\Revenue;
 use App\Models\SaleZone;
 use App\Models\SellingUnit;
@@ -49,45 +50,47 @@ class InvoiceController extends Controller
     public  $status=['Paid','Partial','Unpaid','Pending','Cancel','Draft'];
     public function index()
     {
-        $zone=SaleZone::all()->pluck('name','id')->all();
+        $zone=SaleZone::all();
+        $region=Region::all()->pluck('name','id')->all();
         $branch=OfficeBranch::all()->pluck('name','id')->all();
         if(Auth::guard('employee')->user()->role->name=='Super Admin'|| Auth::guard('employee')->user()->role->name=='CEO'||Auth::guard('employee')->user()->role->name=='Sale Manager'||Auth::guard('employee')->user()->role->name=='Cashier' ){
-            $allinv=Invoice::with('customer','employee','branch','zone')->get();
+            $allinv=Invoice::with('customer','employee','branch','zone','region')->get();
         }else{
-            $allinv=Invoice::with('customer','employee','branch','zone')->where('emp_id',Auth::guard('employee')->user()->id)->get();
+            $allinv=Invoice::with('customer','employee','branch','zone','region')->where('emp_id',Auth::guard('employee')->user()->id)->get();
         }
         $status=$this->status;
 //        dd($allinv);
-        return view('invoice.index',compact('allinv','status','zone','branch'));
+        return view('invoice.index',compact('allinv','status','zone','branch','region'));
     }
     public function invoice_view($type){
         $status=$this->status;
         $branch=OfficeBranch::all()->pluck('name','id')->all();
-        $zone=SaleZone::all()->pluck('name','id')->all();
+        $zone=SaleZone::all();
+        $region=Region::all()->pluck('name','id')->all();
         if(Auth::guard('employee')->user()->role->name=='Super Admin'|| Auth::guard('employee')->user()->role->name=='CEO'||Auth::guard('employee')->user()->role->name=='Sale Manager'||Auth::guard('employee')->user()->role->name=='Cashier' ){
         if($type=='due'){
-            $allinv=Invoice::with('customer','employee','branch')->where('due_amount','!=',0)->get();
-            return view('invoice.due_list',compact('allinv','status','branch','zone'));
+            $allinv=Invoice::with('customer','employee','branch','region','zone')->where('due_amount','!=',0)->get();
+            return view('invoice.due_list',compact('allinv','status','branch','zone','region'));
         }elseif ($type=='whole'){
-            $allinv=Invoice::with('customer','employee','branch')->where('inv_type','Whole Sale')->get();
-            return view('invoice.wholesale',compact('allinv','status','branch','zone'));
+            $allinv=Invoice::with('customer','employee','branch','region','zone')->where('inv_type','Whole Sale')->get();
+            return view('invoice.wholesale',compact('allinv','status','branch','zone','region'));
 
         }else{
-            $allinv=Invoice::with('customer','employee','branch')->where('inv_type','Retail Sale')->get();
-            return view('invoice.retail',compact('allinv','status','zone','branch','zone'));
+            $allinv=Invoice::with('customer','employee','branch','region','zone')->where('inv_type','Retail Sale')->get();
+            return view('invoice.retail',compact('allinv','status','zone','branch','zone','region'));
 
         }
         }else{
             if($type=='due'){
-                $allinv=Invoice::with('customer','employee','branch','zone')->where('due_amount','!=',0)->where('emp_id',Auth::guard('employee')->user()->id)->get();
-                return view('invoice.due_list',compact('allinv','status','branch','zone'));
+                $allinv=Invoice::with('customer','employee','branch','zone','region')->where('due_amount','!=',0)->where('emp_id',Auth::guard('employee')->user()->id)->get();
+                return view('invoice.due_list',compact('allinv','status','branch','zone','region'));
             }elseif ($type=='whole'){
-                $allinv=Invoice::with('customer','employee','branch','zone')->where('inv_type','Whole Sale')->where('emp_id',Auth::guard('employee')->user()->id)->get();
-                return view('invoice.wholesale',compact('allinv','status','branch','zone'));
+                $allinv=Invoice::with('customer','employee','branch','zone','region')->where('inv_type','Whole Sale')->where('emp_id',Auth::guard('employee')->user()->id)->get();
+                return view('invoice.wholesale',compact('allinv','status','branch','zone','region'));
 
             }else{
-                $allinv=Invoice::with('customer','employee','branch','zone')->where('inv_type','Retail Sale')->where('emp_id',Auth::guard('employee')->user()->id)->get();
-                return view('invoice.retail',compact('allinv','status','zone','branch'));
+                $allinv=Invoice::with('customer','employee','branch','zone','region')->where('inv_type','Retail Sale')->where('emp_id',Auth::guard('employee')->user()->id)->get();
+                return view('invoice.retail',compact('allinv','status','zone','branch','region'));
 
             }
         }
@@ -138,8 +141,9 @@ class InvoiceController extends Controller
             $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))->whereDate('end_date','>=',date('Y-m-d'))->where('sale_type','Whole Sale')->get();
             $due_default=Carbon::today()->addDay(1);
             $companies=Company::all()->pluck('name','id')->all();
-            $zone=SaleZone::all()->pluck('name','id')->all();
-            return view('invoice.create', compact('zone','warehouse', 'type', 'request_id', 'allcustomers', 'orderline', 'grand_total', 'status', 'data', 'aval_product', 'taxes', 'unit_price', 'dis_promo', 'focs','prices','amount_discount','due_default','companies'));
+            $zone=SaleZone::all();
+            $region=Region::where('branch_id',$Auth->office_branch_id)->get();
+            return view('invoice.create', compact('zone','warehouse', 'type', 'request_id', 'allcustomers', 'orderline', 'grand_total', 'status', 'data', 'aval_product', 'taxes', 'unit_price', 'dis_promo', 'focs','prices','amount_discount','due_default','companies','region'));
         }else{
             return redirect()->back()->with('error','Firstly,Fixed your Branch of Office');
     }
@@ -194,8 +198,9 @@ class InvoiceController extends Controller
         $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))->whereDate('end_date','>=',date('Y-m-d'))->where('sale_type','Retail Sale')->get();
             $due_default=Carbon::today()->addDay(1);
             $companies=Company::all()->pluck('name','id')->all();
-            $zone=SaleZone::all()->pluck('name','id')->all();
-        return view('invoice.create',compact('zone','warehouse','request_id','allcustomers','orderline','grand_total','status','data','aval_product','taxes','unit_price','dis_promo','focs','type','prices','amount_discount','due_default','companies'));
+            $zone=SaleZone::all();
+            $region=Region::where('branch_id',$Auth->office_branch_id)->get();
+        return view('invoice.create',compact('zone','warehouse','request_id','allcustomers','orderline','grand_total','status','data','aval_product','taxes','unit_price','dis_promo','focs','type','prices','amount_discount','due_default','companies','region'));
         }else{
             return redirect()->back()->with('error','Firstly,Fixed your Branch of Office');
         }
@@ -272,6 +277,7 @@ class InvoiceController extends Controller
             $newInvoice->due_amount = $request->inv_grand_total;
             $newInvoice->warehouse_id = $request->warehouse_id;
             $newInvoice->inv_type = $request->inv_type;
+            $newInvoice->region_id=$request->region_id;
             $newInvoice->zone_id=$request->zone_id;
             $newInvoice->include_delivery_fee=$request->deli_fee_include=='on'?1:0;
             $newInvoice->emp_id = Auth::guard('employee')->user()->id;

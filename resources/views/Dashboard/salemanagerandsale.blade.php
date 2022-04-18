@@ -1,3 +1,31 @@
+
+<div class="row g-3 col-md-8 offset-md-2 col-sm-8 offset-md-2 col-12 offset-0 my-3 justify-content-center">
+    <div class="col-6 col-sm-3 col-md-4 my-2">
+        <div class="alert-light alert mb-0 shadow">
+            <a href="{{route('invoices.create')}}">
+                <div class="d-flex align-items-center">
+                    <div class="avatar rounded no-thumbnail bg-info text-light shadow"><i class="fa fa-dollar fa-lg"></i></div>
+                    <div class="flex-fill ms-3 text-truncate">
+                        <div class="h6 mb-0">Whole Sale</div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-6 col-sm-3 col-md-4 my-2">
+        <div class="alert-light alert mb-0 shadow">
+            <a href="{{url('retail/invoice/create')}}">
+                <div class="d-flex align-items-center">
+                    <div class="avatar rounded no-thumbnail bg-warning text-light shadow"><i class="fa fa-dollar fa-lg"></i></div>
+                    <div class="flex-fill ms-3 text-truncate">
+                        <div class="h6 mb-0">Retail Sale</div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+<hr>
 <div class="row g-3 row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4 my-3">
     <div class="col-6 col-sm-3 col-md-4 my-2">
         <div class="alert-success alert mb-0 shadow">

@@ -17,6 +17,7 @@ use App\Models\next_plan;
 use App\Models\OfficeBranch;
 use App\Models\OrderItem;
 use App\Models\Quotation;
+use App\Models\Region;
 use App\Models\SalePipelineRecord;
 use App\Models\SaleZone;
 use App\Models\tags_industry;
@@ -86,8 +87,9 @@ class CustomerController extends Controller
         $last_tag = tags_industry::orderBy('id', 'desc')->first();
         $companies = $this->company_contract->all()->pluck('name', 'id')->all();
         $parent_companies = $this->company_contract->parentCompanies()->pluck('name', 'id')->all();
-        $zone=SaleZone::all()->pluck('name','id')->all();
-        return view('customer.create', compact('companies', 'state', 'last_tag', 'tags','parent_companies','zone'));
+        $zone=SaleZone::all();
+        $region=Region::all()->pluck('name','id')->all();
+        return view('customer.create', compact('companies', 'state', 'last_tag', 'tags','parent_companies','zone','region'));
     }
 
     /**
@@ -133,7 +135,7 @@ class CustomerController extends Controller
             'name' => $request->name,
             'branch_id'=>Auth::guard('employee')->user()->office_branch_id,
             'zone_id'=>$request->zone_id,
-            'region' => $request->region,
+            'region_id' => $request->region_id,
             'phone' => $request->phone,
             'email' => $request->email,
             'gender' => $request->gender,
@@ -272,8 +274,9 @@ class CustomerController extends Controller
         $companies = $this->company_contract->all()->pluck('name', 'id')->all();
         $state = $this->state;
         $branch=OfficeBranch::all()->pluck('name','id')->all();
-        $zone=SaleZone::all()->pluck('name','id')->all();
-        return view('customer.edit', compact('record', 'companies', 'state', 'tags', 'last_tag','zone','branch'));
+        $region=Region::all()->pluck('name','id')->all();
+        $zone=SaleZone::all();
+        return view('customer.edit', compact('record', 'companies', 'state', 'tags', 'last_tag','zone','branch','region'));
     }
 
     /**
@@ -352,7 +355,7 @@ class CustomerController extends Controller
                 'name' => $request->name,
                 'phone' => $request->phone,
                 'email' => $request->email,
-                'region' => $request->region,
+                'region_id' => $request->region_id,
                 'gender' => $request->gender,
                 'address' => $request->address,
                 'password' => $password != null ? Hash::make($password) : null,
@@ -395,7 +398,7 @@ class CustomerController extends Controller
                 'profile' => isset($request->profile_img) ? $input['imagename'] : $request->oldpic,
                 'name' => $request->name,
                 'phone' => $request->phone,
-                'region' => $request->region,
+                'region_id' => $request->region_id,
                 'email' => $request->email,
                 'gender' => $request->gender,
                 'address' => $request->address,

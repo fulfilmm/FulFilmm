@@ -49,7 +49,7 @@
                         <tbody>
                         @foreach ($customers as $customer)
                             <tr>
-                                <td><input type="checkbox" name="customer" value="{{$customer->id}}"></td>
+                                <td><input type="checkbox" class="checkbox" name="customer" value="{{$customer->id}}"></td>
                                 <td><img src="{{$customer->profile!=null? url(asset('img/profiles/'.$customer->profile)):url(asset('img/profiles/avatar-01.jpg'))}}" alt="" class="avatar chat-avatar-sm">{{$customer->name}}</td>
                                 <td>{{ $customer->phone }}</td>
                                 <td>{{ $customer->email }}</td>
@@ -79,20 +79,27 @@
     <script>
         $(document).ready(function() {
             $('#action').hide();
-            $('input[type="checkbox"]').click(function () {
-                $('input[type="checkbox"]').click(function () {
-                    var checked_id = new Array();
-                    $("input:checked").each(function () {
-                        // console.log($(this).val()); //works fine
-                        checked_id.push($(this).val());
-                    });
-                    if (checked_id.length > 0) {
-                        $('#action').show();
-                    } else {
-                        $('#action').hide();
-                    }
-
-                });
+            // $('input[type="checkbox"]').click(function () {
+            //     $('input[type="checkbox"]').click(function () {
+            //         var checked_id = new Array();
+            //         $("input:checked").each(function () {
+            //             // console.log($(this).val()); //works fine
+            //             checked_id.push($(this).val());
+            //         });
+            //         if (checked_id.length > 0) {
+            //             $('#action').show();
+            //         } else {
+            //             $('#action').hide();
+            //         }
+            //
+            //     });
+            // });
+            $('.checkbox').on('click',function () {
+                if($('.checkbox').is(':checked')){
+                    $('#action').show();
+                }else {
+                    $('#action').hide();
+                }
             });
         });
         $(document).ready(function() {

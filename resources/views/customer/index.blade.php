@@ -92,20 +92,28 @@
     <script>
         $(document).ready(function() {
             $('select').select2();
-            $('input[type="checkbox"]').click(function () {
-                $('input[type="checkbox"]').click(function () {
-                    var checked_id = new Array();
-                    $("input:checked").each(function () {
-                        // console.log($(this).val()); //works fine
-                        checked_id.push($(this).val());
-                    });
-                    if (checked_id.length > 0) {
-                        $('#action').show();
-                    } else {
-                        $('#action').hide();
-                    }
-
-                });
+            $('#action').hide();
+            // $('input[type="checkbox"]').click(function () {
+            //     $('input[type="checkbox"]').click(function () {
+            //         var checked_id = new Array();
+            //         $("input:checked").each(function () {
+            //             // console.log($(this).val()); //works fine
+            //             checked_id.push($(this).val());
+            //         });
+            //         if (checked_id.length > 0) {
+            //             $('#action').show();
+            //         } else {
+            //             $('#action').hide();
+            //         }
+            //
+            //     });
+            // });
+            $('.checkbox').on('click',function () {
+                if($('.checkbox').is(':checked')){
+                    $('#action').show();
+                }else {
+                    $('#action').hide();
+                }
             });
         });
         $(document).ready(function() {

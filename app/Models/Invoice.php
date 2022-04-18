@@ -29,4 +29,7 @@ class Invoice extends Model
     public function zone(){
         return $this->belongsTo(SaleZone::class,'zone_id','id');
     }
+    public function region(){
+        return $this->belongsTo(Region::class,'region_id','id');
+    }
 }

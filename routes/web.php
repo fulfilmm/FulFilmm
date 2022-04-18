@@ -532,6 +532,7 @@ Route::get('inv/cancel/{id}',[InvoiceController::class,'cancel'])->name('invoice
 Route::resource('sale_return',\App\Http\Controllers\SaleReturnController::class);
 Route::resource('salezone',\App\Http\Controllers\SaleZoneController::class);
 Route::get('daily/report',[ReportController::class,'daily'])->name('daily.report');
+Route::resource('region',\App\Http\Controllers\RegionController::class);
 
 
 

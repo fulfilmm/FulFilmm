@@ -29,7 +29,7 @@ class CustomerTable extends Component
                     ->with(['company' => function($q) {
                         $q->withTrashed();
                     },'branch'
-                    ,'zone'])
+                    ,'zone','region'])
                     ->paginate(10)
             ]);
         }else{

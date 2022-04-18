@@ -27,6 +27,7 @@
                                 <th>Supplier</th>
                                 <th>Status</th>
                                 <th>Amount</th>
+                                <th>Due Amount</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -39,10 +40,11 @@
                                     <td>{{$bill->supplier->name}}</td>
                                     <td>{{$bill->status}}</td>
                                     <td>{{$bill->grand_total}}</td>
+                                    <td>{{$bill->due_amount}}</td>
                                     <td>
                                         <div class="row">
                                             <a href="{{route('bills.show',$bill->id)}}" class="btn btn-white btn-sm mr-1"><i class="fa fa-eye"></i></a>
-                                            <a href="{{route('bills.edit',$bill->id)}}" class="btn btn-success btn-sm mr-1"><i class="fa fa-edit"></i></a>
+                                            {{--<a href="{{route('bills.edit',$bill->id)}}" class="btn btn-success btn-sm mr-1"><i class="fa fa-edit"></i></a>--}}
                                             <form action="{{route('bills.destroy',$bill->id)}}" method="post">
                                                 @csrf @method('delete')
                                                 <button type="submit" class="btn btn-danger btn-sm mr-1"><i class="fa fa-trash"></i></button>

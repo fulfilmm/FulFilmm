@@ -92,7 +92,7 @@
                             <div class="avatar rounded no-thumbnail bg-danger text-light shadow"><i class="fa fa-money fa-lg"></i></div>
                             <div class="flex-fill ms-3 text-truncate">
                                 <div class="h6 mb-0">Total Bill</div>
-                                <span class="small" id="total_bill">{{$total_bill[0]->total}}</span>
+                                <span class="small" id="total_bill">{{$total_bill[0]->total??0}}</span>
                             </div>
                         </div>
                     </div>

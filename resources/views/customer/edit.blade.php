@@ -82,29 +82,35 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="zone">Branch</label>
+                                                <label for="branch">Branch</label>
                                                 <div class="input-group">
-                                                    <select name="branch_id" id="zone" class="form-control">
+                                                    <select name="branch_id" id="branch" class="form-control">
                                                         <option value="">None</option>
                                                         @foreach($branch as $key=>$val)
                                                             <option value="{{$key}}" {{$record->branch_id==$key?'selected':''}}>{{$val}}</option>
                                                         @endforeach
                                                     </select>
-                                                    <div class="input-group-append">
-                                                        <button type="button" class="btn btn-white" data-toggle="modal" data-target="#add_zone"><i class="la la-plus"></i></button>
-
-                                                    </div>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="cus_region_id">Region</label>
+                                                <select name="region_id" id="cus_region_id" class="form-control" onchange="childregion(this.value);">
+                                                    <option value="">None</option>
+                                                    @foreach($region as $key=>$val)
+                                                        <option value="{{$key}}" {{$record->region_id==$key?'selected':''}}>{{$val}}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="zone">Sale Zone</label>
                                                 <div class="input-group">
-                                                    <select name="zone_id" id="zone" class="form-control">
-                                                        <option value="">None</option>
-                                                        @foreach($zone as $key=>$val)
-                                                            <option value="{{$key}}" {{$record->zone_id==$key?'selected':''}}>{{$val}}</option>
+                                                    <select name="zone_id" id="zone_id" class="form-control">
+                                                        @foreach($zone as $item)
+                                                            <option value="{{$item->id}}" {{$record->zone_id==$key?'selected':''}} data-option="{{$item->region_id}}">{{$item->name}}</option>
                                                         @endforeach
                                                     </select>
                                                     <div class="input-group-append">
@@ -387,7 +393,6 @@
         function openSelect(file) {
             $(file).trigger('click');
         }
-
         $(document).ready(function () {
             var customer_type = $('#customer_type option:selected').val();
             if(customer_type=='Lead'){
@@ -434,5 +439,22 @@
                 });
             });
         });
+
+        var main = document.querySelector('#cus_region_id');
+        var child = document.querySelector('#zone_id');
+        var zone_optoion = child.querySelectorAll('option');
+        // console.log(options3);
+        // alert(product)
+        function childregion(selValue) {
+            zone_id.innerHTML='';
+
+            for(var i = 0; i < zone_optoion.length; i++) {
+                if(zone_optoion[i].dataset.option === selValue) {
+                    zone_id.appendChild(zone_optoion[i]);
+
+                }
+            }
+        }
+        childregion(main.value);
     </script>
 @endsection

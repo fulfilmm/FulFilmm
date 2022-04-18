@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSaleZonesTable extends Migration
+class CreateRegionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateSaleZonesTable extends Migration
      */
     public function up()
     {
-        Schema::create('sale_zones', function (Blueprint $table) {
+        Schema::create('regions', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->bigInteger('region_id')->unsigned();//new field
+            $table->bigInteger('branch_id')->unsigned();
             $table->string('description')->nullable();
             $table->timestamps();
         });
@@ -29,6 +29,6 @@ class CreateSaleZonesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sale_zones');
+        Schema::dropIfExists('regions');
     }
 }

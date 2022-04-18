@@ -219,10 +219,6 @@
         <a href="#"><i class="la la-cube"></i> <span>Sales</span> <span
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
-            <li><a class="{{ Request::is('barcode/create') ? 'active' : '' }}"
-                   href="{{ route('barcode.create') }}" style="text-decoration: none"><i class="la la-calendar mr-1"
-                                                                                         style="font-size: 18px;"></i>Barcode
-                    Generate</a></li>
             <li class="submenu">
                 <a href="#"><i class="la la-cube mr-2" style="font-size: 18px"></i><span> Selling Price</span> <span
                             class="menu-arrow"></span></a>

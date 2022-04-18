@@ -40,7 +40,7 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $transactions = Transaction::with('expense', 'revenue', 'account')->get();
+        $transactions = Transaction::with('expense', 'revenue', 'account','bill')->get();
         $employees = Employee::all()->pluck('name', 'id')->all();
         $invoice = Invoice::all()->pluck('invoice_id', 'id')->all();
         $bill = Bill::all()->pluck('bill_id', 'id')->all();

@@ -175,7 +175,7 @@
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                                                <h5 class="modal-title" id="exampleModalLabel">Stock In</h5>
                                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
@@ -231,7 +231,7 @@
                                                                         <div class="col-md-6">
                                                                             <div class="form-group">
                                                                                 <label for="value">Purchase Price</label>
-                                                                                <input type="number" name="purchase_price" class="form-control" placeholder="Enter Purchase Price">
+                                                                                <input type="number" name="purchase_price" class="form-control" placeholder="Enter Purchase Price" value="{{$item->price}}">
                                                                                 @error('purchase_price')
                                                                                 <span class="text-danger">{{$message}}</span>
                                                                                 @enderror

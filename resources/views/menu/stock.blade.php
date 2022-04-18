@@ -144,6 +144,8 @@
 
         <ul style="display: none;">
             <li class="submenu">
+            <li><a class="{{ Request::is('barcode/create') ? 'active' : '' }}"
+                   href="{{ route('barcode.create') }}" style="text-decoration: none">Barcode Generate</a></li>
                 <a href="#"><span>Supplier</span> <span
                             class="menu-arrow"></span></a>
                 <ul style="display: none;">

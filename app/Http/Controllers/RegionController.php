@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\OfficeBranch;
 use App\Models\Region;
-use App\Models\SaleZone;
 use Illuminate\Http\Request;
 
-class SaleZoneController extends Controller
+class RegionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,10 +15,9 @@ class SaleZoneController extends Controller
      */
     public function index()
     {
-        $zones=SaleZone::all();
-        $region=Region::all()->pluck('name','id')->all();
-//        dd($zones);
-        return view('customer.salezone',compact('zones','region'));
+        $regions=Region::with('branch')->get();
+        $branch=OfficeBranch::all()->pluck('name','id')->all();
+        return view('customer.region',compact('regions','branch'));
     }
 
     /**
@@ -39,11 +38,12 @@ class SaleZoneController extends Controller
      */
     public function store(Request $request)
     {
-//        dd($request->all());
-        $this->validate($request,['name'=>'required']);
-        SaleZone::create($request->all());
-
-        return redirect()->back()->with('success','Added New Zone');
+        $this->validate($request,[
+           'name'=>'required',
+           'branch_id'=>'required'
+        ]);
+        Region::create($request->all());
+        return redirect()->back()->with('success','Added new Region');
     }
 
     /**
@@ -77,9 +77,9 @@ class SaleZoneController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $zone=SaleZone::where('id',$id)->first();
-        $zone->update($request->all());
-        return redirect('salezone')->with('Updated Zone');
+        $region=Region::where('id',$id)->first();
+        $region->update($request->all());
+        return redirect()->back()->with('success','Added new Region');
     }
 
     /**
@@ -90,8 +90,6 @@ class SaleZoneController extends Controller
      */
     public function destroy($id)
     {
-        $zone=SaleZone::where('id',$id)->first();
-        $zone->delete();
-        return redirect('salezone')->with('danger','Deleted Sale Zone');
+        //
     }
 }

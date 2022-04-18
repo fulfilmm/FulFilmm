@@ -33,7 +33,7 @@
                             <td>{{ $customer->phone }}</td>
                             <td>{{ $customer->email }}</td>
                             <td>{{$customer->branch->name??'N/A'}}</td>
-                            <td>{{$customer->region??'N/A'}}</td>
+                            <td>{{$customer->region->name??'N/A'}}</td>
                             <td>{{$customer->zone->name??'N/A'}}</td>
                             <td>{{$customer->credit_limit??0}}</td>
                             <td><span class="text-{{$customer->current_credit>$customer->credit_limit?'danger':''}}">{{$customer->current_credit??0}}</span></td>

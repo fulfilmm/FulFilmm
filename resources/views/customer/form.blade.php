@@ -18,6 +18,26 @@
                         <p class="mb-0 text-muted font-weight-bold">Upload Image</p>
                     </div>
                 </div>
+                <div class="col-md-12 mb-3">
+                    <label class="form-label font-weight-bold text-muted text-uppercase">Gender<span
+                                class="text-danger">*</span></label><br>
+                    <div class="form-check form-check-inline">
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" id="male" name="gender" value="Male"
+                                   class="custom-control-input" checked>
+                            <label class="custom-control-label" for="male"><i
+                                        class="fa fa-male"></i> Male </label>
+                        </div>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" id="female" name="gender" value="Female"
+                                   class="custom-control-input">
+                            <label class="custom-control-label" for="female"><i
+                                        class="fa fa-female"></i> Female </label>
+                        </div>
+                    </div>
+                </div>
 
             </div>
             <div class="col-md-8">
@@ -44,7 +64,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fa fa-building"></i></span>
                             </div>
-                            <select name="company_id" id="company_id" class="form-control">
+                            <select name="company_id" id="company_id" class="form-control select2">
                                 @foreach($companies as $key=>$val)
                                     <option value="{{$key}}">{{$val}}</option>
                                 @endforeach
@@ -90,7 +110,7 @@
                     <div class="col-md-6 mb-3" id="refesh_div">
                         <label for="customer_type" class="form-label font-weight-bold text-muted text-uppercase">
                             Type</label>
-                        <select name="customer_type" id="customer_type" class="form-control">
+                        <select name="customer_type" id="customer_type" class="form-control select2">
                             <option value="Customer">Customer</option>
                             <option value="Lead">Lead</option>
                             <option value="In Query">In Query</option>
@@ -101,33 +121,24 @@
                         </select>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label class="form-label font-weight-bold text-muted text-uppercase">Gender<span
-                                    class="text-danger">*</span></label><br>
-                        <div class="form-check form-check-inline">
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" id="male" name="gender" value="Male"
-                                       class="custom-control-input" checked>
-                                <label class="custom-control-label" for="male"><i
-                                            class="fa fa-male"></i> Male </label>
-                            </div>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" id="female" name="gender" value="Female"
-                                       class="custom-control-input">
-                                <label class="custom-control-label" for="female"><i
-                                            class="fa fa-female"></i> Female </label>
-                            </div>
+                        <div class="form-group">
+                            <label for="region_id">Region</label>
+                            <select name="region_id" id="region_id" class="form-control select2" onchange="region(this.value)">
+                                <option value="">None</option>
+                                @foreach($region as $key=>$val)
+                                    <option value="{{$key}}">{{$val}}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
                         <div class="form-group">
                             <label for="zone">Sale Zone</label>
                             <div class="input-group">
-                                <select name="zone_id" id="zone" class="form-control">
+                                <select name="zone_id" id="zone" class="form-control select2">
                                     <option value="">None</option>
-                                    @foreach($zone as $key=>$val)
-                                        <option value="{{$key}}">{{$val}}</option>
+                                    @foreach($zone as $item)
+                                        <option value="{{$item->id}}" data-option="{{$item->region_id}}">{{$item->name}}</option>
                                     @endforeach
                                 </select>
                                 <div class="input-group-append">
@@ -157,11 +168,6 @@
                               autocomplete="off">
                    </div>
                </div>
-           </div>
-           <div class="col-md-6 mb-3">
-               <label for="region"
-                      class="form-label font-weight-bold text-muted text-uppercase">Region</label>
-               <input type="text" class="form-control" id="region" name="region" value="{{old('region')}}">
            </div>
 
            <div class="col-md-6 mb-3">
@@ -322,6 +328,9 @@
         </div>
 
         <script>
+            $(document).ready(function () {
+                $('.select2').select2();
+            });
             var loadFile = function (event) {
                 var reader = new FileReader();
                 reader.onload = function () {
@@ -351,7 +360,21 @@
                     });
                 });
             });
-            $(document).ready(function () {
-                $('select').select2();
-            });
+
+            var region_id = document.querySelector('#region_id');
+            var zone_id = document.querySelector('#zone');
+            var zone_optoion = zone_id.querySelectorAll('option');
+            console.log(options3);
+            // alert(product)
+            function region(selValue) {
+                zone.innerHTML='';
+
+                for(var i = 0; i < zone_optoion.length; i++) {
+                    if(zone_optoion[i].dataset.option === selValue) {
+                        zone.appendChild(zone_optoion[i]);
+
+                    }
+                }
+            }
+            region(region_id.value);
         </script>

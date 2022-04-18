@@ -62,7 +62,7 @@
                     {{\Illuminate\Support\Carbon::parse($bill->due_date)->toFormattedDateString()}}               </span></strong> <br><br></div>
         </div>
 
-        {{--@if($data['overdue_amount']!=0)--}}
+        @if($bill->due_amount!=0)
             <div class="card">
                 <div class="card-body">
                     <div data-timeline-content="axis" data-timeline-axis-style="dashed" class="timeline timeline-one-side">
@@ -131,7 +131,7 @@
                     </div>
                 </div>
             </div>
-        {{--@endif--}}
+        @endif
         <div class="row form" >
             <div class="col-lg-12">
                 <div class="card" >
