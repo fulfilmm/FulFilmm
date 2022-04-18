@@ -219,6 +219,10 @@
         <a href="#"><i class="la la-cube"></i> <span>Sales</span> <span
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
+            <li><a class="{{ Request::is('salezone') ? 'active' : '' }}"
+                   href="{{route('salezone.index')}}" style="text-decoration: none">Sale Zone</a></li>
+            <li><a class="{{ Request::is('region') ? 'active' : '' }}"
+                   href="{{route('region.index')}}" style="text-decoration: none">Sale Regioin</a></li>
             <li class="submenu">
                 <a href="#"><i class="la la-cube mr-2" style="font-size: 18px"></i><span> Selling Price</span> <span
                             class="menu-arrow"></span></a>
