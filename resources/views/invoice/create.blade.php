@@ -1176,6 +1176,14 @@
                 var delivery_onoff=$('input[name="delionoff"]:checked').val();
                 var zone=$('#inv_zone option:selected').val();
                 var region=$('#region_id option:selected').val();
+                swal({
+                    title: 'Credit Amount Alert!',
+                    text: "This customer credit limit is exceeded!",
+                    type: 'warning',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Confirm!'
+                }).then(function(){
                 $.ajax({
                     data: {
                         'discount': discount,
@@ -1224,6 +1232,9 @@
                         }
                     }
                 });
+                }).catch(function(reason){
+                    alert("The alert was dismissed by the user: "+reason);
+                });
             });
         });
 
@@ -1253,12 +1264,11 @@
                 var zone=$('#inv_zone option:selected').val();
                 var region=$('#region_id option:selected').val();
                 swal({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
+                    title: 'Credit Limit Alert',
+                    text: "This customer credit limit is exceeded!",
                     type: 'warning',
-                    showCancelButton: true,
+                    showCancelButton: false,
                     confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
                     confirmButtonText: 'Confirm!'
                 }).then(function(){
                     $.ajax({
