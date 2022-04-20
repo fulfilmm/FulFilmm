@@ -19,6 +19,7 @@ class CreateDamagedProductsTable extends Migration
             $table->double('qty');
             $table->bigInteger('warehouse_id')->unsigned();
             $table->bigInteger('emp_id')->unsigned();
+            $table->bigInteger('branch_id')->nullable();
             $table->timestamps();
         });
     }

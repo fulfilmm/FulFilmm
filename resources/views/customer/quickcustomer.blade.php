@@ -134,7 +134,8 @@
             var email = $('#contact_email').val();
             var phone = $('#contact_phone').val();
             var can_login=$('#canlogin').val();
-            var zone=$('#zone option:selected').val();
+            var region=$('#quick_region_id option:selected').val();
+            var zone=$('#quick_zone option:selected').val();
             $.ajax({
                 type: 'POST',
                 data: {
@@ -144,7 +145,8 @@
                     email: email,
                     company_id: company_id,
                     canlogin:can_login,
-                    zone_id:zone
+                    zone_id:zone,
+                    region_id:region,
 
                 },
                 url: "{{route('customers.store')}}",

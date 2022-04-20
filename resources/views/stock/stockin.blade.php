@@ -48,10 +48,29 @@
                            <div class="col-md-6">
                                <div class="form-group">
                                    <label for="exp_date">Expired Date</label>
-                                   <input type="date" class="form-control" name="exp_date" id="exp_date" value="{{old('exp_date')}}">
+                                   <input type="date" class="form-control" name="exp_date" id="datepicker" value="{{old('exp_date')}}">
                                    @error('exp_date')
                                    <span class="text-danger">{{$message}}</span>
                                    @enderror
+                               </div>
+                           </div>
+                           <div class="col-md-6">
+                               <div class="form-group">
+                                   <label for="exp_date">Alert Month</label>
+                                   <input type="text" class="form-control" name="alert_month" id="alert_month" value="{{old('alert_month')}}" dataformatas="Y-M">
+                                   @error('alert_month')
+                                   <span class="text-danger">{{$message}}</span>
+                                   @enderror
+                               </div>
+                           </div>
+                           <div class="col-md-6">
+                               <div class="form-group">
+                                   <label for="branch">Office Branch</label>
+                                   <select name="branch_id" id="branch" class="form-control">
+                                       @foreach($branch as $brch)
+                                           <option value="{{$brch->id}}" {{$brch->id==old('branch_id')?'selected':''}}>{{$brch->name}}</option>
+                                       @endforeach
+                                   </select>
                                </div>
                            </div>
                            <div class="col-md-6">
@@ -94,15 +113,17 @@
                                    </select>
                                </div>
                            </div>
-                       <div class="col-md-6">
+                       <div class="col-md-12">
                            <div class="form-group">
                                <label for="loca">Location</label>
                                <input type="text" class="form-control" name="product_location" placeholder="Enter product location in warehouse" value="{{old('product_location')}}">
                            </div>
                        </div>
-                       <div class="form-group ">
-                           <div class="col-12">
-                               <button type="submit" class="btn btn-primary text-center">Stock In</button>
+                       <div class="col-12">
+                           <div class="form-group ">
+                               <div class="col-12">
+                                   <button type="submit" class="btn btn-primary text-center">Stock In</button>
+                               </div>
                            </div>
                        </div>
                        </div>
@@ -113,7 +134,24 @@
     </div>
     <script>
        $(document).ready(function () {
-           $('select').select2();
+           $(".ui-datepicker-calendar").hide();
+           $('#alert_month').datepicker({
+               changeYear: true,
+               changeMonth:true,
+               changeCalender:false,
+               showButtonPanel: true,
+               dateFormat: 'yy-mm',
+               onClose: function(dateText, inst) {
+                   var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                   var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+                   $(this).datepicker('setDate', new Date(year,month));
+               }
+           });
+           $("#datepicker").focus(function() {
+               $(".ui-datepicker-month").show();
+               $(".ui-datepicker-calender").hide();
+
+           });
        });
        $(document).ready(function () {
            $("#product_id").html(" @foreach($products as $product)<option value='{{$product->id}}'>{{$product->product_name}} ({{$product->variant}})</option> @endforeach");

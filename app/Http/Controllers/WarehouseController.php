@@ -8,6 +8,7 @@ use App\Models\ProductVariations;
 use App\Models\Stock;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class WarehouseController extends Controller
 {
@@ -18,21 +19,40 @@ class WarehouseController extends Controller
      */
     public function index()
     {
-        $warehouses=Warehouse::with('branch','main_warehouse')->get();
-        $branches=OfficeBranch::where('warehouse_created',0)->get();
+       $auth=Auth::guard('employee')->user();
+       if($auth->role->name=='Super Admin'||$auth->role->name=='CE0'){
+           $warehouses=Warehouse::with('branch','main_warehouse')->get();
+           $branches=OfficeBranch::all();
 
 //        dd($branches);
-        $warehouse_qty=[];
-        foreach ($warehouses as $warehouse){
-            $product=Stock::where('warehouse_id',$warehouse->id)->get();
-            $total=0;
-            foreach ($product as $item){
-                $valuation=$item->stock_balance*$item->cos??0;
-                $total+=$valuation;
-            }
+           $warehouse_qty=[];
+           foreach ($warehouses as $warehouse){
+               $product=Stock::where('warehouse_id',$warehouse->id)->get();
+               $total=0;
+               foreach ($product as $item){
+                   $valuation=$item->stock_balance*$item->cos??0;
+                   $total+=$valuation;
+               }
 
-            $warehouse_qty[$warehouse->id]=$total;
-        }
+               $warehouse_qty[$warehouse->id]=$total;
+           }
+       }else{
+           $warehouses=Warehouse::with('branch','main_warehouse')->where('branch_id',$auth->office_branch_id)->get();
+           $branches=OfficeBranch::where('id',$auth->office_branch_id)->get();
+
+//        dd($branches);
+           $warehouse_qty=[];
+           foreach ($warehouses as $warehouse){
+               $product=Stock::where('warehouse_id',$warehouse->id)->get();
+               $total=0;
+               foreach ($product as $item){
+                   $valuation=$item->stock_balance*$item->cos??0;
+                   $total+=$valuation;
+               }
+
+               $warehouse_qty[$warehouse->id]=$total;
+           }
+       }
         $last_wh = Warehouse::orderBy('id', 'desc')->first();
         if ($last_wh != null) {
             $last_wh->warehouse_id++;

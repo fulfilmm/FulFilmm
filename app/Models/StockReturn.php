@@ -10,7 +10,7 @@ class StockReturn extends Model
     use HasFactory;
     protected $fillable=[
         'inv_id','description','variant_id','customer_id','emp_id',
-        'attachment','warehouse_id','sell_unit','creator_id','qty','transfer_warehouse'
+        'attachment','warehouse_id','sell_unit','creator_id','qty','transfer_warehouse','category'
     ];
     public function invoice(){
         return $this->belongsTo(Invoice::class,'inv_id','id');

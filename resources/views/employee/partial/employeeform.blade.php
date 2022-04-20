@@ -127,9 +127,19 @@
                        <div class="col-md-12">
                            <div class="form-group">
                                <label for="">Office</label>
-                               <select name="office_branch_id" id="" class="select form-control">
+                               <select name="office_branch_id" id="branch_id" class="select form-control" onchange="region_select(this.value)">
                                    @foreach($office as $item)
                                        <option value="{{$item->id}}" {{isset($employee)?($employee->office_branch_id==$item->id?'selected':''):old('office_branch_id')}}>{{$item->name}}</option>
+                                   @endforeach
+                               </select>
+                           </div>
+                       </div>
+                       <div class="col-md-12">
+                           <div class="form-group">
+                               <label for="">Region</label>
+                               <select name="region_id" id="region_id" class="select form-control">
+                                   @foreach($region as $item)
+                                       <option value="{{$item->id}}" {{isset($employee)?($employee->office_branch_id==$item->id?'selected':''):old('office_branch_id')}} data-option="{{$item->branch_id}}">{{$item->name}}</option>
                                    @endforeach
                                </select>
                            </div>
@@ -182,6 +192,22 @@
     $(document).ready(function () {
         $('select').select2();
     });
+    var branch_id = document.querySelector('#branch_id');
+    var region_id = document.querySelector('#region_id');
+    var region_option = region_id.querySelectorAll('option');
+    // console.log(options3);
+    // alert(product)
+    function region_select(selValue) {
+        region_id.innerHTML='';
+
+        for(var i = 0; i < region_option.length; i++) {
+            if(region_option[i].dataset.option === selValue) {
+                region_id.appendChild(region_option[i]);
+
+            }
+        }
+    }
+    region_select(branch_id.value);
 </script>
 {{-- {{dd($errors->all())}} --}}
 

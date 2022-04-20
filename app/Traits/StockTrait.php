@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 trait StockTrait
 {
     public function stockin($request){
+//        dd($request);
         $main_product=ProductVariations::with('product')->where('id',$request['variantion_id'])->first();
         $all_qty=ProductStockBatch::where('warehouse_id',$request['warehouse_id'])->where('product_id',$request['variantion_id'])
             ->get();
@@ -24,7 +25,8 @@ trait StockTrait
         $total_qty+=$request['qty'];
         $cos_of_sale=$sum_price/$total_qty;
 //        dd($sum_price,$total_qty);
-        $last_batch= ProductStockBatch::orderBy('id', 'desc')->where('product_id',$request['variantion_id'])->first();
+        $last_batch= ProductStockBatch::orderBy('id', 'desc')->where('product_id',$request['variantion_id'])->where('branch_id',$request['branch_id'])->first();
+
 
         if ($last_batch != null) {
             $last_batch->batch_no++;
@@ -38,7 +40,9 @@ trait StockTrait
         $batch['qty']=$request['qty'];
         $batch['purchase_price']=$request['valuation']??0;
         $batch['exp_date']=$request['exp_date']??null;
+        $batch['alert_month']=$request['alert_month']??null;
         $batch['warehouse_id']=$request['warehouse_id'];
+        $batch['branch_id']=$request['branch_id'];
         ProductStockBatch::create($batch);
         $stockin=new StockIn();
 //        dd($request);
@@ -46,7 +50,8 @@ trait StockTrait
         $stockin->emp_id=Auth::guard('employee')->user()->id;
         $stockin->supplier_id=$request['supplier_id'];
         $stockin->qty=$request['qty'];
-        $stockin->binlookup_id=$request['bin_id'];
+        $stockin->binlookup_id=$request['bin_id']??null;
+        $stockin->branch_id=$request['branch_id'];
         $stockin->save();
 
        if(isset($request['valuation'])){
@@ -66,6 +71,7 @@ trait StockTrait
             $new_stock->available=$request['qty']??0;
             $new_stock->alert_qty=$request['alert_qty']??0;
             $new_stock->cos=$cos_of_sale;
+            $new_stock->branch_id=$request['branch_id'];
             $new_stock->product_location=$request['product_location']??null;
             $new_stock->save();
         }else{
@@ -75,12 +81,6 @@ trait StockTrait
             $stock->update();
             $product_variant=ProductVariations::where('id',$request['variantion_id'])->first();
             $product_variant->update();
-        }
-        $product=ProductStockBatch::where('warehouse_id',$request['warehouse_id'])->get();
-        $total=0;
-        foreach ($product as $item){
-            $valuation=$item->qty*$item->purchase_price??0;
-            $total+=$valuation;
         }
         $stock_transaction=new StockTransaction();
 //        dd($request['variantion_id']);
@@ -94,8 +94,8 @@ trait StockTrait
         $stock_transaction->creator_id=Auth::guard('employee')->user()->id;
         $stock_transaction->purchase_price=$request['valuation']??0;
         $stock_transaction->sale_value=$request['valuation']* $request['qty'];
-        $stock_transaction->inventory_value=$total;
         $stock_transaction->qty=$request['qty'];
+        $stock_transaction->branch_id=$request['branch_id'];
         $stock_transaction->type="Stock In";
         $stock_transaction->save();
 

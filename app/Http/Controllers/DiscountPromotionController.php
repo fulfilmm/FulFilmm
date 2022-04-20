@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\DiscountPromotion;
+use App\Models\OfficeBranch;
 use App\Models\ProductVariations;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DiscountPromotionController extends Controller
 {
@@ -15,7 +17,13 @@ class DiscountPromotionController extends Controller
      */
     public function index()
     {
-        $promo_discounts=DiscountPromotion::with('variant')->get();
+        $auth=Auth::guard('employee')->user();
+        if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'){
+            $promo_discounts=DiscountPromotion::with('variant','branch')->get();
+        }else{
+            $promo_discounts=DiscountPromotion::with('variant','branch')->where('branch_id',$auth->office_branch_id)->get();
+        }
+
         return view('sale.DiscountAndPromotion.index',compact('promo_discounts'));
     }
 
@@ -26,8 +34,15 @@ class DiscountPromotionController extends Controller
      */
     public function create()
     {
+        $auth=Auth::guard('employee')->user();
+        if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'){
+            $branch=OfficeBranch::all();
+        }else{
+            $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
+        }
         $products=ProductVariations::all();
-        return view('sale.DiscountAndPromotion.create',compact('products'));
+
+        return view('sale.DiscountAndPromotion.create',compact('products','branch'));
     }
 
     /**
@@ -63,7 +78,13 @@ class DiscountPromotionController extends Controller
     {
         $pro_discount=DiscountPromotion::where('id',$id)->first();
         $products=ProductVariations::all();
-        return view('sale.DiscountAndPromotion.edit',compact('pro_discount','products'));
+        $auth=Auth::guard('employee')->user();
+        if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'){
+            $branch=OfficeBranch::all();
+        }else{
+            $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
+        }
+        return view('sale.DiscountAndPromotion.edit',compact('pro_discount','products','branch'));
     }
 
     /**

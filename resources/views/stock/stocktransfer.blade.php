@@ -22,10 +22,12 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="warehouse">Current Warehouse <span class="text-danger"> * </span></label>
+                                    <label for="warehouse">My Warehouse <span class="text-danger"> * </span></label>
                                     <select name="current_warehouse_id" id="current_warehouse" class="form-control">
-                                        @foreach($warehouse as $key=>$val)
-                                            <option value={{$key}} {{old('current_warehouse_id')==$key?'selected':''}}>{{$val}}</option>
+                                        @foreach($warehouse as $item)
+                                            @if($item->branch_id==\Illuminate\Support\Facades\Auth::guard('employee')->user()->office_branch_id)
+                                                <option value={{$item->id}} {{old('current_warehouse_id')==$item->id?'selected':''}}>{{$item->name}}</option>
+                                                @endif
                                         @endforeach
                                     </select>
                                 </div>
@@ -34,8 +36,8 @@
                                 <div class="form-group">
                                     <label for="warehouse">Transfer Warehouse <span class="text-danger"> * </span></label>
                                     <select name="transfer_warehouse_id" id="warehouse" class="form-control" >
-                                        @foreach($warehouse as $key=>$val)
-                                            <option value={{$key}} {{old('transfer_warehouse_id')==$key?'selected':''}}>{{$val}}</option>
+                                        @foreach($warehouse as $item)
+                                                <option value={{$item->id}} {{old('current_warehouse_id')==$item->key?'selected':''}}>{{$item->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>

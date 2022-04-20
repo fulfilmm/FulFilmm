@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class SaleReturn extends Model
 {
     use HasFactory;
-    protected $fillable=['invoice_id','customer_id','sale_man_id','amount','reason','attach','branch_id','account_id','cashier_id'];
+    protected $fillable=['invoice_id','customer_id','sale_man_id','amount','reason','attach','branch_id','account_id','cashier_id','category'];
     public function saleman(){
         return $this->belongsTo(Employee::class,'sale_man_id','id');
     }

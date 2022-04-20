@@ -43,7 +43,7 @@ class StockReturnController extends Controller
         $invoices=Invoice::all();
         $employees=Employee::all();
         $customers=Customer::all();
-        return view('stock.StockReturn.create',compact('units','products','warehouse','invoices','employees','customers','variants'));
+        return view('stock.StockReturn.create',compact('units','products','warehouse','invoices','employees','customers','variants','category'));
     }
 
     /**
@@ -129,12 +129,6 @@ class StockReturnController extends Controller
         $stock->stock_balance=$stock->stock_balance + ($request->qty*$unit->unit_convert_rate);
         $stock->available=$stock->available + ($request->qty*$unit->unit_convert_rate);
         $stock->update();
-        $product=ProductStockBatch::all();
-        $total=0;
-        foreach ($product as $item){
-            $valuation=$item->qty*$item->purchase_price??0;
-            $total+=$valuation;
-        }
         $stock_transaction = new StockTransaction();
      try{
          $stock_transaction->product_name = $request->mainproduct;
@@ -147,7 +141,6 @@ class StockReturnController extends Controller
          $stock_transaction->qty=$request->qty*$unit->unit_convert_rate;
          $stock_transaction->creator_id=Auth::guard('employee')->user()->id;
          $stock_transaction->balance=$stock->stock_balance + ($request->qty*$unit->unit_convert_rate);
-         $stock_transaction->inventory_value=$total;
          $stock_transaction->save();
      }catch (\Exception $e){
          return redirect('stockreturn')->with('success',$e->getMessage());

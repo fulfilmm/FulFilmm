@@ -8,6 +8,7 @@ use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Invoice;
 use App\Models\OfficeBranch;
+use App\Models\Region;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -65,13 +66,15 @@ class EmployeeController extends Controller
         $office = OfficeBranch::all();
         $warehouse = Warehouse::all();
         $all_employee = Employee::all()->pluck('name', 'id')->all();
+        $region=Region::all();
 
         return view('employee.create', compact(
             'departments',
             'roles',
             'office',
             'all_employee',
-            'warehouse'
+            'warehouse',
+            'region'
         ));
     }
 
@@ -131,7 +134,9 @@ class EmployeeController extends Controller
         $employee->address = $request->address;
         $employee->report_to = $request->report_to;
         $employee->gender = $request->gender;
+        $employee->region_id=$request->region_id;
         $employee->warehouse_id=$request->warehouse_id;
+
         if ($request->profile_img != null) {
             $profile = $request->file('profile_img');
             $input['filename'] = \Illuminate\Support\Str::random(10) . time() . '.' . $profile->extension();
@@ -183,6 +188,7 @@ class EmployeeController extends Controller
         $office = OfficeBranch::all();
         $all_employee = Employee::all()->pluck('name', 'id')->all();
         $warehouse=Warehouse::all();
+        $region=Region::all();
 
         return view('employee.edit', compact(
             'departments',
@@ -190,7 +196,8 @@ class EmployeeController extends Controller
             'employee',
             'office',
             'all_employee',
-            'warehouse'
+            'warehouse',
+            'region'
         ));
     }
 
@@ -222,6 +229,7 @@ class EmployeeController extends Controller
             $employee->address = $request->address;
             $employee->report_to = $request->report_to;
             $employee->warehouse_id=$request->warehouse_id;
+            $employee->region_id=$request->region_id;
             $employee->gender = $request->gender;
             if ($request->profile_img != null) {
                 $profile = $request->file('profile_img');

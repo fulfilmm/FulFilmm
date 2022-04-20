@@ -20,10 +20,12 @@ class CreateStockTransferRecordsTable extends Migration
             $table->bigInteger('from_warehouse')->unsigned();
             $table->bigInteger('to_warehouse')->unsigned();
             $table->double('qty');
+            $table->bigInteger('emp_id')->unsigned();
             $table->bigInteger('receiver_id')->unsigned();
             $table->tinyInteger('receipt')->default(0);
             $table->double('validate_qty')->default(0);
             $table->tinyInteger('validated')->default(0);
+            $table->bigInteger('branch_id')->unsigned();
             $table->timestamps();
         });
     }

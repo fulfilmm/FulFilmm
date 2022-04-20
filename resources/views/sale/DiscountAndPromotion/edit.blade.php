@@ -57,6 +57,16 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
+                            <label for="branch">Office Branch</label>
+                            <select name="branch_id" id="bid" class="form-control select2">
+                                @foreach($branch as $item)
+                                    <option value="{{$item->id}}" {{$item->id==$pro_discount->branch_id?'selected':''}}>{{$item->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
                             <label for="rate">Rate</label>
                             <div class="input-group">
                                 <input type="number" id="rate" name="rate" value="{{$pro_discount->rate}}" class="form-control" >

@@ -92,7 +92,7 @@
                                        <select class="form-control" id="client_id">
                                            <option value="">Select Client</option>
                                            @foreach($allcustomers as $client)
-                                               <option value="{{$client->id}}" {{isset($order_data)?($client->id==$order_data->customer_id?'selected':''):($data!=null?($data[0]['client_id']==$client->id?'selected':''):'')}}>{{$client->name}}{{$client->region!=null?'('.$client->region.')':''}}</option>
+                                               <option value="{{$client->id}}" {{isset($order_data)?($client->id==$order_data->customer_id?'selected':''):($data!=null?($data[0]['client_id']==$client->id?'selected':''):'')}}>{{$client->name}}{{$client->region!=null?'('.$client->region->name.')':''}}</option>
                                            @endforeach
                                        </select>
                                        <div class="input-group-append">
@@ -172,20 +172,11 @@
                         </div>
                         {{--@dd($data)--}}
                         <div class="form-group">
-                            <label for="zone">Region (Optional)</label>
-                            <select name="region" id="region_id" class="form-control select2" onchange="region(this.value)"style="width: 100%">
-                                <option value="">None</option>
-                                @foreach($region as $item)
-                                    <option value="{{$item->id}}">{{$item->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
                             <label for="zone">Zone (Optional)</label>
                             <select name="zone_id" id="inv_zone" class="form-control select2" style="width: 100%">
                                 <option value="">None</option>
                                 @foreach($zone as $item)
-                                    <option value="{{$item->id}}" data-option="{{$item->region_id}}" >{{$item->name}}</option>
+                                    <option value="{{$item->id}}">{{$item->name}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -401,6 +392,55 @@
                                     {{--                                @dd($unit_price)--}}
                                     <script>
                                         $(".update_item_{{$order->id}}").keyup(function () {
+                                            var customer_id=$('#client_id option:selected').val();
+                                            var unit_id = $('#unit{{$order->id}} option:selected').val();
+                                            @foreach($prices as $item)
+                                            if (unit_id == "{{$item->unit_id}}") {
+                                                if ('{{$order->variant->pricing_type}}' == 1) {
+                                                    var qty = $('#quantity_{{$order->id}}').val();
+                                                    if (parseInt("{{$item->min}}") <= qty) {
+                                                        var price = "{{$item->price}}";
+                                                    }
+
+                                                } else {
+                                                    if ('{{$item->multi_price}}' == 0) {
+
+                                                        var price = "{{$item->price}}";
+
+                                                    }
+                                                }
+                                            }
+                                            @endforeach
+
+
+                                            @if($order->foc)
+                                            $('#price_{{$order->id}}').val(0);
+                                            $('#total_{{$order->id}}').val(0);
+                                            @else
+                                            $('#price_{{$order->id}}').val(price);
+                                            var quantity = $('#quantity_{{$order->id}}').val();
+                                            var dis_pro = $('#dis_pro{{$order->id}} option:selected').val();
+                                            var sub_total = quantity * price;
+                                            var amount = (dis_pro / 100) * sub_total;
+                                            var total = sub_total - amount;
+
+                                            $('#total_{{$order->id}}').val(total);
+                                            var sum = 0;
+                                            $('.total').each(function () {
+                                                sum += parseFloat($(this).val());
+                                            });
+                                            $('#total').val(sum);
+                                            @foreach($allcustomers as $client)
+                                            if('{{$client->id}}'==customer_id){
+                                                if((parseFloat(sum)+parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')){
+                                                    noti_alert();
+                                                }
+                                            }
+                                            @endforeach
+                                            @endif
+
+                                        });
+                                        $(".select_update").change(function () {
                                             var customer_id=$('#client_id option:selected').val();
                                             var unit_id = $('#unit{{$order->id}} option:selected').val();
                                             @foreach($prices as $item)
@@ -697,6 +737,7 @@
                     var tax_rate ='{{$tax->rate}}';
                         @endforeach
                 var tax_amount = parseFloat(sum) * (parseInt(tax_rate) / 100);
+                $('#taxt_amount').val(tax_amount);
                 // var discount = $('#discount').val();
                 var deli_fee = $('#deli_fee').val();
                 var on_off=$('input[name="amount_discount"]:checked').val();
@@ -758,6 +799,7 @@
                 var deli_fee = $('#deli_fee').val();
                 var on_off=$('input[name="amount_discount"]:checked').val();
                 var grand=(parseFloat(sum) + parseFloat(deli_fee) + parseFloat(tax_amount));
+{{--                @dd($amount_discount)--}}
                 if(on_off==1){
                     if('{{$amount_discount->isEmpty()}}'){
                         swal('Empty Amount Discount', 'Amount Discount Empty', 'error');
@@ -1293,25 +1335,6 @@
         }
         giveSelection(warehouse.value);
 
-
-
-
-        var region_id = document.querySelector('#region_id');
-        var zone_id = document.querySelector('#inv_zone');
-        var zone_optoion = zone_id.querySelectorAll('option');
-        console.log(options3);
-        // alert(product)
-        function region(selValue) {
-            inv_zone.innerHTML='';
-
-            for(var i = 0; i < zone_optoion.length; i++) {
-                if(zone_optoion[i].dataset.option === selValue) {
-                    inv_zone.appendChild(zone_optoion[i]);
-
-                }
-            }
-        }
-        region(region_id.value);
         // window.onbeforeunload = closeWindow;
     </script>
 

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\OfficeBranch;
 use App\Models\Region;
 use App\Models\SaleZone;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SaleZoneController extends Controller
 {
@@ -15,10 +17,16 @@ class SaleZoneController extends Controller
      */
     public function index()
     {
+        $auth=Auth::guard('employee')->user();
         $zones=SaleZone::all();
-        $region=Region::all()->pluck('name','id')->all();
+        $region=Region::all();
+        if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'||$auth->role->name=='Sale Manager'){
+            $branch=OfficeBranch::all();
+        }else{
+            $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
+        }
 //        dd($zones);
-        return view('customer.salezone',compact('zones','region'));
+        return view('customer.salezone',compact('zones','region','branch'));
     }
 
     /**

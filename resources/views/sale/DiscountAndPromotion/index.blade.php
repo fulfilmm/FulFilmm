@@ -25,7 +25,8 @@
                     <th>Product Code</th>
                     <th>Product Name</th>
                     <th>Variant</th>
-                    <th>Type</th>
+                    <th>Sale Type</th>
+                    <th>Office Branch</th>
                     <th>Discount For</th>
                     <th>Rate</th>
                     <th>Start Date</th>
@@ -41,6 +42,7 @@
                         <td>{{$item->variant->product_name}}</td>
                         <td>{{$item->variant->variant}}</td>
                         <td>{{$item->type}}</td>
+                        <td>{{$item->branch->name}}</td>
                         <td>{{$item->sale_type}}</td>
                         <td>{{$item->rate}} %</td>
                         <td>{{$item->start_date!=null?\Carbon\Carbon::parse($item->start_date)->toFormattedDateString():'N/A'}}</td>

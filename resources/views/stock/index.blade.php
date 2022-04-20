@@ -51,11 +51,11 @@
                         <th>Variant</th>
                         <th>Qty</th>
                         <th>Type</th>
+                        <th>Stock Out Type</th>
                         <th>Warehouse</th>
                         <th>Balance</th>
                         <th>Price</th>
                         <th>Purchase/Sale Value</th>
-                        <th>Total Stock Value</th>
                         <th>Employee</th>
                         <th>Unit</th>
                     </tr>
@@ -93,11 +93,11 @@
                                 </td>
                                 <td><span class="text-success">{{$transaction->type}}</span>
                                 </td>
-                                <td>{{$transaction->warehouse->name}}</td>
+                                <td></td>
+                                <td><a href="{{route('warehouses.show',$transaction->warehouse->id)}}">{{$transaction->warehouse->name}}</a></td>
                                 <td><span id="balance{{$transaction->id}}"></span></td>
                                 <td>{{$transaction->purchase_price}}</td>
                                 <td>{{$transaction->sale_value}}</td>
-                                <td>{{$transaction->inventory_value}}</td>
                                 <td>{{$transaction->employee->name}}</td>
                                 <td>
                                     <select name="" id="unit{{$transaction->id}}" class="form-control select">
@@ -142,11 +142,11 @@
                                 </td>
                                 <td><span class="text-danger" >{{$transaction->type}}</span>
                                 </td>
+                                <td>{{$transaction->stockout->type}}</td>
                                 <td>{{$transaction->warehouse->name}}</td>
                                 <td><span id="outbalance{{$transaction->id}}"></span></td>
                                 <td>{{$transaction->purchase_price}}</td>
                                 <td>{{$transaction->sale_value}}</td>
-                                <td>{{$transaction->inventory_value}}</td>
                                 <td>{{$transaction->employee->name}}</td>
                                 <td>
                                     <select name="" id="outunit{{$transaction->id}}" class="form-control select">
@@ -195,7 +195,6 @@
                                 <td><span id="outbalance{{$transaction->id}}"></span></td>
                                 <td>{{$transaction->purchase_price}}</td>
                                 <td>{{$transaction->sale_value}}</td>
-                                <td>{{$transaction->inventory_value}}</td>
                                 <td>{{$transaction->employee->name}}</td>
                                 <td>
                                     <select name="" id="outunit{{$transaction->id}}" class="form-control select">

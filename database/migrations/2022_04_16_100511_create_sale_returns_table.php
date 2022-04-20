@@ -19,6 +19,7 @@ class CreateSaleReturnsTable extends Migration
             $table->bigInteger('customer_id')->unsigned();
             $table->bigInteger('branch_id')->unsigned();
             $table->bigInteger('sale_man_id')->unsigned();
+            $table->string('category')->nullable();
             $table->double('amount')->default(0);
             $table->text('attach')->nullable();
             $table->text('reason')->nullable();

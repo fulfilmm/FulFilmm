@@ -15,7 +15,9 @@ class ProductStockBatch extends Model
         'qty',
         'purchase_price',
         'exp_date',
-        'warehouse_id'
+        'warehouse_id',
+        'alert_month',
+        'branch_id'
     ];
     public function supplier(){
         return $this->belongsTo(Customer::class,'supplier_id','id');
@@ -23,5 +25,11 @@ class ProductStockBatch extends Model
     }
     public function variant(){
         return $this->belongsTo(ProductVariations::class,'product_id','id');
+    }
+    public function warehouse(){
+        return $this->belongsTo(Warehouse::class,'warehouse_id','id');
+    }
+    public function branch(){
+        return $this->belongsTo(OfficeBranch::class,'branch_id','id');
     }
 }

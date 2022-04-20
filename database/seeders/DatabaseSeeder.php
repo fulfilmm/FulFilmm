@@ -56,7 +56,7 @@ class DatabaseSeeder extends Seeder
         TransactionCategory::create(['name'=>'General Expense','type'=>0]);
         $cuscom=Company::create(['name'=>'Customer Company','email'=>'oranger@gmail.com','phone'=>'09786543278','address'=>'Yangon','business_type'=>'Trading']);
         $supcom=Company::create(['name'=>'Supplier Company','email'=>'supplier@gmail.com','phone'=>'09786543278','address'=>'Yangon','business_type'=>'Trading']);
-        Account::create(['account_no'=>'0001','name'=>'Main Account','number'=>'2002865657','currency'=>'MMK','enabled'=>1]);
+        Account::create(['account_no'=>'0001','name'=>'Main Account','number'=>'2002865657','currency'=>'MMK','enabled'=>1,'branch_id'=>$branch->id]);
         $superadmin = Employee::updateOrCreate(
             ['email' => 'admin@gmail.com'],
             [    'empid'=>'Emp-00001',

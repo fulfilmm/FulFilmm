@@ -20,8 +20,10 @@ class CreateProductStockBatchesTable extends Migration
             $table->bigInteger('supplier_id')->unsigned()->nullable();
             $table->double('qty');
             $table->double('purchase_price')->nullable();
+            $table->dateTime('alert_month')->nullable();
             $table->dateTime('exp_date')->nullable();
             $table->bigInteger('warehouse_id')->unsigned();
+            $table->bigInteger('branch_id')->unsigned();
             $table->timestamps();
         });
     }

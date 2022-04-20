@@ -19,6 +19,7 @@ class CreateFreeofcharesTable extends Migration
             $table->double('qty');
             $table->bigInteger('issuer_id')->unsigned();
             $table->text('description')->nullable();
+            $table->bigInteger('branch_id')->unsigned();
             $table->timestamps();
         });
     }

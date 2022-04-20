@@ -24,7 +24,7 @@ class Employee extends Authenticatable implements JWTSubject
 
     protected $fillable = [
         'name', 'department_id', 'role_id', 'phone', 'email',
-        'work_phone', 'can_login','can_post_assignments', 'password', 'join_date','office_branch_id','empid'
+        'work_phone', 'can_login','can_post_assignments', 'password', 'join_date','office_branch_id','empid','region_id'
     ];
 
     public function getJWTIdentifier()
@@ -79,8 +79,8 @@ class Employee extends Authenticatable implements JWTSubject
     public function reportperson(){
         return $this->belongsTo(Employee::class,'report_to','id');
     }
-//    public function project_tasks()
-//    {
-//        return $this->belongsToMany(ProjectTask::class, 'project_task_employee');
-//    }
+    public function region()
+    {
+        return $this->belongsTo(Region::class,'region_id','id');
+    }
 }

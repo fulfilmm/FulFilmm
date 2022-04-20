@@ -201,7 +201,7 @@
        <div class="col-12 border-bottom mb-3"></div>
        <h4 class="col-12 border-top"><input type="checkbox" id="stock" onclick="check('stock')" class="mr-2">Stock</h4>
        @foreach ($permissions as $permission)
-           @if($permission->type=='Stocks'||$permission->type=='binlookup')
+           @if($permission->type=='Stocks'||$permission->type=='binlookup'||$permission->type=='warehouse')
                <label for="{{'permission' . $permission->display_name}}" class="col-md-3">
                    <input type="checkbox" {{$hasPermissions->contains($permission->id)? 'checked' : ''}} class="stock"  name="permissions[]" id="{{'permission' . $permission->display_name}}" value="{{$permission->id}}"> {{$permission->display_name}}
                </label>

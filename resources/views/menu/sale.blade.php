@@ -216,15 +216,20 @@
         </ul>
     </li>
     <li class="submenu">
-        <a href="#"><i class="la la-cube"></i> <span>Sales</span> <span
+        <a href="#"><i class="la la-dollar"></i> <span>Sale</span> <span
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
+
             <li><a class="{{ Request::is('salezone') ? 'active' : '' }}"
                    href="{{route('salezone.index')}}" style="text-decoration: none">Sale Zone</a></li>
             <li><a class="{{ Request::is('region') ? 'active' : '' }}"
                    href="{{route('region.index')}}" style="text-decoration: none">Sale Regioin</a></li>
+            <li><a class="{{ Request::is('inv/view/whole') ? 'active' : '' }}"
+                   href="{{ url('inv/view/whole') }}" style="text-decoration: none">Whole Sale</a></li>
+            <li><a class="{{ Request::is('inv/view/retail') ? 'active' : '' }}"
+                   href="{{ url('inv/view/retail') }}" style="text-decoration: none">Retail Sale</a></li>
             <li class="submenu">
-                <a href="#"><i class="la la-cube mr-2" style="font-size: 18px"></i><span> Selling Price</span> <span
+                <a href="#"><span> Selling Price</span> <span
                             class="menu-arrow"></span></a>
                 <ul style="display: none;">
                     <li><a class="{{ Request::is('product/price/index') ? 'active' : '' }}"
@@ -232,43 +237,18 @@
                 </ul>
             </li>
             <li><a class="{{ Request::is('main/customer') ? 'active' : '' }}"
-                   href="{{ route('customer') }}" style="text-decoration: none"><i class="la la-calendar mr-1"
-                                                                                   style="font-size: 18px;"></i>Customers</a>
+                   href="{{ route('customer') }}" style="text-decoration: none">Customers</a>
             </li>
             <li><a class="{{ Request::is('selling/report') ? 'active' : '' }}"
-                   href="{{ route('sale.report') }}" style="text-decoration: none"><i class="la la-calendar mr-1"
-                                                                                      style="font-size: 18px;"></i>Sale
-                    Report</a></li>
+                   href="{{ route('sale.report') }}" style="text-decoration: none">Sale Report</a></li>
             <li><a class="{{ Request::is('sale/activity') ? 'active' : '' }}"
-                   href="{{ route('activity.index') }}" style="text-decoration: none"><i class="la la-calendar mr-1"
-                                                                                         style="font-size: 18px;"></i>Sale
-                    Activity</a></li>
+                   href="{{ route('activity.index') }}" style="text-decoration: none">Sale Activity</a></li>
             <li><a class="{{ Request::is('saletargets/create') ? 'active' : '' }}"
-                   href="{{ route('saletargets.create') }}" style="text-decoration: none"><i class="la la-bullseye mr-1"
-                                                                                             style="font-size: 18px;"></i>
-                    Add Sale Target</a></li>
+                   href="{{ route('saletargets.create') }}" style="text-decoration: none">Sale Target</a></li>
             <li><a class="{{ Request::is('contact/qualified') ? 'active' : '' }}"
-                   href="{{ route('qualified_contact') }}" style="text-decoration: none"><i class="la la-users mr-1"
-                                                                                            style="font-size: 18px;"></i>
-                    Customer</a></li>
-            <li><a class="{{ Request::is('transfer/index') ? 'active' : '' }}"
-                   href="{{ route('transfer.index') }}" style="text-decoration: none">Stock Transfer</a></li>
+                   href="{{ route('qualified_contact') }}" style="text-decoration: none">Qualified Customer</a></li>
             <li class="submenu">
-                <a href="#"><img src="{{url(asset('img/icon_image/invoice.png'))}}" alt="" width="18px" height="18px"
-                                 class="mr-1"><span> Invoice</span> <span
-                            class="menu-arrow"></span></a>
-                <ul style="display: none;">
-                    <li><a class="{{ Request::is('invoices') ? 'active' : '' }}"
-                           href="{{ route('invoices.index') }}" style="text-decoration: none">All Invoice</a></li>
-                    <li><a class="{{ Request::is('invoices/create') ? 'active' : '' }}"
-                           href="{{ route('invoices.create') }}" style="text-decoration: none">Whole Sale</a></li>
-                    <li><a class="{{ Request::is('rental/invoice/crate') ? 'active' : '' }}"
-                           href="{{ route('invoice.rental') }}" style="text-decoration: none">Retail Sale</a></li>
-                </ul>
-            </li>
-            <li class="submenu">
-                <a href="#"><img src="{{url(asset('img/icon_image/order24.png'))}}" alt="" class="mr-1" width="18px"
-                                 height="18px;"><span> Order</span> <span
+                <a href="#"><span> Order</span> <span
                             class="menu-arrow"></span></a>
                 <ul style="display: none;">
                     <li><a class="{{ Request::is('saleorders') ? 'active' : '' }}"
@@ -278,7 +258,7 @@
                 </ul>
             </li>
             <li class="submenu">
-                <a href="#"><i class="la la-cube mr-2" style="font-size: 18px"></i><span>Promotion and Discount</span>
+                <a href="#"><span>Promotion and Discount</span>
                     <span class="menu-arrow"></span></a>
                 <ul style="display: none;">
                     <li><a class="{{ Request::is('discount_promotions') ? 'active' : '' }}"
@@ -287,10 +267,13 @@
                     <li><a class="{{ Request::is('discount_promotions/create') ? 'active' : '' }}"
                            href="{{route('discount_promotions.create')}}" style="text-decoration: none">
                             Add Promotion and Discount</a></li>
+                    <li><a class="{{ Request::is('discount') ? 'active' : '' }}"
+                           href="{{route('discount.index')}}" style="text-decoration: none">
+                            Amount Discount</a></li>
                 </ul>
             </li>
         </ul>
-    </li>
+    </li><!--Sale -->
     <li class="submenu">
         <a href="#"><i class="la la-cube"></i> <span>CRM</span> <span
                     class="menu-arrow"></span></a>

@@ -27,6 +27,8 @@
                     <th>Min Amount</th>
                     <th>Max Amount</th>
                     <th>Rate</th>
+                    <th>Sale Type</th>
+                    <th>Branch Office</th>
                     <th></th>
 
                 </tr>
@@ -41,6 +43,7 @@
                         <td>{{$item->max_amount}}</td>
                         <td>{{$item->rate}} %</td>
                         <td>{{$item->sale_type}}</td>
+                        <td>{{$item->branch->name}}</td>
                         <td>
                             <div class="row">
                                 <button data-toggle="modal" data-target="#edit_{{$item->id}}" class="btn btn-success btn-sm"><i class="la la-edit"></i></button>
@@ -66,11 +69,20 @@
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="row">
-
+                                                            <div class="col-md-6" >
+                                                                <div class="form-group">
+                                                                    <label for="branch">Office Branch</label>
+                                                                    <select name="branch_id"  class="form-control" style="width: 100%">
+                                                                        @foreach($branch as $brch)
+                                                                            <option value="{{$brch->id}}" {{$brch->id==$item->branch_id?'selected':''}}>{{$brch->name}}</option>
+                                                                            @endforeach
+                                                                    </select>
+                                                                </div>
+                                                            </div>
                                                             <div class="col-md-6" >
                                                                 <div class="form-group">
                                                                     <label for="sale_type">Sale Type <span class="text-danger"> * </span></label>
-                                                                    <select name="sale_type" class="form-control">
+                                                                    <select name="sale_type" class="form-control" style="width: 100%;">
                                                                         <option value="Whole Sale" {{$item->sale_type=='Whole Sale'?'selected':''}}>Whole Sale</option>
                                                                         <option value="Retail Sale" {{$item->sale_type=='Retail Sale'?'selected':''}}>Retail Sale</option>
                                                                     </select>
@@ -123,7 +135,7 @@
                                                                     @enderror
                                                                 </div>
                                                             </div>
-                                                            <div class="col-12">
+                                                            <div class="col-6">
                                                                 <div class="form-group">
                                                                     <label for="rate">Rate</label>
                                                                     <div class="input-group">
@@ -169,11 +181,20 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="row">
-
+                                    <div class="col-md-6" >
+                                        <div class="form-group">
+                                            <label for="branch">Office Branch</label>
+                                            <select name="branch_id" id="branch" class="form-control" style="width: 100%">
+                                                @foreach($branch as $brch)
+                                                    <option value="{{$brch->id}}">{{$brch->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
                                     <div class="col-md-6" >
                                         <div class="form-group">
                                             <label for="sale_type">Sale Type <span class="text-danger"> * </span></label>
-                                            <select name="sale_type" class="form-control">
+                                            <select name="sale_type" class="form-control" style="width: 100%">
                                                 <option value="Whole Sale">Whole Sale</option>
                                                 <option value="Retail Sale">Retail Sale</option>
                                             </select>
@@ -226,7 +247,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-12">
+                                    <div class="col-6">
                                         <div class="form-group">
                                             <label for="rate">Rate</label>
                                             <div class="input-group">
@@ -250,5 +271,9 @@
             </div>
         </div>
     </div>
-
+    <script>
+        $(document).ready(function () {
+           $('select').select2();
+        });
+    </script>
 @endsection

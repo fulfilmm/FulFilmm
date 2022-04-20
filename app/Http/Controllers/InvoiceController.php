@@ -20,7 +20,7 @@ use App\Models\OrderItem;
 use App\Models\MainCompany;
 use App\Models\product;
 use App\Models\product_price;
-use App\Models\products_tax; 
+use App\Models\products_tax;
 use App\Models\ProductVariations;
 use App\Models\Region;
 use App\Models\Revenue;
@@ -50,19 +50,22 @@ class InvoiceController extends Controller
     public  $status=['Paid','Partial','Unpaid','Pending','Cancel','Draft'];
     public function index()
     {
-        $zone=SaleZone::all();
-        $region=Region::all()->pluck('name','id')->all();
-        $branch=OfficeBranch::all()->pluck('name','id')->all();
+        $zone=SaleZone::all();// sale zone နဲ့ filter လုပ်ဖို့ထုတ်ထားတာ
+        $region=Region::all()->pluck('name','id')->all();//Region နဲ့ filter လုပ်ဖို့ထုတ်ထားတာ
+        $branch=OfficeBranch::all()->pluck('name','id')->all(); //Branch နဲ့ filter လုပ်ဖို့ထုတ်ထားတာ
         if(Auth::guard('employee')->user()->role->name=='Super Admin'|| Auth::guard('employee')->user()->role->name=='CEO'||Auth::guard('employee')->user()->role->name=='Sale Manager'||Auth::guard('employee')->user()->role->name=='Cashier' ){
-            $allinv=Invoice::with('customer','employee','branch','zone','region')->get();
+            $allinv=Invoice::with('customer','employee','branch','zone','region')->get();//Super Admin နဲ့ CEO က invoice အားလုံးကြည့်လို့ရတအောင်အကုန်ထုတ်ပေးတယ်
+        }elseif (Auth::guard('employee')->user()->role->name=='Sale Manager'||Auth::guard('employee')->user()->role->name=='Accountant'||Auth::guard('employee')->user()->role->name=='Cashier'){
+            $allinv=Invoice::with('customer','employee','branch','zone','region')->where('branch_id',Auth::guard('employee')->user()->office_branch_id)->get();
         }else{
-            $allinv=Invoice::with('customer','employee','branch','zone','region')->where('emp_id',Auth::guard('employee')->user()->id)->get();
+            $allinv=Invoice::with('customer','employee','branch','zone','region')->where('emp_id',Auth::guard('employee')->user()->id)->get();//ရိုးရိုးsale man တေက သူဖွင့်ထားတဲ့ invoice ကိုဘဲကြည့်လို့ရမယ်
         }
         $status=$this->status;
 //        dd($allinv);
         return view('invoice.index',compact('allinv','status','zone','branch','region'));
     }
     public function invoice_view($type){
+        //type parameter က invoice ကိုအမျိုးကြည့်ဖို့အတွက် ထည့်ထားတာ
         $status=$this->status;
         $branch=OfficeBranch::all()->pluck('name','id')->all();
         $zone=SaleZone::all();
@@ -80,7 +83,21 @@ class InvoiceController extends Controller
             return view('invoice.retail',compact('allinv','status','zone','branch','zone','region'));
 
         }
-        }else{
+        }elseif (Auth::guard('employee')->user()->role->name=='Sale Manager'||Auth::guard('employee')->user()->role->name=='Accountant'||Auth::guard('employee')->user()->role->name=='Cashier'){
+            if($type=='due'){
+                $allinv=Invoice::with('customer','employee','branch','region','zone')->where('due_amount','!=',0)->where('branch_id',Auth::guard('employee')->user()->office_branch_id)->get();
+                return view('invoice.due_list',compact('allinv','status','branch','zone','region'));
+            }elseif ($type=='whole'){
+                $allinv=Invoice::with('customer','employee','branch','region','zone')->where('inv_type','Whole Sale')->where('branch_id',Auth::guard('employee')->user()->office_branch_id)->get();
+                return view('invoice.wholesale',compact('allinv','status','branch','zone','region'));
+
+            }else{
+                $allinv=Invoice::with('customer','employee','branch','region','zone')->where('inv_type','Retail Sale')->where('branch_id',Auth::guard('employee')->user()->office_branch_id)->get();
+                return view('invoice.retail',compact('allinv','status','zone','branch','zone','region'));
+
+            }
+        }
+        else{
             if($type=='due'){
                 $allinv=Invoice::with('customer','employee','branch','zone','region')->where('due_amount','!=',0)->where('emp_id',Auth::guard('employee')->user()->id)->get();
                 return view('invoice.due_list',compact('allinv','status','branch','zone','region'));
@@ -96,18 +113,29 @@ class InvoiceController extends Controller
         }
 
     }
+    /*
+     * invoice method က invoice ကို whole sale,Retail sale,Due သပ်သပ်စီခွဲကြည့်ဖို့အတွက်လုပ်ထားတဲံ method
+     */
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response 
+     * @return \Illuminate\Http\Response
      */
     public function create()
     {
+        /*
+         * whole sale ရောင်းရင်saleman employee မှာ branch နဲ့ region သတ်မှတ်ပီးသားဖြစ်ဖို့လိုတယ်
+         * ရောင်းမယ့် customer ဟာ saleman employee ရဲ့ branch customer ဖြစ်ရမယ် sale man ရဲ့region
+         * customer လဲဖြစ်ထားရမယ်
+         * warehouse က saleman အတွက်သတ်မှတ်ထားတဲ့ထားတဲ့ warehouse ဖြစ်ရမယ် stock လဲရှီရမယ်
+         * discount and promotion လဲ branch အလိုက်ဘဲသွားမယ်
+         * Ygn branch အတွက် discount က Mdy branch နဲ့မဆိုင်ဘူး
+         */
 
         $Auth=Auth::guard('employee')->user();
-        if($Auth->office_branch_id!=null){
-            $allcustomers = Customer::all();
+        if($Auth->office_branch_id!=null && $Auth->region_id!=null){
+            $allcustomers = Customer::where('branch_id',$Auth->office_branch_id)->where('region_id',$Auth->region_id)->get();
             $taxes = products_tax::all();
             $data = Session::get('data-' . Auth::guard('employee')->user()->id);
 //        dd($data);
@@ -128,32 +156,45 @@ class InvoiceController extends Controller
             $unit_price=SellingUnit::where('active',1)->get();
             $prices =product_price::where('sale_type', 'Whole Sale')->where('active',1)->where('branch_id',$Auth->office_branch_id)->get();
             //dd($prices);
-            $dis_promo = DiscountPromotion::where('sale_type', 'Whole Sale')->get();
-            $focs = Freeofchare::with('variant')->get();
+            $dis_promo = DiscountPromotion::where('sale_type', 'Whole Sale')
+                ->where('branch_id',$Auth->office_branch_id)
+                ->get();
+            $focs = Freeofchare::with('variant')->where('branch_id',$Auth->office_branch_id)->get();
             $type = 'Whole Sale';
 
           if(Auth::guard('employee')->user()->mobile_seller==1){
-              $warehouse =Warehouse::where('branch_id', $Auth->office_branch_id)->where('mobile_warehouse',1)->get();
+              $warehouse =Warehouse::where('branch_id', $Auth->office_branch_id)
+                  ->where('mobile_warehouse',1)
+                  ->get();
           }else{
-              $warehouse =Warehouse::where('branch_id', $Auth->office_branch_id)->where('mobile_warehouse',0)->get();
+              $warehouse =Warehouse::where('branch_id', $Auth->office_branch_id)
+                  ->where('mobile_warehouse',0)
+                  ->get();
           }
             $aval_product = Stock::with('variant')->where('available', '>', 0)->get();
-            $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))->whereDate('end_date','>=',date('Y-m-d'))->where('sale_type','Whole Sale')->get();
+            $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))
+                ->whereDate('end_date','>=',date('Y-m-d'))
+                ->where('sale_type','Whole Sale')
+                ->where('branch_id',$Auth->office_branch_id)
+                ->get();
             $due_default=Carbon::today()->addDay(1);
             $companies=Company::all()->pluck('name','id')->all();
-            $zone=SaleZone::all();
+            $zone=SaleZone::where('region_id',$Auth->region_id)->get();
             $region=Region::where('branch_id',$Auth->office_branch_id)->get();
             return view('invoice.create', compact('zone','warehouse', 'type', 'request_id', 'allcustomers', 'orderline', 'grand_total', 'status', 'data', 'aval_product', 'taxes', 'unit_price', 'dis_promo', 'focs','prices','amount_discount','due_default','companies','region'));
         }else{
-            return redirect()->back()->with('error','Firstly,Fixed your Branch of Office');
+            return redirect()->back()->with('error','Firstly,Fixed your Branch Office and Sale Region');
     }
     }
+    /*
+     * whole sale invoice create form သွားမယ့် method
+     */
     public function retail_inv()
     {
         $Auth=Auth::guard('employee')->user();
-        if($Auth->office_branch_id!=null){
-        $allcustomers =Customer::all();
-        $aval_product=Stock::with('variant')->where('available','>',0)->get();
+        if($Auth->office_branch_id!=null && $Auth->region_id!=null){
+            $allcustomers = Customer::where('branch_id',$Auth->office_branch_id)->where('region_id',$Auth->region_id)->get();
+            $aval_product=Stock::with('variant')->where('available','>',0)->get();
 //        foreach ($pd as $product){
 //
 //            if($pd!=null){
@@ -186,8 +227,10 @@ class InvoiceController extends Controller
         $status=$this->status;
         $unit_price=SellingUnit::where('active',1)->get();
         $prices=product_price::where('sale_type','Retail Sale')->where('active',1)->where('branch_id',$Auth->office_branch_id)->get();
-        $dis_promo=DiscountPromotion::where('sale_type','Retail Sale')->get();
-        $focs=Freeofchare::with('variant')->get();
+        $dis_promo=DiscountPromotion::where('sale_type','Retail Sale')
+            ->where('branch_id',$Auth->office_branch_id)
+            ->get();
+        $focs=Freeofchare::with('variant')->where('branch_id',$Auth->office_branch_id)->get();
         $type='Retail Sale';
         $Auth=Auth::guard('employee')->user();
             if(Auth::guard('employee')->user()->mobile_seller==1){
@@ -195,16 +238,23 @@ class InvoiceController extends Controller
             }else{
                 $warehouse =Warehouse::where('branch_id', $Auth->office_branch_id)->where('mobile_warehouse',0)->get();
             }
-        $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))->whereDate('end_date','>=',date('Y-m-d'))->where('sale_type','Retail Sale')->get();
+            $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))
+            ->whereDate('end_date','>=',date('Y-m-d'))
+            ->where('sale_type','Retail Sale')
+            ->where('branch_id',$Auth->office_branch_id)
+            ->get();
             $due_default=Carbon::today()->addDay(1);
             $companies=Company::all()->pluck('name','id')->all();
-            $zone=SaleZone::all();
+            $zone=SaleZone::where('region_id',$Auth->region_id)->get();
             $region=Region::where('branch_id',$Auth->office_branch_id)->get();
         return view('invoice.create',compact('zone','warehouse','request_id','allcustomers','orderline','grand_total','status','data','aval_product','taxes','unit_price','dis_promo','focs','type','prices','amount_discount','due_default','companies','region'));
         }else{
-            return redirect()->back()->with('error','Firstly,Fixed your Branch of Office');
+            return redirect()->back()->with('error','Firstly,Fixed your Branch Office and region');
         }
     }
+    /*
+     * retail sale invoice create form သွားမယ့် method
+     */
 
     /**
      * Store a newly created resource in storage.
@@ -284,7 +334,7 @@ class InvoiceController extends Controller
             $newInvoice->branch_id=Auth::guard('employee')->user()->office_branch_id;
             $Auth = Auth::guard('employee')->user()->name;
             $request_id = Session::get($Auth);
-            $confirm_order_item = OrderItem::where("creation_id", $request_id)->get();
+            $confirm_order_item = OrderItem::where("creation_id", $request_id)->get(); //invoice item တေကို ပြန် confirm ပီး invoice id နဲ့တွဲတာ
             if (count($confirm_order_item) != 0) {
                 $newInvoice->save();
                 $customer=Customer::where('id',$request->client_id)->first();
@@ -577,7 +627,7 @@ class InvoiceController extends Controller
        if($old_state==null){
            $history=new InvoiceHistory();
            $history->invoice_id=$id;
-           $history->status=$status; 
+           $history->status=$status;
            $history->description=$desc;
            $history->save();
        }

@@ -105,33 +105,52 @@
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
             <li><a class="{{ Request::is('main/customer') ? 'active' : '' }}"
-                   href="{{ route('customer') }}" style="text-decoration: none"><i class="la la-calendar mr-1"
-                                                                                   style="font-size: 18px;"></i>Customers</a>
+                   href="{{ route('customer') }}" style="text-decoration: none">Customers</a>
             </li>
+            <li><a class="{{ Request::is('invoices') ? 'active' : '' }}"
+                   href="{{ route('invoices.index') }}" style="text-decoration: none">All Invoice</a></li>
+            <li><a class="{{ Request::is('inv/view/due') ? 'active' : '' }}"
+                   href="{{ url('inv/view/'.'due') }}" style="text-decoration: none">Due Invoice</a></li>
+            <li><a class="{{ Request::is('inv/view/whole') ? 'active' : '' }}"
+                   href="{{ url('inv/view/whole') }}" style="text-decoration: none">Whole Sale</a></li>
+            <li><a class="{{ Request::is('inv/view/retail') ? 'active' : '' }}"
+                   href="{{ url('inv/view/retail') }}" style="text-decoration: none">Retail Sale</a></li>
+            <li><a class="{{ Request::is('sale_return') ? 'active' : '' }}"
+                   href="{{ route('sale_return.index') }}" style="text-decoration: none">Sale Return</a></li>
             <li><a class="{{ Request::is('coatype') ? 'active' : '' }}" href="{{route('coatype.index')}}"
-                   style="text-decoration: none"><i class="la la-bank mr-2" style="font-size: 18px"></i><span>Account Type</span>
+                   style="text-decoration: none"><span>Account Type</span>
                 </a></li>
             <li><a class="{{ Request::is('chartofaccount') ? 'active' : '' }}" href="{{route('chartofaccount.index')}}"
-                   style="text-decoration: none"><i class="la la-bank mr-2" style="font-size: 18px"></i><span>Chart Of Account</span>
+                   style="text-decoration: none"><span>Chart Of Account</span>
                 </a></li>
             <li><a class="{{ Request::is('accounts') ? 'active' : '' }}" href="{{route('accounts.index')}}"
-                   style="text-decoration: none"><i class="la la-bank mr-2"
-                                                    style="font-size: 18px"></i><span> Account</span> </a></li>
+                   style="text-decoration: none"><span> Account</span> </a></li>
             <li><a class="{{ Request::is('revenuebudget') ? 'active' : '' }}" href="{{route('revenuebudget.index')}}"
-                   style="text-decoration: none"><i class="la la-dollar mr-2" style="font-size: 18px"></i><span> Revenue Budget</span>
+                   style="text-decoration: none"><span> Revenue Budget</span>
                 </a></li>
             <li><a class="{{ Request::is('expensebudget') ? 'active' : '' }}" href="{{route('expensebudget.index')}}"
-                   style="text-decoration: none"><i class="la la-dollar mr-2" style="font-size: 18px"></i><span> Expense Budget</span>
+                   style="text-decoration: none"><span> Expense Budget</span>
                 </a></li>
             <li>
                 <a class="{{ Request::is('transaction/category') ? 'active' : '' }}"
-                   href="{{route('transaction.category')}}" style="text-decoration: none"><i class="la la-cube mr-2"
-                                                                                             style="font-size: 18px"></i><span> Category</span>
+                   href="{{route('transaction.category')}}" style="text-decoration: none"><span> Category</span>
                 </a>
             </li>
+            <li class="submenu">
+                <a href="#"><span>Bills</span> <span
+                            class="menu-arrow"></span></a>
+                <ul style="display: none;">
+                    <li><a class="{{ Request::is('bills') ? 'active' : '' }}" href="{{route('bills.index')}}"
+                           style="text-decoration: none">All Bill</a></li>
+                    <li><a class="{{ Request::is('bills') ? 'active' : '' }}" href="{{route('bills.create')}}"
+                           style="text-decoration: none">Create</a></li>
+                    <li><a class="{{ Request::is('payments') ? 'active' : '' }}" href="{{route('payment')}}"
+                           style="text-decoration: none">Payment</a></li>
+                </ul>
+            </li><!--Bill -->
         </ul>
 
-    </li>
+    </li><!--Accounting -->
     <li class="submenu">
         <a href="#"><i class="la la-cube"></i> <span>Banking</span> <span
                     class="menu-arrow"></span></a>
@@ -284,16 +303,6 @@
             </li>
         </ul>
 
-    </li>
-    <li class="submenu">
-        <a href="#"><i class="la la-money " style="font-size: 18px"></i><span>Bills</span> <span
-                    class="menu-arrow"></span></a>
-        <ul style="display: none;">
-            <li><a class="{{ Request::is('bills') ? 'active' : '' }}" href="{{route('bills.index')}}"
-                   style="text-decoration: none">All Bill</a></li>
-            <li><a class="{{ Request::is('bills') ? 'active' : '' }}" href="{{route('bills.create')}}"
-                   style="text-decoration: none">Create</a></li>
-        </ul>
     </li>
     <li class="submenu">
         <a href="#"><i class="la la-truck" style="font-size: 18px;"></i> <span>Delivery</span> <span

@@ -22,7 +22,8 @@ class SaleReturnController extends Controller
         $invoices=Invoice::with('customer','employee','branch')->where('cancel',1)->get();
         $account=Account::all();
         $employee=Employee::all();
-        return view('sale.SaleReturn.index',compact('sale_returns','invoices','account','employee'));
+        $category=['Item Does Not Fit','Defective Item','Damage Item','Late Delivery','Wrong Item Deliverred'];
+        return view('sale.SaleReturn.index',compact('sale_returns','invoices','account','employee','category'));
     }
 
     /**

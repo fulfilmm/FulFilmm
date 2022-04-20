@@ -187,7 +187,37 @@ Route::middleware(['auth:employee'])->group(function () {
     //Invoice Route
     Route::get('/invoice_vue' , [InvoiceDataController::class, 'index']) -> name('invoice_vue.index');
     Route::get('invoice/{any}', [InvoiceDataController::class,'show']) -> where('any', '.*'); 
-   
+
+
+    //new route (do not have permission table)
+
+    Route::resource('revenuebudget',\App\Http\Controllers\RevenueBudgetController::class);
+    Route::resource('expensebudget',\App\Http\Controllers\ExpenseBudgetController::class);
+    Route::resource('chartofaccount',\App\Http\Controllers\ChartOfAccountController::class);
+    Route::get('coatype',[\App\Http\Controllers\ChartOfAccountController::class,'coatype_index'])->name('coatype.index');
+    Route::post('coatype',[\App\Http\Controllers\ChartOfAccountController::class,'coatype'])->name('coatype.store');
+    Route::post('coatype/update/{id}',[\App\Http\Controllers\ChartOfAccountController::class,'type_update'])->name('coatype.update');
+    Route::get('coatype/delete/{id}',[\App\Http\Controllers\ChartOfAccountController::class,'type_destory'])->name('coatype.delete');
+
+    Route::post('emp/add/office',[OfficeBranchController::class,'add_emp'])->name('empadd.office');
+    Route::get('branch/report/{branch_id}',[OfficeBranchController::class,'report'])->name('branch.report');
+    Route::get('stock/transfer/receipt/{id}',[StockTransactionController::class,'confirm'])->name('stock_transfer.confirm');
+    Route::post('stock/transfer/validate/{id}',[StockTransactionController::class,'transfer_validate'])->name('stock_transfer.validate');
+    Route::resource('expense_record',\App\Http\Controllers\ExpensesRecordController::class);
+    Route::get('revenue/delete/{id}',[TransactionController::class,'revenue_delete'])->name('revenue.delete');
+    Route::get('revenue/edit/{id}',[TransactionController::class,'revenue_edit'])->name('revenue.edit');
+    Route::post('revenue/update/{id}',[TransactionController::class,'revenue_update'])->name('revenue.update');
+    Route::get('expense/delete/{id}',[TransactionController::class,'expense_delete'])->name('expense.delete');
+    Route::get('expense/edit/{id}',[TransactionController::class,'expense_edit'])->name('expense.edit');
+    Route::post('expense/update/{id}',[TransactionController::class,'expense_update'])->name('expense.update');
+    Route::get('inv/cancel/{id}',[InvoiceController::class,'cancel'])->name('invoice.cancel');
+    Route::resource('sale_return',\App\Http\Controllers\SaleReturnController::class);
+    Route::resource('salezone',\App\Http\Controllers\SaleZoneController::class);
+    Route::get('daily/report',[ReportController::class,'daily'])->name('daily.report');
+    Route::resource('region',\App\Http\Controllers\RegionController::class);
+    Route::get('expired/product',[StockTransactionController::class,'expired_product'])->name('expired.products');
+    Route::get('expired/alert/product',[StockTransactionController::class,'alert_product'])->name('alert.products');
+    Route::get('payments',[BillController::class,'payment'])->name('payment');
 
 
 
@@ -509,30 +539,6 @@ Route::resource('bank_transfers',\App\Http\Controllers\BankTransferController::c
 
 
 
-Route::resource('revenuebudget',\App\Http\Controllers\RevenueBudgetController::class);
-Route::resource('expensebudget',\App\Http\Controllers\ExpenseBudgetController::class);
-Route::resource('chartofaccount',\App\Http\Controllers\ChartOfAccountController::class);
-Route::get('coatype',[\App\Http\Controllers\ChartOfAccountController::class,'coatype_index'])->name('coatype.index');
-Route::post('coatype',[\App\Http\Controllers\ChartOfAccountController::class,'coatype'])->name('coatype.store');
-Route::post('coatype/update/{id}',[\App\Http\Controllers\ChartOfAccountController::class,'type_update'])->name('coatype.update');
-Route::get('coatype/delete/{id}',[\App\Http\Controllers\ChartOfAccountController::class,'type_destory'])->name('coatype.delete');
-
-Route::post('emp/add/office',[OfficeBranchController::class,'add_emp'])->name('empadd.office');
-Route::get('branch/report/{branch_id}',[OfficeBranchController::class,'report'])->name('branch.report');
-Route::get('stock/transfer/receipt/{id}',[StockTransactionController::class,'confirm'])->name('stock_transfer.confirm');
-Route::post('stock/transfer/validate/{id}',[StockTransactionController::class,'transfer_validate'])->name('stock_transfer.validate');
-Route::resource('expense_record',\App\Http\Controllers\ExpensesRecordController::class);
-Route::get('revenue/delete/{id}',[TransactionController::class,'revenue_delete'])->name('revenue.delete');
-Route::get('revenue/edit/{id}',[TransactionController::class,'revenue_edit'])->name('revenue.edit');
-Route::post('revenue/update/{id}',[TransactionController::class,'revenue_update'])->name('revenue.update');
-Route::get('expense/delete/{id}',[TransactionController::class,'expense_delete'])->name('expense.delete');
-Route::get('expense/edit/{id}',[TransactionController::class,'expense_edit'])->name('expense.edit');
-Route::post('expense/update/{id}',[TransactionController::class,'expense_update'])->name('expense.update');
-Route::get('inv/cancel/{id}',[InvoiceController::class,'cancel'])->name('invoice.cancel');
-Route::resource('sale_return',\App\Http\Controllers\SaleReturnController::class);
-Route::resource('salezone',\App\Http\Controllers\SaleZoneController::class);
-Route::get('daily/report',[ReportController::class,'daily'])->name('daily.report');
-Route::resource('region',\App\Http\Controllers\RegionController::class);
 
 
 

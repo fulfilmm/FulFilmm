@@ -32,6 +32,7 @@
                             <th>Attach</th>
                             <th>Cashier/Accountant</th>
                             <th>Created Date</th>
+                            <th>Reason</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -46,6 +47,7 @@
                                 <td>@if($record->attach!=null)<a href="{{url(asset('attach_file/'.$record->attach))}}">{{$record->attach}}</a> @else N/A @endif</td>
                                 <th>{{$record->cashier->name}}</th>
                                 <td>{{$record->created_at->toFormattedDateString()}}</td>
+                                <td>{{$record->category}}</td>
                                 <td>{{$record->approve?'Approved':'Waiting'}}</td>
                                 <td>
                                     <div class="row">

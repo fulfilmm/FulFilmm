@@ -20,6 +20,7 @@ class CreateDiscountPromotionsTable extends Migration
             $table->dateTime('start_date')->nullable();
             $table->dateTime('end_date')->nullable();
             $table->text('description')->nullable();
+            $table->bigInteger('branch_id')->unsigned();
             $table->string('sale_type');
             $table->string('type');
             $table->timestamps();

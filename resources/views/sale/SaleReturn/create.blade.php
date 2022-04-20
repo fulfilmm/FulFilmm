@@ -36,6 +36,14 @@
     </select>
 </div>
 <div class="form-group">
+    <label for="cat">Category</label>
+    <select name="category" id="cat" class="form-control" style="width: 100%">
+        @foreach($category as $key=>$val)
+        <option value="{{$val}}">{{$val}}</option>
+            @endforeach
+    </select>
+</div>
+<div class="form-group">
     <label for="cashier">Cashier</label>
     <select name="cashier_id" id="cashier" class="form-control" style="width: 100%;">
         @foreach($employee as $emp)

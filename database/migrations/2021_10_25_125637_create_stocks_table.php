@@ -24,6 +24,7 @@ class CreateStocksTable extends Migration
             $table->bigInteger('warehouse_id')->unsigned();
             $table->double('cos')->default(0);
             $table->text('product_location')->nullable();
+            $table->bigInteger('branch_id')->unsigned();
             $table->timestamps();
         });
     }

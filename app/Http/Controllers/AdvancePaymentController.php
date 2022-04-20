@@ -23,7 +23,12 @@ class AdvancePaymentController extends Controller
     {
        if(Auth::guard('employee')->check())
        {
-           $advancepayment=AdvancePayment::with('customer','emp','order','account')->get();
+           $auth=Auth::guard('employee')->user();
+           if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'){
+               $advancepayment=AdvancePayment::with('customer','emp','order','account')->get();
+           }else{
+               $advancepayment=AdvancePayment::with('customer','emp','order','account')->where('emp_id',$auth->id)->get();
+           }
        }else{
            $advancepayment=AdvancePayment::with('customer','emp','order','account')->where('customer_id',Auth::guard('customer')->user()->id)->get();
        }

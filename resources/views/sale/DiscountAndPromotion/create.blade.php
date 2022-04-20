@@ -31,6 +31,16 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
+                            <label for="branch">Office Branch</label>
+                            <select name="branch_id" id="bid" class="form-control select2">
+                                @foreach($branch as $item)
+                                    <option value="{{$item->id}}">{{$item->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
                             <label for="type">Type</label>
                             <select name="type" id="type" class="form-control">
                                 <option value="Discount">Discount</option>
@@ -53,15 +63,7 @@
                             <input type="date" id="end_date" class="form-control" name="end_date" value="{{old('end_date')?\Carbon\Carbon::parse(old('end_date'))->format('Y-m-d'):''}}">
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="rate">Rate</label>
-                           <div class="input-group">
-                               <input type="number" id="rate" name="rate" class="form-control" >
-                               <button type="button" class="btn btn-white">%</button>
-                           </div>
-                        </div>
-                    </div>
+
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="rate">Sale Type</label>
@@ -69,6 +71,15 @@
                                 <option value="Whole Sale">Whole Sale</option>
                                 <option value="Rental Sale">Rental Sale</option>
                             </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="rate">Rate</label>
+                            <div class="input-group">
+                                <input type="number" id="rate" name="rate" class="form-control" >
+                                <button type="button" class="btn btn-white">%</button>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-12">

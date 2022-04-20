@@ -26,7 +26,7 @@ class EmployeeTable extends Component
                     $q->withTrashed();
                 },'branch'=>function($q){
                     $q->get();
-                }])
+                }],'region')
                 ->paginate(20)
         ]);
     }

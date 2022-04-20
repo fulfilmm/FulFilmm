@@ -211,6 +211,15 @@
                                                                         </div>
                                                                         <div class="col-md-6">
                                                                             <div class="form-group">
+                                                                                <label for="exp_date">Alert Month</label>
+                                                                                <input type="text" class="form-control" name="alert_month" id="alert_month" value="{{old('alert_month')}}" dataformatas="Y-M">
+                                                                                @error('alert_month')
+                                                                                <span class="text-danger">{{$message}}</span>
+                                                                                @enderror
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
                                                                                 <label for="warehouse">Warehouse</label>
                                                                                 <select name="warehouse_id" id="warehouse" class="form-control">
                                                                                     @foreach($warehouse as $key=>$val)
@@ -269,6 +278,26 @@
         <div id="print_me"  style="visibility: hidden">
     </div>
     <script>
+        $(document).ready(function () {
+            $(".ui-datepicker-calendar").hide();
+            $('#alert_month').datepicker({
+                changeYear: true,
+                changeMonth:true,
+                changeCalender:false,
+                showButtonPanel: true,
+                dateFormat: 'yy-mm',
+                onClose: function(dateText, inst) {
+                    var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                    var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+                    $(this).datepicker('setDate', new Date(year,month));
+                }
+            });
+            $("#datepicker").focus(function() {
+                $(".ui-datepicker-month").show();
+                $(".ui-datepicker-calender").hide();
+
+            });
+        });
         (function () {
             var
                 form = $('.form'),

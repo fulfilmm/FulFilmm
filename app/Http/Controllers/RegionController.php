@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\OfficeBranch;
 use App\Models\Region;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RegionController extends Controller
 {
@@ -15,8 +16,15 @@ class RegionController extends Controller
      */
     public function index()
     {
-        $regions=Region::with('branch')->get();
-        $branch=OfficeBranch::all()->pluck('name','id')->all();
+        $auth=Auth::guard('employee')->user();
+      if($auth->role->name=='Super Admin'||$auth->role->name=="CEO"){
+          $regions=Region::with('branch')->get();
+          $branch=OfficeBranch::all();
+      }else{
+          $regions=Region::with('branch')->where('branch_id',$auth->office_branch_id)->get();
+          $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
+      }
+
         return view('customer.region',compact('regions','branch'));
     }
 

@@ -27,7 +27,7 @@
     </li>
     <!--- Dashboard menu -->
     <li class="submenu">
-        <a href="#"><i class="la la-th-list" style="font-size: 18px;"></i><span> Contact</span> <span
+        <a href="#"><i class="la la-th-list"></i><span> Contact</span> <span
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
 
@@ -39,7 +39,7 @@
         </ul>
     </li><!--Contact -->
     <li class="submenu">
-        <a href="#"><i class="la la-building" style="font-size: 18px;"></i><span> Company</span> <span
+        <a href="#"><i class="la la-building"></i><span> Company</span> <span
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
 
@@ -217,8 +217,7 @@
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
             <li><a class="{{ Request::is('main/customer') ? 'active' : '' }}"
-                   href="{{ route('customer') }}" style="text-decoration: none"><i class="la la-calendar mr-1"
-                                                                                   style="font-size: 18px;"></i>Customers</a>
+                   href="{{ route('customer') }}" style="text-decoration: none">Customers</a>
             </li>
             <li><a class="{{ Request::is('invoices') ? 'active' : '' }}"
                    href="{{ route('invoices.index') }}" style="text-decoration: none">All Invoice</a></li>
@@ -249,6 +248,18 @@
                    href="{{route('transaction.category')}}" style="text-decoration: none"><span> Category</span>
                 </a>
             </li>
+            <li class="submenu">
+                <a href="#"><span>Bills</span> <span
+                            class="menu-arrow"></span></a>
+                <ul style="display: none;">
+                    <li><a class="{{ Request::is('bills') ? 'active' : '' }}" href="{{route('bills.index')}}"
+                           style="text-decoration: none">All Bill</a></li>
+                    <li><a class="{{ Request::is('bills') ? 'active' : '' }}" href="{{route('bills.create')}}"
+                           style="text-decoration: none">Create</a></li>
+                    <li><a class="{{ Request::is('payments') ? 'active' : '' }}" href="{{route('payment')}}"
+                           style="text-decoration: none">Payment</a></li>
+                </ul>
+            </li><!--Bill -->
         </ul>
 
     </li><!--Accounting -->
@@ -366,6 +377,10 @@
                    style="text-decoration: none">FOC Product</a></li>
             <li><a class="{{ Request::is('damage/index') ? 'active' : '' }}"
                    href="{{ route('damage.index') }}" style="text-decoration: none">Damage Product</a></li>
+            <li><a class="{{ Request::is('expired/product') ? 'active' : '' }}"
+                   href="{{ route('expired.products') }}" style="text-decoration: none">Expired Product</a></li>
+            <li><a class="{{ Request::is('expired/alert/product') ? 'active' : '' }}"
+                   href="{{ route('alert.products') }}" style="text-decoration: none">Expired Alert Product</a></li>
             <li class="submenu">
                 <a href="#"><span> Selling Unit</span> <span
                             class="menu-arrow"></span></a>
@@ -430,16 +445,6 @@
 
     </li><!--Purchase-->
     <li class="submenu">
-        <a href="#"><i class="la la-money " ></i><span>Bills</span> <span
-                    class="menu-arrow"></span></a>
-        <ul style="display: none;">
-            <li><a class="{{ Request::is('bills') ? 'active' : '' }}" href="{{route('bills.index')}}"
-                   style="text-decoration: none">All Bill</a></li>
-            <li><a class="{{ Request::is('bills') ? 'active' : '' }}" href="{{route('bills.create')}}"
-                   style="text-decoration: none">Create</a></li>
-        </ul>
-    </li><!--Bill -->
-    <li class="submenu">
         <a href="#"><i class="la la-truck"></i> <span>Delivery</span> <span
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
@@ -477,7 +482,7 @@
         </ul>
     </li><!--Car -->
     <li class="submenu">
-        <a href="#"><i class="la la-cube"></i> <span>Sale</span> <span
+        <a href="#"><i class="la la-dollar"></i> <span>Sale</span> <span
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
 

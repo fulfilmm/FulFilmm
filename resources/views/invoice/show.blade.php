@@ -234,6 +234,7 @@
                                                         <th>ITEM</th>
                                                         <th class="d-none d-sm-table-cell">DESCRIPTION</th>
                                                         <th>UNIT Price</th>
+                                                        <th>Item Discount</th>
                                                         <th>QUANTITY</th>
                                                         <th>Unit</th>
                                                         <th class="text-right">TOTAL</th>
@@ -246,7 +247,8 @@
                                                             <td>{{$item->id}}</td>
                                                             <td>{{$item->variant->product_name}}({{$item->variant->variant??''}})</td>
                                                             <td class="d-none d-sm-table-cell">{!!$item->description !!}</td>
-                                                            <td>{{$item->unit_price}}
+                                                            <td>{{$item->unit_price}}</td>
+                                                            <td>{{$item->discount_promotion}}%</td>
                                                             <td>{{$item->quantity}}</td>
                                                             <td>{{$item->unit->unit}}</td>
                                                             <td class="text-right">{{$item->total}}</td>
@@ -270,7 +272,7 @@
                                         </li>
                                         <li class="list-group-item">
                                             <div class="d-flex justify-content-end ">
-                                                Tax: <p class="ml-2 mb-0 font-weight-bold"> {{$detail_inv->tax_amount}} MMK </p>
+                                                Tax ({{$detail_inv->tax->rate}}%): <p class="ml-2 mb-0 font-weight-bold"> {{$detail_inv->total*($detail_inv->tax->rate/100)}} MMK</p>
                                             </div>
 
                                         </li>

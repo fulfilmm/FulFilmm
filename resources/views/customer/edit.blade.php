@@ -86,8 +86,8 @@
                                                 <div class="input-group">
                                                     <select name="branch_id" id="branch" class="form-control">
                                                         <option value="">None</option>
-                                                        @foreach($branch as $key=>$val)
-                                                            <option value="{{$key}}" {{$record->branch_id==$key?'selected':''}}>{{$val}}</option>
+                                                        @foreach($branch as $item)
+                                                            <option value="{{$item->id}}" {{$record->branch_id==$item->id?'selected':''}}>{{$item->name}}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -98,8 +98,8 @@
                                                 <label for="cus_region_id">Region</label>
                                                 <select name="region_id" id="cus_region_id" class="form-control" onchange="childregion(this.value);">
                                                     <option value="">None</option>
-                                                    @foreach($region as $key=>$val)
-                                                        <option value="{{$key}}" {{$record->region_id==$key?'selected':''}}>{{$val}}</option>
+                                                    @foreach($region as $item)
+                                                        <option value="{{$item->id}}" {{$record->region_id==$item->id?'selected':''}}>{{$item->name}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -110,7 +110,7 @@
                                                 <div class="input-group">
                                                     <select name="zone_id" id="zone_id" class="form-control">
                                                         @foreach($zone as $item)
-                                                            <option value="{{$item->id}}" {{$record->zone_id==$key?'selected':''}} data-option="{{$item->region_id}}">{{$item->name}}</option>
+                                                            <option value="{{$item->id}}" {{$record->zone_id==$item->id?'selected':''}} data-option="{{$item->region_id}}">{{$item->name}}</option>
                                                         @endforeach
                                                     </select>
                                                     <div class="input-group-append">

@@ -43,6 +43,16 @@
                                 @enderror
                             </div> <!---->
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="branch">Office Branch</label>
+                                <select name="branch_id" id="branch" class="form-control">
+                                    @foreach($branch as $key=>$val)
+                                        <option value="{{$key}}">{{$val}}</option>
+                                        @endforeach
+                                </select>
+                            </div>
+                        </div>
                         <div class="form-group col-md-6 required">
                             <label for="number" class="form-control-label">Bank Account Number</label>
                             <div class="input-group input-group-merge ">

@@ -96,53 +96,61 @@ class TransactionController extends Controller
             'approver_id' => 'required',
             'attachment' => 'mimes:pdf,xlsx,doc,docx,jpg,jpeg,ppt,bip,|max:2048',
         ]);
-        try {
-            $new_expense = new Expense();
-            $new_expense->title = $request->title;
-            $new_expense->vendor_id = $request->customer_id;
-            $new_expense->amount = $request->amount;
-            $new_expense->reference = $request->reference;
-            $new_expense->recurring = $request->recurring;
-            $new_expense->payment_method = $request->payment_method;
-            $new_expense->description = $request->description;
-            $new_expense->category = $request->category;
-            $new_expense->approver_id = $request->approver_id;
-            $new_expense->coa_id = $request->coa_account;
-            $new_expense->transaction_date = $request->transaction_date;
-            $new_expense->emp_id = Auth::guard('employee')->user()->id;
-            $new_expense->branch_id = Auth::guard('employee')->user()->office_branch_id;
-            $new_expense->currency = $request->currency;
-            $new_expense->bill_id = $request->bill_id ?? null;
+        if(isset($request->bill_id)){
+            $bill_amount=Bill::where('id',$request->bill_id)->first();
+            if($bill_amount->due_amount!=0){
+                try {
+                    $new_expense = new Expense();
+                    $new_expense->title = $request->title;
+                    $new_expense->vendor_id = $request->customer_id;
+                    $new_expense->amount = $request->amount;
+                    $new_expense->reference = $request->reference;
+                    $new_expense->recurring = $request->recurring;
+                    $new_expense->payment_method = $request->payment_method;
+                    $new_expense->description = $request->description;
+                    $new_expense->category = $request->category;
+                    $new_expense->approver_id = $request->approver_id;
+                    $new_expense->coa_id = $request->coa_account;
+                    $new_expense->transaction_date = $request->transaction_date;
+                    $new_expense->emp_id = Auth::guard('employee')->user()->id;
+                    $new_expense->branch_id = Auth::guard('employee')->user()->office_branch_id;
+                    $new_expense->currency = $request->currency;
+                    $new_expense->bill_id = $request->bill_id ?? null;
 //        dd($new_expense);
-            if (isset($request->attachment)) {
-                if ($request->attachment != null) {
-                    $attach = $request->file('attachment');
-                    $input['filename'] = \Illuminate\Support\Str::random(10) . time() . '.' . $attach->extension();
-                    $request->attachment->move(public_path() . '/attach_file', $input['filename']);
+                    if (isset($request->attachment)) {
+                        if ($request->attachment != null) {
+                            $attach = $request->file('attachment');
+                            $input['filename'] = \Illuminate\Support\Str::random(10) . time() . '.' . $attach->extension();
+                            $request->attachment->move(public_path() . '/attach_file', $input['filename']);
 
+                        }
+                        $new_expense->attachment = $input['filename'];
+                    }
+                    $new_expense->save();
+                } catch (\Exception $e) {
+                    return redirect()->back()->with('error', $e->getMessage());
                 }
-                $new_expense->attachment = $input['filename'];
+                if (isset($request->exp_id)) {
+                    $exp = ExpenseClaim::where('id', $request->exp_id)->first();
+                    $exp->is_claim = 1;
+                    $exp->update();
+                }
+                $this->transaction_add($request->account, $request->type, $new_expense->id, null);
+                $this->addnotify($request->approver_id, 'noti', 'Add new expense', 'expense', Auth::guard('employee')->user()->id);
+                $last_tran = Transaction::orderBy('id', 'desc')->first();
+                if (isset($request->bill_id)) {
+                    $bill = Bill::where('id', $request->bill_id)->first();
+                    $bill->due_amount = $bill->due_amount - $request->amount;
+                    $bill->update();
+                    return redirect(route('bills.show', $request->bill_id))->with('success', 'Add New Expense Successful');
+                } else {
+                    return redirect(route('transactions.show', $last_tran->id))->with('success', 'Add New Expense Successful');
+                }
+            }else{
+                return redirect()->back()->with('danger','This bill is payment has been made');
             }
-            $new_expense->save();
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', $e->getMessage());
         }
-        if (isset($request->exp_id)) {
-            $exp = ExpenseClaim::where('id', $request->exp_id)->first();
-            $exp->is_claim = 1;
-            $exp->update();
-        }
-        $this->transaction_add($request->account, $request->type, $new_expense->id, null);
-        $this->addnotify($request->approver_id, 'noti', 'Add new expense', 'expense', Auth::guard('employee')->user()->id);
-        $last_tran = Transaction::orderBy('id', 'desc')->first();
-        if (isset($request->bill_id)) {
-            $bill = Bill::where('id', $request->bill_id)->first();
-            $bill->due_amount = $bill->due_amount - $request->amount;
-            $bill->update();
-            return redirect(route('bills.show', $request->bill_id))->with('success', 'Add New Expense Successful');
-        } else {
-            return redirect(route('transactions.show', $last_tran->id))->with('success', 'Add New Expense Successful');
-        }
+
 
     }
 

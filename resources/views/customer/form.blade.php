@@ -123,10 +123,10 @@
                     <div class="col-md-6 mb-3">
                         <div class="form-group">
                             <label for="region_id">Region</label>
-                            <select name="region_id" id="region_id" class="form-control select2" onchange="region(this.value)">
+                            <select name="region_id" id="region_id" class="form-control select2" onchange="region_select(this.value)">
                                 <option value="">None</option>
-                                @foreach($region as $key=>$val)
-                                    <option value="{{$key}}">{{$val}}</option>
+                                @foreach($region as $item)
+                                    <option value="{{$item->id}}">{{$item->name}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -366,7 +366,7 @@
             var zone_optoion = zone_id.querySelectorAll('option');
             console.log(options3);
             // alert(product)
-            function region(selValue) {
+            function region_select(selValue) {
                 zone.innerHTML='';
 
                 for(var i = 0; i < zone_optoion.length; i++) {
@@ -376,5 +376,5 @@
                     }
                 }
             }
-            region(region_id.value);
+            region_select(region_id.value);
         </script>

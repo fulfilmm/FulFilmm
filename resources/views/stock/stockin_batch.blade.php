@@ -1,5 +1,8 @@
 @extends('layout.mainlayout')
-@section('title','Stock Batch')
+@if(isset($type))
+    @section('title',$type)
+    @else
+        @section('title','Stock Batch')
 @section('search')
     <div class="col-12 mt-1">
         <form action="{{route('stock.search')}}" method="GET">
@@ -16,23 +19,18 @@
         </form>
     </div>
 @endsection
+@endif
+
 @section('content')
     <div class="container-fluid">
         <div class="page-header my-3">
             <div class="row">
                 <div class="col-sm-12">
-                    <h3 class="page-title">Stock Batch</h3>
+                    <h3 class="page-title">@if(isset($type)) {{$type}} @else Stock Batch @endif</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
                         <li class="breadcrumb-item active"><a href="{{url('stocks/index')}}">Stock Batch</a></li>
                     </ul>
-                </div>
-                <div class="col-auto float-right ml-auto">
-
-                    <a href="{{route('showstockout')}}" class="btn add-btn ml-2 btn-sm"><i class="fa fa-plus"></i>
-                        Stock Out</a>
-                    <a href="{{route('showstockin')}}" class="btn add-btn btn-sm"><i class="fa fa-plus"></i>Stock In</a>
-                    {{--@endif--}}
                 </div>
             </div>
         </div>
@@ -49,7 +47,10 @@
                         <th>Qty</th>
                         <th>Unit</th>
                         <th>Exp Date</th>
-                        <th>Valuation/Unit</th>
+                        <th>Alert Month</th>
+                        <th>Office Branch</th>
+                        <th>Warehouse</th>
+                        <th>Per Unit Value</th>
                     </tr>
 
                     </thead>
@@ -92,6 +93,9 @@
                                     </select>
                                 </td>
                                 <td>{{\Carbon\Carbon::parse($transaction->exp_date)->toFormattedDateString()}}</td>
+                                <td>{{\Carbon\Carbon::parse($transaction->alert_month)->format('M Y')}}</td>
+                                <td>{{$transaction->branch->name}}</td>
+                                <td>{{$transaction->warehouse->name}}</td>
                                 <td>{{$transaction->purchase_price}}</td>
                             </tr>
                     @endforeach

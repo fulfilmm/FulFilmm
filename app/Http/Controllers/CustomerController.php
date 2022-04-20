@@ -82,14 +82,22 @@ class CustomerController extends Controller
     public function create()
     {
         //
+        $auth=Auth::guard('employee')->user();
         $state = $this->state;
         $tags = tags_industry::all();
         $last_tag = tags_industry::orderBy('id', 'desc')->first();
         $companies = $this->company_contract->all()->pluck('name', 'id')->all();
         $parent_companies = $this->company_contract->parentCompanies()->pluck('name', 'id')->all();
         $zone=SaleZone::all();
-        $region=Region::all()->pluck('name','id')->all();
-        return view('customer.create', compact('companies', 'state', 'last_tag', 'tags','parent_companies','zone','region'));
+        $auth=Auth::guard('employee')->user();
+        if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'||$auth->role->name=='Sale Manager'){
+            $branch=OfficeBranch::all();
+            $region=Region::all();
+        }else{
+            $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
+            $region=Region::where('branch_id',$auth->office_branch_id)->get();
+        }
+        return view('customer.create', compact('companies', 'state', 'last_tag', 'tags','parent_companies','zone','region','branch'));
     }
 
     /**
@@ -273,8 +281,15 @@ class CustomerController extends Controller
         $record = $this->customerContract->getById($id);
         $companies = $this->company_contract->all()->pluck('name', 'id')->all();
         $state = $this->state;
-        $branch=OfficeBranch::all()->pluck('name','id')->all();
-        $region=Region::all()->pluck('name','id')->all();
+        $auth=Auth::guard('employee')->user();
+        if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'){
+            $branch=OfficeBranch::all();
+            $region=Region::all();
+        }else{
+            $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
+            $region=Region::where('branch_id',$auth->office_branch_id)->get();
+        }
+
         $zone=SaleZone::all();
         return view('customer.edit', compact('record', 'companies', 'state', 'tags', 'last_tag','zone','branch','region'));
     }

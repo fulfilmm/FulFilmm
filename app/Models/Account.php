@@ -12,4 +12,7 @@ class Account extends Model
     protected $fillable=['company_id','name','number','currency','opening_balance',
         'bank_name','bank_phone','bank_address','enabled','balance'
     ];
+    public function branch(){
+        return $this->belongsTo(OfficeBranch::class,'branch_id','id');
+    }
 }

@@ -27,6 +27,7 @@
                                 Number</th>
                             <th >Current
                                 Balance</th>
+                            <th>Office Branch</th>
                             <th >Enabled</th>
                             <th >Actions</th>
                         </tr>
@@ -41,6 +42,7 @@
                                 <td >{{$acc->number}}</td>
                                 <td>{{number_format($acc->balance)}}
                                 </td>
+                                <td>{{$acc->branch->name}}</td>
                                 <td>
                                     <div class="custom-control custom-switch">
                                         <input type="checkbox" class="custom-control-input" id="enabled_{{$acc->id}}" name="enable" {{$acc->enabled==1?'checked':''}}>

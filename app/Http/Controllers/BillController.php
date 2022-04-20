@@ -31,7 +31,8 @@ class BillController extends Controller
     public function index()
     {
         $bills=Bill::with('supplier')->get();
-        return view('transaction.Bill.index',compact('bills'));
+        $type='Bills';
+        return view('transaction.Bill.index',compact('bills','type'));
     }
 
     /**
@@ -293,5 +294,10 @@ class BillController extends Controller
         }else{
             return redirect()->back()->with('warning','Already Created Bill');
         }
+    }
+    public function payment(){
+        $bills=Bill::with('supplier')->orWhere('status','paid')->orWhere('status','Partial')->get();
+        $type='Payments';
+        return view('transaction.Bill.index',compact('bills','type'));
     }
 }
