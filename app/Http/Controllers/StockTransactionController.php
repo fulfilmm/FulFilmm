@@ -407,7 +407,7 @@ class StockTransactionController extends Controller
                             $stock_transaction->variant_id =$stock_out->variantion_id;
                             $stock_transaction->contact_id =$stock_out->customer_id;
                             $stock_transaction->qty =$stock_out->qty;
-                            $stock_transaction->type ="Warehouse Transfer";
+                            $stock_transaction->type ="Stock Out";
                             $stock_transaction->emp_id =$stock_out->emp_id;
                             $stock_transaction->creator_id = $stock_out->creator_id;
                             $stock_transaction->balance = $stock->stock_balance - $stock_out->qty;

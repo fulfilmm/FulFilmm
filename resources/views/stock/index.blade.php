@@ -143,7 +143,7 @@
                                 <td><span class="text-danger" >{{$transaction->type}}</span>
                                 </td>
                                 <td>{{$transaction->stockout->type}}</td>
-                                <td>{{$transaction->warehouse->name}}</td>
+                                <td><a href="{{route('warehouses.show',$transaction->warehouse->id)}}">{{$transaction->warehouse->name}}</a></td>
                                 <td><span id="outbalance{{$transaction->id}}"></span></td>
                                 <td>{{$transaction->purchase_price}}</td>
                                 <td>{{$transaction->sale_value}}</td>
