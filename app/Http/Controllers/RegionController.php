@@ -98,6 +98,8 @@ class RegionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $region=Region::where('id',$id)->first();
+        $region->delete();
+        return redirect()->back()->with('success','Deleted successful');
     }
 }
