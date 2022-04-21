@@ -70,8 +70,8 @@
                                     <div class="form-group">
                                         <label for="branch">Office Branch</label>
                                         <select name="branch_id[]" id="branch" class="form-control" multiple>
-                                            @foreach($branch as $key=>$val)
-                                                <option value="{{$key}}">{{$val}}</option>
+                                            @foreach($branch as $item)
+                                                <option value="{{$item->id}}">{{$item->name}}</option>
                                                 @endforeach
                                         </select>
                                     </div>
