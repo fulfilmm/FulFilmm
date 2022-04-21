@@ -52,7 +52,7 @@
                                     N/A @endif</td>
                             <td>{{$transaction->title}}</td>
                             <td>{{number_format($transaction->amount)}}</td>
-                            <td>{{$transaction->supplier->name}}</td>
+                            <td>{{$transaction->supplier->name??'N/A'}}</td>
                             <td>{{$transaction->cat->name}}</td>
                             <td>
                                 @if($transaction->approve==0)

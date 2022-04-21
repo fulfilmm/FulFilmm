@@ -145,7 +145,8 @@ class HomeController extends Controller
                 $sale_activity=SaleActivity::where('report_to',Auth::guard('employee')->user()->id)->count();
                 $numberOfalltickets=ticket::all()->count();
                 $group=Group::count();
-                $account=Account::count();
+                $account=DB::table("accounts")
+                ->select(DB::raw("SUM(balance) as total"))->get();
                 $transaction=Transaction::count();
                 $requestation=Approvalrequest::where('approved_id',Auth::guard('employee')->user()->id)
                     ->orWhere('secondary_approved',Auth::guard('employee')->user()->id)

@@ -121,10 +121,11 @@ class SellingUnitController extends Controller
         $main_product=product::all();
         $products=ProductVariations::all();
         if(Auth::guard('employee')->user()->role->name=='Super Admin'||Auth::guard('employee')->user()->role->name=='CEO'){
-            $branch=OfficeBranch::all()->pluck('name','id')->all();
+            $branch=OfficeBranch::all();
         }else{
             $branch=OfficeBranch::select('id','name')->where('id',Auth::guard('employee')->user()->office_branch_id)->get();
         }
+//        dd($branch);
         return view('sale.sellingunit.price_add',compact('units','main_product','products','branch'));
     }
     public function store_price(Request $request){

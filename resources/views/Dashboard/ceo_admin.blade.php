@@ -5,7 +5,7 @@
                 <div class="d-flex align-items-center">
                     <div class="avatar rounded no-thumbnail bg-success text-light shadow"><i class="fa fa-dollar fa-lg"></i></div>
                     <div class="flex-fill ms-3 text-truncate">
-                        <div class="h6 mb-0">Revenue</div>
+                        <div class="h6 mb-0">In Flow</div>
                         <span class="small"><span id="total_income"></span></span>
                     </div>
                 </div>
@@ -18,7 +18,7 @@
             <div class="d-flex align-items-center">
                 <div class="avatar rounded no-thumbnail bg-danger text-light shadow"><i class="fa fa-credit-card fa-lg"></i></div>
                 <div class="flex-fill ms-3 text-truncate">
-                    <div class="h6 mb-0">Expense</div>
+                    <div class="h6 mb-0">Out Flow</div>
                     <span class="small" id="total_expense"></span>
                 </div>
             </div>
@@ -30,7 +30,7 @@
             <div class="d-flex align-items-center">
                 <div class="avatar rounded no-thumbnail bg-warning text-light shadow"><i class="fa fa-money fa-lg"></i></div>
                 <div class="flex-fill ms-3 text-truncate">
-                    <div class="h6 mb-0">Profit</div>
+                    <div class="h6 mb-0">Balance</div>
                     <span class="small" id="total_profit"></span>
                 </div>
             </div>
@@ -54,7 +54,7 @@
                 <div class="avatar rounded no-thumbnail bg-info text-light shadow"><i class="fa fa-bank" aria-hidden="true"></i></div>
                 <div class="flex-fill ms-3 text-truncate">
                     <div class="h6 mb-0">Account</div>
-                    <span class="small">{{$account??0}}</span>
+                    <span class="small">{{$account[0]->total??0}}</span>
                 </div>
             </div>
             </a>

@@ -102,19 +102,19 @@
         </div>
         </form>
         <div class="row g-3 mb-3 row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4">
-            {{--<div class="col  my-2">--}}
-                {{--<div class="alert-success alert mb-0 shadow">--}}
-                    {{--<a href="{{url('saletargets/create')}}">--}}
-                        {{--<div class="d-flex align-items-center">--}}
-                            {{--<div class="avatar rounded no-thumbnail bg-success text-light shadow"><i class="fa fa-bullseye fa-lg"></i></div>--}}
-                            {{--<div class="flex-fill ms-3 text-truncate">--}}
-                                {{--<div class="h6 mb-0">{{isset($search_month)?$monthlysaletarget[$search_month]->target??0:$monthlysaletarget[date('M')]->target??0}}</div>--}}
-                                {{--<span class="small">Sale Target ({{$search_month??date('M')}})</span>--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
-                    {{--</a>--}}
-                {{--</div>--}}
-            {{--</div>--}}
+            <div class="col  my-2">
+                <div class="alert-success alert mb-0 shadow">
+                    <a href="{{url('saletargets/create')}}">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar rounded no-thumbnail bg-success text-light shadow"><i class="fa fa-bullseye fa-lg"></i></div>
+                            <div class="flex-fill ms-3 text-truncate">
+                                <div class="h6 mb-0">{{isset($search_month)?$monthlysaletarget[$search_month]->target??0:$monthlysaletarget[date('M')]->target??0}}</div>
+                                <span class="small">Sale Target ({{$search_month??date('M')}})</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
             <div class="col my-2">
                 <div class="alert-info alert mb-0 shadow">
                     <a href="{{route('invoices.index')}}">
@@ -130,7 +130,7 @@
             </div>
             <div class="col my-2">
                 <div class="alert-warning alert mb-0 shadow">
-                    <a href="{{route('revenue')}}">
+                    <a href="{{route('invoices.inded')}}">
                         <div class="d-flex align-items-center">
                             <div class="avatar rounded no-thumbnail bg-warning text-light shadow"><i class="fa fa-money fa-lg"></i></div>
                             <div class="flex-fill ms-3 text-truncate">

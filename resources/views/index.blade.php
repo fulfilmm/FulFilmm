@@ -75,7 +75,7 @@
                     type: ''
                 },
                 title: {
-                    text: 'Income,Expense and Profit'
+                    text: 'In Flow,Out Flow and Balance'
                 },
 
                 legend: {
@@ -118,7 +118,7 @@
                 },
 
                 series: [{
-                    name: 'Income',
+                    name: 'In Flow',
                     color: '#0f6bff',
                     data: [
                         {{$monthly_income['Jan']->total??0}},
@@ -135,7 +135,7 @@
                         {{$monthly_income['Dec']->total??0}},
                     ]
                 }, {
-                    name: 'Expense',
+                    name: 'Out Flow',
                     color:'#fe2e76',
                     data: [
                         {{$monthly_expense['Jan']->total??0}},
@@ -154,7 +154,7 @@
 
                     ]
                 }, {
-                    name: 'Profit',
+                    name: 'Balance',
                     color:'#79ff18',
                     data: [
                         {{$profit['Jan']??0}},
