@@ -1,4 +1,5 @@
 @extends('layout.mainlayout')
+@section('title','Sales Dashboard')
 @section('content')
     <style>
         .highcharts-data-table table {
@@ -51,9 +52,10 @@
         <div class="page-header">
             <div class="row">
                 <div class="col-sm-12">
-                    <h3 class="page-title">Welcome Admin!</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item active">Dashboard</li>
+                        <li class="breadcrumb-item active">Sales Dashboard</li>
+
                     </ul>
                 </div>
             </div>
@@ -252,7 +254,7 @@
             },
 
             series: [{
-                name: 'Sale Target',
+                name: 'Sales Target',
                 data: [
                     {{$monthlysaletarget['Jan']->target??0}},
                     {{$monthlysaletarget['Feb']->target??0}},
@@ -269,7 +271,7 @@
                 ],
                 crosshair: true
             }, {
-                name: 'Total Sale',
+                name: 'Total Sales',
                 data: [
                     {{$monthly['Jan']->total??0}},
                     {{$monthly['Feb']->total??0}},
@@ -286,7 +288,7 @@
                 ]
             },
                 {
-                    name: 'Cost Of Sale',
+                    name: 'Cost Of Sales',
                     data: [
                         {{$cos['Jan']??0}},
                         {{$cos['Feb']??0}},
@@ -359,7 +361,7 @@
                 type: ''
             },
             title: {
-                text: 'Yearly Sale and Target'
+                text: 'Yearly Sales and Target'
             },
 
             legend: {
@@ -402,7 +404,7 @@
             },
 
             series: [{
-                name: 'Sale Target',
+                name: 'Sales Target',
                 data: [
                     {{$yearly_target[$year[0]]->target??0}},
                     {{$yearly_target[$year[1]]->target??0}},
@@ -412,7 +414,7 @@
 
                 ]
             }, {
-                name: 'Total Sale',
+                name: 'Total Sales',
                 data: [
                     {{$yearly[$year[0]]->total??0}},
                     {{$yearly[$year[1]]->total??0}},

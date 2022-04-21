@@ -9,12 +9,12 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="float-right"><a href="{{url('reports')}}" class="btn btn-danger btn-sm rounded-circle"><i class="la la-close"></i></a></div>
-                            <h3 class="page-title">Sale Report</h3>
+                            <h3 class="page-title">Stock Out Report</h3>
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
 
                                 <li class="breadcrumb-item active"><a href="{{url('reports')}}">Report</a></li>
-                                <li class="breadcrumb-item active">Sale Report</li>
+                                <li class="breadcrumb-item active">Stock Out Report</li>
                             </ul>
                         </div>
                     </div>
@@ -22,4 +22,4 @@
             </div>
         </div>
     </div>
-    @endsection
+@endsection

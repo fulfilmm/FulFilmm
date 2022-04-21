@@ -435,12 +435,17 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
 //Report route
     Route::get('selling/report',[SaleReportController::class,'sale_report'])->name('sale.report');
     Route::get('income/report',[ReportController::class,'income'])->name('report.income');
+    Route::get('cash/inhand/report',[ReportController::class,'cash_in_hand'])->name('report.inhand');
     Route::get('expense/report',[ReportController::class,'expense'])->name('report.expense');
     Route::get('credit/purchase/report',[ReportController::class,'credit_purchase'])->name('credit.purchase');
     Route::get('payment/purchase/report',[ReportController::class,'payment_purchase'])->name('payment.purchase');
     Route::get('stock/report',[ReportController::class,'stock'])->name('report.stock');
     Route::get('daily/advancepayment/report',[ReportController::class,'advancedaily'])->name('report.advancepay');
     Route::get('reports',[ReportController::class,'reportpage'])->name('reports');
+
+
+
+
     Route::get('retail/sale/quotation',[QuotationController::class,'retailSale'])->name('quotations.retail');
     Route::resource('product_brand',ProductBrandController::class);
 //    Route::post('/add/emp/branch',[OfficeBranchController::class,'addemp'])->name('addemp');

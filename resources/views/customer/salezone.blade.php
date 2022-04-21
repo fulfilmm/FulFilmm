@@ -1,14 +1,14 @@
 @extends('layout.mainlayout')
-@section('title','Sale Zone')
+@section('title','Sales Zone')
 @section('content')
     <div class="content container-fluid">
         <div class="page-header">
             <div class="row">
                 <div class="col-sm-12">
-                    <h3 class="page-title">Sale Zone</h3>
+                    <h3 class="page-title">Sales Zone</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Sale Zone</li>
+                        <li class="breadcrumb-item active">Sales Zone</li>
                     </ul>
                 </div>
                 <div class="col-auto float-right ml-auto">

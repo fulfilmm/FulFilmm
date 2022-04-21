@@ -1,429 +1,404 @@
 @extends('layout.mainlayout')
 @section('title','Customer Information')
 @section('content')
-    <style>
-        .scroll {
-            /*width: 300px;*/
-            height: 800px;
-            overflow: scroll;
-        }
-        .activity_schedule{
-            min-height: 800px;
-            overflow: scroll;
-        }
-        .row{
-            padding-top: 20px;
-        }
-
-    </style>
-    <!-- Page Content -->
     <link rel="stylesheet" href="{{url(asset('customercss/customershow.css'))}}">
-    <div class="content container">
-            <div class="col-lg-12 mb-3 d-flex justify-content-between">
-                <h4 class="font-weight-bold d-flex align-items-center">Customer View</h4>
+    <!-- Page Content -->
+    <div class="content container-fluid">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h3 class="page-title">Customer Profile</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Profile</li>
+                    </ul>
+                </div>
             </div>
-        <div class="row">
-            <div class="col-lg-4">
-                <div class="card shadow">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">
-                            <div>
-                                <ul class="list-style-1 mb-0">
-                                    <li class="list-item d-flex justify-content-start align-items-center">
-                                        <div class="">
-                                            <img class="avatar avatar-img avatar-60 rounded-circle" src="{{$data['customer']->profile!=null? url(asset('img/profiles/'.$data['customer']->profile)):url(asset('img/profiles/avatar-01.jpg'))}}"  />
-                                        </div>
-                                        <div class="list-style-detail ml-4 mr-2">
-                                            <h5 class="font-weight-bold">{{$data['customer']->name}}</h5>
-                                            <p class="mb-0 mt-1 text-muted">{{$data['customer']->company->name}}</p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <h6 class="my-2">Bio</h6>
-                                        <p style="font-size: 12px;">{{$data['customer']->bio}}</p>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="row mt-3">
-                                <div class="col-6 text-center mb-2">
-                                    <button class="btn btn-block btn-sm btn-primary">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="mr-2" width="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-                                        </svg>
-                                        <span class="">Message</span>
-                                    </button>
-                                </div>
-                                <div class="col-6 text-center">
-                                    <a href="{{route('customers.edit',$data['customer']->id)}}" class="btn btn-block btn-sm btn-secondary">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="mr-2" width="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                        </svg>
-                                        <span class="">Edit Profile</span>
+        </div>
+        <!-- /Page Header -->
+
+        <div class="card mb-0">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="profile-view">
+                            <div class="profile-img-wrap">
+                                <div class="profile-img">
+                                    <a href="">
+                                        <img src="{{$data['customer']->profile!=null? url(asset('img/profiles/'.$data['customer']->profile)):url(asset('img/profiles/avatar-01.jpg'))}}" alt="">
                                     </a>
                                 </div>
                             </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="card shadow">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">
-                            <div class="row">
-                                <div class="col-6">Gender</div>
-                                <div class="col-6">{{$data['customer']->gender}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">Position</div>
-                                <div class="col-6">{{$data['customer']->position??'N/A'}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">Department</div>
-                                <div class="col-6">{{$data['customer']->department??'N/A'}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">Email</div>
-                                <div class="col-6">{{$data['customer']->email}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">Facebook</div>
-                                <div class="col-6">{{$data['customer']->facebook??'N/A'}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">Linkedin</div>
-                                <div class="col-6">{{$data['customer']->linkedin??'N/A'}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">Birthday</div>
-                                <div class="col-6">{{$data['customer']->dob==null?'N/A':\Carbon\Carbon::parse($data['customer']->dob)->toFormattedDateString()}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">Phone</div>
-                                <div class="col-6">{{$data['customer']->phone}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">State/Division</div>
-                                <div class="col-6">{{$data['customer']->region??'N/A'}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">Address</div>
-                                <div class="col-6">{{$data['customer']->address??'N/A'}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">Contact Level</div>
-                                <div class="col-6">{{$data['customer']->customer_type}}</div>
-                            </div>
-                            @if($data['customer']->status=='Qualified' && $data['customer']->customer_type=='Lead')
+                            <div class="profile-basic">
                                 <div class="row">
-                                    <div class="col-6">Total Invoice</div>
-                                    <div class="col-6">{{count($data['invoice'])}}</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-6">Total Sale</div>
-                                    <div class="col-6">{{$data['total_sale']}}</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-6">Paid</div>
-                                    <div class="col-6">{{$data['paid_total']}}</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-6">Debt</div>
-                                    <div class="col-6">{{$data['open']}}</div>
-                                </div>
-                            @endif
-                            <div class="row">
-                                <div class="col-6">Total ticket</div>
-                                <div class="col-6">{{count($data['tickets'])}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">Total Deal</div>
-                                <div class="col-6">{{count($data['deal'])}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">Report To</div>
-                                <div class="col-6">{{$data['customer']->report_to??'N/A'}} ({{$data['customer']->position_of_report_to??'Unkown Position'}})</div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <div class="card-header">
-                        <span class="followers-title">Followers</span>
-                        <div class="float-right">
-                        <a href="#" class="followers-add" data-toggle="modal" data-target="#add_followers"><i class="la la-plus"></i></a>
-                        <a href="#" class="followers-add" data-toggle="modal" data-target="#remove_followers"><i class="la la-trash"> </i></a>
-                        </div>
-                    </div>
-                    <div class="project-members  mt-1 mb-4 ml-3 mr-3">
-                        @foreach($followers as $follower)
-                            <div class="row my-2">
-                                <div class="col-12">
-                                    <a href="#" data-toggle="tooltip" title="{{$follower->user->name}}" class="avatar">
-                                        <img src="img/profiles/avatar-09.jpg" alt="">
-                                    </a><span>{{$follower->user->name}}</span>
-                                </div>
-                            </div>
-                        @endforeach
-
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-8">
-                <div class="card shadow-lg" style="height: 875px">
-                    <div class="card-body p-0">
-                        <ul class="nav tab-nav-pane nav-tabs pt-2 mb-0" id="mytab">
-                            @if($data['customer']->status=='Qualified' && $data['customer']->customer_type=='Lead')
-                                <li class="pb-2 mb-0 nav-item"><a data-toggle="tab" class="font-weight-bold text-uppercase px-5 py-2 {{$data['customer']->status=='Qualified' && $data['customer']->customer_type=='Lead'?'active':''}}" href="#invoice">Invoice</a></li>
-                            @endif
-                                <li class="pb-2 mb-0 nav-item"><a data-toggle="tab" class="font-weight-bold text-uppercase px-5 py-2" {{$data['customer']->status=='Qualified' && $data['customer']->customer_type=='Lead'?'':'active'}} href="#activity">Activity Schedule</a></li>
-                                <li class="pb-2 mb-0 nav-item"><a data-toggle="tab" class="font-weight-bold text-uppercase px-5 py-2" href="#comment">Notes</a></li>
-                                <li class="pb-2 mb-0 nav-item"><a data-toggle="tab" class="font-weight-bold text-uppercase px-5 py-2" href="#item_sale">Item Amount</a></li>
-                        </ul>
-                        <div class="tab-content col-12" >
-                            <div id="invoice" class="tab-pane fade show {{$data['customer']->status=='Qualified' && $data['customer']->customer_type=='Lead'?'active':''}} ">
-                                <div class="d-flex justify-content-between align-items-center p-3">
-                                    <h5>Invoice List</h5>
-                                </div>
-                                <div class="table-responsive">
-                                    <table class="table data-table mb-0">
-                                        <thead class="table-color-heading">
-                                        <tr class="text-muted">
-                                            <th scope="col">ID</th>
-                                            <th scope="col">Date </th>
-                                            <th scope="col">Description</th>
-                                            <th scope="col">Status</th>
-                                            <th scope="col" class="text-right">Total</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        @foreach($data['invoice'] as $invoice)
-                                        <tr>
-                                            <td><a href="{{route('invoices.show',$invoice->id)}}">{{$invoice->invoice_id}}</a></td>
-                                            <td>{{\Carbon\Carbon::parse($invoice->invoice_date)->toFormattedDateString()}}</td>
-                                            <td>
-                                                Order OR-561488
-                                            </td>
-                                            <td>
-                                                <p class="mb-0 text-success d-flex justify-content-start align-items-center">
-                                                    <svg class="mr-2" xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24" fill="none">
-                                                        <circle cx="12" cy="12" r="8" fill="#3cb72c"></circle></svg>
-                                                    {{$invoice->status}}
-                                                </p>
-                                            </td>
-                                            <td class="text-right">{{$invoice->grand_total}}</td>
-                                        </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div id="activity" class="tab-pane fade show {{$data['customer']->status=='Qualified' && $data['customer']->customer_type=='Lead'?'':'active'}} scroll">
-                                <h5>Activity Schedule</h5>
-                                <div class="bs-offset-main bs-canvas-anim mt-2">
-                                    <button class="btn btn-primary btn-sm" type="button" data-toggle="canvas"
-                                            data-target="#activity_schedule" aria-expanded="false"
-                                            aria-controls="bs-canvas-right">Add New
-                                    </button>
-                                </div>
-
-
-                                <div class="iq-timeline0 m-0 d-flex align-items-center justify-content-between position-relative activity_schedule" style="overflow: auto">
-
-                                    <ul class="list-inline p-0 m-0">
-                                        @foreach($data['activity_schedule'] as $activity)
-                                        <li>
-                                            <div class="timeline-dots timeline-dot1 border-primary text-primary pt-1"></div>
-                                            <div class="pt-3">
-                                                <p class="mb-0 text-muted font-weight-bold text-uppercase">{{\Carbon\Carbon::parse($activity->date_time)->toFormattedDateString()}}   {{date('h:i a', strtotime($activity->date_time))}}</p>
+                                    <div class="col-md-5">
+                                        <div class="profile-info-left">
+                                            <h3 class="user-name m-t-0">{{$data['customer']->company->name}}</h3>
+                                            <h5 class="company-role m-t-0 mb-0">{{$data['customer']->name}}</h5>
+                                            <small class="text-muted">{{$data['customer']->position??'N/A'}}</small>
+                                            <div class="staff-id">Gender : {{$data['customer']->gender}}</div>
+                                            <div class="staff-id">DOB : {{$data['customer']->dob==null?'N/A':\Carbon\Carbon::parse($data['customer']->dob)->toFormattedDateString()}}</div>
+                                            <div class="staff-id">Department : {{$data['customer']->department??'N/A'}}</div>
+                                            <div class="staff-id">Contact Level : {{$data['customer']->customer_type}}</div>
+                                            <div class="staff-id">Customer ID : {{$data['customer']->customer_id}}</div>
+                                            <div class="staff-id">Report To : {{$data['customer']->report_to??'N/A'}} ({{$data['customer']->position_of_report_to??'Unkown Position'}})</div>
+                                            <div>
+                                                {{$data['customer']->bio}}
                                             </div>
-                                        </li>
-                                        <li>
-
-
-                                            <div class="d-inline-block w-100">
-                                                <div class="d-inline-block w-100">
-                                                    <p></p>
-                                                    <p class="mb-0">{{$activity->description}}</p>
-                                                </div>
-                                                <a href="{{route('delete_schedule',$activity->id)}}" class="btn btn-danger btn-sm float-right">Delete</a>
-                                                @if($activity->work_done!=1)
-                                                    @if(\Carbon\Carbon::now()>$activity->date_time)
-                                                        <a href="{{route('work.done',$activity->id)}}" class="btn btn-danger float-right btn-sm mr-3">Overdue Date</a>
-                                                    @else
-                                                        <a href="{{route('work.done',$activity->id)}}"
-                                                           class="btn btn-primary float-right btn-sm mr-3">Done</a>
-                                                    @endif
-                                                @else
-                                                    <button class="btn btn-success float-right btn-sm mr-3"><i
-                                                                class="la la-check-circle-o"></i> Complete
-                                                    </button>
-                                                @endif
-                                            </div>
-                                        </li>
-
-                                            @endforeach
-                                    </ul>
-                                </div>
-                            </div>
-                            <div id="comment" class="tab-pane fade " >
-                                        <ul class="files-list">
-                                            @foreach($comments as $comment)
-                                                <div class="chat chat-left">
-                                                    <div class="chat-avatar">
-                                                        <a href="profile" class="avatar">
-                                                            <img src="{{$comment->user->profile_img!=null? url(asset('img/profiles/'.$comment->user->profile_img)):url(asset('img/profiles/avatar-01.jpg'))}}" alt="" class="avatar chat-avatar-sm">
-                                                        </a>
-                                                    </div>
-                                                    <div class="chat-body">
-                                                        <div class="chat-bubble">
-                                                            <div class="chat-content">
-                                                                <span class="task-chat-user">{{$comment->user->name}}</span>
-                                                                <p>{{$comment->comment}}</p>
-                                                                <span class="chat-time">{{$comment->created_at->toFormattedDateString()}} at {{date('h:i:s a', strtotime($comment->created_at))}}</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endforeach
-                                        </ul>
-                                    <hr>
-                                    <form method="POST" action="{{url("/lead/post/comment")}}" >
-                                        {{csrf_field()}}
-                                        <div class="row">
-                                                <input type="hidden" name="lead_id" value="{{$data['customer']->id}}">
-                                            <div class="col-12">
-                                                <div class="input-group">
-                                                    <input type="text" class="form-control shadow" name="comment">
-                                                    <div class="input-group-prepend">
-                                                        <button class="btn btn-primary shadow rounded-right" type="submit">Add Note</button>
-                                                    </div>
-                                                </div>
+                                            <div class="row">
+                                                <div class="staff-msg"><a href="#" class="btn btn-custom">Send Message</a></div>
+                                                <div class="staff-msg ml-2"><a href="{{route('customers.edit',$data['customer']->id)}}" class="btn btn-info">Edit</a></div>
                                             </div>
                                         </div>
-                                    </form>
-                            </div>
-                            <div id="item_sale" class="tab-pane fade ">
-                                <div class="d-flex justify-content-between align-items-center p-3">
-                                    <h5>Item List</h5>
-                                </div>
-                                <div class="table-responsive" style="overflow: auto">
-                                    <table class="table" >
-                                        <thead class="table-color-heading">
-                                        <tr class="text-muted">
-                                            <th style="min-width: 150px;">Date </th>
-                                            <th scope="col" style="min-width: 120px;">Invoice ID</th>
-                                            <th scope="col" style="min-width: 120px;">Product Code</th>
-                                            <th scope="col" style="min-width: 150px;">Product Name</th>
-                                            <th scope="col">Quantity</th>
-                                            <th scope="col" style="min-width: 120px;">Unit</th>
-                                            <th scope="col" style="min-width: 120px;">Unit Price</th>
-                                            <th scope="col" class="text-right" style="min-width: 120px;">Total</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        @foreach($items as $item)
-                                            <tr>
-                                                <td style="min-width: 100px;">{{$item->created_at->toFormattedDateString()}}</td>
-                                                <td>{{$item->invoice->invoice_id}}</td>
-                                                <td>{{$item->variant->product_code}}</td>
-                                                <td>{{$item->variant->product_name}}</td>
-                                                <td>{{$item->quantity}}</td>
-                                                <td>{{$item->unit->unit}}</td>
-                                                <td>{{$item->unit_price}}</td>
-                                                <td>{{$item->total}}</td>
-                                            </tr>
-                                        @endforeach
-                                        </tbody>
-                                    </table>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <ul class="personal-info">
+                                            <li>
+                                                <span class="title">Phone:</span>
+                                                <span class="text">{{$data['customer']->phone}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="title">Email:</span>
+                                                <span class="text">{{$data['customer']->email}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="title">Address:</span>
+                                                <span class="text">{{$data['customer']->address??'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="title">Facebook:</span>
+                                                <span class="text">{{$data['customer']->facebook??'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="title">Linkedin:</span>
+                                                <span class="text">{{$data['customer']->linkedin??'N/A'}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="title">Total Deal:</span>
+                                                <span class="text">{{count($data['deal'])}}</span>
+                                            </li>
+                                            <li>
+                                                <span class="title">Credit Amount:</span>
+                                                <span class="text">{{$data['customer']->current_credit??0}} MMK</span>
+                                            </li>
+                                            @if($data['customer']->status=='Qualified' && $data['customer']->customer_type=='Lead')
+                                                <li>
+                                                    <span class="title">Total Invoice:</span>
+                                                    <span class="text">{{count($data['invoice'])}}</span>
+                                                </li>
+                                                <li>
+                                                    <span class="title">Total tickets:</span>
+                                                    <span class="text">{{count($data['tickets'])}}</span>
+                                                </li>
+                                                <li>
+                                                    <span class="title">Total Sales:</span>
+                                                    <span class="text">{{$data['total_sale']}}</span>
+                                                </li>
+                                                <li>
+                                                    <span class="title">Paid:</span>
+                                                    <span class="text">{{$data['paid_total']}}</span>
+                                                </li>
+
+
+                                            @endif
+                                            <li>
+                                                <span class="title">Followers :</span>
+                                                <span class="text"><a href="#" class="followers-add" data-toggle="modal" data-target="#add_followers"><i class="la la-plus"></i></a>
+                                                    <a href="#" class="followers-add" data-toggle="modal" data-target="#remove_followers"><i class="la la-trash"> </i></a></span>
+
+                                            </li>
+                                            <li>
+                                                @foreach($followers as $follower)
+                                                    <div class="row my-2">
+                                                        <div class="col-12">
+                                                            <a href="#" data-toggle="tooltip" title="{{$follower->user->name}}" class="avatar">
+                                                                <img src="img/profiles/avatar-09.jpg" alt="">
+                                                            </a><span>{{$follower->user->name}}</span>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </li>
+
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div id="activity_schedule" class="bs-canvas bs-canvas-anim bs-canvas-right position-fixed bg-light h-100"
-                 style="max-width: 300px;margin-top: 50px;">
-                <header class="bs-canvas-header p-3 bg-primary overflow-auto">
-                    <button type="button" class="bs-canvas-close float-left close" aria-label="Close"><span aria-hidden="true"
-                                                                                                             class="text-dark">&times;</span>
-                    </button>
-                    <strong class="d-inline-block text-light mb-0  ml-2 float-left">Add Activity Schedule</strong>
-                </header>
-                <div class="bs-canvas-content px-3 py-5">
-                    <form action="{{route('activity.schedule')}}" method="post">
-                        @csrf
-                        <input type="hidden" name="lead_id" value="{{$data['customer']->id}}">
-                        <div class="form-group">
-                            <label for="description">Description</label>
-                            <textarea name="description" id="description" cols="30" rows="2" class="form-control"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="type">Type</label>
-                            <select name="type" id="type" class="form-control">
-                                <option value="Cold Calling">Cold Calling</option>
-                                <option value="Phone Call">Phone Call</option>
-                                <option value="Follow Up">Follow Up</option>
-                                <option value="Meeting">Meeting</option>
-                                <option value="Entertainment">Entertainment</option>
-                                <option value="Event">Event</option>
-                                <option value="Visit">Visit</option>
-                            </select>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- Task Tab -->
+               <div class="col-12 card">
+                   <div class="project-task mt-3">
+                       <ul class="nav nav-tabs nav-tabs-top nav-justified mb-0">
+                           <li class="nav-item"><a class="nav-link active" href="#all_tasks" data-toggle="tab" aria-expanded="true">Invoices</a></li>
+                           <li class="nav-item"><a class="nav-link" href="#pending_tasks" data-toggle="tab" aria-expanded="false">Activity Schedule</a></li>
+                           <li class="nav-item"><a class="nav-link" href="#completed_tasks" data-toggle="tab" aria-expanded="false">Notes</a></li>
+                       </ul>
+                       <div class="tab-content">
+                           <div class="tab-pane show active" id="all_tasks">
+                             <div class="col-12" style="overflow: auto">
+                                 <h5>Invoice :</h5>
+                                 <table class="table table-nowrap mb-0 table-hover" id="invoice">
+                                     <thead>
+                                     <tr>
+                                         <th>Invoice Number</th>
+                                         <th>Sale Type</th>
+                                         <th>Invoice Type</th>
+                                         <th>Sale Man</th>
+                                         <th>Created Date</th>
+                                         <th>Due Date</th>
+                                         <th>Amount</th>
+                                         <th>Due Amount</th>
+                                         <th>Status</th>
+                                     </tr>
+                                     </thead>
+                                     <tbody>
+                                     @foreach($data['invoice'] as $invoice)
+                                         <tr>
+                                             @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
+                                                 <td>@if($invoice->cancel==1)
+                                                         <strike><a href="{{route('invoices.show',$invoice->id)}}">{{$invoice->invoice_id}}</a></strike>
+                                                     @else
+                                                         <a href="{{route('invoices.show',$invoice->id)}}">{{$invoice->invoice_id}}</a>
+                                                     @endif
+                                                 </td>
+                                             @else
+                                                 <td>
+                                                     @if($invoice->cancel==1)
+                                                         <strike>
+                                                             <a href="{{route("customer.invoice_show",$invoice->id)}}">#{{$invoice->invoice_id}}</a></strike>
+                                                     @else
+                                                         <a href="{{route("customer.invoice_show",$invoice->id)}}">#{{$invoice->invoice_id}}</a>
+                                                     @endif
+                                                 </td>
+                                             @endif
+                                             <td>@if($invoice->cancel==1)
+                                                     <strike>
+                                                         {{$invoice->inv_type}}</strike>
+                                                 @else
+                                                     {{$invoice->inv_type}}
+                                                 @endif
+                                             </td>
+                                             <td>@if($invoice->cancel==1)
+                                                     <strike>
+                                                         {{$invoice->invoice_type}}</strike>
+                                                 @else
+                                                     {{$invoice->invoice_type}}
+                                                 @endif
+                                             </td>
+                                             <td>
+                                                 @if($invoice->cancel==1)
+                                                     <strike>
+                                                         {{$invoice->employee->name}}
+                                                     </strike>
+                                                 @else
+                                                     {{$invoice->employee->name}}
+                                                 @endif
+                                             </td>
+                                             <td>
+                                                 @if($invoice->cancel==1)
+                                                     <strike>
+                                                         {{$invoice->created_at->toFormattedDateString()}}
+                                                     </strike>
+                                                 @else
+                                                     {{$invoice->created_at->toFormattedDateString()}}
+                                                 @endif
+                                             </td>
+                                             <td>
+                                                 @if($invoice->cancel==1)
+                                                     <strike>
+                                                         {{\Illuminate\Support\Carbon::parse($invoice->due_date)->toFormattedDateString()}}
+                                                     </strike>
+                                                 @else
+                                                     {{\Illuminate\Support\Carbon::parse($invoice->due_date)->toFormattedDateString()}}
+                                                 @endif
+                                             </td>
+                                             <td>
+                                                 @if($invoice->cancel==1)
+                                                     <strike>
+                                                         {{$invoice->grand_total}}
+                                                     </strike>
+                                                 @else
+                                                     {{$invoice->grand_total}}
+                                                 @endif
+                                             </td>
+                                             <td>
+                                                 @if($invoice->cancel==1)
+                                                     <strike>
+                                                         {{$invoice->due_amount}}
+                                                     </strike>
+                                                 @else
+                                                     {{$invoice->due_amount}}
+                                                 @endif
+                                             </td>
+                                             <td>
+                                                 @if($invoice->cancel==1)
+                                                     <div class="dropdown action-label">
+                                                         <a class="btn btn-danger btn-sm btn-rounded " href="#" data-toggle="dropdown"
+                                                            aria-expanded="false"><i
+                                                                     class="fa fa-dot-circle-o mr-1"></i>Cancel</a>
+                                                     </div>
+                                                 @else
+                                                     <div class="dropdown action-label">
+                                                         <a class="btn btn-white btn-sm btn-rounded " href="#" data-toggle="dropdown"
+                                                            aria-expanded="false"><i
+                                                                     class="fa fa-dot-circle-o mr-1"></i>{{$invoice->status}}</a>
+                                                         {{--<a class="btn btn-white btn-sm btn-rounded "  href="#" data-toggle="modal" data-target="#change_status{{$invoice->id}}"></a>--}}
+                                                     </div>
+                                                 @endif
+                                             </td>
+                                         </tr>
+                                         @include('invoice.delete')
+                                     @endforeach
+                                     </tbody>
+                                 </table>
+                             </div>
+                           </div>
+                           <div class="tab-pane" id="pending_tasks">
+                               <div class="col-12">
+                                   <h5>Activity Schedule :</h5>
+                                   <div class="bs-offset-main bs-canvas-anim mt-2">
+                                       <button class="btn btn-primary btn-sm" type="button" data-toggle="canvas"
+                                               data-target="#activity_schedule" aria-expanded="false"
+                                               aria-controls="bs-canvas-right">Add New
+                                       </button>
+                                   </div>
 
-                        </div>
-                        <div class="form-group">
-                            <label for="date_time">Date Time</label>
-                            <input type="text" name="date_time" id="date_time" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-outline-danger ml-2 text-sm  btn-md" id="add">Add Item</button>
-                        </div>
-                    </form>
-                </div>
 
-            </div>
-            <div id="assign" class="bs-canvas bs-canvas-anim bs-canvas-right position-fixed bg-light h-100"
-                 style="max-width: 300px;margin-top: 50px;">
-                <header class="bs-canvas-header p-3 bg-primary overflow-auto">
-                    <button type="button" class="bs-canvas-close float-left close" aria-label="Close"><span aria-hidden="true"
-                                                                                                            class="text-dark">&times;</span>
-                    </button>
-                    <strong class="d-inline-block text-light mb-0  ml-2 float-left">Add Activity Schedule</strong>
-                </header>
-                <div class="bs-canvas-content px-3 py-5">
-                    <form action="{{route('activity.schedule')}}" method="post">
-                        @csrf
-                        <input type="hidden" name="lead_id" value="{{$data['customer']->id}}">
-                        <div class="form-group">
-                            <label for="description">Description</label>
-                            <textarea name="description" id="description" cols="30" rows="2" class="form-control"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="type">Type</label>
-                            <select name="type" id="type" class="form-control">
-                                <option value="Cold Calling">Cold Calling</option>
-                                <option value="Phone Call">Phone Call</option>
-                                <option value="Follow Up">Follow Up</option>
-                                <option value="Meeting">Meeting</option>
-                                <option value="Entertainment">Entertainment</option>
-                                <option value="Event">Event</option>
-                                <option value="Visit">Visit</option>
-                            </select>
+                                   <div class="iq-timeline0 m-0 d-flex align-items-center justify-content-between position-relative activity_schedule" style="overflow: auto">
 
-                        </div>
-                        <div class="form-group">
-                            <label for="end_date">Date Time</label>
-                            <input type="text" name="end_date" id="end_date" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-outline-danger ml-2 text-sm  btn-md" id="add">Add Item</button>
-                        </div>
-                    </form>
-                </div>
+                                       <ul class="list-inline p-0 m-0">
+                                           @foreach($data['activity_schedule'] as $activity)
+                                               <li>
+                                                   <div class="timeline-dots timeline-dot1 border-primary text-primary pt-1"></div>
+                                                   <div class="pt-3">
+                                                       <p class="mb-0 text-muted font-weight-bold text-uppercase">{{\Carbon\Carbon::parse($activity->date_time)->toFormattedDateString()}}   {{date('h:i a', strtotime($activity->date_time))}}</p>
+                                                   </div>
+                                               </li>
+                                               <li>
+
+
+                                                   <div class="d-inline-block w-100">
+                                                       <div class="d-inline-block w-100">
+                                                           <p></p>
+                                                           <p class="mb-0">{{$activity->description}}</p>
+                                                       </div>
+                                                       <a href="{{route('delete_schedule',$activity->id)}}" class="btn btn-danger btn-sm float-right">Delete</a>
+                                                       @if($activity->work_done!=1)
+                                                           @if(\Carbon\Carbon::now()>$activity->date_time)
+                                                               <a href="{{route('work.done',$activity->id)}}" class="btn btn-danger float-right btn-sm mr-3">Overdue Date</a>
+                                                           @else
+                                                               <a href="{{route('work.done',$activity->id)}}"
+                                                                  class="btn btn-primary float-right btn-sm mr-3">Done</a>
+                                                           @endif
+                                                       @else
+                                                           <button class="btn btn-success float-right btn-sm mr-3"><i
+                                                                       class="la la-check-circle-o"></i> Complete
+                                                           </button>
+                                                       @endif
+                                                   </div>
+                                               </li>
+
+                                           @endforeach
+                                       </ul>
+                                   </div>
+                               </div>
+                           </div>
+                           <div class="tab-pane" id="completed_tasks">
+                              <div class="col-12 my-3">
+                                  <h5>Notes :</h5>
+                                  <ul class="files-list">
+                                      @foreach($comments as $comment)
+                                          <div class="chat chat-left">
+                                              <div class="chat-avatar">
+                                                  <a href="profile" class="avatar">
+                                                      <img src="{{$comment->user->profile_img!=null? url(asset('img/profiles/'.$comment->user->profile_img)):url(asset('img/profiles/avatar-01.jpg'))}}" alt="" class="avatar chat-avatar-sm">
+                                                  </a>
+                                              </div>
+                                              <div class="chat-body">
+                                                  <div class="chat-bubble">
+                                                      <div class="chat-content">
+                                                          <span class="task-chat-user">{{$comment->user->name}}</span>
+                                                          <p>{{$comment->comment}}</p>
+                                                          <span class="chat-time">{{$comment->created_at->toFormattedDateString()}} at {{date('h:i:s a', strtotime($comment->created_at))}}</span>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      @endforeach
+                                  </ul>
+                                  <hr>
+                                  <form method="POST" action="{{url("/lead/post/comment")}}" >
+                                      {{csrf_field()}}
+                                      <div class="row">
+                                          <input type="hidden" name="lead_id" value="{{$data['customer']->id}}">
+                                          <div class="col-12">
+                                              <div class="input-group">
+                                                  <input type="text" class="form-control shadow" name="comment">
+                                                  <div class="input-group-prepend">
+                                                      <button class="btn btn-primary shadow rounded-right" type="submit">Add Note</button>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </form>
+                              </div>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+                <!-- /Task Tab -->
 
             </div>
         </div>
+        <div id="activity_schedule" class="bs-canvas bs-canvas-anim bs-canvas-right position-fixed bg-light h-100"
+             style="max-width: 300px;margin-top: 50px;">
+            <header class="bs-canvas-header p-3 bg-info overflow-auto">
+                <button type="button" class="bs-canvas-close float-left close" aria-label="Close"><span aria-hidden="true"
+                                                                                                        class="text-dark">&times;</span>
+                </button>
+                <strong class="d-inline-block text-light mb-0  ml-2 float-left">Add Activity Schedule</strong>
+            </header>
+            <div class="bs-canvas-content px-3 py-5">
+                <form action="{{route('activity.schedule')}}" method="post">
+                    @csrf
+                    <input type="hidden" name="lead_id" value="{{$data['customer']->id}}">
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea name="description" id="description" cols="30" rows="2" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="type">Type</label>
+                        <select name="type" id="type" class="form-control">
+                            <option value="Cold Calling">Cold Calling</option>
+                            <option value="Phone Call">Phone Call</option>
+                            <option value="Follow Up">Follow Up</option>
+                            <option value="Meeting">Meeting</option>
+                            <option value="Entertainment">Entertainment</option>
+                            <option value="Event">Event</option>
+                            <option value="Visit">Visit</option>
+                        </select>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="date_time">Date Time</label>
+                        <input type="text" name="date_time" id="date_time" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-outline-danger ml-2 text-sm  btn-md" id="add">Add Item</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
     </div>
-
-
     <!-- /Page Content -->
     <div id="add_followers" class="modal custom-modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="document">

@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content">
             <div class="modal-header border-bottom">
-                <h5 class="modal-title">Add New Sale Zone</h5>
+                <h5 class="modal-title">Add New Sales Zone</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

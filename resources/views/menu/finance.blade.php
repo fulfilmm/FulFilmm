@@ -112,11 +112,11 @@
             <li><a class="{{ Request::is('inv/view/due') ? 'active' : '' }}"
                    href="{{ url('inv/view/'.'due') }}" style="text-decoration: none">Due Invoice</a></li>
             <li><a class="{{ Request::is('inv/view/whole') ? 'active' : '' }}"
-                   href="{{ url('inv/view/whole') }}" style="text-decoration: none">Whole Sale</a></li>
+                   href="{{ url('inv/view/whole') }}" style="text-decoration: none">Whole Sales</a></li>
             <li><a class="{{ Request::is('inv/view/retail') ? 'active' : '' }}"
-                   href="{{ url('inv/view/retail') }}" style="text-decoration: none">Retail Sale</a></li>
+                   href="{{ url('inv/view/retail') }}" style="text-decoration: none">Retail Sales</a></li>
             <li><a class="{{ Request::is('sale_return') ? 'active' : '' }}"
-                   href="{{ route('sale_return.index') }}" style="text-decoration: none">Sale Return</a></li>
+                   href="{{ route('sale_return.index') }}" style="text-decoration: none">Sales Return</a></li>
             <li><a class="{{ Request::is('coatype') ? 'active' : '' }}" href="{{route('coatype.index')}}"
                    style="text-decoration: none"><span>Account Type</span>
                 </a></li>
@@ -335,12 +335,12 @@
             </li>
             <li><a class="{{ Request::is('selling/report') ? 'active' : '' }}"
                    href="{{ route('sale.report') }}" style="text-decoration: none"><i class="la la-calendar mr-1"
-                                                                                      style="font-size: 18px;"></i>Sale
+                                                                                      style="font-size: 18px;"></i>Sales
                     Report</a></li>
             <li><a class="{{ Request::is('saletargets/create') ? 'active' : '' }}"
                    href="{{ route('saletargets.create') }}" style="text-decoration: none"><i class="la la-bullseye mr-1"
                                                                                              style="font-size: 18px;"></i>
-                    Add Sale Target</a></li>
+                    Add Sales Target</a></li>
             <li class="submenu">
                 <a href="#"><img src="{{url(asset('img/icon_image/invoice.png'))}}" alt="" width="18px" height="18px"
                                  class="mr-1"><span> Invoice</span> <span
@@ -349,9 +349,9 @@
                     <li><a class="{{ Request::is('invoices') ? 'active' : '' }}"
                            href="{{ route('invoices.index') }}" style="text-decoration: none">All Invoice</a></li>
                     <li><a class="{{ Request::is('invoices/create') ? 'active' : '' }}"
-                           href="{{ route('invoices.create') }}" style="text-decoration: none">Whole Sale</a></li>
+                           href="{{ route('invoices.create') }}" style="text-decoration: none">Whole Sales</a></li>
                     <li><a class="{{ Request::is('rental/invoice/crate') ? 'active' : '' }}"
-                           href="{{ route('invoice.rental') }}" style="text-decoration: none">Retail Sale</a></li>
+                           href="{{ route('invoice.rental') }}" style="text-decoration: none">Retail Sales</a></li>
                 </ul>
             </li>
             <li class="submenu">

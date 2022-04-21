@@ -1,4 +1,5 @@
 @extends('layout.mainlayout')
+@section('title','Sales Activity Add')
 @section('content')
     <!-- Page Wrapper -->
 
@@ -9,10 +10,10 @@
         <div class="page-header">
             <div class="row">
                 <div >
-                    <h3 class="page-title">Sale Activities</h3>
+                    <h3 class="page-title">Sales Activities</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item active"><a href="{{route('activity.index')}}">Sale Activities</a></li>
+                        <li class="breadcrumb-item active"><a href="{{route('activity.index')}}">Sales Activities</a></li>
                         <li class="breadcrumb-item active">Create</li>
                     </ul>
                 </div>

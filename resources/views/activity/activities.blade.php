@@ -35,6 +35,7 @@
         </div>
     </li>
 @endsection
+@section('title','Sale Activities')
 @section('content')
     <!-- Page Wrapper -->
 
@@ -45,10 +46,10 @@
         <div class="page-header">
             <div class="row">
                 <div>
-                    <h3 class="page-title">Sale Activities</h3>
+                    <h3 class="page-title">Sales Activities</h3>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Sale Activities</li>
+                        <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Sales Activities</li>
                     </ul>
                 </div>
                 <div class="col-auto float-right ml-auto">

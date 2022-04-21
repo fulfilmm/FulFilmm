@@ -57,9 +57,9 @@
                             <td>
                                 @if($transaction->approve==0)
                                     <a href="{{url('transaction/approve/'.$transaction->id.'/expense')}}"
-                                       class="btn btn-white btn-white btn-sm">Approve</a>
+                                       class="btn btn-white btn-white btn-sm">Confirm</a>
                                 @else
-                                    <button type="button" class="btn btn-success btn-sm disabled">Approved</button>
+                                    <button type="button" class="btn btn-success btn-sm disabled">Confirm</button>
                                 @endif
                             </td>
                             <td>{{$transaction->approver->name}}</td>

@@ -1,5 +1,5 @@
 @extends('layout.mainlayout')
-@section('title','Sale Performance')
+@section('title','Sales Performance')
 @section('content')
     <style>
         .highcharts-figure, .highcharts-data-table table {
@@ -43,10 +43,10 @@
         <div class="page-header mt-3">
             <div class="row">
                 <div class="col-sm-12">
-                    <h3 class="page-title">Sale Performance </h3>
+                    <h3 class="page-title">Sales Performance </h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item float-right">Expense Claim</li>
+                        <li class="breadcrumb-item float-right">Sales Performance</li>
                     </ul>
                 </div>
             </div>
@@ -90,7 +90,7 @@
                 },
                 colors:colors,
                 title: {
-                    text: 'Overall Sale Performance'
+                    text: 'Overall Sales Performance'
                 },
                 accessibility: {
                     announceNewData: {
@@ -126,7 +126,7 @@
 
                 series: [
                     {
-                        name: "Sale Performance",
+                        name: "Sales Performance",
                         colorByPoint: true,
                         data: [
                             {
@@ -169,7 +169,7 @@
                     }
                 },
                 title: {
-                    text: 'Sale Person Performance Compare Chart'
+                    text: 'Sales Person Performance Compare Chart'
                 },
                 xAxis: {
                     categories: [
@@ -262,7 +262,7 @@
                 },
                 colors:pipeline,
                 title: {
-                    text: 'Sale Pipeline Report'
+                    text: 'Sales Pipeline Report'
                 },
                 tooltip: {
                     pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>'

@@ -58,7 +58,7 @@ class TransactionController extends Controller
         $recurring = ['No', 'Daily', 'Weekly', 'Monthly', 'Yearly'];
         $payment_method = ['Cash', 'eBanking', 'WaveMoney', 'KBZ Pay'];
         $category = TransactionCategory::where('type', 0)->get();
-        $emps = Employee::all();
+        $emps =Employee::where('office_branch_id',Auth::guard('employee')->user()->office_branch_id)->get();
         $coas = ChartOfAccount::all();
         $customer = Customer::where('customer_type', 'Supplier')->get();
         $data = ['coas' => $coas, 'emps' => $emps, 'customers' => $customer, 'account' => $account, 'recurring' => $recurring, 'payment_method' => $payment_method, 'category' => $category];
@@ -67,13 +67,32 @@ class TransactionController extends Controller
 
     public function expense_index()
     {
-        $expenses = Expense::with('cat', 'supplier', 'approver', 'employee', 'bill', 'account')->get();
+
+        $auth=Auth::guard('employee')->user();
+        if($auth->role->name=='CEO'||$auth->role->name=='Super Admin'||$auth->role->name=='Finance Manager'){
+            $expenses = Expense::with('cat', 'supplier', 'approver', 'employee', 'bill', 'account')->get();
+        }else{
+            $expenses = Expense::with('cat', 'supplier', 'approver', 'employee', 'bill', 'account')
+                ->orWhere('emp_id',$auth->id)
+                ->orWhere('approver_id',$auth->id)
+                ->get();
+        }
+
         return view('transaction.Expense.index', compact('expenses'));
     }
 
     public function revenue_index()
     {
-        $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->get();
+        $auth=Auth::guard('employee')->user();
+        if($auth->role->name=='CEO'||$auth->role->name=='Super Admin'||$auth->role->name=='Finance Manager'){
+            $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->get();
+        }else{
+            $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')
+                ->orWhere('emp_id',$auth->id)
+                ->orWhere('approver_id',$auth->id)
+                ->get();
+        }
+
         return view('transaction.Revenue.index', compact('revenues'));
     }
 
@@ -86,6 +105,7 @@ class TransactionController extends Controller
     public function expense_store(Request $request)
     {
 
+//        dd($request->all());
         $this->validate($request, [
             'title' => 'required',
             'transaction_date' => 'required',
@@ -137,18 +157,55 @@ class TransactionController extends Controller
                 }
                 $this->transaction_add($request->account, $request->type, $new_expense->id, null);
                 $this->addnotify($request->approver_id, 'noti', 'Add new expense', 'expense', Auth::guard('employee')->user()->id);
-                $last_tran = Transaction::orderBy('id', 'desc')->first();
-                if (isset($request->bill_id)) {
+
                     $bill = Bill::where('id', $request->bill_id)->first();
                     $bill->due_amount = $bill->due_amount - $request->amount;
                     $bill->update();
                     return redirect(route('bills.show', $request->bill_id))->with('success', 'Add New Expense Successful');
-                } else {
-                    return redirect(route('transactions.show', $last_tran->id))->with('success', 'Add New Expense Successful');
-                }
             }else{
                 return redirect()->back()->with('danger','This bill is payment has been made');
             }
+        }else{
+            try {
+                $new_expense = new Expense();
+                $new_expense->title = $request->title;
+                $new_expense->vendor_id = $request->customer_id;
+                $new_expense->amount = $request->amount;
+                $new_expense->reference = $request->reference;
+                $new_expense->recurring = $request->recurring;
+                $new_expense->payment_method = $request->payment_method;
+                $new_expense->description = $request->description;
+                $new_expense->category = $request->category;
+                $new_expense->approver_id = $request->approver_id;
+                $new_expense->coa_id = $request->coa_account;
+                $new_expense->transaction_date = $request->transaction_date;
+                $new_expense->emp_id = Auth::guard('employee')->user()->id;
+                $new_expense->branch_id = Auth::guard('employee')->user()->office_branch_id;
+                $new_expense->currency = $request->currency;
+                $new_expense->bill_id = $request->bill_id ?? null;
+//        dd($new_expense);
+                if (isset($request->attachment)) {
+                    if ($request->attachment != null) {
+                        $attach = $request->file('attachment');
+                        $input['filename'] = \Illuminate\Support\Str::random(10) . time() . '.' . $attach->extension();
+                        $request->attachment->move(public_path() . '/attach_file', $input['filename']);
+
+                    }
+                    $new_expense->attachment = $input['filename'];
+                }
+                $new_expense->save();
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', $e->getMessage());
+            }
+            if (isset($request->exp_id)) {
+                $exp = ExpenseClaim::where('id', $request->exp_id)->first();
+                $exp->is_claim = 1;
+                $exp->update();
+            }
+            $this->transaction_add($request->account, $request->type, $new_expense->id, null);
+            $this->addnotify($request->approver_id, 'noti', 'Add new expense', 'expense', Auth::guard('employee')->user()->id);
+            $last_tran = Transaction::orderBy('id', 'desc')->first();
+            return redirect(route('transactions.show', $last_tran->id))->with('success', 'Add New Expense Successful');
         }
 
 
@@ -204,7 +261,7 @@ class TransactionController extends Controller
 
     public function addrevenue()
     {
-        $emps = Employee::all();
+        $emps =Employee::where('office_branch_id',Auth::guard('employee')->user()->office_branch_id)->get();
         $account = Account::where('enabled', 1)->get();
         $recurring = ['No', 'Daily', 'Weekly', 'Monthly', 'Yearly'];
         $payment_method = ['Cash', 'eBanking', 'WaveMoney', 'KBZ Pay'];

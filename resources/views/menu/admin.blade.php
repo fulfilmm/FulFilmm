@@ -7,15 +7,17 @@
                     Dashboard</a></li>
             <li><a class="{{ Request::is('sale/dashboard') ? 'active' : '' }}" href="{{ route('sale.dashboard') }}"
                    style="text-decoration: none">
-                    Sale Dashboard</a></li>
+                    Sales Dashboard</a></li>
             <li class="submenu">
                 <a href="#"> <span> Report</span> <span
                             class="menu-arrow"></span></a>
                 <ul style="display: none;">
+                    <li><a class="{{ Request::is('reports') ? 'active' : '' }}"
+                           href="{{ url('reports') }}" style="text-decoration: none">Report</a></li>
                     <li><a class="{{ Request::is('selling/report') ? 'active' : '' }}"
-                           href="{{ route('sale.report') }}" style="text-decoration: none">Sale Report</a></li>
+                           href="{{ route('sale.report') }}" style="text-decoration: none">Sales Report</a></li>
                     <li><a class="{{ Request::is('sale/performance') ? 'active' : '' }}"
-                           href="{{ route('report.saleprformance') }}" style="text-decoration: none">Sale Performance</a></li>
+                           href="{{ route('report.saleprformance') }}" style="text-decoration: none">Sales Performance</a></li>
                     <li><a class="{{ Request::is('stock/report') ? 'active' : '' }}"
                            href="{{ route('report.stock') }}" style="text-decoration: none">Stock Report</a></li>
                     <li><a class="{{ Request::is('officebranch') ? 'active' : '' }}"
@@ -224,11 +226,11 @@
             <li><a class="{{ Request::is('inv/view/due') ? 'active' : '' }}"
                    href="{{ url('inv/view/'.'due') }}" style="text-decoration: none">Due Invoice</a></li>
             <li><a class="{{ Request::is('inv/view/whole') ? 'active' : '' }}"
-                   href="{{ url('inv/view/whole') }}" style="text-decoration: none">Whole Sale</a></li>
+                   href="{{ url('inv/view/whole') }}" style="text-decoration: none">Whole Sales</a></li>
             <li><a class="{{ Request::is('inv/view/retail') ? 'active' : '' }}"
-                   href="{{ url('inv/view/retail') }}" style="text-decoration: none">Retail Sale</a></li>
+                   href="{{ url('inv/view/retail') }}" style="text-decoration: none">Retail Sales</a></li>
             <li><a class="{{ Request::is('sale_return') ? 'active' : '' }}"
-                   href="{{ route('sale_return.index') }}" style="text-decoration: none">Sale Return</a></li>
+                   href="{{ route('sale_return.index') }}" style="text-decoration: none">Sales Return</a></li>
             <li><a class="{{ Request::is('coatype') ? 'active' : '' }}" href="{{route('coatype.index')}}"
                    style="text-decoration: none"><span>Account Type</span>
                 </a></li>
@@ -482,18 +484,18 @@
         </ul>
     </li><!--Car -->
     <li class="submenu">
-        <a href="#"><i class="la la-dollar"></i> <span>Sale</span> <span
+        <a href="#"><i class="la la-dollar"></i> <span>Sales</span> <span
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
 
             <li><a class="{{ Request::is('salezone') ? 'active' : '' }}"
-                   href="{{route('salezone.index')}}" style="text-decoration: none">Sale Zone</a></li>
+                   href="{{route('salezone.index')}}" style="text-decoration: none">Sales Zone</a></li>
             <li><a class="{{ Request::is('region') ? 'active' : '' }}"
-                   href="{{route('region.index')}}" style="text-decoration: none">Sale Regioin</a></li>
+                   href="{{route('region.index')}}" style="text-decoration: none">Sales Regioin</a></li>
             <li><a class="{{ Request::is('inv/view/whole') ? 'active' : '' }}"
-                   href="{{ url('inv/view/whole') }}" style="text-decoration: none">Whole Sale</a></li>
+                   href="{{ url('inv/view/whole') }}" style="text-decoration: none">Whole Sales</a></li>
             <li><a class="{{ Request::is('inv/view/retail') ? 'active' : '' }}"
-                   href="{{ url('inv/view/retail') }}" style="text-decoration: none">Retail Sale</a></li>
+                   href="{{ url('inv/view/retail') }}" style="text-decoration: none">Retail Sales</a></li>
             <li class="submenu">
                 <a href="#"><span> Selling Price</span> <span
                             class="menu-arrow"></span></a>
@@ -506,11 +508,11 @@
                    href="{{ route('customer') }}" style="text-decoration: none">Customers</a>
             </li>
             <li><a class="{{ Request::is('selling/report') ? 'active' : '' }}"
-                   href="{{ route('sale.report') }}" style="text-decoration: none">Sale Report</a></li>
+                   href="{{ route('sale.report') }}" style="text-decoration: none">Sales Report</a></li>
             <li><a class="{{ Request::is('sale/activity') ? 'active' : '' }}"
-                   href="{{ route('activity.index') }}" style="text-decoration: none">Sale Activity</a></li>
+                   href="{{ route('activity.index') }}" style="text-decoration: none">Sales Activity</a></li>
             <li><a class="{{ Request::is('saletargets/create') ? 'active' : '' }}"
-                   href="{{ route('saletargets.create') }}" style="text-decoration: none">Sale Target</a></li>
+                   href="{{ route('saletargets.create') }}" style="text-decoration: none">Sales Target</a></li>
             <li><a class="{{ Request::is('contact/qualified') ? 'active' : '' }}"
                    href="{{ route('qualified_contact') }}" style="text-decoration: none">Qualified Customer</a></li>
             <li class="submenu">
@@ -566,10 +568,10 @@
                     <li><a class="{{ Request::is('quotations') ? 'active' : '' }}"
                            href="{{ route('quotations.index') }}" style="text-decoration: none">All Quotations</a></li>
                     <li><a class="{{ Request::is('quotations/create') ? 'active' : '' }}"
-                           href="{{ route('quotations.create') }}" style="text-decoration: none">Whole Sale
+                           href="{{ route('quotations.create') }}" style="text-decoration: none">Whole Sales
                             Quotation</a></li>
                     <li><a class="{{ Request::is('retail/sale/quotation') ? 'active' : '' }}"
-                           href="{{ route('quotations.retail') }}" style="text-decoration: none">Retail Sale
+                           href="{{ route('quotations.retail') }}" style="text-decoration: none">Retail Sales
                             Quotation</a></li>
                 </ul>
             </li>

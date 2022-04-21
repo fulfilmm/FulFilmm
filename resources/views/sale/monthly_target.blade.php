@@ -1,5 +1,5 @@
 @extends('layout.mainlayout')
-@section('title','Add Sale Target')
+@section('title','Add Sales Target')
 @section('content')
     <div class="container-fluid">
         <div class="page-header mt-3">
@@ -8,11 +8,11 @@
                     <h3 class="page-title">Monthly Target</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
-                        <li class="breadcrumb-item float-right">Sale Target</li>
+                        <li class="breadcrumb-item float-right">Sales Target</li>
                     </ul>
                 </div>
                 <div class="col-auto float-right ml-auto">
-                    <a href="#" class="btn btn-white float-right mr-3 mt-3 border-dark rounded-pill" data-toggle="modal" data-target="#add_target" style="box-shadow: white"><i class="fa fa-plus mr-2"></i>Add Sale Target</a>
+                    <a href="#" class="btn btn-white float-right mr-3 mt-3 border-dark rounded-pill" data-toggle="modal" data-target="#add_target" style="box-shadow: white"><i class="fa fa-plus mr-2"></i>Add Sales Target</a>
                 </div>
             </div>
         </div>
