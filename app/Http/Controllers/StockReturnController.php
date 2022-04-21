@@ -43,7 +43,7 @@ class StockReturnController extends Controller
         $invoices=Invoice::all();
         $employees=Employee::all();
         $customers=Customer::all();
-        return view('stock.StockReturn.create',compact('units','products','warehouse','invoices','employees','customers','variants','category'));
+        return view('stock.StockReturn.create',compact('units','products','warehouse','invoices','employees','customers','variants'));
     }
 
     /**
