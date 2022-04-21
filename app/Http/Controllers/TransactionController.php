@@ -310,7 +310,7 @@ class TransactionController extends Controller
                 'payment_method' => 'required',
                 'approver_id' => 'required',
                 'attachment' => 'mimes:pdf,xlsx,doc,docx,jpg,jpeg,ppt,bip',
-                'coa_account'=>'requiured'
+                'coa_account'=>'required'
             ]);
 
             try {

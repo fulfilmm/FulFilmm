@@ -402,8 +402,7 @@
                         <button type="button" aria-hidden="true"  data-dismiss="modal" class="close">×</button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{route('income.store')}}" accept-charset="UTF-8" id="transaction" role="form" novalidate="novalidate" enctype="multipart/form-data"
-                          class="form-loading-button needs-validation">
+                    <form method="POST" action="{{route('income.store')}}"  id="transaction" role="form"  enctype="multipart/form-data">
                     @csrf
                         <input type="hidden" name="type" value="Revenue">
                         <div class="card-body">
@@ -440,7 +439,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="account">Account</label>
+                                        <label for="account">Bank Account</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend" style="width: 12%">
                                                 <span class="input-group-text"><i class="fa fa-bank"></i></span>
@@ -472,7 +471,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="approve">Casher</label>
+                                        <label for="approve">Cashier</label>
                                         <select name="approver_id" id="" class="form-control select2">
                                            @foreach($emps as $emp)
                                             @if($emp->department->name=='Finance Department')
@@ -492,7 +491,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="account">Account</label>
+                                        <label for="account">GL Account</label>
                                         <div class="input-group">
                                             <select name="coa_account" id="account" class="form-control">
                                                 @foreach($data['coas'] as $account)
@@ -501,6 +500,9 @@
                                             </select>
                                         </div>
                                     </div>
+                                    @error('coa_account')
+                                    <span class="text-danger">{{$message}}</span>
+                                    @enderror
                                 </div>
                                 <div class="col-md-6" id="cat_div">
                                     <div class="form-group">
