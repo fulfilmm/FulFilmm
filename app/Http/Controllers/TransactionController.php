@@ -107,7 +107,6 @@ class TransactionController extends Controller
 
 //        dd($request->all());
         $this->validate($request, [
-            'title' => 'required',
             'transaction_date' => 'required',
             'amount' => 'required',
             'account' => 'required',
@@ -115,6 +114,7 @@ class TransactionController extends Controller
             'payment_method' => 'required',
             'approver_id' => 'required',
             'attachment' => 'mimes:pdf,xlsx,doc,docx,jpg,jpeg,ppt,bip,|max:2048',
+            'coa_account'=>'required'
         ]);
         if(isset($request->bill_id)){
             $bill_amount=Bill::where('id',$request->bill_id)->first();
@@ -303,14 +303,14 @@ class TransactionController extends Controller
 
         } else {
             $this->validate($request, [
-                'title' => 'required',
                 'transaction_date' => 'required',
                 'amount' => 'required',
                 'customer_id' => 'required',
                 'category' => 'required',
                 'payment_method' => 'required',
                 'approver_id' => 'required',
-                'attachment' => 'mimes:pdf,xlsx,doc,docx,jpg,jpeg,ppt,bip'
+                'attachment' => 'mimes:pdf,xlsx,doc,docx,jpg,jpeg,ppt,bip',
+                'coa_account'=>'requiured'
             ]);
 
             try {

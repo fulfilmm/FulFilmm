@@ -15,7 +15,7 @@ class CreateRevenuesTable extends Migration
     {
         Schema::create('revenues', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('title')->nullable();
             $table->bigInteger('customer_id')->unsigned();
             $table->bigInteger('invoice_id')->unsigned()->nullable();
             $table->double('amount');

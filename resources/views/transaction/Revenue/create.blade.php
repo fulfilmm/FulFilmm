@@ -65,7 +65,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="account">Account</label>
+                                <label for="account">Gl Account</label>
                                 <div class="input-group">
                                     <select name="coa_account" id="account" class="form-control">
                                         @foreach($data['coas'] as $account)

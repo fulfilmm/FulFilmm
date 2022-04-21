@@ -77,7 +77,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="account">Account</label>
+                                <label for="account">Gl Account</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fa fa-bank"></i></span>
@@ -88,7 +88,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                @error('account')
+                                @error('coa_account')
                                 <span class="text-danger">{{$message}}</span>
                                 @enderror
                             </div>
