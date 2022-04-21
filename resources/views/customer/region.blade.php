@@ -31,7 +31,7 @@
                        @foreach($regions as $item)
                            <tr>
                                <td>{{$item->name}}</td>
-                               <td>{{$item->branch->name}}</td>
+                               <td>{{$item->branch->name??'N/A'}}</td>
                                <td>
                                    <div class="row">
                                        <button type="button" data-toggle="modal" data-target="#edit_region{{$item->id}}" class="btn btn-success btn-sm"><i class="la la-edit"></i></button>

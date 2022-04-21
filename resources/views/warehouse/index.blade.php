@@ -56,7 +56,7 @@
                                     @endif
                                     @endforeach
                             </td>
-                            <td style="min-width: 150px;">{{$warehouse->branch->name}}</td>
+                            <td style="min-width: 150px;">{{$warehouse->branch->name??'N/A'}}</td>
                             <td style="min-width: 150px;">
                                <div class="row">
                                    <a href="" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#stock{{$warehouse->id}}" data-whatever="@getbootstrap"><i class="fa fa-edit"></i></a>

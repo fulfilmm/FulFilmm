@@ -239,7 +239,42 @@ class ReportController extends Controller
             }
 
         }
-        return view('Report.revenue_report',compact('revenues','start','end'));
+        return view('Report.cashinhand',compact('revenues','start','end'));
+    }
+    public function cash_in_emp(Request $request){
+
+        $auth=Auth::guard('employee')->user();
+        if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'||$auth->role->name=='Cashier'||$auth->role->name=='Accountant'){
+            if (isset($request->start)) {
+                $start = Carbon::parse($request->start)->startOfDay();
+                $end = Carbon::parse($request->end)->endOfDay();
+                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->whereBetween('created_at',[$start,$end])
+                    ->where('approve',0)
+                    ->get();
+            }else{
+                $start = Carbon::parse($request->start)->startOfDay();
+                $end = Carbon::parse($request->end)->endOfDay();
+                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->whereBetween('created_at',[$start,$end])
+                    ->where('approve',0)
+                    ->get();
+            }
+        }else{
+            if (isset($request->start)) {
+                $start = Carbon::parse($request->start)->startOfDay();
+                $end = Carbon::parse($request->end)->endOfDay();
+                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->where('emp_id', $auth->id)->whereBetween('created_at',[$start,$end])
+                    ->where('approve',0)
+                    ->get();
+            }else{
+                $start = Carbon::parse($request->start)->startOfDay();
+                $end = Carbon::parse($request->end)->endOfDay();
+                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->where('emp_id', $auth->id)->whereBetween('created_at',[$start,$end])
+                    ->where('approve',0)
+                    ->get();
+            }
+
+        }
+        return view('Report.cashinhand',compact('revenues','start','end'));
     }
     public function expense(Request $request){
         $auth=Auth::guard('employee')->user();

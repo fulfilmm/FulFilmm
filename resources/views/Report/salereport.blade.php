@@ -28,8 +28,8 @@
                                    <label for="branch">Branch</label>
                                    <select name="branch_id" id="branch" class="form-control">
                                        <option value="">All</option>
-                                       @foreach($branch as $key=>$val)
-                                           <option value="{{$key}}" {{$key==$search_branch?'selected':''}}>{{$val}}</option>
+                                       @foreach($branch as $item)
+                                           <option value="{{$item->id}}" {{$item->id==$search_branch?'selected':''}}>{{$item->name}}</option>
                                        @endforeach
                                    </select>
                                </div>

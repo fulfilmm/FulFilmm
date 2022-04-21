@@ -51,7 +51,7 @@
                 </div>
                 <div class="col my-2">
                     <div class="alert-warning alert mb-0 shadow">
-                        <a href="{{url('expense')}}">
+                        <a href="{{route('report.inhand')}}">
                             <div class="d-flex align-items-center">
                                 <div class="avatar rounded no-thumbnail bg-info text-light shadow"><i class="fa fa-credit-card fa-lg"></i></div>
                                 <div class="flex-fill ms-3 text-truncate">
@@ -64,7 +64,7 @@
                 </div>
                 <div class="col my-2">
                     <div class="alert-warning alert mb-0 shadow">
-                        <a href="{{url('expense')}}">
+                        <a href="{{route('report.inemp')}}">
                             <div class="d-flex align-items-center">
                                 <div class="avatar rounded no-thumbnail bg-info text-light shadow"><i class="fa fa-money fa-lg"></i></div>
                                 <div class="flex-fill ms-3 text-truncate">
