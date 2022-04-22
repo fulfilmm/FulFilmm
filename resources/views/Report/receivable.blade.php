@@ -56,44 +56,180 @@
                     </div>
                 </form>
                 <div class="table-responsive my-3 col-12" style="overflow: auto">
-                    <table class="table " id="revenue">
+                    <table class="table table-nowrap mb-0 table-hover" id="receivable">
                         <thead>
                         <tr>
-                            <th>Code</th>
-                            <th>Account</th>
-                            <th>Date</th>
-                            <th>Invoice ID</th>
-                            <th>Title</th>
+                            <th>Invoice Number</th>
+                            <th>Sale Type</th>
+                            <th>Invoice Type</th>
+                            <th>Client</th>
+                            <th>Sale Man</th>
+                            <th>Created Date</th>
+                            <th>Due Date</th>
                             <th>Amount</th>
-                            <th>Receivable Amount</th>
-                            <th>Category</th>
+                            <th>Due Amount</th>
+                            <th>Customer Credit</th>
                             <th>Status</th>
-                            <th>Receiver</th>
+                            <th>Region</th>
+                            <th>Zone</th>
+                            <th>Office Branch</th>
+                            <th class="text-right">Action</th>
                         </tr>
-
                         </thead>
                         <tbody>
-                        @foreach($receivable as $transaction)
+                        @foreach($receivable as $invoice)
                             <tr>
-                                <td>{{$transaction->account->code}}</td>
-                                <td>{{$transaction->account->code.'-'.$transaction->account->name??'N/A'}}</td>
-                                <td>
-                                    {{\Carbon\Carbon::parse($transaction->transaction_date)->toFormattedDateString()}}
-                                </td>
-                                <td>@if($transaction->invoice_id!=null)<a href="{{route('invoices.show',$transaction->invoice->id)}}">{{$transaction->invoice->invoice_id}}</a>@else N/A @endif</td>
-                                <td>{{$transaction->title}}</td>
-                                <td>{{number_format($transaction->amount)}}</td>
-                                <td>{{$transaction->due_amount}}</td>
-                                <td>{{$transaction->cat->name}}</td>
-                                <td>
-                                    @if($transaction->approve==0)
-                                        Pending
+                                @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
+                                    <td>@if($invoice->cancel==1)
+                                            <strike><a href="{{route('invoices.show',$invoice->id)}}">{{$invoice->invoice_id}}</a></strike>
+                                        @else
+                                            <a href="{{route('invoices.show',$invoice->id)}}">{{$invoice->invoice_id}}</a>
+                                        @endif
+                                    </td>
+                                @else
+                                    <td>
+                                        @if($invoice->cancel==1)
+                                            <strike>
+                                                <a href="{{route("customer.invoice_show",$invoice->id)}}">#{{$invoice->invoice_id}}</a></strike>
+                                        @else
+                                            <a href="{{route("customer.invoice_show",$invoice->id)}}">#{{$invoice->invoice_id}}</a>
+                                        @endif
+                                    </td>
+                                @endif
+                                <td>@if($invoice->cancel==1)
+                                        <strike>
+                                            {{$invoice->inv_type}}</strike>
                                     @else
-                                        <button type="button" class="btn btn-success btn-sm disabled">Confirmed</button>
+                                        {{$invoice->inv_type}}
                                     @endif
                                 </td>
-                                <td>{{$transaction->employee->name}}</td>
+                                <td>@if($invoice->cancel==1)
+                                        <strike>
+                                            {{$invoice->invoice_type}}</strike>
+                                    @else
+                                        {{$invoice->invoice_type}}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($invoice->cancel==1)
+                                        <strike>
+                                            {{$invoice->customer->name}}
+                                        </strike>
+                                    @else
+                                        {{$invoice->customer->name}}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($invoice->cancel==1)
+                                        <strike>
+                                            {{$invoice->employee->name}}
+                                        </strike>
+                                    @else
+                                        {{$invoice->employee->name}}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($invoice->cancel==1)
+                                        <strike>
+                                            {{$invoice->created_at->toFormattedDateString()}}
+                                        </strike>
+                                    @else
+                                        {{$invoice->created_at->toFormattedDateString()}}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($invoice->cancel==1)
+                                        <strike>
+                                            {{\Illuminate\Support\Carbon::parse($invoice->due_date)->toFormattedDateString()}}
+                                        </strike>
+                                    @else
+                                        {{\Illuminate\Support\Carbon::parse($invoice->due_date)->toFormattedDateString()}}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($invoice->cancel==1)
+                                        <strike>
+                                            {{$invoice->grand_total}}
+                                        </strike>
+                                    @else
+                                        {{$invoice->grand_total}}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($invoice->cancel==1)
+                                        <strike>
+                                            {{$invoice->due_amount}}
+                                        </strike>
+                                    @else
+                                        {{$invoice->due_amount}}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($invoice->cancel==1)
+                                        <strike>
+                                    <span class="text-{{$invoice->customer->current_credit>$invoice->customer->credit_limit?'danger':''}}"
+                                          title="Red Color is over credit limit">{{$invoice->customer->current_credit}}</span>
+                                        </strike>
+                                    @else
+                                        <span class="text-{{$invoice->customer->current_credit>$invoice->customer->credit_limit?'danger':''}}"
+                                              title="Red Color is over credit limit">{{$invoice->customer->current_credit}}</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($invoice->cancel==1)
+                                        <div class="dropdown action-label">
+                                            <a class="btn btn-danger btn-sm btn-rounded " href="#" data-toggle="dropdown"
+                                               aria-expanded="false"><i
+                                                        class="fa fa-dot-circle-o mr-1"></i>Cancel</a>
+                                        </div>
+                                    @else
+                                        <div class="dropdown action-label">
+                                            <a class="btn btn-white btn-sm btn-rounded " href="#" data-toggle="dropdown"
+                                               aria-expanded="false"><i
+                                                        class="fa fa-dot-circle-o mr-1"></i>{{$invoice->status}}</a>
+                                            {{--<a class="btn btn-white btn-sm btn-rounded "  href="#" data-toggle="modal" data-target="#change_status{{$invoice->id}}"></a>--}}
+                                        </div>
+                                    @endif
+                                </td>
+                                <td>@if($invoice->cancel==1)
+                                        <strike>{{$invoice->region->name??'N/A'}}</strike>
+                                    @else
+                                        {{$invoice->region->name??'N/A'}}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($invoice->cancel==1)
+                                        <strike>{{$invoice->zone->name??'N/A'}}</strike>
+                                    @else
+                                        {{$invoice->zone->name??'N/A'}}
+                                    @endif
+                                </td>
+                                <td>@if($invoice->cancel==1)
+                                        <strike>
+                                            <a href="{{url('officebranch/'.$invoice->branch->id)}}">{{$invoice->branch->name}}</a>
+                                        </strike>
+                                    @else
+                                        <a href="{{url('officebranch/'.$invoice->branch->id)}}">{{$invoice->branch->name}}</a>
+                                    @endif
+                                </td>
+                                @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
+                                    @include('invoice.inv_statuschange')
+
+                                    <td class="text-right">
+                                        <a href="{{route("invoices.show",$invoice->id)}}"
+                                           class="btn btn-white btn-sm"><i class="la la-eye"></i></a>
+                                        @if($invoice->cancel!=1)
+                                            <a href="{{route('invoice.cancel',$invoice->id)}}" class="btn btn-danger btn-sm">Cancel</a>
+                                        @endif
+                                    </td>
+                                @else
+                                    <td>
+                                        <a href="{{route("customer.invoice_show",$invoice->id)}}"
+                                           class="btn btn-white btn-sm"><i class="la la-eye"></i></a>
+                                    </td>
+                                @endif
                             </tr>
+                            @include('invoice.delete')
                         @endforeach
                         </tbody>
                     </table>
@@ -103,7 +239,7 @@
     </div>
     <script>
         $(document).ready(function () {
-            $('#revenue').DataTable({
+            $('#receivable').DataTable({
                 dom: 'Bfrtip',
                 buttons: [
                     'copy', 'csv', 'excel', 'pdf', 'print'
