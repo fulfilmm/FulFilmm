@@ -73,7 +73,6 @@
                             <th>Region</th>
                             <th>Zone</th>
                             <th>Office Branch</th>
-                            <th class="text-right">Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -212,24 +211,7 @@
                                         <a href="{{url('officebranch/'.$invoice->branch->id)}}">{{$invoice->branch->name}}</a>
                                     @endif
                                 </td>
-                                @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
-                                    @include('invoice.inv_statuschange')
-
-                                    <td class="text-right">
-                                        <a href="{{route("invoices.show",$invoice->id)}}"
-                                           class="btn btn-white btn-sm"><i class="la la-eye"></i></a>
-                                        @if($invoice->cancel!=1)
-                                            <a href="{{route('invoice.cancel',$invoice->id)}}" class="btn btn-danger btn-sm">Cancel</a>
-                                        @endif
-                                    </td>
-                                @else
-                                    <td>
-                                        <a href="{{route("customer.invoice_show",$invoice->id)}}"
-                                           class="btn btn-white btn-sm"><i class="la la-eye"></i></a>
-                                    </td>
-                                @endif
                             </tr>
-                            @include('invoice.delete')
                         @endforeach
                         </tbody>
                     </table>
