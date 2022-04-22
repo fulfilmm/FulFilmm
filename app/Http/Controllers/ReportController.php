@@ -480,13 +480,13 @@ class ReportController extends Controller
             if (isset($request->start)) {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
-                $receivable = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->whereBetween('created_at', [$start, $end])
-                    ->where('approve', 0)
+                $receivable = Invoice::with('customer', 'employee', 'branch', 'region','zone')->whereBetween('created_at', [$start, $end])
+                    ->where('due_amount','!=', 0)
                     ->get();
             } else {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
-                $receivable = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')
+                $receivable =Invoice::with('customer', 'employee', 'branch', 'region','zone')
                     ->whereBetween('created_at', [$start, $end])
                     ->where('due_amount','!=', 0)
                     ->get();
@@ -496,13 +496,15 @@ class ReportController extends Controller
             if (isset($request->start)) {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
-                $receivable = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->whereBetween('created_at', [$start, $end])
-                    ->where('approve', 0)
+                $receivable =Invoice::with('customer', 'employee', 'branch', 'region','zone')
+                    ->whereBetween('created_at', [$start, $end])
+                    ->where('due_amount','!=', 0)
+                    ->where('branch_id',$auth->office_branch_id)
                     ->get();
             } else {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
-                $receivable= Revenue::with('customer', 'employee', 'branch', 'region','zone')
+                $receivable=Invoice::with('customer', 'employee', 'branch', 'region','zone')
                     ->whereBetween('created_at', [$start, $end])
                     ->where('due_amount','!=', 0)
                     ->where('branch_id',$auth->office_branch_id)
@@ -513,13 +515,17 @@ class ReportController extends Controller
             if (isset($request->start)) {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
-                $receivable = Invoice::with('customer', 'employee', 'branch', 'region','zone')->where('emp_id', $auth->id)->whereBetween('created_at', [$start, $end])
+                $receivable = Invoice::with('customer', 'employee', 'branch', 'region','zone')
+                    ->where('emp_id', $auth->id)
+                    ->whereBetween('created_at', [$start, $end])
                     ->where('due_amount','!=', 0)
                     ->get();
             } else {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
-                $receivable = Revenue::with('customer', 'employee', 'branch', 'region','zone')->where('emp_id', $auth->id)->whereBetween('created_at', [$start, $end])
+                $receivable = Invoice::with('customer', 'employee', 'branch', 'region','zone')
+                    ->where('emp_id', $auth->id)
+                    ->whereBetween('created_at', [$start, $end])
                     ->where('due_amount','!=', 0)
                     ->get();
             }
