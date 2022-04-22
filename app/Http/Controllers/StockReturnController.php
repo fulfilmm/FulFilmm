@@ -60,6 +60,7 @@ class StockReturnController extends Controller
             'warehouse_id'=>'required',
             'qty'=>'required'
         ]);
+//        dd($request->all());
         $data=$request->all();
         if ($request->hasfile('attachment')) {
             $attach = $request->file('attachment');
@@ -96,6 +97,7 @@ class StockReturnController extends Controller
                         $data['purchase_price'] = $batch->purchase_price;
                         $data['exp_date'] = $batch->exp_date;
                         $data['warehouse_id'] = $request->warehouse_id;
+                        $data['branch_id']=Auth::guard('employee')->user()->office_branch_id;
                         ProductStockBatch::create($data);
                     } else {
                         $remaing = $remaing - $batch->qty;
@@ -117,6 +119,7 @@ class StockReturnController extends Controller
                         $data['purchase_price'] = $batch->purchase_price;
                         $data['exp_date'] = $batch->exp_date;
                         $data['warehouse_id'] = $stock_transfer->to_warehouse;
+                        $data['branch_id']=Auth::guard('employee')->user()->office_branch_id;
                         ProductStockBatch::create($data);
 
                     }
@@ -125,7 +128,8 @@ class StockReturnController extends Controller
         }
         $stockreturn=StockReturn::create($data);
         $stock=Stock::where('variant_id',$request->variant_id)->first();
-        $unit=SellingUnit::where('product_id',$request->variant_id)->first();
+        $unit=SellingUnit::where('product_id',$request->mainproduct)->first();
+//        dd($unit);
         $stock->stock_balance=$stock->stock_balance + ($request->qty*$unit->unit_convert_rate);
         $stock->available=$stock->available + ($request->qty*$unit->unit_convert_rate);
         $stock->update();
@@ -140,6 +144,7 @@ class StockReturnController extends Controller
          $stock_transaction->emp_id=$request->emp_id;
          $stock_transaction->qty=$request->qty*$unit->unit_convert_rate;
          $stock_transaction->creator_id=Auth::guard('employee')->user()->id;
+         $stock_transaction->branch_id=Auth::guard('employee')->user()->office_branch_id;
          $stock_transaction->balance=$stock->stock_balance + ($request->qty*$unit->unit_convert_rate);
          $stock_transaction->save();
      }catch (\Exception $e){

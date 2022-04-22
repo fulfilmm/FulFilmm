@@ -17,4 +17,10 @@ class StockTransferRecord extends Model
     public function to(){
         return $this->belongsTo(Warehouse::class,'to_warehouse','id');
     }
+    public function receiver(){
+        return $this->belongsTo(Employee::class,'receiver_id','id');
+    }
+    public function branch(){
+        return $this->belongsTo(OfficeBranch::class,'branch_id','id');
+    }
 }

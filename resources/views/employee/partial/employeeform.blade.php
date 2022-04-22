@@ -64,7 +64,8 @@
                         <div class="form-group">
                             <label for="password">Password</label>
 
-                            <x-forms.basic.input name="password" title="Password" type="password" value="" required></x-forms.basic.input>
+                            <x-forms.basic.input name="password" title="Password" type="password" value=""  required></x-forms.basic.input>
+                            <input type="checkbox" class="mr-2 mt-2" onclick="myFunction()"><label for="" class="mt-2">Show Password</label>
 
                         </div>
                     </div>
@@ -208,6 +209,14 @@
         }
     }
     region_select(branch_id.value);
+    function myFunction() {
+        var x = document.getElementById("password");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
 </script>
 {{-- {{dd($errors->all())}} --}}
 

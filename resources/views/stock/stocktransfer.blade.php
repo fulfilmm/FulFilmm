@@ -60,7 +60,9 @@
                                     <label for="receiver">Receiver</label>
                                     <select name="approver_id" id="approver" class="form-control">
                                         @foreach($employees as $emp)
-                                            <option value="{{$emp->id}}">{{$emp->name}}</option>
+                                            @if($emp->id!=\Illuminate\Support\Facades\Auth::guard('employee')->user()->id)
+                                                <option value="{{$emp->id}}">{{$emp->name}}</option>
+                                                @endif
                                             @endforeach
                                     </select>
                                 </div>

@@ -30,7 +30,10 @@ class SaleReportController extends Controller
                 $end = Carbon::today()->endOfDay();
             }
             if (isset($request->branch_id)) {
-                $inv = Invoice::where('branch_id', $request->branch_id)->whereBetween('created_at', [$start, $end])->get();
+                $inv = Invoice::where('branch_id', $request->branch_id)
+                    ->whereBetween('created_at', [$start, $end])
+                    ->where('cancel',0)
+                    ->get();
                 $items = [];
                 foreach ($inv as $item) {
                     $orderitem = OrderItem::with('variant', 'unit', 'invoice')->where('inv_id', $item->id)->first();
@@ -43,43 +46,62 @@ class SaleReportController extends Controller
                     ->select(DB::raw("SUM(total) as total"))
                     ->whereBetween('created_at', [$start, $end])
                     ->where('branch_id', $request->branch_id)
+                    ->where('cancel',0)
                     ->get();
                 $total_sale_amount = DB::table("invoices")
                     ->select(DB::raw("SUM(grand_total) as total"))
                     ->whereBetween('created_at', [$start, $end])
                     ->where('branch_id', $request->branch_id)
                     ->where('inv_type', 'Whole Sale')
+                    ->where('cancel',0)
                     ->get();
                 $debt_amount = DB::table("invoices")
                     ->select(DB::raw("SUM(due_amount) as total"))
                     ->whereBetween('created_at', [$start, $end])
                     ->where('branch_id', $request->branch_id)
+                    ->where('cancel',0)
                     ->get();
                 $total_reatail_sale = DB::table("invoices")
                     ->select(DB::raw("SUM(grand_total) as total"))
                     ->where('inv_type', 'Retail Sale')
                     ->where('branch_id', $request->branch_id)
                     ->whereBetween('created_at', [$start, $end])
+                    ->where('cancel',0)
                     ->get();
             } else {
-                $items = OrderItem::with('variant', 'unit', 'invoice')->where('inv_id', '!=', null)->whereBetween('created_at', [$start, $end])->get();
+                $inv = Invoice::whereBetween('created_at', [$start, $end])
+                    ->where('cancel',0)
+                    ->get();
+                $items = [];
+                foreach ($inv as $item) {
+                    $orderitem = OrderItem::with('variant', 'unit', 'invoice')->where('inv_id', $item->id)->first();
+                    if ($item != null) {
+                        array_push($items, $orderitem);
+                    }
+                }
+
                 $total_sale = DB::table("invoices")
                     ->select(DB::raw("SUM(total) as total"))
                     ->whereBetween('created_at', [$start, $end])
+                    ->where('cancel',0)
                     ->get();
                 $total_sale_amount = DB::table("invoices")
                     ->select(DB::raw("SUM(grand_total) as total"))
                     ->whereBetween('created_at', [$start, $end])
                     ->where('inv_type', 'Whole Sale')
+                    ->where('cancel',0)
                     ->get();
+//                dd($total_sale_amount);
                 $debt_amount = DB::table("invoices")
                     ->select(DB::raw("SUM(due_amount) as total"))
                     ->whereBetween('created_at', [$start, $end])
+                    ->where('cancel',0)
                     ->get();
                 $total_reatail_sale = DB::table("invoices")
                     ->select(DB::raw("SUM(grand_total) as total"))
                     ->where('inv_type', 'Retail Sale')
                     ->whereBetween('created_at', [$start, $end])
+                    ->where('cancel',0)
                     ->get();
             }
 
@@ -109,7 +131,7 @@ class SaleReportController extends Controller
                 $start = Carbon::today()->startOfDay();
                 $end = Carbon::today()->endOfDay();
             }
-            $inv = Invoice::where('emp_id', $auth->id)->whereBetween('created_at', [$start, $end])->get();
+            $inv = Invoice::where('emp_id', $auth->id)->whereBetween('created_at', [$start, $end])->where('cancel',0)->get();
             $items = [];
             foreach ($inv as $item) {
                 $orderitem = OrderItem::with('variant', 'unit', 'invoice')->where('inv_id', $item->id)->first();
@@ -122,23 +144,27 @@ class SaleReportController extends Controller
                 ->select(DB::raw("SUM(total) as total"))
                 ->whereBetween('created_at', [$start, $end])
                 ->where('emp_id', $auth->id)
+                ->where('cancel',0)
                 ->get();
             $total_sale_amount = DB::table("invoices")
                 ->select(DB::raw("SUM(grand_total) as total"))
                 ->whereBetween('created_at', [$start, $end])
                 ->where('emp_id', $auth->id)
                 ->where('inv_type', 'Whole Sale')
+                ->where('cancel',0)
                 ->get();
             $debt_amount = DB::table("invoices")
                 ->select(DB::raw("SUM(due_amount) as total"))
                 ->whereBetween('created_at', [$start, $end])
                 ->where('emp_id', $auth->id)
+                ->where('cancel',0)
                 ->get();
             $total_reatail_sale = DB::table("invoices")
                 ->select(DB::raw("SUM(grand_total) as total"))
                 ->where('inv_type', 'Retail Sale')
                 ->where('emp_id', $auth->id)
                 ->whereBetween('created_at', [$start, $end])
+                ->where('cancel',0)
                 ->get();
             $data = [];
             $i = 0;
@@ -154,9 +180,10 @@ class SaleReportController extends Controller
                 } else {
                     $data[$item->variant->product_code . "_" . $i] = $item;
                 }
-                $branch = OfficeBranch::where('id', $auth->office_branch_id)->get();
+
             }
 //        dd($items);
+            $branch = OfficeBranch::where('id', $auth->office_branch_id)->get();
             $search_branch = $request->branch_id;
         }
 

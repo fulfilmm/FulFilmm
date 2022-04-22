@@ -68,7 +68,7 @@
                             <div class="d-flex align-items-center">
                                 <div class="avatar rounded no-thumbnail bg-info text-light shadow"><i class="fa fa-money fa-lg"></i></div>
                                 <div class="flex-fill ms-3 text-truncate">
-                                    <div class="h6 mb-0">Cash In Sales Man</div>
+                                    <div class="h6 mb-0">Cash In Transit</div>
                                     <span class="small"></span>
                                 </div>
                             </div>
@@ -77,7 +77,7 @@
                 </div>
                 <div class="col my-2">
                     <div class="alert-warning alert mb-0 shadow">
-                        <a href="{{url('expense')}}">
+                        <a href="{{route('report.receivable')}}">
                             <div class="d-flex align-items-center">
                                 <div class="avatar rounded no-thumbnail bg-info text-light shadow"><i class="fa fa-credit-card fa-lg"></i></div>
                                 <div class="flex-fill ms-3 text-truncate">
@@ -93,11 +93,11 @@
             <div class="row g-3 mb-3 row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4">
                 <div class="col my-2">
                     <div class="alert-warning alert mb-0 shadow">
-                        <a href="{{url('expense')}}">
+                        <a href="{{route('report.bill')}}">
                             <div class="d-flex align-items-center">
                                 <div class="avatar rounded no-thumbnail bg-info text-light shadow"><i class="fa fa-credit-card fa-lg"></i></div>
                                 <div class="flex-fill ms-3 text-truncate">
-                                    <div class="h6 mb-0">Bill(ပီပီးသား/မပေးရသေး အားလုံးပေါင်း)</div>
+                                    <div class="h6 mb-0">Bill</div>
                                     <span class="small"></span>
                                 </div>
                             </div>
@@ -119,11 +119,11 @@
                 </div>
                 <div class="col my-2">
                     <div class="alert-warning alert mb-0 shadow">
-                        <a href="{{url('expense')}}">
+                        <a href="{{route('report.payable')}}">
                             <div class="d-flex align-items-center">
                                 <div class="avatar rounded no-thumbnail bg-info text-light shadow"><i class="fa fa-credit-card fa-lg"></i></div>
                                 <div class="flex-fill ms-3 text-truncate">
-                                    <div class="h6 mb-0">Payable(မပေးရန်ကျန် bill)</div>
+                                    <div class="h6 mb-0">Payable</div>
                                     <span class="small"></span>
                                 </div>
                             </div>
@@ -132,11 +132,11 @@
                 </div>
                 <div class="col my-2">
                     <div class="alert-warning alert mb-0 shadow">
-                        <a href="{{url('expense')}}">
+                        <a href="{{route('report.payment')}}">
                             <div class="d-flex align-items-center">
                                 <div class="avatar rounded no-thumbnail bg-info text-light shadow"><i class="fa fa-credit-card fa-lg"></i></div>
                                 <div class="flex-fill ms-3 text-truncate">
-                                    <div class="h6 mb-0">Payment (ပေးပီးသားamount)</div>
+                                    <div class="h6 mb-0">Payment</div>
                                     <span class="small"></span>
                                 </div>
                             </div>
@@ -160,7 +160,7 @@
                 </div>
                 <div class="col my-2">
                     <div class="alert-warning alert mb-0 shadow">
-                        <a href="{{url('expense')}}">
+                        <a href="{{route('report.transfer')}}">
                             <div class="d-flex align-items-center">
                                 <div class="avatar rounded no-thumbnail bg-info text-light shadow"><i class="fa fa-credit-card fa-lg"></i></div>
                                 <div class="flex-fill ms-3 text-truncate">
@@ -173,7 +173,7 @@
                 </div>
                 <div class="col my-2">
                     <div class="alert-warning alert mb-0 shadow">
-                        <a href="{{url('expense')}}">
+                        <a href="{{route('report.stockin')}}">
                             <div class="d-flex align-items-center">
                                 <div class="avatar rounded no-thumbnail bg-info text-light shadow"><i class="fa fa-credit-card fa-lg"></i></div>
                                 <div class="flex-fill ms-3 text-truncate">
@@ -186,7 +186,7 @@
                 </div>
                 <div class="col my-2">
                     <div class="alert-warning alert mb-0 shadow">
-                        <a href="{{url('expense')}}">
+                        <a href="{{route('report.stockout')}}">
                             <div class="d-flex align-items-center">
                                 <div class="avatar rounded no-thumbnail bg-info text-light shadow"><i class="fa fa-credit-card fa-lg"></i></div>
                                 <div class="flex-fill ms-3 text-truncate">
@@ -199,7 +199,7 @@
                 </div>
                 <div class="col my-2">
                     <div class="alert-warning alert mb-0 shadow">
-                        <a href="{{url('expense')}}">
+                        <a href="{{route('report.return')}}">
                             <div class="d-flex align-items-center">
                                 <div class="avatar rounded no-thumbnail bg-info text-light shadow"><i class="fa fa-credit-card fa-lg"></i></div>
                                 <div class="flex-fill ms-3 text-truncate">
@@ -215,11 +215,11 @@
 
                 <div class="col my-2">
                     <div class="alert-warning alert mb-0 shadow">
-                        <a href="{{url('expense')}}">
+                        <a href="{{route('report.damage')}}">
                             <div class="d-flex align-items-center">
                                 <div class="avatar rounded no-thumbnail bg-info text-light shadow"><i class="fa fa-credit-card fa-lg"></i></div>
                                 <div class="flex-fill ms-3 text-truncate">
-                                    <div class="h6 mb-0">Damage Products(Stock Out type Damage)</div>
+                                    <div class="h6 mb-0">Damage Products</div>
                                     <span class="small"></span>
                                 </div>
                             </div>
@@ -228,11 +228,11 @@
                 </div>
                 <div class="col my-2">
                     <div class="alert-warning alert mb-0 shadow">
-                        <a href="{{url('expense')}}">
+                        <a href="{{route('report.foc')}}">
                             <div class="d-flex align-items-center">
                                 <div class="avatar rounded no-thumbnail bg-info text-light shadow"><i class="fa fa-credit-card fa-lg"></i></div>
                                 <div class="flex-fill ms-3 text-truncate">
-                                    <div class="h6 mb-0">FOC Product(Stock Out FOC)</div>
+                                    <div class="h6 mb-0">FOC Product</div>
                                     <span class="small"></span>
                                 </div>
                             </div>

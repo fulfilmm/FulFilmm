@@ -174,11 +174,11 @@
 
        <div class="col-12 border-bottom mb-3"></div>
        <div class="col-12 border-bottom mb-3"></div>
-       <h4 class="col-12 border-top"><input type="checkbox" id="report" onclick="check('report')" class="mr-2">Sale Target</h4>
+       <h4 class="col-12 border-top"><input type="checkbox" id="saletargets" onclick="check('saletargets')" class="mr-2">Sale Target</h4>
        @foreach ($permissions as $permission)
            @if($permission->type=='saletargets')
                <label for="{{'permission' . $permission->display_name}}" class="col-md-3">
-                   <input type="checkbox" {{$hasPermissions->contains($permission->id)? 'checked' : ''}} class="report" name="permissions[]" id="{{'permission' . $permission->display_name}}" value="{{$permission->id}}"> {{$permission->display_name}}
+                   <input type="checkbox" {{$hasPermissions->contains($permission->id)? 'checked' : ''}} class="saletargets" name="permissions[]" id="{{'permission' . $permission->display_name}}" value="{{$permission->id}}"> {{$permission->display_name}}
                </label>
            @endif
        @endforeach

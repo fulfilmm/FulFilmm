@@ -54,16 +54,6 @@
                                     Warehouse</label>
                             </div>
                         </div>
-                        <div class="col-md-12 col-sm-12 col-12" id="main_warehouse_div">
-                            <div class="form-group">
-                                <label for="main_warehouse_id">Main Warehouse</label>
-                                <select name="main_warehouse_id" id="main_warehouse_id" class="form-control select2">
-                                    @foreach($warehouses as $item)
-                                        <option value="{{$item->id}}">{{$item->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
                         <div class="col-md-12 col-sm-12 col-12">
 
                             <div class="from-group mb-2">

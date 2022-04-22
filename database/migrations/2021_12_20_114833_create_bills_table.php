@@ -33,6 +33,7 @@ class CreateBillsTable extends Migration
             $table->dateTime('inv_date')->nullable();
             $table->string('category')->nullable();
             $table->index(['id','vendor_id']);
+            $table->bigInteger('branch_id')->unsigned();
             $table->timestamps();
 
         });

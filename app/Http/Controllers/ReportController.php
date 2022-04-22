@@ -4,13 +4,18 @@ namespace App\Http\Controllers;
 
 
 use App\Models\AdvancePayment;
+use App\Models\Bill;
 use App\Models\Customer;
+use App\Models\DamagedProduct;
 use App\Models\deal;
 use App\Models\DealActivitySchedule;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Expense;
+use App\Models\Freeofchare;
+use App\Models\Invoice;
 use App\Models\next_plan;
+use App\Models\OfficeBranch;
 use App\Models\OrderItem;
 use App\Models\ProductVariations;
 use App\Models\PurchaseOrder;
@@ -21,13 +26,16 @@ use App\Models\SellingUnit;
 use App\Models\Stock;
 use App\Models\StockIn;
 use App\Models\StockOut;
+use App\Models\StockReturn;
 use App\Models\StockTransaction;
+use App\Models\StockTransferRecord;
 use App\Models\Transaction;
 use App\Models\Warehouse;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rules\In;
 use phpDocumentor\Reflection\PseudoTypes\PositiveInteger;
 use Yajra\DataTables\DataTables;
 
@@ -89,196 +97,251 @@ class ReportController extends Controller
 
     public function stock(Request $request)
     {
-        $products=ProductVariations::all();
-        $items=[];
-        $auth=Auth::guard('employee')->user();
-        if($auth->role->name=='CEO'||$auth->role->name=='Super Admin'){
-            if(isset($request->start)){
-                $start=Carbon::parse($request->start)->startOfDay();
-                $end=Carbon::parse($request->end)->endOfDay();
-                if(isset($request->warehouse_id)){
-                    $stock_transactions = StockTransaction::with('stockin', 'stockout','variant','customer','employee','stockreturn')->whereBetween('created_at',[$start,$end])->where('warehouse_id',$request->warehouse_id)->get();
-                }else{
-                    $stock_transactions = StockTransaction::with('stockin', 'stockout','variant','customer','employee','stockreturn')->whereBetween('created_at',[$start,$end])->get();
+        $products = ProductVariations::all();
+        $items = [];
+        $auth = Auth::guard('employee')->user();
+        if ($auth->role->name == 'CEO' || $auth->role->name == 'Super Admin') {
+            if (isset($request->start)) {
+                $start = Carbon::parse($request->start)->startOfDay();
+                $end = Carbon::parse($request->end)->endOfDay();
+                if (isset($request->warehouse_id)) {
+                    $stock_transactions = StockTransaction::with('stockin', 'stockout', 'variant', 'customer', 'employee', 'stockreturn')->whereBetween('created_at', [$start, $end])->where('warehouse_id', $request->warehouse_id)->get();
+                } else {
+                    $stock_transactions = StockTransaction::with('stockin', 'stockout', 'variant', 'customer', 'employee', 'stockreturn')->whereBetween('created_at', [$start, $end])->get();
                 }
-            }else{
-                $start=Carbon::today()->startOfDay();
-                $end=Carbon::today()->endOfDay();
-                $stock_transactions = StockTransaction::with('stockin', 'stockout','variant','customer','employee','stockreturn')->whereBetween('created_at',[$start,$end])->get();
+            } else {
+                $start = Carbon::today()->startOfDay();
+                $end = Carbon::today()->endOfDay();
+                $stock_transactions = StockTransaction::with('stockin', 'stockout', 'variant', 'customer', 'employee', 'stockreturn')->whereBetween('created_at', [$start, $end])->get();
             }
 
-            foreach ($products as $prod){
+            foreach ($products as $prod) {
 
-                foreach ($stock_transactions as $tran){
-                    if($tran->variant_id==$prod->id){
-                        $stock=Stock::where('variant_id',$prod->id)->first();
-                        if($tran->type=='Stock In'){
-                            $items[$prod->product_code]=$prod;
-                            $items[$prod->product_code]['in']+=$tran->qty;
-                            $items[$prod->product_code]['out']+=0;
-                            $items[$prod->product_code]['bal']=$stock->stock_balance;
+                foreach ($stock_transactions as $tran) {
+                    if ($tran->variant_id == $prod->id) {
+                        $stock = Stock::where('variant_id', $prod->id)->first();
+                        if ($tran->type == 'Stock In') {
+                            $items[$prod->product_code] = $prod;
+                            $items[$prod->product_code]['in'] += $tran->qty;
+                            $items[$prod->product_code]['out'] += 0;
+                            $items[$prod->product_code]['bal'] = $stock->stock_balance;
 
-                        }elseif ($tran->type=='Stock Out'){
-                            $items[$prod->product_code]=$prod;
-                            $items[$prod->product_code]['out']+=$tran->qty;
-                            $items[$prod->product_code]['in']+=0;
-                            $items[$prod->product_code]['bal']=$stock->stock_balance;
+                        } elseif ($tran->type == 'Stock Out') {
+                            $items[$prod->product_code] = $prod;
+                            $items[$prod->product_code]['out'] += $tran->qty;
+                            $items[$prod->product_code]['in'] += 0;
+                            $items[$prod->product_code]['bal'] = $stock->stock_balance;
                         }
                     }
                 }
 
             }
-            $warehouse=Warehouse::all();
-            $search_warehouse=$request->warehouse_id;
-        }else{
-            if(isset($request->start)){
-                $start=Carbon::parse($request->start)->startOfDay();
-                $end=Carbon::parse($request->end)->endOfDay();
-                if(isset($request->warehouse_id)){
-                    $stock_transactions = StockTransaction::with('stockin', 'stockout','variant','customer','employee','stockreturn')->whereBetween('created_at',[$start,$end])
-                        ->where('warehouse_id',$request->warehouse_id)
-                        ->where('branch_id',$auth->office_branch_id)
+            $warehouse = Warehouse::all();
+            $search_warehouse = $request->warehouse_id;
+        } else {
+            if (isset($request->start)) {
+                $start = Carbon::parse($request->start)->startOfDay();
+                $end = Carbon::parse($request->end)->endOfDay();
+                if (isset($request->warehouse_id)) {
+                    $stock_transactions = StockTransaction::with('stockin', 'stockout', 'variant', 'customer', 'employee', 'stockreturn')->whereBetween('created_at', [$start, $end])
+                        ->where('warehouse_id', $request->warehouse_id)
+                        ->where('branch_id', $auth->office_branch_id)
                         ->get();
-                }else{
-                    $stock_transactions = StockTransaction::with('stockin', 'stockout','variant','customer','employee','stockreturn')->whereBetween('created_at',[$start,$end])
-                        ->where('branch_id',$auth->office_branch_id)
+                } else {
+                    $stock_transactions = StockTransaction::with('stockin', 'stockout', 'variant', 'customer', 'employee', 'stockreturn')->whereBetween('created_at', [$start, $end])
+                        ->where('branch_id', $auth->office_branch_id)
                         ->get();
                 }
-            }else{
-                $start=Carbon::today()->startOfDay();
-                $end=Carbon::today()->endOfDay();
-                $stock_transactions = StockTransaction::with('stockin', 'stockout','variant','customer','employee','stockreturn')
-                   ->where('branch_id',$auth->office_branch_id)
-                    ->whereBetween('created_at',[$start,$end])->get();
+            } else {
+                $start = Carbon::today()->startOfDay();
+                $end = Carbon::today()->endOfDay();
+                $stock_transactions = StockTransaction::with('stockin', 'stockout', 'variant', 'customer', 'employee', 'stockreturn')
+                    ->where('branch_id', $auth->office_branch_id)
+                    ->whereBetween('created_at', [$start, $end])->get();
             }
 
-            foreach ($products as $prod){
+            foreach ($products as $prod) {
 
-                foreach ($stock_transactions as $tran){
-                    if($tran->variant_id==$prod->id){
-                        $stock=Stock::where('variant_id',$prod->id)->first();
-                        if($tran->type=='Stock In'){
-                            $items[$prod->product_code]=$prod;
-                            $items[$prod->product_code]['in']+=$tran->qty;
-                            $items[$prod->product_code]['out']+=0;
-                            $items[$prod->product_code]['bal']=$stock->stock_balance;
+                foreach ($stock_transactions as $tran) {
+                    if ($tran->variant_id == $prod->id) {
+                        $stock = Stock::where('variant_id', $prod->id)->first();
+                        if ($tran->type == 'Stock In') {
+                            $items[$prod->product_code] = $prod;
+                            $items[$prod->product_code]['in'] += $tran->qty;
+                            $items[$prod->product_code]['out'] += 0;
+                            $items[$prod->product_code]['bal'] = $stock->stock_balance;
 
-                        }elseif ($tran->type=='Stock Out'){
-                            $items[$prod->product_code]=$prod;
-                            $items[$prod->product_code]['out']+=$tran->qty;
-                            $items[$prod->product_code]['in']+=0;
-                            $items[$prod->product_code]['bal']=$stock->stock_balance;
+                        } elseif ($tran->type == 'Stock Out') {
+                            $items[$prod->product_code] = $prod;
+                            $items[$prod->product_code]['out'] += $tran->qty;
+                            $items[$prod->product_code]['in'] += 0;
+                            $items[$prod->product_code]['bal'] = $stock->stock_balance;
                         }
                     }
                 }
 
             }
-            $warehouse=Warehouse::where('branch_id',$auth->office_branch_id)->get();
-            $search_warehouse=$request->warehouse_id;
+            $warehouse = Warehouse::where('branch_id', $auth->office_branch_id)->get();
+            $search_warehouse = $request->warehouse_id;
 
         }
-        return view('Report.stock',compact('items','start','end','warehouse','search_warehouse'));
-    }
+        return view('Report.stock', compact('items', 'start', 'end', 'warehouse', 'search_warehouse'));
+    }//ပီးပီ
 
-    public function income(Request $request){
-        $auth=Auth::guard('employee')->user();
-        if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'||$auth->role->name=='Cashier'||$auth->role->name=='Accountant'){
+    public function income(Request $request)
+    {
+        $auth = Auth::guard('employee')->user();
+        if ($auth->role->name == 'Super Admin' || $auth->role->name == 'CEO') {
             if (isset($request->start)) {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
-                 $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->whereBetween('created_at',[$start,$end])->get();
-                }else{
+                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->whereBetween('created_at', [$start, $end])->get();
+            } else {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
-                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->whereBetween('created_at',[$start,$end])->get();
+                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->whereBetween('created_at', [$start, $end])->get();
             }
-        }else{
+        } elseif ($auth->role->name == 'Cashier' || $auth->role->name == 'Accountant'){
             if (isset($request->start)) {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
-                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->where('emp_id', $auth->id)->whereBetween('created_at',[$start,$end])->get();
-            }else{
+                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->whereBetween('created_at', [$start, $end])->where('branch_id',$auth->office_branch_id)->get();
+            } else {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
-                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->where('emp_id', $auth->id)->whereBetween('created_at',[$start,$end])->get();
+                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->whereBetween('created_at', [$start, $end])->where('branch_id',$auth->office_branch_id)->get();
             }
-
-        }
-        return view('Report.revenue_report',compact('revenues','start','end'));
-    }
-    public function cash_in_hand(Request $request){
-
-        $auth=Auth::guard('employee')->user();
-        if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'||$auth->role->name=='Cashier'||$auth->role->name=='Accountant'){
+        } else {
             if (isset($request->start)) {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
-                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->whereBetween('created_at',[$start,$end])
-                    ->where('approve',1)
-                    ->get();
-            }else{
+                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->where('emp_id', $auth->id)->whereBetween('created_at', [$start, $end])->get();
+            } else {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
-                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->whereBetween('created_at',[$start,$end])
-                    ->where('approve',1)
-                    ->get();
-            }
-        }else{
-            if (isset($request->start)) {
-                $start = Carbon::parse($request->start)->startOfDay();
-                $end = Carbon::parse($request->end)->endOfDay();
-                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->where('emp_id', $auth->id)->whereBetween('created_at',[$start,$end])
-                    ->where('approve',1)
-                    ->get();
-            }else{
-                $start = Carbon::parse($request->start)->startOfDay();
-                $end = Carbon::parse($request->end)->endOfDay();
-                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->where('emp_id', $auth->id)->whereBetween('created_at',[$start,$end])
-                    ->where('approve',1)
-                    ->get();
+                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->where('emp_id', $auth->id)->whereBetween('created_at', [$start, $end])->get();
             }
 
         }
-        return view('Report.cashinhand',compact('revenues','start','end'));
-    }
-    public function cash_in_emp(Request $request){
+        return view('Report.revenue_report', compact('revenues', 'start', 'end'));
+    }//ပီးပီ
 
-        $auth=Auth::guard('employee')->user();
-        if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'||$auth->role->name=='Cashier'||$auth->role->name=='Accountant'){
+    public function cash_in_hand(Request $request)
+    {
+
+        $auth = Auth::guard('employee')->user();
+        if ($auth->role->name == 'Super Admin' || $auth->role->name == 'CEO'){
             if (isset($request->start)) {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
-                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->whereBetween('created_at',[$start,$end])
-                    ->where('approve',0)
+                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->whereBetween('created_at', [$start, $end])
+                    ->where('approve', 1)
                     ->get();
-            }else{
+            } else {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
-                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->whereBetween('created_at',[$start,$end])
-                    ->where('approve',0)
+                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->whereBetween('created_at', [$start, $end])
+                    ->where('approve', 1)
                     ->get();
             }
-        }else{
+        }elseif ($auth->role->name == 'Cashier' || $auth->role->name == 'Accountant') {
             if (isset($request->start)) {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
-                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->where('emp_id', $auth->id)->whereBetween('created_at',[$start,$end])
-                    ->where('approve',0)
+                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')
+                    ->whereBetween('created_at', [$start, $end])
+                    ->where('approve', 1)
+                    ->where('branch_id',$auth->office_branch_id)
                     ->get();
-            }else{
+            } else {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
-                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->where('emp_id', $auth->id)->whereBetween('created_at',[$start,$end])
-                    ->where('approve',0)
+                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')
+                    ->whereBetween('created_at', [$start, $end])
+                    ->where('approve', 1)
+                    ->where('branch_id',$auth->office_branch_id)
+                    ->get();
+            }
+        } else {
+            if (isset($request->start)) {
+                $start = Carbon::parse($request->start)->startOfDay();
+                $end = Carbon::parse($request->end)->endOfDay();
+                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')
+                    ->where('emp_id', $auth->id)
+                    ->whereBetween('created_at', [$start, $end])
+                    ->where('approve', 1)
+                    ->get();
+            } else {
+                $start = Carbon::parse($request->start)->startOfDay();
+                $end = Carbon::parse($request->end)->endOfDay();
+                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')
+                    ->where('emp_id', $auth->id)
+                    ->whereBetween('created_at', [$start, $end])
+                    ->where('approve', 1)
                     ->get();
             }
 
         }
-        return view('Report.cashinhand',compact('revenues','start','end'));
-    }
-    public function expense(Request $request){
-        $auth=Auth::guard('employee')->user();
-        if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'||$auth->role->name=='Cashier'||$auth->role->name=='Accountant') {
+        return view('Report.cashinhand', compact('revenues', 'start', 'end'));
+    }//ပီးပီ
+
+    public function cash_in_emp(Request $request)
+    {
+
+        $auth = Auth::guard('employee')->user();
+        if ($auth->role->name == 'Super Admin' || $auth->role->name == 'CEO') {
+            if (isset($request->start)) {
+                $start = Carbon::parse($request->start)->startOfDay();
+                $end = Carbon::parse($request->end)->endOfDay();
+                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->whereBetween('created_at', [$start, $end])
+                    ->where('approve', 0)
+                    ->get();
+            } else {
+                $start = Carbon::parse($request->start)->startOfDay();
+                $end = Carbon::parse($request->end)->endOfDay();
+                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->whereBetween('created_at', [$start, $end])
+                    ->where('approve', 0)
+                    ->get();
+            }
+        }elseif ($auth->role->name == 'Cashier' || $auth->role->name == 'Accountant'){
+            if (isset($request->start)) {
+                $start = Carbon::parse($request->start)->startOfDay();
+                $end = Carbon::parse($request->end)->endOfDay();
+                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->whereBetween('created_at', [$start, $end])
+                    ->where('approve', 0)
+                    ->get();
+            } else {
+                $start = Carbon::parse($request->start)->startOfDay();
+                $end = Carbon::parse($request->end)->endOfDay();
+                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')
+                    ->whereBetween('created_at', [$start, $end])
+                    ->where('approve', 0)
+                    ->where('branch_id',$auth->office_branch_id)
+                    ->get();
+            }
+        } else {
+            if (isset($request->start)) {
+                $start = Carbon::parse($request->start)->startOfDay();
+                $end = Carbon::parse($request->end)->endOfDay();
+                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->where('emp_id', $auth->id)->whereBetween('created_at', [$start, $end])
+                    ->where('approve', 0)
+                    ->get();
+            } else {
+                $start = Carbon::parse($request->start)->startOfDay();
+                $end = Carbon::parse($request->end)->endOfDay();
+                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->where('emp_id', $auth->id)->whereBetween('created_at', [$start, $end])
+                    ->where('approve', 0)
+                    ->get();
+            }
+
+        }
+        return view('Report.cashinemp', compact('revenues', 'start', 'end'));
+    }//ပီးပီ
+
+    public function expense(Request $request)
+    {
+        $auth = Auth::guard('employee')->user();
+        if ($auth->role->name == 'Super Admin' || $auth->role->name == 'CEO' ){
             if (isset($request->start)) {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
@@ -289,74 +352,420 @@ class ReportController extends Controller
                 $expenses = Expense::with('supplier', 'employee', 'approver')->whereDate('transaction_date', Carbon::today())->get();
             }
             $account = Transaction::with('account')->where('type', 'expense')->get();
-        }else{
+        }elseif ($auth->role->name == 'Cashier' || $auth->role->name == 'Accountant') {
+            if (isset($request->start)) {
+                $start = Carbon::parse($request->start)->startOfDay();
+                $end = Carbon::parse($request->end)->endOfDay();
+                $expenses = Expense::with('supplier', 'employee', 'approver')
+                    ->whereBetween('created_at', [$start, $end])
+                    ->where('branch_id',$auth->office_branch_id)
+                    ->get();
+            } else {
+                $start = Carbon::today()->startOfDay();
+                $end = Carbon::today()->endOfDay();
+                $expenses = Expense::with('supplier', 'employee', 'approver')
+                    ->whereDate('created_at',[$start,$end])
+                    ->where('branch_id',$auth->office_branch_id)
+                    ->get();
+            }
+            $account = Transaction::with('account')->where('type', 'expense')->get();
+        } else {
             if (isset($request->start)) {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
                 $expenses = Expense::with('supplier', 'employee', 'approver')->whereBetween('created_at', [$start, $end])
-                    ->where('emp_id',$auth->id)
+                    ->where('emp_id', $auth->id)
                     ->get();
             } else {
                 $start = Carbon::today()->startOfDay();
                 $end = Carbon::today()->endOfDay();
                 $expenses = Expense::with('supplier', 'employee', 'approver')->whereDate('transaction_date', Carbon::today())
-                    ->where('emp_id',$auth->id)
+                    ->where('emp_id', $auth->id)
                     ->get();
             }
             $account = Transaction::with('account')->where('type', 'expense')->get();
 
         }
 //dd($expenses);
-        return view('Report.expense',compact('expenses','account','start','end'));
-    }
-    public function credit_purchase(Request $request){
-        $purchase=PurchaseOrder::where('paid_bill',0)->get();
-        foreach ($purchase as $item){
-//            $item
-        }
+        return view('Report.expense', compact('expenses', 'account', 'start', 'end'));
+    }//ပီးပိ
 
-    }
-    public function payment_purchase(Request $request){
-
-    }
     public function reportpage()
     {
         return view('report');
-    }
+    }//ပီးပီ
 
-    public function stock_report(Request $request){
+    public function stock_report(Request $request)
+    {
         if ($request->ajax()) {
-            $stocks=Stock::with('warehouse','variant')->get();
+            $stocks = Stock::with('warehouse', 'variant')->get();
             return Datatables::of($stocks)
                 ->addIndexColumn()
                 ->editColumn('created_at', function ($data) {
                     $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->updated_at)->toFormattedDateString();
                     return $formatedDate;
                 })
-                ->addColumn('unit',function ($data){
-                    if(!isset($data->variant_id)) {
+                ->addColumn('unit', function ($data) {
+                    if (!isset($data->variant_id)) {
                         $unit = SellingUnit::where('variant_id', $data->variant_id)->where('unit_convert_rate', 1)->first();
                     }
-                    return $unit->unit??'N/A';
+                    return $unit->unit ?? 'N/A';
                 })
                 ->make(true);
         }
+    }//ပီးပီ
+
+    public function stockin(Request $request)
+    {
+        $auth=Auth::guard('employee')->user();
+        if(isset($request->start)){
+            $start=Carbon::parse($request->start)->startOfDay();
+            $end=Carbon::parse($request->end)->endOfDay();
+        }else{
+            $start=Carbon::today()->startOfDay();
+            $end=Carbon::today()->endOfDay();
+        }
+        if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'){
+            $warehouse=Warehouse::all();
+            $stockin=StockIn::with('variant','supplier','employee')->whereBetween('created_at',[$start,$end])->get();
+        }else{
+            $warehouse=Warehouse::where('branch_id',$auth->office_branch_id)->get();
+            $stockin=StockIn::with('variant','supplier','employee')->whereBetween('created_at',[$start,$end])->where('branch_id',$auth->office_branch_id)->get();
+        }
+        $search_warehouse=$request->warehouse_id;
+        return view('Report.stockinreport',compact('stockin','start','end','warehouse','search_warehouse'));
     }
-    public function advancedaily(Request $request){
-        if ($request->ajax()) {
-            $advancepayment=AdvancePayment::with('customer','emp','order','account')->get();
+
+    public function stockout(Request $request)
+    {
+//        dd($request->all());
+        $auth=Auth::guard('employee')->user();
+        if(isset($request->start)){
+            $start=Carbon::parse($request->start)->startOfDay();
+            $end=Carbon::parse($request->end)->endOfDay();
+        }else{
+            $start=Carbon::today()->startOfDay();
+            $end=Carbon::today()->endOfDay();
         }
-            return Datatables::of($advancepayment)
-                ->addIndexColumn()
-                ->editColumn('created_at', function ($data) {
-                    $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->updated_at)->toFormattedDateString();
-                    return $formatedDate;
-                })
-                ->addColumn('account',function ($data){
-                    return $data->account->name??'N/A';
-                })
-                ->make(true);
+//        dd($start,$end);
+        if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'){
+            $warehouse=Warehouse::all();
+            $stockout=StockOut::with('variant','emp','warehouse','customer','approver','invoice','branch')
+                ->whereBetween('created_at',[$start,$end])
+                ->get();
+//            dd('hello',$stockout);
+
+        }elseif ($auth->role->name=='Stock Controller'){
+            $warehouse=Warehouse::where('branch_id',$auth->office_branch_id)->get();
+            $stockout=StockOut::with('variant','emp','warehouse','customer','approver','invoice','branch')
+                ->whereBetween('created_at',[$start,$end])
+                ->where('branch_id',$auth->office_branch_id)
+                ->get();
+        }else{
+            $warehouse=Warehouse::where('branch_id',$auth->office_branch_id)->get();
+            $stockout=StockOut::with('variant','emp','warehouse','customer','approver','invoice','branch')
+                ->whereBetween('created_at',[$start,$end])
+                ->where('emp_id',$auth->id)->get();
         }
+        $search_warehouse=$request->warehouse_id;
+//        dd($stockout);
+
+        return view('Report.stockoutreport',compact('stockout','warehouse','start','end','search_warehouse'));
+    }
+
+    public function receivable(Request $request)
+    {
+        $auth = Auth::guard('employee')->user();
+        if ($auth->role->name == 'Super Admin' || $auth->role->name == 'CEO') {
+            if (isset($request->start)) {
+                $start = Carbon::parse($request->start)->startOfDay();
+                $end = Carbon::parse($request->end)->endOfDay();
+                $receivable = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->whereBetween('created_at', [$start, $end])
+                    ->where('approve', 0)
+                    ->get();
+            } else {
+                $start = Carbon::parse($request->start)->startOfDay();
+                $end = Carbon::parse($request->end)->endOfDay();
+                $receivable = Invoice::with('account', 'cat', 'employee', 'approver', 'invoice')
+                    ->whereBetween('created_at', [$start, $end])
+                    ->where('due_amount','!=', 0)
+                    ->get();
+            }
+            $branch=OfficeBranch::all();
+        }elseif ($auth->role->name == 'Cashier' || $auth->role->name == 'Accountant'){
+            if (isset($request->start)) {
+                $start = Carbon::parse($request->start)->startOfDay();
+                $end = Carbon::parse($request->end)->endOfDay();
+                $receivable = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->whereBetween('created_at', [$start, $end])
+                    ->where('approve', 0)
+                    ->get();
+            } else {
+                $start = Carbon::parse($request->start)->startOfDay();
+                $end = Carbon::parse($request->end)->endOfDay();
+                $receivable= Revenue::with('customer', 'employee', 'branch', 'region','zone')
+                    ->whereBetween('created_at', [$start, $end])
+                    ->where('due_amount','!=', 0)
+                    ->where('branch_id',$auth->office_branch_id)
+                    ->get();
+            }
+            $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
+        } else {
+            if (isset($request->start)) {
+                $start = Carbon::parse($request->start)->startOfDay();
+                $end = Carbon::parse($request->end)->endOfDay();
+                $receivable = Invoice::with('customer', 'employee', 'branch', 'region','zone')->where('emp_id', $auth->id)->whereBetween('created_at', [$start, $end])
+                    ->where('due_amount','!=', 0)
+                    ->get();
+            } else {
+                $start = Carbon::parse($request->start)->startOfDay();
+                $end = Carbon::parse($request->end)->endOfDay();
+                $receivable = Invoice::with('customer', 'employee', 'branch', 'region','zone')->where('emp_id', $auth->id)->whereBetween('created_at', [$start, $end])
+                    ->where('due_amount','!=', 0)
+                    ->get();
+            }
+
+            $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
+        }
+        $search_branch=$request->branch_id;
+        return view('Report.receivable',compact('branch','receivable','start','end','search_branch'));
+    }
+
+    public function bill(Request $request)
+    {
+
+        $auth=Auth::guard('employee')->user();
+        if(isset($request->start)){
+            $start=Carbon::parse($request->start)->startOfDay();
+            $end=Carbon::parse($request->end)->endOfDay();
+        }else{
+            $start=Carbon::today()->startOfDay();
+            $end=Carbon::today()->endOfDay();
+        }
+        if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'||$auth->role->name=='Finance Manager'){
+            $bills=Bill::with('supplier','employee')->whereBetween('created_at',[$start,$end])->get();
+            $branch=OfficeBranch::all();
+        }elseif ($auth->role->name='Cashier'||$auth->role->name=='Accountant'){
+            $bills=Bill::with('supplier','employee')
+                ->whereBetween('created_at',[$start,$end])
+                ->where('branch_id',$auth->office_branch_id)
+                ->get();
+            $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
+        }else{
+            $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
+            $bills=Bill::with('supplier','employee')->whereBetween('created_at',[$start,$end])->where('emp_id',$auth->id)->get();
+        }
+        $search_branch=$request->branch_id;
+        return view('Report.bill',compact('bills','start','end','branch','search_branch'));
+    }
+
+    public function payment(Request $request)
+    {
+
+        $auth=Auth::guard('employee')->user();
+        if(isset($request->start)){
+            $start=Carbon::parse($request->start)->startOfDay();
+            $end=Carbon::parse($request->end)->endOfDay();
+        }else{
+            $start=Carbon::today()->startOfDay();
+            $end=Carbon::today()->endOfDay();
+        }
+        if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'||$auth->role->name=='Finance Manager'){
+            $bills=Bill::with('supplier','employee')
+                ->whereBetween('created_at',[$start,$end])
+                ->where('status','!=','Draft')
+                ->get();
+            $branch=OfficeBranch::all();
+        }elseif ($auth->role->name='Cashier'||$auth->role->name=='Accountant'){
+            $bills=Bill::with('supplier','employee')
+                ->whereBetween('created_at',[$start,$end])
+                ->where('status','!=','Draft')
+                ->where('branch_id',$auth->office_branch_id)
+                ->get();
+            $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
+        }else{
+            $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
+            $bills=Bill::with('supplier','employee')
+                ->whereBetween('created_at',[$start,$end])
+                ->where('status','!=','Draft')
+                ->where('emp_id',$auth->id)->get();
+        }
+        $search_branch=$request->branch_id;
+        return view('Report.payment',compact('bills','start','end','branch','search_branch'));
+    }
+
+    public function payable(Request $request)
+    {
+        $auth=Auth::guard('employee')->user();
+        if(isset($request->start)){
+            $start=Carbon::parse($request->start)->startOfDay();
+            $end=Carbon::parse($request->end)->endOfDay();
+        }else{
+            $start=Carbon::today()->startOfDay();
+            $end=Carbon::today()->endOfDay();
+        }
+        if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'||$auth->role->name=='Finance Manager'){
+            $bills=Bill::with('supplier','employee')
+                ->whereBetween('created_at',[$start,$end])
+                ->where('due_amount','!=',0)
+                ->get();
+            $branch=OfficeBranch::all();
+        }elseif ($auth->role->name='Cashier'||$auth->role->name=='Accountant'){
+            $bills=Bill::with('supplier','employee')
+                ->whereBetween('created_at',[$start,$end])
+                ->where('due_amount','!=',0)
+                ->where('branch_id',$auth->office_branch_id)
+                ->get();
+            $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
+        }else{
+            $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
+            $bills=Bill::with('supplier','employee')
+                ->whereBetween('created_at',[$start,$end])
+                ->where('due_amount','!=',0)
+                ->where('emp_id',$auth->id)->get();
+        }
+        $search_branch=$request->branch_id;
+        return view('Report.payable',compact('bills','start','end','branch','search_branch'));
+    }
+
+    public function stockreturn(Request $request)
+    {
+        $auth=Auth::guard('employee')->user();
+        if(isset($request->start)){
+            $start=Carbon::parse($request->start)->startOfDay();
+            $end=Carbon::parse($request->end)->endOfDay();
+        }else{
+            $start=Carbon::today()->startOfDay();
+            $end=Carbon::today()->endOfDay();
+        }
+        if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'||$auth->role->name=='Stock Manager'){
+            $stock_return=StockReturn::with('invoice','variant','warehouse','employee','creator')
+                ->whereBetween('created_at',[$start,$end])
+                ->get();
+            $branch=OfficeBranch::all();
+        }elseif ($auth->role->name='Stock Controller'){
+            $stock_return=StockReturn::with('invoice','variant','warehouse','employee','creator')
+                ->whereBetween('created_at',[$start,$end])
+                ->where('branch_id',$auth->office_branch_id)
+                ->get();
+            $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
+        }else{
+            $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
+            $stock_return=StockReturn::with('invoice','variant','warehouse','employee','creator')
+                ->whereBetween('created_at',[$start,$end])
+                ->where('creator_id',$auth->id)->get();
+        }
+        $search_branch=$request->branch_id;
+        return view('Report.stockreturn',compact('stock_return','start','end','search_branch','branch'));
+    }
+
+    public function stocktransfer(Request $request)
+    {
+        $auth=Auth::guard('employee')->user();
+        if(isset($request->start)){
+            $start=Carbon::parse($request->start)->startOfDay();
+            $end=Carbon::parse($request->end)->endOfDay();
+        }else{
+            $start=Carbon::today()->startOfDay();
+            $end=Carbon::today()->endOfDay();
+        }
+        if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'||$auth->role->name=='Stock Manager'){
+            $stock_transfer=StockTransferRecord::with('from','to','variant','receiver','branch')
+                ->whereBetween('created_at',[$start,$end])
+                ->get();
+            $branch=OfficeBranch::all();
+        }elseif ($auth->role->name='Stock Controller'){
+            $stock_transfer=StockTransferRecord::with('from','to','variant','receiver','branch')
+                ->whereBetween('created_at',[$start,$end])
+                ->where('branch_id',$auth->office_branch_id)
+                ->get();
+            $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
+        }else{
+            $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
+            $stock_transfer=StockTransferRecord::with('from','to','variant','receiver','branch')
+                ->whereBetween('created_at',[$start,$end])
+                ->where('receiver_id',$auth->id)->get();
+        }
+        $search_branch=$request->branch_id;
+        return view('Report.stocktransfer',compact('stock_transfer','start','end','search_branch','branch'));
+    }
+
+    public function damage(Request $request)
+    {
+        $auth=Auth::guard('employee')->user();
+        if(isset($request->start)){
+            $start=Carbon::parse($request->start)->startOfDay();
+            $end=Carbon::parse($request->end)->endOfDay();
+        }else{
+            $start=Carbon::today()->startOfDay();
+            $end=Carbon::today()->endOfDay();
+        }
+//        dd($start,$end);
+        if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'){
+            $warehouse=Warehouse::all();
+            $stockout=StockOut::with('variant','emp','warehouse','customer','approver','invoice','branch')
+                ->where('type','damage')
+                ->whereBetween('created_at',[$start,$end])
+                ->get();
+//            dd('hello',$stockout);
+
+        }elseif ($auth->role->name=='Stock Controller'){
+            $warehouse=Warehouse::where('branch_id',$auth->office_branch_id)->get();
+            $stockout=StockOut::with('variant','emp','warehouse','customer','approver','invoice','branch')
+                ->whereBetween('created_at',[$start,$end])
+                ->where('type','damage')
+                ->where('branch_id',$auth->office_branch_id)
+                ->get();
+        }else{
+            $warehouse=Warehouse::where('branch_id',$auth->office_branch_id)->get();
+            $stockout=StockOut::with('variant','emp','warehouse','customer','approver','invoice','branch')
+                ->whereBetween('created_at',[$start,$end])
+                ->where('type','damage')
+                ->where('emp_id',$auth->id)->get();
+        }
+        $search_warehouse=$request->warehouse_id;
+//        dd($stockout);
+
+        return view('Report.damage',compact('stockout','warehouse','start','end','search_warehouse'));
+    }
+
+    public function foc(Request $request)
+    {
+        $auth=Auth::guard('employee')->user();
+        if(isset($request->start)){
+            $start=Carbon::parse($request->start)->startOfDay();
+            $end=Carbon::parse($request->end)->endOfDay();
+        }else{
+            $start=Carbon::today()->startOfDay();
+            $end=Carbon::today()->endOfDay();
+        }
+//        dd($start,$end);
+        if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'){
+            $warehouse=Warehouse::all();
+            $stockout=StockOut::with('variant','emp','warehouse','customer','approver','invoice','branch')
+                ->whereBetween('created_at',[$start,$end])
+                ->where('type','foc')
+                ->get();
+//            dd('hello',$stockout);
+
+        }elseif ($auth->role->name=='Stock Controller'){
+            $warehouse=Warehouse::where('branch_id',$auth->office_branch_id)->get();
+            $stockout=StockOut::with('variant','emp','warehouse','customer','approver','invoice','branch')
+                ->whereBetween('created_at',[$start,$end])
+                ->where('type','foc')
+                ->where('branch_id',$auth->office_branch_id)
+                ->get();
+        }else{
+            $warehouse=Warehouse::where('branch_id',$auth->office_branch_id)->get();
+            $stockout=StockOut::with('variant','emp','warehouse','customer','approver','invoice','branch')
+                ->whereBetween('created_at',[$start,$end])
+                ->where('type','foc')
+                ->where('emp_id',$auth->id)->get();
+        }
+        $search_warehouse=$request->warehouse_id;
+//        dd($stockout);
+
+        return view('Report.foc',compact('stockout','warehouse','start','end','search_warehouse'));
+    }
 
 
 }

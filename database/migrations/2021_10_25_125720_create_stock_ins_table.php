@@ -21,6 +21,7 @@ class CreateStockInsTable extends Migration
             $table->double('qty');
             $table->bigInteger('binlookup_id')->unsigned()->nullable();
             $table->bigInteger('branch_id')->unsigned();
+            $table->bigInteger('warehouse_id')->unsigned();
             $table->timestamps();
         });
     }

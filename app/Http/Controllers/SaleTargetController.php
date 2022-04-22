@@ -75,7 +75,12 @@ class SaleTargetController extends Controller
                     ->get();
                 $yearly_target[$value]=$yearly_sale_target[0];
 
+
             }
+            $total_receivable = DB::table("invoices")
+                ->select(DB::raw("SUM(due_amount) as total"))
+                ->where('cancel',0)
+                ->get();
         }else{
             //monthly
             $auth=Auth::guard('employee')->user();
@@ -107,6 +112,7 @@ class SaleTargetController extends Controller
                     ->where('cancel',0)
                     ->whereMonth('invoice_date', $key + 1)->whereYear('invoice_date', date('Y'))
                     ->get();
+
                 $cos[$value]=$cost_of_sale[0]->total??0;
                 $gp[$value]=$monthly[$value]->total-$cos[$value];
                 $receivable[$value]=$monthly_receiable[0]->total??0;
@@ -128,16 +134,17 @@ class SaleTargetController extends Controller
                     ->get();
                 $yearly_target[$value]=$yearly_sale_target[0];
             }
+            $total_receivable = DB::table("invoices")
+                ->select(DB::raw("SUM(due_amount) as total"))
+                ->where('cancel',0)
+                ->get();
             $income = DB::table("revenues")
                 ->select(DB::raw("SUM(amount) as total"))
                 ->whereYear('transaction_date', date('Y'))->whereMonth('transaction_date',date('M'))
                 ->get();
             $all_income[date('Y')] = $income[0];
             $all_income[date('Y')] = $income[0];
-            $sale_target = DB::table("sale_targets")
-                ->select(DB::raw("SUM(target_sale) as target"))
-                ->where('month', date('M'))->where('year', date('Y'))->where('emp_id',$auth->id)
-                ->get();
+
         }
 
 
@@ -148,7 +155,7 @@ class SaleTargetController extends Controller
 
 
 //dd($gp);
-        return view('sale.dashboard', compact('monthly', 'yearly', 'year', 'sale_target', 'monthlysaletarget','yearly_target','month','cos','gp','payable','receivable'));
+        return view('sale.dashboard', compact('monthly', 'yearly', 'year', 'sale_target', 'monthlysaletarget','yearly_target','month','cos','gp','payable','receivable','total_receivable'));
     }
 
     public function create()

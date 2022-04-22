@@ -436,13 +436,23 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::get('selling/report',[SaleReportController::class,'sale_report'])->name('sale.report');
     Route::get('income/report',[ReportController::class,'income'])->name('report.income');
     Route::get('cash/inhand/report',[ReportController::class,'cash_in_hand'])->name('report.inhand');
-    Route::get('cash/inemp/report',[ReportController::class,'cash_in_hand'])->name('report.inemp');
+    Route::get('cash/inemp/report',[ReportController::class,'cash_in_emp'])->name('report.inemp');
     Route::get('expense/report',[ReportController::class,'expense'])->name('report.expense');
     Route::get('credit/purchase/report',[ReportController::class,'credit_purchase'])->name('credit.purchase');
     Route::get('payment/purchase/report',[ReportController::class,'payment_purchase'])->name('payment.purchase');
     Route::get('stock/report',[ReportController::class,'stock'])->name('report.stock');
     Route::get('daily/advancepayment/report',[ReportController::class,'advancedaily'])->name('report.advancepay');
     Route::get('reports',[ReportController::class,'reportpage'])->name('reports');
+    Route::get('stock/in/report',[ReportController::class,'stockin'])->name('report.stockin');
+    Route::get('stock/out/report',[ReportController::class,'stockout'])->name('report.stockout');
+    Route::get('report/bills',[ReportController::class,'bill'])->name('report.bill');
+    Route::get('report/payment',[ReportController::class,'payment'])->name('report.payment');
+    Route::get('report/payable',[ReportController::class,'payable'])->name('report.payable');
+    Route::get('report/receivable',[ReportController::class,'receivable'])->name('report.receivable');
+    Route::get('report/stockreturn',[ReportController::class,'stockreturn'])->name('report.return');
+    Route::get('report/stocktansfer',[ReportController::class,'stocktransfer'])->name('report.transfer');
+    Route::get('report/damage',[ReportController::class,'damage'])->name('report.damage');
+    Route::get('report/foc',[ReportController::class,'foc'])->name('report.foc');
 
 
 
