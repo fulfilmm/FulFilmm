@@ -18,11 +18,20 @@ class SaleZoneController extends Controller
     public function index()
     {
         $auth=Auth::guard('employee')->user();
-        $zones=SaleZone::all();
         $region=Region::all();
         if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'||$auth->role->name=='Sale Manager'){
             $branch=OfficeBranch::all();
+            $zones=SaleZone::all();
         }else{
+            $zones=[];
+            $region=Region::where('branch_id',$auth->office_branch_id)->get();
+            foreach ($region as $reg){
+                $sale=SaleZone::where('region_id',$reg->id)->get();
+                foreach ($sale as $item){
+                    array_push($zones,$item);
+                }
+            }
+
             $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
         }
 //        dd($zones);

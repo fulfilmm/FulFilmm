@@ -486,7 +486,7 @@ class ReportController extends Controller
             } else {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
-                $receivable = Invoice::with('account', 'cat', 'employee', 'approver', 'invoice')
+                $receivable = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')
                     ->whereBetween('created_at', [$start, $end])
                     ->where('due_amount','!=', 0)
                     ->get();
@@ -519,7 +519,7 @@ class ReportController extends Controller
             } else {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
-                $receivable = Invoice::with('customer', 'employee', 'branch', 'region','zone')->where('emp_id', $auth->id)->whereBetween('created_at', [$start, $end])
+                $receivable = Revenue::with('customer', 'employee', 'branch', 'region','zone')->where('emp_id', $auth->id)->whereBetween('created_at', [$start, $end])
                     ->where('due_amount','!=', 0)
                     ->get();
             }

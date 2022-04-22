@@ -8,13 +8,15 @@ use App\Models\product;
 use App\Models\products_category;
 use App\Models\products_tax;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
     public function index()
     {
         $ecommerce_stocks=EcommerceProduct::with('variant')->get();
-        return response()->json(['product'=>$ecommerce_stocks]);
+        $auth=Auth::guard('api')->user();
+        return response()->json(['product'=>$auth]);
     }
 
     /**
