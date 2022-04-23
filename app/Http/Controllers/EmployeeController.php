@@ -10,6 +10,7 @@ use App\Models\Invoice;
 use App\Models\OfficeBranch;
 use App\Models\Region;
 use App\Models\Warehouse;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -157,25 +158,59 @@ class EmployeeController extends Controller
      * @param  \App\Models\Employee $employee
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request,$id)
     {
         $employee = Employee::with('department', 'reportperson')->where('id', $id)->firstOrFail();
-        $invoices = Invoice::with('customer')->where('emp_id', $id)->get();
-        $grand_total = DB::table("invoices")
-            ->select(DB::raw("SUM(grand_total) as total"))
+
+        if(isset($request->start)){
+            $start=Carbon::parse($request->start)->startOfDay();
+            $end=Carbon::parse($request->end)->endOfDay();
+            $invoices = Invoice::with('customer')->where('emp_id', $id)
+                ->whereBetween('created_at',[$start,$end])
+                ->get();
+            $grand_total = DB::table("invoices")
+                ->select(DB::raw("SUM(grand_total) as total"))
+                ->where('emp_id', $id)
+                ->whereBetween('created_at',[$start,$end])
+                ->where('cancel',0)
+                ->get();
+            $total_on_transaction = DB::table("revenues")
+                ->select(DB::raw("SUM(amount) as total"))
+                ->where('emp_id', $id)
+                ->where('approve', 1)
+                ->whereBetween('created_at',[$start,$end])
+                ->get();
+            $expenses = DB::table("emp_expenses")
+                ->select(DB::raw("SUM(amount) as total"))
+                ->whereBetween('created_at',[$start,$end])
+                ->where('emp_id', $id)->whereBetween('created_at',[$start,$end])
+                ->get();
+        }else{
+            $start=null;
+            $end=null;
+            $invoices = Invoice::with('customer')->where('emp_id', $id)->get();
+            $grand_total = DB::table("invoices")
+                ->select(DB::raw("SUM(grand_total) as total"))
+                ->where('cancel',0)
+                ->where('emp_id', $id)
+                ->get();
+
+            $total_on_transaction = DB::table("revenues")
+                ->select(DB::raw("SUM(amount) as total"))
+                ->where('emp_id', $id)
+                ->where('approve', 1)
+                ->get();
+            $expenses = DB::table("emp_expenses")
+                ->select(DB::raw("SUM(amount) as total"))
+                ->where('emp_id', $id)
+                ->get();
+        }
+        $receivable = DB::table("invoices")
+            ->select(DB::raw("SUM(due_amount) as total"))
+            ->where('cancel',0)
             ->where('emp_id', $id)
             ->get();
-        $total_on_hand = DB::table("revenues")
-            ->select(DB::raw("SUM(amount) as total"))
-            ->where('emp_id', $id)
-            ->where('approve', 0)
-            ->get();
-        $total_on_transaction = DB::table("revenues")
-            ->select(DB::raw("SUM(amount) as total"))
-            ->where('emp_id', $id)
-            ->where('approve', 1)
-            ->get();
-        return view('employee.show', compact('employee', 'invoices', 'grand_total', 'total_on_hand', 'total_on_transaction'));
+        return view('employee.show', compact('employee', 'invoices', 'grand_total', 'total_on_transaction','receivable','expenses','start','end'));
     }
 
     /**

@@ -1,5 +1,7 @@
 @extends('layout.mainlayout')
+@section('title','Profile')
 @section('content')
+    <link rel="stylesheet" href="{{url(asset('customercss/customershow.css'))}}">
     <div class="content container-fluid">
 
         <!-- Page Header -->
@@ -11,6 +13,30 @@
                         <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
                         <li class="breadcrumb-item active">Profile</li>
                     </ul>
+                </div>
+                <div class="col-auto float-right ml-auto">
+                    <form action="{{route('employees.show',$employee->id)}}" method="get">
+                        @csrf
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="start">Start Date</label>
+                                    <input type="date" class="form-control" name="start" value="{{\Carbon\Carbon::parse($start)->format('Y-m-d')}}">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="end">End Date</label>
+                                    <div class="input-group">
+                                        <input type="date" class="form-control" name="end" value="{{\Carbon\Carbon::parse($end)->format('Y-m-d')}}">
+                                        <div class="input-group-append">
+                                            <button type="submit" class="btn btn-secondary border"><i class="la la-search"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -32,8 +58,15 @@
                                             <h3 class="user-name m-t-0 mb-0">{{$employee->name}}</h3>
                                             <small class="text-muted">{{$employee->department->name}}</small>
                                             <div class="staff-id">Employee ID : {{$employee->empid}}</div>
+                                            <div class="staff-id">Gender : {{$employee->gender}}</div>
+                                            <div class="staff-id">Position : {{$employee->role->name}}</div>
+                                            <div class="staff-id">Branch : {{$employee->branch->name??'N/A'}}</div>
+                                            <div class="staff-id">Region : {{$employee->region->name??'N/A'}}</div>
                                             <div class="small doj text-muted">Date of Join : {{\Carbon\Carbon::parse($employee->join_date)->toFormattedDateString()}}</div>
-                                            <div class="staff-msg"><a class="btn btn-custom" href="#">Send Message</a></div>
+                                            <div class="row">
+                                                <div class="staff-msg mr-2"><a class="btn btn-custom" href="#">Send Message</a></div>
+                                                <div class="staff-msg"><a class="btn btn-primary" href="{{route('employees.edit',$employee->id)}}">Edit</a></div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-7">
@@ -72,6 +105,30 @@
                                                     </a>
                                                 </div>
                                             </li>
+                                            <li>
+                                                <div class="title">Total Expense:</div>
+                                                <div class="text">
+                                                    {{$expenses[0]->total??0}} MMK
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="title">Total Sale:</div>
+                                                <div class="text">
+                                                    {{$grand_total[0]->total??0}} MMK
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="title">Cas in transit:</div>
+                                                <div class="text">
+                                                    {{$employee->amount_in_hand??0}} MMK
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="title">Receivable:</div>
+                                                <div class="text">
+                                                    {{$receivable[0]->total??0}} MMK
+                                                </div>
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>
@@ -99,74 +156,58 @@
 
             <!-- Profile Info Tab -->
             <div id="emp_profile" class="pro-overview tab-pane fade show active">
-               <div class="col-12">
-                   <div class="card shadow">
-                       <div class="col-md-12">
-                           <div class="table-responsive">
-                               <table class="table table-nowrap mb-0 table-hover" id="invoice">
-                                   <thead>
-                                   <tr>
-                                       <th>#</th>
-                                       <th>Invoice Number</th>
-                                       <th>Client</th>
-                                       <th>Created Date</th>
-                                       <th>Due Date</th>
-                                       <th>Amount</th>
-                                       <th>Status</th>
-                                       <th class="text-right">Action</th>
-                                   </tr>
-                                   </thead>
-                                   <tbody>
-                                   @foreach($invoices as $invoice)
-                                       <tr>
-                                           <td>{{$invoice->id}}</td>
-                                           <td><a href="{{route('invoices.show',$invoice->id)}}">#{{$invoice->invoice_id}}</a></td>
-                                           <td>{{$invoice->customer->name}}</td>
-                                           <td>{{$invoice->created_at->toFormattedDateString()}}</td>
-                                           <td>{{\Illuminate\Support\Carbon::parse($invoice->due_date)->toFormattedDateString()}}</td>
-                                           <td>{{$invoice->grand_total}}</td>
-                                           <td>
-                                               <div class="dropdown action-label">
-                                                   <a class="btn btn-white btn-sm btn-rounded " href="#" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o mr-1"></i>{{$invoice->status}}</a>
-                                                   {{--<a class="btn btn-white btn-sm btn-rounded "  href="#" data-toggle="modal" data-target="#change_status{{$invoice->id}}"></a>--}}
-                                               </div>
-                                           </td>
-                                           <td class="text-right">
-                                               <div class="dropdown dropdown-action">
-                                                   <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                                   <div class="dropdown-menu dropdown-menu-right">
-                                                       {{--                                                    <a class="dropdown-item" href="{{route("invoices.edit",$invoice->id)}}"><i class="fa fa-pencil m-r-5"></i> Edit</a>--}}
-                                                       <a class="dropdown-item" href="{{route("invoices.show",$invoice->id)}}"><i class="fa fa-eye m-r-5"></i> View</a>
-                                                       {{--                                                    <a class="dropdown-item" href="#"><i class="fa fa-file-pdf-o m-r-5"></i> Download</a>--}}
-                                                       <a class="dropdown-item" href="" data-toggle="modal" data-target="#delete{{$invoice->id}}"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                   </div>
-                                               </div>
-                                           </td>
-                                       </tr>
-                                   @endforeach
-                                   </tbody>
-                                   <tfoot>
-                                   <tr>
-                                       <td colspan="5"></td>
-                                       <td>Total On hand</td>
-                                       <td>{{$total_on_hand[0]->total??0}}</td>
-                                   </tr>
-                                   <tr>
-                                       <td colspan="5"></td>
-                                       <td>Total Transferred Amount</td>
-                                       <td>{{$total_on_transaction[0]->total??0}}</td>
-                                   </tr>
-                                        <tr>
-                                            <td colspan="5"></td>
-                                            <td>Total Sale</td>
-                                            <td>{{$grand_total[0]->total??0}}</td>
-                                        </tr>
-                                   </tfoot>
-                               </table>
-                           </div>
-                       </div>
-                   </div>
-               </div>
+                <div class="card shadow">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table table-nowrap mb-0 table-hover" id="invoice">
+                                <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Invoice Number</th>
+                                    <th>Client</th>
+                                    <th>Created Date</th>
+                                    <th>Due Date</th>
+                                    <th>Amount</th>
+                                    <th>Receivable Amount</th>
+                                    <th>Status</th>
+                                    <th class="text-right">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($invoices as $invoice)
+                                    <tr>
+                                        <td>{{$invoice->created_at->toFormattedDateString()}}</td>
+                                        <td><a href="{{route('invoices.show',$invoice->id)}}">#{{$invoice->invoice_id}}</a></td>
+                                        <td>{{$invoice->customer->name}}</td>
+                                        <td>{{$invoice->created_at->toFormattedDateString()}}</td>
+                                        <td>{{\Illuminate\Support\Carbon::parse($invoice->due_date)->toFormattedDateString()}}</td>
+                                        <td>{{$invoice->grand_total}}</td>
+                                        <td>{{$invoice->due_amount}}</td>
+                                        <td>
+                                          @if($invoice->cancel==1)
+                                              Cancel
+                                              @else
+                                                {{$invoice->status}}
+                                            @endif
+                                        </td>
+                                        <td class="text-right">
+                                            <div class="dropdown dropdown-action">
+                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    {{--                                                    <a class="dropdown-item" href="{{route("invoices.edit",$invoice->id)}}"><i class="fa fa-pencil m-r-5"></i> Edit</a>--}}
+                                                    <a class="dropdown-item" href="{{route("invoices.show",$invoice->id)}}"><i class="fa fa-eye m-r-5"></i> View</a>
+                                                    {{--                                                    <a class="dropdown-item" href="#"><i class="fa fa-file-pdf-o m-r-5"></i> Download</a>--}}
+                                                    <a class="dropdown-item" href="" data-toggle="modal" data-target="#delete{{$invoice->id}}"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- /Profile Info Tab -->
 
@@ -642,4 +683,14 @@
 
         </div>
     </div>
+    <script>
+        $(document).ready(function () {
+            $('#invoice').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+            });
+        });
+    </script>
 @endsection
