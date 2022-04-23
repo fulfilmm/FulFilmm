@@ -30,7 +30,7 @@
                             <div class="form-group">
                                 <label for="branch">Branch</label>
                                 <select name="branch_id" id="branch" class="form-control">
-                                    @if(\Illuminate\Support\Facades\Auth::guard('employee')->role->name=='Super Admin'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='CEO')
+                                    @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Super Admin'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='CEO')
                                         <option value="">All</option>
                                     @endif
                                     @foreach($branch as $item)
