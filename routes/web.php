@@ -218,6 +218,8 @@ Route::middleware(['auth:employee'])->group(function () {
     Route::get('expired/product',[StockTransactionController::class,'expired_product'])->name('expired.products');
     Route::get('expired/alert/product',[StockTransactionController::class,'alert_product'])->name('alert.products');
     Route::get('payments',[BillController::class,'payment'])->name('payment');
+    Route::get('mobile/warehouse/return',[\App\Http\Controllers\StockReturnController::class,'mobilereturn'])->name('stockreturn.mobile');
+    Route::resource('moneytransfer',\App\Http\Controllers\CashTransferRecordController::class);
 
 
 

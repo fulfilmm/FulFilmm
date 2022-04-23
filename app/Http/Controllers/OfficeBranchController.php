@@ -109,7 +109,9 @@ class OfficeBranchController extends Controller
     public function destroy($id)
     {
         $office=OfficeBranch::where('id',$id)->first();
-        $office->delete();
+        if($office->status!=1){
+            $office->delete();
+        }
         return redirect()->back();
     }
     public function add_emp(Request $request){

@@ -89,7 +89,9 @@ class WarehouseController extends Controller
         Warehouse::create($request->all());
         $branch=OfficeBranch::where('id',$request->branch_id)->first();
         $branch->warehouse_created=1;
+        $branch->status=1;
         $branch->update();
+
         return redirect(route('warehouses.index'));
     }
 
@@ -135,6 +137,9 @@ class WarehouseController extends Controller
         $stocks->branch_id=$request->branch_id;
         $stocks->mobile_warehouse=$request->mobile_warehouse??0;
         $stocks->update();
+        $office_branch=OfficeBranch::where('id',$request->branch_id)->first();
+        $office_branch->status=1;
+        $office_branch->update();
         return redirect()->back();
     }
 

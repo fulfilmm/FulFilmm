@@ -33,6 +33,7 @@
                                 <th>Unit</th>
                                 <th>Employee</th>
                                 <th>Customer</th>
+                                <th>From Warehouse</th>
                                 <th>Warehouse</th>
                                 <th>Attachment</th>
                             </tr>
@@ -48,6 +49,7 @@
                                     <td>{{$item->unit->unit}}</td>
                                     <td>{{$item->employee->name??'N/A'}}</td>
                                     <td>{{$item->customer->name??'N/A'}}</td>
+                                    <td>{{$item->from_warehouse->name??'N/A'}}</td>
                                     <td>{{$item->warehouse->name}}</td>
                                     <td></td>
                                 </tr>

@@ -480,18 +480,31 @@ class ReportController extends Controller
             if (isset($request->start)) {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
-                $receivable = Invoice::with('customer', 'employee', 'branch', 'region','zone')->whereBetween('created_at', [$start, $end])
-                    ->where('branch_id',$request->branch_id)
-                    ->where('due_amount','!=', 0)
-                    ->get();
+                if (isset($request->branch_id)){
+                    $receivable = Invoice::with('customer', 'employee', 'branch', 'region','zone')->whereBetween('created_at', [$start, $end])
+                        ->where('branch_id',$request->branch_id)
+                        ->where('due_amount','!=', 0)
+                        ->get();
+                }else{
+                    $receivable = Invoice::with('customer', 'employee', 'branch', 'region','zone')->whereBetween('created_at', [$start, $end])
+                        ->where('due_amount','!=', 0)
+                        ->get();
+                }
             } else {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
-                $receivable =Invoice::with('customer', 'employee', 'branch', 'region','zone')
-                    ->whereBetween('created_at', [$start, $end])
-                    ->where('branch_id',$request->branch_id)
-                    ->where('due_amount','!=', 0)
-                    ->get();
+                if (isset($request->branch_id)){
+                    $receivable =Invoice::with('customer', 'employee', 'branch', 'region','zone')
+                        ->whereBetween('created_at', [$start, $end])
+                        ->where('branch_id',$request->branch_id)
+                        ->where('due_amount','!=', 0)
+                        ->get();
+                }else{
+                    $receivable =Invoice::with('customer', 'employee', 'branch', 'region','zone')
+                        ->whereBetween('created_at', [$start, $end])
+                        ->where('due_amount','!=', 0)
+                        ->get();
+                }
             }
             $branch=OfficeBranch::all();
         }elseif ($auth->role->name == 'Cashier' || $auth->role->name == 'Accountant'){

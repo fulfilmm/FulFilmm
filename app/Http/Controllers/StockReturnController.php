@@ -25,7 +25,7 @@ class StockReturnController extends Controller
      */
     public function index()
     {
-        $stockreturn=StockReturn::with('invoice','employee','variant','unit','warehouse','creator')->get();
+        $stockreturn=StockReturn::with('invoice','employee','variant','unit','warehouse','creator','from_warehouse')->get();
         return view('stock.StockReturn.index',compact('stockreturn'));
     }
 
@@ -197,5 +197,15 @@ class StockReturnController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function mobilereturn(){
+        $auth=Auth::guard('employee')->user();
+        $units=SellingUnit::all();
+        $products=product::all();
+        $variants=ProductVariations::all();
+        $employees=Employee::all();
+        $mobile=Warehouse::where('id',$auth->warehouse_id)->get();
+        $warehouse=Warehouse::where('branch_id',$auth->office_branch_id)->where('mobile_warehouse',0)->get();
+        return view('stock.StockReturn.mobile',compact('warehouse','employees','products','units','variants','mobile'));
     }
 }

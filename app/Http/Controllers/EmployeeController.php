@@ -145,6 +145,9 @@ class EmployeeController extends Controller
         }
         $employee->save();
         $employee->assignRole($request->role_id);
+        $office_branch=OfficeBranch::where('id',$data['office_branch_id'])->first();
+        $office_branch->status=1;
+        $office_branch->update();
         return redirect('employees')->with('success', __('alert.create_success'));
     }
 
@@ -239,6 +242,9 @@ class EmployeeController extends Controller
             }
             $employee->update();
             $employee->syncRoles($request->role_id);
+            $office_branch=OfficeBranch::where('id',$request->office_branch_id)->first();
+            $office_branch->status=1;
+            $office_branch->update();
             return redirect('employees')->with('success', __('alert.update_success'));
         } else {
             return redirect('employees')->with('error', 'Email already Exist');

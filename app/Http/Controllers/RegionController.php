@@ -51,6 +51,9 @@ class RegionController extends Controller
            'branch_id'=>'required'
         ]);
         Region::create($request->all());
+        $office_branch=OfficeBranch::where('id',$request->branch_id)->first();
+        $office_branch->status=1;
+        $office_branch->update();
         return redirect()->back()->with('success','Added new Region');
     }
 
@@ -87,6 +90,9 @@ class RegionController extends Controller
     {
         $region=Region::where('id',$id)->first();
         $region->update($request->all());
+        $office_branch=OfficeBranch::where('id',$request->branch_id)->first();
+        $office_branch->status=1;
+        $office_branch->update();
         return redirect()->back()->with('success','Added new Region');
     }
 

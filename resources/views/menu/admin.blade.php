@@ -336,6 +336,8 @@
                     <li><a class="{{ Request::is('stockreturn/create') ? 'active' : '' }}"
                            href="{{route('stockreturn.create')}}" style="text-decoration: none">
                             Stock Return Create</a></li>
+                    <li><a class="{{ Request::is('mobile/warehouse/return') ? 'active' : '' }}"
+                           href="{{ route('stockreturn.mobile') }}" style="text-decoration: none">Mobile Stock Return</a></li>
 
                 </ul>
             </li>

@@ -216,11 +216,26 @@
         </ul>
     </li>
     <li class="submenu">
+        <a href="#"><i class="la la-puzzle-piece"></i><span>Stock</span> <span
+                    class="menu-arrow"></span></a>
+        <ul style="display: none;">
+            <li><a class="{{ Request::is('stockreturn') ? 'active' : '' }}" href="{{route('stockreturn.index')}}"
+                   style="text-decoration: none">Stock Return</a></li>
+            <li><a class="{{ Request::is('mobile/warehouse/return') ? 'active' : '' }}"
+                   href="{{ route('stockreturn.mobile') }}" style="text-decoration: none">Create Stock Return</a></li>
+            <li><a class="{{ Request::is('transfer/index') ? 'active' : '' }}"
+                   href="{{ route('transfer.index') }}" style="text-decoration: none">Stock Transfer</a></li>
+
+        </ul>
+    </li>
+    <li class="submenu">
         <a href="#"><i class="la la-dollar"></i> <span>Sale</span> <span
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
-            <li><a class="{{ Request::is('transfer/index') ? 'active' : '' }}"
-                   href="{{ route('transfer.index') }}" style="text-decoration: none">Stock Transfer</a></li>
+
+
+            <li><a class="{{ Request::is('moneytransfer') ? 'active' : '' }}"
+                   href="{{route('moneytransfer.index')}}" style="text-decoration: none">Transfer Money</a></li>
             <li><a class="{{ Request::is('salezone') ? 'active' : '' }}"
                    href="{{route('salezone.index')}}" style="text-decoration: none">Sale Zone</a></li>
             <li><a class="{{ Request::is('region') ? 'active' : '' }}"

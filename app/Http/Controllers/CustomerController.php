@@ -67,7 +67,14 @@ class CustomerController extends Controller
 
     public function card()
     {
-        $customers = Customer::withTrashed()->paginate(12);
+        $auth=Auth::guard('employee')->user();
+        if($auth->role->name=='CEO'||$auth->role->name=='Super Admin')
+        {
+            $customers = Customer::withTrashed()->paginate(12);
+        }else{
+            $customers = Customer::withTrashed()->where('branch_id',$auth->office_branch_id)->paginate(12);
+        }
+
         return view('customer.data.cards', compact('customers'));
     }
     public function qualified_contact(){
@@ -169,7 +176,6 @@ class CustomerController extends Controller
         try{
 //            dd($data);
             $this->customerContract->create($data);
-
             if($request->customer_type=='Lead'){
                 $customer=Customer::orderBy('id', 'desc')->first();
                 $last_deal=deal::orderBy('id', 'desc')->first();

@@ -30,4 +30,7 @@ class StockReturn extends Model
     public function creator(){
         return $this->belongsTo(Employee::class,'creator_id','id');
     }
+    public function from_warehouse(){
+        return $this->belongsTo(Warehouse::class,'transfer_warehouse','id');
+    }
 }

@@ -8,7 +8,9 @@
                 <div class="page-header">
                     <div class="row">
                         <div class="col-sm-12">
-                            <div class="float-right"><a href="{{url('reports')}}" class="btn btn-danger btn-sm rounded-circle"><i class="la la-close"></i></a></div>
+                            <div class="float-right"><a href="{{url('reports')}}"
+                                                        class="btn btn-danger btn-sm rounded-circle"><i
+                                            class="la la-close"></i></a></div>
                             <h3 class="page-title">Receivable Report</h3>
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
@@ -25,29 +27,37 @@
                     @csrf
                     <div class="row">
                         <div class="col">
-                        <div class="form-group">
-                        <label for="branch">Branch</label>
-                        <select name="branch_id" id="branch" class="form-control">
-                        <option value="">All</option>
-                        @foreach($branch as $item)
-                        <option value="{{$item->id}}" {{$item->id==$search_branch?'selected':''}}>{{$item->name}}</option>
-                        @endforeach
-                        </select>
-                        </div>
+                            <div class="form-group">
+                                <label for="branch">Branch</label>
+                                <select name="branch_id" id="branch" class="form-control">
+                                    @if(\Illuminate\Support\Facades\Auth::guard('employee')->role->name!='Super Admin'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name!='CEO')
+
+
+                                    @else
+                                        <option value="">All</option>
+                                    @endif
+                                    @foreach($branch as $item)
+                                        <option value="{{$item->id}}" {{$item->id==$search_branch?'selected':''}}>{{$item->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                         <div class="col">
                             <div class="form-group">
                                 <label for="">Start Date</label>
-                                <input type="date" class="form-control shadow-sm" name="start" value="{{$start->format('Y-m-d')}}">
+                                <input type="date" class="form-control shadow-sm" name="start"
+                                       value="{{$start->format('Y-m-d')}}">
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-group">
                                 <label for="">End Date</label>
                                 <div class="input-group">
-                                    <input type="date" class="form-control shadow-sm" name="end" value="{{$end->format('Y-m-d')}}">
+                                    <input type="date" class="form-control shadow-sm" name="end"
+                                           value="{{$end->format('Y-m-d')}}">
                                     <div class="input-group-append">
-                                        <button type="submit" class="btn btn-white shadow-sm"><i class="la la-search"></i></button>
+                                        <button type="submit" class="btn btn-white shadow-sm"><i
+                                                    class="la la-search"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -177,7 +187,8 @@
                                 <td>
                                     @if($invoice->cancel==1)
                                         <div class="dropdown action-label">
-                                            <a class="btn btn-danger btn-sm btn-rounded " href="#" data-toggle="dropdown"
+                                            <a class="btn btn-danger btn-sm btn-rounded " href="#"
+                                               data-toggle="dropdown"
                                                aria-expanded="false"><i
                                                         class="fa fa-dot-circle-o mr-1"></i>Cancel</a>
                                         </div>
