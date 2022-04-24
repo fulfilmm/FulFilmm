@@ -43,7 +43,7 @@
                         <td>{{$item->max_amount}}</td>
                         <td>{{$item->rate}} %</td>
                         <td>{{$item->sale_type}}</td>
-                        <td>{{$item->branch->name}}</td>
+                        <td>{{$item->region->name}}</td>
                         <td>
                             <div class="row">
                                 <button data-toggle="modal" data-target="#edit_{{$item->id}}" class="btn btn-success btn-sm"><i class="la la-edit"></i></button>
@@ -71,10 +71,10 @@
                                                         <div class="row">
                                                             <div class="col-md-6" >
                                                                 <div class="form-group">
-                                                                    <label for="branch">Office Branch</label>
-                                                                    <select name="branch_id"  class="form-control" style="width: 100%">
-                                                                        @foreach($branch as $brch)
-                                                                            <option value="{{$brch->id}}" {{$brch->id==$item->branch_id?'selected':''}}>{{$brch->name}}</option>
+                                                                    <label for="region">Region</label>
+                                                                    <select name="region_id"  class="form-control" style="width: 100%">
+                                                                        @foreach($region as $reg)
+                                                                            <option value="{{$reg->id}}" {{$reg->id==$item->branch_id?'selected':''}}>{{$reg->name}}</option>
                                                                             @endforeach
                                                                     </select>
                                                                 </div>
@@ -183,10 +183,10 @@
                                 <div class="row">
                                     <div class="col-md-6" >
                                         <div class="form-group">
-                                            <label for="branch">Office Branch</label>
-                                            <select name="branch_id" id="branch" class="form-control" style="width: 100%">
-                                                @foreach($branch as $brch)
-                                                    <option value="{{$brch->id}}">{{$brch->name}}</option>
+                                            <label for="region">Office Branch</label>
+                                            <select name="region_id" id="region" class="form-control" style="width: 100%">
+                                                @foreach($region as $brch)
+                                                    <option value="{{$brch->id}}">{{$brch->name}} ({{$brch->branch->name}})</option>
                                                 @endforeach
                                             </select>
                                         </div>

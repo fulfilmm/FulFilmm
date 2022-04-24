@@ -20,6 +20,7 @@ class CreateOfficeBranchesTable extends Migration
             $table->bigInteger('parent_branch')->unsigned()->nullable();
             $table->string('type');
             $table->tinyInteger('warehouse_created')->default(0);
+            $table->tinyInteger('status')->default(0);
             $table->timestamps();
         });
     }

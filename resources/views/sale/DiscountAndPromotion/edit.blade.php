@@ -57,10 +57,10 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="branch">Office Branch</label>
-                            <select name="branch_id" id="bid" class="form-control select2">
-                                @foreach($branch as $item)
-                                    <option value="{{$item->id}}" {{$item->id==$pro_discount->branch_id?'selected':''}}>{{$item->name}}</option>
+                            <label for="region">Region</label>
+                            <select name="region_id" id="region" class="form-control select2">
+                                @foreach($region as $item)
+                                    <option value="{{$item->id}}" {{$item->id==$pro_discount->region_id?'selected':''}}>{{$item->name}} ({{$item->branch->name}})</option>
                                 @endforeach
                             </select>
                         </div>
@@ -90,6 +90,9 @@
     <script>
         ClassicEditor.create($('#description')[0], {
             toolbar: ['heading', 'bold', 'italic', 'undo', 'redo', 'numberedList', 'bulletedList', 'insertTable']
+        });
+        $(document).ready(function () {
+           $('select').select2();
         });
     </script>
 @endsection

@@ -95,11 +95,21 @@
             <div class="card shadow">
                <div class="col-12 my-4">
                    <div class="row">
+                       <div class="col-md-12">
+                           <div class="form-group">
+                               <label for="">Office</label>
+                               <select name="office_branch_id" id="branch_id" class="select form-control" onchange="region_select(this.value)">
+                                   @foreach($office as $item)
+                                       <option value="{{$item->id}}" {{isset($employee)?($employee->office_branch_id==$item->id?'selected':''):old('office_branch_id')}}>{{$item->name}}</option>
+                                   @endforeach
+                               </select>
+                           </div>
+                       </div>
                        <div class="col-md-12 my-3">
                            <label for="wh_id">Warehouse</label>
                            <select name="warehouse_id" id="wh_id" class="form-control">
                                @foreach($warehouse as $item)
-                                   <option value="{{$item->id}}" {{isset($employee)?($employee->warehouse_id==$item->id?'selected':''):old('warehouse_id')}}>{{$item->warehouse_id}}-{{$item->name}}</option>
+                                   <option value="{{$item->id}}" {{isset($employee)?($employee->warehouse_id==$item->id?'selected':''):old('warehouse_id')}} data-option="{{$item->branch_id}}">{{$item->warehouse_id}}-{{$item->name}}</option>
                                    @endforeach
                            </select>
                        </div>
@@ -123,16 +133,6 @@
                            <div class="form-group">
                                <label for="work_phone">Work Phone</label>
                                <x-forms.basic.input name="work_phone" type="tel" title="Work Phone" value="{{$employee->work_phone ?? old('work_phone')}}" required></x-forms.basic.input>
-                           </div>
-                       </div>
-                       <div class="col-md-12">
-                           <div class="form-group">
-                               <label for="">Office</label>
-                               <select name="office_branch_id" id="branch_id" class="select form-control" onchange="region_select(this.value)">
-                                   @foreach($office as $item)
-                                       <option value="{{$item->id}}" {{isset($employee)?($employee->office_branch_id==$item->id?'selected':''):old('office_branch_id')}}>{{$item->name}}</option>
-                                   @endforeach
-                               </select>
                            </div>
                        </div>
                        <div class="col-md-12">
@@ -196,14 +196,23 @@
     var branch_id = document.querySelector('#branch_id');
     var region_id = document.querySelector('#region_id');
     var region_option = region_id.querySelectorAll('option');
+    var warehouse = document.querySelector('#wh_id');
+    var warehouse_option = warehouse.querySelectorAll('option');
     // console.log(options3);
     // alert(product)
     function region_select(selValue) {
         region_id.innerHTML='';
+        wh_id.innerHTML='';
 
         for(var i = 0; i < region_option.length; i++) {
             if(region_option[i].dataset.option === selValue) {
                 region_id.appendChild(region_option[i]);
+
+            }
+        }
+        for(var i = 0; i < warehouse_option.length; i++) {
+            if(warehouse_option[i].dataset.option === selValue) {
+                wh_id.appendChild(warehouse_option[i]);
 
             }
         }
