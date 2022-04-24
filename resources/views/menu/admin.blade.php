@@ -14,14 +14,14 @@
                 <ul style="display: none;">
                     <li><a class="{{ Request::is('reports') ? 'active' : '' }}"
                            href="{{ url('reports') }}" style="text-decoration: none">Report</a></li>
-                    <li><a class="{{ Request::is('selling/report') ? 'active' : '' }}"
-                           href="{{ route('sale.report') }}" style="text-decoration: none">Sales Report</a></li>
+                    {{--<li><a class="{{ Request::is('selling/report') ? 'active' : '' }}"--}}
+                           {{--href="{{ route('sale.report') }}" style="text-decoration: none">Sales Report</a></li>--}}
                     <li><a class="{{ Request::is('sale/performance') ? 'active' : '' }}"
                            href="{{ route('report.saleprformance') }}" style="text-decoration: none">Sales Performance</a></li>
                     <li><a class="{{ Request::is('stock/report') ? 'active' : '' }}"
                            href="{{ route('report.stock') }}" style="text-decoration: none">Stock Report</a></li>
-                    <li><a class="{{ Request::is('officebranch') ? 'active' : '' }}"
-                           href="{{ route('officebranch.index') }}" style="text-decoration: none;">Branch</a></li>
+                    {{--<li><a class="{{ Request::is('officebranch') ? 'active' : '' }}"--}}
+                           {{--href="{{ route('officebranch.index') }}" style="text-decoration: none;">Branch</a></li>--}}
 
                 </ul>
             </li>
@@ -509,8 +509,8 @@
             <li><a class="{{ Request::is('main/customer') ? 'active' : '' }}"
                    href="{{ route('customer') }}" style="text-decoration: none">Customers</a>
             </li>
-            <li><a class="{{ Request::is('selling/report') ? 'active' : '' }}"
-                   href="{{ route('sale.report') }}" style="text-decoration: none">Sales Report</a></li>
+            {{--<li><a class="{{ Request::is('selling/report') ? 'active' : '' }}"--}}
+                   {{--href="{{ route('sale.report') }}" style="text-decoration: none">Sales Report</a></li>--}}
             <li><a class="{{ Request::is('sale/activity') ? 'active' : '' }}"
                    href="{{ route('activity.index') }}" style="text-decoration: none">Sales Activity</a></li>
             <li><a class="{{ Request::is('saletargets/create') ? 'active' : '' }}"
