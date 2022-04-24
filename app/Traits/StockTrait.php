@@ -50,6 +50,7 @@ trait StockTrait
         $stockin->emp_id=Auth::guard('employee')->user()->id;
         $stockin->supplier_id=$request['supplier_id'];
         $stockin->qty=$request['qty'];
+        $stockin->warehouse_id=$request['warehouse_id'];
         $stockin->binlookup_id=$request['bin_id']??null;
         $stockin->branch_id=$request['branch_id'];
         $stockin->save();
