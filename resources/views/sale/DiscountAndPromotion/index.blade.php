@@ -42,7 +42,7 @@
                         <td>{{$item->variant->product_name}}</td>
                         <td>{{$item->variant->variant}}</td>
                         <td>{{$item->type}}</td>
-                        <td>{{$item->branch->name}}</td>
+                        <td>{{$item->region->name}}</td>
                         <td>{{$item->sale_type}}</td>
                         <td>{{$item->rate}} %</td>
                         <td>{{$item->start_date!=null?\Carbon\Carbon::parse($item->start_date)->toFormattedDateString():'N/A'}}</td>

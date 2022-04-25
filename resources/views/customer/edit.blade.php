@@ -173,11 +173,6 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6 mb-3">
-                                            <label for="region"
-                                                   class="form-label font-weight-bold text-muted text-uppercase">State/Division</label>
-                                            <input type="text" class="form-control" name="region" id="region" value="{{$record->region}}">
-                                        </div>
-                                        <div class="col-md-6 mb-3">
                                             <label for="address"
                                                    class="form-label font-weight-bold text-muted text-uppercase">Address</label>
                                             <div class="input-group">

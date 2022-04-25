@@ -23,7 +23,7 @@ class CreateAmountDiscountsTable extends Migration
             $table->integer('rate');
             $table->text('description')->nullable();
             $table->string('sale_type');
-            $table->bigInteger('branch_id')->unsigned();
+            $table->bigInteger('region_id')->unsigned();
             $table->timestamps();
         });
     }

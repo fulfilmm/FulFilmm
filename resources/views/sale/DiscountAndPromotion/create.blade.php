@@ -31,10 +31,10 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="branch">Office Branch</label>
-                            <select name="branch_id" id="bid" class="form-control select2">
-                                @foreach($branch as $item)
-                                    <option value="{{$item->id}}">{{$item->name}}</option>
+                            <label for="regionid">Region </label>
+                            <select name="region_id" id="regionid" class="form-control select2">
+                                @foreach($region as $item)
+                                    <option value="{{$item->id}}" {{$item->id==old('region_id')?'selected':''}}>{{$item->name}} ({{$item->branch->name}})</option>
                                 @endforeach
                             </select>
                         </div>
@@ -42,7 +42,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="type">Type</label>
-                            <select name="type" id="type" class="form-control">
+                            <select name="type" id="type{{$}}" class="form-control">
                                 <option value="Discount">Discount</option>
                                 <option value="Promotion">Promotion</option>
                             </select>

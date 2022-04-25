@@ -95,7 +95,9 @@
                                     <select name="region_id" id="quick_region_id" class="form-control select2" onchange="selectregion(this.value)" style="width: 100%">
                                         <option value="">None</option>
                                         @foreach($region as $item)
-                                            <option value="{{$item->id}}">{{$item->name}}</option>
+                                           @if($item->id==\Illuminate\Support\Facades\Auth::guard('employee')->user()->region_id)
+                                                <option value="{{$item->id}}">{{$item->name}}</option>
+                                               @endif
                                         @endforeach
                                     </select>
                                 </div>

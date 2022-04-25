@@ -8,14 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class product_price extends Model
 {
     use HasFactory;
-    protected $fillable=['product_id','unit_id','sale_type','price','rule','max','min','start_date','end_date','multi_price','branch_id'];
+    protected $fillable=['product_id','unit_id','sale_type','price','rule','max','min','start_date','end_date','multi_price','region_id'];
     public function unit(){
         return $this->belongsTo(SellingUnit::class,'unit_id','id');
     }
     public function variant(){
         return $this->belongsTo(ProductVariations::class,'product_id','id');
     }
-    public function branch(){
-        return $this->belongsTo(OfficeBranch::class,'branch_id','id');
+    public function region(){
+        return $this->belongsTo(Region::class,'region_id','id');
     }
 }

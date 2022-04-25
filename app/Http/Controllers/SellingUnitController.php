@@ -6,6 +6,7 @@ use App\Models\OfficeBranch;
 use App\Models\product;
 use App\Models\product_price;
 use App\Models\ProductVariations;
+use App\Models\Region;
 use App\Models\SellingUnit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -108,13 +109,13 @@ class SellingUnitController extends Controller
 //        dd('je;p');
         $units=SellingUnit::all();
         if(Auth::guard('employee')->user()->role->name=='Super Admin'||Auth::guard('employee')->user()->role->name=='CEO'){
-            $price_lists=product_price::with('unit','variant','branch')->get();
-            $branch=OfficeBranch::all()->pluck('name','id')->all();
+            $price_lists=product_price::with('unit','variant','region')->get();
+            $region=Region::all()->pluck('name','id')->all();
         }else{
-            $price_lists=product_price::with('unit','variant','branch')->where('branch_id',Auth::guard('employee')->user()->office_branch_id)->get();
-            $branch=OfficeBranch::where('id',Auth::guard('employee')->user()->office_branch_id)->pluck('name','id')->all();
+            $price_lists=product_price::with('unit','variant','region')->where('branch_id',Auth::guard('employee')->user()->office_branch_id)->get();
+            $region=Region::where('id',Auth::guard('employee')->user()->region_id)->pluck('name','id')->all();
         }
-        return view('sale.sellingunit.price',compact('price_lists','units','branch'));
+        return view('sale.sellingunit.price',compact('price_lists','units','region'));
     }
     public function price_add(){
         $units=SellingUnit::all();
@@ -122,11 +123,13 @@ class SellingUnitController extends Controller
         $products=ProductVariations::all();
         if(Auth::guard('employee')->user()->role->name=='Super Admin'||Auth::guard('employee')->user()->role->name=='CEO'){
             $branch=OfficeBranch::all();
+            $region=Region::all();
         }else{
             $branch=OfficeBranch::select('id','name')->where('id',Auth::guard('employee')->user()->office_branch_id)->get();
+            $region=Region::where("branch_id",Auth::guard('employee')->user()->office_branch_id)->get();
         }
 //        dd($branch);
-        return view('sale.sellingunit.price_add',compact('units','main_product','products','branch'));
+        return view('sale.sellingunit.price_add',compact('units','main_product','products','branch','region'));
     }
     public function store_price(Request $request){
 //        dd($request->all());
@@ -134,9 +137,9 @@ class SellingUnitController extends Controller
            'product_id'=>'required',
            'unit_id'=>'required',
            'sale_type'=>'required',
-            'branch_id'=>'required'
+            'region_id'=>'required'
         ]);
-        foreach ($request->branch_id as $branch_id){
+        foreach ($request->region_id as $region_id){
             foreach ($request->product_id as $item){
                 $unit=SellingUnit::where('id',$request->unit_id)->first();
                 $unit->active=1;
@@ -145,13 +148,13 @@ class SellingUnitController extends Controller
                     $exist_price=product_price::where('product_id',$item)->where('sale_type',$request->sale_type)
                         ->where('unit_id',$request->unit_id)
                         ->where('active',1)
-                        ->where('branch_id',$branch_id)
+                        ->where('region_id',$region_id)
                         ->first();
                     $single_data['product_id']=$item;
                     $single_data['unit_id']=$request->unit_id;
                     $single_data['sale_type']=$request->sale_type;
                     $single_data['price']=$request->single_price;
-                    $single_data['branch_id']=$branch_id;
+                    $single_data['region_id']=$region_id;
                     $single_data['multi_price']=0;
                     if($exist_price==null) {
                         product_price::create($single_data);
@@ -174,7 +177,7 @@ class SellingUnitController extends Controller
                         $data['max']=$request->max_qty[$i];
                         $data['start_date']=$request->start_date[$i];
                         $data['end_date']=$request->end_date[$i];
-                        $data['branch_id']=$request->branch_id;
+                        $data['region_id']=$region_id;
                         product_price::create($data);
                     }
                 }

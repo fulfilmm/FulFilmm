@@ -208,6 +208,7 @@ class StockTransactionController extends Controller
                 $foc->issuer_id = $stock_out->emp_id;
                 $foc->description = $stock_out->description;
                 $foc->branch_id = $stock_out->branch_id;
+                $foc->region_id=Auth::guard('employee')->user()->id;
                 $foc->save();
             } elseif ($stock_out->type == 'Damage') {
                 $data = ['warehouse_id' => $stock_out->warehouse_id, 'emp_id' => $stock_out->emp_id, 'qty' => $stock_out->qty, 'variant_id' => $stock_out->variantion_id, 'branch_id' => $stock_out->branch_id];

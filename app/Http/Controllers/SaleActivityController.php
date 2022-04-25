@@ -34,7 +34,7 @@ class SaleActivityController extends Controller
     }
     public function create(){
         $customers=Customer::all()->pluck('name','id')->all();
-        $emps=Employee::all();
+        $emps=Employee::where('office_branch_id',Auth::guard('employee')->user()->office_branch_id)->get();
         $township=
             ["Botataung",
                 "Dagon Seikkan",

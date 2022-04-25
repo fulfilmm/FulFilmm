@@ -72,7 +72,7 @@
 </div>
 <div class="row">
     <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-        <a href="{{route('employees.index')}}">
+        <a href="{{url('selling/report')}}">
             <div class="card dash-widget ">
                 <div class="card-body">
                     <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
@@ -194,39 +194,39 @@
         </a>
     </div>
     <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-        <a href="{{route('customers.index')}}">
+        <a href="{{route('bills.index')}}">
             <div class="card dash-widget ">
                 <div class="card-body">
-                    <span class="dash-widget-icon"><i class="la la-users"></i></span>
+                    <span class="dash-widget-icon"><i class="la la-file-text"></i></span>
                     <div class="dash-widget-info">
-                        <h3>{{$items['customer']??0}}</h3>
-                        <span>Contact</span>
+                        <h3>{{$items['bills']??0}}</h3>
+                        <span>Bill</span>
                     </div>
                 </div>
             </div>
         </a>
     </div>
     <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-        <a href="{{route('transactions.index')}}">
+        <a href="{{route('purchaseorders.index')}}">
             <div class="card dash-widget ">
                 <div class="card-body">
-                    <span class="dash-widget-icon"><i class="la la-retweet"></i></span>
+                    <span class="dash-widget-icon"><i class="la la-file-text"></i></span>
                     <div class="dash-widget-info">
-                        <h3>{{$items['transaction']??0}}</h3>
-                        <span>Transactions</span>
+                        <h3>{{$items['purchaseorder']??0}}</h3>
+                        <span>Purchase Orders</span>
                     </div>
                 </div>
             </div>
         </a>
     </div>
     <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-        <a href="{{route('groups.index')}}">
+        <a href="{{url('stocks')}}">
             <div class="card dash-widget ">
                 <div class="card-body">
-                    <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
+                    <span class="dash-widget-icon"><i class="fa fa-puzzle-piece"></i></span>
                     <div class="dash-widget-info">
-                        <h3>{{$items['my_groups']??0}}</h3>
-                        <span>Group</span>
+                        <h3>{{$items['stock_balance'][0]->total??0}}</h3>
+                        <span>Total Stock</span>
                     </div>
                 </div>
             </div>

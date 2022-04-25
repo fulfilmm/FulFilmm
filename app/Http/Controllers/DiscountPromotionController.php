@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\DiscountPromotion;
 use App\Models\OfficeBranch;
 use App\Models\ProductVariations;
+use App\Models\Region;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,9 +20,9 @@ class DiscountPromotionController extends Controller
     {
         $auth=Auth::guard('employee')->user();
         if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'){
-            $promo_discounts=DiscountPromotion::with('variant','branch')->get();
+            $promo_discounts=DiscountPromotion::with('variant','region')->get();
         }else{
-            $promo_discounts=DiscountPromotion::with('variant','branch')->where('branch_id',$auth->office_branch_id)->get();
+            $promo_discounts=DiscountPromotion::with('variant','region')->where('region_id',$auth->region_id)->get();
         }
 
         return view('sale.DiscountAndPromotion.index',compact('promo_discounts'));
@@ -36,13 +37,13 @@ class DiscountPromotionController extends Controller
     {
         $auth=Auth::guard('employee')->user();
         if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'){
-            $branch=OfficeBranch::all();
+            $region=Region::all();
         }else{
-            $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
+            $region=Region::where('id',$auth->region_id)->get();
         }
         $products=ProductVariations::all();
 
-        return view('sale.DiscountAndPromotion.create',compact('products','branch'));
+        return view('sale.DiscountAndPromotion.create',compact('products','region'));
     }
 
     /**
@@ -80,11 +81,11 @@ class DiscountPromotionController extends Controller
         $products=ProductVariations::all();
         $auth=Auth::guard('employee')->user();
         if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'){
-            $branch=OfficeBranch::all();
+            $region=Region::all();
         }else{
-            $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
+            $region=Region::where('id',$auth->region_id)->get();
         }
-        return view('sale.DiscountAndPromotion.edit',compact('pro_discount','products','branch'));
+        return view('sale.DiscountAndPromotion.edit',compact('pro_discount','products','region'));
     }
 
     /**

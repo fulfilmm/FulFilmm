@@ -66,7 +66,7 @@
                            <div class="col-md-6">
                                <div class="form-group">
                                    <label for="branch">Office Branch</label>
-                                   <select name="branch_id" id="branch" class="form-control">
+                                   <select name="branch_id" id="branch" class="form-control" onchange="branch_select(this.value)">
                                        @foreach($branch as $brch)
                                            <option value="{{$brch->id}}" {{$brch->id==old('branch_id')?'selected':''}}>{{$brch->name}}</option>
                                        @endforeach
@@ -78,7 +78,7 @@
                                    <label for="warehouse">Warehouse</label>
                                    <select name="warehouse_id" id="warehouse" class="form-control">
                                        @foreach($warehouses as $warehouse)
-                                           <option value="{{$warehouse->id}}" {{$warehouse->id==old('warehouse_id')?'selected':''}}>{{$warehouse->name}}</option>
+                                           <option value="{{$warehouse->id}}" {{$warehouse->id==old('warehouse_id')?'selected':''}} data-option="{{$warehouse->branch_id}}">{{$warehouse->name}}</option>
                                        @endforeach
                                    </select>
                                </div>
@@ -134,6 +134,7 @@
     </div>
     <script>
        $(document).ready(function () {
+           $('select').select2();
            $(".ui-datepicker-calendar").hide();
            $('#alert_month').datepicker({
                changeYear: true,
@@ -164,5 +165,21 @@
                }
            });
        });
+       var branch_id = document.querySelector('#branch');
+       var warehouse = document.querySelector('#warehouse');
+       var warehouse_option = warehouse.querySelectorAll('option');
+       // console.log(options3);
+       // alert(product)
+       function branch_select(selValue) {
+           warehouse.innerHTML='';
+
+           for(var i = 0; i < warehouse_option.length; i++) {
+               if(warehouse_option[i].dataset.option === selValue) {
+                   warehouse.appendChild(warehouse_option[i]);
+
+               }
+           }
+       }
+       branch_select(branch_id.value);
     </script>
 @endsection

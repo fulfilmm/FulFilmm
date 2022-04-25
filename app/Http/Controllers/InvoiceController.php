@@ -154,12 +154,12 @@ class InvoiceController extends Controller
             }
             $status = $this->status;
             $unit_price=SellingUnit::where('active',1)->get();
-            $prices =product_price::where('sale_type', 'Whole Sale')->where('active',1)->where('branch_id',$Auth->office_branch_id)->get();
+            $prices =product_price::where('sale_type', 'Whole Sale')->where('active',1)->where('region_id',$Auth->region_id)->get();
             //dd($prices);
             $dis_promo = DiscountPromotion::where('sale_type', 'Whole Sale')
-                ->where('branch_id',$Auth->office_branch_id)
+                ->where('region_id',$Auth->region_id)
                 ->get();
-            $focs = Freeofchare::with('variant')->where('branch_id',$Auth->office_branch_id)->get();
+            $focs = Freeofchare::with('variant')->where('region_id',$Auth->region_id)->get();
             $type = 'Whole Sale';
 
           if(Auth::guard('employee')->user()->mobile_seller==1){
@@ -175,7 +175,7 @@ class InvoiceController extends Controller
             $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))
                 ->whereDate('end_date','>=',date('Y-m-d'))
                 ->where('sale_type','Whole Sale')
-                ->where('branch_id',$Auth->office_branch_id)
+                ->where('region_id',$Auth->regioin_id)
                 ->get();
             $due_default=Carbon::today()->addDay(1);
             $companies=Company::all()->pluck('name','id')->all();
@@ -226,11 +226,11 @@ class InvoiceController extends Controller
         }
         $status=$this->status;
         $unit_price=SellingUnit::where('active',1)->get();
-        $prices=product_price::where('sale_type','Retail Sale')->where('active',1)->where('branch_id',$Auth->office_branch_id)->get();
+        $prices=product_price::where('sale_type','Retail Sale')->where('active',1)->where('region_id',$Auth->region_id)->get();
         $dis_promo=DiscountPromotion::where('sale_type','Retail Sale')
-            ->where('branch_id',$Auth->office_branch_id)
+            ->where('region_id',$Auth->region_id)
             ->get();
-        $focs=Freeofchare::with('variant')->where('branch_id',$Auth->office_branch_id)->get();
+        $focs=Freeofchare::with('variant')->where('region_id',$Auth->region_id)->get();
         $type='Retail Sale';
         $Auth=Auth::guard('employee')->user();
             if(Auth::guard('employee')->user()->mobile_seller==1){
@@ -241,7 +241,7 @@ class InvoiceController extends Controller
             $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))
             ->whereDate('end_date','>=',date('Y-m-d'))
             ->where('sale_type','Retail Sale')
-            ->where('branch_id',$Auth->office_branch_id)
+            ->where('region_id',$Auth->region_id)
             ->get();
             $due_default=Carbon::today()->addDay(1);
             $companies=Company::all()->pluck('name','id')->all();

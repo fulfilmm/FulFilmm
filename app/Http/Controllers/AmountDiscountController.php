@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AmountDiscount;
 use App\Models\OfficeBranch;
+use App\Models\Region;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,13 +19,13 @@ class AmountDiscountController extends Controller
     {
         $auth=Auth::guard('employee')->user();
         if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'||$auth->role->name=='Sale Manager'){
-            $discount=AmountDiscount::with('branch')->get();
-            $branch=OfficeBranch::all();
+            $discount=AmountDiscount::with('region')->get();
+            $region=Region::all();
         }else{
-            $discount=AmountDiscount::with('branch')->where('branch_id',$auth->office_branch_id)->get();
-            $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
+            $discount=AmountDiscount::with('region')->where('region_id',$auth->region_id)->get();
+            $region=Region::where('id',$auth->region_id)->get();
         }
-        return view('sale.DiscountAndPromotion.amount_discount',compact('discount','branch'));
+        return view('sale.DiscountAndPromotion.amount_discount',compact('discount','region'));
     }
 
     /**
