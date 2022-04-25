@@ -27,6 +27,7 @@ use App\Models\ticket;
 use App\Models\ticket_follower;
 use App\Models\Transaction;
 use App\Models\Warehouse;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -77,7 +78,7 @@ class HomeController extends Controller
                 $end=($year+1).'-03-31';
                 $daily_sale = DB::table("invoices")
                     ->select(DB::raw("SUM(grand_total) as total"))
-                    ->whereDate('created_at', date('d'))
+                    ->whereDate('created_at',Carbon::today())
                     ->get();
                 $current_year_income = DB::table("revenues")
                     ->select(DB::raw("SUM(amount) as total"))
