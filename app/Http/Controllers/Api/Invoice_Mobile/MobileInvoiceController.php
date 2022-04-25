@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Invoice_Mobile;
 
 use App\Http\Controllers\Controller;
+use App\Models\Stock;
 use Illuminate\Http\Request;
 
 use App\Models\MainCompany;
@@ -39,49 +40,36 @@ class MobileInvoiceController extends Controller
     {
         $company = Company::all();
         $Auth = Auth::guard('api')->user();
-        dd($Auth);
+//        dd($Auth);
+        $customer = Customer::where('region_id', $Auth->region_id)->where('branch_id', $Auth->office_branch_id)->get();
+        $warehouse = Warehouse::where('branch_id', $Auth->office_branch_id)
+            ->get();
 
-        $customer = Customer::where(['region_id', $Auth -> region_id],
-                                    ['branch_id', $Auth->office_branch_id])
-                                //->where('branch_id', )
-                                ->get();
-        $warehouse = Warehouse::where('branch_id', $Auth -> office_branch_id)
-                                ->get();
-        
         $product = Stock::with('varient')
-                        ->where(['warehouse_id', $Auth -> warehouse_id],
-                                'available' , '>' , 0)
-                        ->get();
+            ->where('warehouse_id', $Auth->warehouse_id)
+            ->where('available', '>', 0)
+            ->get();
 
-        $foc = Freeofchare::where('brand_id', $Auth -> office_branch_id)
-                        ->get();
-        
-        $discount = DiscountPromotion::where('branch_id', $Auth -> office_branch_id)
-                                        ->get();
+        $foc = Freeofchare::where('branch_id',$Auth->office_branch_id)
+            ->get();
 
-        $dis_amt = AmountDiscount::where(['branch_id', $Auth -> office_branch_id])
-                                    ->whereDate('start_date', '<=' , date('Y-m-d'))
-                                    ->whereDate('end_date', '>=' , date('Y-m-d'))
-                                    ->get();
-        
-        $region = Region::where('region_id', $Auth -> region_id)
-                            ->get();
+        $discount = DiscountPromotion::where('region_id',$Auth->region_id)->get();
 
-        $zone = SaleZone::where('branch_id', $Auth -> branch_id)
-                            ->get();
-        
-        $selling_unit = SellingUnit::where('branch_id', $Auth -> branch_id)
-                        ->get();
+        $dis_amt = AmountDiscount::where('region_id',$Auth->region_id)->get();
 
-        $selling_price = product_price::where('branch_id', $Auth -> branch_id)
-                        ->get();
-                                    
+        $region = Region::where('id', $Auth->region_id)
+            ->get();
 
-        
-    
-        return response() -> json(['company' => $company, 'customer' => $customer , 'warehouse' => $warehouse ,
-                                    'foc' => $foc, 'discount' => $discount , 'dis_amt' => $dis_amt, 'region' => $region,
-                                    'zone' => $zone , 'selling_unit' => $selling_unit, 'selling_price' => $selling_price]);
+        $zone = SaleZone::where('region_id',$Auth->region_id)->get();
+
+        $selling_unit = SellingUnit::all();
+
+        $selling_price = product_price::where('region_id',$Auth->region_id)->get();
+
+
+        return response()->json(['company' => $company, 'customer' => $customer, 'warehouse' => $warehouse,
+            'foc' => $foc, 'discount' => $discount, 'dis_amt' => $dis_amt, 'region' => $region,
+            'zone' => $zone, 'selling_unit' => $selling_unit, 'selling_price' => $selling_price]);
         
         }
 
