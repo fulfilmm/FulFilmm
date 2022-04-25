@@ -459,14 +459,14 @@ class HomeController extends Controller
                             }
                         }
                     }
-                    dd(count($no_of_items));
+//                    dd(count($no_of_items));
                     $items=[
                         'my_groups'=>$group,
                         'meeting'=>$meeting,
                         'assignment'=>$assignment,
                         'all_ticket'=>$emp_ticket,
                         'requestation'=>$requestation,
-                        'no_product_item'=>$no_of_items,
+                        'no_product_item'=>count($no_of_items),
                         'valuation'=>$total,
                         'warehouse'=>$warehouse
 
