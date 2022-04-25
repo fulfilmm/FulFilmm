@@ -17,6 +17,7 @@ use App\Models\product_price;
 use App\Models\SellingUnit;
 use App\Models\Freeofchare; 
 use App\Models\DiscountPromotion;
+
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use function PHPUnit\Framework\isEmpty;
@@ -206,6 +207,7 @@ class MobileInvoiceController extends Controller
                                 $items->variant_id = $request->variant_id;
                                 $items->unit_price = 0;
                                 $items->total = 0;
+                                $items->inv_id = $invoice_id;
                                 $items->creation_id = $request->invoice_id;
                                 $items->order_id = $request->order_id ?? null;
                                 $items->state = 1;
@@ -224,6 +226,7 @@ class MobileInvoiceController extends Controller
                                         $items->sell_unit = $sale_unit->id;
                                         $items->unit_price =$price->price ?? 0;
                                         $items->total = $item -> total;
+                                        $items->inv_id = $invoice_id;
                                         $items->sell_unit = $sale_unit->id??null;
                                         $items->creation_id = $request->invoice_id;
                                         $items->order_id = $request->order_id ?? null;
@@ -239,7 +242,7 @@ class MobileInvoiceController extends Controller
 
 
 
-                //should in need to add these ???
+                //should I need to add these ???
                 //
                 // $inv_item= DB::table("order_items")
                 //     ->select(DB::raw("SUM(cos_total) as total"))
