@@ -108,6 +108,7 @@
                        <div class="col-md-12 my-3">
                            <label for="wh_id">Warehouse</label>
                            <select name="warehouse_id" id="wh_id" class="form-control">
+                               <option value="">None</option>
                                @foreach($warehouse as $item)
                                    <option value="{{$item->id}}" {{isset($employee)?($employee->warehouse_id==$item->id?'selected':''):old('warehouse_id')}} data-option="{{$item->branch_id}}">{{$item->warehouse_id}}-{{$item->name}}</option>
                                    @endforeach
@@ -139,6 +140,7 @@
                            <div class="form-group">
                                <label for="">Region</label>
                                <select name="region_id" id="region_id" class="select form-control">
+                                   <option value="">None</option>
                                    @foreach($region as $item)
                                        <option value="{{$item->id}}" {{isset($employee)?($employee->office_branch_id==$item->id?'selected':''):old('office_branch_id')}} data-option="{{$item->branch_id}}">{{$item->name}}</option>
                                    @endforeach
