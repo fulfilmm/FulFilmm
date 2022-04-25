@@ -439,7 +439,7 @@ class HomeController extends Controller
                 break;
             case "Stock Manager":
                 $no_of_items=ProductVariations::count();
-                $warehouse=Warehouse::count();
+                $warehouse=Warehouse::where('branch_id',$user->office_branch_id)->count();
                 $requestation=Approvalrequest::where('emp_id',Auth::guard('employee')->user()->id)->count();
                 $myticket=ticket::where('created_emp_id',$user->id)->count();
                 $follow_ticket=ticket_follower::where('emp_id',$user->id)->count();
