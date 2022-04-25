@@ -438,22 +438,27 @@ class HomeController extends Controller
                 return view('index', compact('numberOfalltickets','agents','depts','assign_ticket','status','status_report','report_percentage','count_down','group'));
                 break;
             case "Stock Manager":
+
                 $warehouse=Warehouse::where('branch_id',$user->office_branch_id)->get();
                 $requestation=Approvalrequest::where('emp_id',Auth::guard('employee')->user()->id)->count();
                 $myticket=ticket::where('created_emp_id',$user->id)->count();
                 $follow_ticket=ticket_follower::where('emp_id',$user->id)->count();
                 $emp_ticket=$myticket+$follow_ticket;
+                    $product=Stock::with('variant')->get();
+                    $total=0;
+                    foreach ($product as $item){
+                        $valuation=$item->stock_balance*$item->variant->purchase_price??0;
+                        $total+=$valuation;
+                    }
                 $no_of_items=[];
                     foreach ($warehouse as $wh){
-                        $product=Stock::with('variant')->where('warehouse_id',$wh->id)->get();
-
-                        foreach ($product as $item){
-                           if(!in_array($item->variant->product_code,$no_of_items)){
-                               array_push($no_of_items,$item);
-                           }
+                        $inhand_product=Stock::with('variant')->where('warehouse_id',$wh->id)->where('qty','>',0)->get();
+                        foreach ($inhand_product as $item){
+                            if(!in_array($item->variant->product_code,$no_of_items)){
+                                array_push($no_of_items,$item->variant->product_code);
+                            }
                         }
                     }
-
                     $items=[
                         'my_groups'=>$group,
                         'meeting'=>$meeting,
