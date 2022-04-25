@@ -225,7 +225,7 @@
                 <div class="card-body">
                     <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
                     <div class="dash-widget-info">
-                        <h3>{{$items['stock_balance']??0}}</h3>
+                        <h3>{{$items['stock_balance']->total??0}}</h3>
                         <span>Total Stock</span>
                     </div>
                 </div>
