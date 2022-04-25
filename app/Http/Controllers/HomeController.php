@@ -144,7 +144,7 @@ class HomeController extends Controller
                     $profit[$value]=($grand_total[0]->total??0) - ($expense[0]->total??0);
 
                 }
-                $sale_activity=SaleActivity::where('report_to',Auth::guard('employee')->user()->id)->count();
+                $sale_activity=SaleActivity::count();
                 $numberOfalltickets=ticket::all()->count();
                 $group=Group::count();
                 $account=DB::table("accounts")
@@ -269,7 +269,7 @@ class HomeController extends Controller
                     $profit[$value]=($grand_total[0]->total??0) - ($expense[0]->total??0);
 
                 }
-                $sale_activity=SaleActivity::where('report_to',Auth::guard('employee')->user()->id)->count();
+                $sale_activity=SaleActivity::count();
                 $numberOfalltickets=ticket::all()->count();
                 $group=Group::count();
                 $account=Account::count();
