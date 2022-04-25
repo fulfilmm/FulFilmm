@@ -468,7 +468,7 @@ class HomeController extends Controller
                         'requestation'=>$requestation,
                         'no_product_item'=>count($no_of_items),
                         'valuation'=>$total,
-                        'warehouse'=>$warehouse
+                        'warehouse'=>count($warehouse)
 
                     ];
                 return view('index',compact('items'));
