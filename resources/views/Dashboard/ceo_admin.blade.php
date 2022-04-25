@@ -197,7 +197,7 @@
         <a href="{{route('bills.index')}}">
             <div class="card dash-widget ">
                 <div class="card-body">
-                    <span class="dash-widget-icon"><i class="la la-users"></i></span>
+                    <span class="dash-widget-icon"><i class="la la-file-text"></i></span>
                     <div class="dash-widget-info">
                         <h3>{{$items['bills']??0}}</h3>
                         <span>Bill</span>
@@ -210,7 +210,7 @@
         <a href="{{route('purchaseorders.index')}}">
             <div class="card dash-widget ">
                 <div class="card-body">
-                    <span class="dash-widget-icon"><i class="la la-retweet"></i></span>
+                    <span class="dash-widget-icon"><i class="la la-file-text"></i></span>
                     <div class="dash-widget-info">
                         <h3>{{$items['purchaseorder']??0}}</h3>
                         <span>Purchase Orders</span>
@@ -223,7 +223,7 @@
         <a href="{{url('stocks')}}">
             <div class="card dash-widget ">
                 <div class="card-body">
-                    <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
+                    <span class="dash-widget-icon"><i class="fa fa-puzzle-piece"></i></span>
                     <div class="dash-widget-info">
                         <h3>{{$items['stock_balance'][0]->total??0}}</h3>
                         <span>Total Stock</span>
