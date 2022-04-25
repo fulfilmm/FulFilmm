@@ -1,6 +1,5 @@
 
 
-
     <div class="row">
         <div class="col-md-4 ">
            <div class="card shadow">
@@ -18,7 +17,7 @@
                </div>
 
            </div>
-            <div class="card shadow">
+            <div class="card shadow" id="first_card">
                 <div class="col-md-12 mt-3">
                     <div class="form-group">
                         <label for="name">Name</label>
@@ -47,8 +46,12 @@
                         </div>
                         <div class="input-group">
                             <label for="mobile_seller">
-                            <input type="checkbox" name="mobile_seller" value="1" {{isset( $employee->mobile_seller) ?  $employee->mobile_seller == 1 ? 'checked' : '' : ''}}>
-                                Mobile Sale Man</label>
+                            <input type="radio" name="mobile_seller" value="1" {{isset( $employee->mobile_seller) ?  $employee->mobile_seller == 1 ? 'checked' : '' : ''}}>
+                                Mobile Sale Man</label><br>
+                        </div>
+                        <div class="form-group">
+                            <input type="radio" name="mobile_seller" value="2" {{isset( $employee->mobile_seller) ?  $employee->mobile_seller == 2 ? 'checked' : '' : ''}}>
+                            Sale Man</label>
                         </div>
 
                     </div>
@@ -77,17 +80,7 @@
                         </div>
                     </div>
                 @endif
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label for="report_to">Report To</label>
-                        <select name="report_to" id="report_to" class="form-control">
-                            <option value="">Select Report Person</option>
-                            @foreach($all_employee as $key=>$val)
-                                <option value="{{$key}}" {{isset($employee)?($key==$employee->report_to?'selected':''):old('report_to')}}>{{$val}}</option>
-                                @endforeach
-                        </select>
-                    </div>
-                </div>
+
             </div>
         </div>
 
@@ -97,32 +90,23 @@
                    <div class="row">
                        <div class="col-md-12">
                            <div class="form-group">
-                               <label for="">Office</label>
-                               <select name="office_branch_id" id="branch_id" class="select form-control" onchange="region_select(this.value)">
-                                   @foreach($office as $item)
-                                       <option value="{{$item->id}}" {{isset($employee)?($employee->office_branch_id==$item->id?'selected':''):old('office_branch_id')}}>{{$item->name}}</option>
-                                   @endforeach
-                               </select>
-                           </div>
-                       </div>
-                       <div class="col-md-12 my-3">
-                           <label for="wh_id">Warehouse</label>
-                           <select name="warehouse_id" id="wh_id" class="form-control">
-                               <option value="">None</option>
-                               @foreach($warehouse as $item)
-                                   <option value="{{$item->id}}" {{isset($employee)?($employee->warehouse_id==$item->id?'selected':''):old('warehouse_id')}} data-option="{{$item->branch_id}}">{{$item->warehouse_id}}-{{$item->name}}</option>
-                                   @endforeach
-                           </select>
-                       </div>
-                       <div class="col-md-12">
-                           <div class="form-group">
                                <label for="">Department</label>
                                <x-forms.basic.select name="department_id" title="Department"
                                                      value="{{$employee->department_id ?? old('department_id')}}"
                                                      :options="$departments" required></x-forms.basic.select>
                            </div>
                        </div>
-
+                       <div class="col-md-12">
+                           <div class="form-group">
+                               <label for="report_to">Report To</label>
+                               <select name="report_to" id="report_to" class="form-control">
+                                   <option value="">Select Report Person</option>
+                                   @foreach($all_employee as $key=>$val)
+                                       <option value="{{$key}}" {{isset($employee)?($key==$employee->report_to?'selected':''):old('report_to')}}>{{$val}}</option>
+                                   @endforeach
+                               </select>
+                           </div>
+                       </div>
 
                        <div class="col-md-12">
                            <div class="form-group">
@@ -138,6 +122,34 @@
                        </div>
                        <div class="col-md-12">
                            <div class="form-group">
+                               <label for="">Role</label>
+                               <x-forms.basic.select name="role_id"
+                                                     title="Asssign Role"
+                                                     value="{{$employee->role->id ?? old('role_id')}}"
+                                                     :options="$roles" required></x-forms.basic.select>
+                           </div>
+                       </div>
+                       <div class="col-md-12">
+                           <div class="form-group">
+                               <label for="">Office</label>
+                               <select name="office_branch_id" id="branch_id" class="select form-control" onchange="region_select(this.value)">
+                                   @foreach($office as $item)
+                                       <option value="{{$item->id}}" {{isset($employee)?($employee->office_branch_id==$item->id?'selected':''):old('office_branch_id')}}>{{$item->name}}</option>
+                                   @endforeach
+                               </select>
+                           </div>
+                       </div>
+                       <div class="col-md-12 my-3" id="wh_div">
+                           <label for="wh_id">Warehouse</label>
+                           <select name="warehouse_id" id="wh_id" class="form-control">
+                               <option value="">None</option>
+                               @foreach($warehouse as $item)
+                                   <option value="{{$item->id}}" {{isset($employee)?($employee->warehouse_id==$item->id?'selected':''):old('warehouse_id')}} data-option="{{$item->branch_id}}">{{$item->warehouse_id}}-{{$item->name}}</option>
+                               @endforeach
+                           </select>
+                       </div>
+                       <div class="col-md-12" id="region_div">
+                           <div class="form-group">
                                <label for="">Region</label>
                                <select name="region_id" id="region_id" class="select form-control">
                                    <option value="">None</option>
@@ -145,15 +157,6 @@
                                        <option value="{{$item->id}}" {{isset($employee)?($employee->office_branch_id==$item->id?'selected':''):old('office_branch_id')}} data-option="{{$item->branch_id}}">{{$item->name}}</option>
                                    @endforeach
                                </select>
-                           </div>
-                       </div>
-                       <div class="col-md-12">
-                           <div class="form-group">
-                               <label for="">Role</label>
-                               <x-forms.basic.select name="role_id"
-                                                     title="Asssign Role"
-                                                     value="{{$employee->role->id ?? old('role_id')}}"
-                                                     :options="$roles" required></x-forms.basic.select>
                            </div>
                        </div>
                        <div class="col-md-12">
@@ -194,6 +197,15 @@
     }
     $(document).ready(function () {
         $('select').select2();
+        $('#region_div').hide();
+        $('#wh_div').hide();
+
+    });
+    $("input[type='radio'][name='mobile_seller']").change(function () {
+        if($("input[type='radio'][name='mobile_seller']").prop('checked', true)){
+            $('#region_div').show();
+            $('#wh_div').show();
+        }
     });
     var branch_id = document.querySelector('#branch_id');
     var region_id = document.querySelector('#region_id');
@@ -205,7 +217,6 @@
     function region_select(selValue) {
         region_id.innerHTML='';
         wh_id.innerHTML='';
-
         for(var i = 0; i < region_option.length; i++) {
             if(region_option[i].dataset.option === selValue) {
                 region_id.appendChild(region_option[i]);
@@ -220,6 +231,7 @@
         }
     }
     region_select(branch_id.value);
+
     function myFunction() {
         var x = document.getElementById("password");
         if (x.type === "password") {

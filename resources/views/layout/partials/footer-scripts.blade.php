@@ -47,6 +47,7 @@
 <script src="{{url(asset('js/exportjs/jszip.min.js'))}}"></script>
 <script src="{{url(asset('js/exportjs/pdfmake.min.js'))}}"></script>
 <script src="{{url(asset('js/exportjs/vfs_fonts.js'))}}"></script>
+{{--<script src="{{url(asset('js/jquery-editable-select.min.js'))}}"></script>--}}
 <!-- Task JS -->
 <script src="{{asset('js/task.js')}}"></script>
 

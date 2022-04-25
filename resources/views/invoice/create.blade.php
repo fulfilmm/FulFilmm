@@ -219,10 +219,7 @@
                                                             Product Name
                                                         </option>
                                                         @foreach($aval_product as $item)
-                                                            <option value="{{$item->variant->id}}"
-                                                                    data-option="{{$item->warehouse_id}}">{{$item->variant->product_name}}
-                                                                ( {{$item->variant->variant}})
-                                                            </option>
+                                                            <option value="{{$item->variant->id}}" data-option="{{$item->warehouse_id}}">{{$item->variant->product_name}}({{$item->variant->variant}})</option>
                                                         @endforeach
                                                     </select>
                                                     <div class="input-group-append">
@@ -727,6 +724,9 @@
         function noti_alert(){
 
         }
+        $(document).ready(function () {
+            $('select').select2();
+        });
 
         $('select').change(function () {
                 var tax = $('#tax option:selected').val();
@@ -924,11 +924,11 @@
 
             });
         });
-        $(document).ready(function () {
-
-            $('select').select2();
-
-        });
+        // $(document).ready(function () {
+        //
+        //     $('select').select2();
+        //
+        // });
 
         $(document).ready(function () {
             $('#client_id').change(function () {

@@ -137,6 +137,7 @@
 
         {{--</script>--}}
         <link rel="stylesheet" href="{{url(asset('css/mdtimepicker.css'))}}">
+{{--        <link rel="stylesheet" href="{{url(asset('css/jquery-editable-select.min.css'))}}">--}}
         {{--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>--}}
         <style>
             body,head,header,h3,.card-title{

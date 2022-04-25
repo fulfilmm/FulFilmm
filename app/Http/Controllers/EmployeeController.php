@@ -135,8 +135,13 @@ class EmployeeController extends Controller
         $employee->address = $request->address;
         $employee->report_to = $request->report_to;
         $employee->gender = $request->gender;
-        $employee->region_id=$request->region_id;
-        $employee->warehouse_id=$request->warehouse_id;
+       if(isset($request->mobile_seller)){
+           if($request->mobile_seller==1){
+               $employee->mobile_seller=1;
+           }
+           $employee->region_id=$request->region_id;
+           $employee->warehouse_id=$request->warehouse_id;
+       }
 
         if ($request->profile_img != null) {
             $profile = $request->file('profile_img');
@@ -263,12 +268,16 @@ class EmployeeController extends Controller
             $employee->can_login = $data['can_login'];
             $employee->can_post_assignments = $data['can_post_assignment'];
             $employee->dob = $request->dob;
-            $employee->mobile_seller = $data['mobile_seller'] ?? 0;
             $employee->address = $request->address;
             $employee->report_to = $request->report_to;
             $employee->warehouse_id=$request->warehouse_id;
-            $employee->region_id=$request->region_id;
-            $employee->gender = $request->gender;
+            if(isset($request->mobile_seller)){
+                if($request->mobile_seller==1){
+                    $employee->mobile_seller=1;
+                }
+                $employee->region_id=$request->region_id;
+                $employee->warehouse_id=$request->warehouse_id;
+            }
             if ($request->profile_img != null) {
                 $profile = $request->file('profile_img');
                 $input['filename'] = \Illuminate\Support\Str::random(10) . time() . '.' . $profile->extension();
