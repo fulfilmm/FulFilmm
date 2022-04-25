@@ -18,6 +18,7 @@ use App\Models\Invoice;
 use App\Models\Meetingmember;
 use App\Models\MinutesAssign;
 use App\Models\ProductVariations;
+use App\Models\PurchaseOrder;
 use App\Models\Revenue;
 use App\Models\SaleActivity;
 use App\Models\status;
@@ -151,7 +152,15 @@ class HomeController extends Controller
                 $requestation=Approvalrequest::where('approved_id',Auth::guard('employee')->user()->id)
                     ->orWhere('secondary_approved',Auth::guard('employee')->user()->id)
                     ->count();
+                $bills=Bill::count();
+                $purchaseorder=PurchaseOrder::count();
+                $stock_balance=DB::table("stocks")
+                    ->select(DB::raw("SUM(stock_balance) as total"))
+                    ->get();
                 $items = [
+                    'stock_balance'=>$stock_balance,
+                    'bills'=>$bills,
+                    'purchaseorder'=>$purchaseorder,
                     'daily_sale'=>$daily_sale,
                     'saleactivity'=>$sale_activity,
                     'requestation'=>$requestation,
@@ -269,7 +278,15 @@ class HomeController extends Controller
                 $requestation=Approvalrequest::where('approved_id',Auth::guard('employee')->user()->id)
                     ->orWhere('secondary_approved',Auth::guard('employee')->user()->id)
                     ->count();
+                $bills=Bill::count();
+                $purchaseorder=PurchaseOrder::count();
+                $stock_balance=DB::table("stocks")
+                    ->select(DB::raw("SUM(stock_balance) as total"))
+                    ->get();
                 $items = [
+                    'stock_balance'=>$stock_balance,
+                    'bills'=>$bills,
+                    'purchaseorder'=>$purchaseorder,
                     'daily_sale'=>$daily_sale,
                     'first_term_bill'=>$first_6month_bill[0]->total??0,
                     'total_bill'=>$current_year_bill[0]->total??0,
