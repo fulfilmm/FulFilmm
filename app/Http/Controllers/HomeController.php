@@ -459,6 +459,7 @@ class HomeController extends Controller
                             }
                         }
                     }
+                    dd($no_of_items);
                     $items=[
                         'my_groups'=>$group,
                         'meeting'=>$meeting,
