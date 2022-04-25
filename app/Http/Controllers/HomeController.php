@@ -452,7 +452,7 @@ class HomeController extends Controller
                     }
                 $no_of_items=[];
                     foreach ($warehouse as $wh){
-                        $inhand_product=Stock::with('variant')->where('warehouse_id',$wh->id)->where('qty','>',0)->get();
+                        $inhand_product=Stock::with('variant')->where('warehouse_id',$wh->id)->where('stock_balance','>',0)->get();
                         foreach ($inhand_product as $item){
                             if(!in_array($item->variant->product_code,$no_of_items)){
                                 array_push($no_of_items,$item->variant->product_code);
