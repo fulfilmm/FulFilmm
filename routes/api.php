@@ -42,7 +42,7 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
     Route::post('logout',[ApiAuthController::class,'login'])->name('logout');
     Route::resource('api_customers', CustomerController::class);
     Route::resource("api_invoices",InvoiceController::class);
-    Route::apiResource("invoice" , InvoiceDataController::class);
+//    Route::apiResource("invoice" , InvoiceDataController::class);
 
     Route::apiResource("mobile_invoice", MobileInvoiceController::class);
 
