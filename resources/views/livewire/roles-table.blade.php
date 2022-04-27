@@ -26,15 +26,6 @@
                     <td>{{ $em->created_at }}</td>
                     <td style="display: flex">
                     <a class="mr-2 my-auto btn btn-success" href="{{route('roles.show',$em->id)}}">Assign</a>
-                    <a class="pr-2 my-auto btn btn-success" href="{{route('roles.edit',$em->id)}}">
-                        <span class='fa fa-edit'></span>
-                    </a>&nbsp;
-
-                    <form  id="employee-del-{{$em->id}}" action="{{route('roles.destroy',$em->id)}}" method="POST">
-                        @method('delete')
-                        @csrf
-                        <button class="btn btn-danger" onclick="deleteRecord({{$em->id}})" type="submit"><span class='fa fa-trash'></span></button>
-                    </form>
                     </td>
                 </tr>
             @endforeach

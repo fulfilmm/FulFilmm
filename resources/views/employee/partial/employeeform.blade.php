@@ -49,10 +49,6 @@
                             <input type="radio" name="mobile_seller" value="1" {{isset( $employee->mobile_seller) ?  $employee->mobile_seller == 1 ? 'checked' : '' : ''}}>
                                 Mobile Sale Man</label><br>
                         </div>
-                        <div class="form-group">
-                            <input type="radio" name="mobile_seller" value="2" {{isset( $employee->mobile_seller) ?  $employee->mobile_seller == 2 ? 'checked' : '' : ''}}>
-                            Sale Man</label>
-                        </div>
 
                     </div>
                 </div>
@@ -80,6 +76,15 @@
                         </div>
                     </div>
                 @endif
+                <div class="col-md-12 mb-3">
+                    <div class="form-group">
+                        <label for="">Role</label>
+                        <x-forms.basic.select name="role_id"
+                                              title="Asssign Role"
+                                              value="{{$employee->role->id ?? old('role_id')}}"
+                                              :options="$roles" required></x-forms.basic.select>
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -120,19 +125,11 @@
                                <x-forms.basic.input name="work_phone" type="tel" title="Work Phone" value="{{$employee->work_phone ?? old('work_phone')}}" required></x-forms.basic.input>
                            </div>
                        </div>
-                       <div class="col-md-12">
-                           <div class="form-group">
-                               <label for="">Role</label>
-                               <x-forms.basic.select name="role_id"
-                                                     title="Asssign Role"
-                                                     value="{{$employee->role->id ?? old('role_id')}}"
-                                                     :options="$roles" required></x-forms.basic.select>
-                           </div>
-                       </div>
+
                        <div class="col-md-12">
                            <div class="form-group">
                                <label for="">Office</label>
-                               <select name="office_branch_id" id="branch_id" class="select form-control" onchange="region_select(this.value)">
+                               <select name="office_branch_id" id="branch_id" class="select form-control">
                                    @foreach($office as $item)
                                        <option value="{{$item->id}}" {{isset($employee)?($employee->office_branch_id==$item->id?'selected':''):old('office_branch_id')}}>{{$item->name}}</option>
                                    @endforeach
@@ -151,7 +148,7 @@
                        <div class="col-md-12" id="region_div">
                            <div class="form-group">
                                <label for="">Region</label>
-                               <select name="region_id" id="region_id" class="select form-control">
+                               <select name="region_id" id="region_id" class="form-control">
                                    <option value="">None</option>
                                    @foreach($region as $item)
                                        <option value="{{$item->id}}" {{isset($employee)?($employee->office_branch_id==$item->id?'selected':''):old('office_branch_id')}} data-option="{{$item->branch_id}}">{{$item->name}}</option>
@@ -195,42 +192,7 @@
     function openSelect(file) {
         $(file).trigger('click');
     }
-    $(document).ready(function () {
-        $('select').select2();
-        $('#region_div').hide();
-        $('#wh_div').hide();
 
-    });
-    $("input[type='radio'][name='mobile_seller']").change(function () {
-        if($("input[type='radio'][name='mobile_seller']").prop('checked', true)){
-            $('#region_div').show();
-            $('#wh_div').show();
-        }
-    });
-    var branch_id = document.querySelector('#branch_id');
-    var region_id = document.querySelector('#region_id');
-    var region_option = region_id.querySelectorAll('option');
-    var warehouse = document.querySelector('#wh_id');
-    var warehouse_option = warehouse.querySelectorAll('option');
-    // console.log(options3);
-    // alert(product)
-    function region_select(selValue) {
-        region_id.innerHTML='';
-        wh_id.innerHTML='';
-        for(var i = 0; i < region_option.length; i++) {
-            if(region_option[i].dataset.option === selValue) {
-                region_id.appendChild(region_option[i]);
-
-            }
-        }
-        for(var i = 0; i < warehouse_option.length; i++) {
-            if(warehouse_option[i].dataset.option === selValue) {
-                wh_id.appendChild(warehouse_option[i]);
-
-            }
-        }
-    }
-    region_select(branch_id.value);
 
     function myFunction() {
         var x = document.getElementById("password");
@@ -240,6 +202,9 @@
             x.type = "password";
         }
     }
+    $(document).ready(function () {
+        $('select').select2();
+    });
 </script>
 {{-- {{dd($errors->all())}} --}}
 

@@ -24,8 +24,9 @@ class RoleSeeder extends Seeder
         'Cashier',
         'Car Admin',
         'Car Driver',
-        'Purchaser'
-
+        'Purchaser',
+        'Stock Controller',
+        'Store Keeper'
     ];
     /**
      * Run the database seeds.

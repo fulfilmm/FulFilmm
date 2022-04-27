@@ -23,14 +23,7 @@ class SaleZoneController extends Controller
             $branch=OfficeBranch::all();
             $zones=SaleZone::all();
         }else{
-            $zones=[];
-            $region=Region::where('branch_id',$auth->office_branch_id)->get();
-            foreach ($region as $reg){
-                $sale=SaleZone::where('region_id',$reg->id)->get();
-                foreach ($sale as $item){
-                    array_push($zones,$item);
-                }
-            }
+            $zones=SaleZone::where('region_id',$auth->regioin_id)->get();
 
             $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
         }

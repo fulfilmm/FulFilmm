@@ -55,7 +55,7 @@
             @include('Dashboard.cs_agent')
             @elseif(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Sale'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Sale Manager')
         @include('Dashboard.salemanagerandsale')
-            @elseif(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Stock Manager')
+            @elseif(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Stock Manager'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Stock Controller'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Store Keeper')
             @include('Dashboard.stockmanager')
             @elseif(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Accountant'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Cashier')
             @include('Dashboard.accountantandcashier')

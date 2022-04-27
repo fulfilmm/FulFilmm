@@ -100,7 +100,7 @@ class ReportController extends Controller
         $products = ProductVariations::all();
         $items = [];
         $auth = Auth::guard('employee')->user();
-        if ($auth->role->name == 'CEO' || $auth->role->name == 'Super Admin') {
+        if ($auth->role->name == 'CEO' || $auth->role->name == 'Super Admin'||$auth->role->name=='Stock Manager') {
             if (isset($request->start)) {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
@@ -138,7 +138,8 @@ class ReportController extends Controller
             }
             $warehouse = Warehouse::all();
             $search_warehouse = $request->warehouse_id;
-        } else {
+
+        } else if ($auth->role->name=='Stock Controller'){
             if (isset($request->start)) {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
@@ -184,6 +185,50 @@ class ReportController extends Controller
             $warehouse = Warehouse::where('branch_id', $auth->office_branch_id)->get();
             $search_warehouse = $request->warehouse_id;
 
+        }else{
+            if (isset($request->start)) {
+                $start = Carbon::parse($request->start)->startOfDay();
+                $end = Carbon::parse($request->end)->endOfDay();
+                if (isset($request->warehouse_id)) {
+                    $stock_transactions = StockTransaction::with('stockin', 'stockout', 'variant', 'customer', 'employee', 'stockreturn')->whereBetween('created_at', [$start, $end])
+                        ->where('warehouse_id', $request->warehouse_id)
+                        ->get();
+                } else {
+                    $stock_transactions = StockTransaction::with('stockin', 'stockout', 'variant', 'customer', 'employee', 'stockreturn')->whereBetween('created_at', [$start, $end])
+                        ->where('warehouse_id', $auth->warehouse_id)
+                        ->get();
+                }
+            } else {
+                $start = Carbon::today()->startOfDay();
+                $end = Carbon::today()->endOfDay();
+                $stock_transactions = StockTransaction::with('stockin', 'stockout', 'variant', 'customer', 'employee', 'stockreturn')
+                    ->where('warehouse_id', $auth->warehouse_id)
+                    ->whereBetween('created_at', [$start, $end])->get();
+            }
+
+            foreach ($products as $prod) {
+
+                foreach ($stock_transactions as $tran) {
+                    if ($tran->variant_id == $prod->id) {
+                        $stock = Stock::where('variant_id', $prod->id)->first();
+                        if ($tran->type == 'Stock In') {
+                            $items[$prod->product_code] = $prod;
+                            $items[$prod->product_code]['in'] += $tran->qty;
+                            $items[$prod->product_code]['out'] += 0;
+                            $items[$prod->product_code]['bal'] = $stock->stock_balance;
+
+                        } elseif ($tran->type == 'Stock Out') {
+                            $items[$prod->product_code] = $prod;
+                            $items[$prod->product_code]['out'] += $tran->qty;
+                            $items[$prod->product_code]['in'] += 0;
+                            $items[$prod->product_code]['bal'] = $stock->stock_balance;
+                        }
+                    }
+                }
+
+            }
+            $warehouse = Warehouse::where('id', $auth->warehouse_id)->get();
+            $search_warehouse = $request->warehouse_id;
         }
         return view('Report.stock', compact('items', 'start', 'end', 'warehouse', 'search_warehouse'));
     }//ပီးပီ
@@ -425,12 +470,15 @@ class ReportController extends Controller
             $start=Carbon::today()->startOfDay();
             $end=Carbon::today()->endOfDay();
         }
-        if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'){
+        if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'||$auth->role->name=='Stock Manager'){
             $warehouse=Warehouse::all();
             $stockin=StockIn::with('variant','supplier','employee')->whereBetween('created_at',[$start,$end])->get();
-        }else{
+        }else if ($auth->role->name=='Stock Controller'){
             $warehouse=Warehouse::where('branch_id',$auth->office_branch_id)->get();
             $stockin=StockIn::with('variant','supplier','employee')->whereBetween('created_at',[$start,$end])->where('branch_id',$auth->office_branch_id)->get();
+        }else{
+            $warehouse=Warehouse::where('id',$auth->wareahouse_id)->get();
+            $stockin=StockIn::with('variant','supplier','employee')->whereBetween('created_at',[$start,$end])->where('warehouse_id',$auth->warehouse_id)->get();
         }
         $search_warehouse=$request->warehouse_id;
         return view('Report.stockinreport',compact('stockin','start','end','warehouse','search_warehouse'));
@@ -448,7 +496,7 @@ class ReportController extends Controller
             $end=Carbon::today()->endOfDay();
         }
 //        dd($start,$end);
-        if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'){
+        if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'||$auth->role->name=='Stock Manager'){
             $warehouse=Warehouse::all();
             $stockout=StockOut::with('variant','emp','warehouse','customer','approver','invoice','branch')
                 ->whereBetween('created_at',[$start,$end])

@@ -20,7 +20,7 @@ class WarehouseController extends Controller
     public function index()
     {
        $auth=Auth::guard('employee')->user();
-       if($auth->role->name=='Super Admin'||$auth->role->name=='CE0'){
+       if($auth->role->name=='Super Admin'||$auth->role->name=='CE0'||$auth->role->name=='Stock Manager'){
            $warehouses=Warehouse::with('branch','main_warehouse')->get();
            $branches=OfficeBranch::all();
 
@@ -36,8 +36,24 @@ class WarehouseController extends Controller
 
                $warehouse_qty[$warehouse->id]=$total;
            }
-       }else{
+       }else if ($auth->role->name=='Stock Controller'){
            $warehouses=Warehouse::with('branch','main_warehouse')->where('branch_id',$auth->office_branch_id)->get();
+           $branches=OfficeBranch::where('id',$auth->office_branch_id)->get();
+
+//        dd($branches);
+           $warehouse_qty=[];
+           foreach ($warehouses as $warehouse){
+               $product=Stock::where('warehouse_id',$warehouse->id)->get();
+               $total=0;
+               foreach ($product as $item){
+                   $valuation=$item->stock_balance*$item->cos??0;
+                   $total+=$valuation;
+               }
+
+               $warehouse_qty[$warehouse->id]=$total;
+           }
+       }else{
+           $warehouses=Warehouse::with('branch','main_warehouse')->where('id',$auth->warehouse_id)->get();
            $branches=OfficeBranch::where('id',$auth->office_branch_id)->get();
 
 //        dd($branches);

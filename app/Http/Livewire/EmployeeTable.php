@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Employee;
 use App\Models\OfficeBranch;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -20,14 +21,27 @@ class EmployeeTable extends Component
 
     public function render()
     {
-        return view('livewire.employee-table', [
-            'employees' => Employee::where('name', 'like', "%$this->search_key%")
-                ->with(['department' => function ($q) {
-                    $q->withTrashed();
-                },'branch'=>function($q){
-                    $q->get();
-                }],'region')
-                ->paginate(20)
-        ]);
+        $auth=Auth::guard('employee')->user();
+        if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'||$auth->role->name=='Hr Manager'){
+            return view('livewire.employee-table', [
+                'employees' => Employee::where('name', 'like', "%$this->search_key%")
+                    ->with(['department' => function ($q) {
+                        $q->withTrashed();
+                    },'branch'=>function($q){
+                        $q->get();
+                    }],'region')
+                    ->paginate(20)
+            ]);
+        }else{
+            return view('livewire.employee-table', [
+                'employees' => Employee::where('name', 'like', "%$this->search_key%")
+                    ->with(['department' => function ($q) {
+                        $q->withTrashed();
+                    },'branch'=>function($q){
+                        $q->get();
+                    }],'region')->where('office_branch_id',Auth::guard('employee')->user()->office_branch_id)
+                    ->paginate(20)
+            ]);
+        }
     }
 }

@@ -455,7 +455,7 @@ class HomeController extends Controller
                 break;
             case "Stock Manager":
 
-                $warehouse=Warehouse::where('branch_id',$user->office_branch_id)->get();
+                $warehouse=Warehouse::all();
                 $requestation=Approvalrequest::where('emp_id',Auth::guard('employee')->user()->id)->count();
                 $myticket=ticket::where('created_emp_id',$user->id)->count();
                 $follow_ticket=ticket_follower::where('emp_id',$user->id)->count();
@@ -487,6 +487,76 @@ class HomeController extends Controller
                         'warehouse'=>count($warehouse)
 
                     ];
+                return view('index',compact('items'));
+                break;
+            case "Stock Controller":
+                $warehouse=Warehouse::where('branch_id',$user->office_branch_id)->get();
+                $requestation=Approvalrequest::where('emp_id',Auth::guard('employee')->user()->id)->count();
+                $myticket=ticket::where('created_emp_id',$user->id)->count();
+                $follow_ticket=ticket_follower::where('emp_id',$user->id)->count();
+                $emp_ticket=$myticket+$follow_ticket;
+                $product=Stock::with('variant')->where('branch_id',$user->office_branch_id)->get();
+                $total=0;
+                foreach ($product as $item){
+                    $valuation=$item->stock_balance*$item->variant->purchase_price??0;
+                    $total+=$valuation;
+                }
+                $no_of_items=[];
+                foreach ($warehouse as $wh){
+                    $inhand_product=Stock::with('variant')->where('warehouse_id',$wh->id)->where('stock_balance','>',0)->get();
+                    foreach ($inhand_product as $item){
+                        if(!in_array($item->variant->product_code,$no_of_items)){
+                            array_push($no_of_items,$item->variant->product_code);
+                        }
+                    }
+                }
+//                    dd(count($no_of_items));
+                $items=[
+                    'my_groups'=>$group,
+                    'meeting'=>$meeting,
+                    'assignment'=>$assignment,
+                    'all_ticket'=>$emp_ticket,
+                    'requestation'=>$requestation,
+                    'no_product_item'=>count($no_of_items),
+                    'valuation'=>$total,
+                    'warehouse'=>count($warehouse)
+
+                ];
+                return view('index',compact('items'));
+                break;
+            case "Store Keeper":
+                $warehouse=Warehouse::where('id',$user->warehouse_id)->get();
+                $requestation=Approvalrequest::where('emp_id',Auth::guard('employee')->user()->id)->count();
+                $myticket=ticket::where('created_emp_id',$user->id)->count();
+                $follow_ticket=ticket_follower::where('emp_id',$user->id)->count();
+                $emp_ticket=$myticket+$follow_ticket;
+                $product=Stock::with('variant')->where('warehouse_id',$user->warehouse_id)->get();
+                $total=0;
+                foreach ($product as $item){
+                    $valuation=$item->stock_balance*$item->variant->purchase_price??0;
+                    $total+=$valuation;
+                }
+                $no_of_items=[];
+                foreach ($warehouse as $wh){
+                    $inhand_product=Stock::with('variant')->where('warehouse_id',$wh->id)->where('stock_balance','>',0)->get();
+                    foreach ($inhand_product as $item){
+                        if(!in_array($item->variant->product_code,$no_of_items)){
+                            array_push($no_of_items,$item->variant->product_code);
+                        }
+                    }
+                }
+//                    dd(count($no_of_items));
+                $items=[
+                    'my_groups'=>$group,
+                    'meeting'=>$meeting,
+                    'assignment'=>$assignment,
+                    'all_ticket'=>$emp_ticket,
+                    'requestation'=>$requestation,
+                    'no_product_item'=>count($no_of_items),
+                    'valuation'=>$total,
+                    'warehouse'=>count($warehouse)
+
+                ];
                 return view('index',compact('items'));
                 break;
             case "Finance Manager":

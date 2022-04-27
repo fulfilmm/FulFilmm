@@ -12,6 +12,7 @@ use App\Models\Region;
 use App\Models\Warehouse;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
@@ -34,22 +35,35 @@ class EmployeeController extends Controller
 
     public function index()
     {
-        $employees = Employee::paginate(25);
-        $branch = OfficeBranch::all();
-        return view('employee.data.lists', compact('employees', 'branch'));
+        return view('employee.data.lists');
     }
 
     public function card()
     {
-        $employees = Employee::with('branch')->orderBy('empid', 'desc')->paginate(25);
-        $branch = OfficeBranch::all();
+        $auth=Auth::guard('employee')->user();
+       if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'||$auth->role->name=='Hr Manager'){
+           $employees = Employee::with('branch')->orderBy('empid', 'desc')
+               ->paginate(25);
+           $branch = OfficeBranch::all();
+       }else{
+           $employees = Employee::with('branch')->orderBy('empid', 'desc')
+               ->where('office_branch_id',$auth->office_branch_id)
+               ->paginate(25);
+           $branch = OfficeBranch::where('id',$auth->office_branch_id)->get();
+       }
         return view('employee.data.cards', compact('employees', 'branch'));
     }
 
     public function search(Request $request)
     {
-        $employees = Employee::orderBy('empid', 'desc')->where('id', $request->search)->orWhere('name', 'LIKE', $request->search)->orWhere('empid', $request->serach)->paginate(20);
-        $branch = OfficeBranch::all();
+       $auth=Auth::guard('employee')->user();
+       if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'){
+           $employees = Employee::orderBy('empid', 'desc')->where('id', $request->search)->orWhere('name', 'LIKE', $request->search)->orWhere('empid', $request->serach)->paginate(20);
+           $branch = OfficeBranch::all();
+       }else{
+           $employees = Employee::orderBy('empid', 'desc')->where('office_branch_id',$auth->office_branch_id)->where('id', $request->search)->orWhere('name', 'LIKE', $request->search)->orWhere('empid', $request->serach)->paginate(20);
+           $branch = OfficeBranch::all();
+       }
         return view('employee.data.cards', compact('employees', 'branch'));
     }
 
@@ -65,9 +79,15 @@ class EmployeeController extends Controller
         $departments = Department::all()->pluck('name', 'id');
         $roles = Role::all()->pluck('name', 'id');
         $office = OfficeBranch::all();
-        $warehouse = Warehouse::all();
         $all_employee = Employee::all()->pluck('name', 'id')->all();
-        $region=Region::all();
+        $auth = Auth::guard('employee')->user();
+        if ($auth->role->name == 'Super Admin' || $auth->role->name == 'CEO') {
+            $warehouse = Warehouse::all();
+            $region = Region::all();
+        } else {
+            $warehouse = Warehouse::where('branch_id', $auth->office_branch_id)->get();
+            $region = Region::where('branch_id', $auth->office_branch_id)->get();
+        }
 
         return view('employee.create', compact(
             'departments',
@@ -135,13 +155,9 @@ class EmployeeController extends Controller
         $employee->address = $request->address;
         $employee->report_to = $request->report_to;
         $employee->gender = $request->gender;
-       if(isset($request->mobile_seller)){
-           if($request->mobile_seller==1){
-               $employee->mobile_seller=1;
-           }
-           $employee->region_id=$request->region_id;
-           $employee->warehouse_id=$request->warehouse_id;
-       }
+        $employee->mobile_seller = $request->mobile_seller??0;
+        $employee->region_id = $request->region_id;
+        $employee->warehouse_id = $request->warehouse_id;
 
         if ($request->profile_img != null) {
             $profile = $request->file('profile_img');
@@ -151,8 +167,8 @@ class EmployeeController extends Controller
         }
         $employee->save();
         $employee->assignRole($request->role_id);
-        $office_branch=OfficeBranch::where('id',$data['office_branch_id'])->first();
-        $office_branch->status=1;
+        $office_branch = OfficeBranch::where('id', $data['office_branch_id'])->first();
+        $office_branch->status = 1;
         $office_branch->update();
         return redirect('employees')->with('success', __('alert.create_success'));
     }
@@ -163,40 +179,40 @@ class EmployeeController extends Controller
      * @param  \App\Models\Employee $employee
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request,$id)
+    public function show(Request $request, $id)
     {
         $employee = Employee::with('department', 'reportperson')->where('id', $id)->firstOrFail();
 
-        if(isset($request->start)){
-            $start=Carbon::parse($request->start)->startOfDay();
-            $end=Carbon::parse($request->end)->endOfDay();
+        if (isset($request->start)) {
+            $start = Carbon::parse($request->start)->startOfDay();
+            $end = Carbon::parse($request->end)->endOfDay();
             $invoices = Invoice::with('customer')->where('emp_id', $id)
-                ->whereBetween('created_at',[$start,$end])
+                ->whereBetween('created_at', [$start, $end])
                 ->get();
             $grand_total = DB::table("invoices")
                 ->select(DB::raw("SUM(grand_total) as total"))
                 ->where('emp_id', $id)
-                ->whereBetween('created_at',[$start,$end])
-                ->where('cancel',0)
+                ->whereBetween('created_at', [$start, $end])
+                ->where('cancel', 0)
                 ->get();
             $total_on_transaction = DB::table("revenues")
                 ->select(DB::raw("SUM(amount) as total"))
                 ->where('emp_id', $id)
                 ->where('approve', 1)
-                ->whereBetween('created_at',[$start,$end])
+                ->whereBetween('created_at', [$start, $end])
                 ->get();
             $expenses = DB::table("emp_expenses")
                 ->select(DB::raw("SUM(amount) as total"))
-                ->whereBetween('created_at',[$start,$end])
-                ->where('emp_id', $id)->whereBetween('created_at',[$start,$end])
+                ->whereBetween('created_at', [$start, $end])
+                ->where('emp_id', $id)->whereBetween('created_at', [$start, $end])
                 ->get();
-        }else{
-            $start=null;
-            $end=null;
+        } else {
+            $start = null;
+            $end = null;
             $invoices = Invoice::with('customer')->where('emp_id', $id)->get();
             $grand_total = DB::table("invoices")
                 ->select(DB::raw("SUM(grand_total) as total"))
-                ->where('cancel',0)
+                ->where('cancel', 0)
                 ->where('emp_id', $id)
                 ->get();
 
@@ -212,10 +228,10 @@ class EmployeeController extends Controller
         }
         $receivable = DB::table("invoices")
             ->select(DB::raw("SUM(due_amount) as total"))
-            ->where('cancel',0)
+            ->where('cancel', 0)
             ->where('emp_id', $id)
             ->get();
-        return view('employee.show', compact('employee', 'invoices', 'grand_total', 'total_on_transaction','receivable','expenses','start','end'));
+        return view('employee.show', compact('employee', 'invoices', 'grand_total', 'total_on_transaction', 'receivable', 'expenses', 'start', 'end'));
     }
 
     /**
@@ -230,8 +246,14 @@ class EmployeeController extends Controller
         $roles = Role::all()->pluck('name', 'id');
         $office = OfficeBranch::all();
         $all_employee = Employee::all()->pluck('name', 'id')->all();
-        $warehouse=Warehouse::all();
-        $region=Region::all();
+        $auth = Auth::guard('employee')->user();
+        if ($auth->role->name == 'Super Admin' || $auth->role->name == 'CEO') {
+            $warehouse = Warehouse::all();
+            $region = Region::all();
+        } else {
+            $warehouse = Warehouse::where('branch_id', $auth->office_branch_id)->get();
+            $region = Region::where('branch_id', $auth->office_branch_id)->get();
+        }
 
         return view('employee.edit', compact(
             'departments',
@@ -270,14 +292,11 @@ class EmployeeController extends Controller
             $employee->dob = $request->dob;
             $employee->address = $request->address;
             $employee->report_to = $request->report_to;
-            $employee->warehouse_id=$request->warehouse_id;
-            if(isset($request->mobile_seller)){
-                if($request->mobile_seller==1){
-                    $employee->mobile_seller=1;
-                }
-                $employee->region_id=$request->region_id;
-                $employee->warehouse_id=$request->warehouse_id;
-            }
+            $employee->warehouse_id = $request->warehouse_id;
+            $employee->mobile_seller = $request->mobile_seller??0;
+            $employee->region_id = $request->region_id;
+            $employee->warehouse_id = $request->warehouse_id;
+
             if ($request->profile_img != null) {
                 $profile = $request->file('profile_img');
                 $input['filename'] = \Illuminate\Support\Str::random(10) . time() . '.' . $profile->extension();
@@ -286,8 +305,8 @@ class EmployeeController extends Controller
             }
             $employee->update();
             $employee->syncRoles($request->role_id);
-            $office_branch=OfficeBranch::where('id',$request->office_branch_id)->first();
-            $office_branch->status=1;
+            $office_branch = OfficeBranch::where('id', $request->office_branch_id)->first();
+            $office_branch->status = 1;
             $office_branch->update();
             return redirect('employees')->with('success', __('alert.update_success'));
         } else {
