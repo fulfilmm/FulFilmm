@@ -514,30 +514,30 @@ Route::middleware(['auth:customer'])->group(function () {
 
 });
 
-Route::get('test', function () {
-//    $provided = [
-//        'Shirt' => [
-//            'color' => ['green', 'red','white'],
-//            'size' => ['Small', 'Medium'],
-//            'other'=>['']
-//        ],
-//    ]; // Reduced the provided data to reduce the output for sample purposes.
-////dd($provided);
-//    $result = [];
-//    foreach ($provided as $type => $attributes) {
-//        foreach ($attributes['size'] as $color) {
-//            foreach ($attributes['color'] as $size) {
-//                foreach ($attributes['other'] as $oth) {
-//                    $result[] = compact( 'color', 'size','oth');
-//                }
-//            }
-//        }
-//    }
-//
-//    dd($result);
-//    dd(str_pad(mt_rand(1,99999999),8,'0',STR_PAD_LEFT));
-    return view('test');
-})->name('test');
+//Route::get('test', function () {
+////    $provided = [
+////        'Shirt' => [
+////            'color' => ['green', 'red','white'],
+////            'size' => ['Small', 'Medium'],
+////            'other'=>['']
+////        ],
+////    ]; // Reduced the provided data to reduce the output for sample purposes.
+//////dd($provided);
+////    $result = [];
+////    foreach ($provided as $type => $attributes) {
+////        foreach ($attributes['size'] as $color) {
+////            foreach ($attributes['color'] as $size) {
+////                foreach ($attributes['other'] as $oth) {
+////                    $result[] = compact( 'color', 'size','oth');
+////                }
+////            }
+////        }
+////    }
+////
+////    dd($result);
+////    dd(str_pad(mt_rand(1,99999999),8,'0',STR_PAD_LEFT));
+//    return view('test');
+//})->name('test');
 
 //Route::get('send', [HomeController::class,'sendNotification']);
 //Route::get('piect/search', [TicketPieChartReport::class, 'filter'])->name('piechart.filter');

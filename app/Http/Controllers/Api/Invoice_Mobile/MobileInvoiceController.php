@@ -39,6 +39,7 @@ class MobileInvoiceController extends Controller
     public function index()
     {
         $company = Company::all();
+        $main_company=MainCompany::where('ismaincompany',1)->first();
         $Auth = Auth::guard('api')->user();
 //        dd($Auth);
         $customer = Customer::where('region_id', $Auth->region_id)->where('branch_id', $Auth->office_branch_id)->get();
@@ -69,7 +70,7 @@ class MobileInvoiceController extends Controller
 
         return response()->json(['company' => $company, 'customer' => $customer, 'warehouse' => $warehouse,
             'foc' => $foc, 'discount' => $discount, 'dis_amt' => $dis_amt, 'region' => $region,
-            'zone' => $zone, 'selling_unit' => $selling_unit, 'selling_price' => $selling_price]);
+            'zone' => $zone, 'selling_unit' => $selling_unit, 'selling_price' => $selling_price,'product'=>$product,'maincompany'=>$main_company]);
         
         }
 

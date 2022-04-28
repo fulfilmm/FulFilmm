@@ -21,32 +21,31 @@
                         </li>
                     </ul>
                 </div>
-                @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Super Admin'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='CEO'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='General Manager')
-
-                    <div class="col-12">
-                        <div class="float-right">
-                            <ul class="nav nav-tabs nav-tabs-solid  justify-content-center">
-                                <li class="nav-item"><a class="nav-link active rounded-pill shadow-sm"  onclick="report_type(4)" href="" data-toggle="tab">Current Month</a></li>
-                                <li class="nav-item"><a class="nav-link rounded-pill shadow-sm" href="" onclick="report_type(2)" data-toggle="tab">1st Half Year</a></li>
-                                <li class="nav-item"><a class="nav-link rounded-pill shadow-sm" href="" onclick="report_type(3)" data-toggle="tab">2nd Half Year</a></li>
-                                <li class="nav-item"><a class="nav-link rounded-pill shadow-sm" href="" onclick="report_type(1)" data-toggle="tab">Current Year</a></li>
-                            </ul>
-                            {{--<input type="radio" name="report_type" class="radio" value="1"><label for=""--}}
-                                                                                                          {{--class="ml-2">Current--}}
-                                {{--Year</label>--}}
-                            {{--<input type="radio" name="report_type" class="radio" value="2"><label for="" class="ml-2">Jan--}}
-                                {{--to June</label>--}}
-                            {{--<input type="radio" name="report_type" class="radio" value="3"><label for="" class="ml-2">July--}}
-                                {{--to Dec</label>--}}
-                            {{--<input type="radio" name="report_type" class="radio" value="4"checked><label for="" class="ml-2">Current--}}
-                                {{--Month</label>--}}
-                        </div>
-                    </div>
-                @endif
             </div>
-
         </div>
-        <!-- /Page Header -->
+        @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Super Admin'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='CEO'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='General Manager')
+            <div class="row">
+                <div class="col-12 col-md-12" style="border: none;">
+                    <ul class="nav nav-tabs nav-tabs-solid" style="border: none">
+                        <li class="nav-item col-md-3 col-6 my-2"><a class="nav-link active rounded shadow-sm"  onclick="report_type(4)" href="" data-toggle="tab">Current Month</a></li>
+                        <li class="nav-item col-md-3 col-6 my-2"><a class="nav-link rounded shadow-sm" href="" onclick="report_type(2)" data-toggle="tab">1st Half</a></li>
+                        <li class="nav-item col-md-3 col-6 my-2"><a class="nav-link rounded shadow-sm" href="" onclick="report_type(3)" data-toggle="tab">2nd Half</a></li>
+                        <li class="nav-item col-md-3 col-6 my-2"><a class="nav-link rounded shadow-sm" href="" onclick="report_type(1)" data-toggle="tab">Current Year</a></li>
+                    </ul>
+                    {{--<input type="radio" name="report_type" class="radio" value="1"><label for=""--}}
+                    {{--class="ml-2">Current--}}
+                    {{--Year</label>--}}
+                    {{--<input type="radio" name="report_type" class="radio" value="2"><label for="" class="ml-2">Jan--}}
+                    {{--to June</label>--}}
+                    {{--<input type="radio" name="report_type" class="radio" value="3"><label for="" class="ml-2">July--}}
+                    {{--to Dec</label>--}}
+                    {{--<input type="radio" name="report_type" class="radio" value="4"checked><label for="" class="ml-2">Current--}}
+                    {{--Month</label>--}}
+                </div>
+            </div>
+        @endif
+
+    <!-- /Page Header -->
         @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Customer Service Manager')
            @include('Dashboard.ticket_admin')
         @elseif(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='CEO'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Super Admin'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='General Manager')

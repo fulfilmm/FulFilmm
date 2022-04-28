@@ -70,15 +70,18 @@ class TransactionController extends Controller
 
         $auth=Auth::guard('employee')->user();
         if($auth->role->name=='CEO'||$auth->role->name=='Super Admin'||$auth->role->name=='Finance Manager'){
-            $expenses = Expense::with('cat', 'supplier', 'approver', 'employee', 'bill', 'account')->get();
+            $expenses = Transaction::with('expense', 'revenue', 'account','bill')->where('type','Expense')->get();
+            $employees=Employee::all();
+            $bill=Bill::all();
         }else{
-            $expenses = Expense::with('cat', 'supplier', 'approver', 'employee', 'bill', 'account')
-                ->orWhere('emp_id',$auth->id)
-                ->orWhere('approver_id',$auth->id)
+            $expenses = Transaction::with('expense', 'revenue', 'account','bill')->where('type','Expense')
                 ->get();
+            $employees=Employee::where('office_branch_id',$auth->office_branch_id)->get();
+            $bill=Bill::where('branch_id',$auth->office_branch_id)->get();
         }
+        $coa=ChartOfAccount::all();
 
-        return view('transaction.Expense.index', compact('expenses'));
+        return view('transaction.Expense.index', compact('expenses','employees','coa','bill'));
     }
 
     public function revenue_index()

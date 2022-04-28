@@ -23,56 +23,60 @@
                     <thead>
                     <tr>
                         <th>Code</th>
-                        <th>Account</th>
+                        <th>GL Account</th>
                         <th>Date</th>
                         <th>Bill ID</th>
                         <th>Title</th>
                         <th>Amount</th>
-                        <th>Supplier</th>
-                        <th>Category</th>
-                        <th>Status</th>
+                        <th>Type</th>
+                        <th>Account</th>
+                        <th>Approve</th>
                         <th>Approver Name</th>
-                        <th>Issuer</th>
+                        <th>{{isset($revenue)?'Receiver':(isset($expense)?'Issuer':'Receiver/Issuer')}}</th>
                         <th>Action</th>
                     </tr>
 
                     </thead>
                     <tbody>
-{{--                    @dd($expenses)--}}
+                    {{--                    @dd($expenses)--}}
                     @foreach($expenses as $transaction)
                         <tr>
-                            <td>{{$transaction->account->code}}</td>
-                            <td>{{$transaction->account->code.'-'.$transaction->account->name??'N/A'}}</td>
-                            <td>
-                                {{\Carbon\Carbon::parse($transaction->transaction_date)->toFormattedDateString()}}
+                            <td >@foreach($coa as $coaitem) {{$coaitem->id==$transaction->expense->category?$coaitem->code:''}}  @endforeach</td>
+                            <td style="min-width: 150px;">@foreach($coa as $coaitem) {{$coaitem->id==$transaction->expense->category?$coaitem->name:''}}  @endforeach</td>
+                            <td style="min-width: 150px;">
+                                <a href="{{route('transactions.show',$transaction->id)}}">{{\Carbon\Carbon::parse($transaction->expense->transaction_date)->toFormattedDateString()}}</a>
                             </td>
-                            <td>
-                                @if($transaction->bill_id!=null)
-                                    <a href="{{route('bills.show',$transaction->bill_id)}}">{{$transaction->bill->bill_id}}</a>@else
-                                    N/A @endif</td>
-                            <td>{{$transaction->title}}</td>
-                            <td>{{number_format($transaction->amount)}}</td>
-                            <td>{{$transaction->supplier->name??'N/A'}}</td>
-                            <td>{{$transaction->cat->name}}</td>
-                            <td>
-                                @if($transaction->approve==0)
-                                    <a href="{{url('transaction/approve/'.$transaction->id.'/expense')}}"
-                                       class="btn btn-white btn-white btn-sm">Confirm</a>
+                            <td style="min-width: 150px;">
+                                    @if($transaction->expense->bill_id!=null)
+                                        @foreach($bill as $b)
+                                            @if($b->id==$transaction->expense->bill_id)
+                                                <a href="{{$transaction->expense->bill_id==null?route('transactions.show',$transaction->id):route('bills.show',$transaction->expense->bill_id)}}">{{$b->bill_id}}</a>
+                                            @endif
+                                        @endforeach
+                                    @else
+                                        N/A
+                                    @endif
+
+                            </td>
+                            <td style="min-width: 150px;">{{$transaction->expense->title}}</td>
+                            <td style="min-width: 150px;">{{number_format($transaction->expense->amount)}}</td>
+                            <td style="min-width: 150px;"><span class="badge" style="background-color: #ff4969">{{$transaction->type}}</span></td>
+                            <td style="min-width: 150px;">{{$transaction->account->name}}</td>
+                            <td style="min-width: 150px;">
+                                @if($transaction->expense->approve==0)
+                                    <a href="{{url('transaction/approve/'.$transaction->expense->id.'/Expense')}}"
+                                       class="btn btn-white btn-white btn-sm ">Approve</a>
                                 @else
-                                    <button type="button" class="btn btn-success btn-sm disabled">Confirm</button>
+                                    <button type="button" class="btn btn-success btn-sm disabled">Approved</button>
                                 @endif
                             </td>
-                            <td>{{$transaction->approver->name}}</td>
-                            <td>{{$transaction->employee->name}}</td>
-                            <td style="width: 150px;">
-                                <div class="row">
-                                    <a href="{{$transaction->invoice_id==null?route('transactions.show',$transaction->id):route('invoices.show',$transaction->invoice_id)}}"
-                                       class="btn btn-white btn-sm"><i class="la la-eye"></i></a>
-                                    <a href="{{route('expense.edit',$transaction->id)}}" class="btn btn-primary btn-sm"><i
-                                                class="la la-edit"></i></a>
-                                    <a href="{{route('expense.delete',$transaction->id)}}"
-                                       class="btn btn-primary btn-sm"><i class="la la-trash"></i></a>
-                                </div>
+                            <td style="min-width: 150px;">@foreach($employees as $item) {{$item->id==$transaction->expense->approver_id?$item->name:''}}  @endforeach</td>
+                            <td style="min-width: 150px;">
+                                <a href="{{route('employees.show',$transaction->expense->emp_id)}}">@foreach($employees as $item) {{$item->id==$transaction->expense->emp_id?$item->name:''}}  @endforeach </a>
+                            </td>
+                            <td>
+                                <a href="{{$transaction->expense->invoice_id==null?route('transactions.show',$transaction->id):route('invoices.show',$transaction->expense->invoice_id)}}"
+                                   class="btn btn-white btn-sm"><i class="la la-eye"></i></a>
                             </td>
                         </tr>
                     @endforeach
