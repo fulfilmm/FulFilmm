@@ -417,16 +417,29 @@
                                             $('#price_{{$order->id}}').val(price);
                                             var quantity = $('#quantity_{{$order->id}}').val();
                                             var dis_pro = $('#dis_pro{{$order->id}} option:selected').val();
-                                            var sub_total = quantity * price;
-                                            var amount = (dis_pro / 100) * sub_total;
-                                            var total = sub_total - amount;
-
-                                            $('#total_{{$order->id}}').val(total);
-                                            var sum = 0;
-                                            $('.total').each(function () {
-                                                sum += parseFloat($(this).val());
-                                            });
-                                            $('#total').val(sum);
+                                            var warehouse=$('#warehouse option:selected').val();
+                                            @foreach($aval_product as $item)
+                                            if('{{$order->variant->id}}'=='{{$item->variant->id}}' && warehouse=='{{$item->warehouse_id}}' ){
+                                                if(parseInt('{{$item->available}}')>quantity){
+                                                    var sub_total = quantity * price;
+                                                    var amount = (dis_pro / 100) * sub_total;
+                                                    var total = sub_total - amount;
+                                                    $('#total_{{$order->id}}').val(total);
+                                                    var sum = 0;
+                                                    $('.total').each(function () {
+                                                        sum += parseFloat($(this).val());
+                                                    });
+                                                    $('#total').val(sum);
+                                                }else {
+                                                    swal({title: "Not Enough Quantity", text: '', type:
+                                                            "success"}).then(function(){
+                                                        $('#quantity_{{$order->id}}').val('{{$order->quantity}}');
+                                                        location.reload();
+                                                        }
+                                                    );
+                                                }
+                                            }
+                                                    @endforeach
                                             @foreach($allcustomers as $client)
                                             if('{{$client->id}}'==customer_id){
                                                 if((parseFloat(sum)+parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')){
@@ -577,6 +590,8 @@
                                                         console.log(data);
                                                         if (!$.isEmptyObject(data.out_of_stock)) {
                                                             swal('Empty Item', data.out_of_stock);
+                                                            $('#quantity_{{$order->id}}').val('{{$order->quantity}}');
+                                                            location.reload();
 
                                                         }
 
@@ -594,15 +609,30 @@
                                                 var quantity = $('#quantity_{{$order->id}}').val();
                                                 var price = $('#price_{{$order->id}}').val();
                                                 var dis_pro = $('#dis_pro{{$order->id}} option:selected').val();
-                                                var sub_total = quantity * price;
-                                                var amount = (dis_pro / 100) * sub_total;
-                                                var total = sub_total - amount;
-                                                $('#total_{{$order->id}}').val(total);
-                                                var sum = 0;
-                                                $('.total').each(function () {
-                                                    sum += parseFloat($(this).val());
-                                                });
-                                                $('#total').val(sum);
+                                                var warehouse=$('#warehouse option:selected').val();
+                                                @foreach($aval_product as $item)
+                                                if('{{$order->variant->id}}'=='{{$item->variant->id}}' && warehouse=='{{$item->warehouse_id}}' ){
+                                                    if(parseInt('{{$item->available}}')>quantity){
+                                                        var sub_total = quantity * price;
+                                                        var amount = (dis_pro / 100) * sub_total;
+                                                        var total = sub_total - amount;
+                                                        $('#total_{{$order->id}}').val(total);
+                                                        var sum = 0;
+                                                        $('.total').each(function () {
+                                                            sum += parseFloat($(this).val());
+                                                        });
+                                                        $('#total').val(sum);
+                                                    }else {
+                                                        swal({title: "Not Enough Quantity", text: 'hljlj', type:
+                                                                "success"}).then(function(){
+                                                            $('#quantity_{{$order->id}}').val('{{$order->quantity}}');
+                                                            location.reload();
+                                                            }
+                                                        );
+                                                    }
+                                                }
+                                                        @endforeach
+
                                                 @foreach($allcustomers as $client)
                                                 if('{{$client->id}}'==customer_id){
                                                     if((parseFloat(sum)+parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')){
@@ -624,33 +654,49 @@
                                                 var total = sub_total - amount;
                                                 var sell_unit = $('#unit{{$order->id}} option:selected').val();
                                                 var discount_pro = $('#dis_pro{{$order->id}} option:selected').val();
-                                                $.ajax({
-                                                    data: {
-                                                        "product_id": product,
-                                                        'quantity': quantity,
-                                                        'unit_price': price,
-                                                        "total": total,
-                                                        'sell_unit': sell_unit,
-                                                        'discount_pro': discount_pro
-                                                    },
-                                                    type: 'PUT',
-                                                    url: "{{route('invoice_items.update',$order->id)}}",
-                                                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                                                    success: function (data) {
-                                                        console.log(data);
-                                                        if (!$.isEmptyObject(data.out_of_stock)) {
+                                                var warehouse=$('#warehouse option:selected').val();
+                                                @foreach($aval_product as $item)
+                                                if('{{$order->variant->id}}'=='{{$item->variant->id}}' && warehouse=='{{$item->warehouse_id}}' ){
+                                                    if(parseInt('{{$item->available}}')>quantity){
+                                                        $.ajax({
+                                                            data: {
+                                                                "product_id": product,
+                                                                'quantity': quantity,
+                                                                'unit_price': price,
+                                                                "total": total,
+                                                                'sell_unit': sell_unit,
+                                                                'discount_pro': discount_pro
+                                                            },
+                                                            type: 'PUT',
+                                                            url: "{{route('invoice_items.update',$order->id)}}",
+                                                            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                                                            success: function (data) {
+                                                                console.log(data);
+                                                                if (!$.isEmptyObject(data.out_of_stock)) {
+                                                                    swal({title: "Not Enough Quantity", text: data.out_of_stock, type:
+                                                                            "success"}).then(function(){
+                                                                        $('#quantity_{{$order->id}}').val('{{$order->quantity}}');
+                                                                        }
 
-                                                                swal({title: "Not Enough Quantity", text: data.out_of_stock, type:
-                                                                        "success"}).then(function(){
-                                                                        location.reload();
-                                                                    }
+                                                                    );
 
-                                                            );
+                                                                }
+
+                                                            }
+                                                        });
+                                                    }else {
+                                                        swal({title: "Not Enough Quantity", text: 'hljlj', type:
+                                                                "success"}).then(function(){
+                                                                $('#quantity_{{$order->id}}').val('{{$order->quantity}}');
+                                                            location.reload();
+
 
                                                         }
-
+                                                        );
                                                     }
-                                                });
+                                                }
+                                                @endforeach
+
                                             });
                                         });
                                     </script>
