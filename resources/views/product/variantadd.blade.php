@@ -1,5 +1,5 @@
 @extends("layout.mainlayout")
-@section('title','Product Details')
+@section('title','Add Variant')
 @section("content")
     <div class="content container-fluid">
         <!-- Page Header -->
@@ -16,78 +16,87 @@
             </div>
         </div>
         <div class="col-12">
-            <form action="{{route('variant.store')}}" enctype="multipart/form-data" method="POST">
-                @csrf
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="">Product Name</label>
-                            <select name="product_id" id="pid" class="form-control select2">
-                                @foreach($product as $key=>$val)
-                                    <option value="{{$key}}">{{$val}}</option>
-                                    @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="">Product Code</label>
-                            <div class="input-group">
-                                <input type="text" id="p_code" name="product_code" class="form-control" value="{{old('product_code')}}"  required>
-                                <button type="button" class="btn btn-white btn-sm" onclick="generatecode()" id="generate">Generate Product Code</button>
-                            </div>
-                            @error('product_code')
-                            <span class="text-danger">{{$message}}</span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="">Serial No.</label>
-                            <input type="text" class="form-control" name="serial_no" value="{{old('serial_no')}}">
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="">Variant</label>
-                            <input type="text" class="form-control" name="variant" value="{{old('variant')}}" placeholder='Enter this format : "Color:Red Size:XL"'>
-                            @error('variant')
-                            <span class="text-danger">{{$message}}</span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group mt-5">
-                            <input type="radio" name="pricing_type" value="0" id="single" checked>
-                            <label for="single">Single Price</label>
-                            <input type="radio" name="pricing_type" class="ml-3" value="1" id="multi">
-                            <label for="multi">Multi Price</label>
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <label for="">Images</label>
-                            <input type="file" name="picture" class="form-control" >
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="">Description</label>
-                            <textarea name="description" class="form-control" id="description" cols="30" rows="10"></textarea>
-                        </div>
-                    </div>
-                    <div class="col-12 text-center">
-                        <button type="submit" class="btn btn-primary">Add</button>
-                    </div>
-                </div>
-            </form>
+           <div class="card shadow">
+               <div class="card-header">
+                  Add {{$product->name}}'s Variants
+               </div>
+              <div class="col-12 my-3">
+                  <form action="{{route('variant.store')}}" enctype="multipart/form-data" method="POST">
+                      @csrf
+                      <div class="row">
+                          <input type="hidden" name="product_id" value="{{$product->id}}">
+                          <div class="col">
+                              <div class="form-group">
+                                  <label for="">Images</label>
+                                  <input type="file" name="picture[]" class="form-control" >
+                              </div>
+                          </div>
+                          <div class="col">
+                              <div class="form-group">
+                                  <label for="">Variant</label>
+                                  <input type="text" class="form-control" name="variant[]" value="{{old('variant')}}" placeholder='Enter this format : "Color:Red Size:XL"'>
+                                  @error('variant')
+                                  <span class="text-danger">{{$message}}</span>
+                                  @enderror
+                              </div>
+                          </div>
+                          <div class="col">
+                              <div class="form-group">
+                                  <label for="">Additional Price</label>
+                                  <input type="number" class="form-control" name="additional_price[]" placeholder="Optional">
+                              </div>
+                          </div>
+                      </div>
+                      <div id="newRow">
+
+                      </div>
+                      <div class="row">
+                          <div class="col-12">
+                              <button id="addRow" type="button" class="btn btn-white btn-sm float-right">Add More</button>
+                          </div>
+                      </div>
+
+                          <div class="col-12 text-center">
+                              <button type="submit" class="btn btn-primary">Submit</button>
+                          </div>
+                      </div>
+                  </form>
+              </div>
+           </div>
         </div>
     </div>
     <script>
-        function generatecode(){
-            var pcode='{{random_int(10000000,99999999)}}';
-            $("#p_code").val(pcode);
-        }
+        $("#addRow").click(function () {
+            var html = '';
+            html +='<div id="inputFormRow" class="row">';
+            html += '<div class="col">';
+            html += '<div class="form-group mb-3">';
+            html += '<div class="input-group">';
+            html += '<input type="file" name="picture[]" class="form-control m-input" autocomplete="off" required>';
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
+            html +='<div class="col">';
+            html +='<div class="input-group">';
+            html +='<input type="text" class="form-control" name="variant[]">';
+            html +='</div>';
+            html +='</div>';
+            html += '<div  class="col">';
+            html += '<div class="input-group">';
+            html += '<input type="text" name="additional_price[]" class="form-control m-input amount" autocomplete="off" required placeholder="Optional">';
+            html += '<div class="input-group-append">';
+            html += '<button id="removeRow" type="button" class="btn btn-danger"><i class="fa fa-minus"></i></button>';
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
+
+            $('#newRow').append(html);
+        });
+
+        // remove row
+        $(document).on('click', '#removeRow', function () {
+            $(this).closest('#inputFormRow').remove();
+        });
         ClassicEditor.create($('#description')[0], {
             toolbar: ['heading', 'bold', 'italic', 'undo', 'redo', 'numberedList', 'bulletedList', 'insertTable']
         });

@@ -369,12 +369,11 @@
                     <li><a class="{{ Request::is('products') ? 'active' : '' }}" href="{{url('/products')}}"
                            style="text-decoration: none">All
                             Products</a></li>
+                    <li><a class="{{ Request::is('variant/list') ? 'active' : '' }}" href="{{route('item.list')}}"
+                           style="text-decoration: none">Products Items</a></li>
                     <li><a class="{{ Request::is('products/create') ? 'active' : '' }}"
                            href="{{url('/products/create')}}" style="text-decoration: none">
                             Product Create</a></li>
-                    <li><a class="{{ Request::is('product/variant/create') ? 'active' : '' }}"
-                           href="{{route('create.variant')}}" style="text-decoration: none">
-                            Product Variant Add</a></li>
                 </ul>
             </li>
             <li><a class="{{ Request::is('foc/index') ? 'active' : '' }}" href="{{route('foc.index')}}"

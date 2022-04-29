@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\Invoice_Mobile;
 
 use App\Http\Controllers\Controller;
+use App\Models\Invoice;
+use App\Models\Stock;
 use Illuminate\Http\Request;
 
 use App\Models\MainCompany;
@@ -15,9 +17,10 @@ use App\Models\ProductVariant;
 use App\Models\SaleZone;
 use App\Models\product_price;
 use App\Models\SellingUnit;
-use App\Models\Freeofchare; 
+use App\Models\Freeofchare;
 use App\Models\DiscountPromotion;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use function PHPUnit\Framework\isEmpty;
@@ -39,56 +42,43 @@ class MobileInvoiceController extends Controller
     {
         $company = Company::all();
         $Auth = Auth::guard('api')->user();
-        dd($Auth);
+//        dd($Auth);
+        $customer = Customer::where('region_id', $Auth->region_id)->where('branch_id', $Auth->office_branch_id)->get();
+        $warehouse = Warehouse::where('branch_id', $Auth->office_branch_id)
+            ->get();
 
-        $customer = Customer::where(['region_id', $Auth -> region_id],
-                                    ['branch_id', $Auth->office_branch_id])
-                                //->where('branch_id', )
-                                ->get();
-        $warehouse = Warehouse::where('branch_id', $Auth -> office_branch_id)
-                                ->get();
-        
         $product = Stock::with('varient')
-                        ->where(['warehouse_id', $Auth -> warehouse_id],
-                                'available' , '>' , 0)
-                        ->get();
+            ->where('warehouse_id', $Auth->warehouse_id)
+        ->where('available', '>', 0)
+            ->get();
 
-        $foc = Freeofchare::where('brand_id', $Auth -> office_branch_id)
-                        ->get();
-        
-        $discount = DiscountPromotion::where('branch_id', $Auth -> office_branch_id)
-                                        ->get();
+        $foc = Freeofchare::where('branch_id',$Auth->office_branch_id)
+            ->get();
 
-        $dis_amt = AmountDiscount::where(['branch_id', $Auth -> office_branch_id])
-                                    ->whereDate('start_date', '<=' , date('Y-m-d'))
-                                    ->whereDate('end_date', '>=' , date('Y-m-d'))
-                                    ->get();
-        
-        $region = Region::where('region_id', $Auth -> region_id)
-                            ->get();
+        $discount = DiscountPromotion::where('region_id',$Auth->region_id)->get();
 
-        $zone = SaleZone::where('branch_id', $Auth -> branch_id)
-                            ->get();
-        
-        $selling_unit = SellingUnit::where('branch_id', $Auth -> branch_id)
-                        ->get();
+        $dis_amt = AmountDiscount::where('region_id',$Auth->region_id)->get();
 
-        $selling_price = product_price::where('branch_id', $Auth -> branch_id)
-                        ->get();
-                                    
+        $region = Region::where('id', $Auth->region_id)
+            ->get();
 
-        
-    
-        return response() -> json(['company' => $company, 'customer' => $customer , 'warehouse' => $warehouse ,
-                                    'foc' => $foc, 'discount' => $discount , 'dis_amt' => $dis_amt, 'region' => $region,
-                                    'zone' => $zone , 'selling_unit' => $selling_unit, 'selling_price' => $selling_price]);
-        
-        }
+        $zone = SaleZone::where('region_id',$Auth->region_id)->get();
 
-    
+        $selling_unit = SellingUnit::all();
+
+        $selling_price = product_price::where('region_id',$Auth->region_id)->get();
+
+
+        return response()->json(['company' => $company, 'customer' => $customer, 'warehouse' => $warehouse,
+            'foc' => $foc, 'discount' => $discount, 'dis_amt' => $dis_amt, 'region' => $region,
+            'zone' => $zone, 'selling_unit' => $selling_unit, 'selling_price' => $selling_price]);
+
+    }
+
+
     public function store(Request $request)
     {
-        $validator = Validator::make($request -> all(), [
+        $validator = Validator::make($request->all(), [
             'title' => 'required',
             'client_id' => 'required',
             'inv_date' => 'required',
@@ -106,7 +96,7 @@ class MobileInvoiceController extends Controller
             'state' => 'required',
         ]);
 
-        if($validator->passes()) {
+        if ($validator->passes()) {
             $prefix = MainCompany::where('ismaincompany', true)->pluck('invoice_prefix', 'id')->first();
             $last_invoice = Invoice::orderBy('id', 'desc')->first();
 
@@ -132,7 +122,7 @@ class MobileInvoiceController extends Controller
             } else {
                 $invoice_id = ($prefix ?: 'INV') . "-0001";
             }
- 
+
             $newInvoice = new Invoice();
             $newInvoice->title = $request->title;
             $newInvoice->invoice_id = $invoice_id;
@@ -157,20 +147,20 @@ class MobileInvoiceController extends Controller
             $newInvoice->due_amount = $request->inv_grand_total;
             $newInvoice->warehouse_id = $request->warehouse_id;
             $newInvoice->inv_type = $request->inv_type;
-            $newInvoice->region_id=$request->region_id;
-            $newInvoice->zone_id=$request->zone_id;
-            $newInvoice->include_delivery_fee=$request->deli_fee_include=='on'?1:0;
+            $newInvoice->region_id = $request->region_id;
+            $newInvoice->zone_id = $request->zone_id;
+            $newInvoice->include_delivery_fee = $request->deli_fee_include == 'on' ? 1 : 0;
             $newInvoice->emp_id = Auth::guard('api')->user()->id;
-            $newInvoice->branch_id=Auth::guard('api')->user()->office_branch_id;
-           
-            $order_item = json_decode($request -> order_items);
-            $foc_item = json_decode($request -> foc_items);
+            $newInvoice->branch_id = Auth::guard('api')->user()->office_branch_id;
+
+            $order_item = json_decode($request->order_items);
+            $foc_item = json_decode($request->foc_items);
 
             if (count($order_item) != 0) {
                 $newInvoice->save();
-                $customer=Customer::where('id',$request->client_id)->first();
-                $customer->main_customer=1;
-                $customer->current_credit+=$request->inv_grand_total;
+                $customer = Customer::where('id', $request->client_id)->first();
+                $customer->main_customer = 1;
+                $customer->current_credit += $request->inv_grand_total;
                 $customer->update();
                 foreach ($order_item as $item) {
                     if ($item->foc) {
@@ -181,10 +171,10 @@ class MobileInvoiceController extends Controller
                         $stock->qty = $stock->qty - ($item->quantity * $unit->unit_convert_rate);
                         $stock->update();
                     } else {
-                        $unit = SellingUnit::where('id',$item->sell_unit)->first();
+                        $unit = SellingUnit::where('id', $item->sell_unit)->first();
                         $stock = Stock::where('variant_id', $item->variant_id)->where('warehouse_id', $request->warehouse_id)->first();
                         $item->inv_id = $newInvoice->id;
-                        $item->cos_total=$item->quantity*$stock->cos;
+                        $item->cos_total = $item->quantity * $stock->cos;
                         $item->update();
                         $stock->available = $stock->available - ($item->quantity * $unit->unit_convert_rate);
 
@@ -194,52 +184,49 @@ class MobileInvoiceController extends Controller
 
                 //order items 
 
-                $variant = ProductVariation::where( 'id', $request -> variant_id)
-                                            ->first();
-                
+                $variant = ProductVariation::where('id', $request->variant_id)
+                    ->first();
+
                 if ($request->type == 'invoice') {
-                    foreach($foc_item as $item){
-                  
+                    foreach ($foc_item as $item) {
+
                         if (isset($request->foc)) {
+                            $items = new OrderItem();
+                            $items->description = 'This is FOC item';
+                            $items->quantity = $item->quantity;
+                            $items->variant_id = $request->variant_id;
+                            $items->unit_price = 0;
+                            $items->total = 0;
+                            $items->inv_id = $invoice_id;
+                            $items->creation_id = $request->invoice_id;
+                            $items->order_id = $request->order_id ?? null;
+                            $items->state = 1;
+                            $items->foc = true;
+                            $items->save();
+                        } else {
+                            $sale_unit = SellingUnit::where('product_id', $variant->product_id)->where('unit_convert_rate', 1)->first();
+                            $price = product_price::where('sale_type', $request->inv_type)->where('product_id', $request->variant_id)->where('multi_price', $variant->pricing_type)->first();
+
+                            if ($price != null) {
                                 $items = new OrderItem();
-                                $items->description = 'This is FOC item';
-                                $items->quantity = $item -> quantity;
+                                $items->description = $variant->description;
+                                $items->quantity = $item->quantity;
                                 $items->variant_id = $request->variant_id;
-                                $items->unit_price = 0;
-                                $items->total = 0;
+                                $items->sell_unit = $sale_unit->id;
+                                $items->unit_price = $price->price ?? 0;
+                                $items->total = $item->total;
                                 $items->inv_id = $invoice_id;
+                                $items->sell_unit = $sale_unit->id ?? null;
                                 $items->creation_id = $request->invoice_id;
                                 $items->order_id = $request->order_id ?? null;
                                 $items->state = 1;
-                                $items->foc=true;
                                 $items->save();
-                                }
-                                else{
-                                    $sale_unit = SellingUnit::where('product_id', $variant->product_id)->where('unit_convert_rate', 1)->first();
-                                    $price = product_price::where('sale_type',$request->inv_type)->where('product_id', $request->variant_id)->where('multi_price',$variant->pricing_type)->first();
-                                    
-                                    if($price != null){
-                                        $items = new OrderItem();
-                                        $items->description =$variant->description;
-                                        $items->quantity = $item->quantity;
-                                        $items->variant_id = $request->variant_id;
-                                        $items->sell_unit = $sale_unit->id;
-                                        $items->unit_price =$price->price ?? 0;
-                                        $items->total = $item -> total;
-                                        $items->inv_id = $invoice_id;
-                                        $items->sell_unit = $sale_unit->id??null;
-                                        $items->creation_id = $request->invoice_id;
-                                        $items->order_id = $request->order_id ?? null;
-                                        $items->state = 1;
-                                        $items->save();
-                                
-                                        }
-                                    } 
-                                    
-                                } 
-                            }
-                
 
+                            }
+                        }
+
+                    }
+                }
 
 
                 //should I need to add these ???
@@ -251,7 +238,6 @@ class MobileInvoiceController extends Controller
                 // $newInvoice->invoice_cos=$inv_item[0]->total;
                 // $newInvoice->update();
 
-              
 
                 // if (isset($request->order_id)) {
                 //     $order_item = OrderItem::where('order_id', $request->order_id)->get();
@@ -263,7 +249,7 @@ class MobileInvoiceController extends Controller
                 //     $order->grand_total = $grand_total;
                 //     $order->update();
                 // }
-               
+
                 //end
 
                 //$this->add_history($newInvoice->id, 'Daft', 'Add' . $invoice_id);
@@ -283,17 +269,10 @@ class MobileInvoiceController extends Controller
                 ]);
             }
 
-          
 
-            
-        
-        }else{
-            return response()->json(['error'=>$validator->errors()]);
+        } else {
+            return response()->json(['error' => $validator->errors()]);
         }
-
-
-
-
 
 
     }
@@ -301,7 +280,7 @@ class MobileInvoiceController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -312,8 +291,8 @@ class MobileInvoiceController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -324,7 +303,7 @@ class MobileInvoiceController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

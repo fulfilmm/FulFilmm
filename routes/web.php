@@ -49,6 +49,7 @@ use App\Http\Controllers\TicketSender;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\TransactionController;
+use Cornford\Googlmapper\Mapper;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\Login\EmployeeAuthController as AuthController;
 use App\Http\Controllers\CommentController;
@@ -220,6 +221,7 @@ Route::middleware(['auth:employee'])->group(function () {
     Route::get('payments',[BillController::class,'payment'])->name('payment');
     Route::get('mobile/warehouse/return',[\App\Http\Controllers\StockReturnController::class,'mobilereturn'])->name('stockreturn.mobile');
     Route::resource('moneytransfer',\App\Http\Controllers\CashTransferRecordController::class);
+    Route::get('variant/list',[ProductController::class,'itemlist'])->name('item.list');
 
 
 
@@ -405,7 +407,7 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::get('requestation/search',[ApprovalController::class,'requestatin_search'])->name('requestation.search');
     Route::get('approval/search',[ApprovalController::class,'approval_search'])->name('approval.search');
     Route::get('cc/search',[ApprovalController::class,'cc_search'])->name('cc.search');
-    Route::get('product/variant/create',[ProductController::class,'create_variant'])->name('create.variant');
+    Route::get('product/variant/create/{id}',[ProductController::class,'create_variant'])->name('create.variant');
     Route::post('product/variant/store',[ProductController::class,'variant_add'])->name('variant.store');
     Route::post('product/variant/update/{id}',[ProductController::class,'update_variant'])->name('variant.update');
     Route::get('barcode/generate',[\App\Http\Controllers\BarcodeController::class,'barcode'])->name('barcode.generate');
@@ -515,6 +517,12 @@ Route::middleware(['auth:customer'])->group(function () {
 });
 
 Route::get('test', function () {
+//    $config = array();
+//    $config['center'] = 'New York, USA';
+//    GMaps::initialize($config);
+//    $map = GMaps::create_map();
+//    $mp=Mapper::map(53.381128999999990000, -1.470085000000040000);
+//    dd($mp);
 //    $provided = [
 //        'Shirt' => [
 //            'color' => ['green', 'red','white'],

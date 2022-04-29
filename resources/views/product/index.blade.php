@@ -60,11 +60,12 @@
                         <thead>
                         <tr>
                             <th></th>
-                            <th></th>
+                            <th>Product Code</th>
                             <th>Name</th>
                             <th>MainCategory</th>
                             <th>Sub Category</th>
                             <th>Brand</th>
+                            <th>Add Variant</th>
                             <th>Action</th>
                         </tr>
                         </thead>
@@ -72,13 +73,14 @@
                         {{--@dd($products)--}}
                         @foreach($products as $product)
                             <tr>
-                                <td><button id="collapse{{$product->id}}" class="btn btn-purple btn-sm rounded-circle" type="button" data-toggle="collapse" data-target="#variant{{$product->id}}" style="font-size: 10px;" ><i class="fa fa-plus" id="{{$product->id}}"></i></button>
-                                </td>
+                                {{--<td><button id="collapse{{$product->id}}" class="btn btn-purple btn-sm rounded-circle" type="button" data-toggle="collapse" data-target="#variant{{$product->id}}" style="font-size: 10px;" ><i class="fa fa-plus" id="{{$product->id}}"></i></button>--}}
+                                {{--</td>--}}
                                 <td>
 
                                     <img src="{{url(asset('/product_picture/'.$product->image))}}" alt="" class="border mr-2 ml-2"
                                          style="max-height:50px;max-width:50px;border: solid">
                                 </td>
+                                <th>{{$product->product_code}}</th>
                                 <td>
                                     <a href="{{route("products.show",$product->id)}}">
                                         <span class="ml-3">{{$product->name}}</span></a>
@@ -88,6 +90,7 @@
                                     {{$product->sub_cat->name??''}}
                                 </td>
                                 <td>{{$product->brand->name??'None'}}</td>
+                                <td><a href="{{route('create.variant',$product->id)}}" class="btn btn-outline-info btn-sm">Add Variant</a></td>
                                 <td class="text-center">
                                     <a href="{{route("products.show",$product->id)}}" class="btn btn-warning btn-sm"><i class="la la-eye"></i></a>
                                     <a class="btn btn-white btn-sm" href="{{route("products.edit",$product->id)}}" ><i class="fa fa-pencil"></i> </a>
@@ -139,7 +142,7 @@
                                            @foreach($variants as $item)
                                                 @if($item->product_id==$product->id)
                                                     <div class="row">
-                                                        <div class="col-md-3">{{$item->product_code}}</div>
+                                                        <div class="col-md-3">{{$item->item_code}}</div>
                                                         <div class="col-md-3">{{$item->variant}}</div>
                                                         <div class="col-md-3">{{$item->enable==0?'Disable':'Enable'}}</div>
                                                         <div class="col-md-3"><a href="{{route('show.variant',$item->id)}}" class="btn btn-white btn-sm"><i class="la la-eye"></i></a></div>

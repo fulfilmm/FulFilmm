@@ -41,10 +41,10 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
     Route::resource('api_employees',App\Http\Controllers\Api\EmployeeController::class);
     Route::post('logout',[ApiAuthController::class,'login'])->name('logout');
     Route::resource('api_customers', CustomerController::class);
-    Route::resource("api_invoices",InvoiceController::class);
-    Route::apiResource("invoice" , InvoiceDataController::class);
+    Route::apiResource("api_invoices",InvoiceController::class);
+//    Route::apiResource("invoice" , InvoiceDataController::class);
 
-    Route::apiResource("mobile_invoice", MobileInvoiceController::class);
+  Route::apiResource('mobile_invoice',MobileInvoiceController::class);
 
    
 //    Route::resource("invoice_items",InvoiceItemController::class);

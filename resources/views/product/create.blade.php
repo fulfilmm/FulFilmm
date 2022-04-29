@@ -65,6 +65,18 @@
                                 <input type="text" class="form-control shadow-sm" name="name" required>
                             </div>
                         </div>
+                        <div class="col-md-6 col-12">
+                            <div class="form-group">
+                                <label for="">Product Code</label>
+                                <div class="input-group">
+                                    <input type="text" id="p_code" name="product_code" class="form-control" value="{{old('product_code')}}"  required>
+                                    <button type="button" class="btn btn-white btn-sm" onclick="generatecode()" id="generate">Generate Product Code</button>
+                                </div>
+                                @error('product_code')
+                                <span class="text-danger">{{$message}}</span>
+                                @enderror
+                            </div>
+                        </div>
                         <div class="form-group col-md-6 col-12 ">
                             <label for="">Brand</label>
                             <div class="input-group">
@@ -74,6 +86,15 @@
                                         <option value="{{$item->id}}">{{$item->name}}</option>
                                         @endforeach
                                 </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6 col-12 ">
+                            <label for="">Model No.</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-pencil"></i></span>
+                                </div>
+                                <input type="text" class="form-control shadow-sm" name="model_no" >
                             </div>
                         </div>
                         <div class=" col-md-6 col-12 " id="cat_div">
@@ -117,16 +138,6 @@
                             </div>
                         </div>
                         <div class="form-group col-md-12 col-12 ">
-                            <label for="">Model No.</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fa fa-pencil"></i></span>
-                                </div>
-                                <input type="text" class="form-control shadow-sm" name="model_no" >
-                            </div>
-                        </div>
-
-                        <div class="form-group col-md-12 col-12 ">
                             <label for="description">Detail</label>
                             <textarea name="detail" class="form-control shadow-sm" id="detail" ></textarea>
                         </div>
@@ -135,6 +146,9 @@
                                 <label for="">Image</label>
                                 <input type="file" name="picture" class="form-control">
                             </div>
+                        </div>
+                        <div class="col-12">
+                            <input type="checkbox" name="has_variant" class="mr-2"><label for=""> This product has variant</label>
                         </div>
                     </div>
                 </div>
@@ -149,6 +163,10 @@
     <!-- /Page Content -->
     <!-- /Page Wrapper -->
     <script>
+        function generatecode(){
+            var pcode='{{random_int(10000000,99999999)}}';
+            $("#p_code").val(pcode);
+        }
         $(document).ready(function () {
             $(document).on('change','#product_cat',function () {
                 var cat_id = $('#product_cat option:selected').val();

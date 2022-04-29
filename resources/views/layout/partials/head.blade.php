@@ -137,6 +137,9 @@
 
         {{--</script>--}}
         <link rel="stylesheet" href="{{url(asset('css/mdtimepicker.css'))}}">
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YOUR-API-KEY"></script>
+        <script src="{{url(asset('js/plugins/location-picker.js'))}}"></script>
+
         {{--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>--}}
         <style>
             body,head,header,h3,.card-title{

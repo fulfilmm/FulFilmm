@@ -1,5 +1,5 @@
 <?php
-
+//\App\Models\Emailsetting::all();
 return [
 
     /*

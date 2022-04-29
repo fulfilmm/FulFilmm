@@ -10,9 +10,10 @@ use App\Models\MainCompany;
 use App\Models\product;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
-use Tymon\JWTAuth\Contracts\Providers\Auth;
+
 
 class InvoiceController extends Controller
 {
@@ -24,6 +25,8 @@ class InvoiceController extends Controller
     public  $status=['Paid','Unpaid','Pending','Cancel'];
     public function index()
     {
+        $a=Auth::guard('api')->user();
+        dd($a);
         $allinv=Invoice::with('customer')->get();
         $status=$this->status;
         return response()->json(['allinv'=>$allinv,'status'=>$status]);

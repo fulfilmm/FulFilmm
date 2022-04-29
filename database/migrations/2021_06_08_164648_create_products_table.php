@@ -18,6 +18,7 @@ class CreateProductsTable extends Migration
             $table->string("name");
             $table->text("description")->nullable();
             $table->string("model_no")->nullable();
+            $table->string('product_code');
             $table->bigInteger("cat_id")->unsigned()->nullable();
             $table->bigInteger('sub_cat_id')->unsigned()->nullable();
             $table->bigInteger('brand_id')->unsigned()->nullable();
