@@ -220,6 +220,16 @@
                                                                         </div>
                                                                         <div class="col-md-6">
                                                                             <div class="form-group">
+                                                                                <label for="branch">Office Branch</label>
+                                                                                <select name="branch_id" id="branch" class="form-control" onchange="branch_select(this.value)">
+                                                                                    @foreach($branch as $brch)
+                                                                                        <option value="{{$brch->id}}" {{$brch->id==old('branch_id')?'selected':''}}>{{$brch->name}}</option>
+                                                                                    @endforeach
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
                                                                                 <label for="warehouse">Warehouse</label>
                                                                                 <select name="warehouse_id" id="warehouse" class="form-control">
                                                                                     @foreach($warehouse as $key=>$val)

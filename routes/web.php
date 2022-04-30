@@ -519,7 +519,8 @@ Route::middleware(['auth:customer'])->group(function () {
 
 
 });
-
+Route::get('password/reset',[EmployeeController::class,'reset_form'])->name('reset.password');
+Route::post('password/reset',[EmployeeController::class,'password_reset'])->name('password.reset');
 Route::get('test', function () {
 //    $config = array();
 //    $config['center'] = 'New York, USA';

@@ -80,19 +80,19 @@ class StockTransactionController extends Controller
         if ($auth->role->name == 'Super Admin' || $auth->role->name == 'CEO'||$auth->role->name=='Stock Manager') {
             $customers = Customer::where('customer_type', 'Supplier')
                 ->get();
-            $warehouses = Warehouse::all();
+            $warehouses = Warehouse::where('mobile_warehouse',0)->get();
             $branch = OfficeBranch::all();
         } else if ($auth->role->name=='Stock Controller'){
             $customers = Customer::where('customer_type', 'Supplier')
                 ->where('branch_id', $auth->office_branch_id)
                 ->get();
-            $warehouses = Warehouse::where('branch_id', $auth->office_branch_id)->get();
+            $warehouses = Warehouse::where('branch_id', $auth->office_branch_id)->where('mobile_warehouse',0)->get();
             $branch = OfficeBranch::where('id', $auth->office_branch_id)->get();
         }else{
             $customers = Customer::where('customer_type', 'Supplier')
                 ->where('branch_id', $auth->office_branch_id)
                 ->get();
-            $warehouses = Warehouse::where('id', $auth->warehouse_id)->get();
+            $warehouses = Warehouse::where('id', $auth->warehouse_id)->where('mobile_warehouse',0)->get();
             $branch = OfficeBranch::where('id', $auth->office_branch_id)->get();
         }
         $binlook = BinLookUp::all();

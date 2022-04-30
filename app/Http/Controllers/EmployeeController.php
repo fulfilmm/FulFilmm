@@ -320,4 +320,50 @@ class EmployeeController extends Controller
         }
         return redirect('/')->with('success', 'Password Change Successful!');
     }
+    public function reset_form(){
+        return view('settings.passwordreset');
+    }
+    public function password_reset(Request $request){
+        $this->validate($request,['emp'=>'required']);
+        $pass=\Illuminate\Support\Str::random(6);
+        $employee=Employee::where('empid',$request->emp)->first();
+        if($employee==null){
+            $emp=Employee::where('email',$request->emp)->first();
+            if($emp!=null){
+                $emp->password=Hash::make($pass);
+                $details = array(
+                    'email' => $emp->email,
+                    'subject' => 'Reset Password',
+                    'clientname' => $emp->name,
+                    'password' => $pass,
+                );
+                Mail::send('customerprotal.login_access', $details, function ($message) use ($details) {
+                    $message->from('cincin.com@gmail.com', 'Cloudark');
+                    $message->to($details['email']);
+                    $message->subject($details['subject']);
+
+                });
+                $emp->update();
+                return redirect()->back()->with('reset','Password reset successful!A new password will be sent to your email!Please check your email.');
+            }else{
+                return redirect()->back()->with('empty',"Sorry,Does not match any employee. Try again");
+            }
+        }else{
+            $employee->password=Has::make($pass);
+            $details = array(
+                'email' => $employee->email,
+                'subject' => 'Reset Password',
+                'clientname' => $employee->name,
+                'password' => $pass,
+            );
+            Mail::send('customerprotal.login_access', $details, function ($message) use ($details) {
+                $message->from('cincin.com@gmail.com', 'Cloudark');
+                $message->to($details['email']);
+                $message->subject($details['subject']);
+
+            });
+            $employee->update();
+            return redirect()->back()->with('reset','Password reset successful!A new password will be sent to your email!Please check your email.');
+        }
+    }
 }
