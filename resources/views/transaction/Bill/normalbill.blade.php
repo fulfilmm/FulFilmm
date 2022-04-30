@@ -135,6 +135,18 @@
                                               value="{{old('billing_address')??''}}">
                                    </div>
                                </div>
+                               <div class="col-md-6 col-sm-6 col-12">
+                                   <div class="form-group">
+                                       <label for="po">PO ID</label>
+                                       <input type="text" class="form-control" id="po" name="po_id">
+                                   </div>
+                               </div>
+                               <div class="col-12">
+                                   <div class="form-group">
+                                       <label for="">Attach</label>
+                                       <input type="file" class="form-control" name="attach">
+                                   </div>
+                               </div>
                                <div class="col-md-12">
                                    <div class="form-group">
                                        <label>Other Information</label>
@@ -142,6 +154,7 @@
                                    </div>
                                </div>
                            </div>
+
                            <div class="submit-section">
                                <button class="btn btn-primary submit-btn" type="submit" id="save">Save</button>
                            </div>

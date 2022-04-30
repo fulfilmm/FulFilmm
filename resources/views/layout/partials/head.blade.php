@@ -137,8 +137,10 @@
 
         {{--</script>--}}
         <link rel="stylesheet" href="{{url(asset('css/mdtimepicker.css'))}}">
-        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YOUR-API-KEY"></script>
-        <script src="{{url(asset('js/plugins/location-picker.js'))}}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.googlemap/1.5.1/jquery.googlemap.min.js" integrity="sha512-mTxKPggCYbMylBEGHSZqkUvemhyjRIshmudjw6fiAxjVbKMZUqqVH/ugpvnQgOU4c4C2UhrWpOXkBeXFQfr9kA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDv10DmQtcdycwGXl-PTxCQDrfrf13uRds"></script>
+        <link rel="stylesheet" href="{{url(asset("/css/font-awesome.min.css"))}}">
+        <script src="https://unpkg.com/location-picker/dist/location-picker.min.js"></script>
 
         {{--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>--}}
         <style>

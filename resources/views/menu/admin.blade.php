@@ -380,6 +380,8 @@
                    style="text-decoration: none">FOC Product</a></li>
             <li><a class="{{ Request::is('damage/index') ? 'active' : '' }}"
                    href="{{ route('damage.index') }}" style="text-decoration: none">Damage Product</a></li>
+            <li><a class="{{ Request::is('qty/alert') ? 'active' : '' }}"
+                   href="{{ route('alert.qty') }}" style="text-decoration: none">Quantity Alert</a></li>
             <li><a class="{{ Request::is('expired/product') ? 'active' : '' }}"
                    href="{{ route('expired.products') }}" style="text-decoration: none">Expired Product</a></li>
             <li><a class="{{ Request::is('expired/alert/product') ? 'active' : '' }}"
@@ -488,7 +490,8 @@
         <a href="#"><i class="la la-dollar"></i> <span>Sales</span> <span
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
-
+            <li><a class="{{ Request::is('shop') ? 'active' : '' }}"
+                   href="{{route('shop.index')}}" style="text-decoration: none">Shop</a></li>
             <li><a class="{{ Request::is('salezone') ? 'active' : '' }}"
                    href="{{route('salezone.index')}}" style="text-decoration: none">Sales Zone</a></li>
             <li><a class="{{ Request::is('region') ? 'active' : '' }}"

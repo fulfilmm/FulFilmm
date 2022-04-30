@@ -53,16 +53,17 @@
                   <table class="table table-nowrap table-hover my-5" id="price_table">
                       <thead>
                       <tr>
+                          <th>Item Code</th>
                           <th>Product Code</th>
                           <th>Product Name</th>
                           <th>Variants</th>
                           <th>Pricing Type</th>
+                          <th>Range</th>
+                          <th>Sale Price</th>
+                          <th>Unit</th>
                           <th>Sale Type</th>
                           <th>Region</th>
                           <th>Rule Description</th>
-                          <th>Range</th>
-                          <th>Unit</th>
-                          <th>Sale Price</th>
                           <th>Date Limit</th>
                           <th>Created Date</th>
                           <th>Action</th>
@@ -71,16 +72,19 @@
                       <tbody>
                       @foreach($price_lists as $item)
                           <tr>
-                              <td><strong>{{$item->variant->product_code}}</strong></td>
+                              <td><strong>{{$item->variant->item_code}}</strong></td>
+                              <td>@foreach($product as $key=>$val) @if($key==$item->variant->product_id) {{$val}} @endif @endforeach </td>
                               <td>{{$item->variant->product_name}}</td>
-                              <td>{{$item->variant->variant}}</td>
+                              <td>{{$item->variant->variant??$item->variant->product_name}}</td>
                               <td>{{$item->multi_price?'Multiple Price Rule':'Single Price Rule'}}</td>
+                              <td>{{$item->min}} - {{$item->max}}</td>
+                              <td>{{$item->price}}</td>
+                              <td>{{$item->unit->unit}}</td>
+
                               <td>{{$item->sale_type}}</td>
+
                               <td>{{$item->region->name}}</td>
                               <td>{{$item->rule}}</td>
-                              <td>{{$item->min}} - {{$item->max}}</td>
-                              <td>{{$item->unit->unit}}</td>
-                              <td>{{$item->price}}</td>
                               <td>{{$item->start_date?\Carbon\Carbon::parse($item->start_date)->toFormattedDateString():'N/A'}} - {{$item->end_date?\Carbon\Carbon::parse($item->end_date)->toFormattedDateString():'N/A'}}</td>
                               <td>{{$item->created_at->toFormattedDateString()}}</td>
                               <td style="min-width: 120px;">

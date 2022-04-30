@@ -148,7 +148,7 @@ class ProductController extends Controller
             $variation->product_id = $request->product_id;
             $variation->variant=$request->variant[$i];
             $variation->item_code =$request->variant[$i].'-'.$product->product_code;
-            $variation->additional_price=$request->additional_price[$i];
+            $variation->additional_price=$request->additional_price[$i]??0;
             $variation->save();
         }
         return redirect(route('products.show', $request->product_id));
@@ -179,13 +179,11 @@ class ProductController extends Controller
                $variation->image = $input['imagename'];
            }
         }
-        $variation->description = $request->description;
-        $variation->product_code = $request->product_code;
-        $variation->serial_no = $request->serial_no;
+        $variation->item_code = $request->item_code;
         $variation->variant = $request->variant;
-        $variation->pricing_type = $request->pricing_type;
+        $variation->additional_price=$request->additional_price;
         $variation->update();
-        return redirect(route('products.show', $variation->product_id))->with('success', 'Product Variant Updated');
+        return redirect('variant/list')->with('success', 'Product Variant Updated');
     }
 
     /**

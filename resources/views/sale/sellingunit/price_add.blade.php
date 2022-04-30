@@ -40,7 +40,7 @@
                                         <label for="pid">Variant</label>
                                         <select name="product_id[]" id="pid"  class="form-control select2 shadow" onchange="selectvariant(this.value)" multiple style="width: 100%" required>
                                             @foreach($products as $pd)
-                                                <option value="{{$pd->id}}" data-option="{{$pd->product_id}}">{{$pd->variant}}</option>
+                                                <option value="{{$pd->id}}" data-option="{{$pd->product_id}}">{{$pd->variant??$pd->product_name}}</option>
                                             @endforeach
                                         </select>
                                     </div>

@@ -88,17 +88,17 @@
                             <div class="col-sm-6 col-md-6" id="contact_div">
                                 <div class="form-group">
                                     <label for="client_id">Client <span class="text-danger">*</span></label>
-                                   <div class="input-group">
-                                       <select class="form-control" id="client_id">
-                                           <option value="">Select Client</option>
-                                           @foreach($allcustomers as $client)
-                                               <option value="{{$client->id}}" {{isset($order_data)?($client->id==$order_data->customer_id?'selected':''):($data!=null?($data[0]['client_id']==$client->id?'selected':''):'')}}>{{$client->name}}{{$client->region!=null?'('.$client->region->name.')':''}}</option>
-                                           @endforeach
-                                       </select>
-                                       <div class="input-group-append">
-                                           <button type="button" class="btn btn-white" data-toggle="modal" data-target="#add_contact"><i class="la la-plus"></i></button>
-                                       </div>
-                                   </div>
+                                    <div class="input-group">
+                                        <select class="form-control" id="client_id">
+                                            <option value="">Select Client</option>
+                                            @foreach($allcustomers as $client)
+                                                <option value="{{$client->id}}" {{isset($order_data)?($client->id==$order_data->customer_id?'selected':''):($data!=null?($data[0]['client_id']==$client->id?'selected':''):'')}}>{{$client->name}}{{$client->region!=null?'('.$client->region->name.')':''}}</option>
+                                            @endforeach
+                                        </select>
+                                        <div class="input-group-append">
+                                            <button type="button" class="btn btn-white" data-toggle="modal" data-target="#add_contact"><i class="la la-plus"></i></button>
+                                        </div>
+                                    </div>
                                     <span class="text-danger client_id_err"></span>
                                 </div>
                             </div>
@@ -164,9 +164,9 @@
                             <select name="" id="warehouse" class="form-control select2"
                                     onchange="giveSelection(this.value)">
                                 @foreach($warehouse as $item)
-                                  @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->warehouse_id==$item->id)
+                                    @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->warehouse_id==$item->id)
                                         <option value="{{$item->id}}">{{$item->name}}</option>
-                                      @endif
+                                    @endif
                                 @endforeach
                             </select>
                         </div>
@@ -219,10 +219,7 @@
                                                             Product Name
                                                         </option>
                                                         @foreach($aval_product as $item)
-                                                            <option value="{{$item->variant->id}}"
-                                                                    data-option="{{$item->warehouse_id}}">{{$item->variant->product_name}}
-                                                                ( {{$item->variant->variant}})
-                                                            </option>
+                                                            <option value="{{$item->variant->id}}" data-option="{{$item->warehouse_id}}">{{$item->variant->product_name}}({{$item->variant->variant}})</option>
                                                         @endforeach
                                                     </select>
                                                     <div class="input-group-append">
@@ -420,17 +417,30 @@
                                             $('#price_{{$order->id}}').val(price);
                                             var quantity = $('#quantity_{{$order->id}}').val();
                                             var dis_pro = $('#dis_pro{{$order->id}} option:selected').val();
-                                            var sub_total = quantity * price;
-                                            var amount = (dis_pro / 100) * sub_total;
-                                            var total = sub_total - amount;
-
-                                            $('#total_{{$order->id}}').val(total);
-                                            var sum = 0;
-                                            $('.total').each(function () {
-                                                sum += parseFloat($(this).val());
-                                            });
-                                            $('#total').val(sum);
-                                            @foreach($allcustomers as $client)
+                                            var warehouse=$('#warehouse option:selected').val();
+                                            @foreach($aval_product as $item)
+                                            if('{{$order->variant->id}}'=='{{$item->variant->id}}' && warehouse=='{{$item->warehouse_id}}' ){
+                                                if(parseInt('{{$item->available}}')>quantity){
+                                                    var sub_total = quantity * price;
+                                                    var amount = (dis_pro / 100) * sub_total;
+                                                    var total = sub_total - amount;
+                                                    $('#total_{{$order->id}}').val(total);
+                                                    var sum = 0;
+                                                    $('.total').each(function () {
+                                                        sum += parseFloat($(this).val());
+                                                    });
+                                                    $('#total').val(sum);
+                                                }else {
+                                                    swal({title: "Not Enough Quantity", text: '', type:
+                                                            "success"}).then(function(){
+                                                            $('#quantity_{{$order->id}}').val('{{$order->quantity}}');
+                                                            location.reload();
+                                                        }
+                                                    );
+                                                }
+                                            }
+                                            @endforeach
+                                                    @foreach($allcustomers as $client)
                                             if('{{$client->id}}'==customer_id){
                                                 if((parseFloat(sum)+parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')){
                                                     noti_alert();
@@ -580,6 +590,8 @@
                                                         console.log(data);
                                                         if (!$.isEmptyObject(data.out_of_stock)) {
                                                             swal('Empty Item', data.out_of_stock);
+                                                            $('#quantity_{{$order->id}}').val('{{$order->quantity}}');
+                                                            location.reload();
 
                                                         }
 
@@ -597,16 +609,31 @@
                                                 var quantity = $('#quantity_{{$order->id}}').val();
                                                 var price = $('#price_{{$order->id}}').val();
                                                 var dis_pro = $('#dis_pro{{$order->id}} option:selected').val();
-                                                var sub_total = quantity * price;
-                                                var amount = (dis_pro / 100) * sub_total;
-                                                var total = sub_total - amount;
-                                                $('#total_{{$order->id}}').val(total);
-                                                var sum = 0;
-                                                $('.total').each(function () {
-                                                    sum += parseFloat($(this).val());
-                                                });
-                                                $('#total').val(sum);
-                                                @foreach($allcustomers as $client)
+                                                var warehouse=$('#warehouse option:selected').val();
+                                                @foreach($aval_product as $item)
+                                                if('{{$order->variant->id}}'=='{{$item->variant->id}}' && warehouse=='{{$item->warehouse_id}}' ){
+                                                    if(parseInt('{{$item->available}}')>quantity){
+                                                        var sub_total = quantity * price;
+                                                        var amount = (dis_pro / 100) * sub_total;
+                                                        var total = sub_total - amount;
+                                                        $('#total_{{$order->id}}').val(total);
+                                                        var sum = 0;
+                                                        $('.total').each(function () {
+                                                            sum += parseFloat($(this).val());
+                                                        });
+                                                        $('#total').val(sum);
+                                                    }else {
+                                                        swal({title: "Not Enough Quantity", text: 'hljlj', type:
+                                                                "success"}).then(function(){
+                                                                $('#quantity_{{$order->id}}').val('{{$order->quantity}}');
+                                                                location.reload();
+                                                            }
+                                                        );
+                                                    }
+                                                }
+                                                @endforeach
+
+                                                        @foreach($allcustomers as $client)
                                                 if('{{$client->id}}'==customer_id){
                                                     if((parseFloat(sum)+parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')){
                                                         noti_alert();
@@ -627,33 +654,49 @@
                                                 var total = sub_total - amount;
                                                 var sell_unit = $('#unit{{$order->id}} option:selected').val();
                                                 var discount_pro = $('#dis_pro{{$order->id}} option:selected').val();
-                                                $.ajax({
-                                                    data: {
-                                                        "product_id": product,
-                                                        'quantity': quantity,
-                                                        'unit_price': price,
-                                                        "total": total,
-                                                        'sell_unit': sell_unit,
-                                                        'discount_pro': discount_pro
-                                                    },
-                                                    type: 'PUT',
-                                                    url: "{{route('invoice_items.update',$order->id)}}",
-                                                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                                                    success: function (data) {
-                                                        console.log(data);
-                                                        if (!$.isEmptyObject(data.out_of_stock)) {
+                                                var warehouse=$('#warehouse option:selected').val();
+                                                @foreach($aval_product as $item)
+                                                if('{{$order->variant->id}}'=='{{$item->variant->id}}' && warehouse=='{{$item->warehouse_id}}' ){
+                                                    if(parseInt('{{$item->available}}')>quantity){
+                                                        $.ajax({
+                                                            data: {
+                                                                "product_id": product,
+                                                                'quantity': quantity,
+                                                                'unit_price': price,
+                                                                "total": total,
+                                                                'sell_unit': sell_unit,
+                                                                'discount_pro': discount_pro
+                                                            },
+                                                            type: 'PUT',
+                                                            url: "{{route('invoice_items.update',$order->id)}}",
+                                                            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                                                            success: function (data) {
+                                                                console.log(data);
+                                                                if (!$.isEmptyObject(data.out_of_stock)) {
+                                                                    swal({title: "Not Enough Quantity", text: data.out_of_stock, type:
+                                                                            "success"}).then(function(){
+                                                                            $('#quantity_{{$order->id}}').val('{{$order->quantity}}');
+                                                                        }
 
-                                                                swal({title: "Not Enough Quantity", text: data.out_of_stock, type:
-                                                                        "success"}).then(function(){
-                                                                        location.reload();
-                                                                    }
+                                                                    );
 
-                                                            );
+                                                                }
 
-                                                        }
+                                                            }
+                                                        });
+                                                    }else {
+                                                        swal({title: "Not Enough Quantity", text: 'hljlj', type:
+                                                                "success"}).then(function(){
+                                                                $('#quantity_{{$order->id}}').val('{{$order->quantity}}');
+                                                                location.reload();
 
+
+                                                            }
+                                                        );
                                                     }
-                                                });
+                                                }
+                                                @endforeach
+
                                             });
                                         });
                                     </script>
@@ -727,54 +770,26 @@
         function noti_alert(){
 
         }
+        $(document).ready(function () {
+            $('select').select2();
+        });
 
         $('select').change(function () {
-                var tax = $('#tax option:selected').val();
-                var customer_id = $('#client_id option:selected').val();
-                var sum =$('#total').val();
-                @foreach($taxes as $tax)
-                if (tax == "{{$tax->id}}")
-                    var tax_rate ='{{$tax->rate}}';
-                        @endforeach
-                var tax_amount = parseFloat(sum) * (parseInt(tax_rate) / 100);
-                $('#taxt_amount').val(tax_amount);
-                // var discount = $('#discount').val();
-                var deli_fee = $('#deli_fee').val();
-                var on_off=$('input[name="amount_discount"]:checked').val();
-                var grand=(parseFloat(sum) + parseFloat(deli_fee) + parseFloat(tax_amount));
-                if(on_off==1){
-                    if('{{$amount_discount->isEmpty()}}'){
-                        $('#grand_total').val(grand);
-                        @foreach($allcustomers as $client)
-                        if('{{$client->id}}'==customer_id){
-                            if((parseFloat(grand)+parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')){
-                                noti_alert();
-                            }
-                        }
-                        @endforeach
-
-                    }else{
-                        @foreach($amount_discount as $item)
-                        if(sum > parseFloat('{{$item->min_amount}}') && sum < parseFloat('{{$item->max_amount}}')){
-                            var discount=(parseInt('{{$item->rate}}')/100)*sum;
-                            var sub_total=grand - discount;
-                            $('#dis_row').show();
-                            $('#discount').val(discount);
-                            $('#percentage').text('{{$item->rate}}'+'%');
-                            $('#grand_total').val(sub_total);
-                            @foreach($allcustomers as $client)
-                            if('{{$client->id}}'==customer_id){
-                                if((parseFloat(grand)+parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')){
-                                    noti_alert();
-                                }
-                            }
-                            @endforeach
-                        }
-                        @endforeach
-                    }
-                }else {
-                    $('#discount').val('0.0');
-                    $('#dis_row').hide();
+            var tax = $('#tax option:selected').val();
+            var customer_id = $('#client_id option:selected').val();
+            var sum =$('#total').val();
+            @foreach($taxes as $tax)
+            if (tax == "{{$tax->id}}")
+                var tax_rate ='{{$tax->rate}}';
+                    @endforeach
+            var tax_amount = parseFloat(sum) * (parseInt(tax_rate) / 100);
+            $('#taxt_amount').val(tax_amount);
+            // var discount = $('#discount').val();
+            var deli_fee = $('#deli_fee').val();
+            var on_off=$('input[name="amount_discount"]:checked').val();
+            var grand=(parseFloat(sum) + parseFloat(deli_fee) + parseFloat(tax_amount));
+            if(on_off==1){
+                if('{{$amount_discount->isEmpty()}}'){
                     $('#grand_total').val(grand);
                     @foreach($allcustomers as $client)
                     if('{{$client->id}}'==customer_id){
@@ -783,117 +798,148 @@
                         }
                     }
                     @endforeach
-                }
 
-            });
-        $('input[name="amount_discount"]').change(function () {
-                var customer_id = $('#client_id option:selected').val();
-                var tax = $('#tax option:selected').val();
-                var sum =$('#total').val();
-                @foreach($taxes as $tax)
-                if (tax == "{{$tax->id}}")
-                    var tax_rate ='{{$tax->rate}}';
-                        @endforeach
-                var tax_amount = parseFloat(sum) * (parseInt(tax_rate) / 100);
-                // var discount = $('#discount').val();
-                var deli_fee = $('#deli_fee').val();
-                var on_off=$('input[name="amount_discount"]:checked').val();
-                var grand=(parseFloat(sum) + parseFloat(deli_fee) + parseFloat(tax_amount));
-{{--                @dd($amount_discount)--}}
-                if(on_off==1){
-                    if('{{$amount_discount->isEmpty()}}'){
-                        swal('Empty Amount Discount', 'Amount Discount Empty', 'error');
-                        $('#grand_total').val(grand);
-                    }else{
-                        @foreach($amount_discount as $item)
-                        if(sum > parseFloat('{{$item->min_amount}}') && sum < parseFloat('{{$item->max_amount}}')){
-                            var discount=(parseInt('{{$item->rate}}')/100)*sum;
-                            var sub_total=grand - discount;
-                            $('#dis_row').show();
-                            $('#discount').val(discount);
-                            $('#percentage').text('{{$item->rate}}'+'%');
-                            $('#grand_total').val(sub_total);
+                }else{
+                    @foreach($amount_discount as $item)
+                    if(sum > parseFloat('{{$item->min_amount}}') && sum < parseFloat('{{$item->max_amount}}')){
+                        var discount=(parseInt('{{$item->rate}}')/100)*sum;
+                        var sub_total=grand - discount;
+                        $('#dis_row').show();
+                        $('#discount').val(discount);
+                        $('#percentage').text('{{$item->rate}}'+'%');
+                        $('#grand_total').val(sub_total);
+                        @foreach($allcustomers as $client)
+                        if('{{$client->id}}'==customer_id){
+                            if((parseFloat(grand)+parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')){
+                                noti_alert();
+                            }
                         }
                         @endforeach
                     }
-                }else {
+                    @endforeach
+                }
+            }else {
+                $('#discount').val('0.0');
+                $('#dis_row').hide();
+                $('#grand_total').val(grand);
+                @foreach($allcustomers as $client)
+                if('{{$client->id}}'==customer_id){
+                    if((parseFloat(grand)+parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')){
+                        noti_alert();
+                    }
+                }
+                @endforeach
+            }
 
-                    $('#discount').val('0.0');
-                    $('#dis_row').hide();
+        });
+        $('input[name="amount_discount"]').change(function () {
+            var customer_id = $('#client_id option:selected').val();
+            var tax = $('#tax option:selected').val();
+            var sum =$('#total').val();
+            @foreach($taxes as $tax)
+            if (tax == "{{$tax->id}}")
+                var tax_rate ='{{$tax->rate}}';
+                    @endforeach
+            var tax_amount = parseFloat(sum) * (parseInt(tax_rate) / 100);
+            // var discount = $('#discount').val();
+            var deli_fee = $('#deli_fee').val();
+            var on_off=$('input[name="amount_discount"]:checked').val();
+            var grand=(parseFloat(sum) + parseFloat(deli_fee) + parseFloat(tax_amount));
+            {{--                @dd($amount_discount)--}}
+            if(on_off==1){
+                if('{{$amount_discount->isEmpty()}}'){
+                    swal('Empty Amount Discount', 'Amount Discount Empty', 'error');
+                    $('#grand_total').val(grand);
+                }else{
+                    @foreach($amount_discount as $item)
+                    if(sum > parseFloat('{{$item->min_amount}}') && sum < parseFloat('{{$item->max_amount}}')){
+                        var discount=(parseInt('{{$item->rate}}')/100)*sum;
+                        var sub_total=grand - discount;
+                        $('#dis_row').show();
+                        $('#discount').val(discount);
+                        $('#percentage').text('{{$item->rate}}'+'%');
+                        $('#grand_total').val(sub_total);
+                    }
+                    @endforeach
+                }
+            }else {
+
+                $('#discount').val('0.0');
+                $('#dis_row').hide();
+                $('#grand_total').val(grand);
+                @foreach($allcustomers as $client)
+                if ('{{$client->id}}' == customer_id) {
+                    if ((parseFloat(grand) + parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')) {
+                        noti_alert();
+                    }
+                }
+                @endforeach
+            }
+
+        });
+        $('input').keyup(function () {
+            var tax = $('#tax option:selected').val();
+            var customer_id = $('#client_id optioin:selected').val();
+            var sum =$('#total').val();
+            @foreach($taxes as $tax)
+            if (tax == "{{$tax->id}}")
+                var tax_rate ='{{$tax->rate}}';
+                    @endforeach
+            var tax_amount = parseFloat(sum) * (parseInt(tax_rate) / 100);
+            // var discount = $('#discount').val();
+            var deli_fee = $('#deli_fee').val();
+            var on_off=$('input[name="amount_discount"]:checked').val();
+            var grand=(parseFloat(sum) + parseFloat(deli_fee) + parseFloat(tax_amount));
+            if(on_off==1){
+                if('{{$amount_discount->isEmpty()}}'){
                     $('#grand_total').val(grand);
                     @foreach($allcustomers as $client)
                     if ('{{$client->id}}' == customer_id) {
                         if ((parseFloat(grand) + parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')) {
-                            noti_alert();
+                            noti_alert()
                         }
                     }
                     @endforeach
-                }
-
-            });
-        $('input').keyup(function () {
-                var tax = $('#tax option:selected').val();
-                var customer_id = $('#client_id optioin:selected').val();
-                var sum =$('#total').val();
-                @foreach($taxes as $tax)
-                if (tax == "{{$tax->id}}")
-                    var tax_rate ='{{$tax->rate}}';
-                        @endforeach
-                var tax_amount = parseFloat(sum) * (parseInt(tax_rate) / 100);
-                // var discount = $('#discount').val();
-                var deli_fee = $('#deli_fee').val();
-                var on_off=$('input[name="amount_discount"]:checked').val();
-                var grand=(parseFloat(sum) + parseFloat(deli_fee) + parseFloat(tax_amount));
-                if(on_off==1){
-                    if('{{$amount_discount->isEmpty()}}'){
-                        $('#grand_total').val(grand);
+                }else{
+                    @foreach($amount_discount as $item)
+                    if(sum > parseFloat('{{$item->min_amount}}') && sum < parseFloat('{{$item->max_amount}}')){
+                        var discount=(parseInt('{{$item->rate}}')/100)*sum;
+                        var sub_total=grand - discount;
+                        $('#dis_row').show();
+                        $('#discount').val(discount);
+                        $('#percentage').text('{{$item->rate}}'+'%');
+                        $('#grand_total').val(sub_total);
                         @foreach($allcustomers as $client)
                         if ('{{$client->id}}' == customer_id) {
                             if ((parseFloat(grand) + parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')) {
-                               noti_alert()
+                                noti_alert()
                             }
                         }
                         @endforeach
-                    }else{
-                        @foreach($amount_discount as $item)
-                        if(sum > parseFloat('{{$item->min_amount}}') && sum < parseFloat('{{$item->max_amount}}')){
-                            var discount=(parseInt('{{$item->rate}}')/100)*sum;
-                            var sub_total=grand - discount;
-                            $('#dis_row').show();
-                            $('#discount').val(discount);
-                            $('#percentage').text('{{$item->rate}}'+'%');
-                            $('#grand_total').val(sub_total);
-                            @foreach($allcustomers as $client)
-                            if ('{{$client->id}}' == customer_id) {
-                                if ((parseFloat(grand) + parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')) {
-                                    noti_alert()
-                                }
-                            }
-                            @endforeach
-                        }
-                        @endforeach
-                    }
-                }else {
-                    $('#percentage').hide();
-                    $('#dis_row').hide();
-                    $('#grand_total').val(grand);
-                    @foreach($allcustomers as $client)
-                    if ('{{$client->id}}' == customer_id) {
-                        if ((parseFloat(grand) + parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')) {
-                            @foreach($allcustomers as $client)
-                            if ('{{$client->id}}' == customer_id) {
-                                if ((parseFloat(grand) + parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')) {
-                                    noti_alert();
-                                }
-                            }
-                            @endforeach
-                        }
                     }
                     @endforeach
                 }
+            }else {
+                $('#percentage').hide();
+                $('#dis_row').hide();
+                $('#grand_total').val(grand);
+                @foreach($allcustomers as $client)
+                if ('{{$client->id}}' == customer_id) {
+                    if ((parseFloat(grand) + parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')) {
+                        @foreach($allcustomers as $client)
+                        if ('{{$client->id}}' == customer_id) {
+                            if ((parseFloat(grand) + parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')) {
+                                noti_alert();
+                            }
+                        }
+                        @endforeach
+                    }
+                }
+                @endforeach
+            }
 
 
-            });
+        });
 
         $(document).ready(function () {
             $('#product_code').hide();
@@ -924,11 +970,11 @@
 
             });
         });
-        $(document).ready(function () {
-
-            $('select').select2();
-
-        });
+        // $(document).ready(function () {
+        //
+        //     $('select').select2();
+        //
+        // });
 
         $(document).ready(function () {
             $('#client_id').change(function () {
@@ -1184,54 +1230,54 @@
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: 'Confirm!'
                 }).then(function(){
-                $.ajax({
-                    data: {
-                        'discount': discount,
-                        'total': total,
-                        'tax_id': tax_id,
-                        'tax_amount': tax_amount,
-                        'title': title,
-                        "client_id": client_id,
-                        'client_email': client_email,
-                        'inv_date': inv_date,
-                        "due_date": due_date,
-                        'client_address': client_address,
-                        "more_info": more_info,
-                        'inv_grand_total': inv_grand_total,
-                        'bill_address': bill_address,
-                        "save_type": action_type,
-                        'status': status,
-                        'order_id': order_id,
-                        'payment_method': payment,
-                        'invoice_type': inv_type,
-                        'delivery_fee': deli_fee,
-                        'inv_type':"{{$type}}",
-                        'warehouse_id':warehouse,
-                        'deli_fee_include':delivery_onoff,
-                        'zone_id':zone,
-                        'region_id':region
-                    },
-                    type: 'POST',
-                    url: "{{route('invoices.store')}}",
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    success: function (data) {
-                        console.log(data);
-                        if (!$.isEmptyObject(data.orderempty)) {
-                            swal('Empty Item', 'You invoice does not have any item.', 'error');
-
-                        } else if ($.isEmptyObject(data.error)) {
+                    $.ajax({
+                        data: {
+                            'discount': discount,
+                            'total': total,
+                            'tax_id': tax_id,
+                            'tax_amount': tax_amount,
+                            'title': title,
+                            "client_id": client_id,
+                            'client_email': client_email,
+                            'inv_date': inv_date,
+                            "due_date": due_date,
+                            'client_address': client_address,
+                            "more_info": more_info,
+                            'inv_grand_total': inv_grand_total,
+                            'bill_address': bill_address,
+                            "save_type": action_type,
+                            'status': status,
+                            'order_id': order_id,
+                            'payment_method': payment,
+                            'invoice_type': inv_type,
+                            'delivery_fee': deli_fee,
+                            'inv_type':"{{$type}}",
+                            'warehouse_id':warehouse,
+                            'deli_fee_include':delivery_onoff,
+                            'zone_id':zone,
+                            'region_id':region
+                        },
+                        type: 'POST',
+                        url: "{{route('invoices.store')}}",
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        success: function (data) {
                             console.log(data);
-                            swal('Invoice Crete', 'Invoice Create Success', 'success');
+                            if (!$.isEmptyObject(data.orderempty)) {
+                                swal('Empty Item', 'You invoice does not have any item.', 'error');
 
-                            window.location = data.url;
-                        } else {
-                            $.each(data.error, function (key, value) {
-                                console.log(key);
-                                $('.' + key + '_err').text(value);
-                            });
+                            } else if ($.isEmptyObject(data.error)) {
+                                console.log(data);
+                                swal('Invoice Crete', 'Invoice Create Success', 'success');
+
+                                window.location = data.url;
+                            } else {
+                                $.each(data.error, function (key, value) {
+                                    console.log(key);
+                                    $('.' + key + '_err').text(value);
+                                });
+                            }
                         }
-                    }
-                });
+                    });
                 }).catch(function(reason){
                     alert("The alert was dismissed by the user: "+reason);
                 });

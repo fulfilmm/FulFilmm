@@ -15,9 +15,6 @@
                         <li class="breadcrumb-item active">FOC</li>
                     </ul>
                 </div>
-                <div class="col-auto float-right ml-auto">
-                    <a href="{{route("products.create")}}" class="btn btn-white btn-sm float-right mr-3 border-dark rounded-pill" style="box-shadow: white"><i class="fa fa-plus mr-2"></i>Add Product</a>
-                </div>
             </div>
         </div>
         <!-- /Page Header -->

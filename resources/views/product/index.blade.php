@@ -95,35 +95,35 @@
                                     <a href="{{route("products.show",$product->id)}}" class="btn btn-warning btn-sm"><i class="la la-eye"></i></a>
                                     <a class="btn btn-white btn-sm" href="{{route("products.edit",$product->id)}}" ><i class="fa fa-pencil"></i> </a>
                                     <a class="btn btn-secondary btn-sm" href="{{url("product/duplicate/$product->id")}}" ><i class="fa fa-copy"></i> </a>
-                                    <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#delete_product{{$product->id}}"><i class="fa fa-trash-o"></i> </a>
+                                    {{--<a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#delete_product{{$product->id}}"><i class="fa fa-trash-o"></i> </a>--}}
 
-                                    <div class="modal fade" id="delete_product{{$product->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Delete Product</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <form action="{{route("products.destroy",$product->id)}}" method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <div class="modal-body">
-                                                        <div class="text-center">
-                                                <span>
-                                                    Are you sure delete "{{$product->name}}"?
-                                              </span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="text-center">
-                                                        <button class="btn btn-outline-primary">Cancel</button>
-                                                        <button type="submit" class="btn btn-danger  my-2">Delete</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    {{--<div class="modal fade" id="delete_product{{$product->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">--}}
+                                        {{--<div class="modal-dialog" role="document">--}}
+                                            {{--<div class="modal-content">--}}
+                                                {{--<div class="modal-header">--}}
+                                                    {{--<h5 class="modal-title" id="exampleModalLabel">Delete Product</h5>--}}
+                                                    {{--<button type="button" class="close" data-dismiss="modal" aria-label="Close">--}}
+                                                        {{--<span aria-hidden="true">&times;</span>--}}
+                                                    {{--</button>--}}
+                                                {{--</div>--}}
+                                                {{--<form action="{{route("products.destroy",$product->id)}}" method="POST">--}}
+                                                    {{--@csrf--}}
+                                                    {{--@method('DELETE')--}}
+                                                    {{--<div class="modal-body">--}}
+                                                        {{--<div class="text-center">--}}
+                                                {{--<span>--}}
+                                                    {{--Are you sure delete "{{$product->name}}"?--}}
+                                              {{--</span>--}}
+                                                        {{--</div>--}}
+                                                    {{--</div>--}}
+                                                    {{--<div class="text-center">--}}
+                                                        {{--<button class="btn btn-outline-primary">Cancel</button>--}}
+                                                        {{--<button type="submit" class="btn btn-danger  my-2">Delete</button>--}}
+                                                    {{--</div>--}}
+                                                {{--</form>--}}
+                                            {{--</div>--}}
+                                        {{--</div>--}}
+                                    {{--</div>--}}
                                 </td>
                             </tr>
                             <tr id="variant{{$product->id}}" class="collapse multi-collapse">

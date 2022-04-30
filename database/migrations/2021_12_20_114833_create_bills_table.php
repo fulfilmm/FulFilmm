@@ -31,6 +31,8 @@ class CreateBillsTable extends Migration
             $table->bigInteger('emp_id')->unsigned();
             $table->string('invoice_id')->nullable();
             $table->dateTime('inv_date')->nullable();
+            $table->string('po_id')->nullable();
+            $table->text('attachment')->nullable();
             $table->string('category')->nullable();
             $table->index(['id','vendor_id']);
             $table->bigInteger('branch_id')->unsigned();

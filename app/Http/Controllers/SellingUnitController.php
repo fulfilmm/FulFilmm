@@ -115,7 +115,8 @@ class SellingUnitController extends Controller
             $price_lists=product_price::with('unit','variant','region')->where('branch_id',Auth::guard('employee')->user()->office_branch_id)->get();
             $region=Region::where('id',Auth::guard('employee')->user()->region_id)->pluck('name','id')->all();
         }
-        return view('sale.sellingunit.price',compact('price_lists','units','region'));
+        $product=product::all()->pluck('product_code','id')->all();
+        return view('sale.sellingunit.price',compact('price_lists','units','region','product'));
     }
     public function price_add(){
         $units=SellingUnit::all();

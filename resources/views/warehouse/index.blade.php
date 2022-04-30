@@ -31,12 +31,12 @@
                     <thead>
                     <tr>
                         <th>ID</th>
+                        <th scope="col">Valuation</th>
                         <th scope="col">Name</th>
                         <th scope="col">Description</th>
                         <th scope="col">Address</th>
                         <th scope="col">Mobile Warehouse</th>
                         <th scope="col">Main Warehouse</th>
-                        <th scope="col">Valuation</th>
                         <th scope="col">Branch</th>
                         <th scope="col">Action</th>
                     </tr>
@@ -45,17 +45,17 @@
                     @foreach($warehouses as $warehouse)
                         <tr>
                             <td style="min-width: 150px;">{{$warehouse->warehouse_id}}</td>
+                            <td style="min-width: 150px;">@foreach($warehouse_qty as $key=>$val)
+                                    @if($key==$warehouse->id)
+                                        {{$val}}
+                                    @endif
+                                @endforeach
+                            </td>
                             <td style="min-width: 150px;">{{$warehouse->name}}</td>
                             <td style="min-width: 150px;">{{$warehouse->description}}</td>
                             <td style="min-width: 150px;">{{$warehouse->address}}</td>
                             <td style="min-width: 150px;">{{$warehouse->mobile_warehouse?'Yes':'No'}}</td>
                             <td style="min-width: 150px;">{{$warehouse->main_warehouse->name??'N/A'}}</td>
-                            <td style="min-width: 150px;">@foreach($warehouse_qty as $key=>$val)
-                                    @if($key==$warehouse->id)
-                                        {{$val}}
-                                    @endif
-                                    @endforeach
-                            </td>
                             <td style="min-width: 150px;">{{$warehouse->branch->name??'N/A'}}</td>
                             <td style="min-width: 150px;">
                                <div class="row">

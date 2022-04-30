@@ -72,7 +72,7 @@
             html += '<div class="col">';
             html += '<div class="form-group mb-3">';
             html += '<div class="input-group">';
-            html += '<input type="file" name="picture[]" class="form-control m-input" autocomplete="off" required>';
+            html += '<input type="file" name="picture[]" class="form-control m-input" autocomplete="off">';
             html += '</div>';
             html += '</div>';
             html += '</div>';

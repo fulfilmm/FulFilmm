@@ -103,6 +103,7 @@ class BillController extends Controller
         $bill->category=$request->category;
         $bill->inv_date=$request->inv_date;
         $bill->invoice_id=$request->invoice_id;
+        $bill->po_id=$request->po_id;
         $bill->branch_id=Auth::guard('employee')->user()->office_branch_id;
         $bill->save();
         $bill_items = BillItem::where('creation_id', $request->creation_id)->get();

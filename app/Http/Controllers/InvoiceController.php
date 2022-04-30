@@ -171,7 +171,14 @@ class InvoiceController extends Controller
                   ->where('mobile_warehouse',0)
                   ->get();
           }
-            $aval_product = Stock::with('variant')->where('available', '>', 0)->get();
+            $aval_product =[];
+            $in_stock=Stock::with('variant')->where('available', '>', 0)->get();
+            foreach ($in_stock as $inhand){
+                if($inhand->variant->enable==1){
+                    array_push($aval_product,$inhand);
+                }
+            }
+
             $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))
                 ->whereDate('end_date','>=',date('Y-m-d'))
                 ->where('sale_type','Whole Sale')
@@ -194,7 +201,13 @@ class InvoiceController extends Controller
         $Auth=Auth::guard('employee')->user();
         if($Auth->office_branch_id!=null && $Auth->region_id!=null){
             $allcustomers = Customer::where('branch_id',$Auth->office_branch_id)->where('region_id',$Auth->region_id)->get();
-            $aval_product=Stock::with('variant')->where('available','>',0)->get();
+            $aval_product =[];
+            $in_stock=Stock::with('variant')->where('available', '>', 0)->get();
+            foreach ($in_stock as $inhand){
+                if($inhand->variant->enable==1){
+                    array_push($aval_product,$inhand);
+                }
+            }
 //        foreach ($pd as $product){
 //
 //            if($pd!=null){
@@ -271,8 +284,6 @@ class InvoiceController extends Controller
             'client_email'=>'required',
             'inv_date'=>'required',
             'due_date'=>'required',
-            'client_address'=>'required',
-            'bill_address'=>'required',
             'payment_method'=>'required',
 
         ]);

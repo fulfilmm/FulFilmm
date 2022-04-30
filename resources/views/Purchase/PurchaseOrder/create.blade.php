@@ -361,13 +361,8 @@
                                         </select>
                                         <input type="hidden" class="form-control" id="tax_amount" name="tax_amount"
                                                value="0"></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="4" class="text-right">Additional Cost</td>
-                                    <td colspan="2"><input type="number" id="add_cost" class="form-control"
-                                                           name="additional_cost" value="0"></td>
-                                    <td></td>
+                                    <td><input type="hidden" id="add_cost" class="form-control"
+                                               name="additional_cost" value="0"></td>
                                 </tr>
                                 <tr>
                                     <td colspan="4" class="text-right">Grand Total</td>

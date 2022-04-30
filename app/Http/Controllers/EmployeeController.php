@@ -12,6 +12,7 @@ use App\Models\Region;
 use App\Models\Warehouse;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
@@ -65,9 +66,15 @@ class EmployeeController extends Controller
         $departments = Department::all()->pluck('name', 'id');
         $roles = Role::all()->pluck('name', 'id');
         $office = OfficeBranch::all();
-        $warehouse = Warehouse::all();
-        $all_employee = Employee::all()->pluck('name', 'id')->all();
-        $region=Region::all();
+        $all_employee = Employee::all();
+        $auth = Auth::guard('employee')->user();
+        if ($auth->role->name == 'Super Admin' || $auth->role->name == 'CEO') {
+            $warehouse = Warehouse::all();
+            $region = Region::all();
+        } else {
+            $warehouse = Warehouse::where('branch_id', $auth->office_branch_id)->get();
+            $region = Region::where('branch_id', $auth->office_branch_id)->get();
+        }
 
         return view('employee.create', compact(
             'departments',
@@ -224,7 +231,7 @@ class EmployeeController extends Controller
         $departments = Department::all()->pluck('name', 'id');
         $roles = Role::all()->pluck('name', 'id');
         $office = OfficeBranch::all();
-        $all_employee = Employee::all()->pluck('name', 'id')->all();
+        $all_employee = Employee::all();
         $warehouse=Warehouse::all();
         $region=Region::all();
 

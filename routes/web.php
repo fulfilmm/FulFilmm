@@ -213,6 +213,7 @@ Route::middleware(['auth:employee'])->group(function () {
     Route::post('expense/update/{id}',[TransactionController::class,'expense_update'])->name('expense.update');
     Route::get('inv/cancel/{id}',[InvoiceController::class,'cancel'])->name('invoice.cancel');
     Route::resource('sale_return',\App\Http\Controllers\SaleReturnController::class);
+    //new route not in middleware
     Route::resource('salezone',\App\Http\Controllers\SaleZoneController::class);
     Route::get('daily/report',[ReportController::class,'daily'])->name('daily.report');
     Route::resource('region',\App\Http\Controllers\RegionController::class);
@@ -222,6 +223,9 @@ Route::middleware(['auth:employee'])->group(function () {
     Route::get('mobile/warehouse/return',[\App\Http\Controllers\StockReturnController::class,'mobilereturn'])->name('stockreturn.mobile');
     Route::resource('moneytransfer',\App\Http\Controllers\CashTransferRecordController::class);
     Route::get('variant/list',[ProductController::class,'itemlist'])->name('item.list');
+    Route::resource('shop',\App\Http\Controllers\ShopRegister::class);
+    Route::resource('saleway',\App\Http\Controllers\SaleWayController::class);
+    Route::get('qty/alert',[StockTransactionController::class,'qtyalert'])->name('alert.qty');
 
 
 
