@@ -82,6 +82,9 @@
                                                 </label>
                                             </div>
                                         </div>
+                                        <div class="col">
+                                            <a href="{{url('password/reset')}}">Reset Password</a>
+                                        </div>
 
                                     </div>
                                     <div class="mb-3">

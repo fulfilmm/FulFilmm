@@ -15,10 +15,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Testing\Fluent\Concerns\Has;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\EmployeeExport;
 use App\Imports\EmployeeImport;
 use Exception;
+use Psy\Util\Str;
 use Spatie\Permission\Models\Role;
 
 class EmployeeController extends Controller
@@ -79,7 +82,7 @@ class EmployeeController extends Controller
         $departments = Department::all()->pluck('name', 'id');
         $roles = Role::all()->pluck('name', 'id');
         $office = OfficeBranch::all();
-        $all_employee = Employee::all()->pluck('name', 'id')->all();
+        $all_employee = Employee::all();
         $auth = Auth::guard('employee')->user();
         if ($auth->role->name == 'Super Admin' || $auth->role->name == 'CEO') {
             $warehouse = Warehouse::all();
@@ -245,7 +248,7 @@ class EmployeeController extends Controller
         $departments = Department::all()->pluck('name', 'id');
         $roles = Role::all()->pluck('name', 'id');
         $office = OfficeBranch::all();
-        $all_employee = Employee::all()->pluck('name', 'id')->all();
+        $all_employee = Employee::all();
         $auth = Auth::guard('employee')->user();
         if ($auth->role->name == 'Super Admin' || $auth->role->name == 'CEO') {
             $warehouse = Warehouse::all();
@@ -256,9 +259,9 @@ class EmployeeController extends Controller
         }
 
         return view('employee.edit', compact(
+            'employee',
             'departments',
             'roles',
-            'employee',
             'office',
             'all_employee',
             'warehouse',
@@ -340,5 +343,51 @@ class EmployeeController extends Controller
             $emp->update();
         }
         return redirect('/')->with('success', 'Password Change Successful!');
+    }
+    public function reset_form(){
+        return view('settings.passwordreset');
+    }
+    public function password_reset(Request $request){
+        $this->validate($request,['emp'=>'required']);
+        $pass=\Illuminate\Support\Str::random(6);
+        $employee=Employee::where('empid',$request->emp)->first();
+        if($employee==null){
+            $emp=Employee::where('email',$request->emp)->first();
+           if($emp!=null){
+               $emp->password=Hash::make($pass);
+               $details = array(
+                   'email' => $emp->email,
+                   'subject' => 'Reset Password',
+                   'clientname' => $emp->name,
+                   'password' => $pass,
+               );
+               Mail::send('customerprotal.login_access', $details, function ($message) use ($details) {
+                   $message->from('cincin.com@gmail.com', 'Cloudark');
+                   $message->to($details['email']);
+                   $message->subject($details['subject']);
+
+               });
+               $emp->update();
+               return redirect()->back()->with('reset','Password reset successful!A new password will be sent to your email!Please check your email.');
+           }else{
+               return redirect()->back()->with('empty',"Sorry,Does not match any employee. Try again");
+           }
+        }else{
+            $employee->password=Has::make($pass);
+            $details = array(
+                'email' => $employee->email,
+                'subject' => 'Reset Password',
+                'clientname' => $employee->name,
+                'password' => $pass,
+            );
+            Mail::send('customerprotal.login_access', $details, function ($message) use ($details) {
+                $message->from('cincin.com@gmail.com', 'Cloudark');
+                $message->to($details['email']);
+                $message->subject($details['subject']);
+
+            });
+            $employee->update();
+            return redirect()->back()->with('reset','Password reset successful!A new password will be sent to your email!Please check your email.');
+        }
     }
 }
