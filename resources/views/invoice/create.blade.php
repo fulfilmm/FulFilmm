@@ -432,7 +432,7 @@
                                                     $('#total').val(sum);
                                                 }else {
                                                     swal({title: "Not Enough Quantity", text: '', type:
-                                                            "success"}).then(function(){
+                                                            "warning"}).then(function(){
                                                         $('#quantity_{{$order->id}}').val('{{$order->quantity}}');
                                                         location.reload();
                                                         }
@@ -623,8 +623,8 @@
                                                         });
                                                         $('#total').val(sum);
                                                     }else {
-                                                        swal({title: "Not Enough Quantity", text: 'hljlj', type:
-                                                                "success"}).then(function(){
+                                                        swal({title: "Not Enough Quantity", text: '', type:
+                                                                "warning"}).then(function(){
                                                             $('#quantity_{{$order->id}}').val('{{$order->quantity}}');
                                                             location.reload();
                                                             }
@@ -685,7 +685,7 @@
                                                             }
                                                         });
                                                     }else {
-                                                        swal({title: "Not Enough Quantity", text: 'hljlj', type:
+                                                        swal({title: "Not Enough Quantity", text: '', type:
                                                                 "success"}).then(function(){
                                                                 $('#quantity_{{$order->id}}').val('{{$order->quantity}}');
                                                             location.reload();
