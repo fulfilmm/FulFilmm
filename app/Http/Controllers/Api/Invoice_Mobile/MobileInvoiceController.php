@@ -143,9 +143,9 @@ class MobileInvoiceController extends Controller
             $type='Retail Sale';
             $Auth=Auth::guard('api')->user();
             if(Auth::guard('api')->user()->mobile_seller==1){
-                $warehouse =Warehouse::where('branch_id', $Auth->office_branch_id)->where('mobile_warehouse',1)->get();
+                $warehouse =Warehouse::where('branch_id', $Auth->office_branch_id)->where('mobile_warehouse',1)->where('id',$Auth->warehouse_id)->first();
             }else{
-                $warehouse =Warehouse::where('branch_id', $Auth->office_branch_id)->where('mobile_warehouse',0)->get();
+                $warehouse =Warehouse::where('branch_id', $Auth->office_branch_id)->where('mobile_warehouse',0)->where('id',$Auth->warehouse_id)->first();
             }
             $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))
                 ->whereDate('end_date','>=',date('Y-m-d'))
