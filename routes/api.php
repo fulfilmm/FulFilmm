@@ -44,9 +44,11 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
     Route::resource("api_invoices",InvoiceController::class);
 //    Route::apiResource("invoice" , InvoiceDataController::class);
 
-    Route::apiResource("mobile_invoice", MobileInvoiceController::class);
+    Route::resource("mobile_invoice", MobileInvoiceController::class);
+    Route::get('retail/invoice' , [App\Http\Controllers\Api\Invoice_Mobile\MobileInvoiceController::class,'retail']);
 
-   
+
+
 //    Route::resource("invoice_items",InvoiceItemController::class);
 //    Route::get("invoice/sendmail/{id}",[InvoiceController::class,'sending_form'])->name('invoice.sendmail');
 //    Route::post("invoice/mail/send",[InvoiceController::class,'email'])->name('send');
