@@ -91,7 +91,7 @@ class MobileInvoiceController extends Controller
                     ->first();
             }
             $aval_product =[];
-            $in_stock=Stock::with('variant')->where('available', '>', 0)->get();
+            $in_stock=Stock::with('variant')->where('available', '>', 0)->where('warehouse_id',$Auth->warehouse_id)->get();
             foreach ($in_stock as $inhand){
                 if($inhand->variant->enable==1){
                     array_push($aval_product,$inhand);
@@ -117,7 +117,7 @@ class MobileInvoiceController extends Controller
         if($Auth->office_branch_id!=null && $Auth->region_id!=null){
             $allcustomers = Customer::where('branch_id',$Auth->office_branch_id)->where('region_id',$Auth->region_id)->get();
             $aval_product =[];
-            $in_stock=Stock::with('variant')->where('available', '>', 0)->get();
+            $in_stock=Stock::with('variant')->where('available', '>', 0)->where('warehouse_id',$Auth->warehouse_id)->get();
             foreach ($in_stock as $inhand){
                 if($inhand->variant->enable==1){
                     array_push($aval_product,$inhand);
