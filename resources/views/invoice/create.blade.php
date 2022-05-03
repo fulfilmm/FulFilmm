@@ -644,7 +644,8 @@
                                                                     'unit_price': price,
                                                                     "total": total,
                                                                     'sell_unit': sell_unit,
-                                                                    'discount_pro': discount_pro
+                                                                    'discount_pro': discount_pro,
+                                                                    'warehouse_id':warehouse,
                                                                 },
                                                                 type: 'PUT',
                                                                 url: "{{route('invoice_items.update',$order->id)}}",
@@ -751,7 +752,8 @@
                                                                     'unit_price': price,
                                                                     "total": total,
                                                                     'sell_unit': sell_unit,
-                                                                    'discount_pro': discount_pro
+                                                                    'discount_pro': discount_pro,
+                                                                    'warehouse_id':warehouse,
                                                                 },
                                                                 type: 'PUT',
                                                                 url: "{{route('invoice_items.update',$order->id)}}",
