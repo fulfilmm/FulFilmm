@@ -177,7 +177,11 @@ class InvoiceItemController extends Controller
 //        dd($request->all());
         $items = OrderItem::where('id', $id)->first();
         $stock_aval=Stock::where('variant_id',$items->variant_id)->first();
-        if($request->quantity <=$stock_aval->available) {
+        $unit=SellingUnit::where('id',$request->sell_unit)->first();
+        $qty=$request->quantity;
+        $aval=$stock_aval->available/$unit->unit_convert_rate;
+        if($qty<=$aval) {
+//            dd('hello');
             $items->quantity = $request->quantity;
             $items->unit_price = $request->unit_price;
             $items->total = $request->total;
