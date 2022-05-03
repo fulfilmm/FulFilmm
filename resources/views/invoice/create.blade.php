@@ -758,19 +758,6 @@
                                                                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                                                                 success: function (data) {
                                                                     console.log(data);
-                                                                    if (!$.isEmptyObject(data.out_of_stock)) {
-                                                                        swal({
-                                                                            title: "Not Enough Quantity",
-                                                                            text: data.out_of_stock,
-                                                                            type:
-                                                                                "warning"
-                                                                        }).then(function () {
-                                                                                $('#quantity_{{$order->id}}').val('{{$order->quantity}}');
-                                                                                location.reload();
-                                                                            }
-                                                                        );
-
-                                                                    }
 
                                                                 }
                                                             });
