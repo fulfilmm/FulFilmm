@@ -9,7 +9,7 @@
     {{-- <a href={{url('/employees/export')}}><button  class="btn btn-primary ml-2">Export</button></a> --}}
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-nowrap table-hover datatable mb-0 ">
+            <table class="table table-nowrap table-hover  mb-0 ">
                 <thead>
                 <tr>
                     <th>Name</th>

@@ -7,7 +7,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-nowrap datatable mb-0 table-hover">
+            <table class="table table-nowrap  mb-0 table-hover">
                 <thead>
                     <tr>
                         <th>Name</th>
