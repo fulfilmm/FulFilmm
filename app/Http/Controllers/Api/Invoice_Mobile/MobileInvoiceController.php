@@ -83,12 +83,12 @@ class MobileInvoiceController extends Controller
 
             if(Auth::guard('api')->user()->mobile_seller==1){
                 $warehouse =Warehouse::where('branch_id', $Auth->office_branch_id)
-                    ->where('mobile_warehouse',1)
-                    ->get();
+                    ->where('mobile_warehouse',1)->where('id',$Auth->warehouse_id)
+                    ->first();
             }else{
                 $warehouse =Warehouse::where('branch_id', $Auth->office_branch_id)
-                    ->where('mobile_warehouse',0)
-                    ->get();
+                    ->where('mobile_warehouse',0)->where('id',$Auth->warehouse_id)
+                    ->first();
             }
             $aval_product =[];
             $in_stock=Stock::with('variant')->where('available', '>', 0)->get();
@@ -143,10 +143,12 @@ class MobileInvoiceController extends Controller
             $type='Retail Sale';
             $Auth=Auth::guard('api')->user();
             if(Auth::guard('api')->user()->mobile_seller==1){
-                $warehouse =Warehouse::where('branch_id', $Auth->office_branch_id)->where('mobile_warehouse',1)->where('id',$Auth->warehouse_id)->first();
+                $warehouse =Warehouse::where('mobile_warehouse',1)->where('id',$Auth->warehouse_id)->first();
             }else{
-                $warehouse =Warehouse::where('branch_id', $Auth->office_branch_id)->where('mobile_warehouse',0)->where('id',$Auth->warehouse_id)->first();
+                $warehouse =Warehouse::where('mobile_warehouse',0)->where('id',$Auth->warehouse_id)->first();
+
             }
+
             $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))
                 ->whereDate('end_date','>=',date('Y-m-d'))
                 ->where('sale_type','Retail Sale')
