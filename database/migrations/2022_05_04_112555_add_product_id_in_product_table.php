@@ -13,9 +13,9 @@ class AddProductIdInProductTable extends Migration
      */
     public function up()
     {
-//        Schema::table('products', function (Blueprint $table) {
-//            $table->bigInteger('product_id')->unsigned();
-//        });
+        Schema::table('products', function (Blueprint $table) {
+            $table->drop('product_id')->unsigned();
+        });
     }
 
     /**
