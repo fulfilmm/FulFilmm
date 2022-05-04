@@ -44,7 +44,8 @@ class TransactionController extends Controller
         $employees = Employee::all()->pluck('name', 'id')->all();
         $invoice = Invoice::all()->pluck('invoice_id', 'id')->all();
         $bill = Bill::all()->pluck('bill_id', 'id')->all();
-        return view('transaction.index', compact('transactions', 'employees', 'invoice', 'bill'));
+        $category=TransactionCategory::all();
+        return view('transaction.index', compact('transactions', 'employees', 'invoice', 'bill','category'));
     }
 
     /**
@@ -80,8 +81,9 @@ class TransactionController extends Controller
             $bill=Bill::where('branch_id',$auth->office_branch_id)->get();
         }
         $coa=ChartOfAccount::all();
+        $category = TransactionCategory::where('type', 0)->get();
 
-        return view('transaction.Expense.index', compact('expenses','employees','coa','bill'));
+        return view('transaction.Expense.index', compact('expenses','employees','coa','bill','category'));
     }
 
     public function revenue_index()
