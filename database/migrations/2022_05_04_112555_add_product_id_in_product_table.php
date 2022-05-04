@@ -27,7 +27,7 @@ class AddProductIdInProductTable extends Migration
     public function down()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->drop('product_id');
+            
         });
     }
 }
