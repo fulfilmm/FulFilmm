@@ -533,11 +533,23 @@ class CustomerController extends Controller
         }
     }
     public function supplier(){
-        $suppliers=Customer::where('customer_type','Supplier')->get();
+        $auth=Auth::guard('employee')->user();
+        if($auth->role->name=='CEO'||$auth->role->name=='Super Admin')
+        {
+            $suppliers = Customer::withTrashed()->where('customer_type','Supplier')->paginate(12);
+        }else{
+            $suppliers = Customer::withTrashed()->where('customer_type','Supplier')->where('region_id',$auth->region_id)->paginate(12);
+        }
         return view('customer.supplier',compact('suppliers'));
     }
     public function customer(){
-        $customers=Customer::where('main_customer',1)->get();
+        $auth=Auth::guard('employee')->user();
+        if($auth->role->name=='CEO'||$auth->role->name=='Super Admin')
+        {
+            $customers = Customer::withTrashed()->paginate(12);
+        }else{
+            $customers = Customer::withTrashed()->where('region_id',$auth->region_id)->paginate(12);
+        }
         return view('customer.customer',compact('customers'));
     }
 
