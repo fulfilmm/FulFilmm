@@ -14,7 +14,8 @@ class AddProductIdInProductTable extends Migration
     public function up()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->drop('product_id')->unsigned();
+            $table->dropForeign(['product_id']);
+
         });
     }
 
