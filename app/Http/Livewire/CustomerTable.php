@@ -30,7 +30,7 @@ class CustomerTable extends Component
                         $q->withTrashed();
                     },'branch'
                     ,'zone','region'])
-                    ->where('branch_id')
+                    ->where('region_id',$auth->region_id)
                     ->paginate(10)
             ]);
         }else{

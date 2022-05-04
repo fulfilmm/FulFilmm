@@ -72,7 +72,7 @@ class CustomerController extends Controller
         {
             $customers = Customer::withTrashed()->paginate(12);
         }else{
-            $customers = Customer::withTrashed()->where('branch_id',$auth->office_branch_id)->paginate(12);
+            $customers = Customer::withTrashed()->where('region_id',$auth->region_id)->paginate(12);
         }
 
         return view('customer.data.cards', compact('customers'));
