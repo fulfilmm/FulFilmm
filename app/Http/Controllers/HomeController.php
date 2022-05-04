@@ -653,7 +653,7 @@ class HomeController extends Controller
             case "Sale":
                 $requestation=Approvalrequest::where('emp_id',Auth::guard('employee')->user()->id)->count();
                 $sale_activity=SaleActivity::where('emp_id',Auth::guard('employee')->user()->id)->count();
-                $customer=Customer::count();
+                $customer=Customer::where('region_id',Auth::guard('employee')->user()->region_id)->count();
                 $saleMan_invoice=Invoice::wheremonth('invoice_date',date('m'))->where('emp_id',$user->id)->count();
                 $myticket=ticket::where('created_emp_id',$user->id)->count();
                 $follow_ticket=ticket_follower::where('emp_id',$user->id)->count();
