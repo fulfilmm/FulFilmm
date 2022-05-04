@@ -17,6 +17,23 @@
                 </div>
             </div>
         </div>
+        <div class="row my-3">
+            <div class="col">
+                <input type="text" class="form-control form-control-sm rounded" id="receiver" placeholder="Employee">
+            </div>
+            <div class="col">
+                <input type="text" class="form-control form-control-sm rounded" id="inv_id" placeholder="Invoice Id">
+            </div>
+            <div class="col">
+                <input type="text" class="form-control form-control-sm rounded" id="min" placeholder="Start Date">
+            </div>
+            <div class="col">
+                <input type="text" class="form-control form-control-sm rounded" id="max" placeholder="End Date">
+            </div>
+            <div class="col">
+                <input type="text" class="form-control form-control-sm rounded" id="category" placeholder="Category">
+            </div>
+        </div>
         <div class="card">
             <div class="table-responsive my-3 col-12">
                 <table class="table " id="transaction">
@@ -30,8 +47,8 @@
                         <th>Amount</th>
                         <th>Category</th>
                         <th>Approve</th>
-                        <th>Approver Name</th>
                         <th>Receiver</th>
+                        <th>Employee</th>
                         <th>Action</th>
                     </tr>
 
@@ -75,6 +92,50 @@
 
             jQuery('#start').datetimepicker();
             jQuery('#end').datetimepicker();
+        });
+        $(document).ready(function(){
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var min = $('#min').datepicker("getDate");
+                    var max = $('#max').datepicker("getDate");
+                    var startDate = new Date(data[2]);
+                    if (min == null && max == null) { return true; }
+                    if (min == null && startDate <= max) { return true;}
+                    if(max == null && startDate >= min) {return true;}
+                    if (startDate <= max && startDate >= min) { return true; }
+                    return false;
+                }
+            );
+
+            $("#min").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
+            $("#max").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
+            var table = $('#transaction').DataTable();
+
+            // Event listener to the two range filtering inputs to redraw on input
+            $('#min, #max').change(function () {
+                table.draw();
+            });
+        });
+        $(document).ready(function() {
+            $('#inv_id').keyup(function () {
+                var table = $('#transaction').DataTable();
+                table.column(3).search($(this).val()).draw();
+
+            });
+        });
+        $(document).ready(function() {
+            $('#receiver').keyup(function () {
+                var table = $('#transaction').DataTable();
+                table.column(9).search($(this).val()).draw();
+
+            });
+        });
+        $(document).ready(function() {
+            $('#category').keyup(function () {
+                var table = $('#transaction').DataTable();
+                table.column(6).search($(this).val()).draw();
+
+            });
         });
     </script>
     {{--<script src="{{url(asset('js/jquery_print.js'))}}"></script>--}}

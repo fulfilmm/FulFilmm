@@ -17,6 +17,23 @@
                 </div>
             </div>
         </div>
+        <div class="row my-3">
+            <div class="col">
+                <input type="text" class="form-control form-control-sm rounded" id="issuer" placeholder="Employee">
+            </div>
+            <div class="col">
+                <input type="text" class="form-control form-control-sm rounded" id="bill" placeholder="Bill Id">
+            </div>
+            <div class="col">
+                <input type="text" class="form-control form-control-sm rounded" id="min" placeholder="Start Date">
+            </div>
+            <div class="col">
+                <input type="text" class="form-control form-control-sm rounded" id="max" placeholder="End Date">
+            </div>
+            <div class="col">
+                <input type="text" class="form-control form-control-sm rounded" id="category" placeholder="Category">
+            </div>
+        </div>
         <div class="card">
             <div class="table-responsive my-3 col-12">
                 <table class="table " id="transaction">
@@ -28,11 +45,11 @@
                         <th>Bill ID</th>
                         <th>Title</th>
                         <th>Amount</th>
-                        <th>Type</th>
+                        <th>Category</th>
                         <th>Account</th>
                         <th>Approve</th>
-                        <th>Approver Name</th>
-                        <th>{{isset($revenue)?'Receiver':(isset($expense)?'Issuer':'Receiver/Issuer')}}</th>
+                        <th>Approver</th>
+                        <th>Employee</th>
                         <th>Action</th>
                     </tr>
 
@@ -44,7 +61,7 @@
                             <td >@foreach($coa as $coaitem) {{$coaitem->id==$transaction->expense->category?$coaitem->code:''}}  @endforeach</td>
                             <td style="min-width: 150px;">@foreach($coa as $coaitem) {{$coaitem->id==$transaction->expense->category?$coaitem->name:''}}  @endforeach</td>
                             <td style="min-width: 150px;">
-                                <a href="{{route('transactions.show',$transaction->id)}}">{{\Carbon\Carbon::parse($transaction->expense->transaction_date)->toFormattedDateString()}}</a>
+                                {{\Carbon\Carbon::parse($transaction->expense->transaction_date)->toFormattedDateString()}}
                             </td>
                             <td style="min-width: 150px;">
                                     @if($transaction->expense->bill_id!=null)
@@ -60,7 +77,7 @@
                             </td>
                             <td style="min-width: 150px;">{{$transaction->expense->title}}</td>
                             <td style="min-width: 150px;">{{number_format($transaction->expense->amount)}}</td>
-                            <td style="min-width: 150px;"><span class="badge" style="background-color: #ff4969">{{$transaction->type}}</span></td>
+                           <td>@foreach($category as $item) @if($item->id==$transaction->expense->category) {{$item->name}} @endif @endforeach</td>
                             <td style="min-width: 150px;">{{$transaction->account->name}}</td>
                             <td style="min-width: 150px;">
                                 @if($transaction->expense->approve==0)
@@ -91,6 +108,50 @@
 
             jQuery('#start').datetimepicker();
             jQuery('#end').datetimepicker();
+        });
+        $(document).ready(function(){
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var min = $('#min').datepicker("getDate");
+                    var max = $('#max').datepicker("getDate");
+                    var startDate = new Date(data[2]);
+                    if (min == null && max == null) { return true; }
+                    if (min == null && startDate <= max) { return true;}
+                    if(max == null && startDate >= min) {return true;}
+                    if (startDate <= max && startDate >= min) { return true; }
+                    return false;
+                }
+            );
+
+            $("#min").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
+            $("#max").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
+            var table = $('#transaction').DataTable();
+
+            // Event listener to the two range filtering inputs to redraw on input
+            $('#min, #max').change(function () {
+                table.draw();
+            });
+        });
+        $(document).ready(function() {
+            $('#bill').keyup(function () {
+                var table = $('#transaction').DataTable();
+                table.column(3).search($(this).val()).draw();
+
+            });
+        });
+        $(document).ready(function() {
+            $('#issuer').keyup(function () {
+                var table = $('#transaction').DataTable();
+                table.column(10).search($(this).val()).draw();
+
+            });
+        });
+        $(document).ready(function() {
+            $('#category').keyup(function () {
+                var table = $('#transaction').DataTable();
+                table.column(6).search($(this).val()).draw();
+
+            });
         });
     </script>
     {{--<script src="{{url(asset('js/jquery_print.js'))}}"></script>--}}
