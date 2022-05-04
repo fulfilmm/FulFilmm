@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddProductIdInProductTable extends Migration
+class AddProductIdInStockTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class AddProductIdInProductTable extends Migration
      */
     public function up()
     {
-//        Schema::table('products', function (Blueprint $table) {
-//            $table->bigInteger('product_id')->unsigned();
-//        });
+        Schema::table('stocks', function (Blueprint $table) {
+            $table->bigInteger('product_id')->unsigned();
+        });
     }
 
     /**
@@ -25,7 +25,7 @@ class AddProductIdInProductTable extends Migration
      */
     public function down()
     {
-        Schema::table('products', function (Blueprint $table) {
+        Schema::table('stocks', function (Blueprint $table) {
             $table->drop('product_id');
         });
     }
