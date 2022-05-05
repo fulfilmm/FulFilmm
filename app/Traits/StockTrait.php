@@ -65,7 +65,8 @@ trait StockTrait
 
         if($stock==null){
             $new_stock=new Stock();
-            $new_stock->product_name=$main_product->product->name;
+            $new_stock->product_name=$main_product->product->name;//ပြန်ဖြုတ်ရန်
+            $new_stock->product_id=$main_product->product_id;
             $new_stock->variant_id=$request['variantion_id'];
             $new_stock->warehouse_id=$request['warehouse_id'];
             $new_stock->stock_balance=$request['qty']??0;
