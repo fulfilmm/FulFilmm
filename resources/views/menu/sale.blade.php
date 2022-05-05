@@ -219,10 +219,15 @@
         <a href="#"><i class="la la-puzzle-piece"></i><span>Stock</span> <span
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
+            <li><a class="{{ Request::is('stocks') ? 'active' : '' }}"
+                   href="{{ route('stocks') }}" style="text-decoration: none">Stocks</a>
+            </li>
+            <li><a class="{{ Request::is('foc/index') ? 'active' : '' }}" href="{{route('foc.index')}}"
+                   style="text-decoration: none">FOC Product</a></li>
             <li><a class="{{ Request::is('stockreturn') ? 'active' : '' }}" href="{{route('stockreturn.index')}}"
                    style="text-decoration: none">Stock Return</a></li>
             <li><a class="{{ Request::is('mobile/warehouse/return') ? 'active' : '' }}"
-                   href="{{ route('stockreturn.mobile') }}" style="text-decoration: none">Create Stock Return</a></li>
+                   href="{{ route('stockreturn.mobile') }}" style="text-decoration: none">Stock Return</a></li>
             <li><a class="{{ Request::is('transfer/index') ? 'active' : '' }}"
                    href="{{ route('transfer.index') }}" style="text-decoration: none">Stock Transfer</a></li>
 
