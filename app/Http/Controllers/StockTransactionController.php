@@ -342,11 +342,15 @@ class StockTransactionController extends Controller
     public function stock()
     {
         $auth = Auth::guard('employee')->user();
-        if ($auth->role->name == 'Super Admin' || $auth->role->name == 'CEO') {
+        if ($auth->role->name == 'Super Admin' || $auth->role->name == 'CEO'||$auth->role->name=='Stock Manager') {
             $stocks = Stock::with('warehouse', 'variant')->get();
-        } else {
+        }elseif ($auth->role->name=='Stock Controller'){
             $stocks = Stock::with('warehouse', 'variant')
                 ->where('branch_id', $auth->office_branch_id)
+                ->get();
+        } else {
+            $stocks = Stock::with('warehouse', 'variant')
+                ->where('warehouse_id', $auth->warehouse_id)
                 ->get();
         }
 //        dd($stocks);
