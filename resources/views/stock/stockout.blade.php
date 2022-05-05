@@ -64,7 +64,7 @@
                                   <label for="approver">Approver <span class="text-danger"> * </span></label>
                                   <select name="approver_id" id="approver" class="form-control">
                                       @foreach($emps as $emp)
-                                          @if($emp->role->name=='Stock Manager')
+                                          @if($emp->role->name=='Stock Manager'||$emp->role->name=='Stock Controller')
                                               <option value="{{$emp->id}}">{{$emp->name}}</option>
                                           @endif
                                       @endforeach
