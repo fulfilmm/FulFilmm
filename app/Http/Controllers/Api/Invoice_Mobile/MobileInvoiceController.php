@@ -62,8 +62,8 @@ class MobileInvoiceController extends Controller
 //        dd($allinv);
 //        return \response()->json(['lajsldfjs']);
         return response()->json(['allinv'=>$allinv,'status'=>$status,'zone'=>$zone,'branch'=>$branch,'region'=>$region]);
-        
-        }
+
+    }
 
     public function create()
     {
@@ -261,7 +261,7 @@ class MobileInvoiceController extends Controller
                         $unit = SellingUnit::where('id',$item->sell_unit)->first();
                         $stock = Stock::where('variant_id', $item->variant_id)->where('warehouse_id', $request->warehouse_id)->first();
                         $item->inv_id = $newInvoice->id;
-                        $item->cos_total=$item->quantity*$stock->cos;
+                        $item->cos_total=($item->quantity*$unit->unit_convert_rate)*$stock->cos;
                         $item->update();
                         $stock->available = $stock->available - ($item->quantity * $unit->unit_convert_rate);
 
@@ -321,12 +321,12 @@ class MobileInvoiceController extends Controller
 
                 //should I need to add these ???
                 //
-                // $inv_item= DB::table("order_items")
-                //     ->select(DB::raw("SUM(cos_total) as total"))
-                //     ->where('inv_id',$newInvoice->id)
-                //     ->get();
-                // $newInvoice->invoice_cos=$inv_item[0]->total;
-                // $newInvoice->update();
+                 $inv_item= DB::table("order_items")
+                     ->select(DB::raw("SUM(cos_total) as total"))
+                     ->where('inv_id',$newInvoice->id)
+                     ->get();
+                 $newInvoice->invoice_cos=$inv_item[0]->total;
+                 $newInvoice->update();
 
 
 
