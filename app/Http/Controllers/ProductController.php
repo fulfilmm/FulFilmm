@@ -370,9 +370,15 @@ class ProductController extends Controller
 
     public function focproduct()
     {
-        $foc = Freeofchare::with('emp', 'variant')
-            ->where('branch_id',Auth::guard('employee')->user()->office_branch_id)
-            ->get();
+        $auth=Auth::guard('employee')->user();
+        if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'){
+            $foc = Freeofchare::with('emp', 'variant')
+                ->get();
+        }else{
+            $foc = Freeofchare::with('emp', 'variant')
+                ->where('branch_id',$auth->office_branch_id)
+                ->get();
+        }
         return view('product.foc', compact('foc'));
     }
 
