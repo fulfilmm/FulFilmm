@@ -392,8 +392,10 @@ class StockTransactionController extends Controller
 
                             if ($product_exist == null) {
 //                   dd($branch);
+                                $main_product=ProductVariations::where('id',$request->variantion_id)->first();
                                 $new_stock = new Stock();
                                 $new_stock->product_name = $stock->product_name;
+                                $new_stock->product_id=$main_product->product_id;
                                 $new_stock->variant_id = $request->variantion_id;
                                 $new_stock->warehouse_id = $request->transfer_warehouse_id;
                                 $new_stock->ontheway_qty = $request->qty;
