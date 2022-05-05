@@ -78,7 +78,7 @@ class MobileInvoiceController extends Controller
             $dis_promo = DiscountPromotion::where('sale_type', 'Whole Sale')
                 ->where('region_id',$Auth->region_id)
                 ->get();
-            $focs = Freeofchare::with('variant')->where('branch_id',$Auth->branch_id)->get();
+            $focs = Freeofchare::with('variant')->where('branch_id',$Auth->office_branch_id)->get();
             $type = 'Whole Sale';
 
             if(Auth::guard('api')->user()->mobile_seller==1){
@@ -139,7 +139,7 @@ class MobileInvoiceController extends Controller
             $dis_promo=DiscountPromotion::where('sale_type','Retail Sale')
                 ->where('region_id',$Auth->region_id)
                 ->get();
-            $focs=Freeofchare::with('variant')->where('region_id',$Auth->region_id)->get();
+            $focs=Freeofchare::with('variant')->where('branch_id',$Auth->office_branch_id)->get();
             $type='Retail Sale';
             $Auth=Auth::guard('api')->user();
             if(Auth::guard('api')->user()->mobile_seller==1){
