@@ -490,9 +490,9 @@ class StockTransactionController extends Controller
     {
         $auth = Auth::guard('employee')->user();
         if ($auth->role->name == 'CEO' || $auth->role->name == 'Super Admin'||$auth->role->name=='Stock Manager') {
-            $transfers = StockTransferRecord::with('variant', 'from', 'to')->get();
+            $transfers = StockTransferRecord::with('variant', 'from', 'to','receiver')->get();
         }else{
-            $transfers = StockTransferRecord::with('variant', 'from', 'to')->orWhere('emp_id', $auth->id)->orWhere('receiver_id', $auth->id)->get();
+            $transfers = StockTransferRecord::with('variant', 'from', 'to','receiver')->orWhere('emp_id', $auth->id)->orWhere('receiver_id', $auth->id)->get();
         }
 //        dd($transfers);
         return view('stock.transfer_record', compact('transfers'));

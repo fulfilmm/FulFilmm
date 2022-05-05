@@ -30,6 +30,7 @@
                         <th>Validated Qty</th>
                         <th>From</th>
                         <th>To</th>
+                        <th>Receiver</th>
                         <th>Status</th>
                     </tr>
 
@@ -47,6 +48,7 @@
                                 <td>{{$transfer->validate_qty}}</td>
                                 <td>{{$transfer->from->name}}</td>
                                 <td>{{$transfer->to->name}}</td>
+                                <td>{{$transfer->receiver->name}}</td>
                                 <td>@if($transfer->validated==0 && \Illuminate\Support\Facades\Auth::guard('employee')->user()->id==$transfer->receiver_id)
                                         <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#validate_qty{{$transfer->id}}">Validate</button>
                                         <div id="validate_qty{{$transfer->id}}" class="modal custom-modal fade" role="dialog">
