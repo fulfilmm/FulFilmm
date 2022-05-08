@@ -32,7 +32,7 @@
                             @foreach($shop as $item)
                                 <form action="{{route('check',$item->id)}}" method="POST">
                                     @csrf
-                                    <input type="text" name="emp_location" id="emp_location{{$item->id}}">
+                                    <input type="text" name="emp_location" class="location">
                                     <li class="mb-3">{{$item->shop->name}} <i
                                                 class="la la-{{$item->reach?'check':''}}"></i>
                                         <button type="submit"
@@ -41,16 +41,6 @@
                                         </button>
 
                                     </li>
-                                    <script>
-                                        $(document).ready(function () { //user clicks button
-                                            if (navigator.geolocation) {
-                                                navigator.geolocation.getCurrentPosition(function (p) {
-                                                    $('#emp_location{{$item->id}}').val(p.coords.latitude+','+p.coords.longitude);
-                                                });
-                                            }
-
-                                        });
-                                    </script>
                                 </form>
                             @endforeach
                         </ul>
@@ -65,6 +55,14 @@
 
         $(document).ready(function () {
             $('select').select2();
+        });
+        $(document).ready(function () { //user clicks button
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (p) {
+                    $('.location').val(p.coords.latitude+','+p.coords.longitude);
+                });
+            }
+
         });
         $(function () {
             $("#map").googleMap();
