@@ -238,7 +238,12 @@
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
 
-
+            <li><a class="{{ Request::is('salegroup') ? 'active' : '' }}"
+                   href="{{route('salegroup.index')}}" style="text-decoration: none">Sales Group</a></li>
+            <li><a class="{{ Request::is('saleway') ? 'active' : '' }}"
+                   href="{{route('saleway.index')}}" style="text-decoration: none">Sales Way</a></li>
+            <li><a class="{{ Request::is('shop') ? 'active' : '' }}"
+                   href="{{route('shop.index')}}" style="text-decoration: none">Shop</a></li>
             <li><a class="{{ Request::is('moneytransfer') ? 'active' : '' }}"
                    href="{{route('moneytransfer.index')}}" style="text-decoration: none">Transfer Money</a></li>
             <li><a class="{{ Request::is('salezone') ? 'active' : '' }}"

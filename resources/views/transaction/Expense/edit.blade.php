@@ -77,24 +77,6 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="account">Account</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fa fa-bank"></i></span>
-                                    </div>
-                                    <select name="coa_account" id="account" class="form-control">
-                                        @foreach($data['coas'] as $account)
-                                            <option value="{{$account->id}}" {{$expense->coa_id==$account->id?'selected':''}}>{{$account->code.'-'.$account->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                @error('account')
-                                <span class="text-danger">{{$message}}</span>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
                                 <label for="customer_id">Supplier</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
@@ -137,7 +119,7 @@
                                     <select name="approver_id" id="approver" class="form-control ">
                                         @foreach($data['emps'] as $emps)
                                             @if($emps->department->name=='Finance Department')
-                                            <option value="{{$emps->id}}" {{$expense->approver_id==$emps->id?'selected':''}}>{{$emps->name}}</option>
+                                                <option value="{{$emps->id}}" {{$expense->approver_id==$emps->id?'selected':''}}>{{$emps->name}}</option>
                                             @endif
                                         @endforeach
                                     </select>
@@ -175,32 +157,32 @@
                         </div>
 
                         {{--<div class="col-md-6">--}}
-                            {{--<label for="recurring">Recurring</label>--}}
-                            {{--<div class="input-group">--}}
-                                {{--<div class="input-group-prepend">--}}
-                                    {{--<span class="input-group-text"><i class="fa fa-refresh"></i></span>--}}
-                                {{--</div>--}}
-                                {{--<select name="recurring" id="recurring" class="form-control">--}}
-                                    {{--@foreach($data['recurring'] as $recurring)--}}
-                                        {{--<option value="{{$recurring}}">{{$recurring}}</option>--}}
-                                    {{--@endforeach--}}
-                                {{--</select>--}}
-                            {{--</div>--}}
+                        {{--<label for="recurring">Recurring</label>--}}
+                        {{--<div class="input-group">--}}
+                        {{--<div class="input-group-prepend">--}}
+                        {{--<span class="input-group-text"><i class="fa fa-refresh"></i></span>--}}
+                        {{--</div>--}}
+                        {{--<select name="recurring" id="recurring" class="form-control">--}}
+                        {{--@foreach($data['recurring'] as $recurring)--}}
+                        {{--<option value="{{$recurring}}">{{$recurring}}</option>--}}
+                        {{--@endforeach--}}
+                        {{--</select>--}}
+                        {{--</div>--}}
                         {{--</div>--}}
                         {{--<div class="col-md-6">--}}
-                            {{--<div class="form-group">--}}
-                                {{--<label for="payment_method">Payment Method</label>--}}
-                                {{--<div class="input-group">--}}
-                                    {{--<div class="input-group-prepend">--}}
-                                        {{--<span class="input-group-text"><i class="fa fa-credit-card"></i></span>--}}
-                                    {{--</div>--}}
-                                    {{--<select name="payment_method" id="payment_method" class="form-control ">--}}
-                                        {{--@foreach($data['payment_method'] as $payment_method)--}}
-                                            {{--<option value="{{$payment_method}}">{{$payment_method}}</option>--}}
-                                        {{--@endforeach--}}
-                                    {{--</select>--}}
-                                {{--</div>--}}
-                            {{--</div>--}}
+                        {{--<div class="form-group">--}}
+                        {{--<label for="payment_method">Payment Method</label>--}}
+                        {{--<div class="input-group">--}}
+                        {{--<div class="input-group-prepend">--}}
+                        {{--<span class="input-group-text"><i class="fa fa-credit-card"></i></span>--}}
+                        {{--</div>--}}
+                        {{--<select name="payment_method" id="payment_method" class="form-control ">--}}
+                        {{--@foreach($data['payment_method'] as $payment_method)--}}
+                        {{--<option value="{{$payment_method}}">{{$payment_method}}</option>--}}
+                        {{--@endforeach--}}
+                        {{--</select>--}}
+                        {{--</div>--}}
+                        {{--</div>--}}
                         {{--</div>--}}
                         <div class="col-md-12">
                             <div class="form-group"><label for="reference">Reference</label>

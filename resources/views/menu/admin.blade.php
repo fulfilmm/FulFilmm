@@ -489,7 +489,12 @@
         <a href="#"><i class="la la-dollar"></i> <span>Sales</span> <span
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
-
+            <li><a class="{{ Request::is('salegroup') ? 'active' : '' }}"
+                   href="{{route('salegroup.index')}}" style="text-decoration: none">Sales Group</a></li>
+            <li><a class="{{ Request::is('saleway') ? 'active' : '' }}"
+                   href="{{route('saleway.index')}}" style="text-decoration: none">Sales Way</a></li>
+            <li><a class="{{ Request::is('shop') ? 'active' : '' }}"
+                   href="{{route('shop.index')}}" style="text-decoration: none">Shop</a></li>
             <li><a class="{{ Request::is('salezone') ? 'active' : '' }}"
                    href="{{route('salezone.index')}}" style="text-decoration: none">Sales Zone</a></li>
             <li><a class="{{ Request::is('region') ? 'active' : '' }}"

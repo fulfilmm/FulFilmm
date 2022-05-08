@@ -143,9 +143,9 @@
                     class="menu-arrow"></span></a>
 
         <ul style="display: none;">
-            <li class="submenu">
             <li><a class="{{ Request::is('barcode/create') ? 'active' : '' }}"
                    href="{{ route('barcode.create') }}" style="text-decoration: none">Barcode Generate</a></li>
+            <li class="submenu">
                 <a href="#"><span>Supplier</span> <span
                             class="menu-arrow"></span></a>
                 <ul style="display: none;">
@@ -185,6 +185,8 @@
                     <li><a class="{{ Request::is('stockreturn/create') ? 'active' : '' }}"
                            href="{{route('stockreturn.create')}}" style="text-decoration: none">
                             Stock Return Create</a></li>
+                    <li><a class="{{ Request::is('mobile/warehouse/return') ? 'active' : '' }}"
+                           href="{{ route('stockreturn.mobile') }}" style="text-decoration: none">Mobile Stock Return</a></li>
 
                 </ul>
             </li>
@@ -228,6 +230,10 @@
                    style="text-decoration: none">FOC Product</a></li>
             <li><a class="{{ Request::is('damage/index') ? 'active' : '' }}"
                    href="{{ route('damage.index') }}" style="text-decoration: none">Damage Product</a></li>
+            <li><a class="{{ Request::is('expired/product') ? 'active' : '' }}"
+                   href="{{ route('expired.products') }}" style="text-decoration: none">Expired Product</a></li>
+            <li><a class="{{ Request::is('expired/alert/product') ? 'active' : '' }}"
+                   href="{{ route('alert.products') }}" style="text-decoration: none">Expired Alert Product</a></li>
             <li class="submenu">
                 <a href="#"><span> Selling Unit</span> <span
                             class="menu-arrow"></span></a>

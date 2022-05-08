@@ -19,14 +19,15 @@ class CreateAccountsTable extends Migration
             $table->bigInteger('branch_id')->unsigned();
             $table->string('name');
             $table->string('account_no')->unique()->nullable();
-            $table->string('number');
-            $table->string('currency');
+            $table->string('number')->nullable();
+            $table->string('currency')->default('MMK');
             $table->double('opening_balance', 15, 4)->default('0.0000');
             $table->double('balance', 15, 4)->default('0.0000');
             $table->string('bank_name')->nullable();
             $table->string('bank_phone')->nullable();
             $table->text('bank_address')->nullable();
             $table->boolean('enabled')->default(0);
+            $table->bigInteger('emp_id')->nullable()->unsigned();
             $table->timestamps();
             $table->softDeletes();
             $table->index('company_id');

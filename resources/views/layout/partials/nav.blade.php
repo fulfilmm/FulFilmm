@@ -5,7 +5,7 @@
                 <!---employee menu start-->
             @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
                 <!--- Finance menu start -->
-                @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Accountant'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Finance Manager'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Cashier')
+                @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Accountant'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Finance Manager'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Regional Cashier'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Branch Cashier')
                     @include('menu.finance')
                     <!---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
                 @elseif(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Super Admin' ||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='CEO'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='General Manager')
@@ -14,7 +14,7 @@
                 @elseif(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Stock Manager')
                     @include('menu.stock')
                     <!--end of CEO Super Admin and start Sale menu start-->
-                @elseif(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Sale Manager'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Sale')
+                @elseif(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Sales Manager'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Sales')
                     @include('menu.sale')
                     <!--end sale menu and start Complaint Menu -->
                 @elseif(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Agent'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Customer Service Manager')

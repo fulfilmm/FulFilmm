@@ -1,5 +1,5 @@
 @extends('layout.mainlayout')
-@section('title','Account')
+@section('title','Receipt')
 @section('content')
     <div class="content container-fluid">
 
@@ -48,36 +48,36 @@
                                     @foreach ($category as $cat)
                                         @if($cat->id==$transaction->revenue->category)
                                             {{$cat->name}}
-                                            @endif
-                                        @endforeach
-                                      @else
+                                        @endif
+                                    @endforeach
+                                @else
                                     @foreach ($category as $cat)
                                         @if($cat->id==$transaction->expense->category)
                                             {{$cat->name}}
                                         @endif
                                     @endforeach
-                                        @endif
-                        </div>
-                        </div>
-                        <div class="row my-1">
-                            <div class="col-2">Account</div>
-                            <div class="col-8">
-
-                                : @if($transaction->type=="Revenue")
-                                    @foreach ($coas as $coa)
-                                        @if($coa->id==$transaction->revenue->coa_id)
-                                            {{$coa->code.'-'.$coa->name}}
-                                        @endif
-                                    @endforeach
-                                @else
-                                    @foreach ($coas as $coa)
-                                        @if($coa->id==$transaction->expense->coa_id)
-                                            {{$coa->code.'-'.$coa->name}}
-                                        @endif
-                                    @endforeach
                                 @endif
                             </div>
                         </div>
+                        {{--<div class="row my-1">--}}
+                        {{--<div class="col-2">Account</div>--}}
+                        {{--<div class="col-8">--}}
+
+                        {{--: @if($transaction->type=="Revenue")--}}
+                        {{--@foreach ($coas as $coa)--}}
+                        {{--@if($coa->id==$transaction->revenue->coa_id)--}}
+                        {{--{{$coa->code.'-'.$coa->name}}--}}
+                        {{--@endif--}}
+                        {{--@endforeach--}}
+                        {{--@else--}}
+                        {{--@foreach ($coas as $coa)--}}
+                        {{--@if($coa->id==$transaction->expense->coa_id)--}}
+                        {{--{{$coa->code.'-'.$coa->name}}--}}
+                        {{--@endif--}}
+                        {{--@endforeach--}}
+                        {{--@endif--}}
+                        {{--</div>--}}
+                        {{--</div>--}}
                         <div class="row my-1">
                             <div class="col-2">Payment Method</div>
                             <div class="col-8">
@@ -91,9 +91,9 @@
                         <div class="row mb-5 mt-2">
                             <div class="col-12">Description</div>
                             <div class="col-12 border rounded mt-2" style="min-height: 50px">
-                            <div class="my-2">
-                                {!!$transaction->type=="Revenue"?$transaction->revenue->description:$transaction->expense->description!!}
-                            </div>
+                                <div class="my-2">
+                                    {!!$transaction->type=="Revenue"?$transaction->revenue->description:$transaction->expense->description!!}
+                                </div>
                             </div>
                         </div>
                         <div class="row mt-3 mb-1">
@@ -151,7 +151,7 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                   @if($transaction->type=='Revenue')
+                    @if($transaction->type=='Revenue')
                         @if($transaction->revenue->attachment!=null)
                             <div class="card-body">
                                 <div class="row row-sm">
@@ -183,7 +183,7 @@
                                 </div>
                             </div>
                         @endif
-                       @else
+                    @else
                         @if($transaction->expense->attachment!=null)
                             <div class="card-body">
                                 <div class="row row-sm">

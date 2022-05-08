@@ -62,26 +62,6 @@
                 </div>
             </div>
         </div>
-        <div class="row my-3">
-            <div class="col">
-                <input type="text" class="form-control form-control-sm rounded" id="type" placeholder="Transaction Type">
-            </div>
-            <div class="col">
-                <input type="text" class="form-control form-control-sm rounded" id="employee" placeholder="Employee">
-            </div>
-            <div class="col">
-                <input type="text" class="form-control form-control-sm rounded" id="ref_id" placeholder="Invoice id or Bill Id">
-            </div>
-            <div class="col">
-                <input type="text" class="form-control form-control-sm rounded" id="min" placeholder="Start Date">
-            </div>
-            <div class="col">
-                <input type="text" class="form-control form-control-sm rounded" id="max" placeholder="End Date">
-            </div>
-            <div class="col">
-                <input type="text" class="form-control form-control-sm rounded" id="category" placeholder="Category">
-            </div>
-        </div>
         <div class="card">
             <div class="table-responsive my-3 col-12">
                 <table class="table " id="transaction">
@@ -89,10 +69,10 @@
                     <tr>
                         <th>Date</th>
                         @if(isset($revenue))
-                        <th>Invoice ID</th>
-                            @elseif(isset($expense))
+                            <th>Invoice ID</th>
+                        @elseif(isset($expense))
                             <th>Bill ID</th>
-                            @else
+                        @else
                             <th>Invoice ID/Bill ID</th>
                         @endif
                         <th>Title</th>
@@ -101,8 +81,8 @@
                         <th>Category</th>
                         <th>Account</th>
                         <th>Approve</th>
-                        <th>Approver</th>
-                        <th>Employee</th>
+                        <th>Approver Name</th>
+                        <th>{{isset($revenue)?'Receiver':(isset($expense)?'Issuer':'Receiver/Issuer')}}</th>
                         <th>Action</th>
                     </tr>
 
@@ -112,13 +92,13 @@
                         @if($transaction->type=='Revenue')
                             <tr>
                                 <td>
-                                    {{\Carbon\Carbon::parse($transaction->revenue->transaction_date)->toFormattedDateString()}}
+                                    <a href="{{route('transactions.show',$transaction->id)}}">{{\Carbon\Carbon::parse($transaction->revenue->transaction_date)->toFormattedDateString()}}</a>
                                 </td>
                                 <td>@if($transaction->revenue->invoice_id!=null)@foreach($invoice as $key=>$val)@if($key==$transaction->revenue->invoice_id)<a href="{{$transaction->revenue->invoice_id==null?route('transactions.show',$transaction->id):route('invoices.show',$transaction->revenue->invoice_id)}}">{{$val}}</a> @endif @endforeach @else N/A @endif</td>
                                 <td>{{$transaction->revenue->title}}</td>
                                 <td>{{number_format($transaction->revenue->amount)}}</td>
                                 <td>{{$transaction->type}}</td>
-                                <td>@foreach($category as $item) @if($item->id==$transaction->revenue->category) {{$item->name}} @endif @endforeach</td>
+                                <td>{{$transaction->revenue->category}}</td>
                                 <td>{{$transaction->account->name??'N/A'}}</td>
                                 <td>
                                     @if($transaction->revenue->approve==0)
@@ -126,18 +106,18 @@
                                     @else
                                         <button type="button" class="btn btn-success btn-sm disabled">Approved</button>
                                     @endif
-                                   </td>
+                                </td>
                                 <td>@foreach($employees as $key=>$val) {{$key==$transaction->revenue->approver_id?$val:''}}  @endforeach</td>
                                 <td>@foreach($employees as $key=>$val) {{$key==$transaction->revenue->emp_id?$val:''}}  @endforeach</td>
-                            <td>
-                                <a href="{{$transaction->revenue->invoice_id==null?route('transactions.show',$transaction->id):route('invoices.show',$transaction->revenue->invoice_id)}}" class="btn btn-white btn-sm"><i class="la la-eye"></i></a>
+                                <td>
+                                    <a href="{{$transaction->revenue->invoice_id==null?route('transactions.show',$transaction->id):route('invoices.show',$transaction->revenue->invoice_id)}}" class="btn btn-white btn-sm"><i class="la la-eye"></i></a>
 
-                            </td>
+                                </td>
                             </tr>
                         @else
                             <tr>
                                 <td>
-                                    {{\Carbon\Carbon::parse($transaction->expense->transaction_date)->toFormattedDateString()}}
+                                    <a href="{{route('transactions.show',$transaction->id)}}">{{\Carbon\Carbon::parse($transaction->expense->transaction_date)->toFormattedDateString()}}</a>
                                 </td>
                                 <td>
                                     @if($transaction->expense->bill_id!=null)
@@ -146,19 +126,19 @@
                                                 <a href="{{$transaction->expense->bill_id==null?route('transactions.show',$transaction->id):route('bills.show',$transaction->expense->bill_id)}}">{{$val}}</a>
                                             @endif
                                         @endforeach
-                                        @else
+                                    @else
                                         N/A
                                     @endif
                                 </td>
                                 <td>{{$transaction->expense->title}}</td>
                                 <td>{{number_format($transaction->expense->amount)}}</td>
                                 <td><span class="badge" style="background-color: #ff4969">{{$transaction->type}}</span></td>
-                                <td>@foreach($category as $item) @if($item->id==$transaction->expense->category) {{$item->name}} @endif @endforeach</td>
+                                <td>{{$transaction->expense->category}}</td>
                                 <td>{{$transaction->account->name}}</td>
                                 <td>
                                     @if($transaction->expense->approve==0)
-                                    <a href="{{url('transaction/approve/'.$transaction->expense->id.'/Expense')}}" class="btn btn-white btn-white btn-sm ">Approve</a>
-                                @else
+                                        <a href="{{url('transaction/approve/'.$transaction->expense->id.'/Expense')}}" class="btn btn-white btn-white btn-sm ">Approve</a>
+                                    @else
                                         <button type="button" class="btn btn-success btn-sm disabled">Approved</button>
                                     @endif
                                 </td>
@@ -183,57 +163,6 @@
 
             jQuery('#start').datetimepicker();
             jQuery('#end').datetimepicker();
-        });
-        $(document).ready(function(){
-            $.fn.dataTable.ext.search.push(
-                function (settings, data, dataIndex) {
-                    var min = $('#min').datepicker("getDate");
-                    var max = $('#max').datepicker("getDate");
-                    var startDate = new Date(data[0]);
-                    if (min == null && max == null) { return true; }
-                    if (min == null && startDate <= max) { return true;}
-                    if(max == null && startDate >= min) {return true;}
-                    if (startDate <= max && startDate >= min) { return true; }
-                    return false;
-                }
-            );
-
-            $("#min").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
-            $("#max").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
-            var table = $('#transaction').DataTable();
-
-            // Event listener to the two range filtering inputs to redraw on input
-            $('#min, #max').change(function () {
-                table.draw();
-            });
-        });
-        $(document).ready(function() {
-            $('#ref_id').keyup(function () {
-                var table = $('#transaction').DataTable();
-                table.column(1).search($(this).val()).draw();
-
-            });
-        });
-        $(document).ready(function() {
-            $('#employee').keyup(function () {
-                var table = $('#transaction').DataTable();
-                table.column(9).search($(this).val()).draw();
-
-            });
-        });
-        $(document).ready(function() {
-            $('#category').keyup(function () {
-                var table = $('#transaction').DataTable();
-                table.column(5).search($(this).val()).draw();
-
-            });
-        });
-        $(document).ready(function() {
-            $('#type').keyup(function () {
-                var table = $('#transaction').DataTable();
-                table.column(4).search($(this).val()).draw();
-
-            });
         });
     </script>
     {{--<script src="{{url(asset('js/jquery_print.js'))}}"></script>--}}

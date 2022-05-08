@@ -615,7 +615,7 @@ class HomeController extends Controller
             case "HR Manager":
                 dd('HRM');
                 break;
-            case "Sale Manager":
+            case "Sales Manager":
                 $requestation=Approvalrequest::where('emp_id',Auth::guard('employee')->user()->id)->count();
                 $sale_activity=SaleActivity::where('emp_id',Auth::guard('employee')->user()->id)->count();
                 $customer=Customer::count();
@@ -650,7 +650,7 @@ class HomeController extends Controller
                 break;
             case "Car Admin":
                 break;
-            case "Sale":
+            case "Sales":
                 $requestation=Approvalrequest::where('emp_id',Auth::guard('employee')->user()->id)->count();
                 $sale_activity=SaleActivity::where('emp_id',Auth::guard('employee')->user()->id)->count();
                 $customer=Customer::where('region_id',Auth::guard('employee')->user()->region_id)->count();
@@ -753,7 +753,7 @@ class HomeController extends Controller
                 ];
                 return view('index', compact('items','status_report','report_percentage','count_down','status','assign_ticket','depts'));
                 break;
-            case "Cashier":
+            case "Regional Cashier":
                 $account_count=Account::count();
                 $payable_amount=DB::table('bills')
                     ->select(DB::raw("SUM(grand_total) as total"))
@@ -761,7 +761,36 @@ class HomeController extends Controller
                     ->where('emp_id',$user->id)
                     ->get();
                 $bill=Bill::whereMonth('bill_date',date('m'))->where('emp_id',$user->id)->count();
-                $revenue_transaction=Revenue::where('approver_id',$user->id)->whereMonth('transaction_date',date('m'))->count();
+                $revenue_transaction=Revenue::where('regional_cashier',$user->id)->whereMonth('transaction_date',date('m'))->count();
+                $expense_transaction=Expense::where('approver_id',$user->id)->whereMonth('transaction_date',date('m'))->count();
+                $exp_claim_count=ExpenseClaim::whereMonth('created_at',date('m'))->where('financial_approver',$user->id)->count();
+                $requestation=Approvalrequest::where('emp_id',Auth::guard('employee')->user()->id)->count();
+                $myticket=ticket::where('created_emp_id',$user->id)->count();
+                $follow_ticket=ticket_follower::where('emp_id',$user->id)->count();
+                $emp_ticket=$myticket+$follow_ticket;
+                $items=[
+                    'my_groups'=>$group,
+                    'meeting'=>$meeting,
+                    'assignment'=>$assignment,
+                    'all_ticket'=>$emp_ticket,
+                    'requestation'=>$requestation,
+                    'bill_count'=>$bill,
+                    'transaction_count'=>($revenue_transaction)+($expense_transaction),
+                    'exp_claim_count'=>$exp_claim_count,
+                    'account_count'=>$account_count,
+                    'payable'=>$payable_amount[0]->total??0,
+                ];
+                return view('index',compact('items'));
+                break;
+            case "Branch Cashier":
+                $account_count=Account::count();
+                $payable_amount=DB::table('bills')
+                    ->select(DB::raw("SUM(grand_total) as total"))
+                    ->whereMonth('bill_date',date('m'))
+                    ->where('emp_id',$user->id)
+                    ->get();
+                $bill=Bill::whereMonth('bill_date',date('m'))->where('emp_id',$user->id)->count();
+                $revenue_transaction=Revenue::where('branch_cashier',$user->id)->whereMonth('transaction_date',date('m'))->where('is_cashintransit',1)->count();
                 $expense_transaction=Expense::where('approver_id',$user->id)->whereMonth('transaction_date',date('m'))->count();
                 $exp_claim_count=ExpenseClaim::whereMonth('created_at',date('m'))->where('financial_approver',$user->id)->count();
                 $requestation=Approvalrequest::where('emp_id',Auth::guard('employee')->user()->id)->count();

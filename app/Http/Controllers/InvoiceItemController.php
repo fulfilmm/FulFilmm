@@ -54,11 +54,13 @@ class InvoiceItemController extends Controller
                 Session::push("data-" . $Auth, $request->all());
             }
             if (isset($request->foc)) {
+                $sale_unit = SellingUnit::where('product_id', $variant->product_id)->where('unit_convert_rate', 1)->first();
                 $items = new OrderItem();
                 $items->description = 'This is FOC item';
                 $items->quantity = 1;
                 $items->variant_id = $request->variant_id;
                 $items->unit_price = 0;
+                $items->sell_unit = $sale_unit->id;
                 $items->total = 0;
                 $items->creation_id = $request->invoice_id;
                 $items->order_id = $request->order_id ?? null;

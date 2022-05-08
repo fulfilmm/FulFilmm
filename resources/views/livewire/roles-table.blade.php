@@ -3,7 +3,7 @@
     <div class="card-header">
         <h4 class="card-title mb-0 d-inline">Roles</h4>
         <div class="float-right">
-            <input type="text" wire:model="search_key">
+            <input type="text" wire:model="search_key" class="form-control form-control-sm rounded-pill" placeholder="Enter keyword">
         </div>
     </div>
         {{-- <a href={{url('/employees/export')}}><button  class="btn btn-primary ml-2">Export</button></a> --}}

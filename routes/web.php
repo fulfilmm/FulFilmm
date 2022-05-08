@@ -220,6 +220,16 @@ Route::middleware(['auth:employee'])->group(function () {
     Route::get('payments',[BillController::class,'payment'])->name('payment');
     Route::get('mobile/warehouse/return',[\App\Http\Controllers\StockReturnController::class,'mobilereturn'])->name('stockreturn.mobile');
     Route::resource('moneytransfer',\App\Http\Controllers\CashTransferRecordController::class);
+    Route::post('remove/shop',[\App\Http\Controllers\SaleWayController::class,'remove_shop'])->name('remove.shop');
+    Route::post('add/shop',[\App\Http\Controllers\SaleWayController::class,'add_shop'])->name('add.shop');
+    Route::resource('salegroup',\App\Http\Controllers\SaleGroupController::class);
+    Route::post('add/sale/group/memeber',[\App\Http\Controllers\SaleGroupController::class,'add_member'])->name('add.member');
+    Route::post('remove/sale/group/memeber',[\App\Http\Controllers\SaleGroupController::class,'remove_member'])->name('remove.member');
+    Route::resource('assignsaleway',\App\Http\Controllers\WayAssignController::class);
+    Route::post('check/in/{id}',[\App\Http\Controllers\WayAssignController::class,'check'])->name('check');
+    Route::resource('shop',\App\Http\Controllers\ShopRegister::class);
+    Route::resource('saleway',\App\Http\Controllers\SaleWayController::class);
+    Route::post('transfer/branch',[TransactionController::class,'transer_branch'])->name('transfer.branch');
 
 
 

@@ -75,24 +75,24 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="account">Gl Account</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fa fa-bank"></i></span>
-                                    </div>
-                                    <select name="coa_account" id="account" class="form-control">
-                                        @foreach($data['coas'] as $account)
-                                            <option value="{{$account->id}}">{{$account->code.'-'.$account->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                @error('coa_account')
-                                <span class="text-danger">{{$message}}</span>
-                                @enderror
-                            </div>
-                        </div>
+                        {{--<div class="col-md-6">--}}
+                        {{--<div class="form-group">--}}
+                        {{--<label for="account">Gl Account</label>--}}
+                        {{--<div class="input-group">--}}
+                        {{--<div class="input-group-prepend">--}}
+                        {{--<span class="input-group-text"><i class="fa fa-bank"></i></span>--}}
+                        {{--</div>--}}
+                        {{--<select name="coa_account" id="account" class="form-control">--}}
+                        {{--@foreach($data['coas'] as $account)--}}
+                        {{--<option value="{{$account->id}}">{{$account->code.'-'.$account->name}}</option>--}}
+                        {{--@endforeach--}}
+                        {{--</select>--}}
+                        {{--</div>--}}
+                        {{--@error('coa_account')--}}
+                        {{--<span class="text-danger">{{$message}}</span>--}}
+                        {{--@enderror--}}
+                        {{--</div>--}}
+                        {{--</div>--}}
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="customer_id">Supplier</label>
@@ -114,7 +114,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="payment_method">Cashier</label>
+                                <label for="payment_method">Casher</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fa fa-user"></i></span>
@@ -122,7 +122,7 @@
                                     <select name="approver_id" id="payment_method" class="form-control ">
                                         @foreach($data['emps'] as $emps)
                                             @if($emps->department->name=='Finance Department')
-                                            <option value="{{$emps->id}}">{{$emps->name}}</option>
+                                                <option value="{{$emps->id}}">{{$emps->name}}</option>
                                             @endif
                                         @endforeach
                                     </select>

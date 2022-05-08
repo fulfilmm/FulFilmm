@@ -29,7 +29,7 @@ class CreateExpensesTable extends Migration
             $table->tinyInteger('approve')->default(0);
             $table->bigInteger('approver_id')->unsigned();
             $table->bigInteger('emp_id');
-            $table->bigInteger('coa_id')->unsigned();
+//            $table->bigInteger('coa_id')->unsigned();
             $table->string('currency');
             $table->bigInteger('branch_id')->unsigned();
             $table->timestamps();

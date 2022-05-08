@@ -159,7 +159,7 @@ class InvoiceController extends Controller
             $dis_promo = DiscountPromotion::where('sale_type', 'Whole Sale')
                 ->where('region_id',$Auth->region_id)
                 ->get();
-            $focs = Freeofchare::with('variant')->where('region_id',$Auth->region_id)->get();
+            $focs = Freeofchare::with('variant')->where('branch_id',$Auth->office_branch_id)->get();
             $type = 'Whole Sale';
 
           if(Auth::guard('employee')->user()->mobile_seller==1){
@@ -362,12 +362,13 @@ class InvoiceController extends Controller
                         $item->inv_id = $newInvoice->id;
                         $item->update();
                         $stock->qty = $stock->qty - ($item->quantity * $unit->unit_convert_rate);
+                        $item->cos_total=($item->quantity * $unit->unit_convert_rate)*$stock->cos;
                         $stock->update();
                     } else {
                         $unit = SellingUnit::where('id',$item->sell_unit)->first();
                         $stock = Stock::where('variant_id', $item->variant_id)->where('warehouse_id', $request->warehouse_id)->first();
                         $item->inv_id = $newInvoice->id;
-                        $item->cos_total=$item->quantity*$stock->cos;
+                        $item->cos_total=($item->quantity * $unit->unit_convert_rate)*$stock->cos;
                         $item->update();
                         $stock->available = $stock->available - ($item->quantity * $unit->unit_convert_rate);
 
@@ -436,14 +437,15 @@ class InvoiceController extends Controller
      */
     public function show($id)
     {
+        $emps = Employee::where('office_branch_id', Auth::guard('employee')->user()->office_branch_id)->get();
+        $category = TransactionCategory::where('type', 1)->get();
+        $customer = Customer::orWhere('customer_type', 'Customer')->orWhere('customer_type', 'Lead')->orWhere('customer_type', 'Partner')->orWhere('customer_type', 'Inquery')->get();
         $company=MainCompany::where('ismaincompany',true)->first();
         $detail_inv=Invoice::with('customer','employee','tax','order')->where('id',$id)->firstOrFail();
         $invoic_item=OrderItem::with('variant','unit')->where("inv_id",$detail_inv->id)->get();
         $account=Account::where('enabled',1)->get();
         $recurring=['No','Daily','Weekly','Monthly','Yearly'];
         $payment_method=['Cash','eBanking','WaveMoney','KBZ Pay'];
-        $category=TransactionCategory::all();
-        $coas=ChartOfAccount::all();
         $revenue=Revenue::where('invoice_id',$id)->get();
 //        dd($revenue);
         $history=InvoiceHistory::where('invoice_id',$id)->get();
@@ -477,11 +479,12 @@ class InvoiceController extends Controller
         }
         $transaction_amount=0;
 //        $customer=Customer::orWhere('customer_type','Customer')->orWhere('customer_type','Lead')->orWhere('customer_type','Partner')->orWhere('customer_type','Inquery')->get();
-        $customer=Customer::all();
-        $emps = Employee::all();
         $advan_pay=AdvancePayment::with('order')->where('order_id',$detail_inv->order_id)->first();
-        $data=['coas'=>$coas,'transaction'=>$transaction,'customers'=>$customer,'account'=>$account,'recurring'=>$recurring,'payment_method'=>$payment_method,'category'=>$category];
-        return view('invoice.show',compact('detail_inv','advan_pay','invoic_item','company','data','transaction_amount','history','emps'));
+        $data=[
+//            'coas'=>$coas,
+            'emps' => $emps, 'customers' => $customer, 'recurring' => $recurring, 'payment_method' => $payment_method, 'category' => $category,
+            'transaction'=>$transaction,'account'=>$account];
+        return view('invoice.show',compact('detail_inv','advan_pay','invoic_item','company','data','transaction_amount','history'));
     }
 
     /**

@@ -12,7 +12,10 @@ class Revenue extends Model
         return $this->belongsTo(Employee::class,'emp_id','id');
     }
     public function approver(){
-        return $this->belongsTo(Employee::class,'approver_id','id');
+        return $this->belongsTo(Employee::class,'regional_cashier','id');
+    }
+    public function branch_approver(){
+        return $this->belongsTo(Employee::class,'branch_cashier','id');
     }
     public function customer(){
         return $this->belongsTo(Customer::class,'customer_id','id');
@@ -20,9 +23,9 @@ class Revenue extends Model
     public function invoice(){
         return $this->belongsTo(Invoice::class,'invoice_id','id');
     }
-    public function account(){
-        return $this->belongsTo(ChartOfAccount::class,'coa_id','id');
-    }
+//    public function account(){
+//        return $this->belongsTo(ChartOfAccount::class,'coa_id','id');
+//    }
     public function cat(){
         return $this->belongsTo(TransactionCategory::class,'category','id');
     }
