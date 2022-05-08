@@ -44,14 +44,9 @@
                                     <script>
                                         $(document).ready(function () { //user clicks button
                                             if (navigator.geolocation) {
-                                                function successCallback (position) {
-                                                    var lat=position.coords.latitude; // 43.2132209
-                                                    var lng=position.coords.longitude; // 27.9571503
-                                                    $('#emp_location{{$item->id}}').val(lat+','+lng);
-
-                                                }
-
-                                                navigator.geolocation.getCurrentPosition(successCallback);
+                                                navigator.geolocation.getCurrentPosition(function (p) {
+                                                    $('#emp_location{{$item->id}}').val(p.coords.latitude+','+p.coords.longitude);
+                                                });
                                             }
 
                                         });
