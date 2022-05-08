@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class SaleWay extends Model
 {
     use HasFactory;
+    protected $fillable=['way_id','name','branch_id'];
 }

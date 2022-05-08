@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class SaleGroup extends Model
 {
     use HasFactory;
+    protected $fillable=['name','emp_id','branch_id'];
+    public function employee(){
+        $this->belongsTo(Employee::class,'emp_id','id');
+    }
 }
