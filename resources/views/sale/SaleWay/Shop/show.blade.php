@@ -22,10 +22,10 @@
         <!-- Content Starts -->
         <div class="col-12 my-3">
             <div class="row">
-                <div class="col-9">
+                <div class="col-md-9 col-12">
                     <div id="map" style="width: 750px; height: 550px;"></div>
                 </div>
-                <div class="col-3">
+                <div class="col-md-3 col-12">
                         <div class="form-group">
                             <label for="">Shop Name :</label>
                            {{$shop->name}}

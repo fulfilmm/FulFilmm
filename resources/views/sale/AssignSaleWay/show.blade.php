@@ -19,12 +19,10 @@
         </div>
         <div class="col-12">
             <div class="row">
-                <div class="col-md-8">
-                    <div class="col-12">
-                        <div id="map" class="shadow" style="width: 700px; height: 500px;"></div>
-                    </div>
+                <div class="col-md-9 col-12">
+                        <div id="map" class="shadow" style="width:100%; height: 500px;"></div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3 col-12">
                     <div class="col-12">
                         <span><strong>Way Id </strong>:{{$assignway->way->way_id}}</span><br>
                         <span><strong>Way Name</strong> :{{$assignway->way->name}}</span><br>
@@ -34,7 +32,7 @@
                             @foreach($shop as $item)
                                 <form action="{{route('check',$item->id)}}" method="POST">
                                     @csrf
-                                    <input type="hidden" name="emp_location" id="emp_location{{$item->id}}">
+                                    <input type="text" name="emp_location" id="emp_location{{$item->id}}">
                                     <li class="mb-3">{{$item->shop->name}} <i
                                                 class="la la-{{$item->reach?'check':''}}"></i>
                                         <button type="submit"
@@ -45,14 +43,17 @@
                                     </li>
                                     <script>
                                         $(document).ready(function () { //user clicks button
-                                            if ("geolocation" in navigator) { //check geolocation available
-                                                //try to get user current location using getCurrentPosition() method
-                                                navigator.geolocation.getCurrentPosition(function (position) {
-                                                    $("#emp_location{{$item->id}}").val(position.coords.latitude + ',' + position.coords.longitude);
-                                                });
-                                            } else {
-                                                console.log("Browser doesn't support geolocation!");
+                                            if (navigator.geolocation) {
+                                                function successCallback (position) {
+                                                    var lat=position.coords.latitude; // 43.2132209
+                                                    var lng=position.coords.longitude; // 27.9571503
+                                                    $('#emp_location{{$item->id}}').val(lat+','+lng);
+
+                                                }
+
+                                                navigator.geolocation.getCurrentPosition(successCallback);
                                             }
+
                                         });
                                     </script>
                                 </form>
