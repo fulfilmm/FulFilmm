@@ -41,6 +41,7 @@
                                         </button>
 
                                     </li>
+
                                 </form>
                             @endforeach
                         </ul>
@@ -48,27 +49,28 @@
                 </div>
             </div>
         </div>
-
     </div>
+
     <!-- /Page Content -->
     <script>
 
         $(document).ready(function () {
             $('select').select2();
-        });
-        $(document).ready(function () { //user clicks button
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function (p) {
-                    $('.location').val(p.coords.latitude+','+p.coords.longitude);
-                });
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                x.innerHTML = "Geolocation is not supported by this browser.";
             }
 
+            function showPosition(position) {
+                $('.location').val(position.coords.latitude+","+position.coords.longitude);
+            }
         });
         $(function () {
             $("#map").googleMap();
 
             // Marker 1
-            {{--          @if(\Illuminate\Support\Facades\Auth::guard('employee')->user->role->name=='Sale Manager')--}}
+                      {{--@if(\Illuminate\Support\Facades\Auth::guard('employee')->user->role->name=='Sale Manager')--}}
             @foreach($shop as $item)
             $("#map").addMarker({
                 title: '<span style="font-size: 14px;">{{$item->shop->name}}</span>', // Title
@@ -85,9 +87,6 @@
             });
                 @endif
             @endforeach
-            {{--@else--}}
-
-            {{--@endif--}}
         });
     </script>
     <!-- /Page Wrapper -->
