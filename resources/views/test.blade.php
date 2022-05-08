@@ -9,9 +9,12 @@
 <p id="demo"></p>
 
 <script>
+
     var x = document.getElementById("demo");
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition);
+            navigator.geolocation.getCurrentPosition(function(position) {
+                showPosition(position);
+            });
         } else {
             x.innerHTML = "Geolocation is not supported by this browser.";
         }
