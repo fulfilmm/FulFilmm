@@ -20,7 +20,7 @@
         <div class="col-12">
             <div class="row">
                 <div class="col-md-9 col-12">
-                        <div id="map" class="shadow" style="width:100%; height: 500px;"></div>
+                        <div id="map" style="width:100%; height: 500px;"></div>
                 </div>
                 <div class="col-md-3 col-12">
                     <div class="col-12">
