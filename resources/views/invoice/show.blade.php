@@ -474,14 +474,14 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="regional_cashier">Regional Cashier</label>
+                                        <label for="regional_cashier">Cashier</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fa fa-user"></i></span>
                                             </div>
                                             <select name="approver_id" id="regional_cashier" class="form-control " style="width: 90%">
                                                 @foreach($data['emps'] as $emps)
-                                                    @if($emps->role->name=='Regional Cashier'&& $emps->region_id==\Illuminate\Support\Facades\Auth::guard('employee')->user()->region_id)
+                                                    @if($emps->role->name=='Cashier')
                                                         <option value="{{$emps->id}}">{{$emps->name}}</option>
                                                     @endif
                                                 @endforeach

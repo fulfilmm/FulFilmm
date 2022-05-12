@@ -21,6 +21,7 @@ use App\Models\ProductVariations;
 use App\Models\PurchaseOrder;
 use App\Models\Revenue;
 use App\Models\SaleActivity;
+use App\Models\SellingUnit;
 use App\Models\status;
 use App\Models\Stock;
 use App\Models\ticket;
@@ -187,7 +188,44 @@ class HomeController extends Controller
 
                     'profit'=>Auth::guard('employee')->user()->role->name=='CEO'||Auth::guard('employee')->user()->role->name=='Super Admin'?$current_year_income[0]->total??0-$current_year_expense[0]->total??0:0,
                 ];
-                return view('index', compact('items','total_emp','monthly_income','monthly_expense','profit','account'));
+                $product_items=ProductVariations::all();
+                $units=SellingUnit::all();
+
+                $all_products=[];
+                $bad_product=[];
+                $i=0;
+                foreach ($product_items as $item){
+                    $qty=0;
+
+                    foreach ($units as $unit){
+                        $sell_product=DB::table("order_items")
+                            ->select(DB::raw("SUM(quantity) as total"))
+                            ->where('variant_id',$item->id)
+                            ->where('sell_unit',$unit->id)
+                            ->whereMonth('created_at',Carbon::today())->get();
+                        $qty+=$sell_product[0]->total*$unit->unit_convert_rate;
+                    }
+                    $all_products[$i]['qty']=$qty;
+                    $all_products[$i]['product_name']=$item->product_name;
+                    $all_products[$i]['variant']=$item->variant;
+                    $bad_product[$i]['qty']=$qty;
+                    $bad_product[$i]['product_name']=$item->product_name;
+                    $bad_product[$i]['variant']=$item->variant;
+                    $i ++;
+
+                }
+
+                arsort($all_products);
+                asort($bad_product);
+                $best_sell=[];
+                $bad_sell=[];
+                foreach ($all_products as $pd){
+                    array_push($best_sell,$pd);
+                }
+                foreach ($bad_product as $pd){
+                    array_push($bad_sell,$pd);
+                }
+                return view('index', compact('items','total_emp','monthly_income','monthly_expense','profit','account','bad_sell','best_sell'));
                 break;
             case "CEO":
                 $year = date('Y');
@@ -312,7 +350,44 @@ class HomeController extends Controller
                     'current_month_profit'=>($current_month_income[0]->total??0)-($current_month_expense[0]->total??0),
                     'profit'=>Auth::guard('employee')->user()->role->name=='CEO'||Auth::guard('employee')->user()->role->name=='Super Admin'?$current_year_income[0]->total??0-$current_year_expense[0]->total??0:0,
                 ];
-                return view('index', compact('items','total_emp','monthly_income','monthly_expense','profit','account'));
+                $product_items=ProductVariations::all();
+                $units=SellingUnit::all();
+
+                $all_products=[];
+                $bad_product=[];
+                $i=0;
+                foreach ($product_items as $item){
+                    $qty=0;
+
+                    foreach ($units as $unit){
+                        $sell_product=DB::table("order_items")
+                            ->select(DB::raw("SUM(quantity) as total"))
+                            ->where('variant_id',$item->id)
+                            ->where('sell_unit',$unit->id)
+                            ->whereMonth('created_at',Carbon::today())->get();
+                        $qty+=$sell_product[0]->total*$unit->unit_convert_rate;
+                    }
+                    $all_products[$i]['qty']=$qty;
+                    $all_products[$i]['product_name']=$item->product_name;
+                    $all_products[$i]['variant']=$item->variant;
+                    $bad_product[$i]['qty']=$qty;
+                    $bad_product[$i]['product_name']=$item->product_name;
+                    $bad_product[$i]['variant']=$item->variant;
+                    $i ++;
+
+                }
+
+                arsort($all_products);
+                asort($bad_product);
+                $best_sell=[];
+                $bad_sell=[];
+                foreach ($all_products as $pd){
+                    array_push($best_sell,$pd);
+                }
+                foreach ($bad_product as $pd){
+                    array_push($bad_sell,$pd);
+                }
+                return view('index', compact('items','total_emp','monthly_income','monthly_expense','profit','account','best_sell','bad_sell'));
                 break;
             case "General Manager":
 //                dd("GM");

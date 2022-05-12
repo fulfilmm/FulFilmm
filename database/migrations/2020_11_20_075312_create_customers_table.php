@@ -18,9 +18,9 @@ class CreateCustomersTable extends Migration
             $table->string('customer_id')->unique();
             $table->text('profile')->nullable();
             $table->text('bio')->nullable();
-            $table->string('name', 32);
-            $table->string('phone', 16);
-            $table->string('email', 32);
+            $table->string('name');
+            $table->string('phone');
+            $table->string('email');
             $table->string('gender');
             $table->text('address')->nullable();
             $table->string('password')->nullable();
@@ -44,6 +44,8 @@ class CreateCustomersTable extends Migration
             $table->double('credit_limit')->default(0);
             $table->double('current_credit')->default(0);
             $table->string('case')->nullable();
+            $table->double('use_amount')->default(0);
+            $table->integer('payment_term')->nullable();
             $table->bigInteger('branch_id')->unsigned()->nullable();
             $table->bigInteger('zone_id')->unsigned()->nullable();
             $table->tinyInteger('main_customer')->default(0);

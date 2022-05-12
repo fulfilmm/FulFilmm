@@ -98,33 +98,56 @@
         </a>
     </div>
     <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-        <a href="{{route('transactions.index')}}">
+        <a href="{{route('purchaseorders.index')}}">
             <div class="card dash-widget ">
                 <div class="card-body">
-                    <span class="dash-widget-icon"><i class="la la-retweet"></i></span>
+                    <span class="dash-widget-icon"><i class="la la-file-text"></i></span>
                     <div class="dash-widget-info">
-                        <h3>{{$items['transaction']??0}}</h3>
-                        <span>Transactions</span>
+                        <h3>{{$items['purchaseorder']??0}}</h3>
+                        <span>Purchase Orders</span>
                     </div>
                 </div>
             </div>
         </a>
     </div>
+
     <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-        <a href="{{route('groups.index')}}">
+        <a href="{{url('stocks')}}">
             <div class="card dash-widget ">
                 <div class="card-body">
-                    <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
+                    <span class="dash-widget-icon"><i class="fa fa-puzzle-piece"></i></span>
                     <div class="dash-widget-info">
-                        <h3>{{$items['my_groups']??0}}</h3>
-                        <span>Group</span>
+                        <h3>{{$items['stock_balance'][0]->total??0}}</h3>
+                        <span>Stock Balance</span>
                     </div>
                 </div>
             </div>
         </a>
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-6 text-center">
+                <div class="card shadow">
+                    <figure class="highcharts-figure my-2">
+                        <div id="best"></div>
+
+                    </figure>
+                </div>
+            </div>
+            <div class="col-md-6 text-center">
+                <div class="card shadow">
+                    <figure class="highcharts-figure my-2">
+                        <div id="bad"></div>
+
+                    </figure>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
 <div class="row">
     <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3 ">
         <a href="{{route('tickets.index')}}">
@@ -207,26 +230,27 @@
         </a>
     </div>
     <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-        <a href="{{route('purchaseorders.index')}}">
+        <a href="{{route('transactions.index')}}">
             <div class="card dash-widget ">
                 <div class="card-body">
-                    <span class="dash-widget-icon"><i class="la la-file-text"></i></span>
+                    <span class="dash-widget-icon"><i class="la la-retweet"></i></span>
                     <div class="dash-widget-info">
-                        <h3>{{$items['purchaseorder']??0}}</h3>
-                        <span>Purchase Orders</span>
+                        <h3>{{$items['transaction']??0}}</h3>
+                        <span>Transactions</span>
                     </div>
                 </div>
             </div>
         </a>
     </div>
+
     <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-        <a href="{{url('stocks')}}">
+        <a href="{{route('groups.index')}}">
             <div class="card dash-widget ">
                 <div class="card-body">
-                    <span class="dash-widget-icon"><i class="fa fa-puzzle-piece"></i></span>
+                    <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
                     <div class="dash-widget-info">
-                        <h3>{{$items['stock_balance'][0]->total??0}}</h3>
-                        <span>Total Stock</span>
+                        <h3>{{$items['my_groups']??0}}</h3>
+                        <span>Group</span>
                     </div>
                 </div>
             </div>

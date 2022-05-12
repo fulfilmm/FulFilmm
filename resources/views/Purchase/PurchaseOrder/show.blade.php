@@ -137,27 +137,27 @@
                                     @endif
                             </div>
                         </div>
-                        <div class="timeline-block">
-                            <span class="timeline-step badge-success"><i
-                                        class="la la-money text-white"></i></span>
-                            <div class="timeline-content"><h2 class="font-weight-500">
-                                    Paid Bill
-                                </h2>
-                                <small>
-                                    Status:
-                                </small>
-                                <small>
-                                    {{$po->paid_bill==1?'Paid':'Unpaid'}}
-                                </small>
-                               @if(!$inventory_receipt)
-                                    <div class="mt-3">
-                                        <a href="{{route('po.bill',$po->id)}}" class="btn btn-success btn-sm header-button-bottom {{$po->confirm==0?'disabled':''}}" >
-                                            Create Bill
-                                        </a>
-                                    </div>
-                                   @endif
-                            </div>
-                        </div>
+                        {{--<div class="timeline-block">--}}
+                            {{--<span class="timeline-step badge-success"><i--}}
+                                        {{--class="la la-money text-white"></i></span>--}}
+                            {{--<div class="timeline-content"><h2 class="font-weight-500">--}}
+                                    {{--Paid Bill--}}
+                                {{--</h2>--}}
+                                {{--<small>--}}
+                                    {{--Status:--}}
+                                {{--</small>--}}
+                                {{--<small>--}}
+                                    {{--{{$po->paid_bill==1?'Paid':'Unpaid'}}--}}
+                                {{--</small>--}}
+                               {{--@if(!$inventory_receipt)--}}
+                                    {{--<div class="mt-3">--}}
+                                        {{--<a href="{{route('po.bill',$po->id)}}" class="btn btn-success btn-sm header-button-bottom {{$po->confirm==0?'disabled':''}}" >--}}
+                                            {{--Create Bill--}}
+                                        {{--</a>--}}
+                                    {{--</div>--}}
+                                   {{--@endif--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
                     </div>
                 </div>
             </div>

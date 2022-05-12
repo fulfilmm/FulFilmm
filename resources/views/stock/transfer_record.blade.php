@@ -80,10 +80,11 @@
                                             </div>
                                         </div>
                                         @else
-                                        @if($transfer->receipt==0)<a href="{{url('stock/transfer/receipt/'.$transfer->id)}}" class="btn btn-warning btn-sm">Receipt</a>
+                                        @if($transfer->receipt==0)<a href="{{url('stock/transfer/receipt/'.$transfer->id)}}" class="btn btn-warning btn-sm">Pending</a>
                                 @else
                                     Receipted
                                     @endif
+
                                 @endif
 
                             </tr>

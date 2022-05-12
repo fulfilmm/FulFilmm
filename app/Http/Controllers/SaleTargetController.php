@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use App\Models\Invoice;
+use App\Models\OfficeBranch;
 use App\Models\PurchaseOrder;
+use App\Models\Region;
 use App\Models\SaleTarget;
+use App\Models\SaleZone;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,8 +30,11 @@ class SaleTargetController extends Controller
         $receivable=[];
         $payable=[];
         $gp=[];
+        $branch_compare=[];
+        $region_compare=[];
+        $zone_compare=[];
         $year = [$current_year - 2,$current_year - 1,$current_year,$current_year + 1, $current_year +2];
-        if(Auth::guard('employee')->user()->role->name=='CEO'||Auth::guard('employee')->user()->role->name=='Manager'||Auth::guard('employee')->user()->role->name=='Super Admin')
+        if(Auth::guard('employee')->user()->role->name=='CEO'||Auth::guard('employee')->user()->role->name=='Super Admin')
         {
             foreach ($month as $key => $value) {
                 $grand_total = DB::table("invoices")
@@ -81,6 +87,40 @@ class SaleTargetController extends Controller
                 ->select(DB::raw("SUM(due_amount) as total"))
                 ->where('cancel',0)
                 ->get();
+            $branches=OfficeBranch::all();
+
+            foreach ($branches as $branch){
+                $sale = DB::table("invoices")
+                    ->select(DB::raw("SUM(grand_total) as total"))
+                    ->whereMonth('invoice_date',Carbon::today())
+                    ->where('branch_id',$branch->id)
+                    ->where('cancel',0)
+                    ->get();
+                $branch_compare[$branch->id]['sale_amount']=$sale[0]->total??0;
+                $branch_compare[$branch->id]['name']=$branch->name;
+            }
+            $regions=Region::all();
+            foreach ($regions as $rgn){
+                $sale = DB::table("invoices")
+                    ->select(DB::raw("SUM(grand_total) as total"))
+                    ->whereMonth('invoice_date',Carbon::today())
+                    ->where('region_id',$rgn->id)
+                    ->where('cancel',0)
+                    ->get();
+                $region_compare[$rgn->id]['sale_amount']=$sale[0]->total??0;
+                $region_compare[$rgn->id]['name']=$rgn->name;
+            }
+            $zones=SaleZone::all();
+            foreach ($zones as $zone){
+                $sale = DB::table("invoices")
+                    ->select(DB::raw("SUM(grand_total) as total"))
+                    ->whereMonth('invoice_date',Carbon::today())
+                    ->where('zone_id',$zone->id)
+                    ->where('cancel',0)
+                    ->get();
+                $zone_compare[$zone->id]['sale_amount']=$sale[0]->total??0;
+                $zone_compare[$zone->id]['name']=$rgn->name;
+            }
         }else{
             //monthly
             $auth=Auth::guard('employee')->user();
@@ -145,6 +185,7 @@ class SaleTargetController extends Controller
             $all_income[date('Y')] = $income[0];
             $all_income[date('Y')] = $income[0];
 
+
         }
 
 
@@ -154,6 +195,7 @@ class SaleTargetController extends Controller
 
 
 
+        dd($branch_compare,$region_compare,$zone_compare);
 //dd($gp);
         return view('sale.dashboard', compact('monthly', 'yearly', 'year', 'sale_target', 'monthlysaletarget','yearly_target','month','cos','gp','payable','receivable','total_receivable'));
     }

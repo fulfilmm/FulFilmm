@@ -36,7 +36,8 @@ class EmployeeRequest extends FormRequest
             'join_date' => 'required',
             'mobile_seller'=>'nullable',
             'office_branch_id'=>'nullable',
-            'region_id'=>'nullable'
+            'region_id'=>'nullable',
+            'head_office'=>'required'
 
         ];
     }

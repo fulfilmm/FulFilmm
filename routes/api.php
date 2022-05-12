@@ -46,8 +46,19 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
 
     Route::resource("mobile_invoice", MobileInvoiceController::class);
     Route::get('retail/invoice' , [App\Http\Controllers\Api\Invoice_Mobile\MobileInvoiceController::class,'retail']);
+    Route::resource('revenues',App\Http\Controllers\Api\RevenueController::class);
 
 
+
+    Route::post('remove/shops',[\App\Http\Controllers\Api\WayController::class,'remove_shop'])->name('shop_remove');
+    Route::post('add/shops',[\App\Http\Controllers\Api\WayController::class,'add_shop'])->name('shop_register');
+    Route::resource('sales_groups',\App\Http\Controllers\Api\SaleGroupController::class);
+    Route::post('add/sale/group/member',[\App\Http\Controllers\Api\SaleGroupController::class,'add_member'])->name('member_add');
+    Route::post('remove/sale/group/member',[\App\Http\Controllers\Api\SaleGroupController::class,'remove_member'])->name('member_remove');
+    Route::resource('assign_sales_way',\App\Http\Controllers\Api\AssignSaleWayController::class);
+    Route::post('check/in/{id}',[\App\Http\Controllers\Api\AssignSaleWayController::class,'check'])->name('checkin');
+    Route::resource('shops',\App\Http\Controllers\Api\ShopController::class);
+    Route::resource('sales_way',\App\Http\Controllers\SaleWayController::class);
 
 //    Route::resource("invoice_items",InvoiceItemController::class);
 //    Route::get("invoice/sendmail/{id}",[InvoiceController::class,'sending_form'])->name('invoice.sendmail');

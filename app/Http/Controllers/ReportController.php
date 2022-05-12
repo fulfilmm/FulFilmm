@@ -37,6 +37,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules\In;
 use phpDocumentor\Reflection\PseudoTypes\PositiveInteger;
+use function PHPUnit\Framework\isEmpty;
 use Yajra\DataTables\DataTables;
 
 class ReportController extends Controller
@@ -835,6 +836,14 @@ class ReportController extends Controller
 
         return view('Report.foc',compact('stockout','warehouse','start','end','search_warehouse'));
     }
+
+    public function bestsell_products(){
+
+
+        return view('Report.best_top_sell_product',compact('best_sell','bad_sell'));
+
+    }
+
 
 
 }

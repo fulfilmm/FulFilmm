@@ -56,7 +56,7 @@ class BillController extends Controller
         }else{
             $request_id=Session::get($Auth);
         }
-        $category=TransactionCategory::all();
+        $category=TransactionCategory::where('type',0)->get();
         return view('transaction.Bill.normalbill',compact('vendor','data','request_id','category'));
     }
 
@@ -103,6 +103,15 @@ class BillController extends Controller
         $bill->category=$request->category;
         $bill->inv_date=$request->inv_date;
         $bill->invoice_id=$request->invoice_id;
+        $bill->po_id=$request->po_id;
+        if (isset($request->attach)) {
+                $file=$request->file('attach');
+                $input['filename'] =\Illuminate\Support\Str::random(10).time().'.'.$file->extension();
+                $file->move(public_path() . '/attach_file', $input['filename']);
+                $name[]=$input['filename'];
+                $bill->attachment=$input['filename'];
+
+        }
         $bill->branch_id=Auth::guard('employee')->user()->office_branch_id;
         $bill->save();
         $bill_items = BillItem::where('creation_id', $request->creation_id)->get();
@@ -128,12 +137,12 @@ class BillController extends Controller
         $account=Account::where('enabled',1)->get();
         $recurring=['No','Daily','Weekly','Monthly','Yearly'];
         $payment_method=['Cash','eBanking','WaveMoney','KBZ Pay'];
-        $category=TransactionCategory::all();
+        $category=TransactionCategory::where('type',0)->get();
         $emps = Employee::all();
         $customer=Customer::where('customer_type','Supplier')->get();
         $coas=ChartOfAccount::all();
         $data=['coas'=>$coas,'emps'=>$emps,'customers'=>$customer,'account'=>$account,'recurring'=>$recurring,'payment_method'=>$payment_method,'category'=>$category];
-        $bill=Bill::with('supplier','employee')->where('id',$id)->firstOrFail();
+        $bill=Bill::with('supplier','employee','cat')->where('id',$id)->firstOrFail();
         $bill_item=BillItem::with('purchaseorder','delivery')->where('bill_id',$bill->id)->get();
         $company=MainCompany::where('ismaincompany',true)->first();
         $expense=Expense::all();

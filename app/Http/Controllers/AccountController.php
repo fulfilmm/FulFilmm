@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use App\Models\Employee;
+use App\Models\HeadOffice;
 use App\Models\MainCompany;
 use App\Models\OfficeBranch;
 use App\Models\Transaction;
@@ -21,9 +22,9 @@ class AccountController extends Controller
     {
         $auth = Auth::guard('employee')->user();
         if ($auth->role->name == 'CEO' || $auth->role->name == 'Super Admin' || $auth->role->name == 'Finance Manager') {
-            $account = Account::with('branch','cashier')->get();
+            $account = Account::with('branch','head')->get();
         } else {
-            $account = Account::with('branch','cashier')->where('branch_id', $auth->office_branch_id)->get();
+            $account = Account::with('branch','head')->where('branch_id', $auth->office_branch_id)->get();
         }
 
         return view('account.index', compact('account'));
@@ -38,10 +39,11 @@ class AccountController extends Controller
     {
         $auth = Auth::guard('employee')->user();
         if ($auth->role->name == 'CEO' || $auth->role->name == 'Super Admin' || $auth->role->name == 'Finance Manager') {
+           $head_office=HeadOffice::all()->pluck('name','id')->all();
             $company = MainCompany::where('ismaincompany', true)->first();
-            $branch = OfficeBranch::all()->pluck('name', 'id')->all();
+            $branch = OfficeBranch::all();
             $cashier=Employee::all();
-            return view('account.create', compact('company', 'branch','cashier'));
+            return view('account.create', compact('company', 'branch','cashier','head_office'));
         } else {
             return redirect()->back()->with('warning', 'Sorry!You can not create a new account.Super Admin,CEO and Finance Manager only can create a new bank account');
         }
@@ -59,9 +61,7 @@ class AccountController extends Controller
         $this->validate($request, [
             'account_id' => 'required',
             'name' => 'required',
-            'number' => 'required',
             'currency' => 'required',
-            'emp_id'=>'required'
 
         ]);
         $account = new Account();
@@ -76,8 +76,11 @@ class AccountController extends Controller
         $account->enabled = $request->enable ?? 0;
         $account->bank_name = $request->bank_name;
         $account->bank_phone = $request->bank_phone;
-        $account->branch_id = $request->branch_id;
-        $account->emp_id=$request->emp_id;
+        $account->head_office=$request->head_office;
+        $account->head_account=$request->head_acct;
+        if($request->head_acct!=1){
+            $account->branch_id = $request->branch_id;
+        }
         $account->save();
         return redirect(route('accounts.index'))->with('success', 'New Account Create Success');
     }

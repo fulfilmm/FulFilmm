@@ -70,15 +70,15 @@ class TransactionController extends Controller
     }
     public function addrevenue()
     {
-        $emps = Employee::where('office_branch_id', Auth::guard('employee')->user()->office_branch_id)->get();
+
         $recurring = ['No', 'Daily', 'Weekly', 'Monthly', 'Yearly'];
         $payment_method = ['Cash', 'eBanking', 'WaveMoney', 'KBZ Pay'];
         $category = TransactionCategory::where('type', 1)->get();
 //        $coas = ChartOfAccount::all();
         $customer = Customer::orWhere('customer_type', 'Customer')->orWhere('customer_type', 'Lead')->orWhere('customer_type', 'Partner')->orWhere('customer_type', 'Inquery')->get();
+        $employee=Employee::where('office_branch_id',Auth::guard('employee')->user()->office_branch_id)->get();
         $data = [
-//            'coas' => $coas,
-            'emps' => $emps, 'customers' => $customer, 'recurring' => $recurring, 'payment_method' => $payment_method, 'category' => $category];
+            'emps'=>$employee,'customers' => $customer, 'recurring' => $recurring, 'payment_method' => $payment_method, 'category' => $category];
         return view('transaction.Revenue.create', compact('data'));
     }
 
@@ -118,14 +118,22 @@ class TransactionController extends Controller
                 'customer_id' => 'required',
                 'category' => 'required',
                 'payment_method' => 'required',
-                'approver_id' => 'required',
+                'approver_id'=>'required',
                 'attachment' => 'mimes:pdf,xlsx,doc,docx,jpg,jpeg,ppt,bip',
 //                'coa_account'=>'required'
             ]);
 
             try {
-                $reginal_acc = Account::where('emp_id', $request->approver_id)->first()->id;
-                $new_revenue = new Revenue();
+               $branch_acc=Account::where('branch_id',Auth::guard('employee')->user()->office_branch_id)->first();
+
+               $emps=Employee::where('head_office',Auth::guard('employee')->user()->head_office)->get();
+              $financeManger=[];
+               foreach ($emps as $emp){
+                   if($emp->role->name=='Finance Manager'){
+                       array_push($financeManger,$emp);
+                   }
+               }
+               $new_revenue = new Revenue();
                 $new_revenue->title = $request->title;
                 $new_revenue->customer_id = $request->customer_id;
                 $new_revenue->amount = $request->amount;
@@ -135,16 +143,16 @@ class TransactionController extends Controller
                 $new_revenue->payment_method = $request->payment_method;
                 $new_revenue->description = $request->description;
                 $new_revenue->category = $request->category;
-                $new_revenue->regional_cashier = $request->approver_id;
+                $new_revenue->cashier = $request->approver_id;
                 $new_revenue->advance_pay_id = $request->advance_id ?? null;
                 $employee = Employee::where('office_branch_id', Auth::guard('employee')->user()->office_branch_id)->get();
                 foreach ($employee as $emp) {
                     if ($emp->role->name == 'Branch Cashier') {
-                        $new_revenue->branch_account = Account::where('enabled', 1)->where('emp_id', $emp->id)->first()->id;
-                        $new_revenue->branch_cashier = $emp->id;
+                        $new_revenue->head_account = Account::where('enabled', 1)->where('head_office',Auth::guard('employee')->user()->head_office)->where('head_account',1)->first()->id;
+                        $new_revenue->finance_manager =$financeManger[0]->id;
                     }
                 }
-                $new_revenue->regional_account = $reginal_acc;
+                $new_revenue->cashier_account = $branch_acc->id;
                 $new_revenue->transaction_date = $request->transaction_date;
                 $new_revenue->emp_id = Auth::guard('employee')->user()->id;
                 $new_revenue->branch_id = Auth::guard('employee')->user()->office_branch_id;
@@ -182,10 +190,10 @@ class TransactionController extends Controller
                     $deli_pay->update();
                 }
             }
-            $this->transaction_add($reginal_acc, $request->type, null, $new_revenue->id);
+            $this->transaction_add($branch_acc->id, $request->type, null, $new_revenue->id);
             $this->addnotify($request->approver_id, 'noti', 'Add new revenue', 'revenue', Auth::guard('employee')->user()->id);
             if ($new_revenue->is_cashintransit) {
-                $this->addnotify($new_revenue->branch_cashier, 'noti', 'Add new revenue', 'revenue', Auth::guard('employee')->user()->id);
+                $this->addnotify($new_revenue->finance_manager, 'noti', 'Add new revenue', 'revenue', Auth::guard('employee')->user()->id);
 
             }
             if (isset($request->invoice_id)) {
@@ -217,7 +225,7 @@ class TransactionController extends Controller
     public function revenue_update(Request $request, $id)
     {
         try {
-            $reginal_acc = Account::where('emp_id', $request->approver_id)->first()->id;
+
             $new_revenue = Revenue::where('id', $id)->first();
             $new_revenue->title = $request->title;
             $new_revenue->customer_id = $request->customer_id;
@@ -228,8 +236,6 @@ class TransactionController extends Controller
             $new_revenue->payment_method = $request->payment_method;
             $new_revenue->description = $request->description;
             $new_revenue->category = $request->category;
-            $new_revenue->regional_cashier = $request->approver_id;
-            $new_revenue->regional_account = $reginal_acc;
             $new_revenue->advance_pay_id = $request->advance_id ?? null;
 //            $new_revenue->coa_id = $request->coa_account;
             $new_revenue->transaction_date = $request->transaction_date;
@@ -562,8 +568,8 @@ class TransactionController extends Controller
         if ($type == 'Revenue') {
             $revenue = Revenue::with('invoice')->where('id', $id)->first();
 
-            if ($revenue->regional_cashier == Auth::guard('employee')->user()->id) {
-                $account = Account::where('id', $revenue->regional_account)->first();
+            if ($revenue->cashier == Auth::guard('employee')->user()->id) {
+                $account = Account::where('id', $revenue->cashier_account)->first();
                 $account->balance = $account->balance + $revenue->amount;
                 $revenue->approve = 1;
                 $revenue->update();
@@ -571,6 +577,7 @@ class TransactionController extends Controller
                 if (isset($revenue->invoice->customer_id)) {
                     $customer = Customer::where('id', $revenue->invoice->customer_id)->first();
                     $customer->current_credit = $customer->current_credit - $revenue->amount;
+                    $customer->use_amount+=$revenue->amount;
                     $customer->update();
                     $employee = Employee::where('id', $revenue->invoice->emp_id)->first();
                     $employee->amount_in_hand = $employee->amount_in_hand - $revenue->amount;
@@ -580,16 +587,16 @@ class TransactionController extends Controller
 //                $rev_budget=RevenueBudget::where('category_id',$revenue->category)->where('year',Carbon::parse($revenue->transaction_date)->format('Y'))->where('month',Carbon::parse($revenue->transaction_date)->format('m'))->first();
 //                $rev_budget->actual=$rev_budget->actual + $revenue->amount;
 //                $rev_budget->update();
-            }elseif ($revenue->branch_cashier == Auth::guard('employee')->user()->id) {
-                $branch_acc = Account::where('id', $revenue->branch_account)->first();
-                $branch_acc->balance = $branch_acc->balance + $revenue->amount;
-                $revenue->receipt_branch_cashier = 1;
+            }elseif ($revenue->finance_manager == Auth::guard('employee')->user()->id) {
+                $head_acc = Account::where('id', $revenue->head_account)->first();
+                $head_acc->balance = $head_acc->balance + $revenue->amount;
+                $revenue->received = 1;
                 $revenue->update();
-                $branch_acc->update();
-                $regional_account = Account::where('id', $revenue->regional_account)->first();
-                $regional_account->balance = $regional_account->balance - $revenue->amount;
+                $head_acc->update();
+                $cashier_account = Account::where('id', $revenue->cashier_account)->first();
+                $cashier_account->balance = $cashier_account->balance - $revenue->amount;
                 $revenue->update();
-                $regional_account->update();
+                $cashier_account->update();
                 return redirect('revenue')->with('success', 'You has been receipted this revenue');
             }else {
                 return redirect('revenue')->with('error', 'You can not approve');
@@ -642,7 +649,7 @@ class TransactionController extends Controller
                 }
                 $revenue->second_attach = $input['filename'];
             }
-            $revenue->regional_comment=$request->comment;
+            $revenue->comment=$request->comment;
             $revenue->update();
         }
         return redirect()->back()->with('success','Transferred to ' . count($request->revenue) . ' revenue transaction');

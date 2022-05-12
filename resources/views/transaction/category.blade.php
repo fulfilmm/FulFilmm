@@ -1,5 +1,5 @@
 @extends("layout.mainlayout")
-@section("title","Cases Type")
+@section("title","Transaction Category")
 @section("content")
     <!-- Page Content -->
     <div class="content container-fluid">
@@ -9,7 +9,7 @@
             <div class="row align-items-center">
                 <div class="col">
                     <h3 class="page-title">Category</h3>
-                    <ul class="breadcrumb">Revenue
+                    <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url("/")}}">Dashboard</a></li>
                         <li class="breadcrumb-item active">Category</li>
                     </ul>

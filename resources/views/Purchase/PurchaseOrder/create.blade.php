@@ -178,7 +178,7 @@
                                                                         <div class="col-md-9">
                                                                             <select name="" id="product{{$item->id}}"
                                                                                     class="form-control select2 update{{$item->id}}">
-                                                                                <option value="{{$item->product->product_id}}">{{$item->product->product_name}}({{$item->product->variant}})</option>
+                                                                                <option value="{{$item->product->product_id}}">{{$item->product->product_name}}{{$item->product->variant?'-'.$item->product->variant:''}}</option>
                                                                             </select>
                                                                         </div>
                                                                     </div>

@@ -15,7 +15,7 @@ class Account extends Model
     public function branch(){
         return $this->belongsTo(OfficeBranch::class,'branch_id','id');
     }
-    public function cashier(){
-        return $this->belongsTo(Employee::class,'emp_id','id');
+    public function head(){
+        return $this->belongsTo(HeadOffice::class,'head_office','id');
     }
 }

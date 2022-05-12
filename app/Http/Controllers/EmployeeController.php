@@ -6,6 +6,7 @@ use App\Http\Requests\EmployeeRequest;
 use App\Models\Brand;
 use App\Models\Department;
 use App\Models\Employee;
+use App\Models\HeadOffice;
 use App\Models\Invoice;
 use App\Models\OfficeBranch;
 use App\Models\Region;
@@ -78,7 +79,6 @@ class EmployeeController extends Controller
     public function create()
     {
         //
-
         $departments = Department::all()->pluck('name', 'id');
         $roles = Role::all()->pluck('name', 'id');
         $office = OfficeBranch::all();
@@ -91,6 +91,7 @@ class EmployeeController extends Controller
             $warehouse = Warehouse::where('branch_id', $auth->office_branch_id)->get();
             $region = Region::where('branch_id', $auth->office_branch_id)->get();
         }
+        $head_offices=HeadOffice::all();
 
         return view('employee.create', compact(
             'departments',
@@ -98,7 +99,8 @@ class EmployeeController extends Controller
             'office',
             'all_employee',
             'warehouse',
-            'region'
+            'region',
+            'head_offices'
         ));
     }
 
@@ -161,6 +163,7 @@ class EmployeeController extends Controller
         $employee->mobile_seller = $request->mobile_seller??0;
         $employee->region_id = $request->region_id;
         $employee->warehouse_id = $request->warehouse_id;
+        $employee->head_office=$request->head_office;
 
         if ($request->profile_img != null) {
             $profile = $request->file('profile_img');
@@ -171,8 +174,10 @@ class EmployeeController extends Controller
         $employee->save();
         $employee->assignRole($request->role_id);
         $office_branch = OfficeBranch::where('id', $data['office_branch_id'])->first();
-        $office_branch->status = 1;
-        $office_branch->update();
+       if($office_branch!=null){
+           $office_branch->status = 1;
+           $office_branch->update();
+       }
         return redirect('employees')->with('success', __('alert.create_success'));
     }
 
@@ -249,19 +254,13 @@ class EmployeeController extends Controller
         $roles = Role::all()->pluck('name', 'id');
         $office = OfficeBranch::all();
         $all_employee = Employee::all();
-        $auth = Auth::guard('employee')->user();
-        if ($auth->role->name == 'Super Admin' || $auth->role->name == 'CEO') {
-            $warehouse = Warehouse::all();
-            $region = Region::all();
-        } else {
-            $warehouse = Warehouse::where('branch_id', $auth->office_branch_id)->get();
-            $region = Region::where('branch_id', $auth->office_branch_id)->get();
-        }
+        $warehouse=Warehouse::all();
+        $region=Region::all();
 
         return view('employee.edit', compact(
-            'employee',
             'departments',
             'roles',
+            'employee',
             'office',
             'all_employee',
             'warehouse',
@@ -299,6 +298,7 @@ class EmployeeController extends Controller
             $employee->mobile_seller = $request->mobile_seller??0;
             $employee->region_id = $request->region_id;
             $employee->warehouse_id = $request->warehouse_id;
+            $employee->head_office=$request->head_office;
 
             if ($request->profile_img != null) {
                 $profile = $request->file('profile_img');

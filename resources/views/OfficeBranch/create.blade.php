@@ -19,6 +19,16 @@
                 @csrf
                 <div class="col-md-8 offset-md-2 card shadow">
                     <div class="row my-5">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="head">Head Office</label>
+                                <select name="head_office" id="head" class="form-control">
+                                    @foreach($head as $item)
+                                        <option value="{{$item->id}}">{{$item->name}}</option>
+                                        @endforeach
+                                </select>
+                            </div>
+                        </div>
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="name">Name</label>

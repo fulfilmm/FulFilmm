@@ -34,6 +34,7 @@ class CreateBillsTable extends Migration
             $table->string('category')->nullable();
             $table->index(['id','vendor_id']);
             $table->bigInteger('branch_id')->unsigned();
+            $table->string('po_id')->nullable();
             $table->text('attachment')->nullable();
             $table->timestamps();
 

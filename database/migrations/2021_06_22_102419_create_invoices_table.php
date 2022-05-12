@@ -20,8 +20,8 @@ class CreateInvoicesTable extends Migration
             $table->bigInteger('customer_id')->unsigned();
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
             $table->string('email');
-            $table->text('customer_address');
-            $table->text('billing_address');
+            $table->text('customer_address')->nullable();
+            $table->text('billing_address')->nullable();
             $table->dateTime('invoice_date');
             $table->dateTime('due_date');
             $table->string('status');

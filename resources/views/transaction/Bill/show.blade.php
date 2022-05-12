@@ -184,35 +184,25 @@
                                             <table class="table table-striped table-hover">
                                                 <thead>
                                                 <tr>
-                                                    <th>Item</th>
+                                                    <th>Type</th>
+                                                    <th>Invoice Reference ID</th>
+                                                    <th>PO Reference Id</th>
                                                     <th class="d-none d-sm-table-cell">DESCRIPTION</th>
                                                     <th class='d-none d-sm-table-cell'>TOTAL</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                @foreach($bill_item as $item)
                                                     <tr>
-                                                        <td>
-                                                            @if($item->type=='Purchase')
-                                                                <a href="{{route('purchaseorders.show',$item->purchaseorder->id)}}">
-                                                            {{$item->purchaseorder->po_id}}</a>
-                                                        @else
-                                                                <a href="{{route('deliveries.show',$item->delivery->id)}}">  {{$item->delivery->delivery_id}}</a>
-                                                            @endif
-                                                        </td>
-                                                        <td class="d-none d-sm-table-cell">{{$item->description}}</td>
-                                                        <td>{{$item->amount}}</td>
+                                                        <td>{{$bill->cat->name}}</td>
+                                                        <td>{{$bill->invoice_id??'N/A'}}</td>
+                                                        <td>{{$bill->po_id??'N/A'}}</td>
+                                                        <td>{{$bill->description??'N/A'}}</td>
+                                                        <td>{{$bill->grand_total}} MMK</td>
                                                     </tr>
-                                                @endforeach
+
                                                 </tbody>
                                             </table>
                                         </div>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <div class="d-flex justify-content-end">
-                                            Total: <p class="ml-2 mb-0 font-weight-bold">  {{$bill->grand_total}} MMK </p>
-                                        </div>
-
                                     </li>
                                 </ul>
                             </div>
@@ -224,6 +214,14 @@
                                     </div>
                                 </div>
                             </div>
+                            @if($bill->status=='Paid')
+                                <div class="col-12">
+                                    <div class="text-right">
+                                        <img src="{{url(asset('img/icon_image/paid.png'))}}" alt="paid" width="60px" height="40px">
+                                    </div>
+                                </div>
+                            @endif
+
                         </div>
                     </div>
                 </div>

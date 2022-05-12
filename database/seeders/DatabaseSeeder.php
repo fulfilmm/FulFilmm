@@ -8,6 +8,7 @@ use App\Models\Company;
 use App\Models\Customer;
 use App\Models\Department;
 use App\Models\Employee;
+use App\Models\HeadOffice;
 use App\Models\OfficeBranch;
 use App\Models\priority;
 use App\Models\products_category;
@@ -33,7 +34,10 @@ class DatabaseSeeder extends Seeder
         ThemeSetting::create(['name'=>'Purple','link'=>'purplestyle.css','active'=>0]);
         ThemeSetting::create(['name'=>'Orange','link'=>'orangestyle.css','active'=>0]);
         ThemeSetting::create(['name'=>'Maroon','link'=>'maroonstyle.css','active'=>0]);
-        $branch=OfficeBranch::create(['name'=>'Head Office','address'=>'Yangon','type'=>'Branch']);
+        $upperhead=HeadOffice::create(['name'=>'Upper Myanmar Head']);
+        $lowerhead=HeadOffice::create(['name'=>'Lower Myanmar Head']);
+        $branch=OfficeBranch::create(['name'=>'Mandalay Branch','address'=>'Mandalay','type'=>'Branch','head_office'=>$upperhead->id]);
+        OfficeBranch::create(['name'=>'Yangon Branch','address'=>'Yangon','type'=>'Branch','head_office'=>$lowerhead->id]);
         Warehouse::create(['warehouse_id'=>'WH-001','name'=>'Main Warehouse','address'=>'Yangon','description'=>'Main Warehouse','branch_id'=>$branch->id]);
         products_tax::create(['name'=>'Tax Free','rate'=>0]);
         products_tax::create(['name'=>'Personal Income Tax','rate'=>5]);
@@ -56,7 +60,7 @@ class DatabaseSeeder extends Seeder
         TransactionCategory::create(['name'=>'General Expense','type'=>0]);
         $cuscom=Company::create(['name'=>'Customer Company','email'=>'oranger@gmail.com','phone'=>'09786543278','address'=>'Yangon','business_type'=>'Trading']);
         $supcom=Company::create(['name'=>'Supplier Company','email'=>'supplier@gmail.com','phone'=>'09786543278','address'=>'Yangon','business_type'=>'Trading']);
-        Account::create(['account_no'=>'0001','name'=>'Main Account','number'=>'2002865657','currency'=>'MMK','enabled'=>1,'branch_id'=>$branch->id]);
+//        Account::create(['account_no'=>'0001','name'=>'Main Account','number'=>'2002865657','currency'=>'MMK','enabled'=>1,'branch_id'=>$branch->id]);
         $superadmin = Employee::updateOrCreate(
             ['email' => 'admin@gmail.com'],
             [    'empid'=>'Emp-00001',
@@ -66,7 +70,6 @@ class DatabaseSeeder extends Seeder
                 'email' => 'admin@gmail.com',
                 'work_phone' => '098758654',
                 'can_login' => true,
-                'office_branch_id'=>$branch->id,
                 'password' => bcrypt('123123'),
                 'join_date' => '1999-10-20',
             ]
@@ -80,13 +83,11 @@ class DatabaseSeeder extends Seeder
                 'email' =>'wailinaung.mandalay@gmail.com',
                 'work_phone' => '098764656778',
                 'can_login' => true,
-                'office_branch_id'=>$branch->id,
                 'password' => bcrypt('123123'),
                 'join_date' => '1999-10-20',
             ]
         );
-        Customer::create(['customer_id'=>'CUS-00001', 'name'=>'Mr Chris', 'phone'=>'09867766767', 'email'=>'chris@gmail.com', 'company_id'=>$cuscom->id,'emp_id'=>$superadmin->id,'customer_type'=>'Customer','gender'=>'Male']);
-        Customer::create(['customer_id'=>'CUS-00002', 'name'=>'Miss Ma Sa', 'phone'=>'0925986767', 'email'=>'ma.sa.kitaite@gmail.com', 'company_id'=>$supcom->id,'emp_id'=>$superadmin->id,'customer_type'=>'Supplier','gender'=>'Female']);
+        Customer::create(['customer_id'=>'CUS-00001', 'name'=>'Walk In Customer', 'phone'=>'00000000000', 'email'=>'unknowcustomer@gmail.com', 'company_id'=>$cuscom->id,'emp_id'=>$superadmin->id,'customer_type'=>'Unknown','gender'=>'Male']);
         case_type::create(['name'=>'Problem One']);
         case_type::create(['name'=>'Problem Two']);
         case_type::create(['name'=>'Problem Three']);

@@ -93,7 +93,7 @@ class WayAssignController extends Controller
         }else{
             $this->addnotify($request->emp_id,'noti','You have assigned a new sale way to you','assignsaleway/'.$assign->id,Auth::guard('employee')->user()->id);
         }
-        return redirect('assingsaleway')->with('success','Assign sale way');
+        return redirect('assignsaleway')->with('success','Assign sale way');
     }
 
     /**
@@ -149,6 +149,6 @@ class WayAssignController extends Controller
         $shopreach->emp_id=Auth::guard('employee')->user()->id;
         $shopreach->reach=1;
         $shopreach->update();
-        return redirect('assignsaleway/'.$shopreach->way_id);
+        return redirect('assignsaleway/'.$shopreach->assign_id);
     }
 }

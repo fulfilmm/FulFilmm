@@ -32,4 +32,7 @@ class Invoice extends Model
     public function region(){
         return $this->belongsTo(Region::class,'region_id','id');
     }
+    public function item(){
+        return $this->hasMany(OrderItem::class,'inv_id','id');
+    }
 }

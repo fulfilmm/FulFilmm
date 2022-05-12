@@ -188,7 +188,8 @@ class InvoiceController extends Controller
             $companies=Company::all()->pluck('name','id')->all();
             $zone=SaleZone::where('region_id',$Auth->region_id)->get();
             $region=Region::where('branch_id',$Auth->office_branch_id)->get();
-            return view('invoice.create', compact('zone','warehouse', 'type', 'request_id', 'allcustomers', 'orderline', 'grand_total', 'status', 'data', 'aval_product', 'taxes', 'unit_price', 'dis_promo', 'focs','prices','amount_discount','due_default','companies','region'));
+            $unknown=Customer::where('customer_type','Unknown')->first();
+            return view('invoice.create', compact('zone','warehouse', 'type', 'request_id', 'allcustomers', 'orderline', 'grand_total', 'status', 'data', 'aval_product', 'taxes', 'unit_price', 'dis_promo', 'focs','prices','amount_discount','due_default','companies','region','unknown'));
         }else{
             return redirect()->back()->with('error','Firstly,Fixed your Branch Office and Sale Region');
     }
@@ -198,6 +199,7 @@ class InvoiceController extends Controller
      */
     public function retail_inv()
     {
+        $unknown=Customer::where('customer_type','Unknown')->first();
         $Auth=Auth::guard('employee')->user();
         if($Auth->office_branch_id!=null && $Auth->region_id!=null){
             $allcustomers = Customer::where('branch_id',$Auth->office_branch_id)->where('region_id',$Auth->region_id)->get();
@@ -261,7 +263,7 @@ class InvoiceController extends Controller
             $companies=Company::all()->pluck('name','id')->all();
             $zone=SaleZone::where('region_id',$Auth->region_id)->get();
             $region=Region::where('branch_id',$Auth->office_branch_id)->get();
-        return view('invoice.create',compact('zone','warehouse','request_id','allcustomers','orderline','grand_total','status','data','aval_product','taxes','unit_price','dis_promo','focs','type','prices','amount_discount','due_default','companies','region'));
+        return view('invoice.create',compact('zone','warehouse','request_id','allcustomers','orderline','grand_total','status','data','aval_product','taxes','unit_price','dis_promo','focs','type','prices','amount_discount','due_default','companies','region','unknown'));
         }else{
             return redirect()->back()->with('error','Firstly,Fixed your Branch Office and region');
         }
@@ -285,8 +287,6 @@ class InvoiceController extends Controller
             'client_email'=>'required',
             'inv_date'=>'required',
             'due_date'=>'required',
-            'client_address'=>'required',
-            'bill_address'=>'required',
             'payment_method'=>'required',
 
         ]);

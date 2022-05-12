@@ -145,6 +145,7 @@ class CustomerController extends Controller
             }
         }
         $data = [
+            'payment_term'=>$request->payment_term,
             'customer_id'=>$customer_id,
             'profile' => $request->profile_img != null?$input['imagename']:null,
             'name' => $request->name,
@@ -160,7 +161,7 @@ class CustomerController extends Controller
             'linkedin' => $request->linkedin,
             'dob' => $request->dob,
             'report_to' => $request->report_to,
-            'position_of_report_to' => $request->position,
+            'position_of_report_to' => $request->report_to_position,
             "priority" => $request->priority,
             "tags_id" => $request->tag_industry,
             "emp_id" => Auth::guard('employee')->user()->id,
@@ -169,6 +170,7 @@ class CustomerController extends Controller
             'department'=>$request->department,
             'position'=>$request->position??null,
             'status'=>$request->status,
+            'case'=>$request->case,
             'credit_limit'=>$request->credit_limit??0,
             'lead_title'=>$request->title
 
@@ -204,7 +206,7 @@ class CustomerController extends Controller
                 $deal_record->save();
 
             }
-        return redirect()->route('customers.index')->with('success', __('alert.create_success'));
+            return redirect()->route('customers.index')->with('success', __('alert.create_success'));
         }catch (Exception $e){
             return redirect()->back()->with('error',$e->getMessage());
         }
@@ -387,7 +389,7 @@ class CustomerController extends Controller
                 'branch_id'=>$request->branch_id,
                 'zone_id'=>$request->zone_id,
                 'report_to' => $request->report_to,
-                'position_of_report_to' => $request->position_of_report_to,
+                'position_of_report_to' => $request->report_to_position,
                 "priority" => $request->priority,
                 "tags_id" => $request->tag_industry,
                 "emp_id" => Auth::guard('employee')->user()->id,
@@ -396,6 +398,7 @@ class CustomerController extends Controller
                 'department'=>$request->department,
                 'position'=>$request->position??null,
                 'status'=>$request->status,
+                'case'=>$request->case,
                 'credit_limit'=>$request->credit_limit,
                 'lead_title'=>$request->title,
                 'bio'=>$request->bio
@@ -429,7 +432,7 @@ class CustomerController extends Controller
                 'dob' => $request->dob,
                 'zone_id'=>$request->zone_id,
                 'report_to' => $request->report_to,
-                'position_of_report_to' => $request->position_of_report_to,
+                'position_of_report_to' => $request->report_to_position,
                 "priority" => $request->priority,
                 "tags_id" => $request->tag_industry,
                 "emp_id" => Auth::guard('employee')->user()->id,
@@ -438,6 +441,7 @@ class CustomerController extends Controller
                 'department'=>$request->department,
                 'position'=>$request->position??null,
                 'status'=>$request->status,
+                'case'=>$request->case,
                 'lead_title'=>$request->title,
                 'bio'=>$request->bio
 

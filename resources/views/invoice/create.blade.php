@@ -59,8 +59,7 @@
                             <div class="col-sm-4 col-md-4">
                                 <div class="form-group">
                                     <label for="due_date">Payment Terms <span class="text-danger">*</span></label>
-                                    <input class="form-control shadow-sm" type="date" id="due_date"
-                                           min="{{$due_default->format('Y-m-d')}}"
+                                    <input class="form-control shadow-sm" type="date" id="due_date" min="{{$due_default->format('Y-m-d')}}"
                                            value="{{isset($data[0]['due_date'])?$data[0]['due_date']:$due_default->format('Y-m-d')}}">
                                 </div>
                             </div>
@@ -91,14 +90,13 @@
                                     <label for="client_id">Client <span class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <select class="form-control" id="client_id">
-                                            <option value="">Select Client</option>
+                                            <option value="{{$unknown->id}}">{{$unknown->name}}</option>
                                             @foreach($allcustomers as $client)
                                                 <option value="{{$client->id}}" {{isset($order_data)?($client->id==$order_data->customer_id?'selected':''):($data!=null?($data[0]['client_id']==$client->id?'selected':''):'')}}>{{$client->name}}{{$client->region!=null?'('.$client->region->name.')':''}}</option>
                                             @endforeach
                                         </select>
                                         <div class="input-group-append">
-                                            <button type="button" class="btn btn-white" data-toggle="modal"
-                                                    data-target="#add_contact"><i class="la la-plus"></i></button>
+                                            <button type="button" class="btn btn-white" data-toggle="modal" data-target="#add_contact"><i class="la la-plus"></i></button>
                                         </div>
                                     </div>
                                     <span class="text-danger client_id_err"></span>
@@ -108,7 +106,7 @@
                                 <div class="form-group">
                                     <label for="client_email">Email</label>
                                     <input class="form-control shadow-sm" type="email" id="client_email"
-                                           value="{{$order_data->email??$data[0]['client_email']??''}}" required>
+                                           value="{{$order_data->email??$data[0]['client_email']??$unknown->email}}" required>
                                     <span class="text-danger client_email_err"></span>
                                 </div>
                             </div>
@@ -144,7 +142,7 @@
             <div class="col-md-3 ">
                 <div class="card shadow" style="height: 530px;">
                     <div class="col-12">
-                        <div class="form-group mt-4">
+                        <div class="form-group mt-4 flex-col">
                             <label for="payment">Payment Type</label>
                             <select name="" id="payment" class="form-control">
                                 <option value="Cash" {{isset($order_data)?($order_data->payment_method=='Cash'?'selected':''):($data!=null?($data[0]['payment_method']?'selected':''):'')}}>
@@ -161,7 +159,7 @@
                                 </option>
                             </select>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group col-flex">
                             <label for="bill_address">Warehouse<span class="text-danger"> * </span></label>
                             <select name="" id="warehouse" class="form-control select2"
                                     onchange="giveSelection(this.value)">
@@ -173,7 +171,7 @@
                             </select>
                         </div>
                         {{--@dd($data)--}}
-                        <div class="form-group">
+                        <div class="form-group col-flex">
                             <label for="zone">Zone (Optional)</label>
                             <select name="zone_id" id="inv_zone" class="form-control select2" style="width: 100%">
                                 <option value="">None</option>
@@ -182,7 +180,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group col-md-12 mt-4">
+                        <div class="form-group col-md-12 flex-col mt-4">
                             <input type="radio" class="mr-1" name="delionoff" id="on" value="on" checked><label for="">Delivery
                                 Fee</label><br>
                             <input type="radio" class="mr-1" name="delionoff" id="off" value="off"><label for="">Not
@@ -200,9 +198,9 @@
                         <div class="table-responsive">
                             @if(!isset($order_data))
                                 <div class="row">
-                                    <div class="col-md-8 col-12 my-2 mb-3">
+                                    <div class="col-md-8 col-sm-12 col-12 my-2 mb-3">
                                         <div class="row">
-                                            <div class="col-md-4 col-4">
+                                            <div class="col-md-4 col-12 my-2">
                                                 <button type="button" title="Search By Product Name" id="p_name"
                                                         class="btn btn-white shadow-sm"><i class="la la-cube"></i>
                                                 </button>
@@ -213,7 +211,7 @@
                                                         class="btn btn-white shadow-sm">FOC
                                                 </button>
                                             </div>
-                                            <div class="col-6 col-md-6" id="product_name">
+                                            <div class="col-12 my-2 col-md-6" id="product_name">
                                                 <div class="input-group">
                                                     <select name="" id="variant" class="form-control"
                                                             style="width: 80%">
@@ -221,10 +219,7 @@
                                                             Product Name
                                                         </option>
                                                         @foreach($aval_product as $item)
-                                                            <option value="{{$item->variant->id}}"
-                                                                    data-option="{{$item->warehouse_id}}">{{$item->variant->product_name}}
-                                                                ({{$item->variant->variant}})
-                                                            </option>
+                                                            <option value="{{$item->variant->id}}" data-option="{{$item->warehouse_id}}">{{$item->variant->product_name}}({{$item->variant->variant}})</option>
                                                         @endforeach
                                                     </select>
                                                     <div class="input-group-append">
@@ -233,9 +228,10 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-6 col-md-6" id="product_code">
+                                            <div class="col-12 my-2 col-md-6" id="product_code">
                                                 <div class="input-group">
                                                     <select name="" id="code" class="form-control" style="width: 80%">
+
                                                         <option value="">Search Product Code</option>
                                                         @foreach($aval_product as $item)
                                                             <option value="{{$item->variant->id}}"
@@ -249,7 +245,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-6 col-md-6" id="foc">
+                                            <div class="col-12 my-2 col-md-6" id="foc">
                                                 <div class="input-group">
                                                     <select name="" id="foc_id" class="form-control input-group-sm"
                                                             style="width: 80%">
@@ -272,7 +268,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="">Discount With Amount</label><br>
-                                            <input type="radio" name="amount_discount" value="1">
+                                            <input type="radio" name="amount_discount"  value="1">
                                             <label for="">ON</label>
                                             <input type="radio" name="amount_discount" checked value="0">
                                             <label for="">Off</label>
@@ -280,319 +276,205 @@
                                     </div>
                                 </div>
                             @endif
-                            <table class="table table-hover table-white table-bordered" id="order_table">
-                                <thead>
-                                <th colspan="3">Product</th>
-                                <th>Quantity</th>
-                                <th>Aavaiable</th>
-                                <th>Price</th>
-                                <th>Unit</th>
-                                <th>Discount/Promotion</th>
-                                <th>Total</th>
-                                <th>Action</th>
-                                </thead>
-                                <tbody id="tbody">
-                                @foreach($orderline as $order)
-                                    <tr>
-                                        <td style="min-width: 200px;" colspan="3">
-                                            <input type="hidden" id="order_id_{{$order->id}}" value="{{$order->id}}">
-                                            <div class="row">
-                                                <input type="hidden" name="product_id" id="product_{{$order->id}}"
-                                                       value="{{$order->product_id}}">
-                                                @php
-                                                    $img=json_decode($order->variant->image);
-                                                @endphp
-                                                @if($img!=null)
-                                                    <div class="col-md-4">
-                                                        <img src="{{url(asset('product_picture/'.$img[0]??''))}}"
-                                                             alt="" style="max-width: 50px;max-height: 50px;">
-                                                        {{--<span class="text-sm" style="font-size: 6px">@foreach($aval_product as $item) @if($item->variant_id==$order->variant_id) Aval: {{$item->available}} @endif @endforeach </span>--}}
-                                                    </div>
-                                                @else
-                                                    <div class="col-md-4">
-                                                        <img src="{{url(asset('img/profiles/avatar-01.jpg'))}}"
-                                                             alt="" style="max-width: 50px;max-height: 50px;">
-                                                        {{--<span class="badge badge-warning" style="font-size: 9px;">@foreach($aval_product as $item) @if($item->variant_id==$order->variant_id) Available: {{$item->available}} @endif @endforeach </span>--}}
-                                                    </div>
-
-                                                @endif
-
-                                                <div class="col-8">
-                                                    <div>
-                                                        <span class="font-weight-bold">{{$order->variant->product_name}}</span><br>
-                                                    </div>
-                                                    <p class="m-0 mt-1">
-                                                        {{$order->variant->variant}}
-                                                        {!! $order->variant->description !!}
-
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <input type="number" name="quantity" id="quantity_{{$order->id}}"
-                                                   class="form-control update_item_{{$order->id}}"
-                                                   value="{{$order->quantity}}" min="0"
-                                                   max="3" {{isset($order_data)?'readonly':''}}>
-                                        </td>
-                                        <td><input type="text" class="form-control" id="aval{{$order->id}}" readonly>
-                                        </td>
-                                        <td>
-                                            <div class="col-12">
+                                <table class="table table-hover table-white table-bordered" id="order_table">
+                                    <thead>
+                                    <th colspan="3">Product</th>
+                                    <th>Quantity</th>
+                                    <th>Aavaiable</th>
+                                    <th>Price</th>
+                                    <th>Unit</th>
+                                    <th>Discount/Promotion</th>
+                                    <th>Total</th>
+                                    <th>Action</th>
+                                    </thead>
+                                    <tbody id="tbody">
+                                    @foreach($orderline as $order)
+                                        <tr>
+                                            <td style="min-width: 200px;" colspan="3">
+                                                <input type="hidden" id="order_id_{{$order->id}}" value="{{$order->id}}">
                                                 <div class="row">
-                                                    <input type="number" id="price_{{$order->id}}"
-                                                           class="form-control update_item_{{$order->id}}"
-                                                           value="{{$order->foc?0:$order->unit_price}}" min="0"
-                                                           oninput="validity.valid||(value='');"
-                                                           style="min-width: 120px;">
+                                                    <input type="hidden" name="product_id" id="product_{{$order->id}}"
+                                                           value="{{$order->product_id}}">
+                                                    @php
+                                                        $img=json_decode($order->variant->image);
+                                                    @endphp
+                                                    @if($img!=null)
+                                                        <div class="col-md-4">
+                                                            <img src="{{url(asset('product_picture/'.$img[0]??''))}}"
+                                                                 alt="" style="max-width: 50px;max-height: 50px;">
+                                                            {{--<span class="text-sm" style="font-size: 6px">@foreach($aval_product as $item) @if($item->variant_id==$order->variant_id) Aval: {{$item->available}} @endif @endforeach </span>--}}
+                                                        </div>
+                                                    @else
+                                                        <div class="col-md-4">
+                                                            <img src="{{url(asset('img/profiles/avatar-01.jpg'))}}"
+                                                                 alt="" style="max-width: 50px;max-height: 50px;">
+                                                            {{--<span class="badge badge-warning" style="font-size: 9px;">@foreach($aval_product as $item) @if($item->variant_id==$order->variant_id) Available: {{$item->available}} @endif @endforeach </span>--}}
+                                                        </div>
 
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <select name="" class="select_update" id="unit{{$order->id}}"
-                                                    style="min-width: 100px">
-
-                                                @foreach($unit_price as $item)
-                                                    @if($order->variant->product_id==$item->product_id)
-                                                        <option value="{{$item->id}}" {{$item->id==$order->sell_unit?'selected':''}}>{{$item->unit}}</option>
                                                     @endif
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                        <td>
-                                            @if($order->foc)
-                                                <input type="text" class="form-control" value="FOC">
-                                            @else
-                                                <select name="" id="dis_pro{{$order->id}}"
-                                                        class="form-control select_update">
-                                                    <option value="0">Select Discount</option>
-                                                    @foreach($dis_promo as $item)
 
-                                                        @if($order->variant_id==$item->variant_id)
-                                                            <option value="{{$item->rate}}" {{$item->rate==$order->discount_promotion?'selected':''}}>{{$item->rate}}
-                                                                %
-                                                            </option>
+                                                    <div class="col-8">
+                                                        <div>
+                                                            <span class="font-weight-bold">{{$order->variant->product_name}}</span><br>
+                                                        </div>
+                                                        <p class="m-0 mt-1">
+                                                            {{$order->variant->variant}}
+                                                            {!! $order->variant->description !!}
+
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <input type="number" name="quantity" id="quantity_{{$order->id}}"
+                                                       class="form-control update_item_{{$order->id}}"
+                                                       value="{{$order->quantity}}" min="0"
+                                                       max="3" {{isset($order_data)?'readonly':''}}>
+                                            </td>
+                                            <td><input type="text" class="form-control" id="aval{{$order->id}}" readonly>
+                                            </td>
+                                            <td>
+                                                <div class="col-12">
+                                                    <div class="row">
+                                                        <input type="number" id="price_{{$order->id}}"
+                                                               class="form-control update_item_{{$order->id}}"
+                                                               value="{{$order->foc?0:$order->unit_price}}" min="0"
+                                                               oninput="validity.valid||(value='');"
+                                                               style="min-width: 120px;">
+
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <select name="" class="select_update" id="unit{{$order->id}}"
+                                                        style="min-width: 100px">
+
+                                                    @foreach($unit_price as $item)
+                                                        @if($order->variant->product_id==$item->product_id)
+                                                            <option value="{{$item->id}}" {{$item->id==$order->sell_unit?'selected':''}}>{{$item->unit}}</option>
                                                         @endif
                                                     @endforeach
                                                 </select>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <input type="text" name="total" id="total_{{$order->id}}"
-                                                   class="form-control update_item_{{$order->id}} total"
-                                                   value="{{$order->foc?0:$order->total}}">
-                                        </td>
+                                            </td>
+                                            <td>
+                                                @if($order->foc)
+                                                    <input type="text" class="form-control" value="FOC">
+                                                @else
+                                                    <select name="" id="dis_pro{{$order->id}}"
+                                                            class="form-control select_update">
+                                                        <option value="0">Select Discount</option>
+                                                        @foreach($dis_promo as $item)
 
-                                        <td>
-                                            @if(!isset($order_data))
-                                                <button type="button" class="btn btn-danger btn-sm"
-                                                        id="remove{{$order->id}}"><i class="fa fa-trash-o "></i>
-                                                </button>
-                                                @include('invoice.item_remove')
-                                            @endif
-                                        </td>
+                                                            @if($order->variant_id==$item->variant_id)
+                                                                <option value="{{$item->rate}}" {{$item->rate==$order->discount_promotion?'selected':''}}>{{$item->rate}}
+                                                                    %
+                                                                </option>
+                                                            @endif
+                                                        @endforeach
+                                                    </select>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <input type="text" name="total" id="total_{{$order->id}}"
+                                                       class="form-control update_item_{{$order->id}} total"
+                                                       value="{{$order->foc?0:$order->total}}">
+                                            </td>
 
-                                    </tr>
-                                    {{--                                @dd($unit_price)--}}
-                                    <script>
-                                        $(document).ready(function () {
-                                            var warehouse = $('#warehouse option:selected').val();
-                                            var quantity = $('#quantity_{{$order->id}}').val();
-                                            var unit_id = $('#unit{{$order->id}} option:selected').val();
+                                            <td>
+                                                @if(!isset($order_data))
+                                                    <button type="button" class="btn btn-danger btn-sm"
+                                                            id="remove{{$order->id}}"><i class="fa fa-trash-o "></i>
+                                                    </button>
+                                                    @include('invoice.item_remove')
+                                                @endif
+                                            </td>
 
-                                            @foreach($aval_product as $item)
-                                            if ('{{$order->variant->id}}' == '{{$item->variant->id}}' && warehouse == '{{$item->warehouse_id}}') {
-                                                @foreach($unit_price as $unit)
-                                                if (unit_id == '{{$unit->id}}') {
-                                                    var subqty = quantity * parseInt('{{$unit->unit_convert_rate}}');
-                                                    var aval = Math.round((parseFloat('{{$item->available}}') - subqty) / parseInt('{{$unit->unit_convert_rate}}'));
-                                                    $('#aval{{$order->id}}').val(aval);
+                                        </tr>
+                                        {{--                                @dd($unit_price)--}}
+                                        <script>
+                                            $(document).ready(function () {
+                                                var warehouse = $('#warehouse option:selected').val();
+                                                var quantity = $('#quantity_{{$order->id}}').val();
+                                                var unit_id = $('#unit{{$order->id}} option:selected').val();
+                                                @foreach($aval_product as $item)
+                                                if ('{{$order->variant->id}}' == '{{$item->variant->id}}' && warehouse == '{{$item->warehouse_id}}') {
+                                                    @foreach($unit_price as $unit)
+                                                    if (unit_id == '{{$unit->id}}') {
+                                                        var subqty = quantity * parseInt('{{$unit->unit_convert_rate}}');
+                                                        var aval = Math.round((parseFloat('{{$item->available}}') - subqty) / parseInt('{{$unit->unit_convert_rate}}'));
+                                                        $('#aval{{$order->id}}').val(aval);
+                                                    }
+                                                    @endforeach
                                                 }
                                                 @endforeach
-
-
-
-                                            }
-                                            @endforeach
-                                        });
-                                        $(".update_item_{{$order->id}}").keyup(function () {
-                                            var customer_id = $('#client_id option:selected').val();
-                                            var unit_id = $('#unit{{$order->id}} option:selected').val();
-                                            @foreach($prices as $item)
-                                            if (unit_id == "{{$item->unit_id}}") {
-                                                if ('{{$order->variant->pricing_type}}' == 1) {
-                                                    var qty = $('#quantity_{{$order->id}}').val();
-                                                    if (parseInt("{{$item->min}}") <= qty) {
-                                                        var price = "{{$item->price}}";
-                                                    }
-
-                                                } else {
-                                                    if ('{{$item->multi_price}}' == 0) {
-
-                                                        var price = "{{$item->price}}";
-
-                                                    }
-                                                }
-                                            }
-                                            @endforeach
-
-
-                                            @if($order->foc)
-                                            $('#price_{{$order->id}}').val(0);
-                                            $('#total_{{$order->id}}').val(0);
-                                            @else
-                                            $('#price_{{$order->id}}').val(price);
-                                            var quantity = $('#quantity_{{$order->id}}').val();
-                                            var dis_pro = $('#dis_pro{{$order->id}} option:selected').val();
-                                            var warehouse = $('#warehouse option:selected').val();
-                                            @foreach($aval_product as $item)
-                                            if ('{{$order->variant->id}}' == '{{$item->variant->id}}' && warehouse == '{{$item->warehouse_id}}') {
-                                                @foreach($unit_price as $unit)
-                                                if (unit_id == '{{$unit->id}}') {
-                                                    var subqty = quantity * parseInt('{{$unit->unit_convert_rate}}');
-                                                    var aval = Math.round((parseFloat('{{$item->available}}') - subqty) / parseInt('{{$unit->unit_convert_rate}}'));
-                                                    $('#aval{{$order->id}}').val(aval);
-                                                    if (aval >= 0) {
-                                                        var sub_total = quantity * price;
-                                                        var amount = (dis_pro / 100) * sub_total;
-                                                        var total = sub_total - amount;
-                                                        $('#total_{{$order->id}}').val(total);
-                                                        var sum = 0;
-                                                        $('.total').each(function () {
-                                                            sum += parseFloat($(this).val());
-                                                        });
-                                                        $('#total').val(sum);
-
+                                            });
+                                            $(".update_item_{{$order->id}}").keyup(function () {
+                                                var customer_id = $('#client_id option:selected').val();
+                                                var unit_id = $('#unit{{$order->id}} option:selected').val();
+                                                @foreach($prices as $item)
+                                                if (unit_id == "{{$item->unit_id}}") {
+                                                    if ('{{$order->variant->pricing_type}}' == 1) {
+                                                        var qty = $('#quantity_{{$order->id}}').val();
+                                                        if (parseInt("{{$item->min}}") <= qty) {
+                                                            var price = "{{$item->price}}";
+                                                        }
                                                     } else {
-                                                        swal({
-                                                            title: "Not Enough Quantity", text: '', type:
-                                                                "warning"
-                                                        }).then(function () {
-                                                                $('#quantity_{{$order->id}}').val('{{$order->quantity}}');
-                                                                location.reload();
-                                                            }
-                                                        );
+                                                        if ('{{$item->multi_price}}' == 0) {
+                                                            var price = "{{$item->price}}";
+                                                        }
                                                     }
                                                 }
                                                 @endforeach
-
-                                            }
-                                            @endforeach
-                                                    @foreach($allcustomers as $client)
-                                            if ('{{$client->id}}' == customer_id) {
-                                                if ((parseFloat(sum) + parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')) {
-                                                    noti_alert();
-                                                }
-                                            }
-                                            @endforeach
-                                            @endif
-
-                                        });
-                                        $(".select_update").change(function () {
-                                            var customer_id = $('#client_id option:selected').val();
-                                            var unit_id = $('#unit{{$order->id}} option:selected').val();
-                                            var warehouse = $('#warehouse option:selected').val();
-
-                                            @foreach($prices as $item)
-                                            if (unit_id == "{{$item->unit_id}}") {
-                                                if ('{{$order->variant->pricing_type}}' == 1) {
-                                                    var qty = $('#quantity_{{$order->id}}').val();
-                                                    if (parseInt("{{$item->min}}") <= qty) {
-                                                        var price = "{{$item->price}}";
+                                                @if($order->foc)
+                                                $('#price_{{$order->id}}').val(0);
+                                                $('#total_{{$order->id}}').val(0);
+                                                @else
+                                                $('#price_{{$order->id}}').val(price);
+                                                var quantity = $('#quantity_{{$order->id}}').val();
+                                                var dis_pro = $('#dis_pro{{$order->id}} option:selected').val();
+                                                var warehouse = $('#warehouse option:selected').val();
+                                                @foreach($aval_product as $item)
+                                                if ('{{$order->variant->id}}' == '{{$item->variant->id}}' && warehouse == '{{$item->warehouse_id}}') {
+                                                    @foreach($unit_price as $unit)
+                                                    if (unit_id == '{{$unit->id}}') {
+                                                        var subqty = quantity * parseInt('{{$unit->unit_convert_rate}}');
+                                                        var aval = Math.round((parseFloat('{{$item->available}}') - subqty) / parseInt('{{$unit->unit_convert_rate}}'));
+                                                        $('#aval{{$order->id}}').val(aval);
+                                                        if (aval >= 0) {
+                                                            var sub_total = quantity * price;
+                                                            var amount = (dis_pro / 100) * sub_total;
+                                                            var total = sub_total - amount;
+                                                            $('#total_{{$order->id}}').val(total);
+                                                            var sum = 0;
+                                                            $('.total').each(function () {
+                                                                sum += parseFloat($(this).val());
+                                                            });
+                                                            $('#total').val(sum);
+                                                        } else {
+                                                            swal({
+                                                                title: "Not Enough Quantity", text: '', type:
+                                                                    "warning"
+                                                            }).then(function () {
+                                                                    $('#quantity_{{$order->id}}').val('{{$order->quantity}}');
+                                                                    location.reload();
+                                                                }
+                                                            );
+                                                        }
                                                     }
-
-                                                } else {
-                                                    if ('{{$item->multi_price}}' == 0) {
-
-                                                        var price = "{{$item->price}}";
-
-                                                    }
-                                                }
-                                            }
-                                            @endforeach
-
-
-                                            @if($order->foc)
-                                            $('#price_{{$order->id}}').val(0);
-                                            $('#total_{{$order->id}}').val(0);
-                                            @else
-                                            $('#price_{{$order->id}}').val(price);
-                                            var quantity = $('#quantity_{{$order->id}}').val();
-                                            var dis_pro = $('#dis_pro{{$order->id}} option:selected').val();
-                                            var sub_total = quantity * price;
-                                            var amount = (dis_pro / 100) * sub_total;
-                                            var total = sub_total - amount;
-
-                                            $('#total_{{$order->id}}').val(total);
-                                            var sum = 0;
-                                            $('.total').each(function () {
-                                                sum += parseFloat($(this).val());
-                                            });
-                                            $('#total').val(sum);
-                                            @foreach($aval_product as $item)
-                                            if ('{{$order->variant->id}}' == '{{$item->variant->id}}' && warehouse == '{{$item->warehouse_id}}') {
-                                                @foreach($unit_price as $unit)
-                                                if (unit_id == '{{$unit->id}}') {
-                                                    var subqty = quantity * parseInt('{{$unit->unit_convert_rate}}');
-                                                    var aval = Math.round((parseFloat('{{$item->available}}') - subqty) / parseInt('{{$unit->unit_convert_rate}}'));
-                                                    $('#aval{{$order->id}}').val(aval);
+                                                    @endforeach
                                                 }
                                                 @endforeach
-
-
-
-                                            }
-                                            @endforeach
-                                                    @foreach($allcustomers as $client)
-                                            if ('{{$client->id}}' == customer_id) {
-                                                if ((parseFloat(sum) + parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')) {
-                                                    noti_alert();
-                                                }
-                                            }
-                                            @endforeach
-                                            @endif
-
-                                        });
-                                        $(document).ready(function () {
-                                            var customer_id = $('#client_id option:selected').val();
-                                            var unit_id = $('#unit{{$order->id}} option:selected').val();
-                                            @foreach($prices as $item)
-                                            if (unit_id == "{{$item->unit_id}}") {
-                                                if ('{{$order->variant->pricing_type}}' == 1) {
-                                                    var qty = $('#quantity_{{$order->id}}').val();
-                                                    if (parseInt("{{$item->min}}") <= qty) {
-                                                        var price = "{{$item->price}}";
+                                                        @foreach($allcustomers as $client)
+                                                if ('{{$client->id}}' == customer_id) {
+                                                    if ((parseFloat(sum) + parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')) {
+                                                        noti_alert();
                                                     }
-
-                                                } else {
-                                                    if ('{{$item->multi_price}}' == 0) {
-                                                        var price = "{{$item->price}}";
-                                                    }
-
                                                 }
-                                            }
-                                            @endforeach
-
-
-                                            @if($order->foc)
-                                            $('#price_{{$order->id}}').val(0);
-                                            $('#total_{{$order->id}}').val(0);
-                                            @else
-                                            $('#price_{{$order->id}}').val(price);
-                                            var quantity = $('#quantity_{{$order->id}}').val();
-                                            var dis_pro = $('#dis_pro{{$order->id}} option:selected').val();
-                                            var sub_total = quantity * price;
-                                            var amount = (dis_pro / 100) * sub_total;
-                                            var total = sub_total - amount;
-                                            $('#total_{{$order->id}}').val(total);
-                                            var sum = 0;
-                                            $('.total').each(function () {
-                                                sum += parseFloat($(this).val());
+                                                @endforeach
+                                                @endif
                                             });
-                                            $('#total').val(sum);
-                                            @endif
-                                            $('.select_update').change(function () {
+                                            $(".select_update").change(function () {
+                                                var customer_id = $('#client_id option:selected').val();
                                                 var unit_id = $('#unit{{$order->id}} option:selected').val();
                                                 var warehouse = $('#warehouse option:selected').val();
                                                 @foreach($prices as $item)
@@ -602,7 +484,6 @@
                                                         if (parseInt("{{$item->min}}") <= qty) {
                                                             var price = "{{$item->price}}";
                                                         }
-
                                                     } else {
                                                         if ('{{$item->multi_price}}' == 0) {
                                                             var price = "{{$item->price}}";
@@ -626,96 +507,17 @@
                                                     sum += parseFloat($(this).val());
                                                 });
                                                 $('#total').val(sum);
-                                                var product = $('#product_{{$order->id}}').val();
-                                                var sell_unit = $('#unit{{$order->id}} option:selected').val();
-                                                var discount_pro = $('#dis_pro{{$order->id}} option:selected').val();
-                                                @endif
-                                                        @foreach($aval_product as $item)
-                                                            if ('{{$order->variant->id}}' == '{{$item->variant->id}}' && warehouse == '{{$item->warehouse_id}}') {
+                                                @foreach($aval_product as $item)
+                                                if ('{{$order->variant->id}}' == '{{$item->variant->id}}' && warehouse == '{{$item->warehouse_id}}') {
                                                     @foreach($unit_price as $unit)
                                                     if (unit_id == '{{$unit->id}}') {
                                                         var subqty = quantity * parseInt('{{$unit->unit_convert_rate}}');
                                                         var aval = Math.round((parseFloat('{{$item->available}}') - subqty) / parseInt('{{$unit->unit_convert_rate}}'));
-                                                        if (aval >= 0) {
-                                                            $.ajax({
-                                                                data: {
-                                                                    "product_id": product,
-                                                                    'quantity': quantity,
-                                                                    'unit_price': price,
-                                                                    "total": total,
-                                                                    'sell_unit': sell_unit,
-                                                                    'discount_pro': discount_pro,
-                                                                    'warehouse_id':warehouse,
-                                                                },
-                                                                type: 'PUT',
-                                                                url: "{{route('invoice_items.update',$order->id)}}",
-                                                                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                                                                success: function (data) {
-                                                                    console.log(data);
-                                                                    if (!$.isEmptyObject(data.out_of_stock)) {
-                                                                        swal('Empty Item', data.out_of_stock);
-                                                                        $('#quantity_{{$order->id}}').val('{{$order->quantity}}');
-                                                                        // location.reload();
-
-                                                                    }
-
-                                                                }
-                                                            });
-
-                                                        } else {
-                                                            swal({
-                                                                title: "Not Enough Quantity", text: '', type:
-                                                                    "warning"
-                                                            }).then(function () {
-                                                                location.reload();
-
-                                                                }
-                                                            );
-                                                        }
+                                                        $('#aval{{$order->id}}').val(aval);
                                                     }
                                                     @endforeach
-
                                                 }
                                                 @endforeach
-
-                                            });
-                                        });
-                                        $(document).ready(function () {
-                                            $(".update_item_{{$order->id}}").keyup(function () {
-                                                var customer_id = $('#client_id option:selected').val();
-                                                @if($order->foc)
-                                                $('#price_{{$order->id}}').val(0);
-                                                $('#total_{{$order->id}}').val(0);
-                                                        @else
-                                                var quantity = $('#quantity_{{$order->id}}').val();
-                                                var price = $('#price_{{$order->id}}').val();
-                                                var dis_pro = $('#dis_pro{{$order->id}} option:selected').val();
-                                                var warehouse = $('#warehouse option:selected').val();
-                                                @foreach($aval_product as $item)
-                                                if ('{{$order->variant->id}}' == '{{$item->variant->id}}' && warehouse == '{{$item->warehouse_id}}') {
-                                                    if (parseInt('{{$item->available}}') >= quantity) {
-                                                        var sub_total = quantity * price;
-                                                        var amount = (dis_pro / 100) * sub_total;
-                                                        var total = sub_total - amount;
-                                                        $('#total_{{$order->id}}').val(total);
-                                                        var sum = 0;
-                                                        $('.total').each(function () {
-                                                            sum += parseFloat($(this).val());
-                                                        });
-                                                        $('#total').val(sum);
-                                                    } else {
-                                                        swal({
-                                                            title: "Not Enough Quantity", text: '', type:
-                                                                "warning"
-                                                        }).then(function () {
-                                                                $('#quantity_{{$order->id}}').val('{{$order->quantity}}');
-                                                                location.reload();
-                                                            }
-                                                        );
-                                                    }
-                                                }
-                                                @endforeach
-
                                                         @foreach($allcustomers as $client)
                                                 if ('{{$client->id}}' == customer_id) {
                                                     if ((parseFloat(sum) + parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')) {
@@ -725,44 +527,144 @@
                                                 @endforeach
                                                 @endif
                                             });
-                                        });
-                                        $(document).ready(function () {
-                                            $(".update_item_{{$order->id}}").keyup(function () {
-                                                var product = $('#product_{{$order->id}}').val();
+                                            $(document).ready(function () {
+                                                var customer_id = $('#client_id option:selected').val();
+                                                var unit_id = $('#unit{{$order->id}} option:selected').val();
+                                                @foreach($prices as $item)
+                                                if (unit_id == "{{$item->unit_id}}") {
+                                                    if ('{{$order->variant->pricing_type}}' == 1) {
+                                                        var qty = $('#quantity_{{$order->id}}').val();
+                                                        if (parseInt("{{$item->min}}") <= qty) {
+                                                            var price = "{{$item->price}}";
+                                                        }
+                                                    } else {
+                                                        if ('{{$item->multi_price}}' == 0) {
+                                                            var price = "{{$item->price}}";
+                                                        }
+                                                    }
+                                                }
+                                                @endforeach
+                                                @if($order->foc)
+                                                $('#price_{{$order->id}}').val(0);
+                                                $('#total_{{$order->id}}').val(0);
+                                                @else
+                                                $('#price_{{$order->id}}').val(price);
                                                 var quantity = $('#quantity_{{$order->id}}').val();
-                                                var price = $('#price_{{$order->id}}').val();
                                                 var dis_pro = $('#dis_pro{{$order->id}} option:selected').val();
                                                 var sub_total = quantity * price;
                                                 var amount = (dis_pro / 100) * sub_total;
                                                 var total = sub_total - amount;
-                                                var sell_unit = $('#unit{{$order->id}} option:selected').val();
-                                                var discount_pro = $('#dis_pro{{$order->id}} option:selected').val();
-                                                var warehouse = $('#warehouse option:selected').val();
-                                                @foreach($aval_product as $item)
-                                                if ('{{$order->variant->id}}' == '{{$item->variant->id}}' && warehouse == '{{$item->warehouse_id}}') {
-                                                    @foreach($unit_price as $unit)
-                                                    if (sell_unit == '{{$unit->id}}') {
-                                                        var subqty = quantity * parseInt('{{$unit->unit_convert_rate}}');
-                                                        var aval = Math.round((parseFloat('{{$item->available}}') - subqty) / parseInt('{{$unit->unit_convert_rate}}'));
-                                                        if (aval >= 0) {
-                                                            $.ajax({
-                                                                data: {
-                                                                    "product_id": product,
-                                                                    'quantity': quantity,
-                                                                    'unit_price': price,
-                                                                    "total": total,
-                                                                    'sell_unit': sell_unit,
-                                                                    'discount_pro': discount_pro,
-                                                                    'warehouse_id':warehouse,
-                                                                },
-                                                                type: 'PUT',
-                                                                url: "{{route('invoice_items.update',$order->id)}}",
-                                                                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                                                                success: function (data) {
-                                                                    console.log(data);
-
-                                                                }
+                                                $('#total_{{$order->id}}').val(total);
+                                                var sum = 0;
+                                                $('.total').each(function () {
+                                                    sum += parseFloat($(this).val());
+                                                });
+                                                $('#total').val(sum);
+                                                @endif
+                                                $('.select_update').change(function () {
+                                                    var unit_id = $('#unit{{$order->id}} option:selected').val();
+                                                    var warehouse = $('#warehouse option:selected').val();
+                                                    @foreach($prices as $item)
+                                                    if (unit_id == "{{$item->unit_id}}") {
+                                                        if ('{{$order->variant->pricing_type}}' == 1) {
+                                                            var qty = $('#quantity_{{$order->id}}').val();
+                                                            if (parseInt("{{$item->min}}") <= qty) {
+                                                                var price = "{{$item->price}}";
+                                                            }
+                                                        } else {
+                                                            if ('{{$item->multi_price}}' == 0) {
+                                                                var price = "{{$item->price}}";
+                                                            }
+                                                        }
+                                                    }
+                                                    @endforeach
+                                                    @if($order->foc)
+                                                    $('#price_{{$order->id}}').val(0);
+                                                    $('#total_{{$order->id}}').val(0);
+                                                    @else
+                                                    $('#price_{{$order->id}}').val(price);
+                                                    var quantity = $('#quantity_{{$order->id}}').val();
+                                                    var dis_pro = $('#dis_pro{{$order->id}} option:selected').val();
+                                                    var sub_total = quantity * price;
+                                                    var amount = (dis_pro / 100) * sub_total;
+                                                    var total = sub_total - amount;
+                                                    $('#total_{{$order->id}}').val(total);
+                                                    var sum = 0;
+                                                    $('.total').each(function () {
+                                                        sum += parseFloat($(this).val());
+                                                    });
+                                                    $('#total').val(sum);
+                                                    var product = $('#product_{{$order->id}}').val();
+                                                    var sell_unit = $('#unit{{$order->id}} option:selected').val();
+                                                    var discount_pro = $('#dis_pro{{$order->id}} option:selected').val();
+                                                    @endif
+                                                            @foreach($aval_product as $item)
+                                                    if ('{{$order->variant->id}}' == '{{$item->variant->id}}' && warehouse == '{{$item->warehouse_id}}') {
+                                                        @foreach($unit_price as $unit)
+                                                        if (unit_id == '{{$unit->id}}') {
+                                                            var subqty = quantity * parseInt('{{$unit->unit_convert_rate}}');
+                                                            var aval = Math.round((parseFloat('{{$item->available}}') - subqty) / parseInt('{{$unit->unit_convert_rate}}'));
+                                                            if (aval >= 0) {
+                                                                $.ajax({
+                                                                    data: {
+                                                                        "product_id": product,
+                                                                        'quantity': quantity,
+                                                                        'unit_price': price,
+                                                                        "total": total,
+                                                                        'sell_unit': sell_unit,
+                                                                        'discount_pro': discount_pro,
+                                                                        'warehouse_id':warehouse,
+                                                                    },
+                                                                    type: 'PUT',
+                                                                    url: "{{route('invoice_items.update',$order->id)}}",
+                                                                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                                                                    success: function (data) {
+                                                                        console.log(data);
+                                                                        if (!$.isEmptyObject(data.out_of_stock)) {
+                                                                            swal('Empty Item', data.out_of_stock);
+                                                                            $('#quantity_{{$order->id}}').val('{{$order->quantity}}');
+                                                                            // location.reload();
+                                                                        }
+                                                                    }
+                                                                });
+                                                            } else {
+                                                                swal({
+                                                                    title: "Not Enough Quantity", text: '', type:
+                                                                        "warning"
+                                                                }).then(function () {
+                                                                        location.reload();
+                                                                    }
+                                                                );
+                                                            }
+                                                        }
+                                                        @endforeach
+                                                    }
+                                                    @endforeach
+                                                });
+                                            });
+                                            $(document).ready(function () {
+                                                $(".update_item_{{$order->id}}").keyup(function () {
+                                                    var customer_id = $('#client_id option:selected').val();
+                                                    @if($order->foc)
+                                                    $('#price_{{$order->id}}').val(0);
+                                                    $('#total_{{$order->id}}').val(0);
+                                                            @else
+                                                    var quantity = $('#quantity_{{$order->id}}').val();
+                                                    var price = $('#price_{{$order->id}}').val();
+                                                    var dis_pro = $('#dis_pro{{$order->id}} option:selected').val();
+                                                    var warehouse = $('#warehouse option:selected').val();
+                                                    @foreach($aval_product as $item)
+                                                    if ('{{$order->variant->id}}' == '{{$item->variant->id}}' && warehouse == '{{$item->warehouse_id}}') {
+                                                        if (parseInt('{{$item->available}}') >= quantity) {
+                                                            var sub_total = quantity * price;
+                                                            var amount = (dis_pro / 100) * sub_total;
+                                                            var total = sub_total - amount;
+                                                            $('#total_{{$order->id}}').val(total);
+                                                            var sum = 0;
+                                                            $('.total').each(function () {
+                                                                sum += parseFloat($(this).val());
                                                             });
+                                                            $('#total').val(sum);
                                                         } else {
                                                             swal({
                                                                 title: "Not Enough Quantity", text: '', type:
@@ -770,68 +672,123 @@
                                                             }).then(function () {
                                                                     $('#quantity_{{$order->id}}').val('{{$order->quantity}}');
                                                                     location.reload();
-
-
                                                                 }
                                                             );
                                                         }
                                                     }
                                                     @endforeach
-                                                }
-                                                @endforeach
-
+                                                            @foreach($allcustomers as $client)
+                                                    if ('{{$client->id}}' == customer_id) {
+                                                        if ((parseFloat(sum) + parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')) {
+                                                            noti_alert();
+                                                        }
+                                                    }
+                                                    @endforeach
+                                                    @endif
+                                                });
                                             });
-                                        });
-                                    </script>
-                                @endforeach
-                                <tr>
-                                    <th colspan="7" class="text-right"><span class="mt-5">Total</span></th>
-                                    <td id="total_div" colspan="2"><input class="form-control" type="number" id="total">
-                                    </td>
-                                </tr>
-                                <tr id="dis_row">
-                                    <th colspan="7" class="text-right"><span class="mt-5">Discount</span></th>
+                                            $(document).ready(function () {
+                                                $(".update_item_{{$order->id}}").keyup(function () {
+                                                    var product = $('#product_{{$order->id}}').val();
+                                                    var quantity = $('#quantity_{{$order->id}}').val();
+                                                    var price = $('#price_{{$order->id}}').val();
+                                                    var dis_pro = $('#dis_pro{{$order->id}} option:selected').val();
+                                                    var sub_total = quantity * price;
+                                                    var amount = (dis_pro / 100) * sub_total;
+                                                    var total = sub_total - amount;
+                                                    var sell_unit = $('#unit{{$order->id}} option:selected').val();
+                                                    var discount_pro = $('#dis_pro{{$order->id}} option:selected').val();
+                                                    var warehouse = $('#warehouse option:selected').val();
+                                                    @foreach($aval_product as $item)
+                                                    if ('{{$order->variant->id}}' == '{{$item->variant->id}}' && warehouse == '{{$item->warehouse_id}}') {
+                                                        @foreach($unit_price as $unit)
+                                                        if (sell_unit == '{{$unit->id}}') {
+                                                            var subqty = quantity * parseInt('{{$unit->unit_convert_rate}}');
+                                                            var aval = Math.round((parseFloat('{{$item->available}}') - subqty) / parseInt('{{$unit->unit_convert_rate}}'));
+                                                            if (aval >= 0) {
+                                                                $.ajax({
+                                                                    data: {
+                                                                        "product_id": product,
+                                                                        'quantity': quantity,
+                                                                        'unit_price': price,
+                                                                        "total": total,
+                                                                        'sell_unit': sell_unit,
+                                                                        'discount_pro': discount_pro,
+                                                                        'warehouse_id':warehouse,
+                                                                    },
+                                                                    type: 'PUT',
+                                                                    url: "{{route('invoice_items.update',$order->id)}}",
+                                                                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                                                                    success: function (data) {
+                                                                        console.log(data);
+                                                                    }
+                                                                });
+                                                            } else {
+                                                                swal({
+                                                                    title: "Not Enough Quantity", text: '', type:
+                                                                        "warning"
+                                                                }).then(function () {
+                                                                        $('#quantity_{{$order->id}}').val('{{$order->quantity}}');
+                                                                        location.reload();
+                                                                    }
+                                                                );
+                                                            }
+                                                        }
+                                                        @endforeach
+                                                    }
+                                                    @endforeach
+                                                });
+                                            });
+                                        </script>
+                                    @endforeach
+                                    <tr>
+                                        <th colspan="7" class="text-right"><span class="mt-5">Total</span></th>
+                                        <td id="total_div" colspan="2"><input class="form-control" type="number" id="total">
+                                        </td>
+                                    </tr>
+                                    <tr id="dis_row">
+                                        <th colspan="7" class="text-right"><span class="mt-5">Discount</span></th>
 
-                                    <td id="discount_div" colspan="2">
-                                        <div class="input-group">
-                                            <input class="form-control" type="text"
-                                                   id="discount" value="0.0">
-                                            <div class="input-group-append">
-                                                <button class="btn btn-white" id="percentage"></button>
+                                        <td id="discount_div" colspan="2">
+                                            <div class="input-group">
+                                                <input class="form-control" type="text"
+                                                       id="discount" value="0.0">
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-white" id="percentage"></button>
+                                                </div>
+
                                             </div>
+                                        </td>
+                                    </tr>
+                                    <tr id="delivery">
+                                        <th colspan="7" class="text-right"><span class="mt-5">Delivery Fee</span></th>
+                                        <td colspan="2">
+                                            <input type="number" class="form-control" name="delivery_fee" id="deli_fee"
+                                                   value="0.0">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="7" class="text-right"><span class="mt-5">Tax</span></th>
+                                        <td colspan="2">
+                                            <select name="" id="tax" class="form-control select_update" style="width: 100%">
+                                                @foreach($taxes as $tax)
+                                                    <option value="{{$tax->id}}">{{$tax->name}} ({{$tax->rate}} %)</option>
+                                                @endforeach
+                                            </select>
+                                            <input type="hidden" id="tax_amount" name="tax_mount">
+                                        </td>
+                                    </tr>
 
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr id="delivery">
-                                    <th colspan="7" class="text-right"><span class="mt-5">Delivery Fee</span></th>
-                                    <td colspan="2">
-                                        <input type="number" class="form-control" name="delivery_fee" id="deli_fee"
-                                               value="0.0">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th colspan="7" class="text-right"><span class="mt-5">Tax</span></th>
-                                    <td colspan="2">
-                                        <select name="" id="tax" class="form-control select_update" style="width: 100%">
-                                            @foreach($taxes as $tax)
-                                                <option value="{{$tax->id}}">{{$tax->name}} ({{$tax->rate}} %)</option>
-                                            @endforeach
-                                        </select>
-                                        <input type="hidden" id="tax_amount" name="tax_mount">
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <th colspan="7" class="text-right"><span class="mt-5">Grand Total</span></th>
+                                        <td colspan="2" id="grand_total_div">
+                                            <input class="form-control" type="text" id="grand_total">
+                                        </td>
+                                        <td></td>
 
-                                <tr>
-                                    <th colspan="7" class="text-right"><span class="mt-5">Grand Total</span></th>
-                                    <td colspan="2" id="grand_total_div">
-                                        <input class="form-control" type="text" id="grand_total">
-                                    </td>
-                                    <td></td>
-
-                                </tr>
-                                </tbody>
-                            </table>
+                                    </tr>
+                                    </tbody>
+                                </table>
                         </div>
                     </div>
                 </div>
@@ -839,12 +796,12 @@
         </div>
         <div class="col-6 offset-3 my-3">
             <div class="row">
-                <div class="col-6">
-                    <button class="btn btn-primary my-3 col-12" type="button" id="saveAndsend">Save & Send
+                <div class="col-12 col-md-6">
+                    <button class="btn btn-primary my-2 col-12" type="button" id="saveAndsend">Save & Send
                     </button>
                 </div>
-                <div class="col-6">
-                    <button class="btn btn-primary my-3 col-12" type="button" id="save">Save</button>
+                <div class="col-12 col-md-6">
+                    <button class="btn btn-primary my-2 col-12" type="button" id="save">Save</button>
                 </div>
             </div>
         </div>
@@ -852,10 +809,9 @@
         {{--                            <input type="hidden" id="generate_id" value="{{$generate_id}}">--}}
     </div>
     <script>
-        function noti_alert() {
+        function noti_alert(){
 
         }
-
         $(document).ready(function () {
             $('select').select2();
         });
@@ -863,40 +819,40 @@
         $('select').change(function () {
             var tax = $('#tax option:selected').val();
             var customer_id = $('#client_id option:selected').val();
-            var sum = $('#total').val();
+            var sum =$('#total').val();
             @foreach($taxes as $tax)
             if (tax == "{{$tax->id}}")
-                var tax_rate = '{{$tax->rate}}';
+                var tax_rate ='{{$tax->rate}}';
                     @endforeach
             var tax_amount = parseFloat(sum) * (parseInt(tax_rate) / 100);
             $('#taxt_amount').val(tax_amount);
             // var discount = $('#discount').val();
             var deli_fee = $('#deli_fee').val();
-            var on_off = $('input[name="amount_discount"]:checked').val();
-            var grand = (parseFloat(sum) + parseFloat(deli_fee) + parseFloat(tax_amount));
-            if (on_off == 1) {
-                if ('{{$amount_discount->isEmpty()}}') {
+            var on_off=$('input[name="amount_discount"]:checked').val();
+            var grand=(parseFloat(sum) + parseFloat(deli_fee) + parseFloat(tax_amount));
+            if(on_off==1){
+                if('{{$amount_discount->isEmpty()}}'){
                     $('#grand_total').val(grand);
                     @foreach($allcustomers as $client)
-                    if ('{{$client->id}}' == customer_id) {
-                        if ((parseFloat(grand) + parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')) {
+                    if('{{$client->id}}'==customer_id){
+                        if((parseFloat(grand)+parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')){
                             noti_alert();
                         }
                     }
                     @endforeach
 
-                } else {
+                }else{
                     @foreach($amount_discount as $item)
-                    if (sum > parseFloat('{{$item->min_amount}}') && sum < parseFloat('{{$item->max_amount}}')) {
-                        var discount = (parseInt('{{$item->rate}}') / 100) * sum;
-                        var sub_total = grand - discount;
+                    if(sum > parseFloat('{{$item->min_amount}}') && sum < parseFloat('{{$item->max_amount}}')){
+                        var discount=(parseInt('{{$item->rate}}')/100)*sum;
+                        var sub_total=grand - discount;
                         $('#dis_row').show();
                         $('#discount').val(discount);
-                        $('#percentage').text('{{$item->rate}}' + '%');
+                        $('#percentage').text('{{$item->rate}}'+'%');
                         $('#grand_total').val(sub_total);
                         @foreach($allcustomers as $client)
-                        if ('{{$client->id}}' == customer_id) {
-                            if ((parseFloat(grand) + parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')) {
+                        if('{{$client->id}}'==customer_id){
+                            if((parseFloat(grand)+parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')){
                                 noti_alert();
                             }
                         }
@@ -904,13 +860,13 @@
                     }
                     @endforeach
                 }
-            } else {
+            }else {
                 $('#discount').val('0.0');
                 $('#dis_row').hide();
                 $('#grand_total').val(grand);
                 @foreach($allcustomers as $client)
-                if ('{{$client->id}}' == customer_id) {
-                    if ((parseFloat(grand) + parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')) {
+                if('{{$client->id}}'==customer_id){
+                    if((parseFloat(grand)+parseFloat('{{$client->current_credit}}')) > parseFloat('{{$client->credit_limit}}')){
                         noti_alert();
                     }
                 }
@@ -921,34 +877,34 @@
         $('input[name="amount_discount"]').change(function () {
             var customer_id = $('#client_id option:selected').val();
             var tax = $('#tax option:selected').val();
-            var sum = $('#total').val();
+            var sum =$('#total').val();
             @foreach($taxes as $tax)
             if (tax == "{{$tax->id}}")
-                var tax_rate = '{{$tax->rate}}';
+                var tax_rate ='{{$tax->rate}}';
                     @endforeach
             var tax_amount = parseFloat(sum) * (parseInt(tax_rate) / 100);
             // var discount = $('#discount').val();
             var deli_fee = $('#deli_fee').val();
-            var on_off = $('input[name="amount_discount"]:checked').val();
-            var grand = (parseFloat(sum) + parseFloat(deli_fee) + parseFloat(tax_amount));
+            var on_off=$('input[name="amount_discount"]:checked').val();
+            var grand=(parseFloat(sum) + parseFloat(deli_fee) + parseFloat(tax_amount));
             {{--                @dd($amount_discount)--}}
-            if (on_off == 1) {
-                if ('{{$amount_discount->isEmpty()}}') {
+            if(on_off==1){
+                if('{{$amount_discount->isEmpty()}}'){
                     swal('Empty Amount Discount', 'Amount Discount Empty', 'error');
                     $('#grand_total').val(grand);
-                } else {
+                }else{
                     @foreach($amount_discount as $item)
-                    if (sum > parseFloat('{{$item->min_amount}}') && sum < parseFloat('{{$item->max_amount}}')) {
-                        var discount = (parseInt('{{$item->rate}}') / 100) * sum;
-                        var sub_total = grand - discount;
+                    if(sum > parseFloat('{{$item->min_amount}}') && sum < parseFloat('{{$item->max_amount}}')){
+                        var discount=(parseInt('{{$item->rate}}')/100)*sum;
+                        var sub_total=grand - discount;
                         $('#dis_row').show();
                         $('#discount').val(discount);
-                        $('#percentage').text('{{$item->rate}}' + '%');
+                        $('#percentage').text('{{$item->rate}}'+'%');
                         $('#grand_total').val(sub_total);
                     }
                     @endforeach
                 }
-            } else {
+            }else {
 
                 $('#discount').val('0.0');
                 $('#dis_row').hide();
@@ -966,18 +922,18 @@
         $('input').keyup(function () {
             var tax = $('#tax option:selected').val();
             var customer_id = $('#client_id optioin:selected').val();
-            var sum = $('#total').val();
+            var sum =$('#total').val();
             @foreach($taxes as $tax)
             if (tax == "{{$tax->id}}")
-                var tax_rate = '{{$tax->rate}}';
+                var tax_rate ='{{$tax->rate}}';
                     @endforeach
             var tax_amount = parseFloat(sum) * (parseInt(tax_rate) / 100);
             // var discount = $('#discount').val();
             var deli_fee = $('#deli_fee').val();
-            var on_off = $('input[name="amount_discount"]:checked').val();
-            var grand = (parseFloat(sum) + parseFloat(deli_fee) + parseFloat(tax_amount));
-            if (on_off == 1) {
-                if ('{{$amount_discount->isEmpty()}}') {
+            var on_off=$('input[name="amount_discount"]:checked').val();
+            var grand=(parseFloat(sum) + parseFloat(deli_fee) + parseFloat(tax_amount));
+            if(on_off==1){
+                if('{{$amount_discount->isEmpty()}}'){
                     $('#grand_total').val(grand);
                     @foreach($allcustomers as $client)
                     if ('{{$client->id}}' == customer_id) {
@@ -986,14 +942,14 @@
                         }
                     }
                     @endforeach
-                } else {
+                }else{
                     @foreach($amount_discount as $item)
-                    if (sum > parseFloat('{{$item->min_amount}}') && sum < parseFloat('{{$item->max_amount}}')) {
-                        var discount = (parseInt('{{$item->rate}}') / 100) * sum;
-                        var sub_total = grand - discount;
+                    if(sum > parseFloat('{{$item->min_amount}}') && sum < parseFloat('{{$item->max_amount}}')){
+                        var discount=(parseInt('{{$item->rate}}')/100)*sum;
+                        var sub_total=grand - discount;
                         $('#dis_row').show();
                         $('#discount').val(discount);
-                        $('#percentage').text('{{$item->rate}}' + '%');
+                        $('#percentage').text('{{$item->rate}}'+'%');
                         $('#grand_total').val(sub_total);
                         @foreach($allcustomers as $client)
                         if ('{{$client->id}}' == customer_id) {
@@ -1005,7 +961,7 @@
                     }
                     @endforeach
                 }
-            } else {
+            }else {
                 $('#percentage').hide();
                 $('#dis_row').hide();
                 $('#grand_total').val(grand);
@@ -1064,21 +1020,21 @@
 
         $(document).ready(function () {
             $('#client_id').change(function () {
-                var client_id = $(this).val();
+                var client_id=$(this).val();
                 @foreach($allcustomers as $client)
-                if (client_id == '{{$client->id}}') {
+                if(client_id=='{{$client->id}}'){
                     $('#client_address').val("{{$client->address}}");
                     $('#client_email').val("{{$client->email}}");
                 }
                 @endforeach
-            });
+            }) ;
         });
         $(document).ready(function () {
             $('input[type="radio').change(function () {
-                var deli = $(this).val();
-                if (deli == 'on') {
+                var deli=$(this).val();
+                if(deli=='on'){
                     $('#delivery').show();
-                } else if (deli == 'off') {
+                }else if(deli=='off'){
                     $('#delivery').hide();
                 }
             });
@@ -1100,8 +1056,8 @@
             var inv_type = $('#inv_type option:selected').val();
             var title = $('#title').val();
             var order_id = $('#order_id').val();
-            var zone = $('#inv_zone option:selected').val();
-            var region = $('#region_id option:selected').val();
+            var zone=$('#inv_zone option:selected').val();
+            var region=$('#region_id option:selected').val();
             $.ajax({
                 data: {
                     'variant_id': variant_id,
@@ -1119,10 +1075,10 @@
                     'order_id': order_id,
                     'payment_method': payment,
                     'type': 'invoice',
-                    'invoice_type': inv_type,
-                    'inv_type': '{{$type}}',
-                    'inv_zone': zone,
-                    'region_id': region
+                    'invoice_type':inv_type,
+                    'inv_type':'{{$type}}',
+                    'inv_zone':zone,
+                    'region_id':region
 
                 },
                 type: 'POST',
@@ -1142,7 +1098,7 @@
                     if (!$.isEmptyObject(data.Error)) {
                         // alert(data.orderempty);
                         swal('Fixed Sale Unit Price ', 'This product does not fixed unit price.', 'error');
-                    } else {
+                    }else {
 
                         location.reload();
                     }
@@ -1152,7 +1108,7 @@
         });
 
         $(document).on('click', '#add_item_code', function (event) {
-            var code = $('#code option:selected').val();
+            var code=$('#code option:selected').val();
             var invoice_id = $('#invoice_id').val();
             var client_id = $('#client_id').val();
             var client_email = $('#client_email').val();
@@ -1167,8 +1123,8 @@
             var title = $('#title').val();
             var order_id = $('#order_id').val();
             var inv_type = $('#inv_type option:selected').val();
-            var zone = $('#inv_zone option:selected').val();
-            var region = $('#region_id option:selected').val();
+            var zone=$('#inv_zone option:selected').val();
+            var region=$('#region_id option:selected').val();
             $.ajax({
                 data: {
                     'variant_id': code,
@@ -1186,10 +1142,10 @@
                     'order_id': order_id,
                     'payment_method': payment,
                     'type': 'invoice',
-                    'invoice_type': inv_type,
-                    'inv_type': '{{$type}}',
-                    'inv_zone': zone,
-                    'region_id': region
+                    'invoice_type':inv_type,
+                    'inv_type':'{{$type}}',
+                    'inv_zone':zone,
+                    'region_id':region
 
                 },
                 type: 'POST',
@@ -1209,7 +1165,7 @@
                     if (!$.isEmptyObject(data.Error)) {
                         // alert(data.orderempty);
                         swal('Fixed Sale Unit Price ', 'This product does not fixed unit price.', 'error');
-                    } else {
+                    }else {
 
                         location.reload();
                     }
@@ -1218,7 +1174,7 @@
 
         });
         $(document).on('click', '#foc_item', function (event) {
-            var foc = $('#foc_id option:selected').val();
+            var foc=$('#foc_id option:selected').val();
             var invoice_id = $('#invoice_id').val();
             var client_id = $('#client_id').val();
             var client_email = $('#client_email').val();
@@ -1233,8 +1189,8 @@
             var title = $('#title').val();
             var order_id = $('#order_id').val();
             var inv_type = $('#inv_type option:selected').val();
-            var zone = $('#inv_zone option:selected').val();
-            var region = $('#region_id option:selected').val();
+            var zone=$('#inv_zone option:selected').val();
+            var region=$('#region_id option:selected').val();
             $.ajax({
                 data: {
                     'variant_id': foc,
@@ -1252,10 +1208,10 @@
                     'order_id': order_id,
                     'payment_method': payment,
                     'type': 'invoice',
-                    'invoice_type': inv_type,
-                    'foc': 1,
-                    'inv_zone': zone,
-                    'region_id': region
+                    'invoice_type':inv_type,
+                    'foc':1,
+                    'inv_zone':zone,
+                    'region_id':region
 
                 },
                 type: 'POST',
@@ -1275,7 +1231,7 @@
                     if (!$.isEmptyObject(data.Error)) {
                         // alert(data.orderempty);
                         swal('Fixed Sale Unit Price ', 'This product does not fixed unit price.', 'error');
-                    } else {
+                    }else {
 
                         location.reload();
                     }
@@ -1304,10 +1260,10 @@
                 var tax_amount = $('#tax_amount').val();
                 var inv_type = $('#inv_type option:selected').val();
                 var deli_fee = $('#deli_fee').val();
-                var warehouse = $('#warehouse option:selected').val();
-                var delivery_onoff = $('input[name="delionoff"]:checked').val();
-                var zone = $('#inv_zone option:selected').val();
-                var region = $('#region_id option:selected').val();
+                var warehouse=$('#warehouse option:selected').val();
+                var delivery_onoff=$('input[name="delionoff"]:checked').val();
+                var zone=$('#inv_zone option:selected').val();
+                var region=$('#region_id option:selected').val();
                 swal({
                     title: 'Credit Amount Alert!',
                     text: "This customer credit limit is exceeded!",
@@ -1315,7 +1271,7 @@
                     showCancelButton: false,
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: 'Confirm!'
-                }).then(function () {
+                }).then(function(){
                     $.ajax({
                         data: {
                             'discount': discount,
@@ -1337,11 +1293,11 @@
                             'payment_method': payment,
                             'invoice_type': inv_type,
                             'delivery_fee': deli_fee,
-                            'inv_type': "{{$type}}",
-                            'warehouse_id': warehouse,
-                            'deli_fee_include': delivery_onoff,
-                            'zone_id': zone,
-                            'region_id': region
+                            'inv_type':"{{$type}}",
+                            'warehouse_id':warehouse,
+                            'deli_fee_include':delivery_onoff,
+                            'zone_id':zone,
+                            'region_id':region
                         },
                         type: 'POST',
                         url: "{{route('invoices.store')}}",
@@ -1364,8 +1320,8 @@
                             }
                         }
                     });
-                }).catch(function (reason) {
-                    alert("The alert was dismissed by the user: " + reason);
+                }).catch(function(reason){
+                    alert("The alert was dismissed by the user: "+reason);
                 });
             });
         });
@@ -1391,10 +1347,10 @@
                 var tax_amount = $('#tax_amount').val();
                 var inv_type = $('#inv_type option:selected').val();
                 var deli_fee = $('#deli_fee').val();
-                var warehouse = $('#warehouse option:selected').val();
-                var delivery_onoff = $('input[name="delionoff"]:checked').val();
-                var zone = $('#inv_zone option:selected').val();
-                var region = $('#region_id option:selected').val();
+                var warehouse=$('#warehouse option:selected').val();
+                var delivery_onoff=$('input[name="delionoff"]:checked').val();
+                var zone=$('#inv_zone option:selected').val();
+                var region=$('#region_id option:selected').val();
                 swal({
                     title: 'Credit Limit Alert',
                     text: "This customer credit limit is exceeded!",
@@ -1402,7 +1358,7 @@
                     showCancelButton: false,
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: 'Confirm!'
-                }).then(function () {
+                }).then(function(){
                     $.ajax({
                         data: {
                             'discount': discount,
@@ -1423,11 +1379,11 @@
                             'payment_method': payment,
                             'invoice_type': inv_type,
                             'delivery_fee': deli_fee,
-                            'inv_type': "{{$type}}",
-                            'warehouse_id': warehouse,
-                            'deli_fee_include': delivery_onoff,
-                            'zone_id': zone,
-                            'region_id': region
+                            'inv_type':"{{$type}}",
+                            'warehouse_id':warehouse,
+                            'deli_fee_include':delivery_onoff,
+                            'zone_id':zone,
+                            'region_id':region
 
                         },
                         type: 'POST',
@@ -1450,8 +1406,8 @@
                             }
                         }
                     });
-                }).catch(function (reason) {
-                    alert("The alert was dismissed by the user: " + reason);
+                }).catch(function(reason){
+                    alert("The alert was dismissed by the user: "+reason);
                 });
 
             });
@@ -1462,21 +1418,19 @@
         var options2 = product_name.querySelectorAll('option');
         var options3 = code.querySelectorAll('option');
         console.log(options3);
-
         // alert(product)
         function giveSelection(selValue) {
-            variant.innerHTML = '';
-            code.innerHTML = '';
+            variant.innerHTML='';
+            code.innerHTML='';
 
-            for (var i = 0; i < options2.length; i++) {
-                if (options2[i].dataset.option === selValue) {
+            for(var i = 0; i < options2.length; i++) {
+                if(options2[i].dataset.option === selValue) {
                     variant.appendChild(options2[i]);
                     code.appendChild(options3[i]);
 
                 }
             }
         }
-
         giveSelection(warehouse.value);
 
         // window.onbeforeunload = closeWindow;
@@ -1487,7 +1441,7 @@
         $(document).ready(function () {
             var tax = $('#tax option:selected').val();
             var sum = $('#total').val();
-            var customer_id = $('#client_id option:selected').val();
+            var customer_id=$('#client_id option:selected').val();
             @foreach($taxes as $tax)
             if (tax == "{{$tax->id}}")
                 var tax_rate = '{{$tax->rate}}';

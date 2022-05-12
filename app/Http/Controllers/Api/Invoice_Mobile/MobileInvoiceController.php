@@ -3,12 +3,17 @@
 namespace App\Http\Controllers\Api\Invoice_Mobile;
 
 use App\Http\Controllers\Controller;
+use App\Models\AdvancePayment;
+use App\Models\Employee;
 use App\Models\Invoice;
+use App\Models\InvoiceHistory;
 use App\Models\OfficeBranch;
 use App\Models\OrderItem;
 use App\Models\products_tax;
 use App\Models\ProductVariations;
+use App\Models\Revenue;
 use App\Models\Stock;
+use App\Models\TransactionCategory;
 use Carbon\Carbon;
 use http\Env\Response;
 use Illuminate\Http\Request;
@@ -383,7 +388,56 @@ class MobileInvoiceController extends Controller
      */
     public function show($id)
     {
-        //
+        $emps =Employee::where('office_branch_id', Auth::guard('api')->user()->office_branch_id)->get();
+        $cashier=[];
+        foreach ($emps as $emp){
+            if($emp->role->name=='Regional Cashier'&& $emp->region_id==Auth::guard('api')->user()->region_id){
+                    array_push($cashier,$emp);
+            }
+        }
+        $category = TransactionCategory::where('type', 1)->get();
+        $customer = Customer::orWhere('customer_type', 'Customer')->orWhere('customer_type', 'Lead')->orWhere('customer_type', 'Partner')->orWhere('customer_type', 'Inquery')->get();
+        $company=MainCompany::where('ismaincompany',true)->first();
+        $detail_inv=Invoice::with('customer','employee','tax','order')->where('id',$id)->firstOrFail();
+        $invoice_item=OrderItem::with('variant','unit')->where("inv_id",$detail_inv->id)->get();
+        $recurring=['No','Daily','Weekly','Monthly','Yearly'];
+        $payment_method=['Cash','eBanking','WaveMoney','KBZ Pay'];
+//        $revenue=Revenue::where('invoice_id',$id)->get();
+//        dd($revenue);
+//        $history=InvoiceHistory::where('invoice_id',$id)->get();
+//        $transaction=[];
+//        foreach ($revenue as $tran){
+//            $revenue_transaction=Transaction::with('revenue')->where('revenue_id',$tran->id)->first();
+//            if($revenue!=null){
+//                array_push($transaction,$revenue_transaction);
+//            }
+//
+//        }
+        if($detail_inv->grand_total > $detail_inv->due_amount && $detail_inv->due_amount!=0){
+
+            $detail_inv->status='Partial';
+            $detail_inv->update();
+            $this->add_history($id,'Partial','Change Status '.$detail_inv->invoice_id);
+        }elseif($detail_inv->due_amount!=0 && Carbon::now()>$detail_inv->due_date && $detail_inv->created_at!=$detail_inv->due_date){
+            $detail_inv->status='Overdue';
+            $detail_inv->update();
+            $this->add_history($id,'Overdue','Change Status '.$detail_inv->invoice_id);
+        }elseif($detail_inv->due_amount==0){
+
+            $detail_inv->status='Paid';
+            $detail_inv->update();
+            $this->add_history($id,'Paid','Change Status '.$detail_inv->invoice_id);
+        }else{
+
+            $detail_inv->status='Draft';
+            $detail_inv->update();
+            $this->add_history($id,'Draft','Change Status '.$detail_inv->invoice_id);
+        }
+//        $transaction_amount=0;
+//        $customer=Customer::orWhere('customer_type','Customer')->orWhere('customer_type','Lead')->orWhere('customer_type','Partner')->orWhere('customer_type','Inquery')->get();
+        $advan_pay=AdvancePayment::with('order')->where('order_id',$detail_inv->order_id)->first();
+        return response()->json(['emps' =>$cashier, 'customers' => $customer, 'recurring' => $recurring, 'payment_method' => $payment_method, 'category' => $category,
+           'advance_pay'=>$advan_pay,'maincompany'=>$company,'invoice_item'=>$invoice_item,'invoice'=>$detail_inv]);
     }
 
     /**
@@ -407,5 +461,16 @@ class MobileInvoiceController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function add_history($id,$status,$desc){
+        $old_state=InvoiceHistory::where('invoice_id',$id)->where('status',$status)->first();
+        if($old_state==null){
+            $history=new InvoiceHistory();
+            $history->invoice_id=$id;
+            $history->status=$status;
+            $history->description=$desc;
+            $history->save();
+        }
+
     }
 }

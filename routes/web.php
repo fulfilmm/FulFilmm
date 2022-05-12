@@ -230,6 +230,8 @@ Route::middleware(['auth:employee'])->group(function () {
     Route::resource('shop',\App\Http\Controllers\ShopRegister::class);
     Route::resource('saleway',\App\Http\Controllers\SaleWayController::class);
     Route::post('transfer/branch',[TransactionController::class,'transer_branch'])->name('transfer.branch');
+    Route::get('best/sell/products',[ReportController::class,'bestsell_products'])->name('best.sell');
+    Route::resource('head_office',\App\Http\Controllers\HeadOfficeController::class);
 
 
 

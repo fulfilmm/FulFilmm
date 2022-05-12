@@ -12,13 +12,13 @@ class RoleSeeder extends Seeder
         'Admin Manager',
         'CEO',
         'General Manager',
-        'Sale Manager',
+        'Sales Manager',
         'Stock Manager',
         'Finance Manager',
         'Hr Manager',
         'Customer Service Manager',
         'Agent',
-        'Sale',
+        'Sales',
         'Employee',
         'Accountant',
         'Cashier',
@@ -26,7 +26,8 @@ class RoleSeeder extends Seeder
         'Car Driver',
         'Purchaser',
         'Stock Controller',
-        'Store Keeper'
+        'Store Keeper',
+
     ];
     /**
      * Run the database seeds.

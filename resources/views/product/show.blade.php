@@ -150,7 +150,7 @@
                                </td>
                                <td> <img src="{{url(asset('/product_picture/'.$item->image))}}" alt="" class="border-0 mr-2 ml-2"
                                          style="max-height:50px;max-width:50px;border: solid"></td>
-                               <td>{{$item->product_name}}</td>
+                               <td>{{$item->product->product_name}}</td>
                                <td><a href="{{route('show.variant',$item->id)}}"><strong>{{$item->product_code}}</strong></a></td>
                                <td>{{$item->serial_no}}</td>
                                <td>{{$item->variant}}</td>

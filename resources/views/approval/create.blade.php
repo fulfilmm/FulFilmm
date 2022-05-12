@@ -63,11 +63,13 @@
                        <div class="row">
                            <div class="col-md-6 col-12">
                                <div class="form-group">
-                                   <label for="approver" class="control-label">Approver Name <span class="text-danger">*</span></label>
+                                   <label for="approver" class="control-label">Approver<span class="text-danger">*</span></label>
                                    <div class="input-group">
                                        <select class="form-control" name="approve_id" id="approver">
                                            @foreach($all_emp as $emp)
-                                               @if($emp->role->name=='Manager'||$emp->role->name=='CEO')
+                                               @if($emp->role->name=='Sale Manager'||$emp->role->name=='CEO'||$emp->role->name=='Stock Manager'||
+                                               $emp->role->name=='Finance Manager'||$emp->role->name=='Hr Manager'||
+                                               $emp->role->name=='Customer Service Manager'||$emp->role->name=='Admin Manager')
                                                    <option {{ old('approve_id') == $emp->id ? "selected" : "" }} value="{{$emp->id}}">{{$emp->name}}</option>
                                                @endif
                                            @endforeach

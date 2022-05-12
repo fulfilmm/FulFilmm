@@ -23,7 +23,7 @@
         </div>
         <div class="col-12">
             <div class="row g-3 mb-3 row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4">
-                <div class="col my-2">
+                <div class="col-md col-6 my-2">
                     <div class="alert-warning alert mb-0 shadow">
                         <a href="{{url('selling/report')}}">
                             <div class="d-flex align-items-center">
@@ -36,7 +36,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="col my-2">
+                <div class="col-md col-6 my-2">
                     <div class="alert-warning alert mb-0 shadow">
                         <a href="{{route('report.income')}}">
                             <div class="d-flex align-items-center">
@@ -49,7 +49,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="col my-2">
+                <div class="col-md col-6 my-2">
                     <div class="alert-warning alert mb-0 shadow">
                         <a href="{{route('report.inhand')}}">
                             <div class="d-flex align-items-center">
@@ -62,7 +62,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="col my-2">
+                <div class="col-md col-6 my-2">
                     <div class="alert-warning alert mb-0 shadow">
                         <a href="{{route('report.inemp')}}">
                             <div class="d-flex align-items-center">
@@ -75,7 +75,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="col my-2">
+                <div class="col-md col-6 my-2">
                     <div class="alert-warning alert mb-0 shadow">
                         <a href="{{route('report.receivable')}}">
                             <div class="d-flex align-items-center">
@@ -88,10 +88,7 @@
                         </a>
                     </div>
                 </div>
-
-            </div>
-            <div class="row g-3 mb-3 row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4">
-                <div class="col my-2">
+                <div class="col-md col-6 my-2">
                     <div class="alert-warning alert mb-0 shadow">
                         <a href="{{route('report.bill')}}">
                             <div class="d-flex align-items-center">
@@ -104,7 +101,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="col my-2">
+                <div class="col-md col-6 my-2">
                     <div class="alert-warning alert mb-0 shadow">
                         <a href="{{route('report.expense')}}">
                             <div class="d-flex align-items-center">
@@ -117,7 +114,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="col my-2">
+                <div class="col-md col-6 my-2">
                     <div class="alert-warning alert mb-0 shadow">
                         <a href="{{route('report.payable')}}">
                             <div class="d-flex align-items-center">
@@ -130,7 +127,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="col my-2">
+                <div class="col-md col-6 my-2">
                     <div class="alert-warning alert mb-0 shadow">
                         <a href="{{route('report.payment')}}">
                             <div class="d-flex align-items-center">
@@ -143,9 +140,7 @@
                         </a>
                     </div>
                 </div>
-            </div>
-            <div class="row g-3 mb-3 row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4">
-                <div class="col my-2">
+                <div class="col-md col-6 my-2">
                     <div class="alert-warning alert mb-0 shadow">
                         <a href="{{url('stock/report')}}">
                             <div class="d-flex align-items-center">
@@ -158,7 +153,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="col my-2">
+                <div class="col-md col-6 my-2">
                     <div class="alert-warning alert mb-0 shadow">
                         <a href="{{route('report.transfer')}}">
                             <div class="d-flex align-items-center">
@@ -171,7 +166,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="col my-2">
+                <div class="col-md col-6 my-2">
                     <div class="alert-warning alert mb-0 shadow">
                         <a href="{{route('report.stockin')}}">
                             <div class="d-flex align-items-center">
@@ -184,7 +179,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="col my-2">
+                <div class="col-md col-6 my-2">
                     <div class="alert-warning alert mb-0 shadow">
                         <a href="{{route('report.stockout')}}">
                             <div class="d-flex align-items-center">
@@ -197,7 +192,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="col my-2">
+                <div class="col-md col-6 my-2">
                     <div class="alert-warning alert mb-0 shadow">
                         <a href="{{route('report.return')}}">
                             <div class="d-flex align-items-center">
@@ -210,10 +205,7 @@
                         </a>
                     </div>
                 </div>
-            </div>
-            <div class="row g-3 mb-3 row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4">
-
-                <div class="col my-2">
+                <div class="col-md col-6 my-2">
                     <div class="alert-warning alert mb-0 shadow">
                         <a href="{{route('report.damage')}}">
                             <div class="d-flex align-items-center">
@@ -226,7 +218,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="col my-2">
+                <div class="col-md col-6 my-2">
                     <div class="alert-warning alert mb-0 shadow">
                         <a href="{{route('report.foc')}}">
                             <div class="d-flex align-items-center">
