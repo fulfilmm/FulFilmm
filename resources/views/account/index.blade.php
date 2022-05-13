@@ -27,9 +27,9 @@
                             Number</th>
                         <th >Current
                             Balance</th>
-                        <th>Type</th>
-                        <th>Office Branch</th>
-                        <th>Holder Name</th>
+                        <th>Account Type</th>
+                        <th>Head Office</th>
+                        <th>Branch Office</th>
                         <th >Enabled</th>
                         <th style="width: 100px">Actions</th>
                     </tr>
@@ -45,9 +45,9 @@
                             <td >{{$acc->number}}</td>
                             <td>{{number_format($acc->balance)}}
                             </td>
-                            <td>{{$acc->sales_account?'Sale Receive Account':'Other Account'}}</td>
-                            <td>{{$acc->branch->name}}</td>
-                            <td>{{$acc->cashier->name??'N/A'}}</td>
+                            <td>{{$acc->head_account?'Head Account':'Branch Account'}}</td>
+                            <td>{{$acc->head->name??'N/A'}}</td>
+                            <td>{{$acc->branch->name??'N/A'}}</td>
                             <td>
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="enabled_{{$acc->id}}" name="enable" {{$acc->enabled==1?'checked':''}}>

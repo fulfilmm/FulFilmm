@@ -20,6 +20,25 @@
                 <input type="hidden" name="company_id" value="{{$company->id??''}}">
                 <div class="card-body">
                     <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="">Account Type</label>
+                                        <div class="row">
+                                            <div class="col">
+                                                <input type="radio" name="head_acct" value="1">
+                                                <lable>Head Office Account</lable>
+                                            </div>
+                                            <div class="col">
+                                                <input type="radio" name="head_acct" value="0" checked>
+                                                <lable>Branch Office Account</lable>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="no">Account Number</label>
@@ -45,22 +64,21 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="branch">Office Branch</label>
-                                <select name="branch_id" id="branch" class="form-control"  onchange="giveSelection(this.value)">
-                                    @foreach($branch as $key=>$val)
+                                <label for="head">Head Office</label>
+                                <select name="head_office" id="head" class="form-control"  onchange="giveSelection(this.value)">
+                                    @foreach($head_office as $key=>$val)
                                         <option value="{{$key}}">{{$val}}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6" id="branch_div">
                             <div class="form-group">
-                                <label for="emp_id">Cashier</label>
-                                <select name="emp_id" id="emp_id" class="form-control">
-                                    @foreach($cashier as $emp)
-                                        @if($emp->role->name=='Regional Cashier'||$emp->role->name=='Branch Cashier')
-                                            <option value="{{$emp->id}}" data-option="{{$emp->office_branch_id}}">{{$emp->name}}</option>
-                                        @endif
+                                <label for="branch">Office Branch</label>
+                                <select name="branch_id" id="branch" class="form-control"  >
+                                    <option value="">None</option>
+                                    @foreach($branch as $item)
+                                        <option value="{{$item->id}}" data-option="{{$item->head_office}}">{{$item->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -73,7 +91,7 @@
                                         <i class="fa fa-pencil"></i>
                                     </span>
                                 </div>
-                                <input data-name="number" placeholder="Enter Bank Account Number" required="required" name="number" type="text" id="number" class="form-control" value="{{old('number')}}">
+                                <input data-name="number" placeholder="Enter Bank Account Number"  name="number" type="text" id="number" class="form-control" value="{{old('number')}}">
                                 @error('number')
                                 <span class="text-danger">{{$message}}</span>
                                 @enderror
@@ -128,6 +146,7 @@
                                 @enderror
                             </div> <!---->
                         </div>
+
                         <div class="form-group col-md-12">
                             <label for="bank_address" class="form-control-label">Bank Address</label>
                             <textarea  placeholder="Enter Bank Address" rows="3" name="bank_address" cols="50" id="bank_address" class="form-control">
@@ -164,22 +183,34 @@
     <script>
         $(document).ready(function () {
             $('select').select2();
-
+            var type=$("input[name='head_acct']:checked").val()
+            if (type==1){
+                $('#branch_div').hide();
+            } else {
+                $('#branch_div').show();
+            }
         });
+        $("input[name='head_acct']").change(function () {
+            var type=$("input[name='head_acct']:checked").val()
+            if (type==1){
+                $('#branch_div').hide();
+            } else {
+                $('#branch_div').show();
+            }
+        });
+        var head = document.querySelector('#head');
         var branch = document.querySelector('#branch');
-        var emp = document.querySelector('#emp_id');
-        var options2 = emp.querySelectorAll('option');
+        var options2 = branch.querySelectorAll('option');
         // console.log(options3);
         // alert(product)
         function giveSelection(selValue) {
-            emp.innerHTML='';
+            branch.innerHTML='';
             for(var i = 0; i < options2.length; i++) {
                 if(options2[i].dataset.option === selValue) {
-                    emp.appendChild(options2[i]);
-
+                    branch.appendChild(options2[i]);
                 }
             }
         }
-        giveSelection(branch.value);
+        giveSelection(head.value);
     </script>
 @endsection

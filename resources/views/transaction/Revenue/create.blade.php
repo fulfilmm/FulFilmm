@@ -85,14 +85,14 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="regional_cashier">Regional Cashier</label>
+                                <label for="regional_cashier">Cashier</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fa fa-user"></i></span>
                                     </div>
                                     <select name="approver_id" id="regional_cashier" class="form-control " style="width: 90%">
                                         @foreach($data['emps'] as $emps)
-                                            @if($emps->role->name=='Regional Cashier'&& $emps->region_id==\Illuminate\Support\Facades\Auth::guard('employee')->user()->region_id)
+                                            @if($emps->role->name=='Cashier')
                                                 <option value="{{$emps->id}}">{{$emps->name}}</option>
                                             @endif
                                         @endforeach
@@ -114,6 +114,16 @@
                                             <option value="{{$cat->id}}">{{$cat->name}}</option>
                                         @endforeach
                                     </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group"><label for="reference">Reference</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-file-text-o"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" name="reference" id="reference" value="{{isset($advance)?$advance->order->order_id:''}}">
                                 </div>
                             </div>
                         </div>
@@ -140,16 +150,6 @@
                         {{--</div>--}}
                         {{--</div>--}}
 
-                        <div class="col-md-6">
-                            <div class="form-group"><label for="reference">Reference</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fa fa-file-text-o"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control" name="reference" id="reference" value="{{isset($advance)?$advance->order->order_id:''}}">
-                                </div>
-                            </div>
-                        </div>
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="attach">Attachment</label>

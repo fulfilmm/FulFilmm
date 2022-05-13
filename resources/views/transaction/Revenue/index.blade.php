@@ -50,11 +50,11 @@
                             <th>Title</th>
                             <th>Amount</th>
                             <th>Category</th>
-                            <th style="width: 400px;">Regional Cashier</th>
-                            <th style="width: 400px;">Branch Cashier</th>
+                            <th style="width: 400px;">Cashier</th>
+                            <th style="width: 400px;">Finance Manager</th>
                             <th>Created By</th>
-                            <th style="width: 250px;">Regional Approve</th>
-                            <th style="width: 250px;">Branch Approve</th>
+                            <th style="width: 250px;">Cashier Approve</th>
+                            <th style="width: 250px;">Finance Manager Approve</th>
                             <th style="width: 200px;">Action</th>
                         </tr>
 
@@ -80,8 +80,8 @@
                                 <td>{{$transaction->title}}</td>
                                 <td>{{number_format($transaction->amount)}}</td>
                                 <td>{{$transaction->cat->name}}</td>
-                                <td>{{$transaction->approver->name}}</td>
-                                <td>{{$transaction->branch_approver->name}}</td>
+                                <td>{{$transaction->branch_cashier->name}}</td>
+                                <td>{{$transaction->manager->name}}</td>
                                 <td>{{$transaction->employee->name}}</td>
 
                                 <td>
@@ -92,8 +92,8 @@
                                     @endif
                                 </td>
                                 <td style="width: 200px;">
-                                    @if($transaction->receipt_branch_cashier==0)
-                                        @if($transaction->branch_cashier==\Illuminate\Support\Facades\Auth::guard('employee')->user()->id)
+                                    @if($transaction->received==0)
+                                        @if($transaction->finance_manager==\Illuminate\Support\Facades\Auth::guard('employee')->user()->id)
                                             <a href="{{url('transaction/approve/'.$transaction->id.'/Revenue')}}" class="btn btn-white btn-white btn-sm">Receive</a>
                                         @else
                                             <button type="button" class="btn btn-info btn-sm disabled">Waiting</button>
@@ -144,7 +144,6 @@
     <script>
         jQuery(document).ready(function () {
             'use strict';
-
             jQuery('#start').datetimepicker();
             jQuery('#end').datetimepicker();
         });
@@ -161,11 +160,9 @@
                     return false;
                 }
             );
-
             $("#min").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
             $("#max").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
             var table = $('#transaction').DataTable();
-
             // Event listener to the two range filtering inputs to redraw on input
             $('#min, #max').change(function () {
                 table.draw();
@@ -175,21 +172,18 @@
             $('#inv_id').keyup(function () {
                 var table = $('#transaction').DataTable();
                 table.column(2).search($(this).val()).draw();
-
             });
         });
         $(document).ready(function() {
             $('#receiver').keyup(function () {
                 var table = $('#transaction').DataTable();
                 table.column(8).search($(this).val()).draw();
-
             });
         });
         $(document).ready(function() {
             $('#category').keyup(function () {
                 var table = $('#transaction').DataTable();
                 table.column(5).search($(this).val()).draw();
-
             });
         });
     </script>
