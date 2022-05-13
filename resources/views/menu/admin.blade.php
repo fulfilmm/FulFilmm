@@ -278,9 +278,9 @@
                 </a>
                 <a class="{{ Request::is('accounts') ? 'active' : '' }}" href="{{route('accounts.index')}}"
                    style="text-decoration: none"><span> Account</span> </a>
-                <a class="{{ Request::is('transactions') ? 'active' : '' }}" href="{{route('transactions.index')}}"
-                   style="text-decoration: none"><span> Transaction</span>
-                </a>
+                {{--<a class="{{ Request::is('transactions') ? 'active' : '' }}" href="{{route('transactions.index')}}"--}}
+                   {{--style="text-decoration: none"><span> Transaction</span>--}}
+                {{--</a>--}}
                 <a class="{{ Request::is('revenue') ? 'active' : '' }}" href="{{route('revenue')}}"
                    style="text-decoration: none"><span> Revenue</span> </a>
                 <a class="{{ Request::is('expense') ? 'active' : '' }}" href="{{route('expense')}}"
@@ -490,6 +490,10 @@
         <a href="#"><i class="la la-dollar"></i> <span>Sales</span> <span
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
+            <li><a class="{{ Request::is('salegroup') ? 'active' : '' }}"
+                   href="{{route('salegroup.index')}}" style="text-decoration: none">Sales Group</a></li>
+            <li><a class="{{ Request::is('saleway') ? 'active' : '' }}"
+                   href="{{route('saleway.index')}}" style="text-decoration: none">Sales Way</a></li>
             <li><a class="{{ Request::is('shop') ? 'active' : '' }}"
                    href="{{route('shop.index')}}" style="text-decoration: none">Shop</a></li>
             <li><a class="{{ Request::is('salezone') ? 'active' : '' }}"

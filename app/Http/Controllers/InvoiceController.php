@@ -53,7 +53,7 @@ class InvoiceController extends Controller
         $zone=SaleZone::all();// sale zone နဲ့ filter လုပ်ဖို့ထုတ်ထားတာ
         $region=Region::all()->pluck('name','id')->all();//Region နဲ့ filter လုပ်ဖို့ထုတ်ထားတာ
         $branch=OfficeBranch::all()->pluck('name','id')->all(); //Branch နဲ့ filter လုပ်ဖို့ထုတ်ထားတာ
-        if(Auth::guard('employee')->user()->role->name=='Super Admin'|| Auth::guard('employee')->user()->role->name=='CEO'||Auth::guard('employee')->user()->role->name=='Sale Manager'||Auth::guard('employee')->user()->role->name=='Cashier' ){
+        if(Auth::guard('employee')->user()->role->name=='Super Admin'|| Auth::guard('employee')->user()->role->name=='CEO'||Auth::guard('employee')->user()->role->name=='Sale Manager'){
             $allinv=Invoice::with('customer','employee','branch','zone','region')->get();//Super Admin နဲ့ CEO က invoice အားလုံးကြည့်လို့ရတအောင်အကုန်ထုတ်ပေးတယ်
         }elseif (Auth::guard('employee')->user()->role->name=='Sale Manager'||Auth::guard('employee')->user()->role->name=='Accountant'||Auth::guard('employee')->user()->role->name=='Cashier'){
             $allinv=Invoice::with('customer','employee','branch','zone','region')->where('branch_id',Auth::guard('employee')->user()->office_branch_id)->get();
@@ -188,6 +188,7 @@ class InvoiceController extends Controller
             $companies=Company::all()->pluck('name','id')->all();
             $zone=SaleZone::where('region_id',$Auth->region_id)->get();
             $region=Region::where('branch_id',$Auth->office_branch_id)->get();
+//            dd($aval_product,$unit_price,$prices);
             return view('invoice.create', compact('zone','warehouse', 'type', 'request_id', 'allcustomers', 'orderline', 'grand_total', 'status', 'data', 'aval_product', 'taxes', 'unit_price', 'dis_promo', 'focs','prices','amount_discount','due_default','companies','region'));
         }else{
             return redirect()->back()->with('error','Firstly,Fixed your Branch Office and Sale Region');
@@ -433,14 +434,15 @@ class InvoiceController extends Controller
      */
     public function show($id)
     {
+        $emps = Employee::where('office_branch_id', Auth::guard('employee')->user()->office_branch_id)->get();
+        $category = TransactionCategory::where('type', 1)->get();
+        $customer = Customer::orWhere('customer_type', 'Customer')->orWhere('customer_type', 'Lead')->orWhere('customer_type', 'Partner')->orWhere('customer_type', 'Inquery')->get();
         $company=MainCompany::where('ismaincompany',true)->first();
         $detail_inv=Invoice::with('customer','employee','tax','order')->where('id',$id)->firstOrFail();
         $invoic_item=OrderItem::with('variant','unit')->where("inv_id",$detail_inv->id)->get();
         $account=Account::where('enabled',1)->get();
         $recurring=['No','Daily','Weekly','Monthly','Yearly'];
         $payment_method=['Cash','eBanking','WaveMoney','KBZ Pay'];
-        $category=TransactionCategory::all();
-        $coas=ChartOfAccount::all();
         $revenue=Revenue::where('invoice_id',$id)->get();
 //        dd($revenue);
         $history=InvoiceHistory::where('invoice_id',$id)->get();
@@ -474,11 +476,12 @@ class InvoiceController extends Controller
         }
         $transaction_amount=0;
 //        $customer=Customer::orWhere('customer_type','Customer')->orWhere('customer_type','Lead')->orWhere('customer_type','Partner')->orWhere('customer_type','Inquery')->get();
-        $customer=Customer::all();
-        $emps = Employee::all();
         $advan_pay=AdvancePayment::with('order')->where('order_id',$detail_inv->order_id)->first();
-        $data=['coas'=>$coas,'transaction'=>$transaction,'customers'=>$customer,'account'=>$account,'recurring'=>$recurring,'payment_method'=>$payment_method,'category'=>$category];
-        return view('invoice.show',compact('detail_inv','advan_pay','invoic_item','company','data','transaction_amount','history','emps'));
+        $data=[
+//            'coas'=>$coas,
+            'emps' => $emps, 'customers' => $customer, 'recurring' => $recurring, 'payment_method' => $payment_method, 'category' => $category,
+            'transaction'=>$transaction,'account'=>$account];
+        return view('invoice.show',compact('detail_inv','advan_pay','invoic_item','company','data','transaction_amount','history'));
     }
 
     /**

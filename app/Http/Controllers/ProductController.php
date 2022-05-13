@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Exports\ProductExport;
+use App\Imports\ItemImport;
+use App\Imports\ProductCategoryImport;
 use App\Imports\ProductImport;
 use App\Jobs\ProductJob;
 use App\Models\Brand;
@@ -406,8 +408,17 @@ class ProductController extends Controller
             return redirect()->route('products.index')->with('error', $e->getMessage());
         }
     }
+    public function cat_import(Request $request)
+    {
+            Excel::import(new ProductCategoryImport(), $request->file('import'));
+            return redirect()->back();
+    }
     public function itemlist(){
         $variantions = ProductVariations::with('supplier')->get();
         return view('product.itemlist',compact('variantions'));
+    }
+    public function item_import(Request $request){
+            Excel::import(new ItemImport(), $request->file('import'));
+
     }
 }

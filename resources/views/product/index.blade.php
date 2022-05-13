@@ -90,11 +90,11 @@
                                     {{$product->sub_cat->name??''}}
                                 </td>
                                 <td>{{$product->brand->name??'None'}}</td>
-                                <td><a href="{{route('create.variant',$product->id)}}" class="btn btn-outline-info btn-sm">Add Variant</a></td>
+{{--                                <td><a href="{{route('create.variant',$product->id)}}" class="btn btn-outline-info btn-sm">Add Variant</a></td>--}}
                                 <td class="text-center">
-                                    <a href="{{route("products.show",$product->id)}}" class="btn btn-warning btn-sm"><i class="la la-eye"></i></a>
-                                    <a class="btn btn-white btn-sm" href="{{route("products.edit",$product->id)}}" ><i class="fa fa-pencil"></i> </a>
-                                    <a class="btn btn-secondary btn-sm" href="{{url("product/duplicate/$product->id")}}" ><i class="fa fa-copy"></i> </a>
+                                    <a href="{{route("products.show",$product->id)}}" class="btn btn-warning btn-sm" title="Product detail view"><i class="la la-eye"></i></a>
+                                    <a class="btn btn-white btn-sm" href="{{route("products.edit",$product->id)}}" title="Product Edit"><i class="fa fa-pencil"></i> </a>
+                                    <a class="btn btn-secondary btn-sm" href="{{url("product/duplicate/$product->id")}}" title="Product Duplicate"><i class="fa fa-copy"></i> </a>
                                     {{--<a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#delete_product{{$product->id}}"><i class="fa fa-trash-o"></i> </a>--}}
 
                                     {{--<div class="modal fade" id="delete_product{{$product->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">--}}

@@ -21,7 +21,8 @@ class RoleSeeder extends Seeder
         'Sales',
         'Employee',
         'Accountant',
-        'Cashier',
+        'Regional Cashier',
+        'Branch Cashier',
         'Car Admin',
         'Car Driver',
         'Purchaser'

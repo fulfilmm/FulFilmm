@@ -20,9 +20,9 @@ class Expense extends Model
     public function bill(){
         return $this->belongsTo(Bill::class,'bill_id','id');
     }
-    public function account(){
-        return $this->belongsTo(ChartOfAccount::class,'coa_id','id');
-    }
+//    public function account(){
+//        return $this->belongsTo(ChartOfAccount::class,'coa_id','id');
+//    }
     public function cat(){
         return $this->belongsTo(TransactionCategory::class,'category','id');
     }

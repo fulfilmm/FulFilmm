@@ -112,7 +112,7 @@ class SellingUnitController extends Controller
             $price_lists=product_price::with('unit','variant','region')->get();
             $region=Region::all()->pluck('name','id')->all();
         }else{
-            $price_lists=product_price::with('unit','variant','region')->where('branch_id',Auth::guard('employee')->user()->office_branch_id)->get();
+            $price_lists=product_price::with('unit','variant','region')->where('region_id',Auth::guard('employee')->user()->region_id)->get();
             $region=Region::where('id',Auth::guard('employee')->user()->region_id)->pluck('name','id')->all();
         }
         $product=product::all()->pluck('product_code','id')->all();

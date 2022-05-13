@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ShopLocation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ShopRegister extends Controller
 {
@@ -13,8 +14,13 @@ class ShopRegister extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    { $user=Auth::guard('employee')->user();
+    if($user->role->name=='Super Admin'||$user->role->name=='CEO'){
         $shops=ShopLocation::with('employee')->get();
+    }else{
+        $shops=ShopLocation::with('employee')->where('branch_id',$user->office_branch_id)->get();
+    }
+
         return view('sale.SaleWay.Shop.index',compact('shops'));
     }
 
@@ -45,6 +51,7 @@ class ShopRegister extends Controller
             'contact'=>'required',
             'phone'=>'required',
             'description'=>'nullable'
+
         ]);
         ShopLocation::create($request->all());
         return redirect('shop')->with('success','Added new shop');
@@ -58,7 +65,8 @@ class ShopRegister extends Controller
      */
     public function show($id)
     {
-        //
+        $shop=ShopLocation::where('id',$id)->first();
+        return view('sale.SaleWay.Shop.show',compact('shop'));
     }
 
     /**

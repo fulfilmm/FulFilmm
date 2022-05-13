@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SaleWay;
+use App\Models\ShopLocation;
+use App\Models\way_assign_shop;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SaleWayController extends Controller
 {
@@ -13,7 +17,14 @@ class SaleWayController extends Controller
      */
     public function index()
     {
-        //
+        $user=Auth::guard('employee')->user();
+        if($user->role->name=='Super Admin'||$user->role->name=='CEO'){
+            $sales_ways=SaleWay::all();
+        }else{
+            $sales_ways=SaleWay::where('branch_id',$user->office_branch_id)->get();
+        }
+
+        return view('sale.SaleWay.index',compact('sales_ways'));
     }
 
     /**
@@ -23,7 +34,8 @@ class SaleWayController extends Controller
      */
     public function create()
     {
-        //
+        $shops=ShopLocation::all()->pluck('name','id')->all();
+        return view('sale.SaleWay.create',compact('shops'));
     }
 
     /**
@@ -34,7 +46,21 @@ class SaleWayController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       $this->validate($request,[
+          'shop_id'=>'required',
+          'way_id'=>'required',
+           'branch_id'=>'required',
+       ]);
+        $way=SaleWay::create($request->all());
+        foreach ($request->shop_id as $key=>$val){
+            $shop=ShopLocation::where('id',$val)->first();
+            $data['reach_location']=$shop->location;
+            $data['shop_id']=$val;
+            $data['way_id']=$way->id;
+            $data['branch_id']=Auth::guard('employee')->user()->office_branch_id;
+            way_assign_shop::create($data);
+        }
+        return redirect('saleway')->with('success','Created new sales way');
     }
 
     /**
@@ -45,7 +71,11 @@ class SaleWayController extends Controller
      */
     public function show($id)
     {
-        //
+        $way=SaleWay::where('id',$id)->first();
+        $assgin_shop=way_assign_shop::with('shop')->where('way_id',$id)->get();
+        $shops=ShopLocation::all()->pluck('name','id')->all();
+
+        return view('sale.SaleWay.show',compact('way','assgin_shop','shops'));
     }
 
     /**
@@ -80,5 +110,28 @@ class SaleWayController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function remove_shop(Request $request){
+        $no_shop=count($request->shop_id);
+        foreach ($request->shop_id as $key=>$val){
+            $assign_shop=way_assign_shop::where('id',$val)->first();
+            $assign_shop->delete();
+
+        }
+        return redirect()->back()->with('Removed '.$no_shop.' Shops');
+    }
+    public function add_shop(Request $request){
+        $no_shop=count($request->shop_id);
+        foreach ($request->shop_id as $key=>$val){
+            $exits=way_assign_shop::where('shop_id',$val)->where('way_id',$request->way_id)->first();
+            if($exits==null){
+                $shop=ShopLocation::where('id',$val)->first();
+                $data['reach_location']=$shop->location;
+                $data['shop_id']=$val;
+                $data['way_id']=$request->way_id;
+                way_assign_shop::create($data);
+            }
+        }
+        return redirect()->back()->with('Removed '.$no_shop.' Shops');
     }
 }

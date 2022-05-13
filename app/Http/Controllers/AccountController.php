@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\Employee;
 use App\Models\MainCompany;
 use App\Models\OfficeBranch;
 use App\Models\Transaction;
@@ -20,9 +21,9 @@ class AccountController extends Controller
     {
         $auth = Auth::guard('employee')->user();
         if ($auth->role->name == 'CEO' || $auth->role->name == 'Super Admin' || $auth->role->name == 'Finance Manager') {
-            $account = Account::with('branch')->get();
+            $account = Account::with('branch','cashier')->get();
         } else {
-            $account = Account::with('branch')->where('branch_id', $auth->office_branch_id)->get();
+            $account = Account::with('branch','cashier')->where('branch_id', $auth->office_branch_id)->get();
         }
 
         return view('account.index', compact('account'));
@@ -39,7 +40,8 @@ class AccountController extends Controller
         if ($auth->role->name == 'CEO' || $auth->role->name == 'Super Admin' || $auth->role->name == 'Finance Manager') {
             $company = MainCompany::where('ismaincompany', true)->first();
             $branch = OfficeBranch::all()->pluck('name', 'id')->all();
-            return view('account.create', compact('company', 'branch'));
+            $cashier=Employee::all();
+            return view('account.create', compact('company', 'branch','cashier'));
         } else {
             return redirect()->back()->with('warning', 'Sorry!You can not create a new account.Super Admin,CEO and Finance Manager only can create a new bank account');
         }
@@ -59,6 +61,7 @@ class AccountController extends Controller
             'name' => 'required',
             'number' => 'required',
             'currency' => 'required',
+            'emp_id'=>'required'
 
         ]);
         $account = new Account();
@@ -74,6 +77,7 @@ class AccountController extends Controller
         $account->bank_name = $request->bank_name;
         $account->bank_phone = $request->bank_phone;
         $account->branch_id = $request->branch_id;
+        $account->emp_id=$request->emp_id;
         $account->save();
         return redirect(route('accounts.index'))->with('success', 'New Account Create Success');
     }

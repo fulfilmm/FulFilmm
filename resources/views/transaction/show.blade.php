@@ -59,25 +59,25 @@
                                         @endif
                         </div>
                         </div>
-                        <div class="row my-1">
-                            <div class="col-2">Account</div>
-                            <div class="col-8">
+                        {{--<div class="row my-1">--}}
+                            {{--<div class="col-2">Account</div>--}}
+                            {{--<div class="col-8">--}}
 
-                                : @if($transaction->type=="Revenue")
-                                    @foreach ($coas as $coa)
-                                        @if($coa->id==$transaction->revenue->coa_id)
-                                            {{$coa->code.'-'.$coa->name}}
-                                        @endif
-                                    @endforeach
-                                @else
-                                    @foreach ($coas as $coa)
-                                        @if($coa->id==$transaction->expense->coa_id)
-                                            {{$coa->code.'-'.$coa->name}}
-                                        @endif
-                                    @endforeach
-                                @endif
-                            </div>
-                        </div>
+                                {{--: @if($transaction->type=="Revenue")--}}
+                                    {{--@foreach ($coas as $coa)--}}
+                                        {{--@if($coa->id==$transaction->revenue->coa_id)--}}
+                                            {{--{{$coa->code.'-'.$coa->name}}--}}
+                                        {{--@endif--}}
+                                    {{--@endforeach--}}
+                                {{--@else--}}
+                                    {{--@foreach ($coas as $coa)--}}
+                                        {{--@if($coa->id==$transaction->expense->coa_id)--}}
+                                            {{--{{$coa->code.'-'.$coa->name}}--}}
+                                        {{--@endif--}}
+                                    {{--@endforeach--}}
+                                {{--@endif--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
                         <div class="row my-1">
                             <div class="col-2">Payment Method</div>
                             <div class="col-8">

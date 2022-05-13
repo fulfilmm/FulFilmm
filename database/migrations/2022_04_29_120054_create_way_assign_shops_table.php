@@ -19,6 +19,7 @@ class CreateWayAssignShopsTable extends Migration
             $table->bigInteger('shop_id')->unsigned();
             $table->string('reach_location')->nullable();
             $table->tinyInteger('reached')->default(0);
+            $table->bigInteger('branch_id')->unsigned();
             $table->timestamps();
         });
     }

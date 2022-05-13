@@ -20,7 +20,6 @@
                 @csrf
                 <div class="card-body">
                     <div class="row">
-                        <input type="hidden" name="type" value="Revenue">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="title">Title</label>
@@ -47,30 +46,6 @@
                                             <option value="USD">USD</option>
                                         </select>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="account">Bank Account</label>
-                                <div class="input-group">
-                                    <select name="account" id="account" class="form-control">
-                                        @foreach($data['account'] as $account)
-                                            <option value="{{$account->id}}" {{$transaction->account_id==$account->id?'selected':''}}>{{$account->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="account">Account</label>
-                                <div class="input-group">
-                                    <select name="coa_account" id="account" class="form-control">
-                                        @foreach($data['coas'] as $account)
-                                            <option value="{{$account->id}}" {{$revenue->coa_id==$account->id?'selected':''}}>{{$account->code.'-'.$account->name}}</option>
-                                        @endforeach
-                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -108,19 +83,20 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="payment_method">Cashier</label>
+                                <label for="regional_cashier">Regional Cashier</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fa fa-user"></i></span>
                                     </div>
-                                    <select name="approver_id" id="payment_method" class="form-control " style="width: 90%">
+                                    <select name="approver_id" id="regional_cashier" class="form-control " style="width: 90%">
                                         @foreach($data['emps'] as $emps)
-                                            @if($emps->department->name=='Finance Department')
-                                                <option value="{{$emps->id}}" {{$revenue->approver_id==$emps->id?'selected':''}}>{{$emps->name}}</option>
-                                                @endif
+                                            @if($emps->role->name=='Regional Cashier'&& $emps->region_id==\Illuminate\Support\Facades\Auth::guard('employee')->user()->region_id)
+                                                <option value="{{$emps->id}}">{{$emps->name}}</option>
+                                            @endif
                                         @endforeach
 
                                     </select>
+
                                 </div>
                             </div>
                         </div>
@@ -128,14 +104,21 @@
                             <div class="form-group">
                                 <label for="category">Category</label>
                                 <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" data-toggle='modal' data-target='#add_cat'><i class="fa fa-plus"></i></span>
-                                    </div>
                                     <select name="category" id="category" class="form-control" style="width: 90%">
                                         @foreach($data['category'] as $cat)
                                             <option value="{{$cat->id}}" {{$revenue->category==$cat->id?'selected':''}}>{{$cat->name}}</option>
                                         @endforeach
                                     </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group"><label for="reference">Reference</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-file-text-o"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" name="reference" id="reference" value="{{$revenue->reference}}">
                                 </div>
                             </div>
                         </div>
@@ -149,29 +132,20 @@
                         </div>
 
                         {{--<div class="col-md-6">--}}
-                            {{--<label for="recurring">Recurring</label>--}}
-                            {{--<div class="input-group">--}}
-                                {{--<div class="input-group-prepend">--}}
-                                    {{--<span class="input-group-text"><i class="fa fa-refresh"></i></span>--}}
-                                {{--</div>--}}
-                                {{--<select name="recurring" id="recurring" class="form-control" style="width: 90%">--}}
-                                    {{--@foreach($data['recurring'] as $recurring)--}}
-                                        {{--<option value="{{$recurring}}">{{$recurring}}</option>--}}
-                                    {{--@endforeach--}}
-                                {{--</select>--}}
-                            {{--</div>--}}
+                        {{--<label for="recurring">Recurring</label>--}}
+                        {{--<div class="input-group">--}}
+                        {{--<div class="input-group-prepend">--}}
+                        {{--<span class="input-group-text"><i class="fa fa-refresh"></i></span>--}}
+                        {{--</div>--}}
+                        {{--<select name="recurring" id="recurring" class="form-control" style="width: 90%">--}}
+                        {{--@foreach($data['recurring'] as $recurring)--}}
+                        {{--<option value="{{$recurring}}">{{$recurring}}</option>--}}
+                        {{--@endforeach--}}
+                        {{--</select>--}}
+                        {{--</div>--}}
                         {{--</div>--}}
 
-                        <div class="col-md-6">
-                            <div class="form-group"><label for="reference">Reference</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fa fa-file-text-o"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control" name="reference" id="reference" value="{{$revenue->reference}}">
-                                </div>
-                            </div>
-                        </div>
+
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="attach">Attachment</label>
@@ -187,18 +161,17 @@
                 </div>
 
                 <div class="card-footer">
-            <div class="row save-buttons">
-                <div class="col-md-12"><a href="{{route('transactions.index')}}"
-                                          class="btn btn-outline-secondary">Cancel</a>
-                    <button type="submit" class="btn btn-icon btn-success"><!----> <span
-                                class="btn-inner--text">Save</span></button>
+                    <div class="row save-buttons">
+                        <div class="col-md-12"><a href="{{url('revenue')}}')}}"
+                                                  class="btn btn-outline-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-icon btn-success"><!----> <span
+                                        class="btn-inner--text">Save</span></button>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        </form>
+            </form>
         </div>
     </div>
-    @include('transaction.add_category')
     <script>
         $(document).ready(function () {
             $('select').select2();

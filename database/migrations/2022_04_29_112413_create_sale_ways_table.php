@@ -16,9 +16,8 @@ class CreateSaleWaysTable extends Migration
         Schema::create('sale_ways', function (Blueprint $table) {
             $table->id();
             $table->string('way_id');
-            $table->tinyInteger('way_type')->default(0);
-            $table->bigInteger('group_id')->unsigned();
-            $table->bigInteger('emp_id')->unsigned();
+            $table->string('name')->nullable();
+            $table->bigInteger('branch_id')->unsigned();
             $table->timestamps();
         });
     }

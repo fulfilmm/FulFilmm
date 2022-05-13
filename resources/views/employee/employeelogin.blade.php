@@ -59,10 +59,8 @@
                                             <div class="flex-grow-1">
                                                 <label class="form-label">Password</label>
                                             </div>
-                                            <div class="flex-shrink-0">
-                                                <div class="">
-                                                    <a href="#" class="text-muted">Forgot password?</a>
-                                                </div>
+                                            <div class="">
+                                                <a href="{{url('password/reset')}}">Forgot password?</a>
                                             </div>
                                         </div>
                                         <div class="input-group auth-pass-inputgroup ">
@@ -89,26 +87,26 @@
                                     </div>
                                 </form>
 
-                                <div class="mt-4 pt-2 text-center">
+                                {{--<div class="mt-4 pt-2 text-center">--}}
 
-                                    <ul class="list-inline mb-0">
-                                        <li class="list-inline-item">
-                                            <a href="javascript:void()" class="social-list-item bg-info text-white border-info">
-                                                <b style="font-size: 18px">f</b>
-                                            </a>
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <a href="javascript:void()" class="social-list-item bg-info text-white border-info">
-                                                <i class="la la-twitter"></i>
-                                            </a>
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <a href="javascript:void()" class="social-list-item bg-danger text-white border-danger">
-                                                <i class="la la-google"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                    {{--<ul class="list-inline mb-0">--}}
+                                        {{--<li class="list-inline-item">--}}
+                                            {{--<a href="javascript:void()" class="social-list-item bg-info text-white border-info">--}}
+                                                {{--<b style="font-size: 18px">f</b>--}}
+                                            {{--</a>--}}
+                                        {{--</li>--}}
+                                        {{--<li class="list-inline-item">--}}
+                                            {{--<a href="javascript:void()" class="social-list-item bg-info text-white border-info">--}}
+                                                {{--<i class="la la-twitter"></i>--}}
+                                            {{--</a>--}}
+                                        {{--</li>--}}
+                                        {{--<li class="list-inline-item">--}}
+                                            {{--<a href="javascript:void()" class="social-list-item bg-danger text-white border-danger">--}}
+                                                {{--<i class="la la-google"></i>--}}
+                                            {{--</a>--}}
+                                        {{--</li>--}}
+                                    {{--</ul>--}}
+                                {{--</div>--}}
                             </div>
                             {{--<div class="mt-4 mt-md-5 text-center">--}}
                             {{--<p class="mb-0">© <script>--}}
@@ -255,43 +253,6 @@
             $(this).siblings('input').attr('type') == "password" ? $(this).siblings('input').attr('type', 'input') : $(this).siblings('input').attr('type', 'password');
         }
     })
-    $('#change-password').on('submit',function(event){
-        event.preventDefault();
-        var Id = $('#data_id').val();
-        var current_password = $('#current-password').val();
-        var password = $('#password').val();
-        var password_confirm = $('#password-confirm').val();
-        $('#current_passwordError').text('');
-        $('#passwordError').text('');
-        $('#password_confirmError').text('');
-        $.ajax({
-            url: "http://minia-light.laravel.themesbrand.com/update-password" + "/" + Id,
-            type:"POST",
-            data:{
-                "current_password": current_password,
-                "password": password,
-                "password_confirmation": password_confirm,
-                "_token": "yLUyjD9WW8ILTF5XMcNtgTQv0gKB8AsRb0U4czo8",
-            },
-            success:function(response){
-                $('#current_passwordError').text('');
-                $('#passwordError').text('');
-                $('#password_confirmError').text('');
-                if(response.isSuccess == false){
-                    $('#current_passwordError').text(response.Message);
-                }else if(response.isSuccess == true){
-                    setTimeout(function () {
-                        window.location.href = "http://minia-light.laravel.themesbrand.com";
-                    }, 1000);
-                }
-            },
-            error: function(response) {
-                $('#current_passwordError').text(response.responseJSON.errors.current_password);
-                $('#passwordError').text(response.responseJSON.errors.password);
-                $('#password_confirmError').text(response.responseJSON.errors.password_confirmation);
-            }
-        });
-    });
 </script>
 
 

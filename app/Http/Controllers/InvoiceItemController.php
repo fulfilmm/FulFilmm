@@ -54,11 +54,13 @@ class InvoiceItemController extends Controller
                 Session::push("data-" . $Auth, $request->all());
             }
             if (isset($request->foc)) {
+                $sale_unit = SellingUnit::where('product_id', $variant->product_id)->where('unit_convert_rate', 1)->first();
                 $items = new OrderItem();
                 $items->description = 'This is FOC item';
                 $items->quantity = 1;
                 $items->variant_id = $request->variant_id;
                 $items->unit_price = 0;
+                $items->sell_unit = $sale_unit->id;
                 $items->total = 0;
                 $items->creation_id = $request->invoice_id;
                 $items->order_id = $request->order_id ?? null;
@@ -176,8 +178,12 @@ class InvoiceItemController extends Controller
     {
 //        dd($request->all());
         $items = OrderItem::where('id', $id)->first();
-        $stock_aval=Stock::where('variant_id',$items->variant_id)->first();
-        if($request->quantity <=$stock_aval->available) {
+        $stock_aval=Stock::where('variant_id',$items->variant_id)->where('warehouse_id',$request->warehouse_id)->first();
+        $unit=SellingUnit::where('id',$request->sell_unit)->first();
+        $qty=$request->quantity;
+        $aval=$stock_aval->available/$unit->unit_convert_rate;
+        if($qty<=$aval) {
+//            dd('hello');
             $items->quantity = $request->quantity;
             $items->unit_price = $request->unit_price;
             $items->total = $request->total;

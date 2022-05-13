@@ -192,6 +192,20 @@
                           placeholder="Enter linkedin link">
                </div>
            </div>
+           <div class="col-md-6 mb-3">
+               <label for="payment_term"
+                      class="form-label font-weight-bold text-muted text-uppercase">Payment Terms</label>
+               <div class="input-group">
+                   <div class="input-group-prepend">
+                       <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                   </div>
+                   <input type="number" class="form-control" id="payment_term" name="payment_term"
+                          placeholder="Enter payment term ">
+                   <div class="input-group-prepend">
+                       <span class="input-group-text">Days</span>
+                   </div>
+               </div>
+           </div>
            <div class="col-md-12 mb-3">
                <label for="address"
                       class="form-label font-weight-bold text-muted text-uppercase">Address</label>
@@ -220,10 +234,10 @@
                 </div>
             </div>
             <div class="col-md-6 mb-3">
-                <label for="position"
+                <label for="report_to_position"
                        class="form-label font-weight-bold text-muted text-uppercase">Report
                     Person's Position</label>
-                <input type="text" class="form-control" id="position" name="position"
+                <input type="text" class="form-control" id="report_to_position" name="report_to_position"
                        placeholder="Enter report person's position">
             </div>
             <div class="col-md-6 mb-3">

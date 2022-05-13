@@ -60,9 +60,9 @@
 												<label class="form-label">Password</label>
 											</div>
 											<div class="flex-shrink-0">
-												<div class="">
-													<a href="#" class="text-muted">Forgot password?</a>
-												</div>
+												{{--<div class="">--}}
+													{{--<a href="#" class="text-muted">Forgot password?</a>--}}
+												{{--</div>--}}
 											</div>
 										</div>
 										<div class="input-group auth-pass-inputgroup ">
@@ -89,26 +89,26 @@
 									</div>
 								</form>
 
-								<div class="mt-4 pt-2 text-center">
+								{{--<div class="mt-4 pt-2 text-center">--}}
 
-									<ul class="list-inline mb-0">
-										<li class="list-inline-item">
-											<a href="javascript:void()" class="social-list-item bg-info text-white border-info">
-												<b style="font-size: 18px">f</b>
-											</a>
-										</li>
-										<li class="list-inline-item">
-											<a href="javascript:void()" class="social-list-item bg-info text-white border-info">
-												<i class="la la-twitter"></i>
-											</a>
-										</li>
-										<li class="list-inline-item">
-											<a href="javascript:void()" class="social-list-item bg-danger text-white border-danger">
-												<i class="la la-google"></i>
-											</a>
-										</li>
-									</ul>
-								</div>
+									{{--<ul class="list-inline mb-0">--}}
+										{{--<li class="list-inline-item">--}}
+											{{--<a href="javascript:void()" class="social-list-item bg-info text-white border-info">--}}
+												{{--<b style="font-size: 18px">f</b>--}}
+											{{--</a>--}}
+										{{--</li>--}}
+										{{--<li class="list-inline-item">--}}
+											{{--<a href="javascript:void()" class="social-list-item bg-info text-white border-info">--}}
+												{{--<i class="la la-twitter"></i>--}}
+											{{--</a>--}}
+										{{--</li>--}}
+										{{--<li class="list-inline-item">--}}
+											{{--<a href="javascript:void()" class="social-list-item bg-danger text-white border-danger">--}}
+												{{--<i class="la la-google"></i>--}}
+											{{--</a>--}}
+										{{--</li>--}}
+									{{--</ul>--}}
+								{{--</div>--}}
 							</div>
 							{{--<div class="mt-4 mt-md-5 text-center">--}}
 								{{--<p class="mb-0">© <script>--}}

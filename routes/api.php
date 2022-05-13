@@ -63,6 +63,16 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
     Route::apiResource('ecommerce_products_add', ProductAddController::class);
     Route::apiResource('ecommerce_products_promotion', ProductPromotionController::class);
     Route::apiResource('ecommerce_banner', ProductBannerController::class);
+    Route::post('sales/remove/shop',[\App\Http\Controllers\Api\SaleWayController::class,'remove_shop']);
+    Route::post('sales/add/shop',[\App\Http\Controllers\Api\SaleWayController::class,'add_shop']);
+    Route::resource('salegroups',\App\Http\Controllers\Api\SaleGroupController::class);
+    Route::post('add/group/members',[\App\Http\Controllers\Api\SaleGroupController::class,'add_member']);
+    Route::post('remove/group/member',[\App\Http\Controllers\Api\SaleGroupController::class,'remove_member']);
+    Route::resource('assignsaleways',\App\Http\Controllers\Api\WayAssignController::class);
+    Route::post('checkin/{id}',[\App\Http\Controllers\Api\WayAssignController::class,'check']);
+    Route::resource('shops',\App\Http\Controllers\Api\ShopRegister::class);
+    Route::resource('saleways',\App\Http\Controllers\Api\SaleWayController::class);
+    Route::get('retail/invoice',[InvoiceController::class,'retail']);
 });
 
 //Api for Car

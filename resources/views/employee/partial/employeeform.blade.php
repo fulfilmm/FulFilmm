@@ -133,6 +133,7 @@
                         <div class="form-group">
                             <label for="">Office</label>
                             <select name="office_branch_id" id="branch_id" class="select form-control">
+                                <option value="">Select Branch</option>
                                 @foreach($office as $item)
                                     <option value="{{$item->id}}" {{isset($employee)?($employee->office_branch_id==$item->id?'selected':''):old('office_branch_id')}}>{{$item->name}}</option>
                                 @endforeach
@@ -143,9 +144,7 @@
                         <label for="wh_id">Warehouse</label>
                         <select name="warehouse_id" id="wh_id" class="form-control">
                             <option value="">None</option>
-                            @foreach($warehouse as $item)
-                                <option value="{{$item->id}}" {{isset($employee)?($employee->warehouse_id==$item->id?'selected':''):old('warehouse_id')}} data-option="{{$item->branch_id}}">{{$item->warehouse_id}}-{{$item->name}}</option>
-                            @endforeach
+
                         </select>
                     </div>
                     <div class="col-md-12" id="region_div">
@@ -153,9 +152,6 @@
                             <label for="">Region</label>
                             <select name="region_id" id="region_id" class="form-control">
                                 <option value="">None</option>
-                                @foreach($region as $item)
-                                    <option value="{{$item->id}}" {{isset($employee)?($employee->office_branch_id==$item->id?'selected':''):old('office_branch_id')}} data-option="{{$item->branch_id}}">{{$item->name}}</option>
-                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -207,6 +203,43 @@
     }
     $(document).ready(function () {
         $('select').select2();
+    });
+
+    // alert(product)
+    $(document).ready(function () {
+        var b_id=$('#branch_id option:selected').val();
+        var html = '';
+        var region='';
+        @foreach($warehouse as $item)
+        if(b_id=='{{$item->branch_id}}'){
+            html += '<option value="{{$item->id}}" {{isset($employee)?($employee->warehouse_id==$item->id?'selected':''):old('warehouse_id')}} data-option="{{$item->branch_id}}">{{$item->warehouse_id}}-{{$item->name}}</option>';
+        }
+        @endforeach
+        $('#wh_id').html(html);
+        @foreach($region as $item)
+        if(b_id=='{{$item->branch_id}}') {
+            region += '<option value="{{$item->id}}" {{isset($employee)?($employee->office_branch_id==$item->id?'selected':''):old('office_branch_id')}} data-option="{{$item->branch_id}}">{{$item->name}}</option>';
+        }
+        @endforeach
+        $('#region_id').html(region);
+    });
+    $('#branch_id').change(function () {
+        var b_id=$(this).val();
+        var html = '<option value="">None</option>';
+        var region='<option value="">None</option>';
+        @foreach($warehouse as $item)
+            if(b_id=='{{$item->branch_id}}'){
+            html += '<option value="{{$item->id}}" {{isset($employee)?($employee->warehouse_id==$item->id?'selected':''):old('warehouse_id')}} data-option="{{$item->branch_id}}">{{$item->warehouse_id}}-{{$item->name}}</option>';
+        }
+        @endforeach
+        $('#wh_id').html(html);
+        @foreach($region as $item)
+            if(b_id=='{{$item->branch_id}}') {
+            region += '<option value="{{$item->id}}" {{isset($employee)?($employee->office_branch_id==$item->id?'selected':''):old('office_branch_id')}} data-option="{{$item->branch_id}}">{{$item->name}}</option>';
+        }
+        @endforeach
+        $('#region_id').html(region);
+
     });
 </script>
 {{-- {{dd($errors->all())}} --}}

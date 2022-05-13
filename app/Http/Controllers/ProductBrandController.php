@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\ProductBrandImport;
 use App\Models\Brand;
+use http\Exception;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductBrandController extends Controller
 {
@@ -120,5 +123,13 @@ class ProductBrandController extends Controller
         $brand=Brand::where('id',$id)->first();
         $brand->delete();
         return redirect()->back()->with('error','Deleted Successful !');
+    }
+    public function import(Request $request){
+        try {
+            Excel::import(new ProductBrandImport(), $request->file('import'));
+            return redirect('product_brand')->with('success', __('alert.import_success'));
+        } catch (Exception $e) {
+            return redirect('product_brand')->with('error', $e->getMessage());
+        }
     }
 }

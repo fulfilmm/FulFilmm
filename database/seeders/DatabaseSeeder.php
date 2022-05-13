@@ -85,8 +85,7 @@ class DatabaseSeeder extends Seeder
                 'join_date' => '1999-10-20',
             ]
         );
-        Customer::create(['customer_id'=>'CUS-00001', 'name'=>'Mr Chris', 'phone'=>'09867766767', 'email'=>'chris@gmail.com', 'company_id'=>$cuscom->id,'emp_id'=>$superadmin->id,'customer_type'=>'Customer','gender'=>'Male']);
-        Customer::create(['customer_id'=>'CUS-00002', 'name'=>'Miss Ma Sa', 'phone'=>'0925986767', 'email'=>'ma.sa.kitaite@gmail.com', 'company_id'=>$supcom->id,'emp_id'=>$superadmin->id,'customer_type'=>'Supplier','gender'=>'Female']);
+        Customer::create(['customer_id'=>'CUS-00001', 'name'=>'Walk In Customer', 'phone'=>'00000000000', 'email'=>'walkincustomer@gmail.com', 'company_id'=>$cuscom->id,'emp_id'=>$superadmin->id,'customer_type'=>'Unknown','gender'=>'Male']);
         case_type::create(['name'=>'Problem One']);
         case_type::create(['name'=>'Problem Two']);
         case_type::create(['name'=>'Problem Three']);

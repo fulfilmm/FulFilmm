@@ -19,6 +19,7 @@
                         <th>Zone</th>
                         <th>Credit Limit</th>
                         <th>Credit Amount</th>
+                        <th>Payment Terms</th>
                         <th>Company</th>
                         <th>Type</th>
                         <th>Action</th>
@@ -37,6 +38,7 @@
                             <td>{{$customer->zone->name??'N/A'}}</td>
                             <td>{{$customer->credit_limit??0}}</td>
                             <td><span class="text-{{$customer->current_credit>$customer->credit_limit?'danger':''}}">{{$customer->current_credit??0}}</span></td>
+                            <td>{{$customer->payment_term?$customer->payment_term.' Days':''}}</td>
                             <td>{{ $customer->company->name }}</td>
                             <td>{{$customer->customer_type}}</td>
                             <td style="display: flex">

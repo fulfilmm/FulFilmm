@@ -73,7 +73,7 @@ class SaleReturnController extends Controller
      * @param  \App\Models\SaleReturn  $saleReturnController
      * @return \Illuminate\Http\Response
      */
-    public function show(SaleReturn $saleReturnController)
+    public function show(Request $request)
     {
         //
     }
@@ -84,7 +84,7 @@ class SaleReturnController extends Controller
      * @param  \App\Models\SaleReturn  $saleReturnController
      * @return \Illuminate\Http\Response
      */
-    public function edit(SaleReturn $saleReturnController)
+    public function edit(Request $request)
     {
         //
     }
@@ -116,7 +116,7 @@ class SaleReturnController extends Controller
      * @param  \App\Models\SaleReturn  $saleReturnController
      * @return \Illuminate\Http\Response
      */
-    public function destroy(SaleReturn $saleReturnController)
+    public function destroy(Request $request)
     {
         //
     }

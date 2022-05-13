@@ -22,8 +22,8 @@
                 <table class="table " id="transaction">
                     <thead>
                     <tr>
-                        <th>Code</th>
-                        <th>Account</th>
+                        {{--<th>Code</th>--}}
+                        {{--<th>Account</th>--}}
                         <th>Date</th>
                         <th>Bill ID</th>
                         <th>Title</th>
@@ -41,8 +41,8 @@
 {{--                    @dd($expenses)--}}
                     @foreach($expenses as $transaction)
                         <tr>
-                            <td>{{$transaction->account->code}}</td>
-                            <td>{{$transaction->account->code.'-'.$transaction->account->name??'N/A'}}</td>
+                            {{--<td>{{$transaction->account->code}}</td>--}}
+                            {{--<td>{{$transaction->account->code.'-'.$transaction->account->name??'N/A'}}</td>--}}
                             <td>
                                 {{\Carbon\Carbon::parse($transaction->transaction_date)->toFormattedDateString()}}
                             </td>
@@ -68,10 +68,10 @@
                                 <div class="row">
                                     <a href="{{$transaction->invoice_id==null?route('transactions.show',$transaction->id):route('invoices.show',$transaction->invoice_id)}}"
                                        class="btn btn-white btn-sm"><i class="la la-eye"></i></a>
+                                    @if($transaction->approve==0)
                                     <a href="{{route('expense.edit',$transaction->id)}}" class="btn btn-primary btn-sm"><i
                                                 class="la la-edit"></i></a>
-                                    <a href="{{route('expense.delete',$transaction->id)}}"
-                                       class="btn btn-primary btn-sm"><i class="la la-trash"></i></a>
+                                        @endif
                                 </div>
                             </td>
                         </tr>

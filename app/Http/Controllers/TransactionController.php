@@ -40,235 +40,45 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $transactions = Transaction::with('expense', 'revenue', 'account','bill')->get();
+        $transactions = Transaction::with('expense', 'revenue', 'account', 'bill')->get();
         $employees = Employee::all()->pluck('name', 'id')->all();
         $invoice = Invoice::all()->pluck('invoice_id', 'id')->all();
         $bill = Bill::all()->pluck('bill_id', 'id')->all();
         return view('transaction.index', compact('transactions', 'employees', 'invoice', 'bill'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function expense()
-    {
-        $account = Account::where('enabled', 1)->get();
-        $recurring = ['No', 'Daily', 'Weekly', 'Monthly', 'Yearly'];
-        $payment_method = ['Cash', 'eBanking', 'WaveMoney', 'KBZ Pay'];
-        $category = TransactionCategory::where('type', 0)->get();
-        $emps =Employee::where('office_branch_id',Auth::guard('employee')->user()->office_branch_id)->get();
-        $coas = ChartOfAccount::all();
-        $customer = Customer::where('customer_type', 'Supplier')->get();
-        $data = ['coas' => $coas, 'emps' => $emps, 'customers' => $customer, 'account' => $account, 'recurring' => $recurring, 'payment_method' => $payment_method, 'category' => $category];
-        return view('transaction.Expense.create', compact('data'));
-    }
-
-    public function expense_index()
-    {
-
-        $auth=Auth::guard('employee')->user();
-        if($auth->role->name=='CEO'||$auth->role->name=='Super Admin'||$auth->role->name=='Finance Manager'){
-            $expenses = Expense::with('cat', 'supplier', 'approver', 'employee', 'bill', 'account')->get();
-        }else{
-            $expenses = Expense::with('cat', 'supplier', 'approver', 'employee', 'bill', 'account')
-                ->orWhere('emp_id',$auth->id)
-                ->orWhere('approver_id',$auth->id)
-                ->get();
-        }
-
-        return view('transaction.Expense.index', compact('expenses'));
-    }
-
     public function revenue_index()
     {
-        $auth=Auth::guard('employee')->user();
-        if($auth->role->name=='CEO'||$auth->role->name=='Super Admin'||$auth->role->name=='Finance Manager'){
-            $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->get();
-        }else{
-            $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')
-                ->orWhere('emp_id',$auth->id)
-                ->orWhere('approver_id',$auth->id)
+        $auth = Auth::guard('employee')->user();
+        if ($auth->role->name == 'CEO' || $auth->role->name == 'Super Admin' || $auth->role->name == 'Finance Manager') {
+            $revenues = Revenue::with('cat', 'employee', 'approver', 'invoice', 'branch_approver')->get();
+        } else if ($auth->role->name=='Branch Cashier') {
+            $revenues = Revenue::with('cat', 'employee', 'approver', 'invoice', 'branch_approver')
+                ->where('branch_cashier', $auth->id)
+                ->where('is_cashintransit',1)
+                ->where('approve',1)
+                ->orWhere('emp_id', $auth->id)
+                ->get();
+
+        } else {
+            $revenues = Revenue::with('cat', 'employee', 'approver', 'invoice', 'branch_approver')
+                ->orWhere('emp_id', $auth->id)
+                ->orWhere('regional_cashier', $auth->id)
                 ->get();
         }
 
         return view('transaction.Revenue.index', compact('revenues'));
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function expense_store(Request $request)
-    {
-
-//        dd($request->all());
-        $this->validate($request, [
-            'transaction_date' => 'required',
-            'amount' => 'required',
-            'account' => 'required',
-            'category' => 'required',
-            'payment_method' => 'required',
-            'approver_id' => 'required',
-            'attachment' => 'mimes:pdf,xlsx,doc,docx,jpg,jpeg,ppt,bip,|max:2048',
-            'coa_account'=>'required'
-        ]);
-        if(isset($request->bill_id)){
-            $bill_amount=Bill::where('id',$request->bill_id)->first();
-            if($bill_amount->due_amount!=0){
-                try {
-                    $new_expense = new Expense();
-                    $new_expense->title = $request->title;
-                    $new_expense->vendor_id = $request->customer_id;
-                    $new_expense->amount = $request->amount;
-                    $new_expense->reference = $request->reference;
-                    $new_expense->recurring = $request->recurring;
-                    $new_expense->payment_method = $request->payment_method;
-                    $new_expense->description = $request->description;
-                    $new_expense->category = $request->category;
-                    $new_expense->approver_id = $request->approver_id;
-                    $new_expense->coa_id = $request->coa_account;
-                    $new_expense->transaction_date = $request->transaction_date;
-                    $new_expense->emp_id = Auth::guard('employee')->user()->id;
-                    $new_expense->branch_id = Auth::guard('employee')->user()->office_branch_id;
-                    $new_expense->currency = $request->currency;
-                    $new_expense->bill_id = $request->bill_id ?? null;
-//        dd($new_expense);
-                    if (isset($request->attachment)) {
-                        if ($request->attachment != null) {
-                            $attach = $request->file('attachment');
-                            $input['filename'] = \Illuminate\Support\Str::random(10) . time() . '.' . $attach->extension();
-                            $request->attachment->move(public_path() . '/attach_file', $input['filename']);
-
-                        }
-                        $new_expense->attachment = $input['filename'];
-                    }
-                    $new_expense->save();
-                } catch (\Exception $e) {
-                    return redirect()->back()->with('error', $e->getMessage());
-                }
-                if (isset($request->exp_id)) {
-                    $exp = ExpenseClaim::where('id', $request->exp_id)->first();
-                    $exp->is_claim = 1;
-                    $exp->update();
-                }
-                $this->transaction_add($request->account, $request->type, $new_expense->id, null);
-                $this->addnotify($request->approver_id, 'noti', 'Add new expense', 'expense', Auth::guard('employee')->user()->id);
-
-                    $bill = Bill::where('id', $request->bill_id)->first();
-                    $bill->due_amount = $bill->due_amount - $request->amount;
-                    $bill->update();
-                    return redirect(route('bills.show', $request->bill_id))->with('success', 'Add New Expense Successful');
-            }else{
-                return redirect()->back()->with('danger','This bill is payment has been made');
-            }
-        }else{
-            try {
-                $new_expense = new Expense();
-                $new_expense->title = $request->title;
-                $new_expense->vendor_id = $request->customer_id;
-                $new_expense->amount = $request->amount;
-                $new_expense->reference = $request->reference;
-                $new_expense->recurring = $request->recurring;
-                $new_expense->payment_method = $request->payment_method;
-                $new_expense->description = $request->description;
-                $new_expense->category = $request->category;
-                $new_expense->approver_id = $request->approver_id;
-                $new_expense->coa_id = $request->coa_account;
-                $new_expense->transaction_date = $request->transaction_date;
-                $new_expense->emp_id = Auth::guard('employee')->user()->id;
-                $new_expense->branch_id = Auth::guard('employee')->user()->office_branch_id;
-                $new_expense->currency = $request->currency;
-                $new_expense->bill_id = $request->bill_id ?? null;
-//        dd($new_expense);
-                if (isset($request->attachment)) {
-                    if ($request->attachment != null) {
-                        $attach = $request->file('attachment');
-                        $input['filename'] = \Illuminate\Support\Str::random(10) . time() . '.' . $attach->extension();
-                        $request->attachment->move(public_path() . '/attach_file', $input['filename']);
-
-                    }
-                    $new_expense->attachment = $input['filename'];
-                }
-                $new_expense->save();
-            } catch (\Exception $e) {
-                return redirect()->back()->with('error', $e->getMessage());
-            }
-            if (isset($request->exp_id)) {
-                $exp = ExpenseClaim::where('id', $request->exp_id)->first();
-                $exp->is_claim = 1;
-                $exp->update();
-            }
-            $this->transaction_add($request->account, $request->type, $new_expense->id, null);
-            $this->addnotify($request->approver_id, 'noti', 'Add new expense', 'expense', Auth::guard('employee')->user()->id);
-            $last_tran = Transaction::orderBy('id', 'desc')->first();
-            return redirect(route('transactions.show', $last_tran->id))->with('success', 'Add New Expense Successful');
-        }
-
-
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $transaction = Transaction::with('expense', 'revenue', 'account')->where('id', $id)->firstOrFail();
-        $company = MainCompany::where('ismaincompany', true)->first();
-        $category = TransactionCategory::all();
-        $coas = ChartOfAccount::all();
-        $customer = Customer::where('id', $transaction->type == 'Revenue' ? $transaction->revenue->customer_id : $transaction->expense->vendor_id)->first();
-        $receiver = Employee::where('id', $transaction->type == 'Revenue' ? $transaction->revenue->emp_id : $transaction->expense->emp_id)->first();
-        return view('transaction.show', compact('transaction', 'customer', 'receiver', 'company', 'category', 'coas'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
     public function addrevenue()
     {
-        $emps =Employee::where('office_branch_id',Auth::guard('employee')->user()->office_branch_id)->get();
-        $account = Account::where('enabled', 1)->get();
+        $emps = Employee::where('office_branch_id', Auth::guard('employee')->user()->office_branch_id)->get();
         $recurring = ['No', 'Daily', 'Weekly', 'Monthly', 'Yearly'];
         $payment_method = ['Cash', 'eBanking', 'WaveMoney', 'KBZ Pay'];
         $category = TransactionCategory::where('type', 1)->get();
-        $coas = ChartOfAccount::all();
+//        $coas = ChartOfAccount::all();
         $customer = Customer::orWhere('customer_type', 'Customer')->orWhere('customer_type', 'Lead')->orWhere('customer_type', 'Partner')->orWhere('customer_type', 'Inquery')->get();
-        $data = ['coas' => $coas, 'emps' => $emps, 'customers' => $customer, 'account' => $account, 'recurring' => $recurring, 'payment_method' => $payment_method, 'category' => $category];
+        $data = [
+//            'coas' => $coas,
+            'emps' => $emps, 'customers' => $customer, 'recurring' => $recurring, 'payment_method' => $payment_method, 'category' => $category];
         return view('transaction.Revenue.create', compact('data'));
     }
 
@@ -310,10 +120,11 @@ class TransactionController extends Controller
                 'payment_method' => 'required',
                 'approver_id' => 'required',
                 'attachment' => 'mimes:pdf,xlsx,doc,docx,jpg,jpeg,ppt,bip',
-                'coa_account'=>'required'
+//                'coa_account'=>'required'
             ]);
 
             try {
+                $reginal_acc = Account::where('emp_id', $request->approver_id)->first()->id;
                 $new_revenue = new Revenue();
                 $new_revenue->title = $request->title;
                 $new_revenue->customer_id = $request->customer_id;
@@ -324,13 +135,23 @@ class TransactionController extends Controller
                 $new_revenue->payment_method = $request->payment_method;
                 $new_revenue->description = $request->description;
                 $new_revenue->category = $request->category;
-                $new_revenue->approver_id = $request->approver_id;
+                $new_revenue->regional_cashier = $request->approver_id;
                 $new_revenue->advance_pay_id = $request->advance_id ?? null;
-                $new_revenue->coa_id = $request->coa_account;
+                $employee = Employee::where('office_branch_id', Auth::guard('employee')->user()->office_branch_id)->get();
+                foreach ($employee as $emp) {
+                    if ($emp->role->name == 'Branch Cashier') {
+                        $new_revenue->branch_account = Account::where('enabled', 1)->where('emp_id', $emp->id)->first()->id;
+                        $new_revenue->branch_cashier = $emp->id;
+                    }
+                }
+                $new_revenue->regional_account = $reginal_acc;
                 $new_revenue->transaction_date = $request->transaction_date;
                 $new_revenue->emp_id = Auth::guard('employee')->user()->id;
                 $new_revenue->branch_id = Auth::guard('employee')->user()->office_branch_id;
                 $new_revenue->currency = $request->currency;
+                if ($request->payment_method != "Cash") {
+                    $new_revenue->is_cashintransit = 1;
+                }
                 if (isset($request->attachment)) {
                     if ($request->attachment != null) {
                         $attach = $request->file('attachment');
@@ -361,8 +182,12 @@ class TransactionController extends Controller
                     $deli_pay->update();
                 }
             }
-            $this->transaction_add($request->account, $request->type, null, $new_revenue->id);
+            $this->transaction_add($reginal_acc, $request->type, null, $new_revenue->id);
             $this->addnotify($request->approver_id, 'noti', 'Add new revenue', 'revenue', Auth::guard('employee')->user()->id);
+            if ($new_revenue->is_cashintransit) {
+                $this->addnotify($new_revenue->branch_cashier, 'noti', 'Add new revenue', 'revenue', Auth::guard('employee')->user()->id);
+
+            }
             if (isset($request->invoice_id)) {
                 $inv = Invoice::where('id', $request->invoice_id)->first();
                 $inv->due_amount = $inv->due_amount - $request->amount;
@@ -373,6 +198,320 @@ class TransactionController extends Controller
                 return redirect(route('transactions.show', $last_tran->id))->with('success', 'Add New Revenue Successful');
             }
         }
+    }
+    public function revenue_edit($id)
+    {
+        $revenue = Revenue::where('id', $id)->first();
+        $transaction = Transaction::where('revenue_id', $revenue->id)->first();
+        $emps = Employee::where('office_branch_id', Auth::guard('employee')->user()->office_branch_id)->get();
+        $recurring = ['No', 'Daily', 'Weekly', 'Monthly', 'Yearly'];
+        $payment_method = ['Cash', 'eBanking', 'WaveMoney', 'KBZ Pay'];
+        $category = TransactionCategory::where('type', 1)->get();
+//        $coas = ChartOfAccount::all();
+        $customer = Customer::orWhere('customer_type', 'Customer')->orWhere('customer_type', 'Lead')->orWhere('customer_type', 'Partner')->orWhere('customer_type', 'Inquery')->get();
+        $data = [
+//            'coas' => $coas,
+            'emps' => $emps, 'customers' => $customer, 'recurring' => $recurring, 'payment_method' => $payment_method, 'category' => $category];
+        return view('transaction.Revenue.edit', compact('data', 'revenue', 'transaction'));
+    }
+    public function revenue_update(Request $request, $id)
+    {
+        try {
+            $reginal_acc = Account::where('emp_id', $request->approver_id)->first()->id;
+            $new_revenue = Revenue::where('id', $id)->first();
+            $new_revenue->title = $request->title;
+            $new_revenue->customer_id = $request->customer_id;
+            $new_revenue->amount = $request->amount;
+            $new_revenue->invoice_id = $request->invoice_id ?? null;
+            $new_revenue->reference = $request->reference;
+            $new_revenue->recurring = $request->recurring;
+            $new_revenue->payment_method = $request->payment_method;
+            $new_revenue->description = $request->description;
+            $new_revenue->category = $request->category;
+            $new_revenue->regional_cashier = $request->approver_id;
+            $new_revenue->regional_account = $reginal_acc;
+            $new_revenue->advance_pay_id = $request->advance_id ?? null;
+//            $new_revenue->coa_id = $request->coa_account;
+            $new_revenue->transaction_date = $request->transaction_date;
+            $new_revenue->emp_id = Auth::guard('employee')->user()->id;
+            $new_revenue->branch_id = Auth::guard('employee')->user()->office_branch_id;
+            $new_revenue->currency = $request->currency;
+            if (isset($request->attachment)) {
+                if ($request->attachment != null) {
+                    $attach = $request->file('attachment');
+                    $input['filename'] = \Illuminate\Support\Str::random(10) . time() . '.' . $attach->extension();
+                    $request->attachment->move(public_path() . '/attach_file', $input['filename']);
+
+                }
+                $new_revenue->attachment = $input['filename'];
+            }
+            if ($request->payment_method == 'Advance Payment') {
+                $new_revenue->approve = 1;
+            }
+            if (isset($request->invoice_id)) {
+                $inv = Invoice::where('id', $request->invoice_id)->first();
+                $employee = Employee::where('id', $inv->emp_id)->first();
+                $employee->amount_in_hand -= $new_revenue->amount;
+                $employee->update();
+            }
+            $new_revenue->update();
+            if (isset($request->invoice_id)) {
+                $inv = Invoice::where('id', $request->invoice_id)->first();
+                $employee = Employee::where('id', $inv->emp_id)->first();
+                $employee->amount_in_hand += $request->amount;
+                $employee->update();
+            }
+            $transaction = Transaction::where('revenue_id', $id)->first();
+            $transaction->account_id = $request->account;
+            $transaction->update();
+            return redirect('revenue')->with('success', 'Revenue updated');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+    public function revenue_delete($id)
+    {
+        $revenue = Revenue::where('id', $id)->first();
+        $transaction = Transaction::where('revenue_id', $revenue->id)->first();
+        $transaction->delete();
+        $revenue->delete();
+        return redirect('revenue')->with('success', 'Deleted Successful');
+    }
+
+    public function expense()
+    {
+        $account = Account::where('enabled', 1)->get();
+        $recurring = ['No', 'Daily', 'Weekly', 'Monthly', 'Yearly'];
+        $payment_method = ['Cash', 'eBanking', 'WaveMoney', 'KBZ Pay'];
+        $category = TransactionCategory::where('type', 0)->get();
+        $emps = Employee::where('office_branch_id', Auth::guard('employee')->user()->office_branch_id)->get();
+//        $coas = ChartOfAccount::all();
+        $customer = Customer::where('customer_type', 'Supplier')->get();
+        $data = [
+//            'coas' => $coas,
+            'emps' => $emps, 'customers' => $customer, 'account' => $account, 'recurring' => $recurring, 'payment_method' => $payment_method, 'category' => $category];
+        return view('transaction.Expense.create', compact('data'));
+    }
+    public function expense_index()
+    {
+
+        $auth = Auth::guard('employee')->user();
+        if ($auth->role->name == 'CEO' || $auth->role->name == 'Super Admin' || $auth->role->name == 'Finance Manager') {
+            $expenses = Expense::with('cat', 'supplier', 'approver', 'employee', 'bill')->get();
+        } else {
+            $expenses = Expense::with('cat', 'supplier', 'approver', 'employee', 'bill')
+                ->orWhere('emp_id', $auth->id)
+                ->orWhere('approver_id', $auth->id)
+                ->get();
+        }
+
+        return view('transaction.Expense.index', compact('expenses'));
+    }
+    public function expense_store(Request $request)
+    {
+
+//        dd($request->all());
+        $this->validate($request, [
+            'transaction_date' => 'required',
+            'amount' => 'required',
+            'account' => 'required',
+            'category' => 'required',
+            'payment_method' => 'required',
+            'approver_id' => 'required',
+            'attachment' => 'mimes:pdf,xlsx,doc,docx,jpg,jpeg,ppt,bip,|max:2048',
+//            'coa_account'=>'required'
+        ]);
+        if (isset($request->bill_id)) {
+            $bill_amount = Bill::where('id', $request->bill_id)->first();
+            if ($bill_amount->due_amount != 0) {
+                try {
+                    $new_expense = new Expense();
+                    $new_expense->title = $request->title;
+                    $new_expense->vendor_id = $request->customer_id;
+                    $new_expense->amount = $request->amount;
+                    $new_expense->reference = $request->reference;
+                    $new_expense->recurring = $request->recurring;
+                    $new_expense->payment_method = $request->payment_method;
+                    $new_expense->description = $request->description;
+                    $new_expense->category = $request->category;
+                    $new_expense->approver_id = $request->approver_id;
+//                    $new_expense->coa_id = $request->coa_account;
+                    $new_expense->transaction_date = $request->transaction_date;
+                    $new_expense->emp_id = Auth::guard('employee')->user()->id;
+                    $new_expense->branch_id = Auth::guard('employee')->user()->office_branch_id;
+                    $new_expense->currency = $request->currency;
+                    $new_expense->bill_id = $request->bill_id ?? null;
+//        dd($new_expense);
+                    if (isset($request->attachment)) {
+                        if ($request->attachment != null) {
+                            $attach = $request->file('attachment');
+                            $input['filename'] = \Illuminate\Support\Str::random(10) . time() . '.' . $attach->extension();
+                            $request->attachment->move(public_path() . '/attach_file', $input['filename']);
+
+                        }
+                        $new_expense->attachment = $input['filename'];
+                    }
+                    $new_expense->save();
+                } catch (\Exception $e) {
+                    return redirect()->back()->with('error', $e->getMessage());
+                }
+                if (isset($request->exp_id)) {
+                    $exp = ExpenseClaim::where('id', $request->exp_id)->first();
+                    $exp->is_claim = 1;
+                    $exp->update();
+                }
+                $this->transaction_add($request->account, $request->type, $new_expense->id, null);
+                $this->addnotify($request->approver_id, 'noti', 'Add new expense', 'expense', Auth::guard('employee')->user()->id);
+
+                $bill = Bill::where('id', $request->bill_id)->first();
+                $bill->due_amount = $bill->due_amount - $request->amount;
+                $bill->update();
+                return redirect(route('bills.show', $request->bill_id))->with('success', 'Add New Expense Successful');
+            } else {
+                return redirect()->back()->with('danger', 'This bill is payment has been made');
+            }
+        } else {
+            try {
+                $new_expense = new Expense();
+                $new_expense->title = $request->title;
+                $new_expense->vendor_id = $request->customer_id;
+                $new_expense->amount = $request->amount;
+                $new_expense->reference = $request->reference;
+                $new_expense->recurring = $request->recurring;
+                $new_expense->payment_method = $request->payment_method;
+                $new_expense->description = $request->description;
+                $new_expense->category = $request->category;
+                $new_expense->approver_id = $request->approver_id;
+//                $new_expense->coa_id = $request->coa_account;
+                $new_expense->transaction_date = $request->transaction_date;
+                $new_expense->emp_id = Auth::guard('employee')->user()->id;
+                $new_expense->branch_id = Auth::guard('employee')->user()->office_branch_id;
+                $new_expense->currency = $request->currency;
+                $new_expense->bill_id = $request->bill_id ?? null;
+//        dd($new_expense);
+                if (isset($request->attachment)) {
+                    if ($request->attachment != null) {
+                        $attach = $request->file('attachment');
+                        $input['filename'] = \Illuminate\Support\Str::random(10) . time() . '.' . $attach->extension();
+                        $request->attachment->move(public_path() . '/attach_file', $input['filename']);
+
+                    }
+                    $new_expense->attachment = $input['filename'];
+                }
+                $new_expense->save();
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', $e->getMessage());
+            }
+            if (isset($request->exp_id)) {
+                $exp = ExpenseClaim::where('id', $request->exp_id)->first();
+                $exp->is_claim = 1;
+                $exp->update();
+            }
+            $this->transaction_add($request->account, $request->type, $new_expense->id, null);
+            $this->addnotify($request->approver_id, 'noti', 'Add new expense', 'expense', Auth::guard('employee')->user()->id);
+            $last_tran = Transaction::orderBy('id', 'desc')->first();
+            return redirect(route('transactions.show', $last_tran->id))->with('success', 'Add New Expense Successful');
+        }
+
+
+    }
+    public function expense_delete($id)
+    {
+        $expense = Expense::where('id', $id)->first();
+        $transaction = Transaction::where('expense_id', $expense->id)->first();
+        $transaction->delete();
+        $expense->delete();
+        return redirect('revenue')->with('success', 'Deleted Successful');
+    }
+    public function expense_edit($id)
+    {
+        $expense = Expense::where('id', $id)->first();
+        $transaction = Transaction::where('expense_id', $id)->first();
+        $account = Account::where('enabled', 1)->get();
+        $recurring = ['No', 'Daily', 'Weekly', 'Monthly', 'Yearly'];
+        $payment_method = ['Cash', 'eBanking', 'WaveMoney', 'KBZ Pay'];
+        $category = TransactionCategory::where('type', 0)->get();
+        $emps = Employee::all();
+//        $coas = ChartOfAccount::all();
+        $customer = Customer::where('customer_type', 'Supplier')->get();
+        $data = [
+//            'coas' => $coas,
+            'emps' => $emps, 'customers' => $customer, 'account' => $account, 'recurring' => $recurring, 'payment_method' => $payment_method, 'category' => $category];
+        return view('transaction.Expense.edit', compact('data', 'expense', 'transaction'));
+    }
+    public function expense_update(Request $request, $id)
+    {
+        try {
+            $new_expense = Expense::where('id', $id)->first();
+            $new_expense->title = $request->title;
+            $new_expense->vendor_id = $request->customer_id;
+            $new_expense->amount = $request->amount;
+            $new_expense->reference = $request->reference;
+            $new_expense->recurring = $request->recurring;
+            $new_expense->payment_method = $request->payment_method;
+            $new_expense->description = $request->description;
+            $new_expense->category = $request->category;
+            $new_expense->approver_id = $request->approver_id;
+//            $new_expense->coa_id = $request->coa_account;
+            $new_expense->transaction_date = $request->transaction_date;
+            $new_expense->emp_id = Auth::guard('employee')->user()->id;
+            $new_expense->branch_id = Auth::guard('employee')->user()->office_branch_id;
+            $new_expense->currency = $request->currency;
+            $new_expense->bill_id = $request->bill_id ?? null;
+//        dd($new_expense);
+            if (isset($request->attachment)) {
+                if ($request->attachment != null) {
+                    $attach = $request->file('attachment');
+                    $input['filename'] = \Illuminate\Support\Str::random(10) . time() . '.' . $attach->extension();
+                    $request->attachment->move(public_path() . '/attach_file', $input['filename']);
+
+                }
+                $new_expense->attachment = $input['filename'];
+            }
+            if (isset($request->bill_id)) {
+                $bill = Bill::where('id', $request->bill_id)->first();
+                $bill->due_amount += $new_expense->amount;
+                $bill->update();
+            }
+            $new_expense->update();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+        if (isset($request->exp_id)) {
+            $exp = ExpenseClaim::where('id', $request->exp_id)->first();
+            $exp->is_claim = 1;
+            $exp->update();
+        }
+        $last_tran = Transaction::where('expense_id', $id)->first();
+        if (isset($request->bill_id)) {
+            $bill = Bill::where('id', $request->bill_id)->first();
+            $bill->due_amount = $bill->due_amount - $request->amount;
+            $bill->update();
+            return redirect(route('bills.show', $request->bill_id))->with('success', 'Update Expense Successful');
+        } else {
+            return redirect(route('transactions.show', $last_tran->id))->with('success', 'Update  Expense Successful');
+        }
+
+    }
+
+    public function show($id)
+    {
+        $transaction = Transaction::with('expense', 'revenue', 'account')->where('id', $id)->firstOrFail();
+        $company = MainCompany::where('ismaincompany', true)->first();
+        $category = TransactionCategory::all();
+//        $coas = ChartOfAccount::all();
+        $customer = Customer::where('id', $transaction->type == 'Revenue' ? $transaction->revenue->customer_id : $transaction->expense->vendor_id)->first();
+        $receiver = Employee::where('id', $transaction->type == 'Revenue' ? $transaction->revenue->emp_id : $transaction->expense->emp_id)->first();
+        return view('transaction.show', compact('transaction', 'customer', 'receiver', 'company', 'category'));
+    }
+    public function edit($id)
+    {
+        //
+    }
+
+    public function destroy($id)
+    {
+        //
     }
 
     public function transaction_add($account_id, $type, $expense_id, $revenue_id)
@@ -423,9 +562,8 @@ class TransactionController extends Controller
         if ($type == 'Revenue') {
             $revenue = Revenue::with('invoice')->where('id', $id)->first();
 
-            if ($revenue->approver_id == Auth::guard('employee')->user()->id) {
-                $transaction = Transaction::where('revenue_id', $revenue->id)->first();
-                $account = Account::where('id', $transaction->account_id)->first();
+            if ($revenue->regional_cashier == Auth::guard('employee')->user()->id) {
+                $account = Account::where('id', $revenue->regional_account)->first();
                 $account->balance = $account->balance + $revenue->amount;
                 $revenue->approve = 1;
                 $revenue->update();
@@ -433,15 +571,28 @@ class TransactionController extends Controller
                 if (isset($revenue->invoice->customer_id)) {
                     $customer = Customer::where('id', $revenue->invoice->customer_id)->first();
                     $customer->current_credit = $customer->current_credit - $revenue->amount;
+                    $customer->use_amount=$revenue->amount;
                     $customer->update();
                     $employee = Employee::where('id', $revenue->invoice->emp_id)->first();
                     $employee->amount_in_hand = $employee->amount_in_hand - $revenue->amount;
                     $employee->update();
                 }
+                return redirect('revenue')->with('success', 'You has been receipted this revenue');
 //                $rev_budget=RevenueBudget::where('category_id',$revenue->category)->where('year',Carbon::parse($revenue->transaction_date)->format('Y'))->where('month',Carbon::parse($revenue->transaction_date)->format('m'))->first();
 //                $rev_budget->actual=$rev_budget->actual + $revenue->amount;
 //                $rev_budget->update();
-            } else {
+            }elseif ($revenue->branch_cashier == Auth::guard('employee')->user()->id) {
+                $branch_acc = Account::where('id', $revenue->branch_account)->first();
+                $branch_acc->balance = $branch_acc->balance + $revenue->amount;
+                $revenue->receipt_branch_cashier = 1;
+                $revenue->update();
+                $branch_acc->update();
+                $regional_account = Account::where('id', $revenue->regional_account)->first();
+                $regional_account->balance = $regional_account->balance - $revenue->amount;
+                $revenue->update();
+                $regional_account->update();
+                return redirect('revenue')->with('success', 'You has been receipted this revenue');
+            }else {
                 return redirect('revenue')->with('error', 'You can not approve');
             }
         } else {
@@ -464,12 +615,13 @@ class TransactionController extends Controller
 //                $exp_budget=ExpenseBudget::where('category_id',$expense->category)->where('year',Carbon::parse($expense->transaction_date)->format('Y'))->where('month',Carbon::parse($expense->transaction_date)->format('m'))->first();
 //                $exp_budget->actual=$exp_budget->actual??0 + $expense->amount;
 //                $exp_budget->update();
+                return redirect('expense')->with('success', 'You has been approved this expense');
+
             } else {
                 return redirect('expense')->with('error', 'You can not approve');
             }
         }
 
-        return redirect(route('transactions.index'));
     }
 
     public function export(Request $request)
@@ -477,74 +629,12 @@ class TransactionController extends Controller
         return Excel::download(new BankTransactionExport($request->start_date, $request->end_date), 'transaction.xlsx');
     }
 
-    public function revenue_delete($id)
+    public function transer_branch(Request $request)
     {
-        $revenue = Revenue::where('id', $id)->first();
-        $transaction = Transaction::where('revenue_id', $revenue->id)->first();
-        $transaction->delete();
-        $revenue->delete();
-        return redirect('revenue')->with('success', 'Deleted Successful');
-    }
-
-    public function expense_delete($id)
-    {
-        $expense = Expense::where('id', $id)->first();
-        $transaction = Transaction::where('expense_id', $expense->id)->first();
-        $transaction->delete();
-        $expense->delete();
-        return redirect('revenue')->with('success', 'Deleted Successful');
-    }
-
-    public function expense_edit($id)
-    {
-        $expense = Expense::where('id', $id)->first();
-        $transaction=Transaction::where('expense_id',$id)->first();
-        $account = Account::where('enabled', 1)->get();
-        $recurring = ['No', 'Daily', 'Weekly', 'Monthly', 'Yearly'];
-        $payment_method = ['Cash', 'eBanking', 'WaveMoney', 'KBZ Pay'];
-        $category = TransactionCategory::where('type', 0)->get();
-        $emps = Employee::all();
-        $coas = ChartOfAccount::all();
-        $customer = Customer::where('customer_type', 'Supplier')->get();
-        $data = ['coas' => $coas, 'emps' => $emps, 'customers' => $customer, 'account' => $account, 'recurring' => $recurring, 'payment_method' => $payment_method, 'category' => $category];
-        return view('transaction.Expense.edit', compact('data', 'expense','transaction'));
-    }
-
-    public function revenue_edit($id)
-    {
-        $revenue = Revenue::where('id', $id)->first();
-        $transaction = Transaction::where('revenue_id', $revenue->id)->first();
-        $emps = Employee::all();
-        $account = Account::where('enabled', 1)->get();
-        $recurring = ['No', 'Daily', 'Weekly', 'Monthly', 'Yearly'];
-        $payment_method = ['Cash', 'eBanking', 'WaveMoney', 'KBZ Pay'];
-        $category = TransactionCategory::where('type', 1)->get();
-        $coas = ChartOfAccount::all();
-        $customer = Customer::orWhere('customer_type', 'Customer')->orWhere('customer_type', 'Lead')->orWhere('customer_type', 'Partner')->orWhere('customer_type', 'Inquery')->get();
-        $data = ['coas' => $coas, 'emps' => $emps, 'customers' => $customer, 'account' => $account, 'recurring' => $recurring, 'payment_method' => $payment_method, 'category' => $category];
-        return view('transaction.Revenue.edit', compact('data', 'revenue', 'transaction'));
-    }
-
-    public function expense_update(Request $request, $id)
-    {
-        try {
-            $new_expense =Expense::where('id',$id)->first();
-            $new_expense->title = $request->title;
-            $new_expense->vendor_id = $request->customer_id;
-            $new_expense->amount = $request->amount;
-            $new_expense->reference = $request->reference;
-            $new_expense->recurring = $request->recurring;
-            $new_expense->payment_method = $request->payment_method;
-            $new_expense->description = $request->description;
-            $new_expense->category = $request->category;
-            $new_expense->approver_id = $request->approver_id;
-            $new_expense->coa_id = $request->coa_account;
-            $new_expense->transaction_date = $request->transaction_date;
-            $new_expense->emp_id = Auth::guard('employee')->user()->id;
-            $new_expense->branch_id = Auth::guard('employee')->user()->office_branch_id;
-            $new_expense->currency = $request->currency;
-            $new_expense->bill_id = $request->bill_id ?? null;
-//        dd($new_expense);
+//        dd($request->all());
+        foreach ($request->revenue as $key => $val) {
+            $revenue = Revenue::where('id', $val)->first();
+            $revenue->is_cashintransit = 1;
             if (isset($request->attachment)) {
                 if ($request->attachment != null) {
                     $attach = $request->file('attachment');
@@ -552,85 +642,11 @@ class TransactionController extends Controller
                     $request->attachment->move(public_path() . '/attach_file', $input['filename']);
 
                 }
-                $new_expense->attachment = $input['filename'];
+                $revenue->second_attach = $input['filename'];
             }
-            if (isset($request->bill_id)) {
-                $bill = Bill::where('id', $request->bill_id)->first();
-                $bill->due_amount += $new_expense->amount;
-                $bill->update();
-            }
-            $new_expense->update();
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', $e->getMessage());
+            $revenue->regional_comment=$request->comment;
+            $revenue->update();
         }
-        if (isset($request->exp_id)) {
-            $exp = ExpenseClaim::where('id', $request->exp_id)->first();
-            $exp->is_claim = 1;
-            $exp->update();
-        }
-        $last_tran = Transaction::where('expense_id',$id)->first();
-        if (isset($request->bill_id)) {
-            $bill = Bill::where('id', $request->bill_id)->first();
-            $bill->due_amount = $bill->due_amount - $request->amount;
-            $bill->update();
-            return redirect(route('bills.show', $request->bill_id))->with('success', 'Update Expense Successful');
-        } else {
-            return redirect(route('transactions.show', $last_tran->id))->with('success', 'Update  Expense Successful');
-        }
-
-    }
-
-    public function revenue_update(Request $request, $id)
-    {
-        try {
-            $new_revenue =Revenue::where('id',$id)->first();
-            $new_revenue->title = $request->title;
-            $new_revenue->customer_id = $request->customer_id;
-            $new_revenue->amount = $request->amount;
-            $new_revenue->invoice_id = $request->invoice_id ?? null;
-            $new_revenue->reference = $request->reference;
-            $new_revenue->recurring = $request->recurring;
-            $new_revenue->payment_method = $request->payment_method;
-            $new_revenue->description = $request->description;
-            $new_revenue->category = $request->category;
-            $new_revenue->approver_id = $request->approver_id;
-            $new_revenue->advance_pay_id = $request->advance_id ?? null;
-            $new_revenue->coa_id = $request->coa_account;
-            $new_revenue->transaction_date = $request->transaction_date;
-            $new_revenue->emp_id = Auth::guard('employee')->user()->id;
-            $new_revenue->branch_id = Auth::guard('employee')->user()->office_branch_id;
-            $new_revenue->currency = $request->currency;
-            if (isset($request->attachment)) {
-                if ($request->attachment != null) {
-                    $attach = $request->file('attachment');
-                    $input['filename'] = \Illuminate\Support\Str::random(10) . time() . '.' . $attach->extension();
-                    $request->attachment->move(public_path() . '/attach_file', $input['filename']);
-
-                }
-                $new_revenue->attachment = $input['filename'];
-            }
-            if ($request->payment_method == 'Advance Payment') {
-                $new_revenue->approve = 1;
-            }
-            if (isset($request->invoice_id)) {
-                $inv = Invoice::where('id', $request->invoice_id)->first();
-                $employee = Employee::where('id', $inv->emp_id)->first();
-                $employee->amount_in_hand -= $new_revenue->amount;
-                $employee->update();
-            }
-            $new_revenue->update();
-            if (isset($request->invoice_id)) {
-                $inv = Invoice::where('id', $request->invoice_id)->first();
-                $employee = Employee::where('id', $inv->emp_id)->first();
-                $employee->amount_in_hand += $request->amount;
-                $employee->update();
-            }
-            $transaction=Transaction::where('revenue_id',$id)->first();
-            $transaction->account_id=$request->account;
-            $transaction->update();
-            return redirect('revenue')->with('success','Revenue updated');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', $e->getMessage());
-        }
+        return redirect()->back()->with('success','Transferred to ' . count($request->revenue) . ' revenue transaction');
     }
 }

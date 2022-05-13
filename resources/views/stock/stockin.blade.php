@@ -155,13 +155,13 @@
            });
        });
        $(document).ready(function () {
-           $("#product_id").html(" @foreach($products as $product)<option value='{{$product->id}}'>{{$product->product_name}} ({{$product->variant}})</option> @endforeach");
+           $("#product_id").html(" @foreach($products as $product)<option value='{{$product->id}}'>{{$product->product_name}} {{$product->variant?'-'.$product->variant:''}}</option> @endforeach");
            $("#type").change(function () {
                var val = $(this).val();
                if (val == "Name") {
-                   $("#product_id").html(" @foreach($products as $product)<option value='{{$product->id}}'>{{$product->product_name}} ({{$product->variant}})</option> @endforeach");
+                   $("#product_id").html(" @foreach($products as $product)<option value='{{$product->id}}'>{{$product->product_name}} {{$product->variant?'-'.$product->variant:''}}</option> @endforeach");
                } else if (val == "Code") {
-                   $("#product_id").html("@foreach($products as $product)<option value='{{$product->id}}'>{{$product->product_code}}</option> @endforeach");
+                   $("#product_id").html("@foreach($products as $product)<option value='{{$product->id}}'>{{$product->item_code}}</option> @endforeach");
                }
            });
        });

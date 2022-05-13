@@ -18,5 +18,8 @@ class ProductVariations extends Model
     public function supplier(){
         return $this->belongsTo(Customer::class,'supplier_id','id');
     }
+    public function unit(){
+        return $this->hasMany(SellingUnit::class);
+    }
 
 }

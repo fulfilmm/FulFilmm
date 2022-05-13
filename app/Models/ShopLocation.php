@@ -13,7 +13,8 @@ class ShopLocation extends Model
         'contact',
         'phone',
         'description',
-        'emp_id'];
+        'emp_id',
+        'branch_id'];
     public function employee(){
         return $this->belongsTo(Employee::class,'emp_id','id');
     }

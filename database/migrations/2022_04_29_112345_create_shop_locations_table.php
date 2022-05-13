@@ -23,6 +23,7 @@ class CreateShopLocationsTable extends Migration
             $table->string('contact');
             $table->string('phone');
             $table->text('description')->nullable();
+            $table->bigInteger('branch_id')->unsigned();
             $table->timestamps();
         });
     }

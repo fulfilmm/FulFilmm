@@ -27,13 +27,16 @@
                                 Number</th>
                             <th >Current
                                 Balance</th>
+                            <th>Type</th>
                             <th>Office Branch</th>
+                            <th>Holder Name</th>
                             <th >Enabled</th>
-                            <th >Actions</th>
+                            <th style="width: 100px">Actions</th>
                         </tr>
 
                         </thead>
                         <tbody>
+{{--                        @dd($account)--}}
                         @foreach($account as $acc)
                             <tr>
                                 <th>{{$acc->account_no??''}}</th>
@@ -42,7 +45,9 @@
                                 <td >{{$acc->number}}</td>
                                 <td>{{number_format($acc->balance)}}
                                 </td>
+                                <td>{{$acc->sales_account?'Sale Receive Account':'Other Account'}}</td>
                                 <td>{{$acc->branch->name}}</td>
+                                <td>{{$acc->cashier->name??'N/A'}}</td>
                                 <td>
                                     <div class="custom-control custom-switch">
                                         <input type="checkbox" class="custom-control-input" id="enabled_{{$acc->id}}" name="enable" {{$acc->enabled==1?'checked':''}}>
@@ -81,6 +86,7 @@
                                     </script>
                                 </td>
                                 <td>
+                                    <a href="{{route('accounts.show',$acc->id)}}" class="btn btn-white btn-sm"><i class="la la-eye"></i></a>
                                     <a href="{{route('accounts.edit',$acc->id)}}" class="btn btn-white btn-sm"><i class="la la-edit"></i></a>
                                     <a href="" class="btn btn-danger btn-sm " data-toggle="modal" data-target="#delete_{{$acc->id}}"><i class="la la-trash "></i></a>
                                     <div id="delete_{{$acc->id}}" class="modal custom-modal fade" role="dialog">

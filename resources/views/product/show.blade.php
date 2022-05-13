@@ -146,7 +146,7 @@
                                </td>
                                <td> <img src="{{url(asset('/product_picture/'.$item->image))}}" alt="" class="border-0 mr-2 ml-2"
                                          style="max-height:50px;max-width:50px;border: solid"></td>
-                               <td>{{$item->product_name}}</td>
+                               <td>{{$item->product->name}}</td>
                                <td><a href="{{route('show.variant',$item->id)}}"><strong>{{$item->item_code}}</strong></a></td>
                                <td>{{$item->variant}}</td>
                                <td>{{$item->enable==0?'Disable':'Enable'}}</td>
@@ -154,12 +154,12 @@
                                <td>{{$item->created_at->toFormattedDateString()}}</td>
                                <td>
                                    <div class="row">
-                                       <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#edit{{$item->id}}"><i class="la la-edit"></i></button>
-                                       <a href="{{route('show.variant',$item->id)}}" class="btn btn-white btn-sm"><i class="la la-eye"></i></a>
+                                       <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#edit{{$item->id}}" title="Item edit"><i class="la la-edit"></i></button>
+                                       <a href="{{route('show.variant',$item->id)}}" class="btn btn-white btn-sm" title="Item details view"><i class="la la-eye"></i></a>
                                        <form action="{{route('barcode.generate')}}" method="get">
                                            @csrf
                                            <input type="hidden" name="product_name" value="{{$item->id}}">
-                                           <button type="submit" class="btn btn-primary btn-sm"><i class="la la-barcode"></i></button>
+                                           <button type="submit" class="btn btn-primary btn-sm" title="Barcode Generate"><i class="la la-barcode"></i></button>
                                        </form>
                                    </div>
                                    <div id="edit{{$item->id}}" class="modal custom-modal fade" role="dialog">

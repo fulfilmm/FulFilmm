@@ -12,6 +12,8 @@
                         <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
                         <li class="breadcrumb-item active">Shop List</li>
                     </ul>
+                    <div class="col-auto float-right ml-auto mb-3">
+                        <a href="{{route('shop.create')}}" class="btn add-btn shadow-sm mr-2"><i class="fa fa-plus"></i>Register Shop</a>
                 </div>
             </div>
         </div>

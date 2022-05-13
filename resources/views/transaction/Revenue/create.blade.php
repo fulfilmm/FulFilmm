@@ -53,30 +53,6 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="account">Bank Account</label>
-                                <div class="input-group">
-                                    <select name="account" id="account" class="form-control">
-                                        @foreach($data['account'] as $account)
-                                            <option value="{{$account->id}}" {{isset($advance->acount_id)?($advance->account_id==$account->id?'selected':''):''}}>{{$account->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="account">Gl Account</label>
-                                <div class="input-group">
-                                    <select name="coa_account" id="account" class="form-control">
-                                        @foreach($data['coas'] as $account)
-                                            <option value="{{$account->id}}" >{{$account->code.'-'.$account->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
                                 <label for="customer_id">Customer</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
@@ -109,19 +85,20 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="payment_method">Cashier</label>
+                                <label for="regional_cashier">Regional Cashier</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fa fa-user"></i></span>
                                     </div>
-                                    <select name="approver_id" id="payment_method" class="form-control " style="width: 90%">
+                                    <select name="approver_id" id="regional_cashier" class="form-control " style="width: 90%">
                                         @foreach($data['emps'] as $emps)
-                                            @if($emps->department->name=='Finance Department')
+                                            @if($emps->role->name=='Regional Cashier'&& $emps->region_id==\Illuminate\Support\Facades\Auth::guard('employee')->user()->region_id)
                                                 <option value="{{$emps->id}}">{{$emps->name}}</option>
                                                 @endif
                                         @endforeach
 
                                     </select>
+
                                 </div>
                             </div>
                         </div>

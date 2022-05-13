@@ -46,10 +46,22 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="branch">Office Branch</label>
-                                <select name="branch_id" id="branch" class="form-control">
+                                <select name="branch_id" id="branch" class="form-control"  onchange="giveSelection(this.value)">
                                     @foreach($branch as $key=>$val)
                                         <option value="{{$key}}">{{$val}}</option>
                                         @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="emp_id">Cashier</label>
+                                <select name="emp_id" id="emp_id" class="form-control">
+                                    @foreach($cashier as $emp)
+                                        @if($emp->role->name=='Regional Cashier'||$emp->role->name=='Branch Cashier')
+                                        <option value="{{$emp->id}}" data-option="{{$emp->office_branch_id}}">{{$emp->name}}</option>
+                                        @endif
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -152,6 +164,22 @@
     <script>
         $(document).ready(function () {
             $('select').select2();
+
         });
+        var branch = document.querySelector('#branch');
+        var emp = document.querySelector('#emp_id');
+        var options2 = emp.querySelectorAll('option');
+        // console.log(options3);
+        // alert(product)
+        function giveSelection(selValue) {
+            emp.innerHTML='';
+            for(var i = 0; i < options2.length; i++) {
+                if(options2[i].dataset.option === selValue) {
+                    emp.appendChild(options2[i]);
+
+                }
+            }
+        }
+        giveSelection(branch.value);
     </script>
 @endsection

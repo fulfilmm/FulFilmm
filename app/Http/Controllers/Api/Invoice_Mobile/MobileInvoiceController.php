@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Api\Invoice_Mobile;
 
 use App\Http\Controllers\Controller;
 use App\Models\Invoice;
+use App\Models\OfficeBranch;
+use App\Models\OrderItem;
+use App\Models\ProductVariations;
 use App\Models\Stock;
 use Illuminate\Http\Request;
 
@@ -40,42 +43,122 @@ class MobileInvoiceController extends Controller
      */
     public function index()
     {
-        $company = Company::all();
-        $Auth = Auth::guard('api')->user();
-//        dd($Auth);
-        $customer = Customer::where('region_id', $Auth->region_id)->where('branch_id', $Auth->office_branch_id)->get();
-        $warehouse = Warehouse::where('branch_id', $Auth->office_branch_id)
-            ->get();
 
-        $product = Stock::with('varient')
-            ->where('warehouse_id', $Auth->warehouse_id)
-        ->where('available', '>', 0)
-            ->get();
+        $zone=SaleZone::all();// sale zone နဲ့ filter လုပ်ဖို့ထုတ်ထားတာ
+        $region=Region::all()->pluck('name','id')->all();//Region နဲ့ filter လုပ်ဖို့ထုတ်ထားတာ
+        $branch=OfficeBranch::all()->pluck('name','id')->all(); //Branch နဲ့ filter လုပ်ဖို့ထုတ်ထားတာ
+        if(Auth::guard('api')->user()->role->name=='Super Admin'|| Auth::guard('api')->user()->role->name=='CEO'||Auth::guard('api')->user()->role->name=='Sale Manager'){
+            $allinv=Invoice::with('customer','employee','branch','zone','region')->get();//Super Admin နဲ့ CEO က invoice အားလုံးကြည့်လို့ရတအောင်အကုန်ထုတ်ပေးတယ်
+        }elseif (Auth::guard('api')->user()->role->name=='Sale Manager'||Auth::guard('api')->user()->role->name=='Accountant'||Auth::guard('api')->user()->role->name=='Cashier'){
+            $allinv=Invoice::with('customer','employee','branch','zone','region')->where('branch_id',Auth::guard('api')->user()->office_branch_id)->get();
+        }else{
+            $allinv=Invoice::with('customer','employee','branch','zone','region')->where('emp_id',Auth::guard('api')->user()->id)->get();//ရိုးရိုးsale man တေက သူဖွင့်ထားတဲ့ invoice ကိုဘဲကြည့်လို့ရမယ်
+        }
 
-        $foc = Freeofchare::where('branch_id',$Auth->office_branch_id)
-            ->get();
-
-        $discount = DiscountPromotion::where('region_id',$Auth->region_id)->get();
-
-        $dis_amt = AmountDiscount::where('region_id',$Auth->region_id)->get();
-
-        $region = Region::where('id', $Auth->region_id)
-            ->get();
-
-        $zone = SaleZone::where('region_id',$Auth->region_id)->get();
-
-        $selling_unit = SellingUnit::all();
-
-        $selling_price = product_price::where('region_id',$Auth->region_id)->get();
-
-
-        return response()->json(['company' => $company, 'customer' => $customer, 'warehouse' => $warehouse,
-            'foc' => $foc, 'discount' => $discount, 'dis_amt' => $dis_amt, 'region' => $region,
-            'zone' => $zone, 'selling_unit' => $selling_unit, 'selling_price' => $selling_price]);
+        $status=$this->status;
+//        dd($allinv);
+//        return \response()->json(['lajsldfjs']);
+        return response()->json(['allinv'=>$allinv,'status'=>$status,'zone'=>$zone,'branch'=>$branch,'region'=>$region]);
 
     }
+    public function create()
+    {
+        $Auth=Auth::guard('api')->user();
+        if($Auth->office_branch_id!=null && $Auth->region_id!=null){
+            $allcustomers = Customer::where('branch_id',$Auth->office_branch_id)->where('region_id',$Auth->region_id)->get();
+            $taxes = products_tax::all();
+            $status = $this->status;
+            $unit=SellingUnit::where('active',1)->get();
+            $prices =product_price::where('sale_type', 'Whole Sale')->where('active',1)->where('region_id',$Auth->region_id)->get();
+            //dd($prices);
+            $dis_promo = DiscountPromotion::where('sale_type', 'Whole Sale')
+                ->where('region_id',$Auth->region_id)
+                ->get();
+            $focs = Freeofchare::with('variant')->where('region_id',$Auth->region_id)->get();
+            $type = 'Whole Sale';
 
+            if(Auth::guard('api')->user()->mobile_seller==1){
+                $warehouse =Warehouse::where('branch_id', $Auth->office_branch_id)
+                    ->where('mobile_warehouse',1)->where('id',$Auth->warehouse_id)
+                    ->first();
+            }else{
+                $warehouse =Warehouse::where('branch_id', $Auth->office_branch_id)
+                    ->where('mobile_warehouse',0)->where('id',$Auth->warehouse_id)
+                    ->first();
+            }
+            $aval_product =[];
+            $in_stock=Stock::with('variant','unit')->where('available', '>', 0)->where('warehouse_id',$Auth->warehouse_id)->get();
+            foreach ($in_stock as $inhand){
+                if($inhand->variant->enable==1){
+                    array_push($aval_product,$inhand);
+                }
+            }
 
+            $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))
+                ->whereDate('end_date','>=',date('Y-m-d'))
+                ->where('sale_type','Whole Sale')
+                ->where('region_id',$Auth->regioin_id)
+                ->get();
+            $due_default=Carbon::today()->addDay(1);
+            $companies=Company::all()->pluck('name','id')->all();
+            $zone=SaleZone::where('region_id',$Auth->region_id)->get();
+            $region=Region::where('branch_id',$Auth->office_branch_id)->get();
+            return response()->json(['zone'=>$zone,'warehouse'=>$warehouse, 'type'=>$type, 'allcustomers'=>$allcustomers, 'status'=>$status,'aval_product'=>$aval_product, 'taxes'=>$taxes, 'unit'=>$unit, 'dis_promo'=>$dis_promo, 'focs'=>$focs,'prices'=>$prices,'amount_discount'=>$amount_discount,'due_default'=>$due_default,'companies'=>$companies,'region'=>$region]);
+        }else{
+            return response()->json(['error'=>'Firstly,Fixed your Branch Office and Sale Region']);
+        }
+    }
+    public function retail(){
+        $Auth=Auth::guard('api')->user();
+        if($Auth->office_branch_id!=null && $Auth->region_id!=null){
+            $allcustomers = Customer::where('branch_id',$Auth->office_branch_id)->where('region_id',$Auth->region_id)->get();
+            $aval_product =[];
+            $in_stock=Stock::with('variant','unit')->where('available', '>', 0)->where('warehouse_id',$Auth->warehouse_id)->get();
+            foreach ($in_stock as $inhand){
+                if($inhand->variant->enable==1){
+                    array_push($aval_product,$inhand);
+                }
+            }
+//        foreach ($pd as $product){
+//
+//            if($pd!=null){
+//                $stock=Stock::where('variant_id',$product->id)->where('available','>',0)->first();
+//                if($stock!=null){
+//                    array_push($variants,$product);
+//                }
+//            }
+//        }
+            $taxes=products_tax::all();
+            $status=$this->status;
+            $unit=SellingUnit::where('active',1)->get();
+            $prices=product_price::where('sale_type','Retail Sale')->where('active',1)->where('region_id',$Auth->region_id)->get();
+            $dis_promo=DiscountPromotion::where('sale_type','Retail Sale')
+                ->where('region_id',$Auth->region_id)
+                ->get();
+            $focs=Freeofchare::with('variant')->where('region_id',$Auth->region_id)->get();
+            $type='Retail Sale';
+            $Auth=Auth::guard('api')->user();
+            if(Auth::guard('api')->user()->mobile_seller==1){
+                $warehouse =Warehouse::where('mobile_warehouse',1)->where('id',$Auth->warehouse_id)->first();
+            }else{
+                $warehouse =Warehouse::where('mobile_warehouse',0)->where('id',$Auth->warehouse_id)->first();
+
+            }
+
+            $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))
+                ->whereDate('end_date','>=',date('Y-m-d'))
+                ->where('sale_type','Retail Sale')
+                ->where('region_id',$Auth->region_id)
+                ->get();
+            $due_default=Carbon::today()->addDay(1);
+            $companies=Company::all()->pluck('name','id')->all();
+            $zone=SaleZone::where('region_id',$Auth->region_id)->get();
+            $region=Region::where('branch_id',$Auth->office_branch_id)->get();
+            return response()->json(['zone'=>$zone,'warehouse'=>$warehouse, 'type'=>$type, 'allcustomers'=>$allcustomers, 'status'=>$status,'aval_product'=>$aval_product, 'taxes'=>$taxes, 'unit'=>$unit, 'dis_promo'=>$dis_promo, 'focs'=>$focs,'prices'=>$prices,'amount_discount'=>$amount_discount,'due_default'=>$due_default,'companies'=>$companies,'region'=>$region]);
+        }else{
+            return response()->json(['error'=>'Firstly,Fixed your Branch Office and Sale Region']);
+        }
+    }
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -184,18 +267,20 @@ class MobileInvoiceController extends Controller
 
                 //order items 
 
-                $variant = ProductVariation::where('id', $request->variant_id)
+                $variant =ProductVariations::where('id', $request->variant_id)
                     ->first();
 
                 if ($request->type == 'invoice') {
                     foreach ($foc_item as $item) {
 
                         if (isset($request->foc)) {
+                            $sale_unit = SellingUnit::where('product_id', $variant->product_id)->where('unit_convert_rate', 1)->first();
                             $items = new OrderItem();
                             $items->description = 'This is FOC item';
                             $items->quantity = $item->quantity;
                             $items->variant_id = $request->variant_id;
                             $items->unit_price = 0;
+                            $items->sell_unit = $sale_unit->id;
                             $items->total = 0;
                             $items->inv_id = $invoice_id;
                             $items->creation_id = $request->invoice_id;

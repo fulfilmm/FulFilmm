@@ -38,30 +38,30 @@
             <button type="submit" class="btn btn-primary">Submit</button>
         </div>
     </div>
+
 </div>
 <script type="text/javascript">
-    // $(function() {
-    //     $("#map").googleMap();
-    //     $("#map").addMarker({
-    //         coords: [16.8350397982278,96.11916573126366], // GPS coords
-    //         // icon: 'http://www.tiloweb.com/wp-content/uploads/2012/04/logo-e1335400790554.png',
-    //         title: '<i class="fa fa-user"></i> Marker n°1', // Title
-    //         // icon:'<img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.vectorstock.com%2Froyalty-free-vector%2Fcar-simple-icon1-resize-vector-12351742&psig=AOvVaw1RdcLxM4T0h9f6qgGh1TnA&ust=1651284252064000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCMjKnq2XuPcCFQAAAAAdAAAAABAD">',
-    //         text:  '<b>Lorem ipsum</b> dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' // HTML content
-    //     });
+    $(function() {
+        $("#map").googleMap();
+        $("#map").addMarker({
+            coords: [21.9611136,96.0987136], // GPS coords
+            // icon: 'http://www.tiloweb.com/wp-content/uploads/2012/04/logo-e1335400790554.png',
+            title: '<i class="fa fa-user"></i> Marker n°1', // Title
+            // icon:'<img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.vectorstock.com%2Froyalty-free-vector%2Fcar-simple-icon1-resize-vector-12351742&psig=AOvVaw1RdcLxM4T0h9f6qgGh1TnA&ust=1651284252064000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCMjKnq2XuPcCFQAAAAAdAAAAABAD">',
+            text:  '<b>Lorem ipsum</b> dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' // HTML content
+        });
+    });
+    // var map = document.getElementById('map');
+    // // Initialize LocationPicker plugin
+    // $( document ).ready(function() {
+    //     navigator.geolocation.getCurrentPosition(showPosition);
+    //     function showPosition(position) {
+    //         var lat = position.coords.latitude;
+    //         var lng = position.coords.longitude;
+    //         document.getElementById("location").value=lat+','+lng
+    //         buildMap(lat, lng);
+    //     }
     // });
-    var map = document.getElementById('map');
-    // Initialize LocationPicker plugin
-    var lp = new locationPicker(map, {
-        setCurrentPosition: true, // You can omit this, defaults to true
-    }, {
-        zoom: 12 // You can set any google map options here, zoom defaults to 15
-    });
-    google.maps.event.addListener(lp.map, 'idle', function (event) {
-        // Get current location and show it in HTML
-        var location = lp.getMarkerPosition();
-        document.getElementById("location").value=location.lat+','+location.lng;
-    });
 </script>
 </body>
 </html>

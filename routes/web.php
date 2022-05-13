@@ -60,6 +60,7 @@ use App\Http\Controllers\ShippmentController;
 use App\Http\Controllers\CarBooking\CarsController;
 use App\Http\Controllers\CarBooking\MaintainController;
 use App\Http\Controllers\Invoice\InvoiceDataController;
+use phpDocumentor\Reflection\Location;
 
 /*
 |--------------------------------------------------------------------------
@@ -226,8 +227,16 @@ Route::middleware(['auth:employee'])->group(function () {
     Route::resource('shop',\App\Http\Controllers\ShopRegister::class);
     Route::resource('saleway',\App\Http\Controllers\SaleWayController::class);
     Route::get('qty/alert',[StockTransactionController::class,'qtyalert'])->name('alert.qty');
-
-
+    Route::post('brand/import',[ProductBrandController::class,'import'])->name('brand.import');
+    Route::post('category/import',[ProductController::class,'cat_import'])->name('category.import');
+    Route::post('remove/shop',[\App\Http\Controllers\SaleWayController::class,'remove_shop'])->name('remove.shop');
+    Route::post('add/shop',[\App\Http\Controllers\SaleWayController::class,'add_shop'])->name('add.shop');
+    Route::resource('salegroup',\App\Http\Controllers\SaleGroupController::class);
+    Route::post('add/sale/group/memeber',[\App\Http\Controllers\SaleGroupController::class,'add_member'])->name('add.member');
+    Route::post('remove/sale/group/memeber',[\App\Http\Controllers\SaleGroupController::class,'remove_member'])->name('remove.member');
+    Route::resource('assignsaleway',\App\Http\Controllers\WayAssignController::class);
+    Route::post('check/in/{id}',[\App\Http\Controllers\WayAssignController::class,'check'])->name('check');
+    Route::post('transfer/branch',[TransactionController::class,'transer_branch'])->name('transfer.branch');
 
 });
 
@@ -549,6 +558,9 @@ Route::get('test', function () {
 //
 //    dd($result);
 //    dd(str_pad(mt_rand(1,99999999),8,'0',STR_PAD_LEFT));
+//    $ip = '192.168.1.24'; /* Static IP address */
+//    $currentUserInfo = Location::get($ip);
+//    dd($currentUserInfo->latitude);
     return view('test');
 })->name('test');
 

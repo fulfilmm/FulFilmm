@@ -1,3 +1,4 @@
+
 <ul>
     <li class="menu-title">
         <span>Main</span>
@@ -226,9 +227,6 @@
                     <li><a class="{{ Request::is('products/create') ? 'active' : '' }}"
                            href="{{url('/products/create')}}" style="text-decoration: none">
                             Product Create</a></li>
-                    <li><a class="{{ Request::is('product/variant/create') ? 'active' : '' }}"
-                           href="{{route('create.variant')}}" style="text-decoration: none">
-                            Product Variant Add</a></li>
                     <li><a class="{{ Request::is('foc/index') ? 'active' : '' }}" href="{{route('foc.index')}}"
                            style="text-decoration: none">
                             FOC Product</a></li>
