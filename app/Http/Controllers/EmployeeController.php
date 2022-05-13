@@ -6,6 +6,7 @@ use App\Http\Requests\EmployeeRequest;
 use App\Models\Brand;
 use App\Models\Department;
 use App\Models\Employee;
+use App\Models\HeadOffice;
 use App\Models\Invoice;
 use App\Models\OfficeBranch;
 use App\Models\Region;
@@ -44,29 +45,29 @@ class EmployeeController extends Controller
     public function card()
     {
         $auth=Auth::guard('employee')->user();
-       if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'||$auth->role->name=='Hr Manager'){
-           $employees = Employee::with('branch')->orderBy('empid', 'desc')
-               ->paginate(25);
-           $branch = OfficeBranch::all();
-       }else{
-           $employees = Employee::with('branch')->orderBy('empid', 'desc')
-               ->where('office_branch_id',$auth->office_branch_id)
-               ->paginate(25);
-           $branch = OfficeBranch::where('id',$auth->office_branch_id)->get();
-       }
+        if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'||$auth->role->name=='Hr Manager'){
+            $employees = Employee::with('branch')->orderBy('empid', 'desc')
+                ->paginate(25);
+            $branch = OfficeBranch::all();
+        }else{
+            $employees = Employee::with('branch')->orderBy('empid', 'desc')
+                ->where('office_branch_id',$auth->office_branch_id)
+                ->paginate(25);
+            $branch = OfficeBranch::where('id',$auth->office_branch_id)->get();
+        }
         return view('employee.data.cards', compact('employees', 'branch'));
     }
 
     public function search(Request $request)
     {
-       $auth=Auth::guard('employee')->user();
-       if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'){
-           $employees = Employee::orderBy('empid', 'desc')->where('id', $request->search)->orWhere('name', 'LIKE', $request->search)->orWhere('empid', $request->serach)->paginate(20);
-           $branch = OfficeBranch::all();
-       }else{
-           $employees = Employee::orderBy('empid', 'desc')->where('office_branch_id',$auth->office_branch_id)->where('id', $request->search)->orWhere('name', 'LIKE', $request->search)->orWhere('empid', $request->serach)->paginate(20);
-           $branch = OfficeBranch::all();
-       }
+        $auth=Auth::guard('employee')->user();
+        if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'){
+            $employees = Employee::orderBy('empid', 'desc')->where('id', $request->search)->orWhere('name', 'LIKE', $request->search)->orWhere('empid', $request->serach)->paginate(20);
+            $branch = OfficeBranch::all();
+        }else{
+            $employees = Employee::orderBy('empid', 'desc')->where('office_branch_id',$auth->office_branch_id)->where('id', $request->search)->orWhere('name', 'LIKE', $request->search)->orWhere('empid', $request->serach)->paginate(20);
+            $branch = OfficeBranch::all();
+        }
         return view('employee.data.cards', compact('employees', 'branch'));
     }
 
@@ -78,7 +79,6 @@ class EmployeeController extends Controller
     public function create()
     {
         //
-
         $departments = Department::all()->pluck('name', 'id');
         $roles = Role::all()->pluck('name', 'id');
         $office = OfficeBranch::all();
@@ -91,6 +91,7 @@ class EmployeeController extends Controller
             $warehouse = Warehouse::where('branch_id', $auth->office_branch_id)->get();
             $region = Region::where('branch_id', $auth->office_branch_id)->get();
         }
+        $head_offices=HeadOffice::all();
 
         return view('employee.create', compact(
             'departments',
@@ -98,7 +99,8 @@ class EmployeeController extends Controller
             'office',
             'all_employee',
             'warehouse',
-            'region'
+            'region',
+            'head_offices'
         ));
     }
 
@@ -161,6 +163,7 @@ class EmployeeController extends Controller
         $employee->mobile_seller = $request->mobile_seller??0;
         $employee->region_id = $request->region_id;
         $employee->warehouse_id = $request->warehouse_id;
+        $employee->head_office=$request->head_office;
 
         if ($request->profile_img != null) {
             $profile = $request->file('profile_img');
@@ -171,8 +174,10 @@ class EmployeeController extends Controller
         $employee->save();
         $employee->assignRole($request->role_id);
         $office_branch = OfficeBranch::where('id', $data['office_branch_id'])->first();
-        $office_branch->status = 1;
-        $office_branch->update();
+        if($office_branch!=null){
+            $office_branch->status = 1;
+            $office_branch->update();
+        }
         return redirect('employees')->with('success', __('alert.create_success'));
     }
 
@@ -249,23 +254,19 @@ class EmployeeController extends Controller
         $roles = Role::all()->pluck('name', 'id');
         $office = OfficeBranch::all();
         $all_employee = Employee::all();
-        $auth = Auth::guard('employee')->user();
-        if ($auth->role->name == 'Super Admin' || $auth->role->name == 'CEO') {
-            $warehouse = Warehouse::all();
-            $region = Region::all();
-        } else {
-            $warehouse = Warehouse::where('branch_id', $auth->office_branch_id)->get();
-            $region = Region::where('branch_id', $auth->office_branch_id)->get();
-        }
+        $warehouse=Warehouse::all();
+        $region=Region::all();
+        $head_offices=HeadOffice::all();
 
         return view('employee.edit', compact(
-            'employee',
             'departments',
             'roles',
+            'employee',
             'office',
             'all_employee',
             'warehouse',
-            'region'
+            'region',
+            'head_offices'
         ));
     }
 
@@ -299,6 +300,7 @@ class EmployeeController extends Controller
             $employee->mobile_seller = $request->mobile_seller??0;
             $employee->region_id = $request->region_id;
             $employee->warehouse_id = $request->warehouse_id;
+            $employee->head_office=$request->head_office;
 
             if ($request->profile_img != null) {
                 $profile = $request->file('profile_img');
@@ -309,8 +311,10 @@ class EmployeeController extends Controller
             $employee->update();
             $employee->syncRoles($request->role_id);
             $office_branch = OfficeBranch::where('id', $request->office_branch_id)->first();
-            $office_branch->status = 1;
-            $office_branch->update();
+            if($office_branch!=null) {
+                $office_branch->status = 1;
+                $office_branch->update();
+            }
             return redirect('employees')->with('success', __('alert.update_success'));
         } else {
             return redirect('employees')->with('error', 'Email already Exist');
@@ -353,25 +357,25 @@ class EmployeeController extends Controller
         $employee=Employee::where('empid',$request->emp)->first();
         if($employee==null){
             $emp=Employee::where('email',$request->emp)->first();
-           if($emp!=null){
-               $emp->password=Hash::make($pass);
-               $details = array(
-                   'email' => $emp->email,
-                   'subject' => 'Reset Password',
-                   'clientname' => $emp->name,
-                   'password' => $pass,
-               );
-               Mail::send('customerprotal.login_access', $details, function ($message) use ($details) {
-                   $message->from('cincin.com@gmail.com', 'Cloudark');
-                   $message->to($details['email']);
-                   $message->subject($details['subject']);
+            if($emp!=null){
+                $emp->password=Hash::make($pass);
+                $details = array(
+                    'email' => $emp->email,
+                    'subject' => 'Reset Password',
+                    'clientname' => $emp->name,
+                    'password' => $pass,
+                );
+                Mail::send('customerprotal.login_access', $details, function ($message) use ($details) {
+                    $message->from('cincin.com@gmail.com', 'Cloudark');
+                    $message->to($details['email']);
+                    $message->subject($details['subject']);
 
-               });
-               $emp->update();
-               return redirect()->back()->with('reset','Password reset successful!A new password will be sent to your email!Please check your email.');
-           }else{
-               return redirect()->back()->with('empty',"Sorry,Does not match any employee. Try again");
-           }
+                });
+                $emp->update();
+                return redirect()->back()->with('reset','Password reset successful!A new password will be sent to your email!Please check your email.');
+            }else{
+                return redirect()->back()->with('empty',"Sorry,Does not match any employee. Try again");
+            }
         }else{
             $employee->password=Has::make($pass);
             $details = array(

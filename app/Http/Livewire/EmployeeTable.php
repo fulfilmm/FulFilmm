@@ -29,7 +29,7 @@ class EmployeeTable extends Component
                         $q->withTrashed();
                     },'branch'=>function($q){
                         $q->get();
-                    }],'region')
+                    }],'region','head')
                     ->paginate(20)
             ]);
         }else{

@@ -83,4 +83,7 @@ class Employee extends Authenticatable implements JWTSubject
     {
         return $this->belongsTo(Region::class,'region_id','id');
     }
+    public function head(){
+        return $this->belongsTo(HeadOffice::class,'head_office','id');
+    }
 }

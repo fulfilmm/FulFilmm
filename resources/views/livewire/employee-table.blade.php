@@ -18,7 +18,8 @@
                     <th>Work Phone</th>
                     <th>Department</th>
                     <th>Join Date</th>
-                    <th>Office</th>
+                    <th>Head Office</th>
+                    <th>Branch Office</th>
                     <th>Region</th>
                     <th>In Hand Amount</th>
                     <th>Can login</th>
@@ -42,6 +43,7 @@
                         <td>{{ $em->work_phone }}</td>
                         <td>{{ $em->department->name }}</td>
                         <td>{{ $em->join_date }}</td>
+                        <td>{{$em->head->name}}</td>
                         <td>{{$em->branch->name??'N/A'}}</td>
                         <td>{{$em->region->name??'N/A'}}</td>
                         <td>{{$em->amount_in_hand}}</td>
