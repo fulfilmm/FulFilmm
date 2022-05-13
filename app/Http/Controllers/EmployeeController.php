@@ -256,6 +256,7 @@ class EmployeeController extends Controller
         $all_employee = Employee::all();
         $warehouse=Warehouse::all();
         $region=Region::all();
+        $head_offices=HeadOffice::all();
 
         return view('employee.edit', compact(
             'departments',
@@ -264,7 +265,8 @@ class EmployeeController extends Controller
             'office',
             'all_employee',
             'warehouse',
-            'region'
+            'region',
+            'head_offices'
         ));
     }
 
@@ -309,8 +311,10 @@ class EmployeeController extends Controller
             $employee->update();
             $employee->syncRoles($request->role_id);
             $office_branch = OfficeBranch::where('id', $request->office_branch_id)->first();
-            $office_branch->status = 1;
-            $office_branch->update();
+            if($office_branch!=null) {
+                $office_branch->status = 1;
+                $office_branch->update();
+            }
             return redirect('employees')->with('success', __('alert.update_success'));
         } else {
             return redirect('employees')->with('error', 'Email already Exist');

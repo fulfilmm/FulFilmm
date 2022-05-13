@@ -11,11 +11,11 @@ class Revenue extends Model
     public function employee(){
         return $this->belongsTo(Employee::class,'emp_id','id');
     }
-    public function approver(){
-        return $this->belongsTo(Employee::class,'regional_cashier','id');
+    public function branch_cashier(){
+        return $this->belongsTo(Employee::class,'cashier','id');
     }
-    public function branch_approver(){
-        return $this->belongsTo(Employee::class,'branch_cashier','id');
+    public function manager(){
+        return $this->belongsTo(Employee::class,'finance_manager','id');
     }
     public function customer(){
         return $this->belongsTo(Customer::class,'customer_id','id');

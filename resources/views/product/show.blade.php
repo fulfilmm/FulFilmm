@@ -150,7 +150,7 @@
                                </td>
                                <td> <img src="{{url(asset('/product_picture/'.$item->image))}}" alt="" class="border-0 mr-2 ml-2"
                                          style="max-height:50px;max-width:50px;border: solid"></td>
-                               <td>{{$item->product->product_name}}</td>
+                               <td>{{$item->product->name}}</td>
                                <td><a href="{{route('show.variant',$item->id)}}"><strong>{{$item->product_code}}</strong></a></td>
                                <td>{{$item->serial_no}}</td>
                                <td>{{$item->variant}}</td>
@@ -338,7 +338,9 @@
                 var product_id =new Array();
                 $(".single").each(function () {
                     console.log($(this).val()); //works fine
-                    product_id.push($(this).val());
+                    if($(this).is(":checked")){
+                        product_id.push($(this).val());
+                    }
                 });
                 var action_type=$( "#action_type option:selected" ).val();
                 console.log(product_id);

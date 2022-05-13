@@ -50,22 +50,21 @@ class TransactionController extends Controller
     {
         $auth = Auth::guard('employee')->user();
         if ($auth->role->name == 'CEO' || $auth->role->name == 'Super Admin' || $auth->role->name == 'Finance Manager') {
-            $revenues = Revenue::with('cat', 'employee', 'approver', 'invoice', 'branch_approver')->get();
-        } else if ($auth->role->name=='Branch Cashier') {
-            $revenues = Revenue::with('cat', 'employee', 'approver', 'invoice', 'branch_approver')
-                ->where('branch_cashier', $auth->id)
+            $revenues = Revenue::with('cat', 'employee', 'branch_cashier', 'invoice', 'manager')->get();
+        } else if ($auth->role->name=='Finance Manager') {
+            $revenues = Revenue::with('cat', 'employee', 'branch_cashier', 'invoice', 'manager')
+                ->where('finance_manager', $auth->id)
                 ->where('is_cashintransit',1)
                 ->where('approve',1)
                 ->orWhere('emp_id', $auth->id)
                 ->get();
 
         } else {
-            $revenues = Revenue::with('cat', 'employee', 'approver', 'invoice', 'branch_approver')
+            $revenues = Revenue::with('cat', 'employee', 'branch_cashier', 'invoice', 'manager')
                 ->orWhere('emp_id', $auth->id)
-                ->orWhere('regional_cashier', $auth->id)
+                ->orWhere('cashier', $auth->id)
                 ->get();
         }
-
         return view('transaction.Revenue.index', compact('revenues'));
     }
     public function addrevenue()
@@ -76,6 +75,7 @@ class TransactionController extends Controller
         $category = TransactionCategory::where('type', 1)->get();
 //        $coas = ChartOfAccount::all();
         $customer = Customer::orWhere('customer_type', 'Customer')->orWhere('customer_type', 'Lead')->orWhere('customer_type', 'Partner')->orWhere('customer_type', 'Inquery')->get();
+//        dd($customer);
         $employee=Employee::where('office_branch_id',Auth::guard('employee')->user()->office_branch_id)->get();
         $data = [
             'emps'=>$employee,'customers' => $customer, 'recurring' => $recurring, 'payment_method' => $payment_method, 'category' => $category];
@@ -145,12 +145,12 @@ class TransactionController extends Controller
                 $new_revenue->category = $request->category;
                 $new_revenue->cashier = $request->approver_id;
                 $new_revenue->advance_pay_id = $request->advance_id ?? null;
-                $employee = Employee::where('office_branch_id', Auth::guard('employee')->user()->office_branch_id)->get();
+                $employee = Employee::where('head_office', Auth::guard('employee')->user()->head_office)->get();
                 foreach ($employee as $emp) {
-                    if ($emp->role->name == 'Branch Cashier') {
+                    if ($emp->role->name =='Finance Manager') {
                         $new_revenue->head_account = Account::where('enabled', 1)->where('head_office',Auth::guard('employee')->user()->head_office)->where('head_account',1)->first()->id;
                         $new_revenue->finance_manager =$financeManger[0]->id;
-                    }
+                    };
                 }
                 $new_revenue->cashier_account = $branch_acc->id;
                 $new_revenue->transaction_date = $request->transaction_date;

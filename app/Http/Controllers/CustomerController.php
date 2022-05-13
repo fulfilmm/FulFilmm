@@ -116,9 +116,9 @@ class CustomerController extends Controller
     public function store(CustomerRequest $request)
     {
 //        dd($request->all());
-        if(Auth::guard('employee')->user()->office_branch_id==null){
-            return redirect()->back()->with('danger','You must did not connect any branch office');
-        }
+//        if(Auth::guard('employee')->user()->office_branch_id==null){
+//            return redirect()->back()->with('error','You must did not connect any branch office');
+//        }
         $last_customer = Customer::orderBy('id', 'desc')->first();
 
         if ($last_customer != null) {
@@ -166,7 +166,7 @@ class CustomerController extends Controller
             "tags_id" => $request->tag_industry,
             "emp_id" => Auth::guard('employee')->user()->id,
             'company_id' => $request->company_id,
-            'customer_type' =>isset($request->customer_type)??'Customer',
+            'customer_type' =>isset($request->customer_type)?$request->customer_type:'Customer',
             'department'=>$request->department,
             'position'=>$request->position??null,
             'status'=>$request->status,
