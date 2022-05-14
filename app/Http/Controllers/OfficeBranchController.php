@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\EmployeeRequest;
 use App\Models\Employee;
+use App\Models\HeadOffice;
 use App\Models\Invoice;
 use App\Models\OfficeBranch;
 use App\Models\SellingUnit;
@@ -34,7 +35,8 @@ class OfficeBranchController extends Controller
     public function create()
     {
         $branches=OfficeBranch::all();
-        return view('OfficeBranch.create',compact('branches'));
+        $head=HeadOffice::all();
+        return view('OfficeBranch.create',compact('branches','head'));
     }
 
     /**
@@ -48,12 +50,13 @@ class OfficeBranchController extends Controller
         $this->validate($request,[
             'name'=>'required',
             'address'=>'required',
+            'head_office'=>'required'
         ]);
         try{
             OfficeBranch::create($request->all());
             return redirect(route('officebranch.index'))->with('success','Add new Office Branch');
         }catch (\Exception $e){
-          return redirect()->back()->with('error', $e->getMessage());
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
 
