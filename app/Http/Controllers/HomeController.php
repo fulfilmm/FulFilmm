@@ -21,6 +21,7 @@ use App\Models\ProductVariations;
 use App\Models\PurchaseOrder;
 use App\Models\Revenue;
 use App\Models\SaleActivity;
+use App\Models\SellingUnit;
 use App\Models\status;
 use App\Models\Stock;
 use App\Models\ticket;
@@ -63,7 +64,7 @@ class HomeController extends Controller
         $group=Group::whereHas('employees', function ($query) use ($id) {
             $query->where('employee_id', $id);
         })->count();
-     //ticket Admin Dashboard
+        //ticket Admin Dashboard
         switch ($user->role->name) {
             case "Super Admin":
                 $year = date('Y');
@@ -148,7 +149,7 @@ class HomeController extends Controller
                 $numberOfalltickets=ticket::all()->count();
                 $group=Group::count();
                 $account=DB::table("accounts")
-                ->select(DB::raw("SUM(balance) as total"))->get();
+                    ->select(DB::raw("SUM(balance) as total"))->get();
                 $transaction=Transaction::count();
                 $requestation=Approvalrequest::count();
                 $bills=Bill::count();
@@ -187,7 +188,44 @@ class HomeController extends Controller
 
                     'profit'=>Auth::guard('employee')->user()->role->name=='CEO'||Auth::guard('employee')->user()->role->name=='Super Admin'?$current_year_income[0]->total??0-$current_year_expense[0]->total??0:0,
                 ];
-                return view('index', compact('items','total_emp','monthly_income','monthly_expense','profit','account'));
+                $product_items=ProductVariations::all();
+                $units=SellingUnit::all();
+
+                $all_products=[];
+                $bad_product=[];
+                $i=0;
+                foreach ($product_items as $item){
+                    $qty=0;
+
+                    foreach ($units as $unit){
+                        $sell_product=DB::table("order_items")
+                            ->select(DB::raw("SUM(quantity) as total"))
+                            ->where('variant_id',$item->id)
+                            ->where('sell_unit',$unit->id)
+                            ->whereMonth('created_at',Carbon::today())->get();
+                        $qty+=$sell_product[0]->total*$unit->unit_convert_rate;
+                    }
+                    $all_products[$i]['qty']=$qty;
+                    $all_products[$i]['product_name']=$item->product_name;
+                    $all_products[$i]['variant']=$item->variant;
+                    $bad_product[$i]['qty']=$qty;
+                    $bad_product[$i]['product_name']=$item->product_name;
+                    $bad_product[$i]['variant']=$item->variant;
+                    $i ++;
+
+                }
+
+                arsort($all_products);
+                asort($bad_product);
+                $best_sell=[];
+                $bad_sell=[];
+                foreach ($all_products as $pd){
+                    array_push($best_sell,$pd);
+                }
+                foreach ($bad_product as $pd){
+                    array_push($bad_sell,$pd);
+                }
+                return view('index', compact('items','total_emp','monthly_income','monthly_expense','profit','account','bad_sell','best_sell'));
                 break;
             case "CEO":
                 $year = date('Y');
@@ -312,7 +350,44 @@ class HomeController extends Controller
                     'current_month_profit'=>($current_month_income[0]->total??0)-($current_month_expense[0]->total??0),
                     'profit'=>Auth::guard('employee')->user()->role->name=='CEO'||Auth::guard('employee')->user()->role->name=='Super Admin'?$current_year_income[0]->total??0-$current_year_expense[0]->total??0:0,
                 ];
-                return view('index', compact('items','total_emp','monthly_income','monthly_expense','profit','account'));
+                $product_items=ProductVariations::all();
+                $units=SellingUnit::all();
+
+                $all_products=[];
+                $bad_product=[];
+                $i=0;
+                foreach ($product_items as $item){
+                    $qty=0;
+
+                    foreach ($units as $unit){
+                        $sell_product=DB::table("order_items")
+                            ->select(DB::raw("SUM(quantity) as total"))
+                            ->where('variant_id',$item->id)
+                            ->where('sell_unit',$unit->id)
+                            ->whereMonth('created_at',Carbon::today())->get();
+                        $qty+=$sell_product[0]->total*$unit->unit_convert_rate;
+                    }
+                    $all_products[$i]['qty']=$qty;
+                    $all_products[$i]['product_name']=$item->product_name;
+                    $all_products[$i]['variant']=$item->variant;
+                    $bad_product[$i]['qty']=$qty;
+                    $bad_product[$i]['product_name']=$item->product_name;
+                    $bad_product[$i]['variant']=$item->variant;
+                    $i ++;
+
+                }
+
+                arsort($all_products);
+                asort($bad_product);
+                $best_sell=[];
+                $bad_sell=[];
+                foreach ($all_products as $pd){
+                    array_push($best_sell,$pd);
+                }
+                foreach ($bad_product as $pd){
+                    array_push($bad_sell,$pd);
+                }
+                return view('index', compact('items','total_emp','monthly_income','monthly_expense','profit','account','best_sell','bad_sell'));
                 break;
             case "General Manager":
 //                dd("GM");
@@ -460,33 +535,33 @@ class HomeController extends Controller
                 $myticket=ticket::where('created_emp_id',$user->id)->count();
                 $follow_ticket=ticket_follower::where('emp_id',$user->id)->count();
                 $emp_ticket=$myticket+$follow_ticket;
-                    $product=Stock::with('variant')->get();
-                    $total=0;
-                    foreach ($product as $item){
-                        $valuation=$item->stock_balance*$item->variant->purchase_price??0;
-                        $total+=$valuation;
-                    }
+                $product=Stock::with('variant')->get();
+                $total=0;
+                foreach ($product as $item){
+                    $valuation=$item->stock_balance*$item->variant->purchase_price??0;
+                    $total+=$valuation;
+                }
                 $no_of_items=[];
-                    foreach ($warehouse as $wh){
-                        $inhand_product=Stock::with('variant')->where('warehouse_id',$wh->id)->where('stock_balance','>',0)->get();
-                        foreach ($inhand_product as $item){
-                            if(!in_array($item->variant->product_code,$no_of_items)){
-                                array_push($no_of_items,$item->variant->product_code);
-                            }
+                foreach ($warehouse as $wh){
+                    $inhand_product=Stock::with('variant')->where('warehouse_id',$wh->id)->where('stock_balance','>',0)->get();
+                    foreach ($inhand_product as $item){
+                        if(!in_array($item->variant->product_code,$no_of_items)){
+                            array_push($no_of_items,$item->variant->product_code);
                         }
                     }
+                }
 //                    dd(count($no_of_items));
-                    $items=[
-                        'my_groups'=>$group,
-                        'meeting'=>$meeting,
-                        'assignment'=>$assignment,
-                        'all_ticket'=>$emp_ticket,
-                        'requestation'=>$requestation,
-                        'no_product_item'=>count($no_of_items),
-                        'valuation'=>$total,
-                        'warehouse'=>count($warehouse)
+                $items=[
+                    'my_groups'=>$group,
+                    'meeting'=>$meeting,
+                    'assignment'=>$assignment,
+                    'all_ticket'=>$emp_ticket,
+                    'requestation'=>$requestation,
+                    'no_product_item'=>count($no_of_items),
+                    'valuation'=>$total,
+                    'warehouse'=>count($warehouse)
 
-                    ];
+                ];
                 return view('index',compact('items'));
                 break;
             case "Stock Controller":
@@ -753,7 +828,7 @@ class HomeController extends Controller
                 ];
                 return view('index', compact('items','status_report','report_percentage','count_down','status','assign_ticket','depts'));
                 break;
-            case "Regional Cashier":
+            case "Cashier":
                 $account_count=Account::count();
                 $payable_amount=DB::table('bills')
                     ->select(DB::raw("SUM(grand_total) as total"))
@@ -761,36 +836,7 @@ class HomeController extends Controller
                     ->where('emp_id',$user->id)
                     ->get();
                 $bill=Bill::whereMonth('bill_date',date('m'))->where('emp_id',$user->id)->count();
-                $revenue_transaction=Revenue::where('regional_cashier',$user->id)->whereMonth('transaction_date',date('m'))->count();
-                $expense_transaction=Expense::where('approver_id',$user->id)->whereMonth('transaction_date',date('m'))->count();
-                $exp_claim_count=ExpenseClaim::whereMonth('created_at',date('m'))->where('financial_approver',$user->id)->count();
-                $requestation=Approvalrequest::where('emp_id',Auth::guard('employee')->user()->id)->count();
-                $myticket=ticket::where('created_emp_id',$user->id)->count();
-                $follow_ticket=ticket_follower::where('emp_id',$user->id)->count();
-                $emp_ticket=$myticket+$follow_ticket;
-                $items=[
-                    'my_groups'=>$group,
-                    'meeting'=>$meeting,
-                    'assignment'=>$assignment,
-                    'all_ticket'=>$emp_ticket,
-                    'requestation'=>$requestation,
-                    'bill_count'=>$bill,
-                    'transaction_count'=>($revenue_transaction)+($expense_transaction),
-                    'exp_claim_count'=>$exp_claim_count,
-                    'account_count'=>$account_count,
-                    'payable'=>$payable_amount[0]->total??0,
-                ];
-                return view('index',compact('items'));
-                break;
-            case "Branch Cashier":
-                $account_count=Account::count();
-                $payable_amount=DB::table('bills')
-                    ->select(DB::raw("SUM(grand_total) as total"))
-                    ->whereMonth('bill_date',date('m'))
-                    ->where('emp_id',$user->id)
-                    ->get();
-                $bill=Bill::whereMonth('bill_date',date('m'))->where('emp_id',$user->id)->count();
-                $revenue_transaction=Revenue::where('branch_cashier',$user->id)->whereMonth('transaction_date',date('m'))->where('is_cashintransit',1)->count();
+                $revenue_transaction=Revenue::where('cashier',$user->id)->whereMonth('transaction_date',date('m'))->count();
                 $expense_transaction=Expense::where('approver_id',$user->id)->whereMonth('transaction_date',date('m'))->count();
                 $exp_claim_count=ExpenseClaim::whereMonth('created_at',date('m'))->where('financial_approver',$user->id)->count();
                 $requestation=Approvalrequest::where('emp_id',Auth::guard('employee')->user()->id)->count();
@@ -813,21 +859,21 @@ class HomeController extends Controller
                 break;
             case "Car Driver":
             default:
-            $requestation=Approvalrequest::where('emp_id',Auth::guard('employee')->user()->id)->count();
-            $myticket=ticket::where('created_emp_id',$user->id)->count();
-            $follow_ticket=ticket_follower::where('emp_id',$user->id)->count();
-            $emp_ticket=$myticket+$follow_ticket;
-            $group=Group::whereHas('employees', function ($query) use ($id) {
-                $query->where('employee_id', $id);
-            })->count();
-            $items=[
-                'all_ticket'=>$emp_ticket,
-                'requestation'=>$requestation,
-                'assignment'=>$assignment,
-                'meeting'=>$meeting,
-                'my_groups' =>$group,
-            ];
-            return view('index', compact('items'));
+                $requestation=Approvalrequest::where('emp_id',Auth::guard('employee')->user()->id)->count();
+                $myticket=ticket::where('created_emp_id',$user->id)->count();
+                $follow_ticket=ticket_follower::where('emp_id',$user->id)->count();
+                $emp_ticket=$myticket+$follow_ticket;
+                $group=Group::whereHas('employees', function ($query) use ($id) {
+                    $query->where('employee_id', $id);
+                })->count();
+                $items=[
+                    'all_ticket'=>$emp_ticket,
+                    'requestation'=>$requestation,
+                    'assignment'=>$assignment,
+                    'meeting'=>$meeting,
+                    'my_groups' =>$group,
+                ];
+                return view('index', compact('items'));
                 break;
         }
     }
