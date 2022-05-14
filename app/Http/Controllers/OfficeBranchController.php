@@ -24,7 +24,8 @@ class OfficeBranchController extends Controller
     public function index()
     {
         $office_branch=OfficeBranch::with('head')->get();
-        return view('OfficeBranch.index',compact('office_branch'));
+        $head=HeadOffice::all();
+        return view('OfficeBranch.index',compact('office_branch','head'));
     }
 
     /**
@@ -85,7 +86,7 @@ class OfficeBranchController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
