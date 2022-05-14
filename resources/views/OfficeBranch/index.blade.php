@@ -54,6 +54,16 @@
                                                 <div class="row">
                                                     <div class="col-12">
                                                         <div class="form-group">
+                                                            <label for="head">Head Office</label>
+                                                            <select name="head_office" id="head" class="form-control">
+                                                                @foreach($head as $item)
+                                                                    <option value="{{$item->id}}">{{$item->name}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="form-group">
                                                             <label for="name">Name</label>
                                                             <input type="text" class="form-control" name="name" value="{{$branch->name}}">
                                                         </div>
