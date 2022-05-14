@@ -19,7 +19,7 @@
                <tr>
                    <th>Branch Name</th>
                    <th>Address</th>
-                   <th>Parent Branch</th>
+                   <th>Head Office</th>
                    <th>Action</th>
                </tr>
                </thead>
@@ -28,7 +28,7 @@
                     <tr>
                         <td>{{$branch->name}}</td>
                         <td>{{$branch->address}}</td>
-                        <td>{{$branch->parent->name??'N/A'}}</td>
+                        <td>{{$branch->head->name??'N/A'}}</td>
                         <td>
                             <div class="row">
                                 <a href="{{route('officebranch.show',$branch->id)}}" class="btn btn-white btn-sm"><i class="fa fa-eye"></i></a>
