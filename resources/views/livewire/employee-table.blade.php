@@ -29,7 +29,7 @@
                     <th>Action</th>
                 </tr>
                 </thead>
-{{--                @dd($employees)--}}
+                {{--@dd($employees)--}}
                 @foreach ($employees as $em)
                     <tr>
                         <td style="min-width: 200px"><img
@@ -43,7 +43,7 @@
                         <td>{{ $em->work_phone }}</td>
                         <td>{{ $em->department->name }}</td>
                         <td>{{ $em->join_date }}</td>
-                        <td>{{$em->head->name}}</td>
+                        <td>{{$em->head->name??'N/A'}}</td>
                         <td>{{$em->branch->name??'N/A'}}</td>
                         <td>{{$em->region->name??'N/A'}}</td>
                         <td>{{$em->amount_in_hand}}</td>
