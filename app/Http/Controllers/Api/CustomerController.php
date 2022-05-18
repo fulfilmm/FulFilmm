@@ -18,6 +18,8 @@ use App\Repositories\Contracts\CompanyContract;
 use App\Repositories\Contracts\CustomerContract;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Intervention\Image\Facades\Image;
 use Maatwebsite\Excel\Facades\Excel;
 
 class CustomerController extends Controller
@@ -41,10 +43,7 @@ class CustomerController extends Controller
         return response()->json(['customer'=>$customers]);
     }
 
-    public function card(){
-        $customers = Customer::paginate(20);
-        return view('customer.data.cards', compact('customers'));
-    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -55,7 +54,7 @@ class CustomerController extends Controller
     {
         //
         $companies = $this->companyContract->all()->pluck('name', 'id')->all();
-        return view('customer.create', compact('companies'));
+       return response()->json(['companies'=>$companies]);
     }
 
     /**
@@ -67,7 +66,60 @@ class CustomerController extends Controller
     public function store(CustomerRequest $request)
     {
         //
-        $this->customerContract->create($request->all());
+        $last_customer = Customer::orderBy('id', 'desc')->first();
+
+        if ($last_customer != null) {
+            $last_customer->customer_id++;
+            $customer_id = $last_customer->customer_id;
+        } else {
+            $customer_id = "CUS-00001";
+        }
+        $this->validate($request,['email'=>'unique:customers',
+            'customer_id'=>'unique:customers']);
+        if (isset($request->profile_img)) {
+            if ($request->profile_img != null) {
+                $image = $request->file('profile_img');
+                $input['imagename'] = Str::random(10).time().'.'.$image->extension();
+
+                $filePath = public_path('/img/profiles');
+
+                $img = Image::make($image->path());
+                $img->resize(110, 110, function ($const) {
+                    $const->aspectRatio();
+                })->save($filePath.'/'.$input['imagename']);
+
+            }
+        }
+        $data = [
+            'customer_id'=>$customer_id,
+            'profile' => $request->profile_img != null?$input['imagename']:null,
+            'name' => $request->name,
+            'branch_id'=>Auth::guard('api')->user()->office_branch_id,
+            'zone_id'=>$request->zone_id,
+            'region_id' => $request->region_id,
+            'phone' => $request->phone,
+            'email' => $request->email,
+            'gender' => $request->gender,
+            'address' => $request->address,
+            'can_login' => 0,
+            'facebook' => $request->facebook,
+            'linkedin' => $request->linkedin,
+            'dob' => $request->dob,
+            'report_to' => $request->report_to,
+            'position_of_report_to' => $request->position,
+            "priority" => $request->priority,
+            "tags_id" => $request->tag_industry,
+            "emp_id" => Auth::guard('employee')->user()->id,
+            'company_id' => $request->company_id,
+            'customer_type' =>isset($request->customer_type)?$request->customer_type:'Customer',
+            'department'=>$request->department,
+            'position'=>$request->position??null,
+            'status'=>$request->status,
+            'credit_limit'=>$request->credit_limit??0,
+            'lead_title'=>$request->title
+
+        ];
+        $this->customerContract->create($data);
         return response()->json(['msg'=>'Success']);
     }
 
