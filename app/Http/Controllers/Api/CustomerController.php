@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CustomerRequest;
 use App\Imports\CustomerImport;
 use App\Models\assign_ticket;
+use App\Models\Company;
 use App\Models\Customer;
 use App\Models\deal;
 use App\Models\Invoice;
@@ -53,7 +54,7 @@ class CustomerController extends Controller
     public function create()
     {
         //
-        $companies = $this->companyContract->all()->pluck('name', 'id')->all();
+        $companies = Company::all();
        return response()->json(['companies'=>$companies]);
     }
 
