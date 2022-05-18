@@ -116,7 +116,8 @@ class CustomerController extends Controller
             'position'=>$request->position??null,
             'status'=>$request->status,
             'credit_limit'=>$request->credit_limit??0,
-            'lead_title'=>$request->title
+            'lead_title'=>$request->title,
+            'use_amount'=>0
 
         ];
         $this->customerContract->create($data);
