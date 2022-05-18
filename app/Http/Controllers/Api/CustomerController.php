@@ -109,7 +109,7 @@ class CustomerController extends Controller
             'position_of_report_to' => $request->position,
             "priority" => $request->priority,
             "tags_id" => $request->tag_industry,
-            "emp_id" => Auth::guard('employee')->user()->id,
+            "emp_id" => Auth::guard('api')->user()->id,
             'company_id' => $request->company_id,
             'customer_type' =>isset($request->customer_type)?$request->customer_type:'Customer',
             'department'=>$request->department,
