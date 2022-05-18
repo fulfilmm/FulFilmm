@@ -104,7 +104,7 @@ class MobileInvoiceController extends Controller
                 ->where('region_id',$Auth->regioin_id)
                 ->get();
             $due_default=Carbon::today()->addDay(1);
-            $companies=Company::select('id','name')->all();
+            $companies=Company::select('id','name')->get();
             $zone=SaleZone::where('region_id',$Auth->region_id)->get();
             $region=Region::where('branch_id',$Auth->office_branch_id)->get();
             return response()->json(['zone'=>$zone,'warehouse'=>$warehouse, 'type'=>$type, 'allcustomers'=>$allcustomers, 'status'=>$status,'aval_product'=>$aval_product, 'taxes'=>$taxes, 'unit'=>$unit, 'dis_promo'=>$dis_promo, 'focs'=>$focs,'prices'=>$prices,'amount_discount'=>$amount_discount,'due_default'=>$due_default,'companies'=>$companies,'region'=>$region]);
