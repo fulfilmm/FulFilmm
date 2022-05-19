@@ -102,7 +102,7 @@ class MobileInvoiceController extends Controller
             $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))
                 ->whereDate('end_date','>=',date('Y-m-d'))
                 ->where('sale_type','Whole Sale')
-                ->where('region_id',$Auth->regioin_id)
+//                ->where('region_id',$Auth->regioin_id)
                 ->get();
             $due_default=Carbon::today()->addDay(1);
             $companies=Company::select('id','name')->get();
@@ -154,7 +154,7 @@ class MobileInvoiceController extends Controller
             $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))
                 ->whereDate('end_date','>=',date('Y-m-d'))
                 ->where('sale_type','Retail Sale')
-                ->where('region_id',$Auth->region_id)
+//                ->where('region_id',$Auth->region_id)
                 ->get();
             $due_default=Carbon::today()->addDay(1);
             $companies=Company::all()->pluck('name','id')->all();
