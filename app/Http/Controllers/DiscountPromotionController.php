@@ -54,6 +54,17 @@ class DiscountPromotionController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request,[
+            'rate'=>'required',
+            'variant_id'=>'required',
+            'type'=>'required',
+            'start_date'=>'nullable',
+            'end_date'=>'nullable',
+            'description'=>'nullable',
+            'sale_type'=>'required',
+            'region_id'=>'required'
+
+        ]);
         DiscountPromotion::create($request->all());
         return redirect(route('discount_promotions.index'));
     }

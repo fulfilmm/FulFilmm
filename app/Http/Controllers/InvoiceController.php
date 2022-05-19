@@ -157,6 +157,7 @@ class InvoiceController extends Controller
             $prices =product_price::where('sale_type', 'Whole Sale')->where('active',1)->where('region_id',$Auth->region_id)->get();
             //dd($prices);
             $dis_promo = DiscountPromotion::where('sale_type', 'Whole Sale')
+                ->where('start_date','<=',Carbon::today())->where('end_date','>=',Carbon::today())
                 ->where('region_id',$Auth->region_id)
                 ->get();
             $focs = Freeofchare::with('variant')->where('branch_id',$Auth->office_branch_id)->get();
@@ -479,12 +480,11 @@ class InvoiceController extends Controller
         }
         $transaction_amount=0;
 //        $customer=Customer::orWhere('customer_type','Customer')->orWhere('customer_type','Lead')->orWhere('customer_type','Partner')->orWhere('customer_type','Inquery')->get();
-        $advan_pay=AdvancePayment::with('order')->where('order_id',$detail_inv->order_id)->first();
         $data=[
 //            'coas'=>$coas,
             'emps' => $emps, 'customers' => $customer, 'recurring' => $recurring, 'payment_method' => $payment_method, 'category' => $category,
             'transaction'=>$transaction,'account'=>$account];
-        return view('invoice.show',compact('detail_inv','advan_pay','invoic_item','company','data','transaction_amount','history'));
+        return view('invoice.show',compact('detail_inv','invoic_item','company','data','transaction_amount','history'));
     }
 
     /**

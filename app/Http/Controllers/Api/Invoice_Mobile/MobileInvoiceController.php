@@ -76,6 +76,7 @@ class MobileInvoiceController extends Controller
             $prices =product_price::where('sale_type', 'Whole Sale')->where('active',1)->where('region_id',$Auth->region_id)->get();
             //dd($prices);
             $dis_promo = DiscountPromotion::where('sale_type', 'Whole Sale')
+                ->where('start_date','<=',Carbon::today())->where('end_date','>=',Carbon::today())
                 ->where('region_id',$Auth->region_id)
                 ->get();
             $focs = Freeofchare::with('variant')->where('branch_id',$Auth->office_branch_id)->get();
@@ -137,6 +138,7 @@ class MobileInvoiceController extends Controller
             $unit=SellingUnit::where('active',1)->get();
             $prices=product_price::where('sale_type','Retail Sale')->where('active',1)->where('region_id',$Auth->region_id)->get();
             $dis_promo=DiscountPromotion::where('sale_type','Retail Sale')
+                ->where('start_date','<=',Carbon::today())->where('end_date','>=',Carbon::today())
                 ->where('region_id',$Auth->region_id)
                 ->get();
             $focs=Freeofchare::with('variant')->where('branch_id',$Auth->office_branch_id)->get();

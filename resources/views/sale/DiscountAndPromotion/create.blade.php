@@ -27,6 +27,9 @@
                                     <option value="{{$item->id}}">{{$item->product_name}}({{$item->variant}})</option>
                                 @endforeach
                             </select>
+                            @error('variant_id')
+                            <span class="text-danger">{{$message}}</span>
+                            @enderror
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -37,12 +40,15 @@
                                     <option value="{{$item->id}}" {{$item->id==old('region_id')?'selected':''}}>{{$item->name}} ({{$item->branch->name}})</option>
                                 @endforeach
                             </select>
+                            @error('region_id')
+                            <span class="text-danger">{{$message}}</span>
+                            @enderror
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="type">Type</label>
-                            <select name="type" id="type{{$}}" class="form-control">
+                            <select name="type" id="type" class="form-control">
                                 <option value="Discount">Discount</option>
                                 <option value="Promotion">Promotion</option>
                             </select>
@@ -80,6 +86,9 @@
                                 <input type="number" id="rate" name="rate" class="form-control" >
                                 <button type="button" class="btn btn-white">%</button>
                             </div>
+                            @error('rate')
+                            <span class="text-danger">{{$message}}</span>
+                            @enderror
                         </div>
                     </div>
                     <div class="col-md-12">
