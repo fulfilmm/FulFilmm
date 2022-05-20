@@ -167,6 +167,7 @@ class MobileInvoiceController extends Controller
     }
     public function store(Request $request)
     {
+
         $validator = Validator::make($request -> all(), [
             'title' => 'required',
             'client_id' => 'required',
@@ -177,12 +178,12 @@ class MobileInvoiceController extends Controller
             'payment_method' => 'required',
 
             //for orderItems
-            'variant_id' => 'required',
-            'quantity' => 'required',
-            'unit_price' => 'required',
-            'total' => 'required',
-            'creation_id' => 'required',
-            'state' => 'required',
+//            'variant_id' => 'required',
+//            'quantity' => 'required',
+//            'unit_price' => 'required',
+//            'total' => 'required',
+//            'creation_id' => 'required',
+//            'state' => 'required',
         ]);
 
         if($validator->passes()) {
@@ -231,6 +232,7 @@ class MobileInvoiceController extends Controller
             $newInvoice->total = $request->total;
             $newInvoice->discount = $request->discount;
             $newInvoice->tax_amount = $request->tax_amount;
+            $newInvoice->tax_rate=$request->tax_rate;
             $newInvoice->invoice_type = $request->invoice_type;
             $newInvoice->delivery_fee = $request->delivery_fee;
             $newInvoice->due_amount = $request->inv_grand_total;
@@ -241,131 +243,28 @@ class MobileInvoiceController extends Controller
             $newInvoice->include_delivery_fee=$request->deli_fee_include=='on'?1:0;
             $newInvoice->emp_id = Auth::guard('api')->user()->id;
             $newInvoice->branch_id=Auth::guard('api')->user()->office_branch_id;
-           
+            $newInvoice->save();
+
+
             $order_item = json_decode($request -> order_items);
             $foc_item = json_decode($request -> foc_items);
 
-            if (count($order_item) != 0) {
-                $newInvoice->save();
-                $customer=Customer::where('id',$request->client_id)->first();
-                $customer->main_customer=1;
-                $customer->current_credit+=$request->inv_grand_total;
-                $customer->update();
-                foreach ($order_item as $item) {
-                    if ($item->foc) {
-                        $unit = SellingUnit::where('id', $item->sell_unit)->first();
-                        $stock = Freeofchare::where('variant_id', $item->variant_id)->first();
-                        $item->inv_id = $newInvoice->id;
-                        $item->update();
-                        $stock->qty = $stock->qty - ($item->quantity * $unit->unit_convert_rate);
-                        $stock->update();
-                    } else {
-                        $unit = SellingUnit::where('id',$item->sell_unit)->first();
-                        $stock = Stock::where('variant_id', $item->variant_id)->where('warehouse_id', $request->warehouse_id)->first();
-                        $item->inv_id = $newInvoice->id;
-                        $item->cos_total=($item->quantity*$unit->unit_convert_rate)*$stock->cos;
-                        $item->update();
-                        $stock->available = $stock->available - ($item->quantity * $unit->unit_convert_rate);
+            if(count($order_item)!=0){
 
-                        $stock->update();
-                    }
+                foreach ($order_item as $item){
+                    $item->invoice_id=$newInvoice->id;
+                    $item->type='invoice';
+                    $this->item_store($item);
                 }
-
-                //order items
-
-                $variant =ProductVariations::where( 'id', $request -> variant_id)
-                                            ->first();
-
-                if ($request->type == 'invoice') {
-                    foreach($foc_item as $item){
-
-                        if (isset($request->foc)) {
-                                $items = new OrderItem();
-                                $items->description = 'This is FOC item';
-                                $items->quantity = $item -> quantity;
-                                $items->variant_id = $request->variant_id;
-                                $items->unit_price = 0;
-                                $items->total = 0;
-                                $items->inv_id = $newInvoice->id;
-                                $items->creation_id = $invoice_id;
-                                $items->order_id = $request->order_id ?? null;
-                                $items->state = 1;
-                                $items->foc=true;
-                                $items->save();
-                                }
-                                else{
-                                    $sale_unit = SellingUnit::where('product_id', $variant->product_id)->where('unit_convert_rate', 1)->first();
-                                    $price = product_price::where('sale_type',$request->inv_type)->where('product_id', $request->variant_id)->where('multi_price',$variant->pricing_type)->first();
-
-                                    if($price != null){
-                                        $items = new OrderItem();
-                                        $items->description =$variant->description;
-                                        $items->quantity = $item->quantity;
-                                        $items->variant_id = $request->variant_id;
-                                        $items->sell_unit = $sale_unit->id;
-                                        $items->unit_price =$price->price ?? 0;
-                                        $items->total = $item -> total;
-                                        $items->inv_id = $newInvoice->id;
-                                        $items->sell_unit = $sale_unit->id??null;
-                                        $items->creation_id = $invoice_id;
-                                        $items->order_id = $request->order_id ?? null;
-                                        $items->state = 1;
-                                        $items->save();
-
-                                        }
-                                    }
-
-                                }
-                            }
-
-
-
-
-                //should I need to add these ???
-                //
-                 $inv_item= DB::table("order_items")
-                     ->select(DB::raw("SUM(cos_total) as total"))
-                     ->where('inv_id',$newInvoice->id)
-                     ->get();
-                 $newInvoice->invoice_cos=$inv_item[0]->total;
-                 $newInvoice->update();
-
-
-
-                // if (isset($request->order_id)) {
-                //     $order_item = OrderItem::where('order_id', $request->order_id)->get();
-                //     $grand_total = 0;
-                //     for ($i = 0; $i < count($order_item); $i++) {
-                //         $grand_total = $grand_total + $order_item[$i]->total;
-                //     }
-                //     $order = Order::where('id', $request->order_id)->first();
-                //     $order->grand_total = $grand_total;
-                //     $order->update();
-                // }
-
-                //end
-
-                //$this->add_history($newInvoice->id, 'Daft', 'Add' . $invoice_id);
-                if (isset($request->save_type)) {
-                    $this->sending_form($newInvoice->id);
-                    return response()->json([
-                        'url' => url('invoice/sendmail/' . $newInvoice->id)
-                    ]);
-                } else {
-                    return response()->json([
-                        'url' => url('invoices/' . $newInvoice->id)
-                    ]);
-                }
-            } else {
-                return response()->json([
-                    'orderempty' => 'Empty Item',
-                ]);
             }
-
-
-
-
-
+            if(count($foc_item)!=0){
+                foreach ($foc_item as $foc){
+                    $foc_data=$foc;
+                    $foc_data['invoice_id']=$newInvoice->id;
+                    $this->foc_add($foc_data);
+                }
+            }
+            return response()->json(['message'=>'success','invoice_id'=>$newInvoice->id]);
         }else{
             return response()->json(['error'=>$validator->errors()]);
         }
@@ -409,5 +308,46 @@ class MobileInvoiceController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function item_store($request)
+    {
+        $variant = ProductVariations::where('id', $request->variant_id)->first();
+        if ($request->type == 'invoice') {
+                $sub_total=$request->qty*$request->price;
+                    $discount=($request->discount/100)*$sub_total;
+                    $total=$sub_total-$discount;
+                    $items = new OrderItem();
+                    $items->description =$variant->description;
+                    $items->quantity =$request->qty;
+                    $items->variant_id = $request->variant_id;
+                    $items->sell_unit = $request->unit_id;
+                    $items->unit_price =$request->price ?? 0;
+                    $items->total =$total ?? 0;
+                    $items->discount_promotion=$request->discount;
+                    $items->creation_id = $request->invoice_id;
+                    $items->inv_id = $request->invoice_id;
+                    $items->order_id = $request->order_id ?? null;
+                    $items->state = 1;
+                    $items->save();
+        }
+
+    }
+    public function foc_add($request){
+        return \response()->json();
+//        $variant = ProductVariations::where('id', $request->variant_id)->first();
+            $sale_unit = SellingUnit::where('product_id', $variant->product_id)->where('unit_convert_rate', 1)->first();
+            $items = new OrderItem();
+            $items->description = 'This is FOC item';
+            $items->quantity = 1;
+            $items->variant_id = $request['variant_id'];
+            $items->unit_price = 0;
+            $items->sell_unit = $sale_unit->id;
+            $items->total = 0;
+            $items->creation_id = $request->invoice_id;
+            $items->inv_id = $request->invoice_id;
+            $items->order_id = $request->order_id ?? null;
+            $items->state = 1;
+            $items->foc=true;
+            $items->save();
     }
 }

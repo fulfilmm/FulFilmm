@@ -317,7 +317,8 @@ class InvoiceController extends Controller
             } else {
                 $invoice_id = ($prefix ?: 'INV') . "-0001";
             }
-//dd($invoice_id); 
+//dd($invoice_id);
+            $tax=products_tax::where('id',$request->tax_id)->first();
             $newInvoice = new Invoice();
             $newInvoice->title = $request->title;
             $newInvoice->invoice_id = $invoice_id;
@@ -334,6 +335,7 @@ class InvoiceController extends Controller
             $newInvoice->send_email = isset($request->save_type) ? 1 : 0;
             $newInvoice->payment_method = $request->payment_method;
             $newInvoice->tax_id = $request->tax_id;
+            $newInvoice->tax_rate=$tax->rate;
             $newInvoice->total = $request->total;
             $newInvoice->discount = $request->discount;
             $newInvoice->tax_amount = $request->tax_amount;
