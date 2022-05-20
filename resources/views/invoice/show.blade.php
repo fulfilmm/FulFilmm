@@ -67,7 +67,7 @@
             <div class="col-md-2">
                 Tax
                 <br> <strong><span class="float-left"><a href="https://app.akaunting.com/142258/sales/customers/1005081">
-                     ({{$detail_inv->tax_rate??0}}%)
+                     {{$detail_inv->tax_rate??0}}%
                     </a></span></strong> <br><br></div>
             <div class="col-md-2">
                 Amount due
@@ -248,7 +248,7 @@
                                                                 <td>{{$item->variant->product_name}}({{$item->variant->variant??''}})</td>
                                                                 <td class="d-none d-sm-table-cell">{!!$item->description !!}</td>
                                                                 <td>{{$item->unit_price}}</td>
-                                                                <td>{{$item->discount_promotion}}%</td>
+                                                                <td>{{$item->discount_promotion??0}}%</td>
                                                                 <td>{{$item->quantity}}</td>
                                                                 <td>{{$item->unit->unit}}</td>
                                                                 <td class="text-right">{{$item->total}}</td>
