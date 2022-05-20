@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAdvancePaymentsTable extends Migration
+class CreateRequestItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,13 @@ class CreateAdvancePaymentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('advance_payments', function (Blueprint $table) {
+        Schema::create('request_items', function (Blueprint $table) {
             $table->id();
-            $table->string('payment_type');
-            $table->double('amount')->default(0);
-            $table->bigInteger('approver_id')->unsigned();
-            $table->bigInteger('customer_id')->unsigned();
-            $table->bigInteger('emp_id')->unsigned();
+            $table->string('product_name');
+            $table->string('variant')->nullable();
+            $table->double('qty');
             $table->tinyInteger('approve')->default(0);
-            $table->text('note')->nullable();
+            $table->bigInteger('approval_id')->unsigned();
             $table->timestamps();
         });
     }
@@ -33,6 +31,6 @@ class CreateAdvancePaymentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('advance_payments');
+        Schema::dropIfExists('request_items');
     }
 }

@@ -17,7 +17,9 @@ class CreateSaleTargetsTable extends Migration
             $table->id();
             $table->bigInteger('emp_id')->unsigned();
             $table->foreign('emp_id')->references('id')->on('employees')->onDelete('cascade');
-            $table->double('target_sale');
+            $table->double('target_sale')->nullable();
+            $table->string('type');//(target on qty or amount)
+            $table->double('qty')->nullable();
             $table->string('month');
             $table->double('year');
             $table->timestamps();

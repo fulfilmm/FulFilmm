@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateExccedMoneyTable extends Migration
+class CreateSaletargetItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,12 @@ class CreateExccedMoneyTable extends Migration
      */
     public function up()
     {
-        Schema::create('excced_money', function (Blueprint $table) {
+        Schema::create('saletarget_items', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('sale_target_id')->unsigned();
+            $table->bigInteger('item_id')->unsigned();
+            $table->double('target_qty')->default(0);
+            $table->double('sold_qty')->default(0);
             $table->timestamps();
         });
     }
@@ -26,6 +30,6 @@ class CreateExccedMoneyTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('excced_money');
+        Schema::dropIfExists('saletarget_items');
     }
 }

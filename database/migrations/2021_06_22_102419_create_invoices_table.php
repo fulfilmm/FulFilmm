@@ -31,8 +31,8 @@ class CreateInvoicesTable extends Migration
             $table->string('inv_type');
             $table->bigInteger('warehouse_id')->unsigned();
             $table->double('discount')->nullable();
-            $table->bigInteger('tax_id')->unsigned();
-            $table->double('total');
+            $table->bigInteger('tax_id')->unsigned()->nullable();
+            $table->double('total')->default(0);
             $table->double('tax_amount')->nullable();
             $table->tinyInteger('mark_sent')->default(0);
             $table->boolean('send_email')->default(false);
@@ -40,7 +40,7 @@ class CreateInvoicesTable extends Migration
             $table->index(['id','customer_id']);
             $table->string('invoice_type');
             $table->tinyInteger('include_delivery_fee');
-            $table->double('delivery_fee');
+            $table->double('delivery_fee')->default(0);
             $table->bigInteger('order_id')->unsigned()->nullable();
             $table->double('due_amount');
             $table->bigInteger('branch_id')->unsigned();

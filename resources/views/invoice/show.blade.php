@@ -67,7 +67,7 @@
             <div class="col-md-2">
                 Tax
                 <br> <strong><span class="float-left"><a href="https://app.akaunting.com/142258/sales/customers/1005081">
-                      {{$detail_inv->tax->name??"None"}}({{$detail_inv->tax->rate??0}}%)
+                     ({{$detail_inv->tax_rate??0}}%)
                     </a></span></strong> <br><br></div>
             <div class="col-md-2">
                 Amount due
@@ -272,7 +272,7 @@
                                             </li>
                                             <li class="list-group-item">
                                                 <div class="d-flex justify-content-end ">
-                                                    Tax ({{$detail_inv->tax->rate}}%): <p class="ml-2 mb-0 font-weight-bold"> {{$detail_inv->total*($detail_inv->tax->rate/100)}} MMK</p>
+                                                    Tax ({{$detail_inv->tax_rate}}%): <p class="ml-2 mb-0 font-weight-bold"> {{$detail_inv->total*($detail_inv->tax_rate/100)}} MMK</p>
                                                 </div>
 
                                             </li>
@@ -407,7 +407,6 @@
                             <div class="card-body">
                                 <div class="row">
                                     <input type="hidden" name="invoice_id" value="{{$detail_inv->id}}">
-                                    <input type="hidden" name="advance_id" value="{{isset($advance)?$advance->id:''}}">
                                     <input type="hidden" name="type" value="Revenue">
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -421,13 +420,17 @@
                                             <input type="date" id="date" name="transaction_date" class="form-control">
                                         </div>
                                     </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="advan"><input type="checkbox" name="advance" class="mr-2">Take From Advance Payment</label>
+                                            <input type="text" class="form-control" readonly id="advance_balance" value="{{$detail_inv->customer->advance_balance}}">
+                                        </div>
+                                    </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="amount">Amount</label>
                                             <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text"><i class="fa fa-money"></i></span>
-                                                </div>
                                                 <input type="text" class="form-control" id="amount" name="amount" value="{{$detail_inv->due_amount??''}}">
                                                 <div class="input-group-prepend">
                                                     <select name="currency" id="" class="select">

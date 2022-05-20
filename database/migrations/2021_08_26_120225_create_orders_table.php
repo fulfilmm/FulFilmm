@@ -20,6 +20,8 @@ class CreateOrdersTable extends Migration
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
             $table->double('total');
             $table->double('grand_total');
+            $table->bigInteger('approver_id')->unsigned();
+            $table->dateTime('expected_arrival_date')->nullable();
             $table->string('status')->nullable();
             $table->text('comment')->nullable();
             $table->string('phone');
@@ -35,6 +37,7 @@ class CreateOrdersTable extends Migration
             $table->string('shipping_type')->nullable();
             $table->string('shipping_address')->nullable();
             $table->string('billing_address')->nullable();
+            $table->bigInteger('emp_id')->unsigned();
             $table->timestamps();
             $table->softDeletes();
         });

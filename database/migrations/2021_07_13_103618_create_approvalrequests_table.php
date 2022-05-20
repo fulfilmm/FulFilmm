@@ -38,6 +38,7 @@ class CreateApprovalrequestsTable extends Migration
             $table->string('quantity')->nullable();
             $table->tinyInteger('approver_noti')->default(0);
             $table->tinyInteger('requester_noti')->default(1);
+            $table->bigInteger('warehouse_id')->nullable()->unsigned();
             $table->softDeletes();
             $table->timestamps();
         });

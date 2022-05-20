@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateExccedMoneyTable extends Migration
+class CreateOrderCcsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class CreateExccedMoneyTable extends Migration
      */
     public function up()
     {
-        Schema::create('excced_money', function (Blueprint $table) {
+        Schema::create('order_ccs', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('emp_id')->unsigned();
+            $table->string('emp_name');
+            $table->bigInteger('order_id')->unsigned();
             $table->timestamps();
         });
     }
@@ -26,6 +29,6 @@ class CreateExccedMoneyTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('excced_money');
+        Schema::dropIfExists('order_ccs');
     }
 }

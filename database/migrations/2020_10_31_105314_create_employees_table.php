@@ -18,6 +18,7 @@ class CreateEmployeesTable extends Migration
             $table->string('name', 64);
             $table->string('empid')->unique();
             $table->foreignId('department_id');
+            $table->bigInteger('head_office')->unsigned()->nullable();
             $table->string('phone', 16)->nullable();
             $table->string('email', 100)->unique()->nullable();
             $table->bigInteger('report_to')->unsigned()->nullable();
