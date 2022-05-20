@@ -212,59 +212,63 @@ class MobileInvoiceController extends Controller
             } else {
                 $invoice_id = ($prefix ?: 'INV') . "-0001";
             }
- 
-            $newInvoice = new Invoice();
-            $newInvoice->title = $request->title;
-            $newInvoice->invoice_id = $invoice_id;
-            $newInvoice->customer_id = $request->client_id;
-            $newInvoice->email = $request->client_email;
-            $newInvoice->customer_address = $request->client_address;
-            $newInvoice->billing_address = $request->bill_address;
-            $newInvoice->invoice_date = Carbon::create($request->inv_date);
-            $newInvoice->due_date = Carbon::create($request->due_date);
-            $newInvoice->other_information = $request->more_info;
-            $newInvoice->grand_total = $request->inv_grand_total;
-            $newInvoice->status = "Done";
-            $newInvoice->order_id = $request->order_id;
-            $newInvoice->send_email = isset($request->save_type) ? 1 : 0;
-            $newInvoice->payment_method = $request->payment_method;
-            $newInvoice->tax_id = $request->tax_id;
-            $newInvoice->total = $request->total;
-            $newInvoice->discount = $request->discount;
-            $newInvoice->tax_amount = $request->tax_amount;
-            $newInvoice->tax_rate=$request->tax_rate;
-            $newInvoice->invoice_type = $request->invoice_type;
-            $newInvoice->delivery_fee = $request->delivery_fee;
-            $newInvoice->due_amount = $request->inv_grand_total;
-            $newInvoice->warehouse_id = $request->warehouse_id;
-            $newInvoice->inv_type = $request->sale_type;
-            $newInvoice->region_id=Auth::guard('api')->user()->region_id;
-            $newInvoice->zone_id=$request->zone_id;
-            $newInvoice->include_delivery_fee=$request->deli_fee_include=='on'?1:0;
-            $newInvoice->emp_id = Auth::guard('api')->user()->id;
-            $newInvoice->branch_id=Auth::guard('api')->user()->office_branch_id;
-            $newInvoice->save();
+            try{
+                $newInvoice = new Invoice();
+                $newInvoice->title = $request->title;
+                $newInvoice->invoice_id = $invoice_id;
+                $newInvoice->customer_id = $request->client_id;
+                $newInvoice->email = $request->client_email;
+                $newInvoice->customer_address = $request->client_address;
+                $newInvoice->billing_address = $request->bill_address;
+                $newInvoice->invoice_date = Carbon::create($request->inv_date);
+                $newInvoice->due_date = Carbon::create($request->due_date);
+                $newInvoice->other_information = $request->more_info;
+                $newInvoice->grand_total = $request->inv_grand_total;
+                $newInvoice->status = "Draft";
+                $newInvoice->order_id = $request->order_id;
+                $newInvoice->send_email = isset($request->save_type) ? 1 : 0;
+                $newInvoice->payment_method = $request->payment_method;
+                $newInvoice->tax_id = $request->tax_id;
+                $newInvoice->total = $request->total;
+                $newInvoice->discount = $request->discount;
+                $newInvoice->tax_amount = $request->tax_amount;
+                $newInvoice->tax_rate=$request->tax_rate;
+                $newInvoice->invoice_type = $request->invoice_type;
+                $newInvoice->delivery_fee = $request->delivery_fee;
+                $newInvoice->due_amount = $request->inv_grand_total;
+                $newInvoice->warehouse_id = $request->warehouse_id;
+                $newInvoice->inv_type = $request->sale_type;
+                $newInvoice->region_id=Auth::guard('api')->user()->region_id;
+                $newInvoice->zone_id=$request->zone_id;
+                $newInvoice->include_delivery_fee=$request->deli_fee_include=='on'?1:0;
+                $newInvoice->emp_id = Auth::guard('api')->user()->id;
+                $newInvoice->branch_id=Auth::guard('api')->user()->office_branch_id;
+                $newInvoice->save();
 
 
-            $order_item = json_decode($request -> order_items);
-            $foc_item = json_decode($request -> foc_items);
+                $order_item = json_decode($request -> order_items);
+                $foc_item = json_decode($request -> foc_items);
 
-            if(count($order_item)!=0){
+                if(count($order_item)!=0){
 
-                foreach ($order_item as $item){
-                    $item->invoice_id=$newInvoice->id;
-                    $item->type='invoice';
-                    $this->item_store($item);
+                    foreach ($order_item as $item){
+                        $item->invoice_id=$newInvoice->id;
+                        $item->type='invoice';
+                        $this->item_store($item);
+                    }
                 }
-            }
-            if(count($foc_item)!=0){
-                foreach ($foc_item as $foc){
-                    $foc_data=$foc;
-                    $foc_data['invoice_id']=$newInvoice->id;
-                    $this->foc_add($foc_data);
+                if(count($foc_item)!=0){
+                    foreach ($foc_item as $foc){
+                        $foc_data=$foc;
+                        $foc_data['invoice_id']=$newInvoice->id;
+                        $this->foc_add($foc_data);
+                    }
                 }
+                return response()->json(['message'=>'success','invoice_id'=>$newInvoice->id]);
+            }catch (\Exception $e){
+                return \response()->json($e->getMessage());
             }
-            return response()->json(['message'=>'success','invoice_id'=>$newInvoice->id]);
+
         }else{
             return response()->json(['error'=>$validator->errors()]);
         }
