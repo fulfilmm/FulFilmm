@@ -3,12 +3,18 @@
 namespace App\Http\Controllers\Api\Invoice_Mobile;
 
 use App\Http\Controllers\Controller;
+use App\Models\Account;
+use App\Models\Employee;
 use App\Models\Invoice;
+use App\Models\InvoiceHistory;
 use App\Models\OfficeBranch;
 use App\Models\OrderItem;
 use App\Models\products_tax;
 use App\Models\ProductVariations;
+use App\Models\Revenue;
 use App\Models\Stock;
+use App\Models\Transaction;
+use App\Models\TransactionCategory;
 use Carbon\Carbon;
 use http\Env\Response;
 use Illuminate\Http\Request;
@@ -168,6 +174,7 @@ class MobileInvoiceController extends Controller
     public function store(Request $request)
     {
 
+
         $validator = Validator::make($request -> all(), [
             'title' => 'required',
             'client_id' => 'required',
@@ -243,12 +250,11 @@ class MobileInvoiceController extends Controller
                 $newInvoice->include_delivery_fee=$request->deli_fee_include=='on'?1:0;
                 $newInvoice->emp_id = Auth::guard('api')->user()->id;
                 $newInvoice->branch_id=Auth::guard('api')->user()->office_branch_id;
-                $newInvoice->save();
+//                $newInvoice->save();
 
 
                 $order_item = json_decode($request -> order_items);
                 $foc_item = json_decode($request -> foc_items);
-
                 if(count($order_item)!=0){
 
                     foreach ($order_item as $item){
@@ -288,7 +294,52 @@ class MobileInvoiceController extends Controller
      */
     public function show($id)
     {
-        //
+        $emps = Employee::where('office_branch_id', Auth::guard('api')->user()->office_branch_id)->get();
+        $category = TransactionCategory::where('type', 1)->get();
+        $customer = Customer::orWhere('customer_type', 'Customer')->orWhere('customer_type', 'Lead')->orWhere('customer_type', 'Partner')->orWhere('customer_type', 'Inquery')->get();
+        $company=MainCompany::where('ismaincompany',true)->first();
+        $detail_inv=Invoice::with('customer','employee','tax','order')->where('id',$id)->firstOrFail();
+        $invoic_item=OrderItem::with('variant','unit')->where("inv_id",$detail_inv->id)->get();
+        $account=Account::where('enabled',1)->get();
+        $recurring=['No','Daily','Weekly','Monthly','Yearly'];
+        $payment_method=['Cash','eBanking','WaveMoney','KBZ Pay'];
+        $revenue=Revenue::where('invoice_id',$id)->get();
+//        dd($revenue);
+        $history=InvoiceHistory::where('invoice_id',$id)->get();
+        $transaction=[];
+        foreach ($revenue as $tran){
+            $revenue_transaction=Transaction::with('revenue')->where('revenue_id',$tran->id)->first();
+            if($revenue!=null){
+                array_push($transaction,$revenue_transaction);
+            }
+
+        }
+        if($detail_inv->grand_total > $detail_inv->due_amount && $detail_inv->due_amount!=0){
+
+            $detail_inv->status='Partial';
+            $detail_inv->update();
+            $this->add_history($id,'Partial','Change Status '.$detail_inv->invoice_id);
+        }elseif($detail_inv->due_amount!=0 && Carbon::now()>$detail_inv->due_date && $detail_inv->created_at!=$detail_inv->due_date){
+            $detail_inv->status='Overdue';
+            $detail_inv->update();
+            $this->add_history($id,'Overdue','Change Status '.$detail_inv->invoice_id);
+        }elseif($detail_inv->due_amount==0){
+
+            $detail_inv->status='Paid';
+            $detail_inv->update();
+            $this->add_history($id,'Paid','Change Status '.$detail_inv->invoice_id);
+        }else{
+
+            $detail_inv->status='Draft';
+            $detail_inv->update();
+            $this->add_history($id,'Draft','Change Status '.$detail_inv->invoice_id);
+        }
+        $transaction_amount=0;
+//        $customer=Customer::orWhere('customer_type','Customer')->orWhere('customer_type','Lead')->orWhere('customer_type','Partner')->orWhere('customer_type','Inquery')->get();
+        return response()->json([
+            'emps' => $emps, 'customers' => $customer, 'recurring' => $recurring, 'payment_method' => $payment_method, 'category' => $category,
+            'transaction'=>$transaction,'account'=>$account,'invoice'=>$detail_inv,'invoice_item'=>$invoic_item,'company'=>$company,'transaction_amount'=>$transaction_amount,'history'=>$history
+        ]);
     }
 
     /**
@@ -298,6 +349,49 @@ class MobileInvoiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+   public function edit($id){
+       $Auth=Auth::guard('employee')->user();
+       $invoice=Invoice::with('customer','employee','tax','order')->where('id',$id)->firstOrFail();
+       $allcustomers = Customer::where('branch_id',$Auth->office_branch_id)->where('region_id',$Auth->region_id)->get();
+       $taxes = products_tax::all();
+       $unit=SellingUnit::where('active',1)->get();
+       $prices =product_price::where('sale_type',$invoice->inv_type)->where('active',1)->where('region_id',$Auth->region_id)->get();
+       //dd($prices);
+       $dis_promo = DiscountPromotion::where('sale_type',$invoice->inv_type)
+           ->where('start_date','<=',Carbon::today())->where('end_date','>=',Carbon::today())
+           ->where('region_id',$Auth->region_id)
+           ->get();
+       $focs = Freeofchare::with('variant')->where('branch_id',$Auth->office_branch_id)->get();
+       $invoice_item=OrderItem::with('variant','unit')->where("inv_id",$invoice->id)->get();
+       $warehouse =Warehouse::where('branch_id', $Auth->office_branch_id)
+         ->where('id',$invoice->warehouse_id)
+           ->first();
+       $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))
+           ->whereDate('end_date','>=',date('Y-m-d'))
+           ->where('sale_type',$invoice->inv_type)
+//                ->where('region_id',$Auth->regioin_id)
+           ->get();
+       $companies=Company::select('id','name')->get();
+       $zone=SaleZone::where('region_id',$Auth->region_id)->get();
+       $region=Region::where('branch_id',$Auth->office_branch_id)->get();
+       return response()->json([
+           'invoice'=>$invoice,
+           'invoice_item'=>$invoice_item,
+           'warehouse'=>$warehouse,
+           'customers'=>$allcustomers,
+           'tax'=>$taxes,
+           'unit'=>$unit,
+           'price'=>$prices,
+           'discount'=>$dis_promo,
+           'foc'=>$focs,
+           'amount_discount'=>$amount_discount,
+           'companies'=>$companies,
+           'zones'=>$zone,
+           'region'=>$region
+
+       ]);
+   }
+
     public function update(Request $request, $id)
     {
 
@@ -339,7 +433,7 @@ class MobileInvoiceController extends Controller
         if(count($order_item)!=0){
 
             foreach ($order_item as $item){
-                $item->invoice_id=$newInvoice->id;
+                $item->invoice_id=$update_inv->id;
                 $item->type='invoice';
                 $this->item_store($item);
             }
@@ -347,7 +441,7 @@ class MobileInvoiceController extends Controller
         if(count($foc_item)!=0){
             foreach ($foc_item as $foc){
                 $foc_data=$foc;
-                $foc_data['invoice_id']=$newInvoice->id;
+                $foc_data['invoice_id']=$update_inv->id;
                 $this->foc_add($foc_data);
             }
         }
@@ -400,5 +494,16 @@ class MobileInvoiceController extends Controller
             $items->state = 1;
             $items->foc=true;
             $items->save();
+    }
+    public function add_history($id,$status,$desc){
+        $old_state=InvoiceHistory::where('invoice_id',$id)->where('status',$status)->first();
+        if($old_state==null){
+            $history=new InvoiceHistory();
+            $history->invoice_id=$id;
+            $history->status=$status;
+            $history->description=$desc;
+            $history->save();
+        }
+
     }
 }
