@@ -23,5 +23,8 @@ class Approvalrequest extends Model
     public function contact(){
         return $this->belongsTo(Customer::class,'contact_id','id');
     }
+    public function item(){
+        return $this->hasMany(RequestItem::class,'approval_id','id');
+    }
 
 }
