@@ -230,6 +230,8 @@ Route::middleware(['auth:employee'])->group(function () {
     Route::resource('shop',\App\Http\Controllers\ShopRegister::class);
     Route::resource('saleway',\App\Http\Controllers\SaleWayController::class);
     Route::post('transfer/branch',[TransactionController::class,'transer_branch'])->name('transfer.branch');
+    Route::get('confirm/request/item/{id}',[ApprovalController::class,'item_confirm'])->name('item.comfirm');
+    Route::resource('summary',\App\Http\Controllers\SummaryController::class);
 
 
 
@@ -547,6 +549,25 @@ Route::get('test', function () {
 //
 //    dd($result);
 //    dd(str_pad(mt_rand(1,99999999),8,'0',STR_PAD_LEFT));
+    $oreder_item=[[
+        "qty"=>2,
+        "variant_id"=>1,
+        "unit_id"=>2,
+        "price"=>1000,
+        'discount'=>10,
+
+    ],
+    [
+        "qty"=>2,
+        "variant_id"=>1,
+        "unit_id"=>2,
+        "price"=>1000,
+        'discount'=>10
+
+    ]
+    ];
+    $foc=[['variant_id'=>1,'unit_id'=>1,'qty'=>10]];
+    dd(json_encode($oreder_item));
     return view('test');
 })->name('test');
 

@@ -65,6 +65,7 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
     Route::apiResource('ecommerce_products_add', ProductAddController::class);
     Route::apiResource('ecommerce_products_promotion', ProductPromotionController::class);
     Route::apiResource('ecommerce_banner', ProductBannerController::class);
+    Route::resource('revenues',\App\Http\Controllers\Api\RevenueController::class);
 });
 
 //Api for Car
