@@ -251,7 +251,7 @@ class MobileInvoiceController extends Controller
                 $newInvoice->include_delivery_fee=$request->deli_fee_include=='on'?1:0;
                 $newInvoice->emp_id = Auth::guard('api')->user()->id;
                 $newInvoice->branch_id=Auth::guard('api')->user()->office_branch_id;
-//                $newInvoice->save();
+                $newInvoice->save();
 
 
                 $order_item = json_decode($request -> order_items);
