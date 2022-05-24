@@ -5,6 +5,7 @@
 
     <!-- Page Content -->
     <div class="content container-fluid">
+
         <!-- Page Header -->
 
         <div class="chat-main-row mt-4">
@@ -42,6 +43,12 @@
                                 <div class="chat-wrap-inner">
                                     <div class="chat-box">
                                         <div class="task-wrapper">
+                                            @if ($message = \Illuminate\Support\Facades\Session::get('error'))
+                                                <div class="alert alert-danger alert-block">
+                                                    <button type="button" class="close" data-dismiss="alert">×</button>
+                                                    <strong>{{ $message }}</strong>
+                                                </div>
+                                            @endif
                                             <div class="card">
                                                 <div class="card-header">
                                                     Approval Details
@@ -126,6 +133,32 @@
                                                     </table>
                                                 </div>
                                             </div>
+                                            @if($details_approval->type=='Items Request')
+                                                <div class="card shadow">
+                                                    <table class="table table-hover table-nowrap">
+                                                        <tr>
+                                                            <th>Product Name</th>
+                                                            <th>Variant</th>
+                                                            <th>Quantity</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                        @foreach($details_approval->item as $item)
+                                                            <tr>
+                                                                <td>{{$item->product_name}}</td>
+                                                                <td>{{$item->variant}}</td>
+                                                                <td>{{$item->qty}}</td>
+                                                                <td>
+                                                                    @if($item->approve)
+                                                                        <i class="la la-check"></i>  Confirm
+                                                                        @else
+                                                                        <a href="{{url('confirm/request/item/'.$item->id)}}" class="btn btn-primary btn-sm">Approve</a>
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </table>
+                                                </div>
+                                                @endif
                                             <div class="card">
                                                 <div class="card-header">Description</div>
                                                 <div class="card-body">

@@ -100,6 +100,10 @@
                                            <option value="Business Trip">Business Trip</option>
                                            <option value="Payment">Payment</option>
                                            <option value="Procurement">Procurement</option>
+                                           <option value="Items Request">Item Request</option>
+                                           <option value="Material Request">Material Request</option>
+                                           <option value="Service Request">Service Request</option>
+                                           <option value="Work Request">Work Request</option>
                                        </select>
                                    </div>
                                </div>
@@ -238,6 +242,37 @@
                                </div>
                            </div>
                        </div>
+                       <div  id="warehouse_div">
+                           <div class="form-group">
+                               <label for="">Warehouse</label>
+                               <select name="" id="" class="form-control" style="width: 100%">
+                                   <option value="">None</option>
+                                   @foreach($warehouse as $item)
+                                       <option value="{{$item->id}}">{{$item->name}}</option>
+                                       @endforeach
+                               </select>
+                           </div>
+                       </div>
+                       <div id="item_table">
+                           <button type="button" class='delete btn btn-danger btn-sm'>Remove</button>
+                           <button type="button" class='addmore btn btn-white btn-sm'>Add More</button><br>
+                           <span class="text-danger" style="font-size: 12px;">!If you want to remove row,checked row checkbox and click remove button</span><br>
+                           <table class="table-hover table table-bordered">
+                               <tr>
+                                   <th><input class='check_all' type='checkbox' onclick="select_all()"/></th>
+                                   <th>Product</th>
+                                   <th>Variant</th>
+                                   <th>Quantity</th>
+                               </tr>
+                               <tr>
+                                   <td><input type='checkbox' class='case'/></td>
+                                   <td><input type='text' class="form-control form-control-sm" id='product' name='product[]'/></td>
+                                   <td><input type='text' class="form-control form-control-sm" id='varaiant' name='variant[]'/></td>
+                                   <td><input type='text' class="form-control form-control-sm" id='qty' name='qty[]'/></td>
+                               </tr>
+                           </table>
+
+                       </div>
 
                        <div class="form-group mt-2">
                            <label for="desc">Content <span class="text-danger">*</span></label>
@@ -283,6 +318,8 @@
             $('#business_trip').hide();
             $('#payment').hide();
             $('#procurement').hide();
+            $('#warehouse_div').hide();
+            $('#item_table').hide();
 
             $('#type').on('change',function () {
                 var type=$('#type option:selected').val();
@@ -290,24 +327,71 @@
                 $('#business_trip').show();
                     $('#payment').hide();
                     $('#procurement').hide();
+                    $('#warehouse_div').hide();
+                    $('#item_table').hide();
 
                 }else if(type=='Payment'){
                     $('#business_trip').hide();
                     $('#payment').show();
                     $('#procurement').hide();
+                    $('#warehouse_div').hide();
+                    $('#item_table').hide();
                 }else if (type=='Procurement') {
                     $('#business_trip').hide();
                     $('#payment').hide();
                     $('#procurement').show();
+                    $('#warehouse_div').hide();
+                    $('#item_table').hide();
+
+                }else if(type=='Items Request'){
+                    $('#business_trip').hide();
+                    $('#payment').hide();
+                    $('#procurement').hide();
+                    $('#warehouse_div').show();
+                    $('#item_table').show();
                 }else {
                     $('#business_trip').hide();
                     $('#payment').hide();
                     $('#procurement').hide();
+                    $('#warehouse_div').hide();
+                    $('#item_table').hide();
                 }
             })
         });
         $(document).ready(function () {
             $('select').select2();
         });
+        $(".delete").on('click', function() {
+            $('.case:checkbox:checked').parents("tr").remove();
+            $('.check_all').prop("checked", false);
+            check();
+
+        });
+        var i=2;
+        $(".addmore").on('click',function(){
+            count=$('table tr').length;
+            var data="<tr><td><input type='checkbox' class='case'/></td>";
+            data +="<td><input type='text' class='form-control form-control-sm' id='product"+i+"' name='product[]'/></td> <td><input type='text' class='form-control form-control-sm' id='variant"+i+"' name='variant[]'/></td><td><input type='text' class='form-control form-control-sm' id='qty"+i+"' name='qty[]'/></td></tr>";
+            $('table').append(data);
+            i++;
+        });
+
+        function select_all() {
+            $('input[class=case]:checkbox').each(function(){
+                if($('input[class=check_all]:checkbox:checked').length == 0){
+                    $(this).prop("checked", false);
+                } else {
+                    $(this).prop("checked", true);
+                }
+            });
+        }
+
+        function check(){
+            obj = $('table tr').find('span');
+            $.each( obj, function( key, value ) {
+                id=value.id;
+                $('#'+id).html(key+1);
+            });
+        }
     </script>
 @endsection

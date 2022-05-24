@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\approval_comment;
+use App\Models\approval_items;
 use App\Models\Approvalrequest;
 use App\Models\Cc_of_approval;
 use App\Models\Customer;
 use App\Models\Employee;
+use App\Models\RequestItem;
+use App\Models\Warehouse;
 use App\Traits\NotifyTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -91,7 +94,8 @@ class ApprovalController extends Controller
     {
         $all_emp=Employee::all();
         $customer=Customer::all();
-        return view('approval.create',compact('all_emp','customer'));
+        $warehouse=Warehouse::all();
+        return view('approval.create',compact('all_emp','customer','warehouse'));
     }
 
     /**
@@ -132,6 +136,7 @@ class ApprovalController extends Controller
         $approval->location=$request->location??'';
         $approval->contact_id=$request->type=='Payment'?$request->contact:$request->supplier;
         $approval->quantity=$request->quantity??'';
+        $approval->warehouse_id=$request->warehouse_id;
         if($request->members!=null){
             $trip_member=json_encode($request->members);
         }
@@ -149,6 +154,18 @@ class ApprovalController extends Controller
             $approval->secondary_approved=$request->secondary_id;
         }
         $approval->save();
+        if($request->type=='Items Request'){
+            for($i=0;$i<count($request->product);$i++){
+                $item=new RequestItem();
+                $item->product_name=$request->product[$i];
+                $item->variant=$request->variant[$i];
+                $item->qty=$request->qty[$i];
+                $item->approval_id=$approval->id;
+                $item->save();
+            }
+
+        }
+
 
 
         $approver=Employee::where('id',$request->approve_id)->first();
@@ -204,7 +221,7 @@ class ApprovalController extends Controller
      */
     public function show($id)
     {
-        $details_approval=Approvalrequest::with('approver','secondary_approver','request_emp','contact')->where('id',$id)->firstOrFail();
+        $details_approval=Approvalrequest::with('approver','secondary_approver','request_emp','contact','item')->where('id',$id)->firstOrFail();
 //      dd($details_approval);
         $status=$this->approval_status;
         $doc_files=json_decode($details_approval->doc_file);
@@ -254,5 +271,15 @@ class ApprovalController extends Controller
         $approval=Approvalrequest::where('id',$id)->first();
         $approval->delete();
         return redirect()->back();
+    }
+    public function item_confirm($id){
+        $item=RequestItem::with('approval')->where('id',$id)->first();
+        if($item->approval->approved_id==Auth::guard('employee')->user()->id){
+            $item->approve=1;
+            $item->update();
+            return redirect()->back();
+        }else{
+          return redirect()->back()->with('error','Approver can only be approved each item');
+        }
     }
 }
