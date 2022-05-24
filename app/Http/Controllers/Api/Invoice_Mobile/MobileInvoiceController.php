@@ -473,7 +473,7 @@ class MobileInvoiceController extends Controller
                     $items->unit_price =$request->price ?? 0;
                     $items->total =$total ?? 0;
                     $items->discount_promotion=$request->discount;
-                    $items->creation_id = $request->invoice_id;
+                    $items->creation_id =\Illuminate\Support\Str::random(10);
                     $items->inv_id = $request->invoice_id;
                     $items->order_id = $request->order_id ?? null;
                     $items->state = 1;
