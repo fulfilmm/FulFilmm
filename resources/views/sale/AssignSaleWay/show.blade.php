@@ -32,7 +32,7 @@
                             @foreach($shop as $item)
                                 <form action="{{route('check',$item->id)}}" method="POST">
                                     @csrf
-                                    <input type="text" name="emp_location" class="location">
+                                    <input type="hidden" name="emp_location" class="location">
                                     <li class="mb-3">{{$item->shop->name}} <i
                                                 class="la la-{{$item->reach?'check':''}}"></i>
                                         <button type="submit"

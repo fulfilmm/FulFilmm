@@ -11,6 +11,8 @@
             <li><a class="{{ Request::is('sale/dashboard') ? 'active' : '' }}" href="{{ route('sale.dashboard') }}"
                    style="text-decoration: none">
                     Sale Dashboard</a></li>
+            <li><a class="{{ Request::is('summary') ? 'active' : '' }}"
+                   href="{{ route('summary.index') }}" style="text-decoration: none">Daily Summary</a></li>
         </ul>
     </li>
     <li class="submenu">
