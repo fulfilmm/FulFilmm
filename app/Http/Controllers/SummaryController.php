@@ -254,7 +254,7 @@ class SummaryController extends Controller
             $items=Stock::with('warehouse','variant','unit')->where('warehouse_id',Auth::guard('employee')->user()->warehouse_id)->get();
             $each_balance=DB::table("stocks")
                 ->select(DB::raw("SUM(stock_balance) as total"))
-                ->where('warehouse_id',$emp->warehouse_id)
+                ->where('warehouse_id',$auth->warehouse_id)
                 ->get();
             $total_balance=$each_balance[0]->total;
             foreach ($items as $item){
@@ -269,8 +269,7 @@ class SummaryController extends Controller
                 ->select(DB::raw("SUM(due_amount) as total"))
                 ->where('emp_id',$request->emp_id)
                 ->whereBetween('invoice_date', [$start, $end])->get();
-            $search_emp=Employee::where('id',$request->emp_id)->first();
-            $cash_in_transit=$search_emp->amount_in_hand;
+            $cash_in_transit=$auth->amount_in_hand;
             $total_sold=0;
             foreach ($invoice as $inv) {
                 $orderitem = OrderItem::with('variant', 'unit', 'invoice')->where('inv_id', $inv->id)->get();
