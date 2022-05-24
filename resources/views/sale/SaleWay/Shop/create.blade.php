@@ -71,30 +71,28 @@
             </div>
             <div id="map" style="width: 100%; height: 600px;"> </div>
             <script type="text/javascript">
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(function (p) {
-                        var LatLng = new google.maps.LatLng(p.coords.latitude, p.coords.longitude);
-                        var mapOptions = {
-                            center: LatLng,
-                            zoom: 13,
-                            mapTypeId: google.maps.MapTypeId.ROADMAP
-                        };
-                        var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-                        var marker = new google.maps.Marker({
-                            position: LatLng,
-                            map: map,
-                            title: "<div style = 'height:60px;width:200px'><b>Your location:</b><br />Latitude: " + p.coords.latitude + "<br />Longitude: " + p.coords.longitude
-                        });
-                        google.maps.event.addListener(marker, "click", function (e) {
-                            var infoWindow = new google.maps.InfoWindow();
-                            infoWindow.setContent(marker.title);
-                            infoWindow.open(map, marker);
-                        });
-                        $('#location').val(p.coords.latitude+","+p.coords.longitude);
-                    });
-                } else {
-                    alert('Geo Location feature is not supported in this browser.');
-                }
+                // $(function() {
+                //     $("#map").googleMap();
+                //     $("#map").addMarker({
+                //         coords: [16.8350397982278,96.11916573126366], // GPS coords
+                //         // icon: 'http://www.tiloweb.com/wp-content/uploads/2012/04/logo-e1335400790554.png',
+                //         title: '<i class="fa fa-user"></i> Marker n°1', // Title
+                //         // icon:'<img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.vectorstock.com%2Froyalty-free-vector%2Fcar-simple-icon1-resize-vector-12351742&psig=AOvVaw1RdcLxM4T0h9f6qgGh1TnA&ust=1651284252064000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCMjKnq2XuPcCFQAAAAAdAAAAABAD">',
+                //         text:  '<b>Lorem ipsum</b> dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' // HTML content
+                //     });
+                // });
+                var map = document.getElementById('map');
+                // Initialize LocationPicker plugin
+                var lp = new locationPicker(map, {
+                    setCurrentPosition: true, // You can omit this, defaults to true
+                }, {
+                    zoom: 12 // You can set any google map options here, zoom defaults to 15
+                });
+                google.maps.event.addListener(lp.map, 'idle', function (event) {
+                    // Get current location and show it in HTML
+                    var location = lp.getMarkerPosition();
+                    document.getElementById("location").value=location.lat+','+location.lng;
+                });
             </script>
         </div>
         <!-- /Content End -->
