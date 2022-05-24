@@ -252,10 +252,8 @@ class MobileInvoiceController extends Controller
                 $newInvoice->emp_id = Auth::guard('api')->user()->id;
                 $newInvoice->branch_id=Auth::guard('api')->user()->office_branch_id;
                 $newInvoice->save();
-
-
-                $order_item = json_decode($request -> order_items);
-                $foc_item = json_decode($request -> foc_items);
+                $order_item = json_decode($request->order_items);
+                $foc_item = json_decode($request->foc_items);
                 if(count($order_item)!=0){
 
                     foreach ($order_item as $item){
@@ -267,7 +265,7 @@ class MobileInvoiceController extends Controller
                 if(count($foc_item)!=0){
                     foreach ($foc_item as $foc){
                         $foc_data=$foc;
-                        $foc_data['invoice_id']=$newInvoice->id;
+                        $foc_data->invoice_id=$newInvoice->id;
                         $this->foc_add($foc_data);
                     }
                 }
@@ -406,7 +404,7 @@ class MobileInvoiceController extends Controller
         $update_inv->due_date = Carbon::create($request->due_date);
         $update_inv->other_information = $request->more_info;
         $update_inv->grand_total = $request->inv_grand_total;
-        $update_inv->status = "Done";
+        $update_inv->status = "Draft";
         $update_inv->order_id = $request->order_id;
         $update_inv->send_email = isset($request->save_type) ? 1 : 0;
         $update_inv->payment_method = $request->payment_method;
@@ -428,8 +426,8 @@ class MobileInvoiceController extends Controller
         $update_inv->update();
 
 
-        $order_item = json_decode($request -> order_items);
-        $foc_item = json_decode($request -> foc_items);
+        $order_item = json_decode($request->order_items);
+        $foc_item = json_decode($request->foc_items);
 
         if(count($order_item)!=0){
 
