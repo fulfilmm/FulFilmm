@@ -350,7 +350,7 @@ class MobileInvoiceController extends Controller
      * @return \Illuminate\Http\Response
      */
    public function edit($id){
-       $Auth=Auth::guard('employee')->user();
+       $Auth=Auth::guard('api')->user();
        $invoice=Invoice::with('customer','employee','tax','order')->where('id',$id)->firstOrFail();
        $allcustomers = Customer::where('branch_id',$Auth->office_branch_id)->where('region_id',$Auth->region_id)->get();
        $taxes = products_tax::all();
