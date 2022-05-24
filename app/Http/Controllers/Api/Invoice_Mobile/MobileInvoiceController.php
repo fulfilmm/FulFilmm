@@ -40,6 +40,7 @@ use Illuminate\Support\Facades\Mail;
 
 
 use Illuminate\Support\Facades\Auth;
+use Psy\Util\Str;
 
 
 class MobileInvoiceController extends Controller
@@ -488,7 +489,7 @@ class MobileInvoiceController extends Controller
             $items->unit_price = 0;
             $items->sell_unit = $request->unit_id;
             $items->total = 0;
-            $items->creation_id = $request->invoice_id;
+            $items->creation_id =\Illuminate\Support\Str::random(10);
             $items->inv_id = $request->invoice_id;
             $items->order_id = $request->order_id ?? null;
             $items->state = 1;
