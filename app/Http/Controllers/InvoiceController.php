@@ -509,10 +509,10 @@ class InvoiceController extends Controller
         $status=$this->status;
         $unit_price=SellingUnit::where('active',1)->get();
         if($invoice->inv_type=='Retail Sale') {
-            $prices = product_price::where('sale_type', 'Retail Sale')->where('active', 1)->where('branch_id', Auth::guard('employee')->user()->office_branch_id)->get();
+            $prices = product_price::where('sale_type', 'Retail Sale')->where('active', 1)->where('region_id', Auth::guard('employee')->user()->region_id)->get();
             $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))->whereDate('end_date','>=',date('Y-m-d'))->where('sale_type','Retail Sale')->get();
         }else{
-            $prices = product_price::where('sale_type', 'Whole Sale')->where('active', 1)->where('branch_id', Auth::guard('employee')->user()->office_branch_id)->get();
+            $prices = product_price::where('sale_type', 'Whole Sale')->where('active', 1)->where('region_id', Auth::guard('employee')->user()->region_id)->get();
             $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))->whereDate('end_date','>=',date('Y-m-d'))->where('sale_type','Whole Sale')->get();
         }
         $dis_promo=DiscountPromotion::where('sale_type',$invoice->inv_type)->get();
