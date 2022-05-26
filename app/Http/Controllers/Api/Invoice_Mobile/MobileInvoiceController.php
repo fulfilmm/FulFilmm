@@ -253,20 +253,12 @@ class MobileInvoiceController extends Controller
                 $newInvoice->branch_id=Auth::guard('api')->user()->office_branch_id;
                 $newInvoice->save();
                 $order_item = json_decode($request->order_items);
-                $foc_item = json_decode($request->foc_items);
                 if(count($order_item)!=0){
 
                     foreach ($order_item as $item){
                         $item->invoice_id=$newInvoice->id;
                         $item->type='invoice';
                         $this->item_store($item);
-                    }
-                }
-                if(count($foc_item)!=0){
-                    foreach ($foc_item as $foc){
-                        $foc_data=$foc;
-                        $foc_data->invoice_id=$newInvoice->id;
-                        $this->foc_add($foc_data);
                     }
                 }
                 return response()->json(['message'=>'success','invoice_id'=>$newInvoice->id]);
@@ -363,13 +355,13 @@ class MobileInvoiceController extends Controller
        $focs = Freeofchare::with('variant')->where('branch_id',$Auth->office_branch_id)->get();
        $invoice_item=OrderItem::with('variant','unit')->where("inv_id",$invoice->id)->get();
        $warehouse =Warehouse::where('branch_id', $Auth->office_branch_id)
-         ->where('id',$invoice->warehouse_id)
-           ->first();
+                    ->where('id',$invoice->warehouse_id)
+                    ->first();
        $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))
-           ->whereDate('end_date','>=',date('Y-m-d'))
-           ->where('sale_type',$invoice->inv_type)
+                    ->whereDate('end_date','>=',date('Y-m-d'))
+                    ->where('sale_type',$invoice->inv_type)
 //                ->where('region_id',$Auth->regioin_id)
-           ->get();
+                    ->get();
        $companies=Company::select('id','name')->get();
        $zone=SaleZone::where('region_id',$Auth->region_id)->get();
        $region=Region::where('branch_id',$Auth->office_branch_id)->get();
@@ -434,7 +426,8 @@ class MobileInvoiceController extends Controller
             foreach ($order_item as $item){
                 $item->invoice_id=$update_inv->id;
                 $item->type='invoice';
-                $this->item_store($item);
+                $this->item_update($item);
+
             }
         }
         if(count($foc_item)!=0){
@@ -478,6 +471,27 @@ class MobileInvoiceController extends Controller
                     $items->save();
         }
 
+    }
+    public function item_update($request){
+        $variant = ProductVariations::where('id', $request->variant_id)->first();
+        if ($request->type == 'invoice') {
+            $sub_total=$request->qty*$request->price;
+            $discount=($request->discount/100)*$sub_total;
+            $total=$sub_total-$discount;
+            $items = new OrderItem();
+            $items->description =$variant->description;
+            $items->quantity =$request->qty;
+            $items->variant_id = $request->variant_id;
+            $items->sell_unit = $request->unit_id;
+            $items->unit_price =$request->price ?? 0;
+            $items->total =$total ?? 0;
+            $items->discount_promotion=$request->discount;
+            $items->creation_id =\Illuminate\Support\Str::random(10);
+            $items->inv_id = $request->invoice_id;
+            $items->order_id = $request->order_id ?? null;
+            $items->state = 1;
+            $items->update();
+        }
     }
     public function foc_add($request){
             $items = new OrderItem();
