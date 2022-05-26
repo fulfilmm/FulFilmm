@@ -479,12 +479,12 @@ class MobileInvoiceController extends Controller
             $total=$sub_total-$discount;
             $items = OrderItem::where('id',$request->id)->first();
             $items->description =$variant->description;
-            $items->quantity =$request->qty;
+            $items->quantity =$request->quantity;
             $items->variant_id = $request->variant_id;
-            $items->sell_unit = $request->unit_id;
-            $items->unit_price =$request->price ?? 0;
+            $items->sell_unit = $request->sell_unit;
+            $items->unit_price =$request->unit_price ?? 0;
             $items->total =$total ?? 0;
-            $items->discount_promotion=$request->discount;
+            $items->discount_promotion=$request->discount_promotion;
             $items->creation_id =\Illuminate\Support\Str::random(10);
             $items->inv_id = $request->invoice_id;
             $items->order_id = $request->order_id ?? null;
