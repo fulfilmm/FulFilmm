@@ -484,7 +484,7 @@ class MobileInvoiceController extends Controller
             $sub_total=$request->qty*$request->price;
             $discount=($request->discount/100)*$sub_total;
             $total=$sub_total-$discount;
-            $items = new OrderItem();
+            $items = OrderItem::where('id',$request->id)->first();
             $items->description =$variant->description;
             $items->quantity =$request->qty;
             $items->variant_id = $request->variant_id;
