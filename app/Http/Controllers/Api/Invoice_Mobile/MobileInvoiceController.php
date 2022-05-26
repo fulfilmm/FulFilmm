@@ -474,7 +474,7 @@ class MobileInvoiceController extends Controller
     public function item_update($request){
         $variant = ProductVariations::where('id', $request->variant_id)->first();
         if ($request->type == 'invoice') {
-            $sub_total=$request->quantity*$request->price;
+            $sub_total=$request->quantity*$request->unit_price;
             $discount=($request->discount_promotion/100)*$sub_total;
             $total=$sub_total-$discount;
             $items = OrderItem::where('id',$request->id)->first();
