@@ -433,13 +433,6 @@ class MobileInvoiceController extends Controller
 
                 }
             }
-            if (count($foc_item) != 0) {
-                foreach ($foc_item as $foc) {
-                    $foc_data = $foc;
-                    $foc_data['invoice_id'] = $update_inv->id;
-                    $this->foc_add($foc_data);
-                }
-            }
         }catch (\Exception $e){
             return response()->json(['message'=>$e->getMessage()]);
         }
