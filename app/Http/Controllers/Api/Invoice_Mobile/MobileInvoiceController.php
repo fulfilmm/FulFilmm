@@ -474,8 +474,8 @@ class MobileInvoiceController extends Controller
     public function item_update($request){
         $variant = ProductVariations::where('id', $request->variant_id)->first();
         if ($request->type == 'invoice') {
-            $sub_total=$request->qty*$request->price;
-            $discount=($request->discount/100)*$sub_total;
+            $sub_total=$request->quantity*$request->price;
+            $discount=($request->discount_promotion/100)*$sub_total;
             $total=$sub_total-$discount;
             $items = OrderItem::where('id',$request->id)->first();
             $items->description =$variant->description;
@@ -484,7 +484,7 @@ class MobileInvoiceController extends Controller
             $items->sell_unit = $request->sell_unit;
             $items->unit_price =$request->unit_price ?? 0;
             $items->total =$total ?? 0;
-            $items->discount_promotion=$request->discount_promotion;
+            $items->discount_promotion=$discount;
             $items->creation_id =\Illuminate\Support\Str::random(10);
             $items->inv_id = $request->invoice_id;
             $items->order_id = $request->order_id ?? null;
