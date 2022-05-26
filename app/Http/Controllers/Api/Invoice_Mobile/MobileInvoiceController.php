@@ -422,7 +422,6 @@ class MobileInvoiceController extends Controller
 
 
             $order_item = json_decode($request->order_items);
-            $foc_item = json_decode($request->foc_items);
 
             if (count($order_item) != 0) {
 
@@ -433,6 +432,7 @@ class MobileInvoiceController extends Controller
 
                 }
             }
+            return response()->json(['message'=>'Success']);
         }catch (\Exception $e){
             return response()->json(['message'=>$e->getMessage()]);
         }
