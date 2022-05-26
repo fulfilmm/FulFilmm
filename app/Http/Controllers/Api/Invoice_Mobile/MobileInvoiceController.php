@@ -389,7 +389,7 @@ class MobileInvoiceController extends Controller
     {
         try {
             $tax_amount = ($request->tax_rate / 100) * $request->total;
-            $update_inv = Invoice::where('id', $id);
+            $update_inv = Invoice::where('id', $id)->first();
             $update_inv->title = $request->title;
             $update_inv->customer_id = $request->client_id;
             $update_inv->email = $request->client_email;
