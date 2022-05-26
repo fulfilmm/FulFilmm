@@ -17,6 +17,7 @@ use App\Models\Transaction;
 use App\Models\TransactionCategory;
 use Carbon\Carbon;
 use http\Env\Response;
+use http\Exception;
 use Illuminate\Http\Request;
 
 use App\Models\MainCompany;
@@ -221,6 +222,7 @@ class MobileInvoiceController extends Controller
                 $invoice_id = ($prefix ?: 'INV') . "-0001";
             }
             try{
+                $tax_amount=($request->tax_rate/100)*$request->total;
                 $newInvoice = new Invoice();
                 $newInvoice->title = $request->title;
                 $newInvoice->invoice_id = $invoice_id;
@@ -239,7 +241,7 @@ class MobileInvoiceController extends Controller
                 $newInvoice->tax_id = $request->tax_id;
                 $newInvoice->total = $request->total;
                 $newInvoice->discount = $request->discount;
-                $newInvoice->tax_amount = $request->tax_amount;
+                $newInvoice->tax_amount =$tax_amount;
                 $newInvoice->tax_rate=$request->tax_rate;
                 $newInvoice->invoice_type = $request->invoice_type;
                 $newInvoice->delivery_fee = $request->delivery_fee;
@@ -385,57 +387,61 @@ class MobileInvoiceController extends Controller
 
     public function update(Request $request, $id)
     {
+        try {
+            $tax_amount = ($request->tax_rate / 100) * $request->total;
+            $update_inv = Invoice::where('id', $id);
+            $update_inv->title = $request->title;
+            $update_inv->customer_id = $request->client_id;
+            $update_inv->email = $request->client_email;
+            $update_inv->customer_address = $request->client_address;
+            $update_inv->billing_address = $request->bill_address;
+            $update_inv->invoice_date = Carbon::create($request->inv_date);
+            $update_inv->due_date = Carbon::create($request->due_date);
+            $update_inv->other_information = $request->more_info;
+            $update_inv->grand_total = $request->inv_grand_total;
+            $update_inv->status = "Draft";
+            $update_inv->order_id = $request->order_id;
+            $update_inv->send_email = isset($request->save_type) ? 1 : 0;
+            $update_inv->payment_method = $request->payment_method;
+            $update_inv->tax_id = $request->tax_id;
+            $update_inv->total = $request->total;
+            $update_inv->discount = $request->discount;
+            $update_inv->tax_amount = $tax_amount;
+            $update_inv->tax_rate = $request->tax_rate;
+            $update_inv->invoice_type = $request->invoice_type;
+            $update_inv->delivery_fee = $request->delivery_fee;
+            $update_inv->due_amount = $request->inv_grand_total;
+            $update_inv->warehouse_id = $request->warehouse_id;
+            $update_inv->inv_type = $request->sale_type;
+            $update_inv->region_id = Auth::guard('api')->user()->region_id;
+            $update_inv->zone_id = $request->zone_id;
+            $update_inv->include_delivery_fee = $request->deli_fee_include == 'on' ? 1 : 0;
+            $update_inv->emp_id = Auth::guard('api')->user()->id;
+            $update_inv->branch_id = Auth::guard('api')->user()->office_branch_id;
+            $update_inv->update();
 
-        $update_inv =Invoice::where('id',$id);
-        $update_inv->title = $request->title;
-        $update_inv->customer_id = $request->client_id;
-        $update_inv->email = $request->client_email;
-        $update_inv->customer_address = $request->client_address;
-        $update_inv->billing_address = $request->bill_address;
-        $update_inv->invoice_date = Carbon::create($request->inv_date);
-        $update_inv->due_date = Carbon::create($request->due_date);
-        $update_inv->other_information = $request->more_info;
-        $update_inv->grand_total = $request->inv_grand_total;
-        $update_inv->status = "Draft";
-        $update_inv->order_id = $request->order_id;
-        $update_inv->send_email = isset($request->save_type) ? 1 : 0;
-        $update_inv->payment_method = $request->payment_method;
-        $update_inv->tax_id = $request->tax_id;
-        $update_inv->total = $request->total;
-        $update_inv->discount = $request->discount;
-        $update_inv->tax_amount = $request->tax_amount;
-        $update_inv->tax_rate=$request->tax_rate;
-        $update_inv->invoice_type = $request->invoice_type;
-        $update_inv->delivery_fee = $request->delivery_fee;
-        $update_inv->due_amount = $request->inv_grand_total;
-        $update_inv->warehouse_id = $request->warehouse_id;
-        $update_inv->inv_type = $request->sale_type;
-        $update_inv->region_id=Auth::guard('api')->user()->region_id;
-        $update_inv->zone_id=$request->zone_id;
-        $update_inv->include_delivery_fee=$request->deli_fee_include=='on'?1:0;
-        $update_inv->emp_id = Auth::guard('api')->user()->id;
-        $update_inv->branch_id=Auth::guard('api')->user()->office_branch_id;
-        $update_inv->update();
 
+            $order_item = json_decode($request->order_items);
+            $foc_item = json_decode($request->foc_items);
 
-        $order_item = json_decode($request->order_items);
-        $foc_item = json_decode($request->foc_items);
+            if (count($order_item) != 0) {
 
-        if(count($order_item)!=0){
+                foreach ($order_item as $item) {
+                    $item->invoice_id = $update_inv->id;
+                    $item->type = 'invoice';
+                    $this->item_update($item);
 
-            foreach ($order_item as $item){
-                $item->invoice_id=$update_inv->id;
-                $item->type='invoice';
-                $this->item_update($item);
-
+                }
             }
-        }
-        if(count($foc_item)!=0){
-            foreach ($foc_item as $foc){
-                $foc_data=$foc;
-                $foc_data['invoice_id']=$update_inv->id;
-                $this->foc_add($foc_data);
+            if (count($foc_item) != 0) {
+                foreach ($foc_item as $foc) {
+                    $foc_data = $foc;
+                    $foc_data['invoice_id'] = $update_inv->id;
+                    $this->foc_add($foc_data);
+                }
             }
+        }catch (\Exception $e){
+            return response()->json(['message'=>$e->getMessage()]);
         }
     }
 
