@@ -85,33 +85,6 @@ class TransactionController extends Controller
     public function store_revenue(Request $request)
     {
 //        dd($request->all());
-        if ($request->advance_id) {
-            $revenue = Revenue::where('advance_pay_id', $request->advance_id)->first();
-            $revenue->invoice_id = $request->invoice_id;
-            if (isset($request->attachment)) {
-                if ($request->attachment != null) {
-                    $attach = $request->file('attachment');
-                    $input['filename'] = \Illuminate\Support\Str::random(10) . time() . '.' . $attach->extension();
-                    $request->attachment->move(public_path() . '/attach_file', $input['filename']);
-
-                }
-                $revenue->attachment = $input['filename'];
-            }
-            $revenue->reference = $request->reference;
-            $revenue->update();
-            if (isset($request->invoice_id)) {
-                $inv = Invoice::where('id', $request->invoice_id)->first();
-                $inv->due_amount = $inv->due_amount - $request->amount;
-                $inv->update();
-                $customer = Customer::where('id', $inv->customer_id)->first();
-                $customer->update();
-                return redirect(route('invoices.show', $request->invoice_id))->with('success', 'Add New Revenue Successful');
-            } else {
-                $last_tran = Transaction::orderBy('id', 'desc')->first();
-                return redirect(route('transactions.show', $last_tran->id))->with('success', 'Add New Revenue Successful');
-            }
-
-        } else {
             $this->validate($request, [
                 'transaction_date' => 'required',
                 'amount' => 'required',
@@ -173,6 +146,11 @@ class TransactionController extends Controller
                     $new_revenue->approve = 1;
                 }
                 $new_revenue->save();
+                if($request->advance=='on'){
+                    $customer=Customer::where('id',$request->customer_id)->first();
+                    $customer->advance_balance-=$request->amount;
+                    $customer->update();
+                }
                 if (isset($request->invoice_id)) {
                     $inv = Invoice::where('id', $request->invoice_id)->first();
                     $employee = Employee::where('id', $inv->emp_id)->first();
@@ -205,7 +183,7 @@ class TransactionController extends Controller
                 $last_tran = Transaction::orderBy('id', 'desc')->first();
                 return redirect(route('transactions.show', $last_tran->id))->with('success', 'Add New Revenue Successful');
             }
-        }
+
     }
     public function revenue_edit($id)
     {
