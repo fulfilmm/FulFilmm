@@ -24,15 +24,33 @@ class AdvancePaymentController extends Controller
        if(Auth::guard('employee')->check())
        {
            $auth=Auth::guard('employee')->user();
+
            if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'){
-               $advancepayment=AdvancePayment::with('customer','emp','order','account')->get();
+               $advancepayment=Customer::where('advance_balance','>',0)->get();
+               $history=AdvancePayment::with('approver','emp')->get();
+               $customer=Customer::all();
+               $employee=Employee::all();
+               $approver=[];
+               foreach ($employee as $emp){
+                   if($emp->role->name=='Cashier'){
+                       array_push($approver,$emp);
+                   }
+               }
            }else{
-               $advancepayment=AdvancePayment::with('customer','emp','order','account')->where('emp_id',$auth->id)->get();
+               $advancepayment=Customer::where('advance_balance','>',0)->where('emp_id',$auth->id)->get();
+               $history=AdvancePayment::with('approver','emp')->get();
+               $employee=Employee::where('office_branch_id',$auth->office_branch_id)->get();
+               $customer=Customer::where('branch_id',$auth->office_branch_id)->get();
+               foreach ($employee as $emp){
+                   if($emp->role->name=='Cashier'){
+                       array_push($approver,$emp);
+                   }
+               }
            }
        }else{
-           $advancepayment=AdvancePayment::with('customer','emp','order','account')->where('customer_id',Auth::guard('customer')->user()->id)->get();
+           $advancepayment=AdvancePayment::with('customer','emp','approver')->where('customer_id',Auth::guard('customer')->user()->id)->get();
        }
-        return view('transaction.advancepayment',compact('advancepayment'));
+        return view('transaction.advancepayment',compact('advancepayment','history','customer','approver'));
     }
 
     /**
@@ -53,8 +71,12 @@ class AdvancePaymentController extends Controller
      */
     public function store(Request $request)
     {
+//        dd($request->all());
         try {
             AdvancePayment::create($request->all());
+            $customer=Customer::where('id',$request->customer_id)->first();
+            $customer->advance_balance+=$request->amount;
+            $customer->update();
         }catch (Exception $e){
             return $e->getMessage();
         }
@@ -69,9 +91,9 @@ class AdvancePaymentController extends Controller
         $payment_method=['Cash','eBanking','WaveMoney','KBZ Pay'];
         $category=TransactionCategory::all();
         $emps=Employee::all();
-        $customer=Customer::orWhere('customer_type','Customer')->orWhere('customer_type','Lead')->orWhere('customer_type','Partner')->orWhere('customer_type','Inquery')->get();
+        $customer=Customer::where('id',$advance->customer_id)->get();
         $data=['emps'=>$emps,'customers'=>$customer,'account'=>$account,'recurring'=>$recurring,'payment_method'=>$payment_method,'category'=>$category];
-        return view('transaction.revenue',compact('data','advance'));
+        return view('transaction.Revenue.create',compact('data','advance'));
     }
 
     /**
