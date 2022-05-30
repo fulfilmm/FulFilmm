@@ -154,7 +154,12 @@ class MobileInvoiceController extends Controller
                 ->where('start_date','<=',Carbon::today())->where('end_date','>=',Carbon::today())
                 ->where('region_id',$Auth->region_id)
                 ->get();
-            $focs=Freeofchare::with('variant')->where('branch_id',$Auth->office_branch_id)->get();
+            $foc_item=Freeofchare::with('variant')->where('branch_id',$Auth->office_branch_id)->get();
+            $focs=[];
+            foreach ($foc_item as $item){
+                $item->unit=SellingUnit::where('product_id',$item->variant->product_id)->get();
+                array_push($focs,$item);
+            }
             $type='Retail Sale';
             $Auth=Auth::guard('api')->user();
             if(Auth::guard('api')->user()->mobile_seller==1){
