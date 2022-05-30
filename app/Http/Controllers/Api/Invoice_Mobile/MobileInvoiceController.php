@@ -292,7 +292,12 @@ class MobileInvoiceController extends Controller
         $customer = Customer::orWhere('customer_type', 'Customer')->orWhere('customer_type', 'Lead')->orWhere('customer_type', 'Partner')->orWhere('customer_type', 'Inquery')->get();
         $company=MainCompany::where('ismaincompany',true)->first();
         $detail_inv=Invoice::with('customer','employee','tax','order')->where('id',$id)->firstOrFail();
-        $invoic_item=OrderItem::with('variant','unit')->where("inv_id",$detail_inv->id)->get();
+        $items=OrderItem::with('variant','unit')->where("inv_id",$detail_inv->id)->get();
+        $invoic_item=[];
+        foreach ($items as $item){
+            $item->all_unit=SellingUnit::where('product_id',$item->variant->product_id)->get();
+            array_push($invoic_item,$item);
+        }
         $account=Account::where('enabled',1)->get();
         $recurring=['No','Daily','Weekly','Monthly','Yearly'];
         $payment_method=['Cash','eBanking','WaveMoney','KBZ Pay'];
