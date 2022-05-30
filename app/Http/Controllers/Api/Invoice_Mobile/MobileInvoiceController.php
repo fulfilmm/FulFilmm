@@ -90,7 +90,7 @@ class MobileInvoiceController extends Controller
            $foc_item = Freeofchare::with('variant')->where('branch_id',$Auth->office_branch_id)->get();
             $focs=[];
            foreach ($foc_item as $item){
-                $focs->unit=SellingUnit::where('product_id',$item->variant->product_id)->get();
+                $item->unit=SellingUnit::where('product_id',$item->variant->product_id)->get();
                 array_push($focs,$item);
             }
             $type = 'Whole Sale';
