@@ -17,4 +17,7 @@ class OrderItem extends Model
     public function unit(){
         return $this->belongsTo(SellingUnit::class,'sell_unit','id');
     }
+    public function allunit(){
+        return $this->hasMany(SellingUnit::class,'product_id','product_id');
+    }
 }
