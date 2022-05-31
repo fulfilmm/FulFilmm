@@ -60,11 +60,12 @@
                         <thead>
                         <tr>
                             <th></th>
-                            <th></th>
+                            <th>Product Code</th>
                             <th>Name</th>
                             <th>MainCategory</th>
                             <th>Sub Category</th>
                             <th>Brand</th>
+                            <th>Add Variant</th>
                             <th>Action</th>
                         </tr>
                         </thead>
@@ -72,13 +73,14 @@
                         {{--@dd($products)--}}
                         @foreach($products as $product)
                             <tr>
-                                <td><button id="collapse{{$product->id}}" class="btn btn-purple btn-sm rounded-circle" type="button" data-toggle="collapse" data-target="#variant{{$product->id}}" style="font-size: 10px;" ><i class="fa fa-plus" id="{{$product->id}}"></i></button>
-                                </td>
+                                {{--<td><button id="collapse{{$product->id}}" class="btn btn-purple btn-sm rounded-circle" type="button" data-toggle="collapse" data-target="#variant{{$product->id}}" style="font-size: 10px;" ><i class="fa fa-plus" id="{{$product->id}}"></i></button>--}}
+                                {{--</td>--}}
                                 <td>
 
                                     <img src="{{url(asset('/product_picture/'.$product->image))}}" alt="" class="border mr-2 ml-2"
                                          style="max-height:50px;max-width:50px;border: solid">
                                 </td>
+                                <th>{{$product->product_code}}</th>
                                 <td>
                                     <a href="{{route("products.show",$product->id)}}">
                                         <span class="ml-3">{{$product->name}}</span></a>
@@ -88,39 +90,40 @@
                                     {{$product->sub_cat->name??''}}
                                 </td>
                                 <td>{{$product->brand->name??'None'}}</td>
+{{--                                <td><a href="{{route('create.variant',$product->id)}}" class="btn btn-outline-info btn-sm">Add Variant</a></td>--}}
                                 <td class="text-center">
-                                    <a href="{{route("products.show",$product->id)}}" class="btn btn-warning btn-sm"><i class="la la-eye"></i></a>
-                                    <a class="btn btn-white btn-sm" href="{{route("products.edit",$product->id)}}" ><i class="fa fa-pencil"></i> </a>
-                                    <a class="btn btn-secondary btn-sm" href="{{url("product/duplicate/$product->id")}}" ><i class="fa fa-copy"></i> </a>
-                                    <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#delete_product{{$product->id}}"><i class="fa fa-trash-o"></i> </a>
+                                    <a href="{{route("products.show",$product->id)}}" class="btn btn-warning btn-sm" title="Product detail view"><i class="la la-eye"></i></a>
+                                    <a class="btn btn-white btn-sm" href="{{route("products.edit",$product->id)}}" title="Product Edit"><i class="fa fa-pencil"></i> </a>
+                                    <a class="btn btn-secondary btn-sm" href="{{url("product/duplicate/$product->id")}}" title="Product Duplicate"><i class="fa fa-copy"></i> </a>
+                                    {{--<a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#delete_product{{$product->id}}"><i class="fa fa-trash-o"></i> </a>--}}
 
-                                    <div class="modal fade" id="delete_product{{$product->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Delete Product</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <form action="{{route("products.destroy",$product->id)}}" method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <div class="modal-body">
-                                                        <div class="text-center">
-                                                <span>
-                                                    Are you sure delete "{{$product->name}}"?
-                                              </span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="text-center">
-                                                        <button class="btn btn-outline-primary">Cancel</button>
-                                                        <button type="submit" class="btn btn-danger  my-2">Delete</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    {{--<div class="modal fade" id="delete_product{{$product->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">--}}
+                                        {{--<div class="modal-dialog" role="document">--}}
+                                            {{--<div class="modal-content">--}}
+                                                {{--<div class="modal-header">--}}
+                                                    {{--<h5 class="modal-title" id="exampleModalLabel">Delete Product</h5>--}}
+                                                    {{--<button type="button" class="close" data-dismiss="modal" aria-label="Close">--}}
+                                                        {{--<span aria-hidden="true">&times;</span>--}}
+                                                    {{--</button>--}}
+                                                {{--</div>--}}
+                                                {{--<form action="{{route("products.destroy",$product->id)}}" method="POST">--}}
+                                                    {{--@csrf--}}
+                                                    {{--@method('DELETE')--}}
+                                                    {{--<div class="modal-body">--}}
+                                                        {{--<div class="text-center">--}}
+                                                {{--<span>--}}
+                                                    {{--Are you sure delete "{{$product->name}}"?--}}
+                                              {{--</span>--}}
+                                                        {{--</div>--}}
+                                                    {{--</div>--}}
+                                                    {{--<div class="text-center">--}}
+                                                        {{--<button class="btn btn-outline-primary">Cancel</button>--}}
+                                                        {{--<button type="submit" class="btn btn-danger  my-2">Delete</button>--}}
+                                                    {{--</div>--}}
+                                                {{--</form>--}}
+                                            {{--</div>--}}
+                                        {{--</div>--}}
+                                    {{--</div>--}}
                                 </td>
                             </tr>
                             <tr id="variant{{$product->id}}" class="collapse multi-collapse">
@@ -139,7 +142,7 @@
                                            @foreach($variants as $item)
                                                 @if($item->product_id==$product->id)
                                                     <div class="row">
-                                                        <div class="col-md-3">{{$item->product_code}}</div>
+                                                        <div class="col-md-3">{{$item->item_code}}</div>
                                                         <div class="col-md-3">{{$item->variant}}</div>
                                                         <div class="col-md-3">{{$item->enable==0?'Disable':'Enable'}}</div>
                                                         <div class="col-md-3"><a href="{{route('show.variant',$item->id)}}" class="btn btn-white btn-sm"><i class="la la-eye"></i></a></div>

@@ -181,6 +181,8 @@ return [
         Barryvdh\DomPDF\ServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
         Sarfraznawaz2005\BackupManager\ServiceProvider::class,
+
+
     ],
 
     /*

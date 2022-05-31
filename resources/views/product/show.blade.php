@@ -47,20 +47,17 @@
         <!-- /Page Header -->
         <ul class="nav nav-tabs " id="myTab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+                <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+                   aria-selected="false"><i class="la la-cube mr-2"></i>Items</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
                    aria-selected="true"><i class="fa fa-list mr-2"></i>About Product</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
-                   aria-selected="false"><i class="la la-cube mr-2"></i>Variants</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#addnew" role="tab" aria-controls="profile"
-                   aria-selected="false"><i class="la la-plus mr-2"></i>Add NewVariants</a>
-            </li>
+
         </ul>
         <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <div class="card col-12 shadow">
                     <div class="card-header">
                         <h4>Product Specification</h4>
@@ -106,7 +103,7 @@
 
                 </div>
             </div>
-            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                 <div class="row">
                     <div class="col-12">
                         <div class="ml-2 col-md-4 col-12 float-right">
@@ -132,8 +129,7 @@
                            <th><input type="checkbox" name="all" id="checkall"></th>
                            <th></th>
                            <th>Product Name</th>
-                           <th>Product Code</th>
-                           <th>Serial Number</th>
+                           <th>Item Code</th>
                            <th>Variation</th>
                            <th>Disable/Enable</th>
                            <th>Price Rule</th>
@@ -150,21 +146,20 @@
                                </td>
                                <td> <img src="{{url(asset('/product_picture/'.$item->image))}}" alt="" class="border-0 mr-2 ml-2"
                                          style="max-height:50px;max-width:50px;border: solid"></td>
-                               <td>{{$item->product_name}}</td>
-                               <td><a href="{{route('show.variant',$item->id)}}"><strong>{{$item->product_code}}</strong></a></td>
-                               <td>{{$item->serial_no}}</td>
+                               <td>{{$item->product->name}}</td>
+                               <td><a href="{{route('show.variant',$item->id)}}"><strong>{{$item->item_code}}</strong></a></td>
                                <td>{{$item->variant}}</td>
                                <td>{{$item->enable==0?'Disable':'Enable'}}</td>
                                <td>{{$item->pricing_type?'Multiple Price Rule':'Single Price Rule'}}</td>
                                <td>{{$item->created_at->toFormattedDateString()}}</td>
                                <td>
                                    <div class="row">
-                                       <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#edit{{$item->id}}"><i class="la la-edit"></i></button>
-                                       <a href="{{route('show.variant',$item->id)}}" class="btn btn-white btn-sm"><i class="la la-eye"></i></a>
+                                       <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#edit{{$item->id}}" title="Item edit"><i class="la la-edit"></i></button>
+                                       <a href="{{route('show.variant',$item->id)}}" class="btn btn-white btn-sm" title="Item details view"><i class="la la-eye"></i></a>
                                        <form action="{{route('barcode.generate')}}" method="get">
                                            @csrf
                                            <input type="hidden" name="product_name" value="{{$item->id}}">
-                                           <button type="submit" class="btn btn-primary btn-sm"><i class="la la-barcode"></i></button>
+                                           <button type="submit" class="btn btn-primary btn-sm" title="Barcode Generate"><i class="la la-barcode"></i></button>
                                        </form>
                                    </div>
                                    <div id="edit{{$item->id}}" class="modal custom-modal fade" role="dialog">
@@ -244,70 +239,6 @@
                        </tbody>
                    </table>
                </div>
-            </div>
-            <div class="tab-pane fade" id="addnew" role="tabpanel" aria-labelledby="profile-tab">
-                <div class="col-12">
-                   <div class="card shadow-sm">
-                       <div class="col-12 my-3 mt-2">
-                           <form action="{{route('variant.store')}}" enctype="multipart/form-data" method="POST">
-                               @csrf
-                               <div class="row">
-                                   <input type="hidden" name="product_id" value="{{$product->id}}">
-                                   <div class="col-md-6">
-                                       <div class="form-group">
-                                           <label for="">Product Code</label>
-                                           <div class="input-group">
-                                               <input type="text" id="generate_code" name="product_code" class="form-control" value="{{old('product_code')}}"  required>
-                                               <button type="button" class="btn btn-white btn-sm" onclick="generatecode()" id="generate">Generate Product Code</button>
-                                           </div>
-                                           @error('product_code')
-                                           <span class="text-danger">{{$message}}</span>
-                                           @enderror
-                                       </div>
-                                   </div>
-                                   <div class="col-md-6">
-                                       <div class="form-group">
-                                           <label for="">Serial No.</label>
-                                           <input type="text" class="form-control" name="serial_no" value="{{old('serial_no')}}">
-                                       </div>
-                                   </div>
-                                   <div class="col-md-6">
-                                       <div class="form-group">
-                                           <label for="">Variant</label>
-                                           <input type="text" class="form-control" name="variant" value="{{old('variant')}}" placeholder='Enter this format : "Color:Red Size:XL"'>
-                                           @error('variant')
-                                           <span class="text-danger">{{$message}}</span>
-                                           @enderror
-                                       </div>
-                                   </div>
-                                   <div class="col-md-6">
-                                       <div class="form-group mt-5">
-                                           <input type="radio" name="pricing_type" value="0" id="single" checked>
-                                           <label for="single">Single Price</label>
-                                           <input type="radio" name="pricing_type" class="ml-3" value="1" id="multi">
-                                           <label for="multi">Multi Price</label>
-                                       </div>
-                                   </div>
-                                   <div class="col-md-12">
-                                       <div class="form-group">
-                                           <label for="">Images</label>
-                                           <input type="file" name="picture" class="form-control">
-                                       </div>
-                                   </div>
-                                   <div class="col-md-12">
-                                       <div class="form-group">
-                                           <label for="">Description</label>
-                                           <textarea name="description" class="form-control" id="description" cols="30" rows="10"></textarea>
-                                       </div>
-                                   </div>
-                                   <div class="col-12 text-center">
-                                       <button type="submit" class="btn btn-primary">Add</button>
-                                   </div>
-                               </div>
-                           </form>
-                       </div>
-                   </div>
-                </div>
             </div>
         </div>
     </div>

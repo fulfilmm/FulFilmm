@@ -30,7 +30,7 @@
                       <th>Supplier</th>
                       <th>Approver</th>
                       <th>Status</th>
-                      <th>Bill Status</th>
+                      {{--<th>Bill Status</th>--}}
                       <th>Receipt Status</th>
                       <th>Mail Status</th>
                       <th>Discount</th>
@@ -49,7 +49,7 @@
                           <td>{{$po->vendor->name}}</td>
                           <td>{{$po->approver_name->name}}</td>
                           <td>{{$po->status}}</td>
-                          <td>{{$po->paid_bill?'Paid':'Credit'}}</td>
+{{--                          <td>{{$po->paid_bill_bill?'Paid':'Credit'}}</td>--}}
                           <td>{{$po->is_receipt?'Receipted':'Un Receipted'}}</td>
                           <td>{{$po->sent?'Sent':'Unsent'}}</td>
                           <td>{{$po->discount}}</td>

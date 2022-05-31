@@ -162,6 +162,10 @@ class AccountController extends Controller
             $account->bank_phone = $request->bank_phone;
             $account->branch_id = $request->branch_id;
             $account->bank_address = $request->bank_address;
+            $account->head_office=$request->head_office;
+            if($account->head_account!=1){
+                $account->branch_id = $request->branch_id;
+            }
             $account->enabled = $request->enable ?? 0;
             $account->update();
             return redirect(route('accounts.show', $account->id));

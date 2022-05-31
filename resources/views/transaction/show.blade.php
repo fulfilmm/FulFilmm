@@ -228,7 +228,7 @@
         <script>
             function printContent(el) {
                 // document.title = ;
-                var restorepage = $('body').html();
+                const restorepage = $('body').html();
                 $('#myTab').remove();
                 var printcontent = $('#' + el).clone();
                 printcontent.append('<div class="row" style="position: fixed;bottom: 110px; left: 50px" ><div class="row justify-content-between"> <div class="col-12 text-center"><span>{{$company->web_link??''}}</span></div></div></div>');
@@ -241,4 +241,5 @@
                 $('body').html(restorepage);
             }
         </script>
-@endsection
+    </div>
+    @endsection

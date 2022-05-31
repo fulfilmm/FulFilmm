@@ -13,3 +13,4 @@ class SaleGroupMember extends Model
         return $this->belongsTo(Employee::class,'emp_id','id');
     }
 }
+

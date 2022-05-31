@@ -5,7 +5,7 @@
                 <!---employee menu start-->
             @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
                 <!--- Finance menu start -->
-                @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Accountant'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Finance Manager'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Cashier')
+                @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Accountant'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Finance Manager'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Regional Cashier'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Branch Cashier')
                     @include('menu.finance')
                     <!---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
                 @elseif(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Super Admin' ||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='CEO'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='General Manager')

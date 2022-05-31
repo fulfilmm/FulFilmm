@@ -92,7 +92,6 @@ class EmployeeController extends Controller
             $region = Region::where('branch_id', $auth->office_branch_id)->get();
         }
         $head_offices=HeadOffice::all();
-
         return view('employee.create', compact(
             'departments',
             'roles',

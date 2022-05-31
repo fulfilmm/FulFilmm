@@ -17,13 +17,12 @@ class CreateProductVariationsTable extends Migration
             $table->id();
             $table->bigInteger('product_id')->unsigned()->nullable();
             $table->string('product_name');
-            $table->text('description')->nullable();
-            $table->text('serial_no')->nullable();
             $table->double('purchase_price')->default(0.0)->nullable();
-            $table->string('product_code')->nullable();
+            $table->string('item_code')->nullable();
             $table->tinyInteger('enable')->default(0);
             $table->text('image')->nullable();
             $table->text('variant')->nullable();
+            $table->double('additional_price')->default(0);
             $table->tinyInteger('pricing_type')->default(0);//1 is multi 0 is single
             $table->timestamps();
         });

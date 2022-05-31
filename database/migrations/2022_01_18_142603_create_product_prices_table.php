@@ -27,6 +27,7 @@ class CreateProductPricesTable extends Migration
             $table->double('price');
             $table->bigInteger('region_id')->unsigned();
             $table->tinyInteger('active')->default(1);
+            $table->foreign('unit_id')->references('id')->on('selling_units')->onDelete('cascade');
             $table->timestamps();
         });
     }

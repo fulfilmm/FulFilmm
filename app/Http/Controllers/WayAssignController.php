@@ -12,7 +12,6 @@ use App\Models\WayReachShop;
 use App\Traits\NotifyTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
 class WayAssignController extends Controller
 {
 

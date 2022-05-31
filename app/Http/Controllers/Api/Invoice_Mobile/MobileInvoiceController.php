@@ -16,8 +16,6 @@ use App\Models\Stock;
 use App\Models\Transaction;
 use App\Models\TransactionCategory;
 use Carbon\Carbon;
-use http\Env\Response;
-use http\Exception;
 use Illuminate\Http\Request;
 
 use App\Models\MainCompany;
@@ -26,20 +24,13 @@ use App\Models\Customer;
 use App\Models\Company;
 use App\Models\Region;
 use App\Models\Warehouse;
-use App\Models\ProductVariant;
 use App\Models\SaleZone;
 use App\Models\product_price;
 use App\Models\SellingUnit;
-use App\Models\Freeofchare; 
+use App\Models\Freeofchare;
 use App\Models\DiscountPromotion;
 
 use Illuminate\Support\Facades\Validator;
-use Maatwebsite\Excel\Facades\Excel;
-use function PHPUnit\Framework\isEmpty;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
-
-
 use Illuminate\Support\Facades\Auth;
 use Psy\Util\Str;
 
@@ -87,9 +78,9 @@ class MobileInvoiceController extends Controller
                 ->where('start_date','<=',Carbon::today())->where('end_date','>=',Carbon::today())
                 ->where('region_id',$Auth->region_id)
                 ->get();
-           $foc_item = Freeofchare::with('variant')->where('branch_id',$Auth->office_branch_id)->get();
+            $foc_item = Freeofchare::with('variant')->where('branch_id',$Auth->office_branch_id)->get();
             $focs=[];
-           foreach ($foc_item as $item){
+            foreach ($foc_item as $item){
                 $item->unit=SellingUnit::where('product_id',$item->variant->product_id)->get();
                 array_push($focs,$item);
             }
@@ -357,48 +348,48 @@ class MobileInvoiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-   public function edit($id){
-       $Auth=Auth::guard('api')->user();
-       $invoice=Invoice::with('customer','employee','tax','order')->where('id',$id)->firstOrFail();
-       $allcustomers = Customer::where('branch_id',$Auth->office_branch_id)->where('region_id',$Auth->region_id)->get();
-       $taxes = products_tax::all();
-       $unit=SellingUnit::where('active',1)->get();
-       $prices =product_price::where('sale_type',$invoice->inv_type)->where('active',1)->where('region_id',$Auth->region_id)->get();
-       //dd($prices);
-       $dis_promo = DiscountPromotion::where('sale_type',$invoice->inv_type)
-           ->where('start_date','<=',Carbon::today())->where('end_date','>=',Carbon::today())
-           ->where('region_id',$Auth->region_id)
-           ->get();
-       $focs = Freeofchare::with('variant')->where('branch_id',$Auth->office_branch_id)->get();
-       $invoice_item=OrderItem::with('variant','unit')->where("inv_id",$invoice->id)->get();
-       $warehouse =Warehouse::where('branch_id', $Auth->office_branch_id)
-                    ->where('id',$invoice->warehouse_id)
-                    ->first();
-       $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))
-                    ->whereDate('end_date','>=',date('Y-m-d'))
-                    ->where('sale_type',$invoice->inv_type)
+    public function edit($id){
+        $Auth=Auth::guard('api')->user();
+        $invoice=Invoice::with('customer','employee','tax','order')->where('id',$id)->firstOrFail();
+        $allcustomers = Customer::where('branch_id',$Auth->office_branch_id)->where('region_id',$Auth->region_id)->get();
+        $taxes = products_tax::all();
+        $unit=SellingUnit::where('active',1)->get();
+        $prices =product_price::where('sale_type',$invoice->inv_type)->where('active',1)->where('region_id',$Auth->region_id)->get();
+        //dd($prices);
+        $dis_promo = DiscountPromotion::where('sale_type',$invoice->inv_type)
+            ->where('start_date','<=',Carbon::today())->where('end_date','>=',Carbon::today())
+            ->where('region_id',$Auth->region_id)
+            ->get();
+        $focs = Freeofchare::with('variant')->where('branch_id',$Auth->office_branch_id)->get();
+        $invoice_item=OrderItem::with('variant','unit')->where("inv_id",$invoice->id)->get();
+        $warehouse =Warehouse::where('branch_id', $Auth->office_branch_id)
+            ->where('id',$invoice->warehouse_id)
+            ->first();
+        $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))
+            ->whereDate('end_date','>=',date('Y-m-d'))
+            ->where('sale_type',$invoice->inv_type)
 //                ->where('region_id',$Auth->regioin_id)
-                    ->get();
-       $companies=Company::select('id','name')->get();
-       $zone=SaleZone::where('region_id',$Auth->region_id)->get();
-       $region=Region::where('branch_id',$Auth->office_branch_id)->get();
-       return response()->json([
-           'invoice'=>$invoice,
-           'invoice_item'=>$invoice_item,
-           'warehouse'=>$warehouse,
-           'customers'=>$allcustomers,
-           'tax'=>$taxes,
-           'unit'=>$unit,
-           'price'=>$prices,
-           'discount'=>$dis_promo,
-           'foc'=>$focs,
-           'amount_discount'=>$amount_discount,
-           'companies'=>$companies,
-           'zones'=>$zone,
-           'region'=>$region
+            ->get();
+        $companies=Company::select('id','name')->get();
+        $zone=SaleZone::where('region_id',$Auth->region_id)->get();
+        $region=Region::where('branch_id',$Auth->office_branch_id)->get();
+        return response()->json([
+            'invoice'=>$invoice,
+            'invoice_item'=>$invoice_item,
+            'warehouse'=>$warehouse,
+            'customers'=>$allcustomers,
+            'tax'=>$taxes,
+            'unit'=>$unit,
+            'price'=>$prices,
+            'discount'=>$dis_promo,
+            'foc'=>$focs,
+            'amount_discount'=>$amount_discount,
+            'companies'=>$companies,
+            'zones'=>$zone,
+            'region'=>$region
 
-       ]);
-   }
+        ]);
+    }
 
     public function update(Request $request, $id)
     {
@@ -467,22 +458,22 @@ class MobileInvoiceController extends Controller
     {
         $variant = ProductVariations::where('id', $request->variant_id)->first();
         if ($request->type == 'invoice') {
-                $sub_total=$request->qty*$request->price;
-                    $discount=($request->discount/100)*$sub_total;
-                    $total=$sub_total-$discount;
-                    $items = new OrderItem();
-                    $items->description =$variant->description;
-                    $items->quantity =$request->qty;
-                    $items->variant_id = $request->variant_id;
-                    $items->sell_unit = $request->unit_id;
-                    $items->unit_price =$request->price ?? 0;
-                    $items->total =$total ?? 0;
-                    $items->discount_promotion=$request->discount;
-                    $items->creation_id =\Illuminate\Support\Str::random(10);
-                    $items->inv_id = $request->invoice_id;
-                    $items->order_id = $request->order_id ?? null;
-                    $items->state = 1;
-                    $items->save();
+            $sub_total=$request->qty*$request->price;
+            $discount=($request->discount/100)*$sub_total;
+            $total=$sub_total-$discount;
+            $items = new OrderItem();
+            $items->description =$variant->description;
+            $items->quantity =$request->qty;
+            $items->variant_id = $request->variant_id;
+            $items->sell_unit = $request->unit_id;
+            $items->unit_price =$request->price ?? 0;
+            $items->total =$total ?? 0;
+            $items->discount_promotion=$request->discount;
+            $items->creation_id =\Illuminate\Support\Str::random(10);
+            $items->inv_id = $request->invoice_id;
+            $items->order_id = $request->order_id ?? null;
+            $items->state = 1;
+            $items->save();
         }
 
     }
@@ -508,19 +499,19 @@ class MobileInvoiceController extends Controller
         }
     }
     public function foc_add($request){
-            $items = new OrderItem();
-            $items->description = 'This is FOC item';
-            $items->quantity = 1;
-            $items->variant_id = $request->variant_id;
-            $items->unit_price = 0;
-            $items->sell_unit = $request->unit_id;
-            $items->total = 0;
-            $items->creation_id =\Illuminate\Support\Str::random(10);
-            $items->inv_id = $request->invoice_id;
-            $items->order_id = $request->order_id ?? null;
-            $items->state = 1;
-            $items->foc=true;
-            $items->save();
+        $items = new OrderItem();
+        $items->description = 'This is FOC item';
+        $items->quantity = 1;
+        $items->variant_id = $request->variant_id;
+        $items->unit_price = 0;
+        $items->sell_unit = $request->unit_id;
+        $items->total = 0;
+        $items->creation_id =\Illuminate\Support\Str::random(10);
+        $items->inv_id = $request->invoice_id;
+        $items->order_id = $request->order_id ?? null;
+        $items->state = 1;
+        $items->foc=true;
+        $items->save();
     }
     public function add_history($id,$status,$desc){
         $old_state=InvoiceHistory::where('invoice_id',$id)->where('status',$status)->first();

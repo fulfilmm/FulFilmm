@@ -24,6 +24,7 @@
                         <tr>
                             <th>Name</th>
                             <th>Region</th>
+                            <th>Branch Office</th>
                             <th>Action</th>
                         </tr>
                         </thead>
@@ -32,6 +33,11 @@
                             <tr>
                                 <td>{{$zone->name}}</td>
                                 <td>{{$zone->region->name}}</td>
+                                <td>@foreach($branch as $bh)
+                                        @if($bh->id==$zone->region->branch_id)
+                                            {{$bh->name}}
+                                            @endif
+                                    @endforeach</td>
                                 <td>
                                     <div class="row">
                                         <button type="button" data-toggle="modal" data-target="#edit_zone{{$zone->id}}" class="btn btn-success btn-sm"><i class="la la-edit"></i></button>

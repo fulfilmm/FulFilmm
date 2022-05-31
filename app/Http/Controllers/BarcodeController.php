@@ -16,7 +16,7 @@ class BarcodeController extends Controller
     }
     public function barcode(Request $request){
         $product=ProductVariations::where('id',$request->product_name)->first();
-        $type=$request->btype??'C128';
+        $type=$request->btype??'EAN13';
         $product_price=product_price::where('product_id',$request->product_name)->where('multi_price',0)->where('active',1)->first();
        if($product_price==null){
            return redirect()->back()->with('error','Firstly,Fix Product Selling Price');

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Exports\ProductExport;
+use App\Imports\ItemImport;
+use App\Imports\ProductCategoryImport;
 use App\Imports\ProductImport;
 use App\Jobs\ProductJob;
 use App\Models\Brand;
@@ -22,6 +24,7 @@ use Carbon\Carbon;
 use http\Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Intervention\Image\Facades\Image;
 use function Livewire\str;
 use Livewire\WithPagination;
@@ -71,6 +74,19 @@ class ProductController extends Controller
     public function store(Request $request)
     {
 //        dd($request->all());
+      if(isset($request->unit)){
+          $this->validate($request,[
+              'name'=>'required',
+              'unit.*'=>'required',
+              'unit_convert_rate.*'=>'required'
+
+          ]);
+      }else{
+          $this->validate($request,[
+              'name'=>'required',
+
+          ]);
+      }
 //
         $product = new product();
         $product->name = $request->name;
@@ -79,6 +95,7 @@ class ProductController extends Controller
         $product->cat_id = $request->mian_cat;
         $product->sub_cat_id = $request->sub_cat;
         $product->brand_id = $request->brand_id;
+        $product->product_code=$request->product_code;
         if (isset($request->picture)) {
 //            if ($request->picture != null) {
             $image = $request->file('picture');
@@ -93,13 +110,36 @@ class ProductController extends Controller
 
 
         $product->save();
-        return redirect("/products")->with("message", "Product Create Success");
+        if(isset($request->unit)){
+            for ($i=0;$i<count($request->unit);$i ++){
+                $data['product_id']=$product->id;
+                $data['unit']=$request->unit[$i];
+                $data['unit_convert_rate']=$request->unit_convert_rate[$i];
+                SellingUnit::create($data);
+            }
+        }
+        if(isset($request->has_variant)) {
+
+            return redirect('product/variant/create/'.$product->id)->with("message", "Product Create Success");
+        }else{
+           try{
+               $variation=new ProductVariations();
+               $variation->item_code=$request->product_code;
+               $variation->image=$input['imagename']??null;
+               $variation->product_name = $request->name;
+               $variation->product_id = $product->id;
+               $variation->save();
+           }catch (\Exception $e){
+               return redirect()->back()->with('danger',$e->getMessage());
+           }
+            return redirect('products')->with('success','Product create Successful');
+        }
 
     }
 
-    public function create_variant()
+    public function create_variant($id)
     {
-        $product = product::all()->pluck('name', 'id')->all();
+        $product = product::where('id',$id)->first();
         $supplier = Customer::where('customer_type', 'Supplier')->get();
         return view('product.variantadd', compact('product', 'supplier'));
     }
@@ -107,32 +147,33 @@ class ProductController extends Controller
     public function variant_add(Request $request)
     {
 //        dd($request->all());
+//        dd(count($request->variant));
         $this->validate($request, [
-            'product_code' => 'required',
             'variant' => 'required',
             'picture.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
         $product = product::where('id', $request->product_id)->first();
-        $variation = new ProductVariations();
-        if (isset($request->picture)) {
+
+        for($i=0;$i<count($request->variant);$i++){
+            $variation = new ProductVariations();
+            if (isset($request->picture[$i])) {
 //            if ($request->picture != null) {
-            $image = $request->file('picture');
-            $input['imagename'] = \Illuminate\Support\Str::random(16) . '.' . $image->extension();
+                $image = $request->file('picture')[$i];
+                $input['imagename'] = \Illuminate\Support\Str::random(16) . '.' . $image->extension();
 
-            $filePath = public_path('/product_picture/');
+                $filePath = public_path('/product_picture/');
 
-            $img = Image::make($image->path());
-            $img->save($filePath . '/' . $input['imagename']);
-            $variation->image = $input['imagename'];
+                $img = Image::make($image->path());
+                $img->save($filePath . '/' . $input['imagename']);
+                $variation->image = $input['imagename'];
+            }
+            $variation->product_name = $product->name;
+            $variation->product_id = $request->product_id;
+            $variation->variant=$request->variant[$i];
+            $variation->item_code =$request->variant[$i].'-'.$product->product_code;
+            $variation->additional_price=$request->additional_price[$i]??0;
+            $variation->save();
         }
-        $variation->product_name = $product->name;
-        $variation->product_id = $request->product_id;
-        $variation->description = $request->description;
-        $variation->product_code = $request->product_code;
-        $variation->serial_no = $request->serial_no;
-        $variation->variant = $request->variant;
-        $variation->pricing_type = $request->pricing_type;
-        $variation->save();
         return redirect(route('products.show', $request->product_id));
     }
 
@@ -161,13 +202,11 @@ class ProductController extends Controller
                $variation->image = $input['imagename'];
            }
         }
-        $variation->description = $request->description;
-        $variation->product_code = $request->product_code;
-        $variation->serial_no = $request->serial_no;
+        $variation->item_code = $request->item_code;
         $variation->variant = $request->variant;
-        $variation->pricing_type = $request->pricing_type;
+        $variation->additional_price=$request->additional_price;
         $variation->update();
-        return redirect(route('products.show', $variation->product_id))->with('success', 'Product Variant Updated');
+        return redirect('variant/list')->with('success', 'Product Variant Updated');
     }
 
     /**
@@ -395,5 +434,18 @@ class ProductController extends Controller
         } catch (Exception $e) {
             return redirect()->route('products.index')->with('error', $e->getMessage());
         }
+    }
+    public function cat_import(Request $request)
+    {
+            Excel::import(new ProductCategoryImport(), $request->file('import'));
+            return redirect()->back();
+    }
+    public function itemlist(){
+        $variantions = ProductVariations::with('supplier')->get();
+        return view('product.itemlist',compact('variantions'));
+    }
+    public function item_import(Request $request){
+            Excel::import(new ItemImport(), $request->file('import'));
+
     }
 }

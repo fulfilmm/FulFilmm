@@ -57,17 +57,17 @@ class StockTransactionController extends Controller
 //    }
     public function index()
     {
-      $auth=Auth::guard('employee')->user();
-      if($auth->role->name=='CEO'||$auth->role->name=='Super Admin'||$auth->role->name=='Stock Manager'){
-          $stock_transactions = StockTransaction::with('stockin', 'stockout', 'variant', 'customer', 'employee', 'stockreturn')->get();
-          $stocks = Stock::all();
-      }else if ($auth->role->name=='Stock Controller'){
-          $stock_transactions = StockTransaction::with('stockin', 'stockout', 'variant', 'customer', 'employee', 'stockreturn')->where('branch_id',$auth->office_branch_id)->get();
-          $stocks = Stock::where('branch_id',$auth->office_branch_id)->get();
-      }else{
-          $stock_transactions = StockTransaction::with('stockin', 'stockout', 'variant', 'customer', 'employee', 'stockreturn')->where('warehouse_id',$auth->warehouse_id)->get();
-          $stocks = Stock::where('warehouse_id',$auth->warehouse_id)->get();
-      }
+        $auth=Auth::guard('employee')->user();
+        if($auth->role->name=='CEO'||$auth->role->name=='Super Admin'||$auth->role->name=='Stock Manager'){
+            $stock_transactions = StockTransaction::with('stockin', 'stockout', 'variant', 'customer', 'employee', 'stockreturn')->get();
+            $stocks = Stock::all();
+        }else if ($auth->role->name=='Stock Controller'){
+            $stock_transactions = StockTransaction::with('stockin', 'stockout', 'variant', 'customer', 'employee', 'stockreturn')->where('branch_id',$auth->office_branch_id)->get();
+            $stocks = Stock::where('branch_id',$auth->office_branch_id)->get();
+        }else{
+            $stock_transactions = StockTransaction::with('stockin', 'stockout', 'variant', 'customer', 'employee', 'stockreturn')->where('warehouse_id',$auth->warehouse_id)->get();
+            $stocks = Stock::where('warehouse_id',$auth->warehouse_id)->get();
+        }
         $units = SellingUnit::all();
 //        dd($stock_transactions);
         return view('stock.index', compact('stock_transactions', 'stocks', 'units'));
@@ -80,19 +80,19 @@ class StockTransactionController extends Controller
         if ($auth->role->name == 'Super Admin' || $auth->role->name == 'CEO'||$auth->role->name=='Stock Manager') {
             $customers = Customer::where('customer_type', 'Supplier')
                 ->get();
-            $warehouses = Warehouse::all();
+            $warehouses = Warehouse::where('mobile_warehouse',0)->get();
             $branch = OfficeBranch::all();
         } else if ($auth->role->name=='Stock Controller'){
             $customers = Customer::where('customer_type', 'Supplier')
                 ->where('branch_id', $auth->office_branch_id)
                 ->get();
-            $warehouses = Warehouse::where('branch_id', $auth->office_branch_id)->get();
+            $warehouses = Warehouse::where('branch_id', $auth->office_branch_id)->where('mobile_warehouse',0)->get();
             $branch = OfficeBranch::where('id', $auth->office_branch_id)->get();
         }else{
             $customers = Customer::where('customer_type', 'Supplier')
                 ->where('branch_id', $auth->office_branch_id)
                 ->get();
-            $warehouses = Warehouse::where('id', $auth->warehouse_id)->get();
+            $warehouses = Warehouse::where('id', $auth->warehouse_id)->where('mobile_warehouse',0)->get();
             $branch = OfficeBranch::where('id', $auth->office_branch_id)->get();
         }
         $binlook = BinLookUp::all();
@@ -342,20 +342,18 @@ class StockTransactionController extends Controller
     public function stock()
     {
         $auth = Auth::guard('employee')->user();
-        if ($auth->role->name == 'Super Admin' || $auth->role->name == 'CEO'||$auth->role->name=='Stock Manager') {
+        if ($auth->role->name == 'Super Admin' || $auth->role->name == 'CEO') {
             $stocks = Stock::with('warehouse', 'variant')->get();
-        }elseif ($auth->role->name=='Stock Controller'){
-            $stocks = Stock::with('warehouse', 'variant')
-                ->where('branch_id', $auth->office_branch_id)
-                ->get();
         } else {
             $stocks = Stock::with('warehouse', 'variant')
-                ->where('warehouse_id', $auth->warehouse_id)
+                ->where('branch_id', $auth->office_branch_id)
                 ->get();
         }
 //        dd($stocks);
         $units = SellingUnit::all();
-        return view('stock.stock', compact('stocks', 'units'));
+        $type='Stock';
+        $product=product::all()->pluck('product_code','id')->all();
+        return view('stock.stock', compact('stocks', 'units','product'));
     }
     public function transfer()
     {
@@ -396,10 +394,8 @@ class StockTransactionController extends Controller
 
                             if ($product_exist == null) {
 //                   dd($branch);
-                                $main_product=ProductVariations::where('id',$request->variantion_id)->first();
                                 $new_stock = new Stock();
                                 $new_stock->product_name = $stock->product_name;
-                                $new_stock->product_id=$main_product->product_id;
                                 $new_stock->variant_id = $request->variantion_id;
                                 $new_stock->warehouse_id = $request->transfer_warehouse_id;
                                 $new_stock->ontheway_qty = $request->qty;
@@ -494,9 +490,9 @@ class StockTransactionController extends Controller
     {
         $auth = Auth::guard('employee')->user();
         if ($auth->role->name == 'CEO' || $auth->role->name == 'Super Admin'||$auth->role->name=='Stock Manager') {
-            $transfers = StockTransferRecord::with('variant', 'from', 'to','receiver')->get();
+            $transfers = StockTransferRecord::with('variant', 'from', 'to')->get();
         }else{
-            $transfers = StockTransferRecord::with('variant', 'from', 'to','receiver')->orWhere('emp_id', $auth->id)->orWhere('receiver_id', $auth->id)->get();
+            $transfers = StockTransferRecord::with('variant', 'from', 'to')->orWhere('emp_id', $auth->id)->orWhere('receiver_id', $auth->id)->get();
         }
 //        dd($transfers);
         return view('stock.transfer_record', compact('transfers'));
@@ -675,13 +671,26 @@ class StockTransactionController extends Controller
         $type = 'Expired Alert Product';
         $auth=Auth::guard('employee')->user();
         if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'||$auth->role->name=='Stock Manager'){
-            $stock_transactions = ProductStockBatch::with('supplier', 'variant','warehouse','branch')->where('alert_month', '<', Carbon::today())->get();
+            $stock_transactions = Stock::with('supplier', 'variant','warehouse','branch')->where('alert_month', '<', Carbon::today())->get();
         }elseif ($auth->role->name=='Stock Controller'){
             $stock_transactions = ProductStockBatch::with('supplier', 'variant','warehouse','branch')->where('alert_month', '<', Carbon::today())->where('branch_id',Auth::guard('employee')->user()->office_branch_id)->get();
         }else{
             $stock_transactions = ProductStockBatch::with('supplier', 'variant','warehouse','branch')->where('alert_month', '<', Carbon::today())->where('warehouse_id',Auth::guard('employee')->user()->warehouse_id)->get();
         }
         return view('stock.stockin_batch', compact('stock_transactions', 'units', 'type'));
+    }
+    public function qtyalert(){
+        $units = SellingUnit::all();
+        $auth=Auth::guard('employee')->user();
+        if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'||$auth->role->name=='Stock Manager'){
+            $stocks = Stock::with('warehouse', 'variant')->whereRaw('stock_balance < alert_qty')->get();
+        }elseif ($auth->role->name=='Stock Controller'){
+            $stocks =  Stock::with('warehouse', 'variant')->whereRaw('stock_balance < alert_qty')->where('branch_id',Auth::guard('employee')->user()->office_branch_id)->get();
+        }else{
+            $stocks =  Stock::with('warehouse', 'variant')->whereRaw('stock_balance < alert_qty')->where('warehouse_id',Auth::guard('employee')->user()->warehouse_id)->get();
+        }
+        $product=product::all()->pluck('product_code','id')->all();
+        return view('stock.qtyalert',compact('stocks','units','product'));
     }
 
 }

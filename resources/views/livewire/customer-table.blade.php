@@ -19,6 +19,8 @@
                         <th>Zone</th>
                         <th>Credit Limit</th>
                         <th>Credit Amount</th>
+                        <th>Advance Balance</th>
+                        <th>Payment Terms</th>
                         <th>Company</th>
                         <th>Type</th>
                         <th>Action</th>
@@ -37,6 +39,8 @@
                             <td>{{$customer->zone->name??'N/A'}}</td>
                             <td>{{$customer->credit_limit??0}}</td>
                             <td><span class="text-{{$customer->current_credit>$customer->credit_limit?'danger':''}}">{{$customer->current_credit??0}}</span></td>
+                            <td>{{$customer->advance_balance??0}}</td>
+                            <td>{{$customer->payment_term?$customer->payment_term.' Days':''}}</td>
                             <td>{{ $customer->company->name }}</td>
                             <td>{{$customer->customer_type}}</td>
                             <td style="display: flex">
@@ -54,27 +58,6 @@
                 </tbody>
             </table>
             {{$customers->links()}}
-        </div>
-    </div>
-    <div class="card-footer">
-        <div class="form-group col-md-4 col-12 float-left" id="action">
-            <div class="input-group">
-               <div class="row">
-                   <select name="type" id="type" class="form-control">
-                       <option value="">Select Customer Type</option>
-                       <option value="Customer">Customer</option>
-                       <option value="Lead">Lead</option>
-                       <option value="In Query">In Query</option>
-                       <option value="Partner">Partner</option>
-                       <option value="Competitor">Competitor</option>
-                       <option value="Supplier">Supplier</option>
-                       <option value="Courier">Courier</option>
-                   </select>
-                   <div class="input-group-prepend">
-                       <button type="button" data-toggle="tooltip" title="Change type of Customer" id="type_change" class="btn btn-white"><i class="fa fa-save"></i></button>
-                   </div>
-               </div>
-            </div>
         </div>
     </div>
 </div>

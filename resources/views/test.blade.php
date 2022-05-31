@@ -1,3 +1,4 @@
+
 <?php
 define("API_KEY", "AIzaSyDcBCPH0mGrTWWZnWWKzyLvTx06lBeNFAs");
 ?>
@@ -88,6 +89,5 @@ define("API_KEY", "AIzaSyDcBCPH0mGrTWWZnWWKzyLvTx06lBeNFAs");
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=<?php echo API_KEY; ?>&callback=initMap">
 </script>
-
 </body>
 </html>

@@ -85,104 +85,104 @@ class TransactionController extends Controller
     public function store_revenue(Request $request)
     {
 //        dd($request->all());
-            $this->validate($request, [
-                'transaction_date' => 'required',
-                'amount' => 'required',
-                'customer_id' => 'required',
-                'category' => 'required',
-                'payment_method' => 'required',
-                'approver_id'=>'required',
-                'attachment' => 'mimes:pdf,xlsx,doc,docx,jpg,jpeg,ppt,bip',
+        $this->validate($request, [
+            'transaction_date' => 'required',
+            'amount' => 'required',
+            'customer_id' => 'required',
+            'category' => 'required',
+            'payment_method' => 'required',
+            'approver_id'=>'required',
+            'attachment' => 'mimes:pdf,xlsx,doc,docx,jpg,jpeg,ppt,bip',
 //                'coa_account'=>'required'
-            ]);
+        ]);
 
-            try {
-                $branch_acc=Account::where('branch_id',Auth::guard('employee')->user()->office_branch_id)->first();
+        try {
+            $branch_acc=Account::where('branch_id',Auth::guard('employee')->user()->office_branch_id)->first();
 
-                $emps=Employee::where('head_office',Auth::guard('employee')->user()->head_office)->get();
-                $financeManger=[];
-                foreach ($emps as $emp){
-                    if($emp->role->name=='Finance Manager'){
-                        array_push($financeManger,$emp);
-                    }
-                }
-                $new_revenue = new Revenue();
-                $new_revenue->title = $request->title;
-                $new_revenue->customer_id = $request->customer_id;
-                $new_revenue->amount = $request->amount;
-                $new_revenue->invoice_id = $request->invoice_id ?? null;
-                $new_revenue->reference = $request->reference;
-                $new_revenue->recurring = $request->recurring;
-                $new_revenue->payment_method = $request->payment_method;
-                $new_revenue->description = $request->description;
-                $new_revenue->category = $request->category;
-                $new_revenue->cashier = $request->approver_id;
-                $new_revenue->advance_pay_id = $request->advance_id ?? null;
-                $employee = Employee::where('head_office', Auth::guard('employee')->user()->head_office)->get();
-                foreach ($employee as $emp) {
-                    if ($emp->role->name =='Finance Manager') {
-                        $new_revenue->head_account = Account::where('enabled', 1)->where('head_office',Auth::guard('employee')->user()->head_office)->where('head_account',1)->first()->id;
-                        $new_revenue->finance_manager =$financeManger[0]->id;
-                    };
-                }
-                $new_revenue->cashier_account = $branch_acc->id;
-                $new_revenue->transaction_date = $request->transaction_date;
-                $new_revenue->emp_id = Auth::guard('employee')->user()->id;
-                $new_revenue->branch_id = Auth::guard('employee')->user()->office_branch_id;
-                $new_revenue->currency = $request->currency;
-                if ($request->payment_method != "Cash") {
-                    $new_revenue->is_cashintransit = 1;
-                }
-                if (isset($request->attachment)) {
-                    if ($request->attachment != null) {
-                        $attach = $request->file('attachment');
-                        $input['filename'] = \Illuminate\Support\Str::random(10) . time() . '.' . $attach->extension();
-                        $request->attachment->move(public_path() . '/attach_file', $input['filename']);
-
-                    }
-                    $new_revenue->attachment = $input['filename'];
-                }
-                if ($request->payment_method == 'Advance Payment') {
-                    $new_revenue->approve = 1;
-                }
-                $new_revenue->save();
-                if($request->advance=='on'){
-                    $customer=Customer::where('id',$request->customer_id)->first();
-                    $customer->advance_balance-=$request->amount;
-                    $customer->update();
-                }
-                if (isset($request->invoice_id)) {
-                    $inv = Invoice::where('id', $request->invoice_id)->first();
-                    $employee = Employee::where('id', $inv->emp_id)->first();
-                    $employee->amount_in_hand += $request->amount;
-                    $employee->update();
-                }
-            } catch (\Exception $e) {
-                return redirect()->back()->with('error', $e->getMessage());
-            }
-            if (isset($request->invoice_id)) {
-                $delivery = DeliveryOrder::where('invoice_id', $request->invoice_id)->first();
-                if ($delivery != null) {
-                    $deli_pay = DeliveryPay::where('delivery_id', $delivery->id)->first();
-                    $deli_pay->receiver_invoice_amount = 1;
-                    $deli_pay->update();
+            $emps=Employee::where('head_office',Auth::guard('employee')->user()->head_office)->get();
+            $financeManger=[];
+            foreach ($emps as $emp){
+                if($emp->role->name=='Finance Manager'){
+                    array_push($financeManger,$emp);
                 }
             }
-            $this->transaction_add($branch_acc->id, $request->type, null, $new_revenue->id);
-            $this->addnotify($request->approver_id, 'noti', 'Add new revenue', 'revenue', Auth::guard('employee')->user()->id);
-            if ($new_revenue->is_cashintransit) {
-                $this->addnotify($new_revenue->finance_manager, 'noti', 'Add new revenue', 'revenue', Auth::guard('employee')->user()->id);
+            $new_revenue = new Revenue();
+            $new_revenue->title = $request->title;
+            $new_revenue->customer_id = $request->customer_id;
+            $new_revenue->amount = $request->amount;
+            $new_revenue->invoice_id = $request->invoice_id ?? null;
+            $new_revenue->reference = $request->reference;
+            $new_revenue->recurring = $request->recurring;
+            $new_revenue->payment_method = $request->payment_method;
+            $new_revenue->description = $request->description;
+            $new_revenue->category = $request->category;
+            $new_revenue->cashier = $request->approver_id;
+            $new_revenue->advance_pay_id = $request->advance_id ?? null;
+            $employee = Employee::where('head_office', Auth::guard('employee')->user()->head_office)->get();
+            foreach ($employee as $emp) {
+                if ($emp->role->name =='Finance Manager') {
+                    $new_revenue->head_account = Account::where('enabled', 1)->where('head_office',Auth::guard('employee')->user()->head_office)->where('head_account',1)->first()->id;
+                    $new_revenue->finance_manager =$financeManger[0]->id;
+                };
+            }
+            $new_revenue->cashier_account = $branch_acc->id;
+            $new_revenue->transaction_date = $request->transaction_date;
+            $new_revenue->emp_id = Auth::guard('employee')->user()->id;
+            $new_revenue->branch_id = Auth::guard('employee')->user()->office_branch_id;
+            $new_revenue->currency = $request->currency;
+            if ($request->payment_method != "Cash") {
+                $new_revenue->is_cashintransit = 1;
+            }
+            if (isset($request->attachment)) {
+                if ($request->attachment != null) {
+                    $attach = $request->file('attachment');
+                    $input['filename'] = \Illuminate\Support\Str::random(10) . time() . '.' . $attach->extension();
+                    $request->attachment->move(public_path() . '/attach_file', $input['filename']);
 
+                }
+                $new_revenue->attachment = $input['filename'];
+            }
+            if ($request->payment_method == 'Advance Payment') {
+                $new_revenue->approve = 1;
+            }
+            $new_revenue->save();
+            if($request->advance=='on'){
+                $customer=Customer::where('id',$request->customer_id)->first();
+                $customer->advance_balance-=$request->amount;
+                $customer->update();
             }
             if (isset($request->invoice_id)) {
                 $inv = Invoice::where('id', $request->invoice_id)->first();
-                $inv->due_amount = $inv->due_amount - $request->amount;
-                $inv->update();
-                return redirect(route('invoices.show', $request->invoice_id))->with('success', 'Add New Revenue Successful');
-            } else {
-                $last_tran = Transaction::orderBy('id', 'desc')->first();
-                return redirect(route('transactions.show', $last_tran->id))->with('success', 'Add New Revenue Successful');
+                $employee = Employee::where('id', $inv->emp_id)->first();
+                $employee->amount_in_hand += $request->amount;
+                $employee->update();
             }
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+        if (isset($request->invoice_id)) {
+            $delivery = DeliveryOrder::where('invoice_id', $request->invoice_id)->first();
+            if ($delivery != null) {
+                $deli_pay = DeliveryPay::where('delivery_id', $delivery->id)->first();
+                $deli_pay->receiver_invoice_amount = 1;
+                $deli_pay->update();
+            }
+        }
+        $this->transaction_add($branch_acc->id, $request->type, null, $new_revenue->id);
+        $this->addnotify($request->approver_id, 'noti', 'Add new revenue', 'revenue', Auth::guard('employee')->user()->id);
+        if ($new_revenue->is_cashintransit) {
+            $this->addnotify($new_revenue->finance_manager, 'noti', 'Add new revenue', 'revenue', Auth::guard('employee')->user()->id);
+
+        }
+        if (isset($request->invoice_id)) {
+            $inv = Invoice::where('id', $request->invoice_id)->first();
+            $inv->due_amount = $inv->due_amount - $request->amount;
+            $inv->update();
+            return redirect(route('invoices.show', $request->invoice_id))->with('success', 'Add New Revenue Successful');
+        } else {
+            $last_tran = Transaction::orderBy('id', 'desc')->first();
+            return redirect(route('transactions.show', $last_tran->id))->with('success', 'Add New Revenue Successful');
+        }
 
     }
     public function revenue_edit($id)

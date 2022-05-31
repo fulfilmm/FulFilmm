@@ -50,7 +50,6 @@
             </div>
         </div>
     </div>
-
     <!-- /Page Content -->
     <script>
 
@@ -70,7 +69,7 @@
             $("#map").googleMap();
 
             // Marker 1
-                      {{--@if(\Illuminate\Support\Facades\Auth::guard('employee')->user->role->name=='Sale Manager')--}}
+            {{--          @if(\Illuminate\Support\Facades\Auth::guard('employee')->user->role->name=='Sale Manager')--}}
             @foreach($shop as $item)
             $("#map").addMarker({
                 title: '<span style="font-size: 14px;">{{$item->shop->name}}</span>', // Title

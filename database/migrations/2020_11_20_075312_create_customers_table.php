@@ -48,6 +48,8 @@ class CreateCustomersTable extends Migration
             $table->bigInteger('branch_id')->unsigned()->nullable();
             $table->bigInteger('zone_id')->unsigned()->nullable();
             $table->tinyInteger('main_customer')->default(0);
+            $table->double('use_amount')->default(0);
+            $table->integer('payment_term')->nullable();
             $table->rememberToken();
             $table->foreignId('company_id');
             $table->softDeletes();

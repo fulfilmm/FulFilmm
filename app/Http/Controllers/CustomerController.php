@@ -78,7 +78,13 @@ class CustomerController extends Controller
         return view('customer.data.cards', compact('customers'));
     }
     public function qualified_contact(){
-        $customers = Customer::where('customer_type','Lead')->where('status','Qualified')->paginate(20);
+        $auth=Auth::guard('employee')->user();
+        if($auth->role->name=='CEO'||$auth->role->name=='Super Admin')
+        {
+            $customers = Customer::where('customer_type','Lead')->where('status','Qualified')->paginate(12);
+        }else{
+            $customers = Customer::where('customer_type','Lead')->where('status','Qualified')->where('branch_id',$auth->office_branch_id)->paginate(12);
+        }
         return view('customer.qualifiedContact', compact('customers'));
     }
     /**
@@ -116,9 +122,6 @@ class CustomerController extends Controller
     public function store(CustomerRequest $request)
     {
 //        dd($request->all());
-        if(Auth::guard('employee')->user()->office_branch_id==null){
-            return redirect()->back()->with('error','You must did not connect any branch office');
-        }
         $last_customer = Customer::orderBy('id', 'desc')->first();
 
         if ($last_customer != null) {
@@ -145,6 +148,7 @@ class CustomerController extends Controller
             }
         }
         $data = [
+            'payment_term'=>$request->payment_term,
             'customer_id'=>$customer_id,
             'profile' => $request->profile_img != null?$input['imagename']:null,
             'name' => $request->name,
@@ -160,7 +164,7 @@ class CustomerController extends Controller
             'linkedin' => $request->linkedin,
             'dob' => $request->dob,
             'report_to' => $request->report_to,
-            'position_of_report_to' => $request->position,
+            'position_of_report_to' => $request->report_to_position,
             "priority" => $request->priority,
             "tags_id" => $request->tag_industry,
             "emp_id" => Auth::guard('employee')->user()->id,
@@ -169,6 +173,7 @@ class CustomerController extends Controller
             'department'=>$request->department,
             'position'=>$request->position??null,
             'status'=>$request->status,
+            'case'=>$request->case,
             'credit_limit'=>$request->credit_limit??0,
             'lead_title'=>$request->title
 
@@ -387,7 +392,7 @@ class CustomerController extends Controller
                 'branch_id'=>$request->branch_id,
                 'zone_id'=>$request->zone_id,
                 'report_to' => $request->report_to,
-                'position_of_report_to' => $request->position_of_report_to,
+                'position_of_report_to' => $request->report_to_position,
                 "priority" => $request->priority,
                 "tags_id" => $request->tag_industry,
                 "emp_id" => Auth::guard('employee')->user()->id,
@@ -396,6 +401,7 @@ class CustomerController extends Controller
                 'department'=>$request->department,
                 'position'=>$request->position??null,
                 'status'=>$request->status,
+                'case'=>$request->case,
                 'credit_limit'=>$request->credit_limit,
                 'lead_title'=>$request->title,
                 'bio'=>$request->bio
@@ -429,7 +435,7 @@ class CustomerController extends Controller
                 'dob' => $request->dob,
                 'zone_id'=>$request->zone_id,
                 'report_to' => $request->report_to,
-                'position_of_report_to' => $request->position_of_report_to,
+                'position_of_report_to' => $request->report_to_position,
                 "priority" => $request->priority,
                 "tags_id" => $request->tag_industry,
                 "emp_id" => Auth::guard('employee')->user()->id,
@@ -438,6 +444,7 @@ class CustomerController extends Controller
                 'department'=>$request->department,
                 'position'=>$request->position??null,
                 'status'=>$request->status,
+                'case'=>$request->case,
                 'lead_title'=>$request->title,
                 'bio'=>$request->bio
 

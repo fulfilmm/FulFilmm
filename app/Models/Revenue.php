@@ -11,6 +11,7 @@ class Revenue extends Model
     public function employee(){
         return $this->belongsTo(Employee::class,'emp_id','id');
     }
+
     public function branch_cashier(){
         return $this->belongsTo(Employee::class,'cashier','id');
     }

@@ -14,10 +14,13 @@
                     <a href="{{route('customers.create')}}" class="btn add-btn"><i class="fa fa-plus"></i>
                         Add Contact</a>
                     <div class="view-icons">
+
                         <a href="{{route('customers.cards')}}" data-toggle="tooltip" title="Card View" class="grid-view btn btn-white shadow-sm"><i class="fa fa-th"></i></a>
                         <a href="{{route('customers.index')}}" data-toggle="tooltip" title="List View" class="list-view btn btn-white active shadow-sm"><i class="fa fa-bars"></i></a>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#change_type"><span style="font-size: 18px;">Change Customer Type</span></button>
                         <a href="{{route('customers.import')}}" data-toggle="modal" data-target="#import" class="btn btn-white shadow-sm"><i class="fa fa-upload mr-1 ml-1"></i><span class="mr-1">Import</span></a>
-                        <a  data-toggle="modal" data-target="#export" class="btn btn-outline-info rounded shadow-sm"><i class="fa fa-download mr-1"></i>Export</a>
+                        <a  data-toggle="modal" data-target="#export" class="btn btn-outline-info shadow-sm"><i class="fa fa-download mr-1"></i>Export</a>
+
 
                 </div>
             </div>
@@ -25,6 +28,37 @@
         @yield('data')
     </div>
     <div>
+        <div id="change_type" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" style="font-size: 20px;">Change Customer Type</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group" id="action">
+                            <label for="">Customer Type</label>
+                            <select name="type" id="type" class="form-control" style="width: 100%">
+                                <option value="">Select Customer Type</option>
+                                <option value="Customer">Customer</option>
+                                <option value="Lead">Lead</option>
+                                <option value="In Query">In Query</option>
+                                <option value="Partner">Partner</option>
+                                <option value="Competitor">Competitor</option>
+                                <option value="Supplier">Supplier</option>
+                                <option value="Courier">Courier</option>
+                            </select>
+                            <span class="text-warning">It will change only checked customer !</span>
+                        </div>
+                        <div class="form-group">
+                            <button type="button" data-toggle="tooltip" title="Change type of Customer" id="type_change" class="btn btn-white">Change</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div id="export" class="modal custom-modal fade" role="dialog">
             <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
                 <div class="modal-content">
@@ -92,31 +126,6 @@
     <script>
         $(document).ready(function() {
             $('select').select2();
-            $('#action').hide();
-            // $('input[type="checkbox"]').click(function () {
-            //     $('input[type="checkbox"]').click(function () {
-            //         var checked_id = new Array();
-            //         $("input:checked").each(function () {
-            //             // console.log($(this).val()); //works fine
-            //             checked_id.push($(this).val());
-            //         });
-            //         if (checked_id.length > 0) {
-            //             $('#action').show();
-            //         } else {
-            //             $('#action').hide();
-            //         }
-            //
-            //     });
-            // });
-            $('.checkbox').on('click',function () {
-                if($('.checkbox').is(':checked')){
-                    $('#action').show();
-                }else {
-                    $('#action').hide();
-                }
-            });
-        });
-        $(document).ready(function() {
             $(document).on('click', '#type_change', function () {
                 var checked_id = new Array();
                 $("input:checked").each(function () {
@@ -125,16 +134,20 @@
                 });
                 var action_type=$( "#type option:selected" ).val();
                 // alert(action_type);
-                $.ajax({
-                    type:'POST',
-                    data : {action_Type:action_type,customer_id:checked_id},
-                    url:'change/contact/type',
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    success:function(data){
-                        console.log(data);
-                        window.location.reload();
-                    }
-                });
+                if(checked_id.length!==0){
+                    $.ajax({
+                        type:'POST',
+                        data : {action_Type:action_type,customer_id:checked_id},
+                        url:'change/contact/type',
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        success:function(data){
+                            console.log(data);
+                            window.location.reload();
+                        }
+                    });
+                }else{
+                    swal('Empty Checked','Please customer checked first','warning');
+                }
             });
         });
         jQuery(document).ready(function () {
@@ -144,6 +157,7 @@
             jQuery('#end').datetimepicker();
         });
     </script>
+
 @endsection
 
 

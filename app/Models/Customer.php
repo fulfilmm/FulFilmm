@@ -48,7 +48,8 @@ class Customer extends Authenticatable
         'region_id',
         'zone_id',
         'branch_id',
-        'use_amount'
+        'use_amount',
+        'payment_term'
     ];
 
 

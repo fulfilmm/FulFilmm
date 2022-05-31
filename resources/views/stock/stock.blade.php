@@ -2,55 +2,6 @@
 @section('title','Stock')
 @section('content')
     <div class="container-fluid">
-        {{--<div class="page-header my-3">--}}
-        {{--<div class="col-12">--}}
-        {{--<div class="row bg-white">--}}
-        {{--<div class="col-sm-6 my-3">--}}
-        {{--<ul class="breadcrumb">--}}
-        {{--<li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>--}}
-        {{--<li class="breadcrumb-item active">Stock</li>--}}
-        {{--</ul>--}}
-        {{--</div>--}}
-        {{--<div class="col-auto float-right ml-auto my-3">--}}
-        {{--<a  data-toggle="modal" data-target="#export" class="btn btn-outline-info rounded btn-sm mr-1"><i class="fa fa-download mr-1"></i>Export</a>--}}
-        {{--<div id="export" class="modal custom-modal fade" role="dialog">--}}
-        {{--<div class="modal-dialog modal-dialog-centered modal-sm" role="document">--}}
-        {{--<div class="modal-content">--}}
-        {{--<div class="modal-header">--}}
-        {{--<h5 class="modal-title">Export</h5>--}}
-        {{--<button type="button" class="close" data-dismiss="modal" aria-label="Close">--}}
-        {{--<span aria-hidden="true">&times;</span>--}}
-        {{--</button>--}}
-        {{--</div>--}}
-        {{--<div class="modal-body">--}}
-        {{--<div class="row justify-content-center">--}}
-        {{--<div>--}}
-        {{--@dd($route)--}}
-        {{--<form action="{{route('stock.export')}}" method="GET">--}}
-        {{--@csrf--}}
-        {{--<div class="form-group">--}}
-        {{--<label for="start">Start Date</label>--}}
-        {{--<input type="text" class="form-control" id="start" name="start_date"  value="" title="Start Date" required>--}}
-        {{--</div>--}}
-        {{--<div class="form-group">--}}
-        {{--<label for="end">End Date</label>--}}
-        {{--<input type="text" class="form-control" id="end" name="end_date"  value="" title="End Date" required>--}}
-        {{--</div>--}}
-        {{--<div class="d-flex justify-content-center">--}}
-        {{--<button type="submit" class="btn btn-primary">Export</button>--}}
-        {{--</div>--}}
-        {{--</form>--}}
-        {{--</div>--}}
-        {{--</div>--}}
-        {{--</div>--}}
-        {{--</div>--}}
-        {{--</div>--}}
-        {{--</div>--}}
-        {{--<a href="{{route('show.transfer')}}" class="btn btn-white btn-sm"><i class="la la-exchange mr-2 mt-1"></i>Stock Transfer</a>--}}
-        {{--</div>--}}
-        {{--</div>--}}
-        {{--</div>--}}
-        {{--</div>--}}
         <div class="page-header my-3">
             <div class="row">
                 <div class="col-sm-12">
@@ -141,6 +92,7 @@
                     <tr>
                         <th style="min-width: 100px">Warehouse</th>
                         <th style="min-width: 130px">Product Code</th>
+                        <th style="min-width: 130px">Item Code</th>
                         <th style="min-width: 100px">Product</th>
                         <th style="min-width: 100px">Variants</th>
                         <th style="min-width: 100px">Unit</th>
@@ -161,13 +113,20 @@
                                 <a href="{{route('warehouses.show',$stock->warehouse->id)}}">{{$stock->warehouse->name}}</a>
                             </td>
                             <td style="min-width: 100px">
-                                <a href="{{route('show.variant',$stock->variant->id)}}">{{$stock->variant->product_code}}</a>
+                                @foreach($product as $key=>$val)
+                                    @if($key==$stock->variant->product_id)
+                                <a href="{{route('products.show',$key)}}">{{$val}}</a>
+                                    @endif
+                                    @endforeach
+                            </td>
+                            <td style="min-width: 100px">
+                                <a href="{{route('show.variant',$stock->variant->id)}}">{{$stock->variant->item_code}}</a>
                             </td>
                             <td>
                                 <a href="{{route('products.show',$stock->variant->product_id)}}">{{$stock->variant->product_name}}</a>
                             </td>
                             <td>
-                                <a href="{{route('show.variant',$stock->variant->id)}}">{{$stock->variant->variant??''}}</a>
+                                <a href="{{route('show.variant',$stock->variant->id)}}">{{$stock->variant->variant??$stock->variant->product_name}}</a>
                             </td>
 
                             <td style="min-width: 100px;">

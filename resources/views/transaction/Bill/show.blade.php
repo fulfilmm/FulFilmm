@@ -369,24 +369,24 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="account">Account</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text"><i class="fa fa-bank"></i></span>
-                                            </div>
-                                            <select name="coa_account" id="account" class="form-control">
-                                                @foreach($data['coas'] as $account)
-                                                    <option value="{{$account->id}}">{{$account->code.'-'.$account->name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        @error('account')
-                                        <span class="text-danger">{{$message}}</span>
-                                        @enderror
-                                    </div>
-                                </div>
+                                {{--<div class="col-md-6">--}}
+                                    {{--<div class="form-group">--}}
+                                        {{--<label for="account">Account</label>--}}
+                                        {{--<div class="input-group">--}}
+                                            {{--<div class="input-group-prepend">--}}
+                                                {{--<span class="input-group-text"><i class="fa fa-bank"></i></span>--}}
+                                            {{--</div>--}}
+                                            {{--<select name="coa_account" id="account" class="form-control">--}}
+                                                {{--@foreach($data['coas'] as $account)--}}
+                                                    {{--<option value="{{$account->id}}">{{$account->code.'-'.$account->name}}</option>--}}
+                                                {{--@endforeach--}}
+                                            {{--</select>--}}
+                                        {{--</div>--}}
+                                        {{--@error('account')--}}
+                                        {{--<span class="text-danger">{{$message}}</span>--}}
+                                        {{--@enderror--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="account">Bank Account</label>

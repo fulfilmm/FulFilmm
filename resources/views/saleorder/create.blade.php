@@ -174,7 +174,7 @@
                                             <select name="" id="variant" class="form-control">
                                                 <option value="">Select Product</option>
                                                 @foreach($data['variants'] as $variant)
-                                                    <option value="{{$variant->id}}" data-option="{{$variant->product_id}}">{{$variant->product_name}} ({{$variant->variant??''}})</option>
+                                                    <option value="{{$variant->id}}" data-option="{{$variant->product_id}}">{{$variant->product_name}} {{$variant->variant?'('.$variant->variant.')':''}}</option>
                                                 @endforeach
                                             </select>
 

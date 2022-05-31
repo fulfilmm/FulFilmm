@@ -29,7 +29,7 @@
 
         <!-- Search -->
         <li class="nav-item">
-          @yield('search')
+            @yield('search')
         </li>
         <!-- /Search -->
 
@@ -61,7 +61,7 @@
             $notifications=\App\Models\Notification::orderBy('id', 'desc')->with('notify_user','notifier')->where('notify_user_id',\Illuminate\Support\Facades\Auth::guard('customer')->user()->id)->where('read_at',null)->get();
         }
         @endphp
-       @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
+        @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
             <li class="nav-item dropdown">
                 <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
                     <i class="fa fa-bell-o"></i> <span class="badge badge-pill">{{count($notifications)}}</span>
@@ -94,10 +94,10 @@
                     </div>
                 </div>
             </li>
-           @else
-           @yield('noti')
-           @endif
-        <!-- Notifications -->
+    @else
+        @yield('noti')
+    @endif
+    <!-- Notifications -->
     {{-- <li class="nav-item dropdown">
         <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
             <i class="fa fa-bell-o"></i> <span class="badge badge-pill">3</span>

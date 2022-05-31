@@ -15,6 +15,7 @@ class ShopRegister extends Controller
      */
     public function index()
     { $user=Auth::guard('employee')->user();
+
         if($user->role->name=='Super Admin'||$user->role->name=='CEO'){
             $shops=ShopLocation::with('employee')->get();
         }else{
@@ -44,6 +45,7 @@ class ShopRegister extends Controller
     {
 //        dd($request->all());
         $this->validate($request,[
+
             'name'=>'required',
             'location'=>'required',
             'customer_id'=>'nullable',

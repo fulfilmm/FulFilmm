@@ -41,13 +41,12 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
     Route::resource('api_employees',App\Http\Controllers\Api\EmployeeController::class);
     Route::post('logout',[ApiAuthController::class,'login'])->name('logout');
     Route::resource('api_customers', CustomerController::class);
+
     Route::resource("api_invoices",InvoiceController::class);
 //    Route::apiResource("invoice" , InvoiceDataController::class);
 
     Route::resource("mobile_invoice", MobileInvoiceController::class);
     Route::get('retail/invoice' , [App\Http\Controllers\Api\Invoice_Mobile\MobileInvoiceController::class,'retail']);
-
-
 
 //    Route::resource("invoice_items",InvoiceItemController::class);
 //    Route::get("invoice/sendmail/{id}",[InvoiceController::class,'sending_form'])->name('invoice.sendmail');
@@ -65,6 +64,7 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
     Route::apiResource('ecommerce_products_add', ProductAddController::class);
     Route::apiResource('ecommerce_products_promotion', ProductPromotionController::class);
     Route::apiResource('ecommerce_banner', ProductBannerController::class);
+
     Route::resource('revenues',\App\Http\Controllers\Api\RevenueController::class);
 });
 

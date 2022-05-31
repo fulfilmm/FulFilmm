@@ -278,9 +278,9 @@
                 </a>
                 <a class="{{ Request::is('accounts') ? 'active' : '' }}" href="{{route('accounts.index')}}"
                    style="text-decoration: none"><span> Account</span> </a>
-                <a class="{{ Request::is('transactions') ? 'active' : '' }}" href="{{route('transactions.index')}}"
-                   style="text-decoration: none"><span> Transaction</span>
-                </a>
+                {{--<a class="{{ Request::is('transactions') ? 'active' : '' }}" href="{{route('transactions.index')}}"--}}
+                   {{--style="text-decoration: none"><span> Transaction</span>--}}
+                {{--</a>--}}
                 <a class="{{ Request::is('revenue') ? 'active' : '' }}" href="{{route('revenue')}}"
                    style="text-decoration: none"><span> Revenue</span> </a>
                 <a class="{{ Request::is('expense') ? 'active' : '' }}" href="{{route('expense')}}"
@@ -369,18 +369,19 @@
                     <li><a class="{{ Request::is('products') ? 'active' : '' }}" href="{{url('/products')}}"
                            style="text-decoration: none">All
                             Products</a></li>
+                    <li><a class="{{ Request::is('variant/list') ? 'active' : '' }}" href="{{route('item.list')}}"
+                           style="text-decoration: none">Products Items</a></li>
                     <li><a class="{{ Request::is('products/create') ? 'active' : '' }}"
                            href="{{url('/products/create')}}" style="text-decoration: none">
                             Product Create</a></li>
-                    <li><a class="{{ Request::is('product/variant/create') ? 'active' : '' }}"
-                           href="{{route('create.variant')}}" style="text-decoration: none">
-                            Product Variant Add</a></li>
                 </ul>
             </li>
             <li><a class="{{ Request::is('foc/index') ? 'active' : '' }}" href="{{route('foc.index')}}"
                    style="text-decoration: none">FOC Product</a></li>
             <li><a class="{{ Request::is('damage/index') ? 'active' : '' }}"
                    href="{{ route('damage.index') }}" style="text-decoration: none">Damage Product</a></li>
+            <li><a class="{{ Request::is('qty/alert') ? 'active' : '' }}"
+                   href="{{ route('alert.qty') }}" style="text-decoration: none">Quantity Alert</a></li>
             <li><a class="{{ Request::is('expired/product') ? 'active' : '' }}"
                    href="{{ route('expired.products') }}" style="text-decoration: none">Expired Product</a></li>
             <li><a class="{{ Request::is('expired/alert/product') ? 'active' : '' }}"

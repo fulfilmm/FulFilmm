@@ -19,7 +19,7 @@ class CreateBillsTable extends Migration
             $table->string('bill_id')->unique();
             $table->bigInteger('vendor_id')->unsigned();
             $table->string('email');
-            $table->text('billing_address');
+            $table->text('billing_address')->nullable();
             $table->dateTime('bill_date');
             $table->dateTime('due_date');
             $table->string('status');
@@ -31,6 +31,7 @@ class CreateBillsTable extends Migration
             $table->bigInteger('emp_id')->unsigned();
             $table->string('invoice_id')->nullable();
             $table->dateTime('inv_date')->nullable();
+            $table->string('po_id')->nullable();
             $table->string('category')->nullable();
             $table->index(['id','vendor_id']);
             $table->bigInteger('branch_id')->unsigned();

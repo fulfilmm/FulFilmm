@@ -141,7 +141,7 @@
                                             @foreach($product as $prd)
                                                 @if($prd->id==$item->variant_id)
                                                     {{$prd->product_name}}
-                                                    ({{$prd->variant??''}})
+                                                    {{$prd->variant??''}}
                                                 @endif
                                             @endforeach
                                         </td>
@@ -178,7 +178,7 @@
                                                                         <div class="col-md-9">
                                                                             <select name="" id="product{{$item->id}}"
                                                                                     class="form-control select2 update{{$item->id}}">
-                                                                                <option value="{{$item->product->product_id}}">{{$item->product->product_name}}({{$item->product->variant}})</option>
+                                                                                <option value="{{$item->product->product_id}}">{{$item->product->product_name}}{{$item->product->variant}}</option>
                                                                             </select>
                                                                         </div>
                                                                     </div>
@@ -314,10 +314,10 @@
                                 <tr id="add_row">
                                     <td>
                                         <select name="[]" id="product" class="form-control select2 item_save">
-                                            <option value="" selected>Select Product</option>
+                                            <option value="" selected>Item Code/Product Name</option>
                                             @foreach($product as $prod)
-                                                <option value="{{$prod->id}}">{{$prod->product_name}}
-                                                    ({{$prod->variant??''}})
+                                                <option value="{{$prod->id}}">{{$prod->product_name}} / {{$prod->item_code??''}}
+
                                                 </option>
                                             @endforeach
                                         </select>
@@ -361,13 +361,8 @@
                                         </select>
                                         <input type="hidden" class="form-control" id="tax_amount" name="tax_amount"
                                                value="0"></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="4" class="text-right">Additional Cost</td>
-                                    <td colspan="2"><input type="number" id="add_cost" class="form-control"
-                                                           name="additional_cost" value="0"></td>
-                                    <td></td>
+                                    <td><input type="hidden" id="add_cost" class="form-control"
+                                               name="additional_cost" value="0"></td>
                                 </tr>
                                 <tr>
                                     <td colspan="4" class="text-right">Grand Total</td>

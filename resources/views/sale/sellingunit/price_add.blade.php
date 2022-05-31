@@ -38,9 +38,9 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="pid">Variant</label>
-                                        <select name="product_id[]" id="pid"  class="form-control select2 shadow" multiple style="width: 100%" required>
+                                        <select name="product_id[]" id="pid"  class="form-control select2 shadow" onchange="selectvariant(this.value)" multiple style="width: 100%" required>
                                             @foreach($products as $pd)
-                                                <option value="{{$pd->id}}" data-option="{{$pd->product_id}}">{{$pd->variant}}</option>
+                                                <option value="{{$pd->id}}" data-option="{{$pd->product_id}}">{{$pd->variant??$pd->product_name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -78,6 +78,12 @@
                                     @error('branch_id')
                                     <span class="text-danger">{{$message}}</span>
                                     @enderror
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="add_price">Additional Price</label>
+                                        <input type="number" class="form-control" name="additional_price" id="add_price">
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -187,6 +193,13 @@
                     $('#single_price').show();
                     $('#multi_price').hide();
                 }
+            }
+            function selectvariant(value){
+                @foreach($products as $pd)
+                    if(value=='{{$pd->id}}'){
+                        $('#add_price').val('{{$pd->additional_price}}');
+                }
+                @endforeach
             }
             $("#addRow").click(function () {
                 var html = '';

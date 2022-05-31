@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\DamagedProduct;
 use App\Models\DeliveryOrder;
 use App\Models\MainCompany;
+use App\Models\OfficeBranch;
 use App\Models\product;
 use App\Models\ProductReceive;
 use App\Models\ProductReceiveItem;
@@ -20,6 +21,7 @@ use App\Models\Warehouse;
 use App\Traits\StockTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class InventoryController extends Controller
@@ -77,8 +79,14 @@ class InventoryController extends Controller
         $receipt_item=ProductReceiveItem::with('product','warehouse','product_unit')->where('id',$id)->get();
         $sell_unit=SellingUnit::where('unit_convert_rate',1)->get();
         $product=product::all()->pluck('name','id')->all();
-        $warehouse=Warehouse::all()->pluck('name','id')->all();
-        return view('Inventory.receivedproduct',compact('receipt','receipt_item','product','warehouse','sell_unit'));
+        $warehouse=Warehouse::where('mobile_warehouse',0)->pluck('name','id')->all();
+        $auth=Auth::guard('employee')->user();
+        if($auth->role->name=='CEO'||$auth->role->name=='Super Admin'||$auth->role->name=='Stock Manager'){
+            $branch=OfficeBranch::all();
+        }else{
+            $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
+        }
+        return view('Inventory.receivedproduct',compact('receipt','receipt_item','product','warehouse','sell_unit','branch'));
     }
 
     /**

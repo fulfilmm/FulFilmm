@@ -94,6 +94,7 @@
     </div>
     <div class="col-6 col-sm-3 col-md-4 my-2">
         <div class="alert-success alert mb-0 shadow">
+
             <a href="{{route('warehouses.index')}}">
                 <div class="d-flex align-items-center">
                     <div class="avatar rounded no-thumbnail bg-success text-light shadow"><i class="fa fa-puzzle-piece fa-lg"></i></div>

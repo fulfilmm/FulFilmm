@@ -53,7 +53,7 @@ class InvoiceController extends Controller
         $zone=SaleZone::all();// sale zone နဲ့ filter လုပ်ဖို့ထုတ်ထားတာ
         $region=Region::all()->pluck('name','id')->all();//Region နဲ့ filter လုပ်ဖို့ထုတ်ထားတာ
         $branch=OfficeBranch::all()->pluck('name','id')->all(); //Branch နဲ့ filter လုပ်ဖို့ထုတ်ထားတာ
-        if(Auth::guard('employee')->user()->role->name=='Super Admin'|| Auth::guard('employee')->user()->role->name=='CEO'||Auth::guard('employee')->user()->role->name=='Sale Manager'||Auth::guard('employee')->user()->role->name=='Cashier' ){
+        if(Auth::guard('employee')->user()->role->name=='Super Admin'|| Auth::guard('employee')->user()->role->name=='CEO'||Auth::guard('employee')->user()->role->name=='Sale Manager'){
             $allinv=Invoice::with('customer','employee','branch','zone','region')->get();//Super Admin နဲ့ CEO က invoice အားလုံးကြည့်လို့ရတအောင်အကုန်ထုတ်ပေးတယ်
         }elseif (Auth::guard('employee')->user()->role->name=='Sale Manager'||Auth::guard('employee')->user()->role->name=='Accountant'||Auth::guard('employee')->user()->role->name=='Cashier'){
             $allinv=Invoice::with('customer','employee','branch','zone','region')->where('branch_id',Auth::guard('employee')->user()->office_branch_id)->get();
@@ -173,6 +173,7 @@ class InvoiceController extends Controller
                   ->get();
           }
             $aval_product =[];
+
             $in_stock=Stock::with('variant','unit')->where('available', '>', 0)->get();
             foreach ($in_stock as $inhand){
                 if($inhand->variant->enable==1){
@@ -189,6 +190,7 @@ class InvoiceController extends Controller
             $companies=Company::all()->pluck('name','id')->all();
             $zone=SaleZone::where('region_id',$Auth->region_id)->get();
             $region=Region::where('branch_id',$Auth->office_branch_id)->get();
+//            dd($aval_product,$unit_price,$prices);
             return view('invoice.create', compact('zone','warehouse', 'type', 'request_id', 'allcustomers', 'orderline', 'grand_total', 'status', 'data', 'aval_product', 'taxes', 'unit_price', 'dis_promo', 'focs','prices','amount_discount','due_default','companies','region'));
         }else{
             return redirect()->back()->with('error','Firstly,Fixed your Branch Office and Sale Region');
@@ -203,13 +205,13 @@ class InvoiceController extends Controller
         if($Auth->office_branch_id!=null && $Auth->region_id!=null){
             $allcustomers = Customer::where('branch_id',$Auth->office_branch_id)->where('region_id',$Auth->region_id)->get();
             $aval_product =[];
+
             $in_stock=Stock::with('variant','unit')->where('available', '>', 0)->get();
             foreach ($in_stock as $inhand){
                 if($inhand->variant->enable==1){
                     array_push($aval_product,$inhand);
                 }
             }
-
 //        foreach ($pd as $product){
 //
 //            if($pd!=null){
@@ -286,8 +288,6 @@ class InvoiceController extends Controller
             'client_email'=>'required',
             'inv_date'=>'required',
             'due_date'=>'required',
-            'client_address'=>'required',
-            'bill_address'=>'required',
             'payment_method'=>'required',
 
         ]);
@@ -487,6 +487,7 @@ class InvoiceController extends Controller
             'emps' => $emps, 'customers' => $customer, 'recurring' => $recurring, 'payment_method' => $payment_method, 'category' => $category,
             'transaction'=>$transaction,'account'=>$account];
         return view('invoice.show',compact('detail_inv','invoic_item','company','data','transaction_amount','history'));
+
     }
 
     /**
