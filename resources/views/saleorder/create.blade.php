@@ -94,7 +94,7 @@
                                 <div class="row g-3">
                                     <div class="col-md-6 mb-3">
                                         <label for="order_date" class="form-label font-weight-bold text-muted text-uppercase">Date <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="order_date" placeholder="DD MM YYYY" value="{{$session_data[0]['order_date']??''}}" required>
+                                        <input type="date" class="form-control" id="order_date" placeholder="DD MM YYYY" value="{{$session_data[0]['order_date']??\Carbon\Carbon::today()->format('Y-m-d')}}" required>
                                         <span class="text-danger order_date_err"></span>
                                     </div>
                                     <div class="col-md-6 mb-3">
@@ -126,6 +126,26 @@
                                                 <option value="">None</option>
                                                 @foreach($data['quotation'] as $quotation)
                                                     <option value="{{$quotation->id}}" {{$session_data!=null?($session_data[0]['quotation_id']==$quotation->id?'selected':''):''}}>#{{$quotation->quotation_id}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="approver">Approver</label>
+                                            <select name="approver_id" id="approver" class="form-control">
+                                                @foreach($emps as $key=>$val)
+                                                    <option value="{{$key}}">{{$val}}</option>
+                                                    @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="cc">Cc</label>
+                                            <select name="cc[]" id="cc" class="form-control" multiple>
+                                                @foreach($emps as $key=>$val)
+                                                    <option value="{{$key}}">{{$val}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -171,7 +191,6 @@
                                 <th>Quantity</th>
                                 <th>Price</th>
                                 <th>Unit</th>
-                                <th>Discount/Promotion</th>
                                 <th>Total</th>
                                 <th>Action</th>
                                 </thead>
@@ -233,21 +252,6 @@
                                             </select>
                                         </td>
                                         <td>
-                                            @if($order->foc)
-                                                <input type="text" class="form-control" value="FOC">
-                                            @else
-                                                <select name=""  id="dis_pro{{$order->id}}" class="form-control select_update">
-                                                    <option value="0">Select Discount</option>
-                                                    @foreach($dis_promo as $item)
-
-                                                        @if($order->variant_id==$item->variant_id)
-                                                            <option value="{{$item->rate}}" {{$item->rate==$order->discount_promotion?'selected':''}}>{{$item->rate}} %</option>
-                                                        @endif
-                                                    @endforeach
-                                                </select>
-                                            @endif
-                                        </td>
-                                        <td>
                                             <input type="text" name="total" id="total_{{$order->id}}"
                                                    class="form-control update_item_{{$order->id}} total"
                                                    value="{{$order->foc?0:$order->total}}">
@@ -295,11 +299,8 @@
                                             @else
                                             $('#price_{{$order->id}}').val(price);
                                             var quantity = $('#quantity_{{$order->id}}').val();
-                                            var dis_pro=$('#dis_pro{{$order->id}} option:selected').val();
                                             var sub_total =quantity * price;
-                                            var amount=(dis_pro/100)*sub_total;
-                                            var total=sub_total-amount;
-                                            $('#total_{{$order->id}}').val(total);
+                                            $('#total_{{$order->id}}').val(sub_total);
                                             var sum = 0;
                                             $('.total').each(function() {
                                                 sum += parseFloat($(this).val());
@@ -331,11 +332,8 @@
                                                     @endforeach
 
                                             var quantity = $('#quantity_{{$order->id}}').val();
-                                            var dis_pro=$('#dis_pro{{$order->id}} option:selected').val();
                                             var sub_total =quantity * price;
-                                            var amount=(dis_pro/100)*sub_total;
-                                            var total=sub_total-amount;
-                                            $('#total_{{$order->id}}').val(total);
+                                            $('#total_{{$order->id}}').val(sub_total);
                                             var sum = 0;
                                             $('.total').each(function() {
                                                 sum += parseFloat($(this).val());
@@ -365,11 +363,8 @@
                                                 $('#price_{{$order->id}}').val(price);
 
                                                 var quantity = $('#quantity_{{$order->id}}').val();
-                                                var dis_pro=$('#dis_pro{{$order->id}} option:selected').val();
                                                 var sub_total =quantity * price;
-                                                var amount=(dis_pro/100)*sub_total;
-                                                var total=sub_total-amount;
-                                                $('#total_{{$order->id}}').val(total);
+                                                $('#total_{{$order->id}}').val(sub_total);
                                                 var sum = 0;
                                                 $('.total').each(function() {
                                                     sum += parseFloat($(this).val());
@@ -405,11 +400,9 @@
                                                         @else
                                                 var quantity = $('#quantity_{{$order->id}}').val();
                                                 var price = $('#price_{{$order->id}}').val();
-                                                var dis_pro=$('#dis_pro{{$order->id}} option:selected').val();
+                                                {{--var dis_pro=$('#dis_pro{{$order->id}} option:selected').val();--}}
                                                 var sub_total =quantity * price??0;
-                                                var amount=(dis_pro/100)*sub_total;
-                                                var total=sub_total-amount;
-                                                $('#total_{{$order->id}}').val(total);
+                                                $('#total_{{$order->id}}').val(sub_total);
                                                 var sum = 0;
                                                 $('.total').each(function() {
                                                     sum += parseFloat($(this).val());
@@ -428,7 +421,6 @@
                                                 var amount=(dis_pro/100)*sub_total;
                                                 var total=sub_total-amount;
                                                 var sell_unit=$('#unit{{$order->id}} option:selected').val();
-                                                var discount_pro=$('#dis_pro{{$order->id}} option:selected').val();
                                                 $.ajax({
                                                     data: {
                                                         "product_id": product,
@@ -436,7 +428,7 @@
                                                         'unit_price': price,
                                                         "total": total,
                                                         'sell_unit':sell_unit,
-                                                        'discount_pro':discount_pro
+                                                        'discount_pro':0
                                                     },
                                                     type: 'PUT',
                                                     url: "{{route('invoice_items.update',$order->id)}}",
@@ -503,13 +495,6 @@
         </div>
     <!-- /Page Content -->
 @include('saleorder.jquery_for_order_create')
-        <script>
-            jQuery(document).ready(function () {
-                'use strict';
 
-                jQuery('#order_date').datetimepicker();
-
-            });
-        </script>
 
 @endsection

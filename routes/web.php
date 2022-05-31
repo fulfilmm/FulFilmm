@@ -232,6 +232,7 @@ Route::middleware(['auth:employee'])->group(function () {
     Route::post('transfer/branch',[TransactionController::class,'transer_branch'])->name('transfer.branch');
     Route::get('confirm/request/item/{id}',[ApprovalController::class,'item_confirm'])->name('item.comfirm');
     Route::resource('summary',\App\Http\Controllers\SummaryController::class);
+    Route::get('sales/target/assigned',[SaleTargetController::class,'assign_target'])->name('saletargets.assigned');
 
 
 
@@ -567,7 +568,7 @@ Route::get('test', function () {
     ]
     ];
     $foc=[['variant_id'=>1,'unit_id'=>1,'qty'=>10]];
-    dd(json_encode($oreder_item));
+//    dd(json_encode($oreder_item));
     return view('test');
 })->name('test');
 

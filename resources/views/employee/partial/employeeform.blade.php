@@ -32,7 +32,7 @@
                     <div class="row">
                         <div class="col">
                             <div class="input-group">
-                                <input type="radio" id="gender" class="mr-2 ml-3 mt-1" name="gender" value="Male">
+                                <input type="radio" id="gender" class="mr-2 ml-3 mt-1" name="gender" value="Male" checked>
                                 <label for="Male">Male</label>
                             </div>
                         </div>
@@ -55,7 +55,7 @@
                     </div>
                     <div class="input-group">
                         <label for="mobile_seller">
-                            <input type="radio" name="mobile_seller"
+                            <input type="checkbox" name="mobile_seller"
                                    value="1" {{isset( $employee->mobile_seller) ?  $employee->mobile_seller == 1 ? 'checked' : '' : ''}}>
                             Mobile Sale Man</label><br>
                     </div>
@@ -162,8 +162,6 @@
                         <div class="form-group">
                             <label for="">Office</label>
                             <select name="office_branch_id" id="branch_id" class="select form-control">
-
-
                             </select>
                             @error('office_branch_id')
                             <span class="text-danger">{{$message}}</span>
@@ -264,7 +262,7 @@
         var head_id=$('#head option:selected').val();
         @foreach($office as $item)
         if (head_id == '{{$item->head_office}}') {
-            branch += '<option value="{{$item->id}} {{isset($employee)?($item->id==$employee->office_branch_id?'selected':''):old('office_branch_id')}}>{{$item->name}}</option>';
+            branch += '<option value="{{$item->id}}" {{isset($employee)?($item->id==$employee->office_branch_id?'selected':''):old('office_branch_id')}}>{{$item->name}}</option>';
         }
         @endforeach
         $('#branch_id').html(branch);
@@ -289,7 +287,7 @@
     var head = document.querySelector('#head');
     var branch = document.querySelector('#branch_id');
     var options2 = branch.querySelectorAll('option');
-    console.log(options3);
+    // console.log(options3);
     // alert(product)
     function branch_office(selValue) {
         branch_id.innerHTML='';

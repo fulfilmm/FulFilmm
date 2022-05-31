@@ -11,7 +11,7 @@
                             <img id="output" onClick="openSelect('#file1')"
                                  class="rounded mt-2 mb-4"
                                  src="{{isset($employee)?(url(asset($employee->profile_img?'img/profiles/'.$employee->profile_img:'img/profiles/plus.jpg'))):url(asset('/img/profiles/plus.jpg'))}}"
-                                 width="100px" height="100px;" alt=""><br>
+                                 width="50px" height="50px;" alt=""><br>
                         </div>
                     </div>
                     <div class="d-flex justify-content-center mt-2 mb-3">
@@ -36,6 +36,16 @@
                             <label class="custom-control-label" for="female"><i
                                         class="fa fa-female"></i> Female </label>
                         </div>
+                    </div>
+                </div>
+                <div class="col-12 mb-3">
+                    <div class="form-group">
+                        <label for="">Branch</label>
+                        <select name="branch_id" id="" class="form-control">
+                            @foreach($branch as $item)
+                                <option value="{{$item->id}}">{{$item->name}}</option>
+                                @endforeach
+                        </select>
                     </div>
                 </div>
 

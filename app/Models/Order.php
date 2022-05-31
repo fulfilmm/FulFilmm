@@ -17,4 +17,7 @@ class Order extends Model
     public function tax(){
         return $this->belongsTo(products_tax::class,'tax_id','id');
     }
+    public function follower(){
+        return $this->hasMany(OrderCc::class,'order_id','id');
+    }
 }

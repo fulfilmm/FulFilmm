@@ -518,8 +518,8 @@
                    {{--href="{{ route('sale.report') }}" style="text-decoration: none">Sales Report</a></li>--}}
             <li><a class="{{ Request::is('sale/activity') ? 'active' : '' }}"
                    href="{{ route('activity.index') }}" style="text-decoration: none">Sales Activity</a></li>
-            <li><a class="{{ Request::is('saletargets/create') ? 'active' : '' }}"
-                   href="{{ route('saletargets.create') }}" style="text-decoration: none">Sales Target</a></li>
+            <li><a class="{{ Request::is('sales/target/assigned') ? 'active' : '' }}"
+                   href="{{ route('saletargets.assigned') }}" style="text-decoration: none">Sales Target</a></li>
             <li><a class="{{ Request::is('contact/qualified') ? 'active' : '' }}"
                    href="{{ route('qualified_contact') }}" style="text-decoration: none">Qualified Customer</a></li>
             <li class="submenu">

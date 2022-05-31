@@ -22,10 +22,10 @@
         <!-- Content Starts -->
         <div class="col-12 my-3">
             <div class="row">
-                <div class="col-md-9 col-12">
+                <div class="col-md-9 col-sm-12 col-12">
                     <div id="map" style="width: 750px; height: 550px;"></div>
                 </div>
-                    <div class="col-3">
+                    <div class="col-12 col-md-3">
                         <form action="{{route('shop.store')}}" method="POST">
                             @csrf
                         <input type="hidden" name="emp_id" value="{{\Illuminate\Support\Facades\Auth::guard('employee')->user()->id}}">

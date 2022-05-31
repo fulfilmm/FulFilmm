@@ -1,6 +1,6 @@
 @extends('layout.mainlayout')
 
-@section('title', 'Dashboard')
+@section('title', 'Summary')
 
 @section('content')
     <div class="content container-fluid">
@@ -45,7 +45,9 @@
                                   @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Super Admin'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='CEO')
                                        <option value="">All</option>
                                        @foreach($employees as $emp)
-                                           <option value="{{$emp->id}}" {{$emp->id==$emp_id?'selected':''}}>{{$emp->name}}</option>
+                                           @if($emp->role->name=='Sales'||$emp->role->name=='Stock Controller'||$emp->role->name=='Store Keeper')
+                                               <option value="{{$emp->id}}" {{$emp->id==$emp_id?'selected':''}}>{{$emp->name}}</option>
+                                               @endif
                                        @endforeach
                                       @else
                                        @foreach($employees as $emp)
@@ -122,8 +124,6 @@
                                             <td>{{$inv->grand_total-$inv->due_amount}}</td>
                                         </tr>
                                         @endforeach
-                                </tbody>
-                                <tfooter>
                                     <tr>
                                         <td></td>
                                         <td></td>
@@ -147,7 +147,8 @@
                                         <td></td>
                                         <td></td>
                                     </tr>
-                                </tfooter>
+                                </tbody>
+
                             </table>
                         </div>
                     </div>
@@ -161,6 +162,7 @@
                                     <th>Variant</th>
                                     <th>Warehouse</th>
                                     <th>Sold Qty</th>
+                                    {{--<th>Available</th>--}}
                                     <th>Balance</th>
 
                                 </tr>
@@ -174,22 +176,22 @@
                                         <td>{{$item->warehouse->name}}</td>
                                         <td>{{$item->sold_qty??0}}
                                         </td>
+                                        {{--<td>{{$item->available}}</td>--}}
                                         <td>{{$item->stock_balance}}</td>
 
                                     </tr>
                                 @endforeach
-                                </tbody>
-                                <tfooter>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td class="float-right">Total</td>
-                                        <td>{{$total_sold??0}}</td>
-                                        <td>{{$total_balance}}</td>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Total</td>
+                                    <td>{{$total_sold??0}}</td>
+                                    <td>{{$total_balance}}</td>
+                                    {{--<td></td>--}}
 
-                                    </tr>
-                                </tfooter>
+                                </tr>
+                                </tbody>
                             </table>
                         </div>
                     </div>

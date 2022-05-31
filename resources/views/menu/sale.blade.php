@@ -239,7 +239,8 @@
         <a href="#"><i class="la la-dollar"></i> <span>Sale</span> <span
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
-
+            <li><a class="{{ Request::is('sales/target/assigned') ? 'active' : '' }}"
+                   href="{{ route('saletargets.assigned') }}" style="text-decoration: none">Sales Target</a></li>
             <li><a class="{{ Request::is('salegroup') ? 'active' : '' }}"
                    href="{{route('salegroup.index')}}" style="text-decoration: none">Sales Group</a></li>
             <li><a class="{{ Request::is('saleway') ? 'active' : '' }}"

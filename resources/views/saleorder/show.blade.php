@@ -28,8 +28,6 @@
                     <span class="float-left" type="button" ><i class="fa fa-edit"></i>
                     </span>
                     </a>
-                    <button  class="btn btn-primary btn-sm float-left ml-2" data-toggle="modal" data-target="#advan_pay" type="button" ><i class="fa fa-money " ></i>
-                    </button>
                 </div>
                 <div class="d-flex justify-content-between float-right ">
 
@@ -46,12 +44,14 @@
 
                         </div>
                     </div>
-                    <a class="btn btn-primary btn-sm mr-1 shadow-sm btn-rounded" href="{{route('generate_inv',$data["Order"]->id??'')}}">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="mr-2" width="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                        Generate Invoice
-                    </a>
+                   @if($data["Order"]->status=='Confirm')
+                        <a class="btn btn-primary btn-sm mr-1 shadow-sm btn-rounded" href="{{route('generate_inv',$data["Order"]->id??'')}}">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="mr-2" width="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            Generate Invoice
+                        </a>
+                       @endif
 
                     <div class="bs-offset-main bs-canvas-anim">
                         <button class="btn btn-primary btn-sm shadow-sm btn-rounded" type="button" data-toggle="canvas"
@@ -109,6 +109,16 @@
                                                 @else
                                                 None
                                             @endif
+                                        </td>
+                                    </tr>
+                                    <tr class="white-space-no-wrap">
+                                        <td class="text-muted pl-0">
+                                            Follower
+                                        </td>
+                                        <td>
+                                            @foreach($data['Order']->follower as $item)
+                                                {{$item->emp_name}}
+                                                @endforeach
                                         </td>
                                     </tr>
                                     <tr class="white-space-no-wrap">
@@ -505,101 +515,5 @@
             </div>
         </div>
     </div>
-   @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
-       <div id="advan_pay" class="modal custom-modal fade" role="dialog">
-           <div class="modal-dialog modal-dialog-centered modal-md">
-               <div class="modal-content">
-                   <div class="modal-header">
-                       <h5 class="modal-title">Advance Payment</h5>
-                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                           <span aria-hidden="true">&times;</span>
-                       </button>
-                   </div>
-                   <div class="modal-body">
-                       <form method="POST" action="{{route('advancepayments.store')}}" accept-charset="UTF-8" id="transaction" role="form" novalidate="novalidate"  class="form-loading-button needs-validation">
-                           @csrf
-                           <div class="card-body">
-                               <div class="row">
-                                   <input type="hidden" name="payment_type" value="Advance">
-                                   <div class="col-md-6">
-                                       <div class="form-group">
-                                           <label for="date">Type</label>
-                                           <select name="type" id="type" class="form-control" style="width: 100%">
-                                               <option value="Cash">Cash</option>
-                                               <option value="Ebanking">Ebanking</option>
-                                               <option value="KBZ Pay">KBZ Pay</option>
-                                           </select>
-                                           @error('type')
-                                           <span class="text-danger">{{$message}}</span>
-                                           @enderror
-                                       </div>
-                                   </div>
-                                   <div class="col-md-6">
-                                       <div class="form-group">
-                                           <label for="customer">Customer</label>
-                                           <input type="text" id="customer" class="form-control" value="{{$data['Order']->customer->name}}" readonly>
-                                           <input type="hidden" name="customer_id" value="{{$data['Order']->customer->id}}">
-                                       </div>
-                                   </div>
-                                   <div class="col-md-12" id="account_div">
-                                       <div class="form-group">
-                                           <label for="account">Account</label>
-                                           <select name="account" id="account" class="form-control" style="width: 100%">
-                                               <option value="">None</option>
-                                               @foreach($data['account'] as $item)
-                                                   <option value="{{$item->id}}">{{$item->name}}</option>
-                                               @endforeach
-                                           </select>
-                                       </div>
-                                   </div>
-                                   <div class="col-md-12">
-                                       <div class="form-group">
-                                           <label for="amount">Amount</label>
-                                           <div class="input-group">
-                                               <div class="input-group-prepend">
-                                                   <span class="input-group-text"><i class="fa fa-money"></i></span>
-                                               </div>
-                                               <input type="text" class="form-control" id="amount" name="amount" value="{{$data['grand_total']}}">
-                                           </div>
-                                           @error('amount')
-                                           <span class="text-danger">{{$message}}</span>
-                                           @enderror
-                                       </div>
-                                   </div>
-                               </div>
-                           </div>
-                           <input type="hidden" name="emp_id" value="{{\Illuminate\Support\Facades\Auth::guard('employee')->user()->id}}">
-                           <input type="hidden" name="order_id" value="{{$data['Order']->id}}">
-                           <div class="card-footer">
-                               <div class="row save-buttons">
-                                   <div class="col-md-12">
-                                       <button type="submit" class="btn btn-icon btn-success"><!----> <span
-                                                   class="btn-inner--text">Save</span></button>
-                                   </div>
-                               </div>
-                           </div>
-                       </form>
-                   </div>
-               </div>
-           </div>
-       </div>
-       @endif
-    <script>
-        $(document).ready(function () {
-           var type=$('#type option:selected').val();
-           if(type=='Cash'){
-               $('#account_div').hide();
-           }else {
-               $('#account_div').show();
-           }
-           $('#type').change(function () {
-              var select_type=$(this).val();
-               if(select_type=='Cash'){
-                   $('#account_div').hide();
-               }else {
-                   $('#account_div').show();
-               }
-           });
-        });
-    </script>
+
     @endsection

@@ -117,7 +117,7 @@ class CustomerController extends Controller
     {
 //        dd($request->all());
         if(Auth::guard('employee')->user()->office_branch_id==null){
-            return redirect()->back()->with('danger','You must did not connect any branch office');
+            return redirect()->back()->with('error','You must did not connect any branch office');
         }
         $last_customer = Customer::orderBy('id', 'desc')->first();
 
@@ -148,7 +148,7 @@ class CustomerController extends Controller
             'customer_id'=>$customer_id,
             'profile' => $request->profile_img != null?$input['imagename']:null,
             'name' => $request->name,
-            'branch_id'=>Auth::guard('employee')->user()->office_branch_id,
+            'branch_id'=>$request->branch_id,
             'zone_id'=>$request->zone_id,
             'region_id' => $request->region_id,
             'phone' => $request->phone,
@@ -165,7 +165,7 @@ class CustomerController extends Controller
             "tags_id" => $request->tag_industry,
             "emp_id" => Auth::guard('employee')->user()->id,
             'company_id' => $request->company_id,
-            'customer_type' =>isset($request->customer_type)??'Customer',
+            'customer_type' =>isset($request->customer_type)?$request->customer_type:'Customer',
             'department'=>$request->department,
             'position'=>$request->position??null,
             'status'=>$request->status,

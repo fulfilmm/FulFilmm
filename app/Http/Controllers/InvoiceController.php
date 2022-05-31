@@ -498,27 +498,31 @@ class InvoiceController extends Controller
     public function edit($id)
     {
         $invoice=Invoice::with('customer','tax','employee','order','warehouse')->where('id',$id)->firstOrFail();
-        $allcustomers =Customer::all();
-        $aval_product=Stock::with('variant')->where('available','>',0)->get();
-        $taxes=products_tax::all();
-        $orderline=OrderItem::with('variant','unit')->where('inv_id',$id)->get();
-        $grand_total=0;
-        for ($i=0;$i<count($orderline);$i++){
-            $grand_total=$grand_total+$orderline[$i]->total;
-        }
-        $status=$this->status;
-        $unit_price=SellingUnit::where('active',1)->get();
-        if($invoice->inv_type=='Retail Sale') {
-            $prices = product_price::where('sale_type', 'Retail Sale')->where('active', 1)->where('region_id', Auth::guard('employee')->user()->region_id)->get();
-            $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))->whereDate('end_date','>=',date('Y-m-d'))->where('sale_type','Retail Sale')->get();
-        }else{
-            $prices = product_price::where('sale_type', 'Whole Sale')->where('active', 1)->where('region_id', Auth::guard('employee')->user()->region_id)->get();
-            $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))->whereDate('end_date','>=',date('Y-m-d'))->where('sale_type','Whole Sale')->get();
-        }
-        $dis_promo=DiscountPromotion::where('sale_type',$invoice->inv_type)->get();
-        $focs=Freeofchare::with('variant')->get();
-        $warehouse=Warehouse::all();
-       return view('invoice.edit',compact('warehouse','allcustomers','orderline','grand_total','status','aval_product','taxes','unit_price','dis_promo','focs','invoice','prices','amount_discount'));
+      if(Auth::guard('employee')->user()->id==$invoice->emp_id){
+          $allcustomers =Customer::all();
+          $aval_product=Stock::with('variant')->where('available','>',0)->get();
+          $taxes=products_tax::all();
+          $orderline=OrderItem::with('variant','unit')->where('inv_id',$id)->get();
+          $grand_total=0;
+          for ($i=0;$i<count($orderline);$i++){
+              $grand_total=$grand_total+$orderline[$i]->total;
+          }
+          $status=$this->status;
+          $unit_price=SellingUnit::where('active',1)->get();
+          if($invoice->inv_type=='Retail Sale') {
+              $prices = product_price::where('sale_type', 'Retail Sale')->where('active', 1)->where('region_id', Auth::guard('employee')->user()->region_id)->get();
+              $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))->whereDate('end_date','>=',date('Y-m-d'))->where('sale_type','Retail Sale')->get();
+          }else{
+              $prices = product_price::where('sale_type', 'Whole Sale')->where('active', 1)->where('region_id', Auth::guard('employee')->user()->region_id)->get();
+              $amount_discount=AmountDiscount::whereDate('start_date','<=',date('Y-m-d'))->whereDate('end_date','>=',date('Y-m-d'))->where('sale_type','Whole Sale')->get();
+          }
+          $dis_promo=DiscountPromotion::where('sale_type',$invoice->inv_type)->get();
+          $focs=Freeofchare::with('variant')->get();
+          $warehouse=Warehouse::all();
+          return view('invoice.edit',compact('warehouse','allcustomers','orderline','grand_total','status','aval_product','taxes','unit_price','dis_promo','focs','invoice','prices','amount_discount'));
+      }else{
+          return redirect()->back()->with('error','This invoice can only editable'.$invoice->employee->name);
+      }
     }
 
     /**

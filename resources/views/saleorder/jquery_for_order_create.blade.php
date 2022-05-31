@@ -156,7 +156,14 @@
             var discount=$('#discount').val();
             var total=$('#total').val();
             var tax_id=$('#tax option:selected').val();
-            var tax_amount=$('#tax_amount').val()
+            var tax_amount=$('#tax_amount').val();
+            var approver=$('#approver option:selected').val();
+            var cc=[];
+            $('#cc :selected').each(function(i, sel){
+                cc.push($(sel).val());
+
+            });
+
             $.ajax({
                 data: {
                     'discount':discount,
@@ -175,7 +182,9 @@
                     'billing_address': billing_address,
                     'shipping_address': shipping_address,
                     'shipping_type': shipping_type,
-                    'quotation_id': quotation_id
+                    'quotation_id': quotation_id,
+                    'approver_id':approver,
+                    'cc':cc
 
                 },
                 type: 'POST',

@@ -39,7 +39,7 @@ class EmployeeTable extends Component
                         $q->withTrashed();
                     },'branch'=>function($q){
                         $q->get();
-                    }],'region')->where('office_branch_id',Auth::guard('employee')->user()->office_branch_id)
+                    }],'region','head')->where('office_branch_id',Auth::guard('employee')->user()->office_branch_id)
                     ->paginate(20)
             ]);
         }

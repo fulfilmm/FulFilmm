@@ -69,6 +69,186 @@
     </div>
     @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Super Admin'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='CEO'||\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='General Manager')
         <script>
+            var chart = Highcharts.chart('best', {
+                chart: {
+                    type: "column"
+                },
+                title: {
+                    text: 'Top 10 Best Selling Products'
+                },
+                legend: {
+                    layout: "vertical",
+                    align: 'right',
+                    verticalAlign: 'top',
+                    x: -40,
+                    y: 80,
+                    floating: true,
+                    borderWidth: 1,
+                    backgroundColor:
+                        Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+                    shadow: true
+                },
+                xAxis: {
+                    categories: [
+                        '{{$best_sell[0]['product_name']??''}}({{$best_sell[0]['variant']??'Top 1'}})',
+                        '{{$best_sell[1]['product_name']??''}}({{$best_sell[1]['variant']??'Top 2'}})',
+                        '{{$best_sell[2]['product_name']??''}}({{$best_sell[2]['variant']??'Top 3'}})',
+                        '{{$best_sell[3]['product_name']??''}}({{$best_sell[3]['variant']??'Top 4'}})',
+                        '{{$best_sell[4]['product_name']??''}}({{$best_sell[4]['variant']??'Top 5'}})',
+                        '{{$best_sell[5]['product_name']??''}}({{$best_sell[5]['variant']??'Top 6'}})',
+                        '{{$best_sell[6]['product_name']??''}}({{$best_sell[6]['variant']??'Top 7'}})',
+                        '{{$best_sell[7]['product_name']??''}}({{$best_sell[7]['variant']??'Top 8'}})',
+                        '{{$best_sell[8]['product_name']??''}}({{$best_sell[8]['variant']??'Top 9'}})',
+                        '{{$best_sell[9]['product_name']??''}}({{$best_sell[9]['variant']??'Top 10'}})'
+                    ],
+                    labels: {
+                        x:3
+                    }
+                },
+                yAxis: {
+                    allowDecimals: false,
+                    title: {
+                        text: 'Quantity'
+                    }
+                },
+                series: [{
+                    name: 'Selling Quantity',
+                    data: [
+                        {{$best_sell[0]['qty']??0}},
+                        {{$best_sell[1]['qty']??0}},
+                        {{$best_sell[2]['qty']??0}},
+                        {{$best_sell[3]['qty']??0}},
+                        {{$best_sell[4]['qty']??0}},
+                        {{$best_sell[5]['qty']??0}},
+                        {{$best_sell[6]['qty']??0}},
+                        {{$best_sell[7]['qty']??0}},
+                        {{$best_sell[8]['qty']??0}},
+                        {{$best_sell[9]['qty']??0}},
+                    ],
+                    crosshair: true
+                },
+                ],
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 500
+                        },
+                        chartOptions: {
+                            legend: {
+                                align: 'center',
+                                verticalAlign: 'bottom',
+                                layout: 'horizontal'
+                            },
+                            yAxis: {
+                                labels: {
+                                    align: 'left',
+                                    x: 0,
+                                    y: -5
+                                },
+                                title: {
+                                    text: null
+                                }
+                            },
+                            subtitle: {
+                                text: null
+                            },
+                            credits: {
+                                enabled: false
+                            }
+                        }
+                    }]
+                }
+            });
+            var chart = Highcharts.chart('bad', {
+                chart: {
+                    type: "column"
+                },
+                title: {
+                    text: 'Top 10 Bad Selling Products'
+                },
+                legend: {
+                    layout: "vertical",
+                    align: 'right',
+                    verticalAlign: 'top',
+                    x: -40,
+                    y: 80,
+                    floating: true,
+                    borderWidth: 1,
+                    backgroundColor:
+                        Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+                    shadow: true
+                },
+                xAxis: {
+                    categories: [
+                        '{{$bad_sell[0]['product_name']??''}}({{$bad_sell[0]['variant']??'Top 1'}})',
+                        '{{$bad_sell[1]['product_name']??''}}({{$bad_sell[1]['variant']??'Top 2'}})',
+                        '{{$bad_sell[2]['product_name']??''}}({{$bad_sell[2]['variant']??'Top 3'}})',
+                        '{{$bad_sell[3]['product_name']??''}}({{$bad_sell[3]['variant']??'Top 4'}})',
+                        '{{$bad_sell[4]['product_name']??''}}({{$bad_sell[4]['variant']??'Top 5'}})',
+                        '{{$bad_sell[5]['product_name']??''}}({{$bad_sell[5]['variant']??'Top 6'}})',
+                        '{{$bad_sell[6]['product_name']??''}}({{$bad_sell[6]['variant']??'Top 7'}})',
+                        '{{$bad_sell[7]['product_name']??''}}({{$bad_sell[7]['variant']??'Top 8'}})',
+                        '{{$bad_sell[8]['product_name']??''}}({{$bad_sell[8]['variant']??'Top 9'}})',
+                        '{{$bad_sell[9]['product_name']??''}}({{$bad_sell[9]['variant']??'Top 10'}})'
+                    ],
+                    labels: {
+                        x:3
+                    }
+                },
+                yAxis: {
+                    allowDecimals: false,
+                    title: {
+                        text: 'Quantity'
+                    }
+                },
+                series: [{
+                    name: 'Selling Quantity',
+                    data: [
+                        {{$bad_sell[0]['qty']??0}},
+                        {{$bad_sell[1]['qty']??0}},
+                        {{$bad_sell[2]['qty']??0}},
+                        {{$bad_sell[3]['qty']??0}},
+                        {{$bad_sell[4]['qty']??0}},
+                        {{$bad_sell[5]['qty']??0}},
+                        {{$bad_sell[6]['qty']??0}},
+                        {{$bad_sell[7]['qty']??0}},
+                        {{$bad_sell[8]['qty']??0}},
+                        {{$bad_sell[9]['qty']??0}},
+                    ],
+                    crosshair: true
+                },
+                ],
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 500
+                        },
+                        chartOptions: {
+                            legend: {
+                                align: 'center',
+                                verticalAlign: 'bottom',
+                                layout: 'horizontal'
+                            },
+                            yAxis: {
+                                labels: {
+                                    align: 'left',
+                                    x: 0,
+                                    y: -5
+                                },
+                                title: {
+                                    text: null
+                                }
+                            },
+                            subtitle: {
+                                text: null
+                            },
+                            credits: {
+                                enabled: false
+                            }
+                        }
+                    }]
+                }
+            });
             var chart = Highcharts.chart('yearly', {
 
                 chart: {
