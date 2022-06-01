@@ -499,7 +499,7 @@
             <li><a class="{{ Request::is('salezone') ? 'active' : '' }}"
                    href="{{route('salezone.index')}}" style="text-decoration: none">Sales Zone</a></li>
             <li><a class="{{ Request::is('region') ? 'active' : '' }}"
-                   href="{{route('region.index')}}" style="text-decoration: none">Sales Regioin</a></li>
+                   href="{{route('region.index')}}" style="text-decoration: none">Sales Region</a></li>
             <li><a class="{{ Request::is('inv/view/whole') ? 'active' : '' }}"
                    href="{{ url('inv/view/whole') }}" style="text-decoration: none">Whole Sales</a></li>
             <li><a class="{{ Request::is('inv/view/retail') ? 'active' : '' }}"

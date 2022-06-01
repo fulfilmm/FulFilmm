@@ -350,6 +350,17 @@ class MobileInvoiceController extends Controller
      */
     public function edit($id){
         $Auth=Auth::guard('api')->user();
+        $company=MainCompany::where('ismaincompany',true)->first();
+        $emps = Employee::where('office_branch_id', Auth::guard('api')->user()->office_branch_id)->get();
+       $cashier=[];
+        foreach ($emps as $emp){
+            if($emp->role->name=='Cashier'){
+                array_push($cashier,$emp);
+            }
+        }
+        $category = TransactionCategory::where('type', 1)->get();
+        $recurring=['No','Daily','Weekly','Monthly','Yearly'];
+        $payment_method=['Cash','eBanking','WaveMoney','KBZ Pay'];
         $invoice=Invoice::with('customer','employee','tax','order')->where('id',$id)->firstOrFail();
         $allcustomers = Customer::where('branch_id',$Auth->office_branch_id)->where('region_id',$Auth->region_id)->get();
         $taxes = products_tax::all();
@@ -386,7 +397,11 @@ class MobileInvoiceController extends Controller
             'amount_discount'=>$amount_discount,
             'companies'=>$companies,
             'zones'=>$zone,
-            'region'=>$region
+            'region'=>$region,
+            'cashier'=>$cashier,
+            'payment_category'=>$category,
+            'payment_method'=>$payment_method,
+            'base_company'=>$company
 
         ]);
     }
