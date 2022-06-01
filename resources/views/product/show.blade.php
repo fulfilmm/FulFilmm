@@ -130,7 +130,7 @@
                            <th></th>
                            <th>Product Name</th>
                            <th>Item Code</th>
-                           <th>Variation</th>
+                           <th>Variants</th>
                            <th>Disable/Enable</th>
                            <th>Price Rule</th>
                            <th>Created Date</th>
@@ -268,21 +268,26 @@
             $(document).on('click', '#confirm', function () {
                 var product_id =new Array();
                 $(".single").each(function () {
-                    console.log($(this).val()); //works fine
-                    product_id.push($(this).val());
-                });
-                var action_type=$( "#action_type option:selected" ).val();
-                console.log(product_id);
-                $.ajax({
-                    type:'POST',
-                    data : {action_Type:action_type,product_id:product_id},
-                    url:'/action/confirm',
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    success:function(data){
-                        console.log(data);
-                        window.location.reload();
+                    // console.log($(this).val()); //works fine
+                    if($(this).is(":checked")){
+                        product_id.push($(this).val());
                     }
                 });
+                var action_type=$( "#action_type option:selected" ).val();
+                if(product_id.length!=0){
+                    $.ajax({
+                        type:'POST',
+                        data : {action_Type:action_type,product_id:product_id},
+                        url:'/action/confirm',
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        success:function(data){
+                            console.log(data);
+                            window.location.reload();
+                        }
+                    });
+                }else {
+                    swal('Empty Checked','Please Checkbox checked first!','warning');
+                }
             });
         });
     </script>

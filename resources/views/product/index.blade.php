@@ -90,7 +90,7 @@
                                     {{$product->sub_cat->name??''}}
                                 </td>
                                 <td>{{$product->brand->name??'None'}}</td>
-{{--                                <td><a href="{{route('create.variant',$product->id)}}" class="btn btn-outline-info btn-sm">Add Variant</a></td>--}}
+                                <td><a href="{{route('create.variant',$product->id)}}" class="btn btn-outline-info btn-sm">Add Variant</a></td>
                                 <td class="text-center">
                                     <a href="{{route("products.show",$product->id)}}" class="btn btn-warning btn-sm" title="Product detail view"><i class="la la-eye"></i></a>
                                     <a class="btn btn-white btn-sm" href="{{route("products.edit",$product->id)}}" title="Product Edit"><i class="fa fa-pencil"></i> </a>

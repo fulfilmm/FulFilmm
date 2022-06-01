@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EmployeeRequest;
+use App\Imports\BranchImport;
 use App\Models\Employee;
 use App\Models\HeadOffice;
 use App\Models\Invoice;
@@ -13,6 +14,7 @@ use App\Models\StockTransaction;
 use App\Models\Warehouse;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OfficeBranchController extends Controller
 {
@@ -153,5 +155,9 @@ class OfficeBranchController extends Controller
         }
         return view('Report.branchreport',compact('stocks','invoices','stock_transactions','start','end','status','units','branch'));
 
+    }
+    public function import(Request $request){
+        Excel::import(new BranchImport(),$request->file('import'));
+        return redirect('officebranch')->with('success','Success branch import');
     }
 }

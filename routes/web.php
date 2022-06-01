@@ -241,6 +241,10 @@ Route::middleware(['auth:employee'])->group(function () {
     Route::get('qty/alert',[StockTransactionController::class,'qtyalert'])->name('alert.qty');
     Route::post('brand/import',[ProductBrandController::class,'import'])->name('brand.import');
     Route::post('category/import',[ProductController::class,'cat_import'])->name('category.import');
+    Route::post('branches/import',[OfficeBranchController::class,'import'])->name('branch.import');
+    Route::post('region/import',[\App\Http\Controllers\RegionController::class,'import'])->name('region.import');
+    Route::post('zone/import',[\App\Http\Controllers\SaleZoneController::class,'import'])->name('zone.import');
+    Route::post('price/import',[SellingUnitController::class,'price_import'])->name('price.import');
 
 });
 

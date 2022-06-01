@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\RegionImport;
 use App\Models\OfficeBranch;
 use App\Models\Region;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class RegionController extends Controller
 {
@@ -107,5 +109,10 @@ class RegionController extends Controller
         $region=Region::where('id',$id)->first();
         $region->delete();
         return redirect()->back()->with('success','Deleted successful');
+    }
+    public function import(Request $request){
+//        dd($request->all());
+        Excel::import(new RegionImport(), $request->file('import'));
+        return redirect('region')->with('message','Import successful');
     }
 }
