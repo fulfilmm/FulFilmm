@@ -131,7 +131,7 @@ class RevenueController extends Controller
                 $deli_pay->update();
             }
         }
-        $this->transaction_add($branch_acc->id, $request->type, null, $new_revenue->id);
+        $this->transaction_add($branch_acc->id, $new_revenue->id);
         $this->addnotify($request->approver_id, 'noti', 'Add new revenue', 'revenue', Auth::guard('api')->user()->id);
         if ($new_revenue->is_cashintransit) {
             $this->addnotify($new_revenue->finance_manager, 'noti', 'Add new revenue', 'revenue', Auth::guard('employee')->user()->id);
@@ -193,12 +193,11 @@ class RevenueController extends Controller
     {
         //
     }
-    public function transaction_add($account_id, $expense_id, $revenue_id)
+    public function transaction_add($account_id, $revenue_id)
     {
         $transaction = new Transaction();
         $transaction->type ="Revenue";
         $transaction->account_id = $account_id;
-        $transaction->expense_id = $expense_id;
         $transaction->revenue_id = $revenue_id;
         $transaction->save();
     }
