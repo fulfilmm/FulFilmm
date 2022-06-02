@@ -361,7 +361,6 @@ class MobileInvoiceController extends Controller
         $category = TransactionCategory::where('type', 1)->get();
         $recurring=['No','Daily','Weekly','Monthly','Yearly'];
         $payment_method=['Cash','eBanking','WaveMoney','KBZ Pay'];
-        response()->json($method);
         $invoice=Invoice::with('customer','employee','tax','order')->where('id',$id)->firstOrFail();
         $allcustomers = Customer::where('branch_id',$Auth->office_branch_id)->where('region_id',$Auth->region_id)->get();
         $taxes = products_tax::all();
