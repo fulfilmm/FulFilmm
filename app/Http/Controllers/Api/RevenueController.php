@@ -58,6 +58,7 @@ class RevenueController extends Controller
             'attachment' => 'mimes:pdf,xlsx,doc,docx,jpg,jpeg,ppt,bip',
 //                'coa_account'=>'required'
         ]);
+        return response()->json(['data'=>$request->all()]);
 
         try {
             $branch_acc=Account::where('branch_id',Auth::guard('api')->user()->office_branch_id)->first();
