@@ -16,48 +16,51 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col">
-                <div class="form-group">
-                    <label for="">Employee</label>
-                    <select name="emp_id" id="emp" class="form-control">
-                        @if($auth->role->name=='CEO'||$auth->role->name=='Super Admin'||$auth->role->name=='Sale Manager')
-                            <option value="">All</option>
-                            @foreach($employee as $key=>$val)
-                                <option value="{{$key}}">{{$val}}</option>
+        <form action="{{url('sales/target/assigned')}}" method="get">
+            @csrf
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="">Employee</label>
+                        <select name="emp_id" id="emp" class="form-control">
+                            @if($auth->role->name=='CEO'||$auth->role->name=='Super Admin'||$auth->role->name=='Sale Manager')
+                                <option value="">All</option>
+                                @foreach($employee as $key=>$val)
+                                    <option value="{{$key}}" {{$key==$emp?'selected':''}}>{{$val}}</option>
                                 @endforeach
                             @else
-                            @foreach($employee as $key=>$val)
-                                <option value="{{$key}}">{{$val}}</option>
+                                @foreach($employee as $key=>$val)
+                                    <option value="{{$key}}">{{$val}}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="">Month</label>
+                        <select name="month" id="month" class="form-control">
+                            @foreach($month as $key=>$val)
+                                <option value="{{$val}}" {{$val==$searchmonth?'selected':''}}>{{$val}}</option>
                             @endforeach
-                        @endif
-                    </select>
+                        </select>
+                    </div>
                 </div>
-            </div>
-            <div class="col">
-                <div class="form-group">
-                    <label for="">Month</label>
-                    <select name="month" id="month" class="form-control">
-                        @foreach($month as $key=>$val)
-                            <option value="{{$val}}">{{$val}}</option>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="">Year</label>
+                        <select name="year" id="month" class="form-control">
+                            @foreach($year as $key=>$val)
+                                <option value="{{$val}}" {{$val==$searchyear?'selected':''}}>{{$val}}</option>
                             @endforeach
-                    </select>
+                        </select>
+                    </div>
+                </div>
+                <div class="col mt-4">
+                    <button type="submit" class="btn btn-primary col-12 mt-2"><i class="la la-search"></i> Search</button>
                 </div>
             </div>
-            <div class="col">
-                <div class="form-group">
-                    <label for="">Year</label>
-                    <select name="month" id="month" class="form-control">
-                        @foreach($year as $key=>$val)
-                            <option value="{{$val}}">{{$val}}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-            <div class="col mt-4">
-                <button type="submit" class="btn btn-primary col-12 mt-2"><i class="la la-search"></i> Search</button>
-            </div>
-        </div>
+        </form>
         <div class="card shadow">
             <div class="col-12 my-2"style="overflow: auto">
                 <table class="table table-striped custom-table mb-0 datatable">
@@ -65,7 +68,8 @@
                     <tr>
                         <th>Employee</th>
                         <th>Month</th>
-                        <th>Target</th>
+                        <th>Target Amount</th>
+                        <th>Target Quantity</th>
                         <th>Action</th>
                     </tr>
 
@@ -76,7 +80,11 @@
                                 <td>{{$target->employee->name}}</td>
                                 <td>{{$target->month}}</td>
                                 <td>{{$target->target_sale}}</td>
-                                <td><a href="{{route('saletargets.edit',$target->id)}}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></a></td>
+                                <td>{{$target->qty??''}}</td>
+                                <td>
+                                    <a href="{{route('saletargets.edit',$target->id)}}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></a>
+                                    <a href="{{route('saletargets.show',$target->id)}}" class="btn btn-white btn-sm"><i class="fa fa-eye"></i></a>
+                                </td>
                             </tr>
                     @endforeach
                     </tbody>

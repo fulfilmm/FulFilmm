@@ -4,13 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use App\Models\Invoice;
+use App\Models\OrderItem;
+use App\Models\ProductVariations;
 use App\Models\PurchaseOrder;
 use App\Models\SaleTarget;
+use App\Models\SaletargetItem;
+use App\Models\Stock;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Scalar\String_;
+use function PHPUnit\Framework\isEmpty;
 
 class SaleTargetController extends Controller
 {
@@ -163,19 +168,22 @@ class SaleTargetController extends Controller
         $employee = Employee::where('department_id', 1)->pluck('name', 'id')->all();
         $month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', "Jul", 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         $year=[date('Y')+0,date('Y')+1,date('Y')+2];
+        $product=ProductVariations::select('product_name','variant','id')->get();
 
 //        dd($mothly_targets);
-        return view('sale.assign_sale_target', compact('employee', 'month','year'));
+        return view('sale.assign_sale_target', compact('employee', 'month','year','product'));
     }
     public function assign_target(Request $request)
     {
+//        dd($request->month);
+//        dd(Carbon::create('2022-07')->format('M'));
         $auth=Auth::guard('employee')->user();
         if($auth->role->name=='CEO'||$auth->role->name=='Super Admin'||$auth->role->name=='Sale Manager'){
             $employee = Employee::where('department_id', 1)->pluck('name', 'id')->all();
             $month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', "Jul", 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
             $year=[date('Y')+0,date('Y')+1,date('Y')+2];
             if($request->emp_id==null && $request->month==null&& $request->year==null){
-                $mothly_targets = SaleTarget::with('employee')->where('month', date('m'))->get();
+                $mothly_targets = SaleTarget::with('employee')->where('month', date('M'))->get();
             }else if($request->emp_id==null && $request->month==null&& $request->year!=null){
                 $mothly_targets = SaleTarget::with('employee')->where('year', $request->year)->get();
             }else if($request->emp_id==null && $request->month!=null&& $request->year==null){
@@ -193,6 +201,7 @@ class SaleTargetController extends Controller
                     ->where('year',$request->year)
                     ->where('month',$request->month)
                     ->get();
+//                dd($mothly_targets);
             }else if($request->emp_id!=null && $request->month!=null&& $request->year==null){
                 $mothly_targets = SaleTarget::with('employee')
                     ->where('year',date('Y'))
@@ -203,6 +212,12 @@ class SaleTargetController extends Controller
                 $mothly_targets = SaleTarget::with('employee')
                     ->where('year',$request->year)
                     ->where('emp_id',$request->emp_id)
+                    ->get();
+            }else{
+                $mothly_targets = SaleTarget::with('employee')
+                    ->where('year',$request->year)
+                    ->where('emp_id',$request->emp_id)
+                    ->where('month',$request->month)
                     ->get();
             }
 
@@ -231,28 +246,58 @@ class SaleTargetController extends Controller
 
 
 //        dd($mothly_targets);
-        return view('sale.monthly_target', compact('employee', 'month', 'mothly_targets','year','auth'));
+        $emp=$request->emp_id??'';
+        $searchmonth=$request->month??date('M');
+        $searchyear=$request->year??date('Y');
+        return view('sale.monthly_target', compact('employee', 'month', 'mothly_targets','year','auth','emp','searchmonth','searchyear'));
     }
 
     public function store(Request $request)
     {
 //        dd($request->all());
-        $this->validate($request, ['emp_id' => 'required', 'target_sale' => 'required', 'month' => 'required']);
-        foreach ($request->emp_id as $emp_id) {
-            $have_beenassing = SaleTarget::where('month', $request->month)->where('emp_id', $emp_id)->where('year',$request->year)->first();
-            if ($have_beenassing == null) {
-                $sale_target = new SaleTarget();
-                $sale_target->emp_id = $emp_id;
-                $sale_target->target_sale = $request->target_sale;
-                $sale_target->month = $request->month;
-                $sale_target->year = $request->year;
-                $sale_target->qty=$request->target_qty;
-                $sale_target->save();
+        if($request->target_amount==null&&$request->target_qty==null){
+            return redirect()->back()->with('error','You need to fill up at least one of target amount or target quantity. You can fill both of them');
+        }else {
 
+            if ($request->checked == 'on') {
+                $this->validate($request, [
+                    'emp_id' => 'required',
+                    'month' => 'required',
+                    'target_amount'=>'required'
+                ]);
+            } else {
+                $this->validate($request, ['emp_id' => 'required', 'month' => 'required','target_amount'=>'required']);
             }
 
+            foreach ($request->emp_id as $emp_id) {
+
+                $have_beenassing = SaleTarget::where('month', $request->month)->where('emp_id', $emp_id)->where('year', $request->year)->first();
+                if ($have_beenassing == null) {
+                    $sale_target = new SaleTarget();
+                    $sale_target->emp_id = $emp_id;
+                    $sale_target->target_sale = $request->target_amount;
+                    $sale_target->qty = $request->target_qty;
+                    $sale_target->month = $request->month;
+                    $sale_target->year = $request->year;
+                    $sale_target->qty = $request->target_qty;
+                    $sale_target->save();
+                    if ($request->checked == 'on') {
+                        for ($i = 0; $i < count($request->product); $i++) {
+                            $data['item_id'] = $request->product[$i];
+                            $data['target_qty'] = $request->qty[$i];
+                            $data['sale_target_id'] = $sale_target->id;
+                            SaletargetItem::create($data);
+                        }
+                    }
+
+                    return redirect('sales/target/assigned')->with('success', 'Sale target assigned successful!');
+                } else {
+                    return redirect('saletargets/create')->with('warning', 'This employee have been assigned sales target for ' . $request->month);
+                }
+
+            }
         }
-        return redirect(route('saletargets.assigned'));
+
 
     }
 
@@ -336,5 +381,23 @@ class SaleTargetController extends Controller
 //        dd($cos);
         return view('sale.dashboard', compact('monthly', 'yearly', 'year', 'sale_target', 'monthlysaletarget','yearly_target','search_month','month','searchYear','gp','receivable','payable','cos'));
 
+    }
+    public function show($id){
+        $sale_target=SaleTarget::with('employee')->where('id',$id)->first();
+        $items=SaletargetItem::with('product')->where('sale_target_id',$id)->get();
+//        dd($items);
+        $invoices=Invoice::where('emp_id',$sale_target->emp_id)->whereMonth('created_at',$sale_target->month)->get();
+        foreach ($invoices as $inv){
+            foreach ($items as $item) {
+                $order_item=OrderItem::with('unit')->where('variant_id',$item->item_id)->get();
+                foreach ($order_item as $or_item){
+//                $item->sold_qty+=1;
+                    $item->sold_qty+=$or_item->qty*$or_item->unit->unit_convert_rate;
+                }
+            }
+        }
+
+
+        return view('sale.sales_target_details',compact('sale_target','items'));
     }
 }

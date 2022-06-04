@@ -23,7 +23,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="date">Month</label>
-                                        <select name="month" id="month" class="form-control" style="width: 100%">
+                                        <select name="month" id="month" class="form-control select" style="width: 100%">
                                             @foreach($month as $key=>$val)
                                                 <option value="{{$val}}">{{$val}}</option>
                                             @endforeach
@@ -36,7 +36,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="year">Year</label>
-                                        <select name="year" id="year" class="form-control" style="width: 100%">
+                                        <select name="year" id="year" class="form-control select" style="width: 100%">
                                             @foreach($year as $item)
                                                 <option value="{{$item}}">{{$item}}</option>
                                             @endforeach
@@ -46,7 +46,7 @@
                                 <div class="col-md-12">
                                     <label for="recurring">Employee</label>
                                     <div class="input-group">
-                                        <select name="emp_id[]" id="emp_id" class="form-control" style="width: 90%" multiple>
+                                        <select name="emp_id[]" id="emp_id" class="form-control select" style="width: 90%" multiple>
                                             @foreach($employee as $key=>$val)
                                                 <option value="{{$key}}">{{$val}}</option>
                                             @endforeach
@@ -63,7 +63,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fa fa-money"></i></span>
                                             </div>
-                                            <input type="text" class="form-control" id="target_sale" name="target_sale">
+                                            <input type="text" class="form-control" id="target_sale" name="target_amount">
                                         </div>
                                         @error('target_sale')
                                         <span class="text-danger">{{$message}}</span>
@@ -77,14 +77,20 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fa fa-money"></i></span>
                                             </div>
-                                            <input type="text" class="form-control" id="target_sale" name="target_sale">
+                                            <input type="text" class="form-control" id="target_sale" name="target_qty">
                                         </div>
                                         @error('target_sale')
                                         <span class="text-danger">{{$message}}</span>
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-12">
+                                <div class="col-12 border-bottom">
+                                    <div class="form-group">
+                                        <input type="checkbox" id="has_target_product" name="checked">
+                                        <span>Assign Item target</span>
+                                    </div>
+                                </div>
+                                <div class="col-12 mt-2">
                                     <div id="item_table">
                                         <button type="button" class='delete btn btn-danger btn-sm'>Remove</button>
                                         <button type="button" class='addmore btn btn-white btn-sm'>Add More</button><br>
@@ -97,8 +103,13 @@
                                             </tr>
                                             <tr>
                                                 <td><input type='checkbox' class='case'/></td>
-                                                <td><input type='text' class="form-control form-control-sm" id='product' name='product[]'/></td>
-                                                <td><input type='text' class="form-control form-control-sm" id='qty' name='qty[]'/></td>
+                                                <td><select name="product[]" id="product1" class="form-control">
+                                                        <option value=''>Select Product</option>
+                                                       @foreach($product as $item)
+                                                            <option value="{{$item->id}}">{{$item->product_name}} {{$item->variant?'('.$item->variant.')':''}}</option>
+                                                           @endforeach
+                                                    </select></td>
+                                                <td><input type='text' class="form-control rounded" id='qty' name='qty[]'/></td>
                                             </tr>
                                         </table>
 
@@ -106,12 +117,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card-footer">
-                            <div class="row save-buttons">
-                                <div class="col-md-12">
-                                    <button type="submit" class="btn btn-icon btn-success"><!----> <span
-                                                class="btn-inner--text">Save</span></button>
-                                </div>
+                        <div class="row save-buttons my-3">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-icon btn-success"><!----> <span
+                                            class="btn-inner--text">Save</span></button>
                             </div>
                         </div>
                     </form>
@@ -123,6 +132,17 @@
         /* select tab on select change */
 
 
+        $(document).ready(function () {
+            $('.select').select2();
+            $('#item_table').hide();
+        });
+        $('#has_target_product').change(function () {
+            if($('#has_target_product').is(':checked')){
+                $('#item_table').show();
+            }else {
+                $('#item_table').hide();
+            }
+        });
 
         $(".delete").on('click', function() {
             $('.case:checkbox:checked').parents("tr").remove();
@@ -134,7 +154,9 @@
         $(".addmore").on('click',function(){
             count=$('table tr').length;
             var data="<tr><td><input type='checkbox' class='case'/></td>";
-            data +="<td><input type='text' class='form-control form-control-sm' id='product"+i+"' name='product[]'/></td><td><input type='text' class='form-control form-control-sm' id='qty"+i+"' name='qty[]'/></td></tr>";
+            data +="<td><select name='product[]'";
+            data +="id='product"+i+"'";
+            data +="class='form-control select' required><option value=''>Select Product</option>@foreach($product as $item)<option value='{{$item->id}}'>{{$item->product_name}} {{$item->variant?'('.$item->variant.')':''}}</option>@endforeach </select></td><td><input type='text' class='form-control rounded' id='qty"+i+"' name='qty[]' required></td></tr>";
             $('table').append(data);
             i++;
         });
@@ -156,8 +178,6 @@
                 $('#'+id).html(key+1);
             });
         }
-        $(document).ready(function () {
-            $('select').select2();
-        });
+
     </script>
 @endsection

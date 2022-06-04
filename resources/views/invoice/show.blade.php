@@ -61,12 +61,12 @@
                     </a></span></strong> <br><br></div>
             <div class="col-md-2">
                 Order ID
-                <br> <strong><span class="float-left"><a href="https://app.akaunting.com/142258/sales/customers/1005081">
+                <br> <strong><span class="float-left"><a href="{{$detail_inv->order_id?route('saleorder.show',$detail_inv->order_id):''}}">
                       {{$detail_inv->order->order_id??"None"}}
                     </a></span></strong> <br><br></div>
             <div class="col-md-2">
                 Tax
-                <br> <strong><span class="float-left"><a href="https://app.akaunting.com/142258/sales/customers/1005081">
+                <br> <strong><span class="float-left"><a href="#">
                      {{$detail_inv->tax_rate??0}}%
                     </a></span></strong> <br><br></div>
             <div class="col-md-2">

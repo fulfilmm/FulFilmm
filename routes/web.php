@@ -586,6 +586,14 @@ Route::get('test', function () {
     ];
     $foc=[['variant_id'=>1,'unit_id'=>1,'qty'=>10]];
 //    dd(json_encode($oreder_item));
+    $payment_method=[
+        ['name'=>'Cash'],
+        ['name'=>'eBanking'],
+        ['name'=>'WaveMoney'],
+        ['name'=>'KBZ Pay']
+    ];
+    $method=json_encode($payment_method);
+   dd($method);
     return view('test');
 })->name('test');
 
