@@ -384,17 +384,15 @@ class SaleTargetController extends Controller
     }
     public function show($id){
         $sale_target=SaleTarget::with('employee')->where('id',$id)->first();
-        $tartget_items=SaletargetItem::with('product')->where('sale_target_id',$id)->get();
+        $items=SaletargetItem::with('product')->where('sale_target_id',$id)->get();
 //        dd($items);
-        $invoices=Invoice::where('emp_id',$sale_target->emp_id)->whereMonth('created_at',$sale_target->month)->get();
-        $items=[];
+        $invoices=Invoice::where('emp_id',$sale_target->emp_id)->get();
         foreach ($invoices as $inv){
-            foreach ($tartget_items as $item) {
+            foreach ($items as $item) {
                 $order_item=OrderItem::with('unit')->where('variant_id',$item->item_id)->where('inv_id',$inv->id)->get();
                 foreach ($order_item as $or_item){
 //                $item->sold_qty+=1;
                     $item->sold_qty+=$or_item->qty*$or_item->unit->unit_convert_rate;
-                    array_push($items,$item);
                 }
             }
         }
