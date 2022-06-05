@@ -47,10 +47,6 @@ File: Main Js File
         });
     }
 
-    function initMetisMenu() {
-        //metis menu
-        $("#side-menu").metisMenu();
-    }
 
     function initCounterNumber() {
         var counter = document.querySelectorAll('.counter-value');
@@ -364,26 +360,6 @@ File: Main Js File
             }
         });
     }
-
-    function init() {
-        initMetisMenu();
-        initCounterNumber();
-        initLeftMenuCollapse();
-        initActiveMenu();
-        initMenuItemScroll();
-        initHoriMenuActive();
-        initFullScreen();
-        initDropdownMenu();
-        initComponents();
-        initSettings();
-        initLanguage();
-        initPreloader();
-        layoutSetting();
-        Waves.init();
-        initCheckAll();
-    }
-
-    init();
 
 })(jQuery)
 

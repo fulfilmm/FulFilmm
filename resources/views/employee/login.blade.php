@@ -150,7 +150,6 @@
 									<div class="carousel-inner">
 										<div class="carousel-item active">
 											<div class="testi-contain text-white">
-												<img src="#" class=" img-fluid " alt="..." width="100px" height="100px">
 												<i class="bx bxs-quote-alt-left text-success display-6"></i>
 
 												<h4 class="mt-4 fw-medium lh-base text-white">“I feel confident
@@ -178,7 +177,6 @@
 										<div class="carousel-item">
 											<div class="testi-contain text-white">
 												<i class="bx bxs-quote-alt-left text-success display-6"></i>
-												<img src="#" class=" img-fluid " alt="..." height="100px">
 												<h4 class="mt-4 fw-medium lh-base text-white">“Our task must be to
 													free ourselves by widening our circle of compassion to embrace
 													all living
@@ -203,7 +201,6 @@
 										<div class="carousel-item">
 											<div class="testi-contain text-white">
 												<i class="bx bxs-quote-alt-left text-success display-6"></i>
-												<img src="#" class=" img-fluid " alt="..." width="100px" height="100px">
 												<h4 class="mt-4 fw-medium lh-base text-white">“I've learned that
 													people will forget what you said, people will forget what you
 													did,

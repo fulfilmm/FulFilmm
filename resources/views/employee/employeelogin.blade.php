@@ -143,12 +143,12 @@
                                         <button type="button" data-bs-target="#reviewcarouselIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
                                         <button type="button" data-bs-target="#reviewcarouselIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
                                         <button type="button" data-bs-target="#reviewcarouselIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                                        <button type="button" data-bs-target="#reviewcarouselIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
                                     </div>
                                     <!-- end carouselIndicators -->
                                     <div class="carousel-inner">
                                         <div class="carousel-item active">
                                             <div class="testi-contain text-white">
-                                                <img src="#" class=" img-fluid " alt="..." width="100px" height="100px">
                                                 <i class="bx bxs-quote-alt-left text-success display-6"></i>
 
                                                 <h4 class="mt-4 fw-medium lh-base text-white">“I feel confident
@@ -176,7 +176,6 @@
                                         <div class="carousel-item">
                                             <div class="testi-contain text-white">
                                                 <i class="bx bxs-quote-alt-left text-success display-6"></i>
-                                                <img src="#" class=" img-fluid " alt="..." height="100px">
                                                 <h4 class="mt-4 fw-medium lh-base text-white">“Our task must be to
                                                     free ourselves by widening our circle of compassion to embrace
                                                     all living
@@ -201,7 +200,27 @@
                                         <div class="carousel-item">
                                             <div class="testi-contain text-white">
                                                 <i class="bx bxs-quote-alt-left text-success display-6"></i>
-                                                <img src="#" class=" img-fluid " alt="..." width="100px" height="100px">
+                                                <h4 class="mt-4 fw-medium lh-base text-white">“I've learned that
+                                                    people will forget what you said, people will forget what you
+                                                    did,
+                                                    but people will never forget
+                                                    how donec in efficitur lectus, nec lobortis metus you made them
+                                                    feel.”</h4>
+                                                <div class="mt-4 pt-3 pb-5">
+                                                    <div class="d-flex align-items-start">
+                                                        <img src="#" class="avatar-md img-fluid rounded-circle" alt="...">
+                                                        <div class="flex-1 ms-3 mb-4">
+                                                            <h5 class="font-size-18 text-white">Ilse R. Eaton</h5>
+                                                            <p class="mb-0 text-white-50">Manager
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="carousel-item">
+                                            <div class="testi-contain text-white">
+                                                <i class="bx bxs-quote-alt-left text-success display-6"></i>
                                                 <h4 class="mt-4 fw-medium lh-base text-white">“I've learned that
                                                     people will forget what you said, people will forget what you
                                                     did,

@@ -546,5 +546,11 @@ class MobileInvoiceController extends Controller
         }
 
     }
+    public function cancel($id){
+        $invoice=Invoice::where('id',$id)->first();
+        $invoice->cancel=1;
+        $invoice->update();
+        return response()->json(['message'=>'Canceled this invoice','invoice_id'=>$id]);
+    }
 
 }
