@@ -388,4 +388,4 @@ File: Main Js File
 })(jQuery)
 
 
-feather.replace()
+feather.replace();
