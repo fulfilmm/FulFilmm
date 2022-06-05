@@ -276,9 +276,9 @@ File: Main Js File
         });
     }
 
-    function updateRadio(radioId) {
-        document.getElementById(radioId).checked = true;
-    }
+    // function updateRadio(radioId) {
+    //     document.getElementById(radioId).checked = true;
+    // }
 
     function layoutSetting() {
         var body = document.getElementsByTagName("body")[0];
@@ -313,19 +313,19 @@ File: Main Js File
             return;
         });
 
-        if(body.hasAttribute("data-layout") && body.getAttribute("data-layout") == "horizontal") {
-            updateRadio('layout-horizontal');
-            $(".sidebar-setting").hide();
-        } else {
-            updateRadio('layout-vertical');
-        }
-        (body.hasAttribute("data-layout-mode") && body.getAttribute("data-layout-mode") == "dark") ? updateRadio('layout-mode-dark'): updateRadio('layout-mode-light');
-        (body.hasAttribute("data-layout-size") && body.getAttribute("data-layout-size") == "boxed") ? updateRadio('layout-width-boxed'): updateRadio('layout-width-fuild');
-        (body.hasAttribute("data-layout-scrollable") && body.getAttribute("data-layout-scrollable") == "true") ? updateRadio('layout-position-scrollable'): updateRadio('layout-position-fixed');
-        (body.hasAttribute("data-topbar") && body.getAttribute("data-topbar") == "dark") ? updateRadio('topbar-color-dark'): updateRadio('topbar-color-light');
-        (body.hasAttribute("data-sidebar-size") && body.getAttribute("data-sidebar-size") == "sm") ? updateRadio('sidebar-size-small') : (body.hasAttribute("data-sidebar-size") && body.getAttribute("data-sidebar-size") == "md") ? updateRadio('sidebar-size-compact') : updateRadio('sidebar-size-default');
-        (body.hasAttribute("data-sidebar") && body.getAttribute("data-sidebar") == "brand") ? updateRadio('sidebar-color-brand') : (body.hasAttribute("data-sidebar") && body.getAttribute("data-sidebar") == "dark") ? updateRadio('sidebar-color-dark') : updateRadio('sidebar-color-light');
-        (document.getElementsByTagName("html")[0].hasAttribute("dir") && document.getElementsByTagName("html")[0].getAttribute("dir") == "rtl") ? updateRadio('layout-direction-rtl'): updateRadio('layout-direction-ltr');
+        // if(body.hasAttribute("data-layout") && body.getAttribute("data-layout") == "horizontal") {
+        //     updateRadio('layout-horizontal');
+        //     $(".sidebar-setting").hide();
+        // } else {
+        //     updateRadio('layout-vertical');
+        // }
+        // (body.hasAttribute("data-layout-mode") && body.getAttribute("data-layout-mode") == "dark") ? updateRadio('layout-mode-dark'): updateRadio('layout-mode-light');
+        // (body.hasAttribute("data-layout-size") && body.getAttribute("data-layout-size") == "boxed") ? updateRadio('layout-width-boxed'): updateRadio('layout-width-fuild');
+        // (body.hasAttribute("data-layout-scrollable") && body.getAttribute("data-layout-scrollable") == "true") ? updateRadio('layout-position-scrollable'): updateRadio('layout-position-fixed');
+        // (body.hasAttribute("data-topbar") && body.getAttribute("data-topbar") == "dark") ? updateRadio('topbar-color-dark'): updateRadio('topbar-color-light');
+        // (body.hasAttribute("data-sidebar-size") && body.getAttribute("data-sidebar-size") == "sm") ? updateRadio('sidebar-size-small') : (body.hasAttribute("data-sidebar-size") && body.getAttribute("data-sidebar-size") == "md") ? updateRadio('sidebar-size-compact') : updateRadio('sidebar-size-default');
+        // (body.hasAttribute("data-sidebar") && body.getAttribute("data-sidebar") == "brand") ? updateRadio('sidebar-color-brand') : (body.hasAttribute("data-sidebar") && body.getAttribute("data-sidebar") == "dark") ? updateRadio('sidebar-color-dark') : updateRadio('sidebar-color-light');
+        // (document.getElementsByTagName("html")[0].hasAttribute("dir") && document.getElementsByTagName("html")[0].getAttribute("dir") == "rtl") ? updateRadio('layout-direction-rtl'): updateRadio('layout-direction-ltr');
 
         // on layou change
         $("input[name='layout']").on('change', function () {

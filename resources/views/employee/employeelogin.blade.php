@@ -19,7 +19,7 @@
     <!-- Bootstrap Css -->
     <link href="{{url(asset('css/logincss/bootstap.min.css'))}}" id="bootstrap-style" rel="stylesheet" type="text/css"/>
     <!-- Icons Css -->
-    <link href="{{url(asset('css/logincss/icon.min.css'))}}" rel="stylesheet" type="text/css"/>
+    <link href="{{url(asset('css/font-awesome.min.css'))}}" rel="stylesheet" type="text/css"/>
     <!-- App Css-->
     <link href="{{url(asset('css/logincss/app.css'))}}" id="app-style" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" href="{{url("css/line-awesome.min.css")}}">
@@ -79,9 +79,6 @@
                                                     Remember me
                                                 </label>
                                             </div>
-                                        </div>
-                                        <div class="col">
-                                            <a href="{{url('password/reset')}}">Reset Password</a>
                                         </div>
 
                                     </div>
@@ -151,7 +148,7 @@
                                     <div class="carousel-inner">
                                         <div class="carousel-item active">
                                             <div class="testi-contain text-white">
-                                                <img src="{{url(asset('product_picture/iphone12.png'))}}" class=" img-fluid " alt="..." width="100px" height="100px">
+                                                <img src="#" class=" img-fluid " alt="..." width="100px" height="100px">
                                                 <i class="bx bxs-quote-alt-left text-success display-6"></i>
 
                                                 <h4 class="mt-4 fw-medium lh-base text-white">“I feel confident
@@ -164,7 +161,7 @@
                                                 <div class="mt-4 pt-3 pb-5">
                                                     <div class="d-flex align-items-start">
                                                         <div class="flex-shrink-0">
-                                                            <img src="{{url(asset('img/3612581_18010316150060733791.jpg'))}}" class="avatar-md img-fluid rounded-circle" alt="...">
+                                                            <img src="#" class="avatar-md img-fluid rounded-circle" alt="...">
                                                         </div>
                                                         <div class="flex-grow-1 ms-3 mb-4">
                                                             <h5 class="font-size-18 text-white">Richard Drews
@@ -179,7 +176,7 @@
                                         <div class="carousel-item">
                                             <div class="testi-contain text-white">
                                                 <i class="bx bxs-quote-alt-left text-success display-6"></i>
-                                                <img src="{{url(asset('product_picture/laptop.png'))}}" class=" img-fluid " alt="..." height="100px">
+                                                <img src="#" class=" img-fluid " alt="..." height="100px">
                                                 <h4 class="mt-4 fw-medium lh-base text-white">“Our task must be to
                                                     free ourselves by widening our circle of compassion to embrace
                                                     all living
@@ -189,7 +186,7 @@
                                                 <div class="mt-4 pt-3 pb-5">
                                                     <div class="d-flex align-items-start">
                                                         <div class="flex-shrink-0">
-                                                            <img src="{{url(asset('img/3612581_18010316150060733791.jpg'))}}" class="avatar-md img-fluid rounded-circle" alt="...">
+                                                            <img src="#" class="avatar-md img-fluid rounded-circle" alt="...">
                                                         </div>
                                                         <div class="flex-grow-1 ms-3 mb-4">
                                                             <h5 class="font-size-18 text-white">Rosanna French
@@ -204,7 +201,7 @@
                                         <div class="carousel-item">
                                             <div class="testi-contain text-white">
                                                 <i class="bx bxs-quote-alt-left text-success display-6"></i>
-                                                <img src="{{url(asset('product_picture/watch.png'))}}" class=" img-fluid " alt="..." width="100px" height="100px">
+                                                <img src="#" class=" img-fluid " alt="..." width="100px" height="100px">
                                                 <h4 class="mt-4 fw-medium lh-base text-white">“I've learned that
                                                     people will forget what you said, people will forget what you
                                                     did,
@@ -213,7 +210,7 @@
                                                     feel.”</h4>
                                                 <div class="mt-4 pt-3 pb-5">
                                                     <div class="d-flex align-items-start">
-                                                        <img src="{{url(asset('img/3612581_18010316150060733791.jpg'))}}" class="avatar-md img-fluid rounded-circle" alt="...">
+                                                        <img src="#" class="avatar-md img-fluid rounded-circle" alt="...">
                                                         <div class="flex-1 ms-3 mb-4">
                                                             <h5 class="font-size-18 text-white">Ilse R. Eaton</h5>
                                                             <p class="mb-0 text-white-50">Manager
@@ -260,7 +257,7 @@
 
 
 <!-- App js -->
-<script src="{{url(asset('js/loginjs.app.js'))}}"></script>
+<script src="{{url(asset('js/loginjs/app.js'))}}"></script>
 
 </body>
 </html>

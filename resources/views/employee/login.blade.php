@@ -9,7 +9,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- CSRF Token -->
 	<meta name="csrf-token" content="yLUyjD9WW8ILTF5XMcNtgTQv0gKB8AsRb0U4czo8">
-	<meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+	<meta content="Fulfill"/>
 	<meta content="Themesbrand" name="author" />
 	<!-- App favicon -->
 	<link rel="shortcut icon" href="{{$maincompany!=null ? url(asset('/img/profiles/'.$maincompany->logo)): url(asset('/img/logo2.png'))}}">
@@ -19,7 +19,7 @@
 	<!-- Bootstrap Css -->
 	<link href="{{url(asset('css/logincss/bootstap.min.css'))}}" id="bootstrap-style" rel="stylesheet" type="text/css"/>
 	<!-- Icons Css -->
-	<link href="{{url(asset('css/logincss/icon.min.css'))}}" rel="stylesheet" type="text/css"/>
+	<link href="{{url(asset('css/font-awesome.min.css'))}}" rel="stylesheet" type="text/css"/>
 	<!-- App Css-->
 	<link href="{{url(asset('css/logincss/app.css'))}}" id="app-style" rel="stylesheet" type="text/css"/>
 	<link rel="stylesheet" href="{{url("css/line-awesome.min.css")}}">
@@ -28,7 +28,7 @@
 
 <body>
 <div class="auth-page">
-	<div class="container-fluid p-0">
+	<div class="content container-fluid p-0">
 		<div class="row g-0">
 			<div class="col-xxl-3 col-lg-4 col-md-5">
 				<div class="auth-full-page-content d-flex p-sm-5 p-4">
@@ -150,7 +150,7 @@
 									<div class="carousel-inner">
 										<div class="carousel-item active">
 											<div class="testi-contain text-white">
-												<img src="{{url(asset('product_picture/iphone12.png'))}}" class=" img-fluid " alt="..." width="100px" height="100px">
+												<img src="#" class=" img-fluid " alt="..." width="100px" height="100px">
 												<i class="bx bxs-quote-alt-left text-success display-6"></i>
 
 												<h4 class="mt-4 fw-medium lh-base text-white">“I feel confident
@@ -163,7 +163,7 @@
 												<div class="mt-4 pt-3 pb-5">
 													<div class="d-flex align-items-start">
 														<div class="flex-shrink-0">
-															<img src="{{url(asset('img/3612581_18010316150060733791.jpg'))}}" class="avatar-md img-fluid rounded-circle" alt="...">
+															<img src="#" class="avatar-md img-fluid rounded-circle" alt="...">
 														</div>
 														<div class="flex-grow-1 ms-3 mb-4">
 															<h5 class="font-size-18 text-white">Richard Drews
@@ -178,7 +178,7 @@
 										<div class="carousel-item">
 											<div class="testi-contain text-white">
 												<i class="bx bxs-quote-alt-left text-success display-6"></i>
-												<img src="{{url(asset('product_picture/laptop.png'))}}" class=" img-fluid " alt="..." height="100px">
+												<img src="#" class=" img-fluid " alt="..." height="100px">
 												<h4 class="mt-4 fw-medium lh-base text-white">“Our task must be to
 													free ourselves by widening our circle of compassion to embrace
 													all living
@@ -188,7 +188,7 @@
 												<div class="mt-4 pt-3 pb-5">
 													<div class="d-flex align-items-start">
 														<div class="flex-shrink-0">
-															<img src="{{url(asset('img/3612581_18010316150060733791.jpg'))}}" class="avatar-md img-fluid rounded-circle" alt="...">
+															<img src="#" class="avatar-md img-fluid rounded-circle" alt="...">
 														</div>
 														<div class="flex-grow-1 ms-3 mb-4">
 															<h5 class="font-size-18 text-white">Rosanna French
@@ -203,7 +203,7 @@
 										<div class="carousel-item">
 											<div class="testi-contain text-white">
 												<i class="bx bxs-quote-alt-left text-success display-6"></i>
-												<img src="{{url(asset('product_picture/watch.png'))}}" class=" img-fluid " alt="..." width="100px" height="100px">
+												<img src="#" class=" img-fluid " alt="..." width="100px" height="100px">
 												<h4 class="mt-4 fw-medium lh-base text-white">“I've learned that
 													people will forget what you said, people will forget what you
 													did,
@@ -212,7 +212,7 @@
 													feel.”</h4>
 												<div class="mt-4 pt-3 pb-5">
 													<div class="d-flex align-items-start">
-														<img src="{{url(asset('img/3612581_18010316150060733791.jpg'))}}" class="avatar-md img-fluid rounded-circle" alt="...">
+														<img src="#" class="avatar-md img-fluid rounded-circle" alt="...">
 														<div class="flex-1 ms-3 mb-4">
 															<h5 class="font-size-18 text-white">Ilse R. Eaton</h5>
 															<p class="mb-0 text-white-50">Manager
@@ -242,9 +242,9 @@
 <!-- JAVASCRIPT -->
 <script src="{{url(asset('js/jquery-3.2.1.min.js'))}}"></script>-
 <script src="{{url(asset('js/loginjs/bootstrap.bundle.min.js'))}}"></script>
-<script src="{{url(asset('js/loginjs/metismenu.js'))}}"></script>
-<script src="{{url(asset('js/loginjs/simblebar.js'))}}"></script>
-<script src="{{url(asset('js/loginjs/wave.js'))}}"></script>
+{{--<script src="{{url(asset('js/loginjs/metismenu.js'))}}"></script>--}}
+{{--<script src="{{url(asset('js/loginjs/simblebar.js'))}}"></script>--}}
+{{--<script src="{{url(asset('js/loginjs/wave.js'))}}"></script>--}}
 <script src="{{url(asset('js/loginjs/feather.js'))}}"></script>
 <!-- pace js -->
 <script src="{{url(asset('js/loginjs/peace.js'))}}"></script>
@@ -254,49 +254,12 @@
         if ($(this).siblings('input').length > 0) {
             $(this).siblings('input').attr('type') == "password" ? $(this).siblings('input').attr('type', 'input') : $(this).siblings('input').attr('type', 'password');
         }
-    })
-    $('#change-password').on('submit',function(event){
-        event.preventDefault();
-        var Id = $('#data_id').val();
-        var current_password = $('#current-password').val();
-        var password = $('#password').val();
-        var password_confirm = $('#password-confirm').val();
-        $('#current_passwordError').text('');
-        $('#passwordError').text('');
-        $('#password_confirmError').text('');
-        $.ajax({
-            url: "http://minia-light.laravel.themesbrand.com/update-password" + "/" + Id,
-            type:"POST",
-            data:{
-                "current_password": current_password,
-                "password": password,
-                "password_confirmation": password_confirm,
-                "_token": "yLUyjD9WW8ILTF5XMcNtgTQv0gKB8AsRb0U4czo8",
-            },
-            success:function(response){
-                $('#current_passwordError').text('');
-                $('#passwordError').text('');
-                $('#password_confirmError').text('');
-                if(response.isSuccess == false){
-                    $('#current_passwordError').text(response.Message);
-                }else if(response.isSuccess == true){
-                    setTimeout(function () {
-                        window.location.href = "http://minia-light.laravel.themesbrand.com";
-                    }, 1000);
-                }
-            },
-            error: function(response) {
-                $('#current_passwordError').text(response.responseJSON.errors.current_password);
-                $('#passwordError').text(response.responseJSON.errors.password);
-                $('#password_confirmError').text(response.responseJSON.errors.password_confirmation);
-            }
-        });
     });
 </script>
 
 
 <!-- App js -->
-<script src="{{url(asset('js/loginjs.app.js'))}}"></script>
+<script src="{{url(asset('js/loginjs/app.js'))}}"></script>
 
 </body>
 </html>

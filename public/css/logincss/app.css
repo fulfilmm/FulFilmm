@@ -2435,7 +2435,7 @@ body[data-layout-mode=dark] .toast-header {
 }
 
 body[data-layout-mode=dark] .grid-example, body[data-layout-mode=dark] .grid-structure .grid-container {
-    background-color: #373c39
+    background-color: #373c39;
 }
 
 body[data-layout-mode=dark] .icon-demo-content {
@@ -4189,7 +4189,7 @@ body[data-layout-mode=dark] .jvectormap-label {
 }
 
 .auth-bg {
-    background-image: url(../images/auth-bg.jpg);
+    /*background-image: url(../images/auth-bg.jpg);*/
     background-position: 50%;
     background-size: cover;
     background-repeat: no-repeat
