@@ -46,7 +46,7 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
 //    Route::apiResource("invoice" , InvoiceDataController::class);
 
     Route::resource("mobile_invoice", MobileInvoiceController::class);
-    Route::post('invoice/cancel/{id}',[MobileInvoiceController::class,'cancel']);
+    Route::get('invoice/cancel/{id}',[MobileInvoiceController::class,'cancel']);
     Route::get('retail/invoice' , [App\Http\Controllers\Api\Invoice_Mobile\MobileInvoiceController::class,'retail']);
 
 //    Route::resource("invoice_items",InvoiceItemController::class);
