@@ -844,13 +844,22 @@ class ReportController extends Controller
 
     public function sale_analysis(Request $request)
     {
+
         $months = ['01'=>'Jan','02'=>'Feb', '03'=>'Mar', '04'=>'Apr', '05'=>'May', '06'=>'Jun', '07'=>"Jul", '08'=>'Aug', '09'=>'Sep', '10'=>'Oct', '11'=>'Nov', '12'=>'Dec'];
+       $current_year=date('Y');
+        $years=[$current_year-2,$current_year-1,$current_year,$current_year+1,$current_year+2];
         if(isset($request->month)){
             $month=$request->month;
 
         }else{
             $month=date('m');
         }
+        if(isset($request->year)){
+            $year=$request->year;
+        }else{
+            $year=$current_year;
+        }
+
 //        dd($month);
        $auth=Auth::guard('employee')->user();
        if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'){
@@ -870,6 +879,8 @@ class ReportController extends Controller
                    array_push($zone,$z);
                }
            }
+       }else{
+           return redirect()->back()->with('error','You do not have permission to access requested record!');
        }
 
         $employee=[];
@@ -883,44 +894,80 @@ class ReportController extends Controller
             }
         }
         foreach ($employee as $emp) {
-            $sales_total = DB::table("invoices")
-                ->select(DB::raw("SUM(grand_total) as total"))
-                ->whereYear('invoice_date',date('Y'))
-                ->whereMonth('invoice_date',$month)
-                ->where('emp_id',$emp->id)
-                ->where('cancel',0)
-                ->get();
+          if($month=='all'){
+              $sales_total = DB::table("invoices")
+                  ->select(DB::raw("SUM(grand_total) as total"))
+                  ->whereYear('invoice_date',$year)
+                  ->where('emp_id',$emp->id)
+                  ->where('cancel',0)
+                  ->get();
+          }else{
+              $sales_total = DB::table("invoices")
+                  ->select(DB::raw("SUM(grand_total) as total"))
+                  ->whereYear('invoice_date',$year)
+                  ->whereMonth('invoice_date',$month)
+                  ->where('emp_id',$emp->id)
+                  ->where('cancel',0)
+                  ->get();
+          }
             $saleman_sales[$emp->id]['sale']=$sales_total[0]->total??0;
         }
 //        dd($month,date('m'));
         foreach ($branch as $data) {
-            $branch_total = DB::table("invoices")
-                ->select(DB::raw("SUM(grand_total) as total"))
-                ->whereYear('invoice_date',date('Y'))
-                ->where('branch_id',$data->id)
-                ->whereMonth('invoice_date',$month)
-                ->where('cancel',0)
-                ->get();
+            if($month=='all'){
+                $branch_total = DB::table("invoices")
+                    ->select(DB::raw("SUM(grand_total) as total"))
+                    ->whereYear('invoice_date',$year)
+                    ->where('branch_id',$data->id)
+                    ->where('cancel',0)
+                    ->get();
+            }else{
+                $branch_total = DB::table("invoices")
+                    ->select(DB::raw("SUM(grand_total) as total"))
+                    ->whereYear('invoice_date',$year)
+                    ->where('branch_id',$data->id)
+                    ->whereMonth('invoice_date',$month)
+                    ->where('cancel',0)
+                    ->get();
+            }
             $branch_sales[$data->id]['sale']=$branch_total[0]->total??0;
         }
         foreach ($region as $data) {
-            $sales_total = DB::table("invoices")
-                ->select(DB::raw("SUM(grand_total) as total"))
-                ->whereYear('invoice_date',date('Y'))
-                ->where('region_id',$data->id)
-                ->whereMonth('invoice_date',$month)
-                ->where('cancel',0)
-                ->get();
+            if($month=='all'){
+                $sales_total = DB::table("invoices")
+                    ->select(DB::raw("SUM(grand_total) as total"))
+                    ->whereYear('invoice_date',$year)
+                    ->where('region_id',$data->id)
+                    ->where('cancel',0)
+                    ->get();
+            }else{
+                $sales_total = DB::table("invoices")
+                    ->select(DB::raw("SUM(grand_total) as total"))
+                    ->whereYear('invoice_date',$year)
+                    ->where('region_id',$data->id)
+                    ->whereMonth('invoice_date',$month)
+                    ->where('cancel',0)
+                    ->get();
+            }
             $region_sales[$data->id]['sale']=$sales_total[0]->total??0;
         }
         foreach ($zone as $data) {
-            $sales_total = DB::table("invoices")
-                ->select(DB::raw("SUM(grand_total) as total"))
-                ->whereYear('invoice_date',date('Y'))
-                ->where('zone_id',$data->id)
-                ->whereMonth('invoice_date',$month)
-                ->where('cancel',0)
-                ->get();
+            if($month=='all'){
+                $sales_total = DB::table("invoices")
+                    ->select(DB::raw("SUM(grand_total) as total"))
+                    ->whereYear('invoice_date',$year)
+                    ->where('zone_id',$data->id)
+                    ->where('cancel',0)
+                    ->get();
+            }else{
+                $sales_total = DB::table("invoices")
+                    ->select(DB::raw("SUM(grand_total) as total"))
+                    ->whereYear('invoice_date',$year)
+                    ->where('zone_id',$data->id)
+                    ->whereMonth('invoice_date',$month)
+                    ->where('cancel',0)
+                    ->get();
+            }
             $zone_sales[$data->id]['sale']=$sales_total[0]->total??0;
         }
 
@@ -931,7 +978,8 @@ class ReportController extends Controller
 
 //        dd($employee);
         $search_month=$month;
-        return view('Report.sales_analysis', compact('data', 'employee','branch','region','zone','branch_sales','region_sales','zone_sales','saleman_sales','months','search_month'));
+        $search_year=$year;
+        return view('Report.sales_analysis', compact('data', 'employee','branch','region','zone','branch_sales','region_sales','zone_sales','saleman_sales','months','search_month','years','search_year'));
 
     }//Finish ပီးပီ
 

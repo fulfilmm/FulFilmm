@@ -13,6 +13,10 @@
                     Sale Dashboard</a></li>
             <li><a class="{{ Request::is('summary') ? 'active' : '' }}"
                    href="{{ route('summary.index') }}" style="text-decoration: none">Daily Summary</a></li>
+            @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Sale Manager')
+                <li><a class="{{ Request::is('sales/analysis') ? 'active' : '' }}"
+                       href="{{url('sales/analysis')}}" style="text-decoration: none">Sale Analysis</a></li>
+                @endif
         </ul>
     </li>
     <li class="submenu">

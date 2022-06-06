@@ -20,6 +20,8 @@
                            href="{{ route('report.saleprformance') }}" style="text-decoration: none">Sales Performance</a></li>
                     <li><a class="{{ Request::is('summary') ? 'active' : '' }}"
                            href="{{ route('summary.index') }}" style="text-decoration: none">Daily Summary</a></li>
+                    <li><a class="{{ Request::is('sales/analysis') ? 'active' : '' }}"
+                           href="{{url('sales/analysis')}}" style="text-decoration: none">Sale Analysis</a></li>
                     {{--<li><a class="{{ Request::is('officebranch') ? 'active' : '' }}"--}}
                            {{--href="{{ route('officebranch.index') }}" style="text-decoration: none;">Branch</a></li>--}}
 

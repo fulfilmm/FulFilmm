@@ -54,13 +54,24 @@
         <form action="{{url('sales/analysis')}}" method="get">
             @csrf
             <div class="row">
-                <div class="col-md-4 col-12 offset-md-8">
+                <div class="col-md-4 col-6 offset-md-4 offset-0">
+                    <div class="form-group">
+                        <select name="year" id="year" class="form-control">
+                            @foreach($years as $key=>$val)
+                                <option value="{{$val}}" {{$val==$search_year?'selected':''}}>{{$val}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4 col-6 ">
                     <div class="form-group">
                         <div class="input-group">
                             <select name="month" id="month" class="form-control">
+                                <option value="all" {{$search_month=='all'?'selected':''}}>All</option>
                                 @foreach($months as $key=>$val)
                                     <option value="{{$key}}" {{$key==$search_month?'selected':''}}>{{$val}}</option>
                                 @endforeach
+
                             </select>
                             <div class="input-group-append">
                                 <button class="btn btn-white" type="submit"><i class="la la-search"></i></button>
