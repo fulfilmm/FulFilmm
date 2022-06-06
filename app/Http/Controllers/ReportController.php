@@ -844,13 +844,14 @@ class ReportController extends Controller
 
     public function sale_analysis(Request $request)
     {
-        $months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', "Jul", 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        $months = ['01'=>'Jan','02'=>'Feb', '03'=>'Mar', '04'=>'Apr', '05'=>'May', '06'=>'Jun', '07'=>"Jul", '08'=>'Aug', '09'=>'Sep', '10'=>'Oct', '11'=>'Nov', '12'=>'Dec'];
         if(isset($request->month)){
             $month=$request->month;
 
         }else{
-            $month=date('M');
+            $month=date('m');
         }
+//        dd($month);
        $auth=Auth::guard('employee')->user();
        if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'){
            $emp=Employee::all();
@@ -891,15 +892,16 @@ class ReportController extends Controller
                 ->get();
             $saleman_sales[$emp->id]['sale']=$sales_total[0]->total??0;
         }
+//        dd($month,date('m'));
         foreach ($branch as $data) {
-            $sales_total = DB::table("invoices")
+            $branch_total = DB::table("invoices")
                 ->select(DB::raw("SUM(grand_total) as total"))
                 ->whereYear('invoice_date',date('Y'))
                 ->where('branch_id',$data->id)
                 ->whereMonth('invoice_date',$month)
                 ->where('cancel',0)
                 ->get();
-            $branch_sales[$data->id]['sale']=$sales_total[0]->total??0;
+            $branch_sales[$data->id]['sale']=$branch_total[0]->total??0;
         }
         foreach ($region as $data) {
             $sales_total = DB::table("invoices")
@@ -922,7 +924,7 @@ class ReportController extends Controller
             $zone_sales[$data->id]['sale']=$sales_total[0]->total??0;
         }
 
-            dd($branch_sales,$region_sales,$zone_sales,$saleman_sales);
+//            dd($branch_sales,$region_sales,$zone_sales,$saleman_sales);
 
 
 //            dd($lead);

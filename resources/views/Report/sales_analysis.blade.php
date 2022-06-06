@@ -59,7 +59,7 @@
                         <div class="input-group">
                             <select name="month" id="month" class="form-control">
                                 @foreach($months as $key=>$val)
-                                    <option value="{{$val}}" {{$val==$search_month?'selected':''}}>{{$val}}</option>
+                                    <option value="{{$key}}" {{$key==$search_month?'selected':''}}>{{$val}}</option>
                                 @endforeach
                             </select>
                             <div class="input-group-append">
@@ -132,7 +132,7 @@
                     }
                 },
                 tooltip: {
-                    valueSuffix: ' millions'
+                    valueSuffix: ' MMK'
                 },
                 plotOptions: {
                     bar: {
@@ -202,7 +202,7 @@
                     }
                 },
                 tooltip: {
-                    valueSuffix: ' millions'
+                    valueSuffix: ' MMK'
                 },
                 plotOptions: {
                     bar: {
@@ -272,7 +272,7 @@
                     }
                 },
                 tooltip: {
-                    valueSuffix: ' millions'
+                    valueSuffix: ' MMK'
                 },
                 plotOptions: {
                     bar: {
@@ -344,7 +344,7 @@
                     }
                 },
                 tooltip: {
-                    valueSuffix: ' millions'
+                    valueSuffix: 'MMK'
                 },
                 plotOptions: {
                     bar: {
