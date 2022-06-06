@@ -20,8 +20,10 @@ use App\Models\OrderItem;
 use App\Models\ProductVariations;
 use App\Models\PurchaseOrder;
 use App\Models\Quotation;
+use App\Models\Region;
 use App\Models\Revenue;
 use App\Models\SalePipelineRecord;
+use App\Models\SaleZone;
 use App\Models\SellingUnit;
 use App\Models\Stock;
 use App\Models\StockIn;
@@ -43,9 +45,13 @@ class ReportController extends Controller
 {
     public function SalePerformance()
     {
-
-        $dept = Department::where('name', 'Sale Department')->first();
-        $employee = Employee::where('department_id', $dept->id)->get();
+        $emp=Employee::all();
+        $employee=[];
+        foreach ($emp as $saleman){
+            if($saleman->role->name=='Sales'){
+                array_push($employee,$saleman);
+            }
+        }
         $performance = [];
         foreach ($employee as $emp) {
             $emp_appointment = next_plan::where('type', 'Meeting')->where('emp_id', $emp->id)->whereMonth('created_at', date('m'))
@@ -835,6 +841,97 @@ class ReportController extends Controller
 
         return view('Report.foc',compact('stockout','warehouse','start','end','search_warehouse'));
     }
+
+    public function sale_analysis(Request $request)
+    {
+        $months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', "Jul", 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        if(isset($request->month)){
+            $month=$request->month;
+
+        }else{
+            $month=date('M');
+        }
+       $auth=Auth::guard('employee')->user();
+       if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'){
+           $emp=Employee::all();
+           $branch=OfficeBranch::all();
+           $region=Region::with('branch')->get();
+           $zone=SaleZone::with('region')->get();
+
+       }elseif ($auth->role->name=='Sales Manager'){
+           $emp=Employee::where('office_branch_id',$auth->office_branch_id)->get();
+           $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
+           $region=Region::with('branch')->where('branch_id',$auth->office_branch_id)->get();
+           $zone=[];
+           foreach ($region as $reg){
+               $zn=SaleZone::with('region')->where('region_id',$reg->id)->get();
+               foreach ($zn as $z){
+                   array_push($zone,$z);
+               }
+           }
+       }
+
+        $employee=[];
+        $branch_sales=[];
+        $saleman_sales=[];
+        $region_sales=[];
+        $zone_sales=[];
+        foreach ($emp as $saleman){
+            if($saleman->role->name=='Sales'){
+                array_push($employee,$saleman);
+            }
+        }
+        foreach ($employee as $emp) {
+            $sales_total = DB::table("invoices")
+                ->select(DB::raw("SUM(grand_total) as total"))
+                ->whereYear('invoice_date',date('Y'))
+                ->whereMonth('invoice_date',$month)
+                ->where('emp_id',$emp->id)
+                ->where('cancel',0)
+                ->get();
+            $saleman_sales[$emp->id]['sale']=$sales_total[0]->total??0;
+        }
+        foreach ($branch as $data) {
+            $sales_total = DB::table("invoices")
+                ->select(DB::raw("SUM(grand_total) as total"))
+                ->whereYear('invoice_date',date('Y'))
+                ->where('branch_id',$data->id)
+                ->whereMonth('invoice_date',$month)
+                ->where('cancel',0)
+                ->get();
+            $branch_sales[$data->id]['sale']=$sales_total[0]->total??0;
+        }
+        foreach ($region as $data) {
+            $sales_total = DB::table("invoices")
+                ->select(DB::raw("SUM(grand_total) as total"))
+                ->whereYear('invoice_date',date('Y'))
+                ->where('region_id',$data->id)
+                ->whereMonth('invoice_date',$month)
+                ->where('cancel',0)
+                ->get();
+            $region_sales[$data->id]['sale']=$sales_total[0]->total??0;
+        }
+        foreach ($zone as $data) {
+            $sales_total = DB::table("invoices")
+                ->select(DB::raw("SUM(grand_total) as total"))
+                ->whereYear('invoice_date',date('Y'))
+                ->where('zone_id',$data->id)
+                ->whereMonth('invoice_date',$month)
+                ->where('cancel',0)
+                ->get();
+            $zone_sales[$data->id]['sale']=$sales_total[0]->total??0;
+        }
+
+//            dd($performance);
+
+
+//            dd($lead);
+
+//        dd($employee);
+        $search_month=$month;
+        return view('Report.sales_analysis', compact('data', 'employee','branch','region','zone','branch_sales','region_sales','zone_sales','saleman_sales','months','search_month'));
+
+    }//Finish ပီးပီ
 
 
 }

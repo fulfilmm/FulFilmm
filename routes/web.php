@@ -245,6 +245,7 @@ Route::middleware(['auth:employee'])->group(function () {
     Route::post('region/import',[\App\Http\Controllers\RegionController::class,'import'])->name('region.import');
     Route::post('zone/import',[\App\Http\Controllers\SaleZoneController::class,'import'])->name('zone.import');
     Route::post('price/import',[SellingUnitController::class,'price_import'])->name('price.import');
+    Route::get('sales/analysis',[ReportController::class,'sale_analysis'])->name('sales.analysis');
 
 });
 
