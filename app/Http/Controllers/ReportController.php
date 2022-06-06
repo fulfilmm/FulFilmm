@@ -922,7 +922,7 @@ class ReportController extends Controller
             $zone_sales[$data->id]['sale']=$sales_total[0]->total??0;
         }
 
-//            dd($performance);
+            dd($branch_sales,$region_sales,$zone_sales,$saleman_sales);
 
 
 //            dd($lead);
