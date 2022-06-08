@@ -40,7 +40,8 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = Customer::paginate(20);
+	$auth=Auth::gaurd('api')->user();
+        $customers = Customer::where('region_id',$auth->region_id)->paginate(20);
         return response()->json(['customer'=>$customers]);
     }
 
