@@ -101,7 +101,7 @@ class MobileInvoiceController extends Controller
             foreach ($in_stock as $inhand){
                 if($inhand->variant->enable==1){
                     $unit=SellingUnit::where('unit_convert_rate',1)->where('product_id',$inhand->product_id)->first();
-                    $price=product_price::where('variant_id',$inhand->variant_id)->where('unit_id',$unit->id)->first();
+                    $price=product_price::where('product_id',$inhand->variant_id)->where('unit_id',$unit->id)->first();
                     $inhand->price=$price->price;
                     array_push($aval_product,$inhand);
                 }
@@ -131,7 +131,7 @@ class MobileInvoiceController extends Controller
             foreach ($in_stock as $inhand){
                 if($inhand->variant->enable==1){
                     $unit=SellingUnit::where('unit_convert_rate',1)->where('product_id',$inhand->product_id)->first();
-                    $price=product_price::where('variant_id',$inhand->variant_id)->where('unit_id',$unit->id)->first();
+                    $price=product_price::where('product_id',$inhand->variant_id)->where('unit_id',$unit->id)->first();
                     $inhand->price=$price->price;
                     array_push($aval_product,$inhand);
                 }
