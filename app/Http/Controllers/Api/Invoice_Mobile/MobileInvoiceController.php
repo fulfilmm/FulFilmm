@@ -43,6 +43,7 @@ class MobileInvoiceController extends Controller
      * @return \Illuminate\Http\Response
      */
     public  $status=['Paid','Unpaid','Pending','Cancel'];
+    protected  $payment_method=['Cash',"Mobile Banking",'Bank'];
     public function index()
     {
 
@@ -112,7 +113,8 @@ class MobileInvoiceController extends Controller
             $companies=Company::select('id','name')->get();
             $zone=SaleZone::where('region_id',$Auth->region_id)->get();
             $region=Region::where('branch_id',$Auth->office_branch_id)->get();
-            return response()->json(['zone'=>$zone,'warehouse'=>$warehouse, 'type'=>$type, 'allcustomers'=>$allcustomers, 'status'=>$status,'aval_product'=>$aval_product, 'taxes'=>$taxes, 'unit'=>$unit, 'dis_promo'=>$dis_promo, 'focs'=>$focs,'prices'=>$prices,'amount_discount'=>$amount_discount,'due_default'=>$due_default,'companies'=>$companies,'region'=>$region]);
+            return response()->json(['zone'=>$zone,'warehouse'=>$warehouse, 'type'=>$type, 'allcustomers'=>$allcustomers, 'status'=>$status,'aval_product'=>$aval_product, 'taxes'=>$taxes, 'unit'=>$unit, 'dis_promo'=>$dis_promo, 'focs'=>$focs,'prices'=>$prices,'amount_discount'=>$amount_discount,'due_default'=>$due_default,'companies'=>$companies,'region'=>$region,
+            'payment_method'=>$this->payment_method]);
         }else{
             return response()->json(['error'=>'Firstly,Fixed your Branch Office and Sale Region']);
         }
@@ -169,7 +171,7 @@ class MobileInvoiceController extends Controller
             $companies=Company::all()->pluck('name','id')->all();
             $zone=SaleZone::where('region_id',$Auth->region_id)->get();
             $region=Region::where('branch_id',$Auth->office_branch_id)->get();
-            return response()->json(['zone'=>$zone,'warehouse'=>$warehouse, 'type'=>$type, 'allcustomers'=>$allcustomers, 'status'=>$status,'aval_product'=>$aval_product, 'taxes'=>$taxes, 'unit'=>$unit, 'dis_promo'=>$dis_promo, 'focs'=>$focs,'prices'=>$prices,'amount_discount'=>$amount_discount,'due_default'=>$due_default,'companies'=>$companies,'region'=>$region]);
+            return response()->json(['zone'=>$zone,'warehouse'=>$warehouse, 'type'=>$type, 'allcustomers'=>$allcustomers, 'status'=>$status,'aval_product'=>$aval_product, 'taxes'=>$taxes, 'unit'=>$unit, 'dis_promo'=>$dis_promo, 'focs'=>$focs,'prices'=>$prices,'amount_discount'=>$amount_discount,'due_default'=>$due_default,'companies'=>$companies,'region'=>$region,'payment_method'=>$this->payment_method]);
         }else{
             return response()->json(['error'=>'Firstly,Fixed your Branch Office and Sale Region']);
         }
@@ -364,7 +366,7 @@ class MobileInvoiceController extends Controller
         $invoice=Invoice::with('customer','employee','tax','order')->where('id',$id)->firstOrFail();
         $allcustomers = Customer::where('branch_id',$Auth->office_branch_id)->where('region_id',$Auth->region_id)->get();
         $taxes = products_tax::all();
-        $unit=SellingUnit::where('active',1)->get();
+
         $prices =product_price::where('sale_type',$invoice->inv_type)->where('active',1)->where('region_id',$Auth->region_id)->get();
         //dd($prices);
         $dis_promo = DiscountPromotion::where('sale_type',$invoice->inv_type)
@@ -372,7 +374,12 @@ class MobileInvoiceController extends Controller
             ->where('region_id',$Auth->region_id)
             ->get();
         $focs = Freeofchare::with('variant')->where('branch_id',$Auth->office_branch_id)->get();
-        $invoice_item=OrderItem::with('variant','unit')->where("inv_id",$invoice->id)->get();
+        $items=OrderItem::with('variant','unit')->where("inv_id",$invoice->id)->get();
+        $invoic_item=[];
+        foreach ($items as $item){
+            $item->all_unit=SellingUnit::where('product_id',$item->variant->product_id)->get();
+            array_push($invoic_item,$item);
+        }
         $warehouse =Warehouse::where('branch_id', $Auth->office_branch_id)
             ->where('id',$invoice->warehouse_id)
             ->first();
