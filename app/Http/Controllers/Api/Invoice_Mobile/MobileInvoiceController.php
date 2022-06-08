@@ -378,7 +378,7 @@ class MobileInvoiceController extends Controller
         $invoice_item=[];
         foreach ($items as $item){
             $item->all_unit=SellingUnit::where('product_id',$item->variant->product_id)->get();
-            array_push($invoic_item,$item);
+            array_push($invoice_item,$item);
         }
         $warehouse =Warehouse::where('branch_id', $Auth->office_branch_id)
             ->where('id',$invoice->warehouse_id)
