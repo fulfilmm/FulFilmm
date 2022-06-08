@@ -375,7 +375,7 @@ class MobileInvoiceController extends Controller
             ->get();
         $focs = Freeofchare::with('variant')->where('branch_id',$Auth->office_branch_id)->get();
         $items=OrderItem::with('variant','unit')->where("inv_id",$invoice->id)->get();
-        $invoic_item=[];
+        $invoice_item=[];
         foreach ($items as $item){
             $item->all_unit=SellingUnit::where('product_id',$item->variant->product_id)->get();
             array_push($invoic_item,$item);
@@ -397,7 +397,6 @@ class MobileInvoiceController extends Controller
             'warehouse'=>$warehouse,
             'customers'=>$allcustomers,
             'tax'=>$taxes,
-            'unit'=>$unit,
             'price'=>$prices,
             'discount'=>$dis_promo,
             'foc'=>$focs,
