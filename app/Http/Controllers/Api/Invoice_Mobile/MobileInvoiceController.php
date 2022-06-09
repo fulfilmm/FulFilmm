@@ -425,7 +425,8 @@ class MobileInvoiceController extends Controller
             $update_Invoice=Invoice::where('id',$id)->first();
             $update_Invoice->mark_sent=$request->mark_sent;
             $update_Invoice->update();
-            return redirect(route('invoices.show',$id))->with('success','Invoice Marked');
+            return response()->json(['message' => 'Success','invoice'=>$id]);
+
         }else {
             try {
                 $tax_amount = ($request->tax_rate / 100) * $request->total;
