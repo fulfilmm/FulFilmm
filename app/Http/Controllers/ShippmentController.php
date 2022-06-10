@@ -6,6 +6,7 @@ use App\Models\Customer;
 use App\Models\DeliveryComment;
 use App\Models\DeliveryOrder;
 use App\Models\DeliveryPay;
+use App\Models\Employee;
 use App\Models\Invoice;
 use App\Models\MainCompany;
 use App\Models\OrderItem;
@@ -76,7 +77,12 @@ class ShippmentController extends Controller
         }
         $invoices=Invoice::with('customer','warehouse')->get();
         $customer=Customer::all();
-        $courier=Customer::where('customer_type','Courier')->get();
+        $auth=Auth::guard('employee')->user();
+        if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'){
+            $courier=Employee::all();
+        }else{
+            $courier=Employee::where('office_branch_id',Auth::guard('employee')->user()->office_branch_id)->get();
+        }
         $warehouse=Warehouse::all()->pluck('name','id')->all();
         return view('Inventory.Shippment.create',compact('invoices','customer','courier','warehouse','delivery_id'));
     }
@@ -201,7 +207,7 @@ class ShippmentController extends Controller
     }
     public function statuschange($state,$id){
         $delivery=DeliveryOrder::with('invoice','customer','courier')->where('id',$id)->first();
-        if($delivery->courier_id==Auth::guard('customer')->user()->id){
+        if($delivery->courier_id==Auth::guard('employee')->user()->id){
             if($state!='cancel'&&$state!='accept'){
                 $details = [
 

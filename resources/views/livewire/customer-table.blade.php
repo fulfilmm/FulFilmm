@@ -1,3 +1,30 @@
+
+    <form action="{{route('customers.index')}}" method="GET">
+        @csrf
+        <div class="row my-2">
+            <div class="col">
+               <div class="form-group">
+                   <label for="name">Customer Name</label>
+                   <input type="text" class="form-control" name="name" placeholder="Customer Name" value="{{$name??''}}">
+               </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="min">Minimum Amount</label>
+                    <input type="number" class="form-control" name="min_amount" placeholder="Enter Minimum Amount" value="{{$min??''}}">
+                </div>
+            </div>
+            <div class="col">
+               <div class="form-group">
+                   <label for="">Maximum Amount</label>
+                   <input type="number" class="form-control" name="max_amount" placeholder="Enter Maximum Amount" value="{{$max??''}}">
+               </div>
+            </div>
+            <div class="col mt-4">
+                <button type="submit" class="btn btn-white col-12 mt-2"><i class="la la-search"></i></button>
+            </div>
+        </div>
+    </form>
 <div class="card shadow">
     <div class="card-header">
         <h4 class="card-title mb-0 d-inline">Contacts</h4>

@@ -65,17 +65,44 @@ class CustomerController extends Controller
         return view('customer.data.lists');
     }
 
-    public function card()
+    public function card(Request $request)
     {
+        $name=$request->name??'';
+        $min=$request->min_amount??0;
+        $max=$request->max_amount??null;
         $auth=Auth::guard('employee')->user();
         if($auth->role->name=='CEO'||$auth->role->name=='Super Admin')
         {
-            $customers = Customer::withTrashed()->paginate(12);
+            if($request->name==null){
+                if($max==null){
+                    $customers = Customer::paginate(10);
+                }else{
+                    $customers = Customer::where('use_amount','>=',$min)
+                        ->where('use_amount','<=',$max)
+                        ->paginate(10);
+                }
+            }else{
+                $customers = Customer::where('name','LIKE',"%".$request->name.'%')->paginate(10);
+            }
+
         }else{
-            $customers = Customer::withTrashed()->where('region_id',$auth->region_id)->paginate(12);
+            if($request->name==null){
+                if($max==null){
+                    $customers = Customer::where('region_id',$auth->region_id)->paginate(10);
+                }else{
+                    $customers = Customer::where('use_amount','>=',$min)
+                        ->where('use_amount','<=',$max)
+                        ->where('region_id',$auth->region_id)
+                        ->paginate(10);
+                }
+            }else{
+                $customers = Customer::where('name','LIKE',"%".$request->name.'%')
+                    ->where('region_id',$auth->region_id)
+                    ->paginate(10);
+            }
         }
 
-        return view('customer.data.cards', compact('customers'));
+        return view('customer.data.cards', compact('customers','min','max','name'));
     }
     public function qualified_contact(){
         $auth=Auth::guard('employee')->user();

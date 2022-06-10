@@ -19,7 +19,7 @@ class DeliveryOrder extends Model
         return $this->belongsTo(Invoice::class,'invoice_id','id');
     }
     public function  courier(){
-        return $this->belongsTo(Customer::class,'courier_id','id');
+        return $this->belongsTo(Employee::class,'courier_id','id');
     }
     public function customer(){
         return $this->belongsTo(Customer::class,'customer_id','id');

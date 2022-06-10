@@ -143,6 +143,9 @@
                     class="menu-arrow"></span></a>
 
         <ul style="display: none;">
+            <li><a class="{{ Request::is('stockout/index') ? 'active' : '' }}"
+                   href="{{ route('stock.out.index') }}" style="text-decoration: none">Stocks
+                    Out</a></li>
             <li><a class="{{ Request::is('barcode/create') ? 'active' : '' }}"
                    href="{{ route('barcode.create') }}" style="text-decoration: none">Barcode Generate</a></li>
             <li class="submenu">

@@ -188,7 +188,7 @@ class MobileInvoiceController extends Controller
 
 
         $validator = Validator::make($request -> all(), [
-            'title' => 'required',
+//            'title' => 'required',
             'client_id' => 'required',
             'inv_date' => 'required',
             'due_date' => 'required',

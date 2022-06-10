@@ -19,6 +19,7 @@
                                         Actions
                                     </button>
                                     <div role="menu" class="dropdown-menu">
+                                        <a href="{{url('deliveries/create')}}" class="dropdown-item "  ><i class="fa fa-truck"></i>Assign Shipping</a>
                                         <a href="" id="print" class="dropdown-item "  onclick="printContent('print_me');" ><i class="fa fa-print"></i> Print</a>
                                         <div class="dropdown-divider"></div>
                                         <button type="button" title="Delete" data-toggle="modal" data-target="#delete{{$detail_inv->id}}" class="dropdown-item action-delete">
