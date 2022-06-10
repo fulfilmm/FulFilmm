@@ -48,7 +48,7 @@ class CustomerTable extends Component
                           ->where('use_amount','>=',$min)
                           ->where('use_amount','<=',$max)
                           ->paginate(10),
-                      'name'=>$name,'min'=>$min,'max'=>$max
+
                   ]);
               }
           }else{
@@ -60,7 +60,7 @@ class CustomerTable extends Component
                           ,'zone','region'])
                       ->where('name','like','%'.$request->name.'%')
                       ->paginate(10),
-                  'name'=>$name,'min'=>$min,'max'=>$max
+
               ]);
           }
         }else {
@@ -74,7 +74,7 @@ class CustomerTable extends Component
                             }])
                             ->where('region_id', $auth->region_id)
                             ->paginate(10),
-                        'name'=>$name,'min'=>$min,'max'=>$max
+
                     ]);
                 }else{
                     return view('livewire.customer-table', [
@@ -86,7 +86,6 @@ class CustomerTable extends Component
                             ->where('use_amount','>=',$min)
                             ->where('use_amount','<=',$max)
                             ->paginate(10),
-                        'name'=>$name,'min'=>$min,'max'=>$max
                     ]);
                 }
             }else{
@@ -98,7 +97,6 @@ class CustomerTable extends Component
                             ,'zone','region'])
                         ->where('name','like','%'.$request->name.'%')
                         ->paginate(10),
-                    'name'=>$name,'min'=>$min,'max'=>$max
                 ]);
             }
         }
