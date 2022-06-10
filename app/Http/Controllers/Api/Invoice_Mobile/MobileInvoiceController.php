@@ -51,11 +51,11 @@ class MobileInvoiceController extends Controller
         $region=Region::all()->pluck('name','id')->all();//Region နဲ့ filter လုပ်ဖို့ထုတ်ထားတာ
         $branch=OfficeBranch::all()->pluck('name','id')->all(); //Branch နဲ့ filter လုပ်ဖို့ထုတ်ထားတာ
         if(Auth::guard('api')->user()->role->name=='Super Admin'|| Auth::guard('api')->user()->role->name=='CEO'||Auth::guard('api')->user()->role->name=='Sale Manager'){
-            $allinv=Invoice::with('customer','employee','branch','zone','region')->get();//Super Admin နဲ့ CEO က invoice အားလုံးကြည့်လို့ရတအောင်အကုန်ထုတ်ပေးတယ်
+            $allinv=Invoice::with('customer','employee','branch','zone','region')->orderBy('id', 'desc')->get();//Super Admin နဲ့ CEO က invoice အားလုံးကြည့်လို့ရတအောင်အကုန်ထုတ်ပေးတယ်
         }elseif (Auth::guard('api')->user()->role->name=='Sale Manager'||Auth::guard('api')->user()->role->name=='Accountant'||Auth::guard('api')->user()->role->name=='Cashier'){
-            $allinv=Invoice::with('customer','employee','branch','zone','region')->where('branch_id',Auth::guard('api')->user()->office_branch_id)->get();
+            $allinv=Invoice::with('customer','employee','branch','zone','region')->orderBy('id', 'desc')->where('branch_id',Auth::guard('api')->user()->office_branch_id)->get();
         }else{
-            $allinv=Invoice::with('customer','employee','branch','zone','region')->where('emp_id',Auth::guard('api')->user()->id)->get();//ရိုးရိုးsale man တေက သူဖွင့်ထားတဲ့ invoice ကိုဘဲကြည့်လို့ရမယ်
+            $allinv=Invoice::with('customer','employee','branch','zone','region')->orderBy('id', 'desc')->where('emp_id',Auth::guard('api')->user()->id)->get();//ရိုးရိုးsale man တေက သူဖွင့်ထားတဲ့ invoice ကိုဘဲကြည့်လို့ရမယ်
         }
 
         $status=$this->status;
@@ -69,7 +69,7 @@ class MobileInvoiceController extends Controller
     {
         $Auth=Auth::guard('api')->user();
         if($Auth->office_branch_id!=null && $Auth->region_id!=null){
-            $allcustomers = Customer::where('branch_id',$Auth->office_branch_id)->where('region_id',$Auth->region_id)->get();
+            $allcustomers = Customer::where('branch_id',$Auth->office_branch_id)->orderBy('id', 'desc')->where('region_id',$Auth->region_id)->get();
             $taxes = products_tax::all();
             $status = $this->status;
             $unit=SellingUnit::where('active',1)->get();
@@ -125,7 +125,7 @@ class MobileInvoiceController extends Controller
     public function retail(){
         $Auth=Auth::guard('api')->user();
         if($Auth->office_branch_id!=null && $Auth->region_id!=null){
-            $allcustomers = Customer::where('branch_id',$Auth->office_branch_id)->where('region_id',$Auth->region_id)->get();
+            $allcustomers = Customer::where('branch_id',$Auth->office_branch_id)->orderBy('id', 'desc')->where('region_id',$Auth->region_id)->get();
             $aval_product =[];
             $in_stock=Stock::with('variant','unit')->where('available', '>', 0)->where('warehouse_id',$Auth->warehouse_id)->get();
             foreach ($in_stock as $inhand){
