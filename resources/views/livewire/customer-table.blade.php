@@ -34,7 +34,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-nowrap  mb-0 table-hover">
+            <table class="table table-nowrap  mb-0 table-hover dataTable">
                 <thead>
                     <tr><th></th>
                         <th>ID</th>
