@@ -36,8 +36,8 @@ class CustomerTable extends Component
                               $q->withTrashed();
                           },'branch'
                               ,'zone','region'])
-                          ->paginate(10),
-                  'name'=>$name,'min'=>$min,'max'=>$max]);
+                          ->paginate(10)
+                  ]);
               }else{
                   return view('livewire.customer-table', [
                       'customers' => Customer::where('name', 'like', '%'.$this->search_key.'%')

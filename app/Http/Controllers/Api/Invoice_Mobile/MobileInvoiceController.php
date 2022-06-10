@@ -283,10 +283,6 @@ class MobileInvoiceController extends Controller
         }
 
 
-
-
-
-
     }
 
     /**
