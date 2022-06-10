@@ -34,7 +34,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-nowrap  mb-0 table-hover dataTable">
+            <table class="table table-nowrap  mb-0 table-hover" id="customer">
                 <thead>
                     <tr><th></th>
                         <th>ID</th>
@@ -88,4 +88,9 @@
         </div>
     </div>
 </div>
+    <script>
+        $(document).ready(function () {
+           $('#customer').DataTable();
+        });
+    </script>
 
