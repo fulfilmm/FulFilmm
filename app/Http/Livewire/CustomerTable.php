@@ -36,7 +36,7 @@ class CustomerTable extends Component
                               $q->withTrashed();
                           },'branch'
                               ,'zone','region'])
-                          ->paginate(10)]
+                          ->paginate(20)]
                   );
               }else{
                   return view('livewire.customer-table', [
