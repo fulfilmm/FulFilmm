@@ -84,13 +84,9 @@
 
                 </tbody>
             </table>
-
+            {{$customers->links()}}
         </div>
     </div>
 </div>
-    <script>
-        $(document).ready(function () {
-           $('#customer').DataTable();
-        });
-    </script>
+  
 
