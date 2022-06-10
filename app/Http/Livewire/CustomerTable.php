@@ -36,7 +36,7 @@ class CustomerTable extends Component
                               $q->withTrashed();
                           },'branch'
                               ,'zone','region'])
-                          ->paginate(10)]
+                          ->get()]
                   );
               }else{
                   return view('livewire.customer-table', [
@@ -47,7 +47,7 @@ class CustomerTable extends Component
                               ,'zone','region'])
                           ->where('use_amount','>=',$min)
                           ->where('use_amount','<=',$max)
-                          ->paginate(10),
+                          ->get(),
                       'name'=>$name,'min'=>$min,'max'=>$max
                   ]);
               }
@@ -59,7 +59,7 @@ class CustomerTable extends Component
                       },'branch'
                           ,'zone','region'])
                       ->where('name','like','%'.$request->name.'%')
-                      ->paginate(10),
+                      ->get(),
                   'name'=>$name,'min'=>$min,'max'=>$max
               ]);
           }
@@ -73,7 +73,7 @@ class CustomerTable extends Component
                                 $q->withTrashed();
                             }])
                             ->where('region_id', $auth->region_id)
-                            ->paginate(10),
+                            ->get(),
                         'name'=>$name,'min'=>$min,'max'=>$max
                     ]);
                 }else{
@@ -85,7 +85,7 @@ class CustomerTable extends Component
                                 ,'zone','region'])
                             ->where('use_amount','>=',$min)
                             ->where('use_amount','<=',$max)
-                            ->paginate(10),
+                            ->get(),
                         'name'=>$name,'min'=>$min,'max'=>$max
                     ]);
                 }
@@ -97,7 +97,7 @@ class CustomerTable extends Component
                         },'branch'
                             ,'zone','region'])
                         ->where('name','like','%'.$request->name.'%')
-                        ->paginate(10),
+                        ->get(),
                     'name'=>$name,'min'=>$min,'max'=>$max
                 ]);
             }
