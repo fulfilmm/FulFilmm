@@ -394,6 +394,7 @@ class MobileInvoiceController extends Controller
         $companies=Company::select('id','name')->get();
         $zone=SaleZone::where('region_id',$Auth->region_id)->get();
         $region=Region::where('branch_id',$Auth->office_branch_id)->get();
+
         return response()->json([
             'invoice'=>$invoice,
             'invoice_item'=>$invoice_item,
@@ -468,6 +469,26 @@ class MobileInvoiceController extends Controller
                         $this->item_update($item);
 
                     }
+                }
+                if($update_inv->grand_total > $update_inv->due_amount && $update_inv->due_amount!=0){
+
+                    $update_inv->status='Partial';
+                    $update_inv->update();
+                    $this->add_history($id,'Partial','Change Status '.$update_inv->invoice_id);
+                }elseif($update_inv->due_amount!=0 && Carbon::now()>$update_inv->due_date && $update_inv->created_at!=$update_inv->due_date){
+                    $update_inv->status='Overdue';
+                    $update_inv->update();
+                    $this->add_history($id,'Overdue','Change Status '.$update_inv->invoice_id);
+                }elseif($update_inv->due_amount==0){
+
+                    $update_inv->status='Paid';
+                    $update_inv->update();
+                    $this->add_history($id,'Paid','Change Status '.$update_inv->invoice_id);
+                }else{
+
+                    $update_inv->status='Draft';
+                    $update_inv->update();
+                    $this->add_history($id,'Draft','Change Status '.$update_inv->invoice_id);
                 }
                 return response()->json(['message' => 'Success']);
             } catch (\Exception $e) {
