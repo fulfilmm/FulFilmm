@@ -98,7 +98,7 @@ class CustomerController extends Controller
             'name' => $request->name,
             'branch_id'=>Auth::guard('api')->user()->office_branch_id,
             'zone_id'=>$request->zone_id,
-            'region_id' => $request->region_id,
+            'region_id' =>Auth::guard('api')->user()->region_id,
             'phone' => $request->phone,
             'email' => $request->email,
             'gender' => $request->gender,

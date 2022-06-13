@@ -106,9 +106,9 @@ class RevenueController extends Controller
                 }
                 $new_revenue->attachment = $input['filename'];
             }
-            if ($request->payment_method == 'Advance Payment') {
-                $new_revenue->approve = 1;
-            }
+//            if ($request->payment_method == 'Advance Payment') {
+//                $new_revenue->approve = 1;
+//            }
             $new_revenue->save();
             if($request->advance=='on'){
                 $customer=Customer::where('id',$request->customer_id)->first();
@@ -120,29 +120,28 @@ class RevenueController extends Controller
                 $employee = Employee::where('id', $inv->emp_id)->first();
                 $employee->amount_in_hand += $request->amount;
                 $employee->update();
+                $inv->due_amount = $inv->due_amount - $request->amount;
+                $inv->update();
             }
-        } catch (\Exception $e) {
-           return response()->json(['error'=>$e->getMessage()]);
-        }
-        if (isset($request->invoice_id)) {
-            $delivery = DeliveryOrder::where('invoice_id', $request->invoice_id)->first();
-            if ($delivery != null) {
-                $deli_pay = DeliveryPay::where('delivery_id', $delivery->id)->first();
-                $deli_pay->receiver_invoice_amount = 1;
-                $deli_pay->update();
-            }
-        }
+//        if (isset($request->invoice_id)) {
+//            $delivery = DeliveryOrder::where('invoice_id', $request->invoice_id)->first();
+//            if ($delivery != null) {
+//                $deli_pay = DeliveryPay::where('delivery_id', $delivery->id)->first();
+//                $deli_pay->receiver_invoice_amount = 1;
+//                $deli_pay->update();
+//            }
+//        }
         $this->transaction_add($branch_acc->id, $new_revenue->id);
         $this->addnotify($request->approver_id, 'noti', 'Add new revenue', 'revenue', Auth::guard('api')->user()->id);
         if ($new_revenue->is_cashintransit) {
-            $this->addnotify($new_revenue->finance_manager, 'noti', 'Add new revenue', 'revenue', Auth::guard('employee')->user()->id);
+            $this->addnotify($new_revenue->finance_manager, 'noti', 'Add new revenue', 'revenue', Auth::guard('api')->user()->id);
 
         }
-        if (isset($request->invoice_id)) {
-            $inv = Invoice::where('id', $request->invoice_id)->first();
-            $inv->due_amount = $inv->due_amount - $request->amount;
-            $inv->update();
+
             return response(['success'=>'Add New Revenue Successful','invoice_id'=>$request->invoice_id]);
+
+        } catch (\Exception $e) {
+            return response()->json(['error'=>$e->getMessage()]);
         }
 //        else {
 //            $last_tran = Transaction::orderBy('id', 'desc')->first();
