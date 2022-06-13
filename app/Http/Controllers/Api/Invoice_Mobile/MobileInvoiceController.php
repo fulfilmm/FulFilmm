@@ -394,6 +394,26 @@ class MobileInvoiceController extends Controller
         $companies=Company::select('id','name')->get();
         $zone=SaleZone::where('region_id',$Auth->region_id)->get();
         $region=Region::where('branch_id',$Auth->office_branch_id)->get();
+        if($invoice->grand_total > $invoice->due_amount && $invoice->due_amount!=0){
+
+            $invoice->status='Partial';
+            $invoice->update();
+            $this->add_history($id,'Partial','Change Status '.$invoice->invoice_id);
+        }elseif($invoice->due_amount!=0 && Carbon::now()>$invoice->due_date && $invoice->created_at!=$invoice->due_date){
+            $invoice->status='Overdue';
+            $invoice->update();
+            $this->add_history($id,'Overdue','Change Status '.$invoice->invoice_id);
+        }elseif($invoice->due_amount==0){
+
+            $invoice->status='Paid';
+            $invoice->update();
+            $this->add_history($id,'Paid','Change Status '.$invoice->invoice_id);
+        }else{
+
+            $invoice->status='Draft';
+            $invoice->update();
+            $this->add_history($id,'Draft','Change Status '.$invoice->invoice_id);
+        }
 
         return response()->json([
             'invoice'=>$invoice,
