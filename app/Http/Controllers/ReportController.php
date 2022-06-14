@@ -246,31 +246,31 @@ class ReportController extends Controller
             if (isset($request->start)) {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
-                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->whereBetween('created_at', [$start, $end])->get();
+                $revenues = Revenue::with('cat', 'employee', 'branch_cashier','manager', 'invoice')->whereBetween('created_at', [$start, $end])->get();
             } else {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
-                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->whereBetween('created_at', [$start, $end])->get();
+                $revenues = Revenue::with( 'cat', 'employee', 'branch_cashier','manager', 'invoice')->whereBetween('created_at', [$start, $end])->get();
             }
         } elseif ($auth->role->name == 'Cashier' || $auth->role->name == 'Accountant'){
             if (isset($request->start)) {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
-                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->whereBetween('created_at', [$start, $end])->where('branch_id',$auth->office_branch_id)->get();
+                $revenues = Revenue::with( 'cat', 'employee', 'branch_cashier','manager', 'invoice')->whereBetween('created_at', [$start, $end])->where('branch_id',$auth->office_branch_id)->get();
             } else {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
-                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->whereBetween('created_at', [$start, $end])->where('branch_id',$auth->office_branch_id)->get();
+                $revenues = Revenue::with( 'cat', 'employee', 'branch_cashier','manager', 'invoice')->whereBetween('created_at', [$start, $end])->where('branch_id',$auth->office_branch_id)->get();
             }
         } else {
             if (isset($request->start)) {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
-                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->where('emp_id', $auth->id)->whereBetween('created_at', [$start, $end])->get();
+                $revenues = Revenue::with( 'cat', 'employee', 'branch_cashier','manager', 'invoice')->where('emp_id', $auth->id)->whereBetween('created_at', [$start, $end])->get();
             } else {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
-                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->where('emp_id', $auth->id)->whereBetween('created_at', [$start, $end])->get();
+                $revenues = Revenue::with('cat', 'employee', 'branch_cashier','manager', 'invoice')->where('emp_id', $auth->id)->whereBetween('created_at', [$start, $end])->get();
             }
 
         }

@@ -26,10 +26,14 @@
                     <div class="col-12">
                         <div class="float-right">
                             <ul class="nav nav-tabs nav-tabs-solid  justify-content-center">
-                                <li class="nav-item"><a class="nav-link active rounded-pill shadow-sm"  onclick="report_type(4)" href="" data-toggle="tab">Current Month</a></li>
-                                <li class="nav-item"><a class="nav-link rounded-pill shadow-sm" href="" onclick="report_type(2)" data-toggle="tab">1st Half Year</a></li>
-                                <li class="nav-item"><a class="nav-link rounded-pill shadow-sm" href="" onclick="report_type(3)" data-toggle="tab">2nd Half Year</a></li>
-                                <li class="nav-item"><a class="nav-link rounded-pill shadow-sm" href="" onclick="report_type(1)" data-toggle="tab">Current Year</a></li>
+                                <a href="#" class="dropdown-toggle btn btn-white" data-toggle="dropdown"><span id="text"></span><span class="caret ml-3"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li class="dropdown-item"><a class=" " href="" onclick="report_type(4)" data-toggle="tab">Current Month</a></li>
+                                    <li class="dropdown-item"><a class=" " href="" onclick="report_type(2)" data-toggle="tab">1st Half Year</a></li>
+                                    <li class="dropdown-item"><a class=" " href="" onclick="report_type(3)" data-toggle="tab">2nd Half Year</a></li>
+                                    <li class="dropdown-item"><a class=" " href="" onclick="report_type(1)" data-toggle="tab">Current Year</a></li>
+                                </ul>
+
                             </ul>
                             {{--<input type="radio" name="report_type" class="radio" value="1"><label for=""--}}
                             {{--class="ml-2">Current--}}
@@ -90,16 +94,16 @@
                 },
                 xAxis: {
                     categories: [
-                        '{{$best_sell[0]['product_name']??''}}({{$best_sell[0]['variant']??'Top 1'}})',
-                        '{{$best_sell[1]['product_name']??''}}({{$best_sell[1]['variant']??'Top 2'}})',
-                        '{{$best_sell[2]['product_name']??''}}({{$best_sell[2]['variant']??'Top 3'}})',
-                        '{{$best_sell[3]['product_name']??''}}({{$best_sell[3]['variant']??'Top 4'}})',
-                        '{{$best_sell[4]['product_name']??''}}({{$best_sell[4]['variant']??'Top 5'}})',
-                        '{{$best_sell[5]['product_name']??''}}({{$best_sell[5]['variant']??'Top 6'}})',
-                        '{{$best_sell[6]['product_name']??''}}({{$best_sell[6]['variant']??'Top 7'}})',
-                        '{{$best_sell[7]['product_name']??''}}({{$best_sell[7]['variant']??'Top 8'}})',
-                        '{{$best_sell[8]['product_name']??''}}({{$best_sell[8]['variant']??'Top 9'}})',
-                        '{{$best_sell[9]['product_name']??''}}({{$best_sell[9]['variant']??'Top 10'}})'
+                        '{{isset($best_sell[0]['product_name'])?($best_sell[0]['variant']? $best_sell[0]['product_name']. '-' .$best_sell[0]['variant']:$best_sell[0]['product_name']):'Top 1'}}',
+                        '{{isset($best_sell[1]['product_name'])?($best_sell[1]['variant']? $best_sell[1]['product_name']. '-' .$best_sell[1]['variant']:$best_sell[1]['product_name']):'Top 2'}}',
+                        '{{isset($best_sell[2]['product_name'])?($best_sell[2]['variant']? $best_sell[2]['product_name']. '-' .$best_sell[2]['variant']:$best_sell[2]['product_name']):'Top 3'}}',
+                        '{{isset($best_sell[3]['product_name'])?($best_sell[3]['variant']? $best_sell[3]['product_name']. '-' .$best_sell[3]['variant']:$best_sell[3]['product_name']):'Top 4'}}',
+                        '{{isset($best_sell[4]['product_name'])?($best_sell[4]['variant']? $best_sell[4]['product_name']. '-' .$best_sell[4]['variant']:$best_sell[4]['product_name']):'Top 5'}}',
+                        '{{isset($best_sell[5]['product_name'])?($best_sell[5]['variant']? $best_sell[5]['product_name']. '-' .$best_sell[5]['variant']:$best_sell[5]['product_name']):'Top 6'}}',
+                        '{{isset($best_sell[6]['product_name'])?($best_sell[6]['variant']? $best_sell[6]['product_name']. '-' .$best_sell[6]['variant']:$best_sell[6]['product_name']):'Top 7'}}',
+                        '{{isset($best_sell[7]['product_name'])?($best_sell[7]['variant']? $best_sell[7]['product_name']. '-' .$best_sell[7]['variant']:$best_sell[7]['product_name']):'Top 8'}}',
+                        '{{isset($best_sell[8]['product_name'])?($best_sell[8]['variant']? $best_sell[8]['product_name']. '-' .$best_sell[8]['variant']:$best_sell[8]['product_name']):'Top 9'}}',
+                        '{{isset($best_sell[9]['product_name'])?($best_sell[9]['variant']? $best_sell[9]['product_name']. '-' .$best_sell[9]['variant']:$best_sell[9]['product_name']):'Top 10'}}'
                     ],
                     labels: {
                         x:3
@@ -180,16 +184,16 @@
                 },
                 xAxis: {
                     categories: [
-                        '{{$bad_sell[0]['product_name']??''}}({{$bad_sell[0]['variant']??'Top 1'}})',
-                        '{{$bad_sell[1]['product_name']??''}}({{$bad_sell[1]['variant']??'Top 2'}})',
-                        '{{$bad_sell[2]['product_name']??''}}({{$bad_sell[2]['variant']??'Top 3'}})',
-                        '{{$bad_sell[3]['product_name']??''}}({{$bad_sell[3]['variant']??'Top 4'}})',
-                        '{{$bad_sell[4]['product_name']??''}}({{$bad_sell[4]['variant']??'Top 5'}})',
-                        '{{$bad_sell[5]['product_name']??''}}({{$bad_sell[5]['variant']??'Top 6'}})',
-                        '{{$bad_sell[6]['product_name']??''}}({{$bad_sell[6]['variant']??'Top 7'}})',
-                        '{{$bad_sell[7]['product_name']??''}}({{$bad_sell[7]['variant']??'Top 8'}})',
-                        '{{$bad_sell[8]['product_name']??''}}({{$bad_sell[8]['variant']??'Top 9'}})',
-                        '{{$bad_sell[9]['product_name']??''}}({{$bad_sell[9]['variant']??'Top 10'}})'
+                        '{{isset($bad_sell[0]['product_name'])?($bad_sell[0]['variant']? $bad_sell[0]['product_name']. '-' .$bad_sell[0]['variant']:$bad_sell[0]['product_name']):'Top 1'}}',
+                        '{{isset($bad_sell[1]['product_name'])?($bad_sell[1]['variant']? $bad_sell[1]['product_name']. '-' .$bad_sell[1]['variant']:$bad_sell[1]['product_name']):'Top 2'}}',
+                        '{{isset($bad_sell[2]['product_name'])?($bad_sell[2]['variant']? $bad_sell[2]['product_name']. '-' .$bad_sell[2]['variant']:$bad_sell[2]['product_name']):'Top 3'}}',
+                        '{{isset($bad_sell[3]['product_name'])?($bad_sell[3]['variant']? $bad_sell[3]['product_name']. '-' .$bad_sell[3]['variant']:$bad_sell[3]['product_name']):'Top 4'}}',
+                        '{{isset($bad_sell[4]['product_name'])?($bad_sell[4]['variant']? $bad_sell[4]['product_name']. '-' .$bad_sell[4]['variant']:$bad_sell[4]['product_name']):'Top 5'}}',
+                        '{{isset($bad_sell[5]['product_name'])?($bad_sell[5]['variant']? $bad_sell[5]['product_name']. '-' .$bad_sell[5]['variant']:$bad_sell[5]['product_name']):'Top 6'}}',
+                        '{{isset($bad_sell[6]['product_name'])?($bad_sell[6]['variant']? $bad_sell[6]['product_name']. '-' .$bad_sell[6]['variant']:$bad_sell[6]['product_name']):'Top 7'}}',
+                        '{{isset($bad_sell[7]['product_name'])?($bad_sell[7]['variant']? $bad_sell[7]['product_name']. '-' .$bad_sell[7]['variant']:$bad_sell[7]['product_name']):'Top 8'}}',
+                        '{{isset($bad_sell[8]['product_name'])?($bad_sell[8]['variant']? $bad_sell[8]['product_name']. '-' .$bad_sell[8]['variant']:$bad_sell[8]['product_name']):'Top 9'}}',
+                        '{{isset($bad_sell[9]['product_name'])?($bad_sell[9]['variant']? $bad_sell[9]['product_name']. '-' .$bad_sell[9]['variant']:$bad_sell[9]['product_name']):'Top 10'}}'
                     ],
                     labels: {
                         x:3
@@ -385,6 +389,7 @@
                 }
             });
             $(document).ready(function () {
+                $('#text').text('Current Month');
                 $('#total_income').text("{{number_format($items['current_month_income'])??0}}");
                 $('#total_expense').text("{{number_format($items['current_month_expense'])??0}}");
                 $('#total_profit').text("{{number_format($items['current_month_profit'])??0}}");
@@ -393,21 +398,25 @@
             });
             function report_type (val) {
                 if (val == 1) {
+                    $('#text').text('Current Year');
                     $('#total_income').text("{{number_format($items['total_income'])??0}}");
                     $('#total_expense').text("{{number_format($items['total_expense'])??0}}");
                     $('#total_profit').text("{{number_format($items['profit'])??0}}");
                     $('#total_bill').text("{{number_format($items['total_bill'])??0}}");
                 } else if (val == 2) {
+                    $('#text').text('First Half Year');
                     $('#total_income').text("{{number_format($items['first_term_income'])??0}}");
                     $('#total_expense').text("{{number_format($items['first_term_expense'])??0}}");
                     $('#total_profit').text("{{number_format($items['first_term_profit'])??0}}");
                     $('#total_bill').text("{{number_format($items['first_term_bill'])??0}}");
                 } else if (val == 3) {
+                    $('#text').text('Second Half Year');
                     $('#total_income').text("{{number_format($items['second_term_income'])??0}}");
                     $('#total_expense').text("{{number_format($items['second_term_expense'])??0}}");
                     $('#total_profit').text("{{number_format($items['second_term_profit'])??0}}");
                     $('#total_bill').text("{{number_format($items['second_term_bill'])??0}}");
                 } else {
+                    $('#text').text('Current Month');
                     $('#total_income').text("{{number_format($items['current_month_income'])??0}}");
                     $('#total_expense').text("{{number_format($items['current_month_expense'])??0}}");
                     $('#total_profit').text("{{number_format($items['current_month_profit'])??0}}");

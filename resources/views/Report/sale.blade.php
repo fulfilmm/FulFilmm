@@ -125,8 +125,8 @@
                    ajax: "{{url('daily/stock/report')}}",
                    columns: [
                        {
-                           data:'variant.product_code',
-                           name:'Product Code'
+                           data:'variant.item_code',
+                           name:'Item Code'
                        },
                        {
                            data:'variant.product_name',

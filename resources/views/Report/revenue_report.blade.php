@@ -59,38 +59,32 @@
                     <table class="table " id="revenue">
                         <thead>
                         <tr>
-                            <th>Code</th>
-                            <th>Account</th>
-                            <th>Date</th>
-                            <th>Invoice ID</th>
+                            <th style="width: 150px;">Date</th>
+                            <th>InvoiceId</th>
                             <th>Title</th>
-                            <th>Amount</th>
+
                             <th>Category</th>
-                            <th>Status</th>
-                            <th>Receiver</th>
+                            <th style="width: 400px;">Cashier</th>
+                            <th style="width: 400px;">Finance Manager</th>
+                            <th>Created_by</th>
+                            <th>Amount</th>
                         </tr>
 
                         </thead>
                         <tbody>
                         @foreach($revenues as $transaction)
                             <tr>
-                                <td>{{$transaction->account->code}}</td>
-                                <td>{{$transaction->account->code.'-'.$transaction->account->name??'N/A'}}</td>
                                 <td>
                                     {{\Carbon\Carbon::parse($transaction->transaction_date)->toFormattedDateString()}}
                                 </td>
                                 <td>@if($transaction->invoice_id!=null)<a href="{{route('invoices.show',$transaction->invoice->id)}}">{{$transaction->invoice->invoice_id}}</a>@else N/A @endif</td>
                                 <td>{{$transaction->title}}</td>
-                                <td>{{number_format($transaction->amount)}}</td>
+
                                 <td>{{$transaction->cat->name}}</td>
-                                <td>
-                                    @if($transaction->approve==0)
-                                        Pending
-                                    @else
-                                        <button type="button" class="btn btn-success btn-sm disabled">Confirmed</button>
-                                    @endif
-                                </td>
+                                <td>{{$transaction->branch_cashier->name}}</td>
+                                <td>{{$transaction->manager->name}}</td>
                                 <td>{{$transaction->employee->name}}</td>
+                                <td>{{number_format($transaction->amount)}}</td>
                             </tr>
                         @endforeach
                         </tbody>

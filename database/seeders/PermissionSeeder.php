@@ -176,6 +176,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'transactions.export', 'display_name' => 'Transaction Export', 'type' => 'transaction', "guard_name" => 'employee']);
         //Report
         Permission::create(['name' => 'sale.report', 'display_name' => 'Sale Report page', 'type' => 'Report', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'report.inhand', 'display_name' => 'Cash In Hand Report', 'type' => 'Report', 'guard_name' => 'employee']);
         Permission::create(['name' => 'report.stockin', 'display_name' => 'Daily Stock In Report', 'type' => 'Report', 'guard_name' => 'employee']);
         Permission::create(['name' => 'report.stockout', 'display_name' => 'Daily Stock Out Report', 'type' => 'Report', 'guard_name' => 'employee']);
         Permission::create(['name' => 'report.income', 'display_name' => 'Daily Income Report', 'type' => 'Report', 'guard_name' => 'employee']);

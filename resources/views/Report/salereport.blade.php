@@ -147,7 +147,7 @@
                    <table id="sale_table" class="table table-hover table-nowrap "  style="width: 100%">
                        <thead>
                        <tr>
-                           <th>Product Code</th>
+                           <th>Item Code</th>
                            <th>Product</th>
                            <th>Variant</th>
                            <th>Sold Qty</th>
@@ -158,7 +158,7 @@
 
                        @foreach($data as $item)
                            <tr>
-                               <td>{{$item->variant->product_code}}</td>
+                               <td>{{$item->variant->item_code}}</td>
                                <td>{{$item->variant->product_name}}</td>
                                <td>{{$item->variant->variant}}</td>
                                <td>{{$item->quantity}}</td>

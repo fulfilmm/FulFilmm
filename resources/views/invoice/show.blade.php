@@ -418,7 +418,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="date">Date</label>
-                                            <input type="date" id="date" name="transaction_date" class="form-control">
+                                            <input type="date" id="date" name="transaction_date" class="form-control" value="{{\Carbon\Carbon::today()->format('Y-m-d')}}">
                                         </div>
                                     </div>
 
