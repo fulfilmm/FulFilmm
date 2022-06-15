@@ -344,13 +344,13 @@ class ReportController extends Controller
             if (isset($request->start)) {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
-                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->whereBetween('created_at', [$start, $end])
+                $revenues = Revenue::with( 'cat', 'employee', 'branch_cashier', 'invoice','manager')->whereBetween('created_at', [$start, $end])
                     ->where('approve', 0)
                     ->get();
             } else {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
-                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->whereBetween('created_at', [$start, $end])
+                $revenues = Revenue::with( 'cat', 'employee', 'branch_cashier','manager', 'invoice')->whereBetween('created_at', [$start, $end])
                     ->where('approve', 0)
                     ->get();
             }
@@ -358,13 +358,13 @@ class ReportController extends Controller
             if (isset($request->start)) {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
-                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->whereBetween('created_at', [$start, $end])
+                $revenues = Revenue::with('branch_cashier','manager', 'cat', 'employee', 'invoice')->whereBetween('created_at', [$start, $end])
                     ->where('approve', 0)
                     ->get();
             } else {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
-                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')
+                $revenues = Revenue::with('branch_cashier','manager', 'cat', 'employee', 'invoice')
                     ->whereBetween('created_at', [$start, $end])
                     ->where('approve', 0)
                     ->where('branch_id',$auth->office_branch_id)
@@ -374,13 +374,13 @@ class ReportController extends Controller
             if (isset($request->start)) {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
-                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->where('emp_id', $auth->id)->whereBetween('created_at', [$start, $end])
+                $revenues = Revenue::with('manager','branch_cashier', 'cat', 'employee', 'invoice')->where('emp_id', $auth->id)->whereBetween('created_at', [$start, $end])
                     ->where('approve', 0)
                     ->get();
             } else {
                 $start = Carbon::parse($request->start)->startOfDay();
                 $end = Carbon::parse($request->end)->endOfDay();
-                $revenues = Revenue::with('account', 'cat', 'employee', 'approver', 'invoice')->where('emp_id', $auth->id)->whereBetween('created_at', [$start, $end])
+                $revenues = Revenue::with('branch_cashier','manager', 'cat', 'employee', 'invoice')->where('emp_id', $auth->id)->whereBetween('created_at', [$start, $end])
                     ->where('approve', 0)
                     ->get();
             }
