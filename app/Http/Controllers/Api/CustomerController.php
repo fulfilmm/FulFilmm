@@ -164,7 +164,7 @@ class CustomerController extends Controller
             'invoice'=>$customer_invoice,
             'tickets'=>$customer_ticket,
             'deal'=>$customer_deal,
-            'quotation.blade.php'=>$customer_quotation,
+            'quotation'=>$customer_quotation,
             'paid_total'=>$paid_total,
             'overdue'=>$overdue,
             'open'=>$open_unpaid
