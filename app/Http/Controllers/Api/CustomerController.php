@@ -159,7 +159,8 @@ class CustomerController extends Controller
                 $open_unpaid=$open_unpaid+$invoice->grand_total;
             }
         }
-        $data=[
+        $status_color = ['New' => '#49d1b6', 'Open' => '#e84351', 'Close' => '#4e5450', 'Pending' => '#f0ed4f', 'In Progress' => '#2333e8', 'Complete' => '#18b820', 'Overdue' => '#000'];
+        return response()->json([
             'customer'=>$customer,
             'invoice'=>$customer_invoice,
             'tickets'=>$customer_ticket,
@@ -167,10 +168,10 @@ class CustomerController extends Controller
             'quotation'=>$customer_quotation,
             'paid_total'=>$paid_total,
             'overdue'=>$overdue,
-            'open'=>$open_unpaid
-        ];
-        $status_color = ['New' => '#49d1b6', 'Open' => '#e84351', 'Close' => '#4e5450', 'Pending' => '#f0ed4f', 'In Progress' => '#2333e8', 'Complete' => '#18b820', 'Overdue' => '#000'];
-        return response()->json(['data'=>$data,'assign_ticket'=>$assign_ticket,'status_color'=>$status_color]);
+            'open'=>$open_unpaid,
+            'assign_ticket'=>$assign_ticket,
+            'status_color'=>$status_color
+        ]);
     }
 
     /**
