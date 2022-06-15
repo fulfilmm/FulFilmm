@@ -12,6 +12,7 @@ use App\Models\DeliveryPay;
 use App\Models\Employee;
 use App\Models\Expense;
 use App\Models\MainCompany;
+use App\Models\OfficeBranch;
 use App\Models\PurchaseOrder;
 use App\Models\Transaction;
 use App\Models\TransactionCategory;
@@ -44,20 +45,25 @@ class BillController extends Controller
     {
         $vendor =Customer::all();
 //        dd($vendor);
-        $Auth=Auth::guard('employee')->user()->name;
+        $Auth=Auth::guard('employee')->user();
 //        Session::forget('data-'.Auth::guard('employee')->user()->id);
-        $data=Session::get('bill-'.Auth::guard('employee')->user()->id);
+        $data=Session::get('bill-'.$Auth->id);
 //        dd($data);
 //        Session::forget($Auth);
         $session_value=\Illuminate\Support\Str::random(10);
-        if(!Session::has($Auth)){
-            Session::push("$Auth",$session_value);
-            $request_id=Session::get($Auth);
+        if(!Session::has($Auth->name)){
+            Session::push("$Auth->name",$session_value);
+            $request_id=Session::get($Auth->name);
         }else{
-            $request_id=Session::get($Auth);
+            $request_id=Session::get($Auth->name);
+        }
+        if($Auth->role->name=='Super Admin'||$Auth->role->name=='CEO'){
+            $office_branch=OfficeBranch::all();
+        }else{
+            $office_branch=OfficeBranch::where('id',$Auth->office_branch_id)->get();
         }
         $category=TransactionCategory::all();
-        return view('transaction.Bill.normalbill',compact('vendor','data','request_id','category'));
+        return view('transaction.Bill.normalbill',compact('vendor','data','request_id','category','office_branch'));
     }
 
     /**
@@ -104,7 +110,7 @@ class BillController extends Controller
         $bill->inv_date=$request->inv_date;
         $bill->invoice_id=$request->invoice_id;
         $bill->po_id=$request->po_id;
-        $bill->branch_id=Auth::guard('employee')->user()->office_branch_id;
+        $bill->branch_id=$request->branch_id;
         $bill->save();
         $bill_items = BillItem::where('creation_id', $request->creation_id)->get();
 //        dd($bill_items);

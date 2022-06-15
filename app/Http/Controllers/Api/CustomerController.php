@@ -144,7 +144,7 @@ class CustomerController extends Controller
             $customer_ticket= ticket::with('ticket_status', 'ticket_priority')->where("customer_id",$ticket_history->customer_id)->get();
         }
         $customer_invoice=Invoice::where('customer_id',$id)->get();
-        $customer_lead=leadModel::with("saleMan", "tags")->where("created_id",$id)->get();
+//        $customer_lead=leadModel::with("saleMan", "tags")->where("created_id",$id)->get();
         $customer_deal=deal::with("customer_company","customer","employee")->where('contact',$id)->get();
         $customer_quotation=Quotation::where('customer_name',$customer->id)->get();
         $paid_total=0;
@@ -163,7 +163,6 @@ class CustomerController extends Controller
             'customer'=>$customer,
             'invoice'=>$customer_invoice,
             'tickets'=>$customer_ticket,
-            'lead'=>$customer_lead,
             'deal'=>$customer_deal,
             'quotation.blade.php'=>$customer_quotation,
             'paid_total'=>$paid_total,

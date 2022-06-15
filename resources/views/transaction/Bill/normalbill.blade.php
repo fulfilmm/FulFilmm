@@ -35,6 +35,19 @@
                                        @enderror
                                    </div>
                                </div>
+                               <div class="col-sm-6 col-md-6 col-12">
+                                   <div class="form-group">
+                                       <label for="branch">Office Branch</label>
+                                       <select name="branch_id" id="branch" class="form-control">
+                                           @foreach($office_branch as $branch)
+                                               <option value="{{$branch->id}}">{{$branch->name}}</option>
+                                               @endforeach
+                                       </select>
+                                       @error('branch_id')
+                                       <span class="text-danger">{{$message}}</span>
+                                       @enderror
+                                   </div>
+                               </div>
                                <div class="col-md-6 col-sm-6">
                                    <div class="form-group">
                                        <label for="amount">Amount</label>

@@ -30,6 +30,7 @@ class CustomerRequest extends FormRequest
             'company_id' => 'required',
             'profile_img' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'credit_limit' => 'nullable',
+            'gender'=>'required'
 //            'region' => 'nullable',
 //            'branch_id' => 'nullable',
 //            'zone_id' => 'nullable',
