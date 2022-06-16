@@ -538,10 +538,12 @@ class ReportController extends Controller
                     $receivable = Invoice::with('customer', 'employee', 'branch', 'region','zone')->whereBetween('created_at', [$start, $end])
                         ->where('branch_id',$request->branch_id)
                         ->where('due_amount','!=', 0)
+                        ->where('cancel',0)
                         ->get();
                 }else{
                     $receivable = Invoice::with('customer', 'employee', 'branch', 'region','zone')->whereBetween('created_at', [$start, $end])
                         ->where('due_amount','!=', 0)
+                        ->where('cancel',0)
                         ->get();
                 }
             } else {
@@ -552,11 +554,13 @@ class ReportController extends Controller
                         ->whereBetween('created_at', [$start, $end])
                         ->where('branch_id',$request->branch_id)
                         ->where('due_amount','!=', 0)
+                        ->where('cancel',0)
                         ->get();
                 }else{
                     $receivable =Invoice::with('customer', 'employee', 'branch', 'region','zone')
                         ->whereBetween('created_at', [$start, $end])
                         ->where('due_amount','!=', 0)
+                        ->where('cancel',0)
                         ->get();
                 }
             }
@@ -569,6 +573,7 @@ class ReportController extends Controller
                     ->whereBetween('created_at', [$start, $end])
                     ->where('due_amount','!=', 0)
                     ->where('branch_id',$auth->office_branch_id)
+                    ->where('cancel',0)
                     ->get();
             } else {
                 $start = Carbon::parse($request->start)->startOfDay();
@@ -577,6 +582,7 @@ class ReportController extends Controller
                     ->whereBetween('created_at', [$start, $end])
                     ->where('due_amount','!=', 0)
                     ->where('branch_id',$auth->office_branch_id)
+                    ->where('cancel',0)
                     ->get();
             }
             $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
@@ -588,6 +594,7 @@ class ReportController extends Controller
                     ->where('emp_id', $auth->id)
                     ->whereBetween('created_at', [$start, $end])
                     ->where('due_amount','!=', 0)
+                    ->where('cancel',0)
                     ->get();
             } else {
                 $start = Carbon::parse($request->start)->startOfDay();
@@ -596,6 +603,7 @@ class ReportController extends Controller
                     ->where('emp_id', $auth->id)
                     ->whereBetween('created_at', [$start, $end])
                     ->where('due_amount','!=', 0)
+                    ->where('cancel',0)
                     ->get();
             }
 
