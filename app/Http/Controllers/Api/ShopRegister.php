@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\OfficeBranch;
 use App\Models\ShopLocation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,7 +34,13 @@ class ShopRegister extends Controller
      */
     public function create()
     {
-//        return view('sale.SaleWay.Shop.create');
+        $auth=Auth::guard('api')->user();
+        if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'){
+            $branch=OfficeBranch::all();
+        }else{
+            $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
+        }
+        return response()->json(['branch'=>$branch]);
     }
 
     /**
