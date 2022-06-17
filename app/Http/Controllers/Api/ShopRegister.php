@@ -19,8 +19,14 @@ class ShopRegister extends Controller
         $user=Auth::guard('api')->user();
         if($user->role->name=='Super Admin'||$user->role->name=='CEO'){
             $shops=ShopLocation::with('employee')->get();
+            $location=explode(',',$shops->location);
+            $shops['lat']=$location[0];
+            $shops['lng']=$location[1];
         }else{
             $shops=ShopLocation::with('employee')->where('branch_id',$user->office_branch_id)->get();
+            $location=explode(',',$shops->location);
+            $shops['lat']=$location[0];
+            $shops['lng']=$location[1];
         }
 
         return response()->json(['shops'=>$shops]);
