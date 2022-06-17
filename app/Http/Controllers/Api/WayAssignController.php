@@ -25,7 +25,7 @@ class WayAssignController extends Controller
     use NotifyTrait;
     public function index()
     {
-        $user=Auth::guard('employee')->user();
+        $user=Auth::guard('api')->user();
         if($user->role->name=='Super Admin'||$user->role->name=='CEO'){
             $assgin_way=SalesWayAssign::with('way','group','emp','assign_employee')->get();
         }else{
@@ -42,7 +42,7 @@ class WayAssignController extends Controller
      */
     public function create()
     {
-        $user=Auth::guard('employee')->user();
+        $user=Auth::guard('api')->user();
         if($user->role->name=='Super Admin'||$user->role->name=='CEO'){
             $groups=SaleGroup::all();
             $ways=SaleWay::all();
@@ -76,7 +76,7 @@ class WayAssignController extends Controller
         }else{
             $data['emp_id']=$request->emp_id;
         }
-        $data['assigned_emp']=Auth::guard('employee')->user()->id;
+        $data['assigned_emp']=Auth::guard('api')->user()->id;
         $data['start_date']=$request->start_date;
         $data['branch_id']=$request->branch_id;
         $assign=SalesWayAssign::create($data);
@@ -147,7 +147,7 @@ class WayAssignController extends Controller
     public function check(Request $request,$id){
         $shopreach=WayReachShop::where('id',$id)->first();
         $shopreach->emp_location=$request->emp_location;
-        $shopreach->emp_id=Auth::guard('employee')->user()->id;
+        $shopreach->emp_id=Auth::guard('api')->user()->id;
         $shopreach->reach=1;
         $shopreach->update();
         return response()->json(['message','Checkin success']);

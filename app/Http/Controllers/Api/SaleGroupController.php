@@ -21,7 +21,7 @@ class SaleGroupController extends Controller
         return response()->json(['groups'=>$groups]);
     }
     public function create(){
-        $user=Auth::guard('employee')->user();
+        $user=Auth::guard('api')->user();
         if($user->role->name=='Super Admin'||$user->role->name=='CEO'){
             $employee=Employee::all();
         }else{
