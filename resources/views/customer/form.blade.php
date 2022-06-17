@@ -40,8 +40,8 @@
                 </div>
                 <div class="col-12 mb-3">
                     <div class="form-group">
-                        <label for="">Branch</label>
-                        <select name="branch_id" id="" class="form-control">
+                        <label for="branch">Branch</label>
+                        <select name="branch_id" id="branch_id" class="form-control select2">
                             @foreach($branch as $item)
                                 <option value="{{$item->id}}">{{$item->name}}</option>
                                 @endforeach

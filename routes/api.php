@@ -48,12 +48,14 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
     Route::resource("mobile_invoice", MobileInvoiceController::class);
     Route::post('invoice/cancel/{id}',[MobileInvoiceController::class,'cancel']);
     Route::get('retail/invoice' , [App\Http\Controllers\Api\Invoice_Mobile\MobileInvoiceController::class,'retail']);
-
-//    Route::resource("invoice_items",InvoiceItemController::class);
-//    Route::get("invoice/sendmail/{id}",[InvoiceController::class,'sending_form'])->name('invoice.sendmail');
-//    Route::post("invoice/mail/send",[InvoiceController::class,'email'])->name('send');
-//    Route::post('invoice/status/{id}',[InvoiceController::class,'status_change'])->name('invoice.statuschange');
-
+    Route::post('delete/shop',[\App\Http\Controllers\Api\SaleWayController::class,'remove_shop']);
+    Route::post('add/new/shop',[\App\Http\Controllers\Api\SaleWayController::class,'add_shop']);
+    Route::resource('sale_group',\App\Http\Controllers\Api\SaleGroupController::class);
+    Route::post('add/sale_group/member',[\App\Http\Controllers\Api\SaleGroupController::class,'add_member']);
+    Route::post('remove/sale_group/member',[\App\Http\Controllers\Api\SaleGroupController::class,'remove_member']);
+    Route::resource('assign_saleway',\App\Http\Controllers\Api\WayAssignController::class);
+    Route::post('check/in/{id}',[\App\Http\Controllers\Api\WayAssignController::class,'check']);
+    Route::resource('shops',\App\Http\Controllers\Api\ShopRegister::class);
     Route::resource('complains',ComplainTicket::class)->only('create','store','index');
     Route::get('test',function (){
        $aa=\Illuminate\Support\Facades\Auth::guard('api')->user()->role->name;

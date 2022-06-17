@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Models\Company;
 use App\Models\Customer;
+use App\Models\OfficeBranch;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -18,6 +19,7 @@ class CustomerImport implements ToCollection,WithHeadingRow
     {
         foreach ($customers as $customer) {
             $company_id = Company::where('name', $customer['company'])->first()->id;
+            $branch=OfficeBranch::where('name',$customer['branch'])->first();
             Customer::create([
                 'customer_id'=>$customer['customer_id'],
                 'name' => $customer['name'],
@@ -27,7 +29,8 @@ class CustomerImport implements ToCollection,WithHeadingRow
                 'gender'=>$customer['gender'],
                 'emp_id'=>Auth::guard('employee')->user()->id,
                 'customer_type'=>'Customer',
-                'company_id' => $company_id
+                'company_id' => $company_id,
+                'branch_id'=>$branch->id,
             ]);
         }
     }
