@@ -20,11 +20,13 @@ class ShopRegister extends Controller
         $user=Auth::guard('api')->user();
         if($user->role->name=='Super Admin'||$user->role->name=='CEO'){
             $shops=ShopLocation::with('employee')->get();
+            $branch=OfficeBranch::all();
         }else{
             $shops=ShopLocation::with('employee')->where('branch_id',$user->office_branch_id)->get();
+            $branch=OfficeBranch::where('id',$user->office_branch_id)->get();
         }
 
-        return response()->json(['shops'=>$shops]);
+        return response()->json(['shops'=>$shops,'branch'=>$branch]);
     }
 
     /**
