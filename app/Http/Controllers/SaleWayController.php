@@ -74,6 +74,12 @@ class SaleWayController extends Controller
         $way=SaleWay::where('id',$id)->first();
         $assgin_shop=way_assign_shop::with('shop')->where('way_id',$id)->get();
         $shops=ShopLocation::all()->pluck('name','id')->all();
+        $auth=Auth::guard('employee')->user();
+        if($auth->role->name=='Super Admin'||$auth->role->name='CEO'){
+
+        }else{
+
+        }
 
         return view('sale.SaleWay.show',compact('way','assgin_shop','shops'));
     }
@@ -129,6 +135,7 @@ class SaleWayController extends Controller
                 $data['reach_location']=$shop->location;
                 $data['shop_id']=$val;
                 $data['way_id']=$request->way_id;
+                $data['branch_id']=$request->branch_id;
                 way_assign_shop::create($data);
             }
         }

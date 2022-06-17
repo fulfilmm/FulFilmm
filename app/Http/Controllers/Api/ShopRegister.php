@@ -19,18 +19,8 @@ class ShopRegister extends Controller
         $user=Auth::guard('api')->user();
         if($user->role->name=='Super Admin'||$user->role->name=='CEO'){
             $shops=ShopLocation::with('employee')->get();
-           foreach ($shops as $shop){
-               $location=explode(',',$shops->location);
-               $shop['lat']=$location[0];
-               $shop['lng']=$location[1];
-           }
         }else{
             $shops=ShopLocation::with('employee')->where('branch_id',$user->office_branch_id)->get();
-            foreach ($shops as $shop){
-                $location=explode(',',$shop->location);
-                $shop['lat']=$location[0];
-                $shop['lng']=$location[1];
-            }
         }
 
         return response()->json(['shops'=>$shops]);
@@ -78,7 +68,11 @@ class ShopRegister extends Controller
     public function show($id)
     {
         $shop=ShopLocation::where('id',$id)->first();
-        return response()->json(['shop'=>$shop]);
+        $position=[];
+         $location=explode(',',$shop->location);
+        $position['lat']=$location[0];
+        $position['lng']=$location[1];
+        return response()->json(['shop'=>$shop,'location'=>$position]);
     }
 
     /**
