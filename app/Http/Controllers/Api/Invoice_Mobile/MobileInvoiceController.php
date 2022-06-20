@@ -273,7 +273,7 @@ class MobileInvoiceController extends Controller
                     }
                 }
                 if(count($foc)!=0){
-                    foreach ($order_item as $item){
+                    foreach ($foc as $item){
                         $item->invoice_id=$newInvoice->id;
                         $item->type='invoice';
                         $this->foc_add($item);
