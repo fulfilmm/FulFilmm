@@ -1,0 +1,48 @@
+<?php
+
+use App\Http\Controllers\BillController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DiscountPromotionController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SaleActivityController;
+use App\Http\Controllers\SaleTargetController;
+use App\Http\Controllers\SellingUnitController;
+
+Route::post('region/import',[\App\Http\Controllers\RegionController::class,'import'])->name('region.import');
+Route::post('zone/import',[\App\Http\Controllers\SaleZoneController::class,'import'])->name('zone.import');
+Route::post('price/import',[SellingUnitController::class,'price_import'])->name('price.import');
+Route::get('sales/analysis',[ReportController::class,'sale_analysis'])->name('sales.analysis');
+Route::resource('discount',\App\Http\Controllers\AmountDiscountController::class);
+Route::get('payments',[BillController::class,'payment'])->name('payment');
+Route::resource('moneytransfer',\App\Http\Controllers\CashTransferRecordController::class);
+Route::post('remove/shop',[\App\Http\Controllers\SaleWayController::class,'remove_shop'])->name('remove.shop');
+Route::post('add/shop',[\App\Http\Controllers\SaleWayController::class,'add_shop'])->name('add.shop');
+Route::resource('salegroup',\App\Http\Controllers\SaleGroupController::class);
+Route::post('add/sale/group/memeber',[\App\Http\Controllers\SaleGroupController::class,'add_member'])->name('add.member');
+Route::post('remove/sale/group/memeber',[\App\Http\Controllers\SaleGroupController::class,'remove_member'])->name('remove.member');
+Route::resource('assignsaleway',\App\Http\Controllers\WayAssignController::class);
+Route::resource('saleway',\App\Http\Controllers\SaleWayController::class);
+Route::resource('summary',\App\Http\Controllers\SummaryController::class);
+Route::get('sales/target/assigned',[SaleTargetController::class,'assign_target'])->name('saletargets.assigned');
+Route::get('main/customer',[CustomerController::class,'customer'])->name('customer');
+Route::resource('sellingunits',SellingUnitController::class);
+Route::resource('discount_promotions',DiscountPromotionController::class);
+Route::get('product/price/index',[SellingUnitController::class,'price_list'])->name('add.index');
+Route::post('product/price/store',[SellingUnitController::class,'store_price'])->name('store.price');
+Route::get('add/price',[SellingUnitController::class,'price_add'])->name('add_price');
+Route::get('price/edit/{id}',[SellingUnitController::class,'price_edit'])->name('edit_price');
+Route::get('product/price/delete/{id}',[SellingUnitController::class,'price_destory'])->name('sellprice.destroy');
+Route::post('product/price/update/{id}',[SellingUnitController::class,'update_price'])->name('sellprice.update');
+Route::get('price/{status}/{id}',[SellingUnitController::class,'price_active'])->name('price.active');
+Route::resource('saletargets',SaleTargetController::class);
+Route::get('sale/dashboard',[SaleTargetController::class,'index'])->name('sale.dashboard');
+Route::get('sale/performance',[ReportController::class,'SalePerformance'])->name('report.saleprformance');
+Route::get('sale/dashbord/search',[SaleTargetController::class,'search'])->name('search.saledashboard');
+Route::get('sale/activity',[SaleActivityController::class,'index'])->name('activity.index');
+Route::get('sale/activity/create',[SaleActivityController::class,'create'])->name('activity.create');
+Route::post('sale/activity/create',[SaleActivityController::class,'store'])->name('activity.store');
+Route::get('sale/activity/show/{id}',[SaleActivityController::class,'show'])->name('activity.show');
+Route::post('sale/activity/comment',[SaleActivityController::class,'post_comment'])->name('activity.comment');
+Route::post('sale/activity/addfollower',[SaleActivityController::class,'follower'])->name('activity.addfollowed');
+Route::post('sale/activity/unfollow',[SaleActivityController::class,'unfollower'])->name('activity.unfollowed');
+Route::get('activity/read/{id}',[SaleActivityController::class,'read'])->name('read');

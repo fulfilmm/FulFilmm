@@ -64,7 +64,9 @@ class ShopRegister extends Controller
             'description'=>'nullable'
 
         ]);
-        ShopLocation::create($request->all());
+        $data=$request->all();
+        $data['emp_id']=Auth::guard('api')->user()->id;
+        ShopLocation::create($data);
         return response()->json(['message'=>'Added new shop']);
     }
 
