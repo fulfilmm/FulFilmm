@@ -294,7 +294,6 @@ class InvoiceController extends Controller
         if($validator->passes()) {
             $prefix = MainCompany::where('ismaincompany', true)->pluck('invoice_prefix', 'id')->first();
             $last_invoice = Invoice::orderBy('id', 'desc')->first();
-
             if ($last_invoice != null) {
                 // Sum 1 + last id
                 if ($prefix != null) {
