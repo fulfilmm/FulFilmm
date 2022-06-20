@@ -185,8 +185,6 @@ class MobileInvoiceController extends Controller
     }
     public function store(Request $request)
     {
-
-
         $validator = Validator::make($request -> all(), [
 //            'title' => 'required',
             'client_id' => 'required',
@@ -265,12 +263,20 @@ class MobileInvoiceController extends Controller
                 $newInvoice->branch_id=Auth::guard('api')->user()->office_branch_id;
                 $newInvoice->save();
                 $order_item = json_decode($request->order_items);
+                $foc=json_decode($request->foc_items);
                 if(count($order_item)!=0){
 
                     foreach ($order_item as $item){
                         $item->invoice_id=$newInvoice->id;
                         $item->type='invoice';
                         $this->item_store($item);
+                    }
+                }
+                if(count($foc)!=0){
+                    foreach ($order_item as $item){
+                        $item->invoice_id=$newInvoice->id;
+                        $item->type='invoice';
+                        $this->foc_add($item);
                     }
                 }
                 return response()->json(['message'=>'success','invoice_id'=>$newInvoice->id]);
