@@ -159,7 +159,9 @@ class CustomerController extends Controller
         }
 
         $this->validate($request,['email'=>'unique:customers',
-            'customer_id'=>'unique:customers']);
+            'customer_id'=>'unique:customers',
+            'phone'=>'max:16'
+        ]);
         if (isset($request->profile_img)) {
             if ($request->profile_img != null) {
                 $image = $request->file('profile_img');

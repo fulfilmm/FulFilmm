@@ -66,6 +66,16 @@ class ShopRegister extends Controller
         ]);
         $data=$request->all();
         $data['emp_id']=Auth::guard('api')->user()->id;
+        if ($request->picture != null) {
+            $image = $request->file('picture');
+            $input['imagename'] = Str::random(10).time().'.'.$image->extension();
+            $filePath = public_path('/img/profiles');
+            $img = Image::make($image->path());
+            $img->resize(110, 110, function ($const) {
+                $const->aspectRatio();
+            })->save($filePath.'/'.$input['imagename']);
+            $data['picture']=$input['imagename'];
+        }
         ShopLocation::create($data);
         return response()->json(['message'=>'Added new shop']);
     }

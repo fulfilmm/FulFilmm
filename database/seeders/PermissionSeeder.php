@@ -176,6 +176,8 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'transactions.export', 'display_name' => 'Transaction Export', 'type' => 'transaction', "guard_name" => 'employee']);
         //Report
         Permission::create(['name' => 'sale.report', 'display_name' => 'Sale Report page', 'type' => 'Report', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'report.payable', 'display_name' => 'Payable Report page', 'type' => 'Report', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'report.payment', 'display_name' => 'Payment Report page', 'type' => 'Report', 'guard_name' => 'employee']);
         Permission::create(['name' => 'report.inhand', 'display_name' => 'Cash In Hand Report', 'type' => 'Report', 'guard_name' => 'employee']);
         Permission::create(['name' => 'report.inemp', 'display_name' => 'Cash In Transit Report', 'type' => 'Report', 'guard_name' => 'employee']);
         Permission::create(['name' => 'report.receivable', 'display_name' => 'Receivable Report', 'type' => 'Report', 'guard_name' => 'employee']);
@@ -185,6 +187,10 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'report.income', 'display_name' => 'Daily Income Report', 'type' => 'Report', 'guard_name' => 'employee']);
         Permission::create(['name' => 'report.expense', 'display_name' => 'Daily Expenses Report', 'type' => 'Report', 'guard_name' => 'employee']);
         Permission::create(['name' => 'report.stock', 'display_name' => 'Daily Stock Report', 'type' => 'Report', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'report.transfer', 'display_name' => 'Stock transfer Report', 'type' => 'Report', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'report.return', 'display_name' => 'Stock return Report', 'type' => 'Report', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'report.damage', 'display_name' => 'Product damage  Report', 'type' => 'Report', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'report.foc', 'display_name' => 'FOC Product Report', 'type' => 'Report', 'guard_name' => 'employee']);
         Permission::create(['name' => 'report.advancepay', 'display_name' => 'Daily Advance Payment Report', 'type' => 'Report', 'guard_name' => 'employee']);
         Permission::create(['name' => 'reports', 'display_name' => 'Report Page', 'type' => 'Report', 'guard_name' => 'employee']);
         //Quotation route

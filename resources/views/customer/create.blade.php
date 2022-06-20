@@ -25,7 +25,7 @@
                     </div>
                 </form>
                 @include('company.quickcompany')
-                @include('customer.addzone');
+                @include('customer.addzone')
             </div>
         </div>
         <script>

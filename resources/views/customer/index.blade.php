@@ -17,7 +17,7 @@
 
                         <a href="{{route('customers.cards')}}" data-toggle="tooltip" title="Card View" class="grid-view btn btn-white shadow-sm"><i class="fa fa-th"></i></a>
                         <a href="{{route('customers.index')}}" data-toggle="tooltip" title="List View" class="list-view btn btn-white active shadow-sm"><i class="fa fa-bars"></i></a>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#change_type"><span style="font-size: 18px;">Change Customer Type</span></button>
+                        <button type="button" title="Customer Type Change" class="btn btn-primary" data-toggle="modal" data-target="#change_type"><span style="font-size: 18px;">Change Customer Type</span></button>
                         <a href="{{route('customers.import')}}" data-toggle="modal" data-target="#import" class="btn btn-white shadow-sm"><i class="fa fa-upload mr-1 ml-1"></i><span class="mr-1">Import</span></a>
                         <a  data-toggle="modal" data-target="#export" class="btn btn-outline-info shadow-sm"><i class="fa fa-download mr-1"></i>Export</a>
 
@@ -50,7 +50,7 @@
                                 <option value="Supplier">Supplier</option>
                                 <option value="Courier">Courier</option>
                             </select>
-                            <span class="text-warning">It will change only checked customer !</span>
+                            <span class="text-warning">It will effected only checked customer !</span>
                         </div>
                         <div class="form-group">
                             <button type="button" data-toggle="tooltip" title="Change type of Customer" id="type_change" class="btn btn-white">Change</button>

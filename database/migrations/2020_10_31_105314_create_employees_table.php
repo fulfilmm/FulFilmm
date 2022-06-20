@@ -15,17 +15,17 @@ class CreateEmployeesTable extends Migration
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 64);
+            $table->string('name');
             $table->string('empid')->unique();
             $table->foreignId('department_id');
             $table->bigInteger('head_office')->unsigned()->nullable();
-            $table->string('phone', 16)->nullable();
+            $table->string('phone')->nullable();
             $table->string('email', 100)->unique()->nullable();
             $table->bigInteger('report_to')->unsigned()->nullable();
             $table->dateTime('dob')->nullable();
             $table->text('address')->nullable();
             $table->string('gender')->nullable();
-            $table->string('work_phone', 16)->nullable();
+            $table->string('work_phone')->nullable();
             $table->boolean('can_login')->default(false);
             $table->boolean('can_post_assignments')->default(false);
             $table->string('password', 128)->nullable();

@@ -25,7 +25,7 @@ class CustomerRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'phone' => 'required',
+            'phone' => 'max:16|required',
             'email' => 'required',
             'company_id' => 'required',
             'profile_img' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',

@@ -32,11 +32,14 @@
                     <div class="form-check form-check-inline">
                         <div class="custom-control custom-radio custom-control-inline">
                             <input type="radio" id="female" name="gender" value="Female"
-                                   class="custom-control-input">
+                                   class="custom-control-input" {{old('gender')=='Female'?'checked':''}}>
                             <label class="custom-control-label" for="female"><i
                                         class="fa fa-female"></i> Female </label>
                         </div>
                     </div>
+                    @error('gender')
+                        <span class="text-danger">{{$message}}</span>
+                    @enderror
                 </div>
                 <div class="col-12 mb-3">
                     <div class="form-group">
@@ -46,6 +49,9 @@
                                 <option value="{{$item->id}}">{{$item->name}}</option>
                                 @endforeach
                         </select>
+                        @error('branch_id')
+                        <span class="text-danger">Select the branch where the customer is located</span>
+                        @enderror
                     </div>
                 </div>
 
@@ -62,7 +68,7 @@
                                     <span class="input-group-text"><i class="fa fa-user"></i></span>
                                 </div>
                                 <input type="text" name="name" class="form-control" id="name"
-                                       placeholder="Enter Full Name" required>
+                                       placeholder="Enter Full Name" value="{{old('name')}}" required>
                             </div>
                         </div>
                     </div>
@@ -76,7 +82,7 @@
                             </div>
                             <select name="company_id" id="company_id" class="form-control select2">
                                 @foreach($companies as $key=>$val)
-                                    <option value="{{$key}}">{{$val}}</option>
+                                    <option value="{{$key}}" {{$key==old('company_id')?'selected':''}}>{{$val}}</option>
                                 @endforeach
                             </select>
                             <button type="button" data-toggle="modal" data-target="#add_new_company" class="btn btn-white"><i
@@ -92,7 +98,7 @@
                                 <span class="input-group-text"><i class="fa fa-envelope"></i></span>
                             </div>
                             <input type="text" class="form-control" id="email" name="email"
-                                   placeholder="Enter Email" required>
+                                   placeholder="Enter Email" value="{{old('email')}}" required>
                         </div>
                         @error('email')
                         <span class="offset-md-3 text-danger" role="alert">{{ $message }}</span>
@@ -109,11 +115,17 @@
                             <input type="text" class="form-control" id="phone" name="phone"
                                    placeholder="Enter Phone">
                         </div>
+                        @error('phone')
+                        <span class="text-danger">{{$message}}</span>
+                        @enderror
                     </div>
                     <div class="col-md-6 col-sm-6 col-12">
                         <div class="form-group">
                             <label for="credit">Credit Limit</label>
                             <input type="number" class="form-control" name="credit_limit" value="{{old('credit_limit')}}">
+                            @error('credit_limit')
+                            <span class="text-danger">{{$message}}</span>
+                            @enderror
                         </div>
                     </div>
 
@@ -121,13 +133,13 @@
                         <label for="customer_type" class="form-label font-weight-bold text-muted text-uppercase">
                             Type</label>
                         <select name="customer_type" id="customer_type" class="form-control select2">
-                            <option value="Customer">Customer</option>
-                            <option value="Lead">Lead</option>
-                            <option value="In Query">In Query</option>
-                            <option value="Partner">Partner</option>
-                            <option value="Competitor">Competitor</option>
-                            <option value="Supplier">Supplier</option>
-                            <option value="Courier">Courier</option>
+                            <option value="Customer" {{old('customer_type')=='Customer'?'selected':''}}>Customer</option>
+                            <option value="Lead" {{old('customer_type')=='Lead'?'selected':''}}>Lead</option>
+                            <option value="In Query" {{old('customer_type')=='In Query'?'selected':''}}>In Query</option>
+                            <option value="Partner" {{old('customer_type')=='Partner'?'selected':''}}>Partner</option>
+                            <option value="Competitor" {{old('customer_type')=='Competitor'?'selected':''}}>Competitor</option>
+                            <option value="Supplier" {{old('customer_type')=='Supplier'?'selected':''}}>Supplier</option>
+                            <option value="Courier" {{old('customer_type')=='Courier'?'selected':''}}>Courier</option>
                         </select>
                     </div>
                     <div class="col-md-6 mb-3">
@@ -136,8 +148,11 @@
                             <select name="region_id" id="region_id" class="form-control select2" onchange="region_select(this.value)">
                                 <option value="">None</option>
                                 @foreach($region as $item)
-                                    <option value="{{$item->id}}">{{$item->name}}{{\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Super Admin'?'('.$item->branch->name.')':''}}</option>
+                                    <option value="{{$item->id}}" {{old('region_id')==$item->id?'selected':''}}>{{$item->name}}{{\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Super Admin'?'('.$item->branch->name.')':''}}</option>
                                 @endforeach
+                                @error('region_id')
+                                <span class="text-danger">Select the region where the customer is located</span>
+                                @enderror
                             </select>
                         </div>
                     </div>
@@ -148,13 +163,16 @@
                                 <select name="zone_id" id="zone" class="form-control select2">
                                     <option value="">None</option>
                                     @foreach($zone as $item)
-                                        <option value="{{$item->id}}" data-option="{{$item->region_id}}">{{$item->name}}</option>
+                                        <option value="{{$item->id}}" data-option="{{$item->region_id}}" {{$item->id==old('zone_id')?'selected':''}}>{{$item->name}}</option>
                                     @endforeach
                                 </select>
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-white" data-toggle="modal" data-target="#add_zone"><i class="la la-plus"></i></button>
 
                                 </div>
+                                @error('zone_id')
+                                <span class="text-danger">Select the zone where the customer is located</span>
+                                @enderror
                             </div>
                         </div>
                     </div>
@@ -174,8 +192,8 @@
                    <div class="input-group">
                        <input type="date"
                               class="form-control vanila-datepicker datepicker-input"
-                              id="bod" min="{{\Carbon\Carbon::today()->format('Y-m-d')}}" name="bod" placeholder="Enter Birth Day"
-                              autocomplete="off">
+                              id="bod" max="{{\Carbon\Carbon::today()->format('Y-m-d')}}" name="bod" placeholder="Enter Birth Day"
+                              autocomplete="off" value="{{old('bod')}}">
                    </div>
                </div>
            </div>
@@ -188,7 +206,7 @@
                        <span class="input-group-text"><i class="fa fa-facebook"></i></span>
                    </div>
                    <input type="text" class="form-control" id="fb" name="facebook"
-                          placeholder="Enter facebook link">
+                          placeholder="Enter facebook link" value="{{old('facebook')}}">
                </div>
            </div>
            <div class="col-md-6 mb-3">
@@ -199,7 +217,7 @@
                        <span class="input-group-text"><i class="fa fa-linkedin"></i></span>
                    </div>
                    <input type="text" class="form-control" id="linkedin" name="linkedin"
-                          placeholder="Enter linkedin link">
+                          placeholder="Enter linkedin link" value="{{old('linkedin')}}">
                </div>
            </div>
            <div class="col-md-6 mb-3">
@@ -210,7 +228,7 @@
                        <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                    </div>
                    <input type="number" class="form-control" id="payment_term" name="payment_term"
-                          placeholder="Enter payment term ">
+                          placeholder="Enter payment term " value="{{old('payment_term')}}">
                    <div class="input-group-prepend">
                        <span class="input-group-text">Days</span>
                    </div>
@@ -224,7 +242,7 @@
                        <span class="input-group-text"><i class="fa fa-map-o"></i></span>
                    </div>
                    <input type="text" class="form-control" id="address" name="address"
-                          placeholder="Enter Address">
+                          placeholder="Enter Address" value="{{old('address')}}">
                </div>
            </div>
        </div>
@@ -240,7 +258,7 @@
                         <span class="input-group-text"><i class="fa fa-user"></i></span>
                     </div>
                     <input type="text" class="form-control" id="report_to" name="report_to"
-                           placeholder="Enter report person name">
+                           placeholder="Enter report person name" value="{{old('report_to')}}">
                 </div>
             </div>
             <div class="col-md-6 mb-3">
@@ -248,7 +266,7 @@
                        class="form-label font-weight-bold text-muted text-uppercase">Report
                     Person's Position</label>
                 <input type="text" class="form-control" id="report_to_position" name="report_to_position"
-                       placeholder="Enter report person's position">
+                       placeholder="Enter report person's position"value="{{old('report_to_position')}}">
             </div>
             <div class="col-md-6 mb-3">
                 <div class="form-group">
@@ -257,30 +275,30 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-users"></i></span>
                         </div>
-                        <input type="text" id="dept" name="department" class="form-control" placeholder="Enter Contact Department">
+                        <input type="text" id="dept" name="department" class="form-control" placeholder="Enter Contact Department" value="{{old('department')}}">
                     </div>
                 </div>
             </div>
             <div class="col-md-6 mb-3">
                 <div class="form-group">
                     <label for="position" class="form-label font-weight-bold text-muted text-uppercase">Position</label>
-                    <input type="text" id="position" name="position" class="form-control" placeholder="Enter Contact Position">
+                    <input type="text" id="position" name="position" class="form-control" placeholder="Enter Contact Position" value="{{old('position')}}">
                 </div>
             </div>
             <div class="col-md-6 mb-3" id="title">
                 <label for='title'
                        class='form-label font-weight-bold text-muted text-uppercase pro_label'>Title </label>
                 <div class='input-group' id='priority_field'>
-                    <input type='text' class='form-control' name='title'></div>
+                    <input type='text' class='form-control' name='title' value="{{old('title')}}"></div>
             </div>
             <div class="col-md-6 mb-3" id="priority">
                 <label for="Text6"
                        class="form-label font-weight-bold text-muted text-uppercase pro_label">Priority</label>
                 <div class="input-group" id="priority_field">
                     <select name="priority" id="priority_type" class="form-control" style="width: 100%">
-                        <option value="High">High</option>
-                        <option value="Medium">Medium</option>
-                        <option value="Low">Low</option>
+                        <option value="High" {{old('priority_type')=='High'?'selected':''}}>High</option>
+                        <option value="Medium" {{old('priority_type')=='Medium'?'selected':''}}>Medium</option>
+                        <option value="Low" {{old('priority_type')=='Low'?'selected':''}}>Low</option>
                     </select>
                 </div>
             </div>
@@ -292,7 +310,7 @@
                             @if($tag->id==$last_tag->id)
                                 <option value="{{$tag->id}}" selected>{{$tag->tag_industry}}</option>
                             @else
-                                <option value="{{$tag->id}}">{{$tag->tag_industry}}</option>
+                                <option value="{{$tag->id}}" {{old('tag_industry')==$tag->id?'selected':''}}>{{$tag->tag_industry}}</option>
                             @endif
                         @endforeach
                     </select>
@@ -306,16 +324,16 @@
                 <label for="Text6" class="form-label font-weight-bold text-muted text-uppercase pro_label">Status</label>
                 <div class="input-group">
                     <select name="status" id="status" class="form-control" style="width:100% ;">
-                        <option value="New">New</option>
-                        <option value="Qualified">Qualified</option>
-                        <option value="Unqualified">Unqualified</option>
+                        <option value="New" {{old('status')=='New'?'selected':''}}>New</option>
+                        <option value="Qualified" {{old('status')=='Qualified'?'selected':''}}>Qualified</option>
+                        <option value="Unqualified" {{old('Unqualified')=='Unqualified'?'selected':''}}>Unqualified</option>
                     </select>
                 </div>
             </div>
             <div class="col-md-12 mb-3" id="case">
                 <div class="form-group">
                     <label for="case_text">Case</label>
-                    <input type="text" class="form-control" name="case" id="case_text">
+                    <input type="text" class="form-control" name="case" id="case_text" value="{{old('case')}}">
                 </div>
             </div>
         </div>
@@ -325,7 +343,7 @@
     <div class="form-group mt-3 mb-2">
         <label for="bio" class="form-label font-weight-bold text-muted text-uppercase">Bio</label>
         <textarea name="bio" class="form-control" id="bio" rows="10"
-                  placeholder="Enter Bio"></textarea>
+                  placeholder="Enter Bio">{{old('bio')}}</textarea>
     </div>
 </div>
     <div id="industry_add" class="modal custom-modal fade" data-backdrop="true" tabindex="-1"
@@ -388,7 +406,6 @@
             var region_id = document.querySelector('#region_id');
             var zone_id = document.querySelector('#zone');
             var zone_optoion = zone_id.querySelectorAll('option');
-            console.log(options3);
             // alert(product)
             function region_select(selValue) {
                 zone.innerHTML='';
