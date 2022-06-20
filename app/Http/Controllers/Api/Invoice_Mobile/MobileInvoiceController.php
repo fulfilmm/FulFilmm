@@ -578,10 +578,11 @@ class MobileInvoiceController extends Controller
         }
     }
     public function foc_add($request){
+        $variant = ProductVariations::where('id', $request->variant_id)->first();
         $items = new OrderItem();
         $items->description = 'This is FOC item';
         $items->quantity = 1;
-        $items->variant_id = $request->variant_id;
+        $items->variant_id = $variant->id;
         $items->unit_price = 0;
         $items->sell_unit = $request->unit_id;
         $items->total = 0;
