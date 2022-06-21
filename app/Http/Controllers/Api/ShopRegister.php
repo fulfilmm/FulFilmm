@@ -7,6 +7,7 @@ use App\Models\OfficeBranch;
 use App\Models\ShopLocation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class ShopRegister extends Controller
 {
