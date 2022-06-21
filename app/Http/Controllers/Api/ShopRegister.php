@@ -63,7 +63,8 @@ class ShopRegister extends Controller
             'picture'=>'nullable',
             'contact'=>'required',
             'phone'=>'required',
-            'description'=>'nullable'
+            'description'=>'nullable',
+            'branch_id'=>'required'
 
         ]);
         $data=$request->all();
