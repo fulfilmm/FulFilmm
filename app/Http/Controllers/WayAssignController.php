@@ -95,7 +95,7 @@ class WayAssignController extends Controller
         }else{
             $this->addnotify($request->emp_id,'noti','You have assigned a new sale way to you','assignsaleway/'.$assign->id,Auth::guard('employee')->user()->id);
         }
-        return redirect('assingsaleway')->with('success','Assign sale way');
+        return redirect('assignsaleway'.$assign->id)->with('success','Assign sale way');
     }
 
     /**
