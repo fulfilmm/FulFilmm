@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\OfficeBranch;
 use App\Models\SaleWay;
 use App\Models\ShopLocation;
 use App\Models\way_assign_shop;
@@ -76,12 +77,12 @@ class SaleWayController extends Controller
         $shops=ShopLocation::all()->pluck('name','id')->all();
         $auth=Auth::guard('employee')->user();
         if($auth->role->name=='Super Admin'||$auth->role->name='CEO'){
-
+            $branches=OfficeBranch::all();
         }else{
-
+            $branches=OfficeBranch::where('id',$auth->office_branch_id)->get();
         }
 
-        return view('sale.SaleWay.show',compact('way','assgin_shop','shops'));
+        return view('sale.SaleWay.show',compact('way','assgin_shop','shops','branches'));
     }
 
     /**

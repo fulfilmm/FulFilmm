@@ -53,6 +53,14 @@
                             @csrf
                             <input type="hidden" name="way_id" value="{{$way->id}}">
                             <div class="form-group">
+                                <label for="branch">Branch</label>
+                                <select name="branch_id" id="" class="form-control">
+                                    @foreach($branches as $branch)
+                                        <option value="{{$branch->id}}">{{$branch->name}}</option>
+                                        @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label for="shop">Shop</label>
                                 <select name="shop_id[]" id="shop" class="form-control" multiple style="width: 100%;">
                                     @foreach($shops as $key=>$val)
