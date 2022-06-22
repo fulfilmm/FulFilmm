@@ -54,7 +54,7 @@
                             <input type="hidden" name="way_id" value="{{$way->id}}">
                             <div class="form-group">
                                 <label for="branch">Branch</label>
-                                <select name="branch_id" id="" class="form-control">
+                                <select name="branch_id" id="" class="form-control" style="width: 100%">
                                     @foreach($branches as $branch)
                                         <option value="{{$branch->id}}">{{$branch->name}}</option>
                                         @endforeach

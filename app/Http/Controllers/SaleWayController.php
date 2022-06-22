@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\OfficeBranch;
+use App\Models\SalesWayAssign;
 use App\Models\SaleWay;
 use App\Models\ShopLocation;
 use App\Models\way_assign_shop;
+use App\Models\WayReachShop;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -138,8 +140,8 @@ class SaleWayController extends Controller
                 $data['way_id']=$request->way_id;
                 $data['branch_id']=$request->branch_id;
                 way_assign_shop::create($data);
+                }
             }
-        }
-        return redirect()->back()->with('Removed '.$no_shop.' Shops');
+        return redirect()->back()->with('Added '.$no_shop.' Shops');
     }
 }
