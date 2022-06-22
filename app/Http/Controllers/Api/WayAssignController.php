@@ -29,7 +29,17 @@ class WayAssignController extends Controller
         if($user->role->name=='Super Admin'||$user->role->name=='CEO'){
             $assgin_way=SalesWayAssign::with('way','group','emp','assign_employee')->get();
         }else{
-            $assgin_way=SalesWayAssign::with('way','group','emp','assign_employee')->where('branch_id',$user->office_branch_id)->get();
+            $sale_group=SaleGroup::where('emp_id',$user->id)->get();
+            $assgin_way=[];
+            foreach ($sale_group as $group){
+                $assgined_way=SalesWayAssign::with('way','group','emp','assign_employee')->where('group_id',$group->id)
+                    ->orWhere('emp_id',$user->id)
+                    ->first();
+                if($assgined_way!=null){
+                    array_push($assgin_way,$assgined_way);
+                }
+            }
+
         }
 
         return response()->json(['assign_way'=>$assgin_way]);
@@ -106,8 +116,14 @@ class WayAssignController extends Controller
     public function show($id)
     {
         $assignway=SalesWayAssign::with('way','group','emp','assign_employee')->where('id',$id)->first();
-        $shop=WayReachShop::with('shop')->where('assign_id',$id)->get();
-//        dd($shop);
+        $shops=WayReachShop::with('shop')->where('assign_id',$id)->get();
+       $shop=[];
+        foreach ($shops as $sh){
+            $location=explode(',',$sh->shop->location);
+            $sh['lat']=$location[0];
+            $sh['lng']=$location[1];
+            array_push($shop,$sh);
+        }
         return response()->json(['assignway'=>$assignway,'shop'=>$shop]);
     }
 
