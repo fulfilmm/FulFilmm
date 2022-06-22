@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\OfficeBranch;
 use App\Models\SaleGroup;
 use App\Models\SaleGroupMember;
 use App\Models\SalesWayAssign;
@@ -45,12 +46,14 @@ class WayAssignController extends Controller
             $groups=SaleGroup::all();
             $ways=SaleWay::all();
             $employees=Employee::all();
+            $branches=OfficeBranch::all();
         }else{
             $groups=SaleGroup::where('branch_id',$user->office_branch_id)->get();
             $ways=SaleWay::where('branch_id',$user->office_branch_id)->get();
             $employees=Employee::where('office_branch_id',$user->office_branch_id)->get();
+            $branches=OfficeBranch::where('id',$user->office_branch_id)->get();
         }
-        return view('sale.AssignSaleWay.create',compact('groups','ways','employees'));
+        return view('sale.AssignSaleWay.create',compact('groups','ways','employees','branches'));
     }
 
     /**

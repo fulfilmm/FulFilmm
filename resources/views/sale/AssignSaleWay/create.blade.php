@@ -31,8 +31,14 @@
                 <div class="col-12">
                     <form action="{{route('assignsaleway.store')}}" method="POST">
                         @csrf
-                        <input type="hidden" name="branch_id" value="{{\Illuminate\Support\Facades\Auth::guard('employee')->user()->office_branch_id??''}}">
-
+                        <div class="form-group">
+                            <label for="branch">Branch</label>
+                            <select name="branch_id" id="" class="form-control" style="width: 100%">
+                                @foreach($branches as $branch)
+                                    <option value="{{$branch->id}}">{{$branch->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="form-group">
                             <label for="id">Way ID</label>
                             <select name="way_id" id="id" class="form-control">
