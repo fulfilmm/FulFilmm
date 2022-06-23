@@ -21,62 +21,145 @@
 
         <!-- Content Starts -->
         <div class="col-12 my-3">
-            <div class="row">
-                <div class="col-md-9 col-sm-12 col-12">
-                    <div id="map" style="width: 750px; height: 550px;"></div>
-                </div>
-                    <div class="col-12 col-md-3">
-                        <form action="{{route('shop.store')}}" method="POST">
-                            @csrf
-                        <input type="hidden" name="emp_id" value="{{\Illuminate\Support\Facades\Auth::guard('employee')->user()->id}}">
-                        <div class="form-group">
-                            <label for="branch">Office Branch</label>
-                            <select name="branch_id" id="branch" class="form-control">
-                                @foreach($branches as $branch)
-                                    <option value="{{$branch->id}}">{{$branch->name}}</option>
-                                    @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="">Shop Name</label>
-                            <input type="text" class="form-control" name="name">
-                            @error('name')
-                            <span class="text-danger">{{$message}}</span>
-                            @enderror
-                        </div>
-                        <div class="form-group">
-                            <label for="">Contact Person</label>
-                            <input type="text" class="form-control" name="contact">
-                            @error('contact')
-                            <span class="text-danger">{{$message}}</span>
-                            @enderror
-                        </div>
-                        <div class="form-group">
-                            <label for="">Phone</label>
-                            <input type="text" class="form-control" name="phone">
-                            @error('phone')
-                            <span class="text-danger">{{$message}}</span>
-                            @enderror
-                        </div>
-                        <div class="form-group">
-                            <label for="">Location</label>
-                            <input type="text" class="form-control" id="location" name="location">
-                            @error('location')
-                            <span class="text-danger">{{$message}}</span>
-                            @enderror
-                        </div>
-                        <div class="form-group">
-                            <label for="">Picture</label>
-                            <input type="file" name="picture">
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                        </form>
-                    </div>
-
+            <div class="col-md-12 col-sm-12 col-12">
+                <div id="map" style="width: 100%; height: 550px;"></div>
             </div>
-            <div id="map" style="width: 100%; height: 600px;"> </div>
+            <div class="col-12 col-md-12 my-3">
+                <div class="card">
+                    <form action="{{route('shop.store')}}" method="POST">
+                        @csrf
+                        <input type="hidden" name="emp_id"
+                               value="{{\Illuminate\Support\Facades\Auth::guard('employee')->user()->id}}">
+                       <div class="col-12">
+                           <div class="row my-3">
+
+                               <div class="col-md-4 col-sm-3 col-6">
+                                   <div class="form-group">
+                                       <label for="branch">Office Branch</label>
+                                       <select name="branch_id" id="branch" class="form-control">
+                                           @foreach($branches as $branch)
+                                               <option value="{{$branch->id}}">{{$branch->name}}</option>
+                                           @endforeach
+                                       </select>
+                                   </div>
+                               </div>
+
+                               <div class="col-md-4 col-sm-3 col-6">
+                                   <div class="form-group">
+                                       <label for="branch">Region</label>
+                                       <select name="region_id" id="branch" class="form-control">
+                                           @foreach($region as $reg)
+                                               <option value="{{$reg->id}}">{{$reg->name}}</option>
+                                           @endforeach
+                                       </select>
+                                   </div>
+                               </div>
+
+                               <div class="col-md-4 col-sm-3 col-6">
+                                   <div class="form-group">
+                                       <label for="branch">Zone</label>
+                                       <select name="region_id" id="branch" class="form-control">
+                                           @foreach($zones as $zn)
+                                               <option value="{{$zn->id}}">{{$zn->name}}</option>
+                                           @endforeach
+                                       </select>
+                                   </div>
+                               </div>
+
+                               <div class="col-md-4 col-sm-3 col-6">
+                                   <div class="form-group">
+                                       <label for="">Shop Name</label>
+                                       <input type="text" class="form-control" name="name">
+                                       @error('name')
+                                       <span class="text-danger">{{$message}}</span>
+                                       @enderror
+                                   </div>
+                               </div>
+                               <div class="col-md-4 col-sm-3 col-6">
+                                   <div class="form-group">
+                                       <label for="">Shop Type</label>
+                                       <select name="shop_type" id="shop_type" class="form-control">
+                                           <option value="Whole Sales">Whole Sales</option>
+                                           <option value="Retail Sales">Retail Sales</option>
+                                       </select>
+                                       @error('name')
+                                       <span class="text-danger">{{$message}}</span>
+                                       @enderror
+                                   </div>
+                               </div>
+
+
+                               <div class="col-md-4 col-sm-3 col-6">
+                                   <div class="form-group">
+                                       <label for="">Contact Person</label>
+                                       <input type="text" class="form-control" name="contact">
+                                       @error('contact')
+                                       <span class="text-danger">{{$message}}</span>
+                                       @enderror
+                                   </div>
+                               </div>
+
+                               <div class="col-md-4 col-sm-3 col-6">
+                                   <div class="form-group">
+                                       <label for="">Phone</label>
+                                       <input type="text" class="form-control" name="phone">
+                                       @error('phone')
+                                       <span class="text-danger">{{$message}}</span>
+                                       @enderror
+                                   </div>
+                               </div>
+
+                               <div class="col-md-4 col-sm-3 col-6">
+                                   <div class="form-group">
+                                       <label for="">Location</label>
+                                       <input type="text" class="form-control" id="location" name="location">
+                                       @error('location')
+                                       <span class="text-danger">{{$message}}</span>
+                                       @enderror
+                                   </div>
+                               </div>
+
+                               <div class="col-md-4 col-sm-3 col-6">
+                                   <div class="form-group">
+                                       <label for="">Township</label>
+                                       <input type="text" class="form-control" id="township" name="township">
+                                       @error('township')
+                                       <span class="text-danger">{{$message}}</span>
+                                       @enderror
+                                   </div>
+                               </div>
+
+                               <div class="col-md-4 col-sm-3 col-6">
+                                   <div class="form-group">
+                                       <label for="">Address</label>
+                                       <input type="text" class="form-control" id="address" name="address">
+                                       @error('township')
+                                       <span class="text-danger">{{$message}}</span>
+                                       @enderror
+                                   </div>
+                               </div>
+
+                               <div class="col-md-4 col-sm-3 col-6">
+                                   <div class="form-group">
+                                       <label for="">Picture</label>
+                                       <input type="file" name="picture" class="form-control">
+                                   </div>
+                               </div>
+                               <div class="col-12">
+                                   <div class="form-group">
+                                       <button type="submit" class="btn btn-primary">Submit</button>
+                                   </div>
+                               </div>
+
+
+                           </div>
+                       </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+            <div id="map" style="width: 100%; height: 600px;"></div>
             <script type="text/javascript">
                 // $(function() {
                 //     $("#map").googleMap();
@@ -98,7 +181,7 @@
                 google.maps.event.addListener(lp.map, 'idle', function (event) {
                     // Get current location and show it in HTML
                     var location = lp.getMarkerPosition();
-                    document.getElementById("location").value=location.lat+','+location.lng;
+                    document.getElementById("location").value = location.lat + ',' + location.lng;
                 });
             </script>
         </div>

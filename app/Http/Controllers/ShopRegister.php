@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\OfficeBranch;
+use App\Models\Region;
+use App\Models\SaleZone;
 use App\Models\ShopLocation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -38,10 +40,22 @@ class ShopRegister extends Controller
         $auth=Auth::guard('employee')->user();
         if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'){
             $branches=OfficeBranch::all();
+            $region=Region::all();
+            $zones=SaleZone::all();
         }else{
             $branches=OfficeBranch::where('id',$auth->office_branch_id)->get();
+            $region=Region::where('branch_id',$auth->office_branch_id)->get();
+            $zones=[];
+            foreach ($region as $reg){
+                $zone=SaleZone::where('region_id',$reg->id)->get();
+                if(count($zone)!=0){
+                    foreach ($zone as $z){
+                        array_push($zones,$z);
+                    }
+                }
+            }
         }
-        return view('sale.SaleWay.Shop.create',compact('branches'));
+        return view('sale.SaleWay.Shop.create',compact('branches','region','zones'));
     }
 
     /**
@@ -61,7 +75,10 @@ class ShopRegister extends Controller
             'picture'=>'nullable',
             'contact'=>'required',
             'phone'=>'required',
-            'description'=>'nullable'
+            'description'=>'nullable',
+            'region_id'=>'required',
+            'zone_id'=>'required',
+            'branch_id'=>'required'
 
         ]);
         $data=$request->all();

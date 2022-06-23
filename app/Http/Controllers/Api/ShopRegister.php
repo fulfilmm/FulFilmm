@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\OfficeBranch;
+use App\Models\Region;
+use App\Models\SaleZone;
 use App\Models\ShopLocation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,12 +25,24 @@ class ShopRegister extends Controller
         if($user->role->name=='Super Admin'||$user->role->name=='CEO'){
             $shops=ShopLocation::with('employee')->get();
             $branch=OfficeBranch::all();
+            $region=Region::all();
+            $zones=SaleZone::all();
         }else{
             $shops=ShopLocation::with('employee')->where('branch_id',$user->office_branch_id)->get();
             $branch=OfficeBranch::where('id',$user->office_branch_id)->get();
+            $region=Region::where('branch_id',$user->office_branch_id)->get();
+            $zones=[];
+            foreach ($region as $reg){
+                $zone=SaleZone::where('region_id',$reg->id)->get();
+               if(count($zone)!=0){
+                   foreach ($zone as $z){
+                       array_push($zones,$z);
+                   }
+               }
+            }
         }
 
-        return response()->json(['shops'=>$shops,'branch'=>$branch]);
+        return response()->json(['shops'=>$shops,'branch'=>$branch,'region'=>$region,'zone'=>$zones]);
     }
 
     /**
@@ -64,7 +78,9 @@ class ShopRegister extends Controller
             'contact'=>'required',
             'phone'=>'required',
             'description'=>'nullable',
-            'branch_id'=>'required'
+            'branch_id'=>'required',
+            'region_id'=>'required',
+            'zone_id'=>'required'
 
         ]);
         $data=$request->all();
@@ -91,7 +107,7 @@ class ShopRegister extends Controller
      */
     public function show($id)
     {
-        $shop=ShopLocation::where('id',$id)->first();
+        $shop=ShopLocation::with('branch','region','zone')->where('id',$id)->first();
         $position=[];
          $location=explode(',',$shop->location);
         $position['lat']=$location[0];

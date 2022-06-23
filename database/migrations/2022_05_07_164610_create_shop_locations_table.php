@@ -24,6 +24,11 @@ class CreateShopLocationsTable extends Migration
             $table->string('phone');
             $table->text('description')->nullable();
             $table->bigInteger('branch_id')->unsigned();
+            $table->bigInteger('region_id')->unsigned();
+            $table->bigInteger('zone_id')->unsigned();
+            $table->string('township')->nullable();
+            $table->string('address')->nullable();
+            $table->string('shop_type')->nullable();
             $table->timestamps();
         });
     }
