@@ -23,12 +23,12 @@ class ShopRegister extends Controller
     {
         $user=Auth::guard('api')->user();
         if($user->role->name=='Super Admin'||$user->role->name=='CEO'){
-            $shops=ShopLocation::with('employee')->get();
+            $shops=ShopLocation::with('employee','branch','region','zone')->get();
             $branch=OfficeBranch::all();
             $region=Region::all();
             $zones=SaleZone::all();
         }else{
-            $shops=ShopLocation::with('employee')->where('branch_id',$user->office_branch_id)->get();
+            $shops=ShopLocation::with('employee','branch','region','zone')->where('branch_id',$user->office_branch_id)->get();
             $branch=OfficeBranch::where('id',$user->office_branch_id)->get();
             $region=Region::where('branch_id',$user->office_branch_id)->get();
             $zones=[];
@@ -107,7 +107,7 @@ class ShopRegister extends Controller
      */
     public function show($id)
     {
-        $shop=ShopLocation::with('branch','region','zone')->where('id',$id)->first();
+        $shop=ShopLocation::with('employee','branch','region','zone')->where('id',$id)->first();
         $position=[];
          $location=explode(',',$shop->location);
         $position['lat']=$location[0];
