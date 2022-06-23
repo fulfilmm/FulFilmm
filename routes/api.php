@@ -57,6 +57,7 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
     Route::post('check/in/{id}',[\App\Http\Controllers\Api\WayAssignController::class,'check']);
     Route::resource('shops',\App\Http\Controllers\Api\ShopRegister::class);
     Route::resource('complains',ComplainTicket::class)->only('create','store','index');
+    Route::get('sales/dashboard',[\App\Http\Controllers\Api\SaleDashboardController::class,'dashboard']);
     Route::get('test',function (){
        $aa=\Illuminate\Support\Facades\Auth::guard('api')->user()->role->name;
        return response()->json(['role'=>$aa]);
