@@ -132,7 +132,7 @@ class CustomerController extends Controller
         $auth=Auth::guard('employee')->user();
         if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'||$auth->role->name=='Sale Manager'){
             $branch=OfficeBranch::all();
-            $region=Region::all();
+            $region=Region::with('')->get();
         }else{
             $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
             $region=Region::where('branch_id',$auth->office_branch_id)->get();

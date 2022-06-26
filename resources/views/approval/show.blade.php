@@ -211,7 +211,7 @@
                                         </div>
                                         <div class="notification-popup hide">
                                             <p>
-                                                <span class="task">dgfsdg</span>
+                                                <span class="task"></span>
                                                 <span class="notification-text"></span>
                                             </p>
                                         </div>
@@ -243,7 +243,7 @@
                                                 </div>
                                                 <div class="chat-avatar">
                                                     <a href="#" class="avatar">
-                                                        <img src="{{url(asset('img/profiles/avatar-02.jpg'))}}" alt="">
+                                                        <img src="{{url(asset(isset($cmt->cmt_user->profile_img)?'img/profile/'.$cmt->cmt_user->profile_img:'img/profiles/avatar-02.jpg'))}}" alt="">
                                                     </a>
                                                 </div>
                                                 <div class="chat-body">
