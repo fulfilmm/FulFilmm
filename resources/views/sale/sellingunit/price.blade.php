@@ -36,8 +36,8 @@
                         <label for="sale_type">Filter By Sale Type</label>
                         <select name="" id="sale_type" class="form-control select2">
                             <option value="">All</option>
-                            <option value="Whole Sale">Whole Sale</option>
-                            <option value="Retail Sale">Retail Sale</option>
+                            <option value="Whole Sale">Whole Sales</option>
+                            <option value="Retail Sale">Retail Sales</option>
                         </select>
                     </div>
                 </div>
@@ -148,7 +148,7 @@
             $(document).ready(function() {
                 $('#sale_type').on('change', function () {
                     var table = $('#price_table').DataTable();
-                    table.column(4).search($(this).val()).draw();
+                    table.column(8).search($(this).val()).draw();
 
                 });
             });
