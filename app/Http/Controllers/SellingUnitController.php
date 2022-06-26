@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\PriceImport;
 use App\Models\OfficeBranch;
 use App\Models\product;
 use App\Models\product_price;
@@ -10,6 +11,7 @@ use App\Models\Region;
 use App\Models\SellingUnit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SellingUnitController extends Controller
 {
@@ -206,5 +208,9 @@ class SellingUnitController extends Controller
         $price->price=$request->price;
         $price->update();
         return redirect()->back();
+    }
+    public function price_import(Request $request){
+        Excel::import(new PriceImport(),$request->file('import'));
+        return redirect('product/price/index')->with('success','Success prices import');
     }
 }
