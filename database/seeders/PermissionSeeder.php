@@ -48,6 +48,9 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'variant.update', 'display_name' => 'Product Variant update', 'type' => 'products', 'guard_name' => 'employee']);
         Permission::create(['name' => 'barcode.generate', 'display_name' => 'Product barcode generate', 'type' => 'products', 'guard_name' => 'employee']);
         Permission::create(['name' => 'barcode.create', 'display_name' => 'Product barcode generate form', 'type' => 'products', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'alert.qty', 'display_name' => 'Product quantity alert list', 'type' => 'products', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'alert.products', 'display_name' => 'Products expired alert list', 'type' => 'products', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'expired.products', 'display_name' => 'Expired products alert list', 'type' => 'products', 'guard_name' => 'employee']);
         //ticket
         Permission::create(['name' => 'change_status', 'display_name' => "Can change ticket status", 'type' => 'tickets', 'guard_name' => 'employee']);
         Permission::create(['name' => 'reassign', 'display_name' => "Can reassign ticket ", 'type' => 'tickets', 'guard_name' => 'employee']);
@@ -73,6 +76,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'cc.search', 'display_name' => 'Tagged Approval Search', 'type' => 'approvals', 'guard_name' => 'employee']);
         Permission::create(['name' => 'request.me', 'display_name' => "Can view employee approval request to login employee", 'type' => 'approvals', 'guard_name' => 'employee']);
         Permission::create(['name' => 'requestation.cc', 'display_name' => "Can view tag request list to login employee", 'type' => 'approvals', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'item.comfirm', 'display_name' => "Item request approve each item", 'type' => 'approvals', 'guard_name' => 'employee']);
         //minutes
         Permission::create(['name' => 'assign.minutes', 'display_name' => "Can assign  minutes  in meeting show", 'type' => 'meetings', 'guard_name' => 'employee']);
         //setting
@@ -128,6 +132,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'billitems.update', 'display_name' => 'Update bill item', 'type' => 'bills', 'guard_name' => 'employee']);
         Permission::create(['name' => 'po.bill', 'display_name' => 'Bill direct create form PO', 'type' => 'bills', 'guard_name' => 'employee']);
         Permission::create(['name' => 'delivery.bill', 'display_name' => 'Bill direct create form delivery', 'type' => 'bills', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'payment', 'display_name' => 'Payment paid list', 'type' => 'bills', 'guard_name' => 'employee']);
         //Purchase Orders
         Permission::create(['name' => 'purchase.orders', 'display_name' => 'Po direct create from RFQ', 'type' => 'purchaseorders', 'guard_name' => 'employee']);
         Permission::create(['name' => 'purchaseorders.confirm', 'display_name' => 'Purchase order confirm', 'type' => 'purchaseorders', 'guard_name' => 'employee']);
@@ -162,6 +167,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'transfer.index', 'display_name' => 'Stock Transfer Record', 'type' => 'Stocks', 'guard_name' => 'employee']);
         Permission::create(['name' => 'stocks', 'display_name' => 'Stock', 'type' => 'Stocks', 'guard_name' => 'employee']);
         Permission::create(['name' => 'stocks.import', 'display_name' => 'Stock Import', 'type' => 'Stocks', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'stockreturn.mobile', 'display_name' => 'Stock return from Mobile Warehouse', 'type' => 'Stocks', 'guard_name' => 'employee']);
         //Banking Transaction
         Permission::create(['name' => 'transaction.approve', 'display_name' => 'Expense/Revenue transaction approver', 'type' => 'transaction', 'guard_name' => 'employee']);
         Permission::create(['name' => 'advance.maketransaction', 'display_name' => 'Advance payment to revenue transaction ', 'type' => 'transaction', 'guard_name' => 'employee']);
@@ -193,11 +199,40 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'report.foc', 'display_name' => 'FOC Product Report', 'type' => 'Report', 'guard_name' => 'employee']);
         Permission::create(['name' => 'report.advancepay', 'display_name' => 'Daily Advance Payment Report', 'type' => 'Report', 'guard_name' => 'employee']);
         Permission::create(['name' => 'reports', 'display_name' => 'Report Page', 'type' => 'Report', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'summary.index', 'display_name' => 'Summary Report Page', 'type' => 'Report', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'sales.analysis', 'display_name' => 'Sales analysis Report Page', 'type' => 'Report', 'guard_name' => 'employee']);
         //Quotation route
         Permission::create(['name' => 'quotations.retail', 'display_name' => 'Retail Sale Quotation Create', 'type' => 'quotations', 'guard_name' => 'employee']);
         Permission::create(['name' => 'customer', 'display_name' => 'Invoice issued customer', 'type' => 'customers', 'guard_name' => 'employee']);
         //invoice
         Permission::create(['name' => 'invoice.list', 'display_name' => 'Invoice four type of list view', 'type' => 'invoices', 'guard_name' => 'employee']);
+
+        Permission::create(['name' => 'salegroup.index', 'display_name' => "View all sales group", 'type' =>'sales', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'salegroup.create', 'display_name' => "Show create form for sales group", 'type' => 'sales', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'salegroup.store', 'display_name' => "Store the sales group", 'type' =>'sales', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'salegroup.show', 'display_name' => "View detail of the sales group", 'type' =>'sales', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'salegroup.edit', 'display_name' => "Show Edit form for the sales group", 'type' =>'sales', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'salegroup.update', 'display_name' => "Update the sales group", 'type' => 'sales', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'salegroup.destroy', 'display_name' => "Delete the sales group", 'type' => 'sales', 'guard_name' => 'employee']);
+
+        Permission::create(['name' => 'saleway.index', 'display_name' => "View all sales ways", 'type' =>'sales', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'saleway.create', 'display_name' => "Show create form for sales way", 'type' => 'sales', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'saleway.store', 'display_name' => "Store the sales way", 'type' =>'sales', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'saleway.show', 'display_name' => "View detail of the sales way", 'type' =>'sales', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'saleway.edit', 'display_name' => "Show Edit form for the sales way", 'type' =>'sales', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'saleway.update', 'display_name' => "Update the sales way", 'type' => 'sales', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'saleway.destroy', 'display_name' => "Delete the sales way", 'type' => 'sales', 'guard_name' => 'employee']);
+
+        Permission::create(['name' => 'assignsaleway.index', 'display_name' => "View all sales ways assign", 'type' =>'sales', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'assignsaleway.create', 'display_name' => "Show create form for sales way assign", 'type' => 'sales', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'assignsaleway.store', 'display_name' => "Store the sales way assign", 'type' =>'sales', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'assignsaleway.show', 'display_name' => "View detail of the sales way assign", 'type' =>'sales', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'assignsaleway.edit', 'display_name' => "Show Edit form for the sales way assign", 'type' =>'sales', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'assignsaleway.update', 'display_name' => "Update the sales way assign", 'type' => 'sales', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'assignsaleway.destroy', 'display_name' => "Delete the sales way assign", 'type' => 'sales', 'guard_name' => 'employee']);
+
+
+
 
 
     }

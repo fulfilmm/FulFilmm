@@ -236,18 +236,18 @@
             <li><a class="{{ Request::is('coatype') ? 'active' : '' }}" href="{{route('coatype.index')}}"
                    style="text-decoration: none"><span>Account Type</span>
                 </a></li>
-            <li><a class="{{ Request::is('chartofaccount') ? 'active' : '' }}" href="{{route('chartofaccount.index')}}"
-                   style="text-decoration: none"><span>Chart Of Account</span>
-                </a></li>
+            {{--<li><a class="{{ Request::is('chartofaccount') ? 'active' : '' }}" href="{{route('chartofaccount.index')}}"--}}
+                   {{--style="text-decoration: none"><span>Chart Of Account</span>--}}
+                {{--</a></li>--}}
             <li><a class="{{ Request::is('accounts') ? 'active' : '' }}" href="{{route('accounts.index')}}"
                    style="text-decoration: none"><span> Account</span> </a></li>
-            <li><a class="{{ Request::is('revenuebudget') ? 'active' : '' }}" href="{{route('revenuebudget.index')}}"
-                   style="text-decoration: none"><span> Revenue Budget</span>
-                </a></li>
-            <li><a class="{{ Request::is('expensebudget') ? 'active' : '' }}" href="{{route('expensebudget.index')}}"
-                   style="text-decoration: none"><span> Expense Budget</span>
-                </a></li>
-            <li>
+            {{--<li><a class="{{ Request::is('revenuebudget') ? 'active' : '' }}" href="{{route('revenuebudget.index')}}"--}}
+                   {{--style="text-decoration: none"><span> Revenue Budget</span>--}}
+                {{--</a></li>--}}
+            {{--<li><a class="{{ Request::is('expensebudget') ? 'active' : '' }}" href="{{route('expensebudget.index')}}"--}}
+                   {{--style="text-decoration: none"><span> Expense Budget</span>--}}
+                {{--</a></li>--}}
+            {{--<li>--}}
                 <a class="{{ Request::is('transaction/category') ? 'active' : '' }}"
                    href="{{route('transaction.category')}}" style="text-decoration: none"><span> Category</span>
                 </a>
@@ -452,18 +452,18 @@
 
     </li><!--Purchase-->
     <li class="submenu">
-        <a href="#"><i class="la la-truck"></i> <span>Delivery</span> <span
+        <a href="#"><i class="la la-truck"></i> <span>Shippment</span> <span
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
 
             <li><a class="{{ Request::is('deliveries') ? 'active' : '' }}"
-                   href="{{ route('deliveries.index') }}" style="text-decoration: none">All Delivery</a></li>
+                   href="{{ route('deliveries.index') }}" style="text-decoration: none">All Shipment</a></li>
 
             <li><a class="{{ Request::is('deliveries/create') ? 'active' : '' }}"
-                   href="{{ route('deliveries.create') }}" style="text-decoration: none">Delivery Create</a></li>
-            <li><a class="{{ Request::is('delivery/transaction') ? 'active' : '' }}"
-                   href="{{ route('delivery.transaction') }}" style="text-decoration: none">Delivery Transaction</a>
-            </li>
+                   href="{{ route('deliveries.create') }}" style="text-decoration: none">Shipment Create</a></li>
+            {{--<li><a class="{{ Request::is('delivery/transaction') ? 'active' : '' }}"--}}
+                   {{--href="{{ route('delivery.transaction') }}" style="text-decoration: none">Delivery Transaction</a>--}}
+            {{--</li>--}}
 
         </ul>
     </li><!-- Delivery -->
@@ -482,7 +482,7 @@
             <li>
                 <a class="{{ Request::is('/maintainance') ? 'active' : '' }}"
                    href="{{ route('maintain') }}" style="text-decoration: none">
-                    Maintainance
+                    Maintenance
                 </a>
             </li>
 
@@ -498,6 +498,8 @@
                    href="{{route('saleway.index')}}" style="text-decoration: none">Sales Way</a></li>
             <li><a class="{{ Request::is('shop') ? 'active' : '' }}"
                    href="{{route('shop.index')}}" style="text-decoration: none">Shop</a></li>
+            <li><a class="{{ Request::is('assignsaleway') ? 'active' : '' }}"
+                   href="{{route('assignsaleway.index')}}" style="text-decoration: none">Assigned Ways</a></li>
             <li><a class="{{ Request::is('salezone') ? 'active' : '' }}"
                    href="{{route('salezone.index')}}" style="text-decoration: none">Sales Zone</a></li>
             <li><a class="{{ Request::is('region') ? 'active' : '' }}"

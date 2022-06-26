@@ -37,3 +37,4 @@ Route::middleware(['auth:employee'])->group(function () {
     Route::post('ticket/comment/', [TicketController::class, 'postcomment'])->name('postcomment');
     Route::post('/add/more/follower', [TicketController::class, 'add_more_follower'])->name('addfollower');
 });
+Route::resource('request_tickets', RequestTicket::class)->only('create', 'store');

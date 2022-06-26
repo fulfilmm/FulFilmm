@@ -34,6 +34,5 @@ Route::middleware(['auth:customer'])->group(function () {
 
 
 });
-Route::resource('request_tickets', RequestTicket::class)->only('create', 'store');
 Route::get('delivery/customer/receipt/{id}',[ShippmentController::class,'receipt'])->name('receipt.confirm');
 Route::get('delivery/tracking/{uuid}',[ShippmentController::class,'tracking'])->name('tracking');
