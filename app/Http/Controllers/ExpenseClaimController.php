@@ -130,7 +130,6 @@ class ExpenseClaimController extends Controller
     public function show($id)
     {
         $exp_claim=ExpenseClaim::with('employee','approver','finance_approver')->where('id',$id)->first();
-        dd($exp_claim);
         $items=ExpenseClaimItem::where('exp_claim_id',$id)->get();
         $comment=ExpClaimComment::where('expclaim_id',$id)->get();
         if($exp_claim->attach!=null){
@@ -186,7 +185,7 @@ class ExpenseClaimController extends Controller
     public function commentDelete($id){
         $comment=ExpClaimComment::where('id',$id)->firstorFail();
         $comment->delete();
-        return redirect(route('expenseclaims.show',$id));
+        return redirect(route('expenseclaims.show',$comment->expclaim_id))->with('success','Comment Deleted');
     }
     public function status($status,$id){
       $exp_claim=ExpenseClaim::where('id',$id)->firstorFail();
