@@ -132,7 +132,10 @@ class ExpenseClaimController extends Controller
         $exp_claim=ExpenseClaim::with('employee','approver','finance_approver')->where('id',$id)->first();
         $items=ExpenseClaimItem::where('exp_claim_id',$id)->get();
         $comment=ExpClaimComment::where('expclaim_id',$id)->get();
-        $attach=json_decode($exp_claim->attach);
+        $attach=[];
+        if($exp_claim->attach!=null){
+            $attach=json_decode($exp_claim->attach);
+        }
         return view('transaction.ExpenseClaim.show',compact('exp_claim','items','comment','attach'));
     }
 
