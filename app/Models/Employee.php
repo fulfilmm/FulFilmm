@@ -24,7 +24,7 @@ class Employee extends Authenticatable implements JWTSubject
 
     protected $fillable = [
         'name', 'department_id', 'role_id', 'phone', 'email',
-        'work_phone', 'can_login','can_post_assignments', 'password', 'join_date','office_branch_id','empid','region_id'
+        'work_phone', 'can_login','can_post_assignments', 'password', 'join_date','office_branch_id','empid','region_id','head_office'
     ];
 
     public function getJWTIdentifier()

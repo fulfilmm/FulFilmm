@@ -18,13 +18,15 @@ class EmployeeImport implements ToCollection, WithHeadingRow
     {
         //
 //         dd($collection[0]']);
+        try{
         foreach ($collection as  $employee) {
 //             dd($employee);
-            try{
+
                 $office=OfficeBranch::where('name',$employee['office_branch'])->first();
                 $employee_data['empid']=$employee['empid'];
                 $employee_data['name']=$employee['name'];
                 $employee_data['email']=$employee['email'];
+                $employee_data['head_office']=$office->head_office??null;
                 $employee_data['phone']=$employee['phone'];
                 $employee_data['office_branch_id']=$office->id??null;
                 $employee_data = $employee->except('id', 'department')->toArray();
@@ -35,9 +37,10 @@ class EmployeeImport implements ToCollection, WithHeadingRow
                 // dd($employee_data);
                 $emp=Employee::create($employee_data);
                 $emp->assignRole($employee['role']);
-            }catch (\Exception $e){
-                return redirect()->back()->with('error',$e->getMessage());
-            }
+
+        }
+        }catch (\Exception $e){
+            return redirect()->back()->with('error',$e->getMessage());
         }
     }
 }
