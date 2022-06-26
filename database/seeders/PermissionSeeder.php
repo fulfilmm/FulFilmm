@@ -180,6 +180,8 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'expense.store', 'display_name' => 'Add New Expense', 'type' => 'transaction', "guard_name" => 'employee']);
         Permission::create(['name' => 'transactions.show', 'display_name' => 'Transaction Detail View', 'type' => 'transaction', "guard_name" => 'employee']);
         Permission::create(['name' => 'transactions.export', 'display_name' => 'Transaction Export', 'type' => 'transaction', "guard_name" => 'employee']);
+        Permission::create(['name' => 'branch.import', 'display_name' => 'Branch Import', 'type' => 'officebranch', "guard_name" => 'employee']);
+        Permission::create(['name' => 'region.import', 'display_name' => 'Region Import', 'type' => 'sales', "guard_name" => 'employee']);
         //Report
         Permission::create(['name' => 'sale.report', 'display_name' => 'Sale Report page', 'type' => 'Report', 'guard_name' => 'employee']);
         Permission::create(['name' => 'report.payable', 'display_name' => 'Payable Report page', 'type' => 'Report', 'guard_name' => 'employee']);
