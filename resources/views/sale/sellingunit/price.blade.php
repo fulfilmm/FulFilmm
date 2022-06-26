@@ -14,7 +14,7 @@
                     </ul>
                 </div>
                 <div class="col-auto float-right ml-auto">
-                    <button type="button" class="btn btn-outline-primary  rounded-pill mr-1" data-toggle="modal" data-target="#import"><i class="la la-upload"></i>Import</button>
+                    <button type="button" class="btn btn-outline-primary  rounded-pill mr-1 mt-3" data-toggle="modal" data-target="#import"><i class="la la-upload"></i>Import</button>
                     <div id="import" class="modal custom-modal fade" role="dialog">
                         <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
                             <div class="modal-content">
