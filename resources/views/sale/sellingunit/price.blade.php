@@ -141,7 +141,7 @@
             $(document).ready(function() {
                 $('#branch_name').on('change', function () {
                     var table = $('#price_table').DataTable();
-                    table.column(5).search($(this).val()).draw();
+                    table.column(9).search($(this).val()).draw();
 
                 });
             });
