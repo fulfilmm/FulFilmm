@@ -360,12 +360,12 @@ class InvoiceController extends Controller
                 foreach ($confirm_order_item as $item) {
                     if ($item->foc) {
                         $unit = SellingUnit::where('id', $item->sell_unit)->first();
-                        $stock = Freeofchare::where('variant_id', $item->variant_id)->first();
+                        $foc_stock = Freeofchare::where('variant_id', $item->variant_id)->first();
                         $item->inv_id = $newInvoice->id;
                         $item->update();
-                        $stock->qty = $stock->qty - ($item->quantity * $unit->unit_convert_rate);
-                        $item->cos_total=($item->quantity * $unit->unit_convert_rate)*$stock->cos;
-                        $stock->update();
+                        $foc_stock->qty = $foc_stock->qty - ($item->quantity * $unit->unit_convert_rate);
+                        $item->cos_total=($item->quantity * $unit->unit_convert_rate)*$foc_stock->cos;
+                        $foc_stock->update();
                     } else {
                         $unit = SellingUnit::where('id',$item->sell_unit)->first();
                         $stock = Stock::where('variant_id', $item->variant_id)->where('warehouse_id', $request->warehouse_id)->first();

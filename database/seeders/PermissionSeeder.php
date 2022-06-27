@@ -27,6 +27,8 @@ class PermissionSeeder extends Seeder
         }
 
         //Products
+
+        Permission::create(['name' => 'roles.assignPermission', 'display_name' => "Give permission", 'type' => 'permissions', 'guard_name' => 'employee']);
         Permission::create(['name' => 'duplicate', 'display_name' => "Can duplicate  product", 'type' => 'products', 'guard_name' => 'employee']);
         Permission::create(['name' => 'tax.create', 'display_name' => "Can store tax", 'type' => 'products', 'guard_name' => 'employee']);
         Permission::create(['name' => 'category.create', 'display_name' => "Can store category", 'type' => 'products', 'guard_name' => 'employee']);
@@ -105,6 +107,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'permission.create', 'display_name' => 'Permission Create', 'type' => 'permissions', 'guard_name' => 'employee']);
 
         //sale target
+        Permission::create(['name' => 'saletargets.assigned', 'display_name' => 'Sale target index', 'type' => 'saletargets', 'guard_name' => 'employee']);
         Permission::create(['name' => 'saletargets.index', 'display_name' => 'Sale target index', 'type' => 'saletargets', 'guard_name' => 'employee']);
         Permission::create(['name' => 'saletargets.create', 'display_name' => 'Sale target create', 'type' => 'saletargets', 'guard_name' => 'employee']);
         Permission::create(['name' => 'saletargets.store', 'display_name' => 'Sale target store', 'type' => 'saletargets', 'guard_name' => 'employee']);
