@@ -373,7 +373,6 @@ class InvoiceController extends Controller
                         $item->cos_total=($item->quantity * $unit->unit_convert_rate)*$stock->cos;
                         $item->update();
                         $stock->available = $stock->available - ($item->quantity * $unit->unit_convert_rate);
-
                         $stock->update();
                     }
                 }

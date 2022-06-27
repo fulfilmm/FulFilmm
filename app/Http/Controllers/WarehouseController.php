@@ -20,7 +20,7 @@ class WarehouseController extends Controller
     public function index()
     {
        $auth=Auth::guard('employee')->user();
-       if($auth->role->name=='Super Admin'||$auth->role->name=='CE0'||$auth->role->name=='Stock Manager'){
+       if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'||$auth->role->name=='Stock Manager'){
            $warehouses=Warehouse::with('branch','main_warehouse')->get();
            $branches=OfficeBranch::all();
 
