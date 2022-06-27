@@ -272,35 +272,6 @@ class MobileInvoiceController extends Controller
                         $item->type='invoice';
                         $this->item_store($item);
                     }
-                    $confirm_order_item = OrderItem::where("inv_id", $newInvoice->id)->get(); //invoice item တေကို ပြန် confirm ပီး invoice id နဲ့တွဲတာ
-                    if (count($confirm_order_item) != 0) {
-                        foreach ($confirm_order_item as $item) {
-                            if ($item->foc) {
-                                $unit = SellingUnit::where('id', $item->sell_unit)->first();
-                                $foc_stock = Freeofchare::where('variant_id', $item->variant_id)->first();
-                                $item->inv_id = $newInvoice->id;
-                                $item->update();
-                                $foc_stock->qty = $foc_stock->qty - ($item->quantity * $unit->unit_convert_rate);
-                                $item->cos_total=($item->quantity * $unit->unit_convert_rate)*$foc_stock->cos;
-                                $foc_stock->update();
-                            } else {
-                                $unit = SellingUnit::where('id',$item->sell_unit)->first();
-                                $stock = Stock::where('variant_id', $item->variant_id)->where('warehouse_id', $request->warehouse_id)->first();
-                                $item->inv_id = $newInvoice->id;
-                                $item->cos_total=($item->quantity * $unit->unit_convert_rate)*$stock->cos;
-                                $item->update();
-                                $stock->available = $stock->available - ($item->quantity * $unit->unit_convert_rate);
-                                $stock->update();
-                            }
-                        }
-
-                        $inv_item= DB::table("order_items")
-                            ->select(DB::raw("SUM(cos_total) as total"))
-                            ->where('inv_id',$newInvoice->id)
-                            ->get();
-                        $newInvoice->invoice_cos=$inv_item[0]->total;
-                        $newInvoice->update();
-                    }
                 }
                 if(count($foc)!=0){
                     foreach ($foc as $item){
@@ -311,6 +282,25 @@ class MobileInvoiceController extends Controller
                 }
                 $confirm_order_item = OrderItem::where("inv_id", $newInvoice->id)->get(); //invoice item တေကို ပြန် confirm ပီး invoice id နဲ့တွဲတာ
                 if (count($confirm_order_item) != 0) {
+                    foreach ($confirm_order_item as $item) {
+                        if ($item->foc) {
+                            $unit = SellingUnit::where('id', $item->sell_unit)->first();
+                            $foc_stock = Freeofchare::where('variant_id', $item->variant_id)->first();
+                            $item->inv_id = $newInvoice->id;
+                            $item->update();
+                            $foc_stock->qty = $foc_stock->qty - ($item->quantity * $unit->unit_convert_rate);
+                            $item->cos_total=($item->quantity * $unit->unit_convert_rate)*$foc_stock->cos;
+                            $foc_stock->update();
+                        } else {
+                            $unit = SellingUnit::where('id',$item->sell_unit)->first();
+                            $stock = Stock::where('variant_id', $item->variant_id)->where('warehouse_id', $request->warehouse_id)->first();
+                            $item->inv_id = $newInvoice->id;
+                            $item->cos_total=($item->quantity * $unit->unit_convert_rate)*$stock->cos;
+                            $item->update();
+                            $stock->available = $stock->available - ($item->quantity * $unit->unit_convert_rate);
+                            $stock->update();
+                        }
+                    }
 
                     $inv_item= DB::table("order_items")
                         ->select(DB::raw("SUM(cos_total) as total"))
@@ -577,8 +567,6 @@ class MobileInvoiceController extends Controller
     {
         $variant = ProductVariations::where('id', $request->variant_id)->first();
         if ($request->type == 'invoice') {
-            $unit = SellingUnit::where('id',$request->unit_id)->first();
-            $stock = Stock::where('variant_id', $request->variant_id)->where('warehouse_id', $request->warehouse_id)->first();
             $sub_total=$request->qty*$request->price;
             $discount=($request->discount/100)*$sub_total;
             $total=$sub_total-$discount;
@@ -594,18 +582,13 @@ class MobileInvoiceController extends Controller
             $items->inv_id = $request->invoice_id;
             $items->order_id = $request->order_id ?? null;
             $items->state = 1;
-            $items->cos_total=($request->qty * $unit->unit_convert_rate)*$stock->cos;
             $items->save();
-            $stock->available = $stock->available - ($request->qty * $unit->unit_convert_rate);
-            $stock->update();
         }
 
     }
     public function item_update($request){
         $variant = ProductVariations::where('id', $request->variant_id)->first();
         if ($request->type == 'invoice') {
-            $unit = SellingUnit::where('id',$request->unit_id)->first();
-            $stock = Stock::where('variant_id', $request->variant_id)->where('warehouse_id', $request->warehouse_id)->first();
             $sub_total=$request->quantity*$request->unit_price;
             $discount=($request->discount_promotion/100)*$sub_total;
             $total=$sub_total-$discount;
@@ -621,17 +604,11 @@ class MobileInvoiceController extends Controller
             $items->inv_id = $request->invoice_id;
             $items->order_id = $request->order_id ?? null;
             $items->state = 1;
-            $items->inv_id = $request->invoice_id;
-            $items->cos_total=($request->qty * $unit->unit_convert_rate)*$stock->cos;
             $items->update();
-            $stock->available = $stock->available - ($request->qty * $unit->unit_convert_rate);
-            $stock->update();
         }
     }
     public function foc_add($request){
         $variant = ProductVariations::where('id', $request->variant_id)->first();
-        $unit = SellingUnit::where('id',$request->unit_id)->first();
-        $stock = Stock::where('variant_id', $request->variant_id)->where('warehouse_id', $request->warehouse_id)->first();
         $items = new OrderItem();
         $items->description = 'This is FOC item';
         $items->quantity = 1;
@@ -644,10 +621,6 @@ class MobileInvoiceController extends Controller
         $items->order_id = $request->order_id ?? null;
         $items->state = 1;
         $items->foc=true;
-        $items->cos_total=($request->qty * $unit->unit_convert_rate)*$stock->cos;
-        $items->save();
-        $stock->available = $stock->available - ($request->qty * $unit->unit_convert_rate);
-        $stock->update();
         $items->save();
     }
     public function add_history($id,$status,$desc){
