@@ -175,39 +175,25 @@
                                                    <form action="{{route('variant.update',$item->id)}}" enctype="multipart/form-data" method="POST">
                                                        @csrf
                                                        <div class="row">
-                                                           <input type="hidden" name="product_id" value="{{$product->id}}">
-                                                           <div class="col-md-4">
+                                                           <input type="hidden" name="product_id" value="{{$item->product_id}}">
+                                                           <div class="col-md-12">
                                                                <div class="form-group">
-                                                                   <label for="">Product Code</label>
+                                                                   <label for="">Item Code</label>
                                                                    <div class="input-group">
-                                                                       <input type="text" id="p_code" name="product_code" class="form-control" value="{{$item->product_code}}" readonly required>
+                                                                       <input type="text" id="p_code" name="item_code" class="form-control" value="{{$item->item_code}}"  required>
                                                                    </div>
                                                                    @error('product_code')
                                                                    <span class="text-danger">{{$message}}</span>
                                                                    @enderror
                                                                </div>
                                                            </div>
-                                                           <div class="col-md-4">
-                                                               <div class="form-group">
-                                                                   <label for="">Serial No.</label>
-                                                                   <input type="text" class="form-control" name="serial_no" value="{{$item->serial_no}}">
-                                                               </div>
-                                                           </div>
-                                                           <div class="col-md-4">
+                                                           <div class="col-md-12">
                                                                <div class="form-group">
                                                                    <label for="">Variant</label>
-                                                                   <input type="text" class="form-control" name="variant" value="{{$item->variant}}" placeholder='Enter this format : "Color:Red Size:XL"'>
+                                                                   <input type="text" class="form-control" name="variant" value="{{$item->variant??$item->product_name}}" placeholder='Enter this format : "Color:Red Size:XL"'>
                                                                    @error('variant')
                                                                    <span class="text-danger">{{$message}}</span>
                                                                    @enderror
-                                                               </div>
-                                                           </div>
-                                                           <div class="col-md-4">
-                                                               <div class="form-group">
-                                                                   <input type="radio" name="pricing_type" value="0" id="single" {{$item->pricing_type?"":"checked"}}>
-                                                                   <label for="single">Single Price</label>
-                                                                   <input type="radio" name="pricing_type" value="1" id="multi" {{$item->pricing_type?'checked':''}}>
-                                                                   <label for="multi">Multi Price</label>
                                                                </div>
                                                            </div>
                                                            <div class="col-md-12">
@@ -219,12 +205,20 @@
 
                                                            <div class="col-md-12">
                                                                <div class="form-group">
-                                                                   <label for="">Description</label>
-                                                                   <textarea name="description" class="form-control" id="description" cols="30" rows="10">{{$item->description}}</textarea>
+                                                                   <label for="">Additional Price</label>
+                                                                   <input type="text" name="additional_price" class="form-control" value="{{$item->additional_price}}">
+                                                               </div>
+                                                           </div>
+                                                           <div class="col-md-4">
+                                                               <div class="form-group">
+                                                                   <input type="radio" name="pricing_type" value="0" id="single" {{$item->pricing_type?"":"checked"}}>
+                                                                   <label for="single">Single Price</label>
+                                                                   <input type="radio" name="pricing_type" value="1" id="multi" {{$item->pricing_type?'checked':''}}>
+                                                                   <label for="multi">Multi Price</label>
                                                                </div>
                                                            </div>
                                                            <div class="col-12 text-center">
-                                                               <button type="submit" class="btn btn-primary">Add</button>
+                                                               <button type="submit" class="btn btn-primary">Update</button>
                                                            </div>
                                                        </div>
                                                    </form>

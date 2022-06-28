@@ -142,8 +142,16 @@
                                                                     <input type="text" name="additional_price" class="form-control" value="{{$item->additional_price}}">
                                                                 </div>
                                                             </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <input type="radio" name="pricing_type" value="0" id="single" {{$item->pricing_type?"":"checked"}}>
+                                                                    <label for="single">Single Price</label>
+                                                                    <input type="radio" name="pricing_type" value="1" id="multi" {{$item->pricing_type?'checked':''}}>
+                                                                    <label for="multi">Multi Price</label>
+                                                                </div>
+                                                            </div>
                                                             <div class="col-12 text-center">
-                                                                <button type="submit" class="btn btn-primary">Add</button>
+                                                                <button type="submit" class="btn btn-primary">Update</button>
                                                             </div>
                                                         </div>
                                                     </form>

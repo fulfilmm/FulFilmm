@@ -89,32 +89,25 @@ class RoomController extends Controller
         return view('room.booking',compact('data'));
     }
     public function booking_save(Request $request){
+        $start_time= $request->date . ' ' . $request->start_time;
+        $end_time= $request->date . ' ' . $request->endtime;
 
-        $booked_rooms=RoomBooking::where('room_id',$request->room_id)->where('date',$request->date)->get();
-     if($booked_rooms->isEmpty()){
-         $isvalid=true;
+        $booked_rooms=RoomBooking::where('room_id',$request->room_id)->whereBetween('start_time',[$start_time,$end_time])->get();
+
+     if(count($booked_rooms)==0){
+         $book=new RoomBooking();
+         $book->start_time=$request->start_time;
+         $book->endtime=$request->endtime;
+         $book->date=$request->date;
+         $book->room_id=$request->room_id;
+         $book->created_emp=Auth::guard('employee')->user()->id;
+         $book->subject=$request->subject;
+         $book->save();
+         return redirect()->back()->with('success','Your room booking successful');
      }else{
-         foreach ($booked_rooms as $room){
-             if(Carbon::parse($room->start_time)->greaterThan(Carbon::parse($request->start_time))&&Carbon::parse($room->end_time)->lessThan(Carbon::parse())){
-                 $isvalid=false;
-             }else{
-                 $isvalid=true;
-             }
-         }
+         return redirect()->back()->with('error','This room has been booked in your selected time! Please select another time');
      }
-        if($isvalid){
-            $book=new RoomBooking();
-            $book->start_time=$request->start_time;
-            $book->endtime=$request->endtime;
-            $book->date=$request->date;
-            $book->room_id=$request->room_id;
-            $book->created_emp=Auth::guard('employee')->user()->id;
-            $book->subject=$request->subject;
-            $book->save();
-            return redirect()->back()->with('success','Your room booking successful');
-        }else{
-            return redirect()->back()->with('error','This room has been booked in your selected time! Please select another time');
-        }
+
 
     }
 

@@ -118,20 +118,20 @@
                    href="{{ url('inv/view/retail') }}" style="text-decoration: none">Retail Sales</a></li>
             <li><a class="{{ Request::is('sale_return') ? 'active' : '' }}"
                    href="{{ route('sale_return.index') }}" style="text-decoration: none">Sales Return</a></li>
-            <li><a class="{{ Request::is('coatype') ? 'active' : '' }}" href="{{route('coatype.index')}}"
-                   style="text-decoration: none"><span>Account Type</span>
-                </a></li>
-            <li><a class="{{ Request::is('chartofaccount') ? 'active' : '' }}" href="{{route('chartofaccount.index')}}"
-                   style="text-decoration: none"><span>Chart Of Account</span>
-                </a></li>
+            {{--<li><a class="{{ Request::is('coatype') ? 'active' : '' }}" href="{{route('coatype.index')}}"--}}
+                   {{--style="text-decoration: none"><span>Account Type</span>--}}
+                {{--</a></li>--}}
+            {{--<li><a class="{{ Request::is('chartofaccount') ? 'active' : '' }}" href="{{route('chartofaccount.index')}}"--}}
+                   {{--style="text-decoration: none"><span>Chart Of Account</span>--}}
+                {{--</a></li>--}}
             <li><a class="{{ Request::is('accounts') ? 'active' : '' }}" href="{{route('accounts.index')}}"
                    style="text-decoration: none"><span> Account</span> </a></li>
-            <li><a class="{{ Request::is('revenuebudget') ? 'active' : '' }}" href="{{route('revenuebudget.index')}}"
-                   style="text-decoration: none"><span> Revenue Budget</span>
-                </a></li>
-            <li><a class="{{ Request::is('expensebudget') ? 'active' : '' }}" href="{{route('expensebudget.index')}}"
-                   style="text-decoration: none"><span> Expense Budget</span>
-                </a></li>
+            {{--<li><a class="{{ Request::is('revenuebudget') ? 'active' : '' }}" href="{{route('revenuebudget.index')}}"--}}
+                   {{--style="text-decoration: none"><span> Revenue Budget</span>--}}
+                {{--</a></li>--}}
+            {{--<li><a class="{{ Request::is('expensebudget') ? 'active' : '' }}" href="{{route('expensebudget.index')}}"--}}
+                   {{--style="text-decoration: none"><span> Expense Budget</span>--}}
+                {{--</a></li>--}}
             <li>
                 <a class="{{ Request::is('transaction/category') ? 'active' : '' }}"
                    href="{{route('transaction.category')}}" style="text-decoration: none"><span> Category</span>
@@ -146,7 +146,7 @@
                     <li><a class="{{ Request::is('bills') ? 'active' : '' }}" href="{{route('bills.create')}}"
                            style="text-decoration: none">Create</a></li>
                     <li><a class="{{ Request::is('payments') ? 'active' : '' }}" href="{{route('payment')}}"
-                           style="text-decoration: none">Payment</a></li>
+                           style="text-decoration: none">Payments</a></li>
                 </ul>
             </li><!--Bill -->
         </ul>
@@ -156,22 +156,6 @@
         <a href="#"><i class="la la-cube"></i> <span>Banking</span> <span
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
-            <li class="submenu">
-                <a href="#"><i class="la la-building mr-2" style="font-size: 18px;"></i> <span> Expense Claim</span>
-                    <span
-                            class="menu-arrow"></span></a>
-                <ul style="display: none;">
-
-                    <li><a class="{{ Request::is('expenseclaims') ? 'active' : '' }}"
-                           href="{{ route('expenseclaims.index') }}" style="text-decoration: none">All Expense Claim</a>
-                    </li>
-
-                    <li><a class="{{ Request::is('expenseclaims/create') ? 'active' : '' }}"
-                           href="{{ route('expenseclaims.create') }}" style="text-decoration: none">Submit Expense
-                            Claim</a></li>
-
-                </ul>
-            </li>
             <li><a class="{{ Request::is('advancepayments') ? 'active' : '' }}"
                    href="{{ route('advancepayments.index') }}" style="text-decoration: none"><i class="la la-money mr-2"
                                                                                                 style="font-size: 18px"></i>Advance
@@ -184,9 +168,6 @@
                 <a class="{{ Request::is('accounts') ? 'active' : '' }}" href="{{route('accounts.index')}}"
                    style="text-decoration: none"><i class="la la-bank mr-2"
                                                     style="font-size: 18px"></i><span> Account</span> </a>
-                <a class="{{ Request::is('transactions') ? 'active' : '' }}" href="{{route('transactions.index')}}"
-                   style="text-decoration: none"><i class="la la-cube mr-2" style="font-size: 18px"></i><span> Transaction</span>
-                </a>
                 <a class="{{ Request::is('revenue') ? 'active' : '' }}" href="{{route('revenue')}}"
                    style="text-decoration: none"><i class="la la-cube mr-2"
                                                     style="font-size: 18px"></i><span> Revenue</span> </a>
