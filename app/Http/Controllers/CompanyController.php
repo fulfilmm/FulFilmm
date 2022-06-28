@@ -90,7 +90,7 @@ class CompanyController extends Controller
                $data['logo'] = $path;
            }
 //        dd($data);
-           $this->company_contract->create($data);
+         Company::create($data);
            return redirect()->route('companies.index')->with('success', __('alert.create_success'));
        }catch (Exception $e){
            return redirect()->route('companies.create')->with('error',$e->getMessage());
