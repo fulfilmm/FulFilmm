@@ -95,8 +95,10 @@ class RoomController extends Controller
          $isvalid=true;
      }else{
          foreach ($booked_rooms as $room){
-             if(Carbon::parse($room->start_time)->greaterThan(Carbon::parse($request->start_time))){
+             if(Carbon::parse($room->start_time)->greaterThan(Carbon::parse($request->start_time))&&Carbon::parse($room->end_time)->lessThan(Carbon::parse())){
                  $isvalid=false;
+             }else{
+                 $isvalid=true;
              }
          }
      }

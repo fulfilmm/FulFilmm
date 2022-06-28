@@ -80,16 +80,22 @@ class CompanyController extends Controller
     {
         //
 //        dd($request->all());
-        $data=$request->all();
-        if ($request->file('logo')) {
-            $uploadedFile = $request->file('logo');
-            $path = Storage::url($uploadedFile->store('companylogo', ['disk' => 'public']));
-            $data['logo'] = $request->logo->getClientOriginalName();
-            $data['logo'] = $path;
-        }
+
+       try{
+           $data=$request->all();
+           if ($request->file('logo')) {
+               $uploadedFile = $request->file('logo');
+               $path = Storage::url($uploadedFile->store('companylogo', ['disk' => 'public']));
+               $data['logo'] = $request->logo->getClientOriginalName();
+               $data['logo'] = $path;
+           }
 //        dd($data);
-        $this->company_contract->create($data);
-        return redirect()->route('companies.index')->with('success', __('alert.create_success'));
+           $this->company_contract->create($data);
+           return redirect()->route('companies.index')->with('success', __('alert.create_success'));
+       }catch (Exception $e){
+           return redirect()->route('companies.create')->with('error',$e->getMessage());
+       }
+
     }
 
     /**

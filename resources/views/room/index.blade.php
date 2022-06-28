@@ -26,7 +26,6 @@
                     <table class="table" id="ticket">
                         <thead>
                         <tr>
-                            <th>#</th>
                             <th>Room No</th>
                             <th>Address</th>
                             <th>Actions</th>
@@ -35,7 +34,6 @@
                         <tbody>
                         @foreach($rooms as $room)
                             <tr>
-                                <th>#{{$room->id}}</th>
                                 <td>{{$room->room_no}}</td>
                                 <td>{{$room->address}}</td>
                                 <td>
