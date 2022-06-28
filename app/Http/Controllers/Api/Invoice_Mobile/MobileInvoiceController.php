@@ -104,6 +104,7 @@ class MobileInvoiceController extends Controller
                     $unit=SellingUnit::where('unit_convert_rate',1)->where('product_id',$inhand->product_id)->first();
                     $price=product_price::where('product_id',$inhand->variant_id)->where('unit_id',$unit->id)->first();
                     $inhand->show_price=$price->price;
+                    $inhand->pricing_type=$inhand->variant->pricing_type;
                     array_push($aval_product,$inhand);
                 }
             }
