@@ -72,6 +72,17 @@
                                    </div>
                                </div>
                            </div>
+                           <div class="col-md-12 mb-5">
+                               <div class="form-group">
+                                   <label for="address">Address</label>
+                                   <textarea name="address" id="address" class="form-control" >{{$record->address ?? old('address')}}</textarea>
+                                   @error('address')
+                                   <span role="alert">
+            <p class="text-danger mt-3 mb-0">{{ $message }}</p>
+        </span>
+                                   @enderror
+                               </div>
+                           </div>
                        </div>
                    </div>
                </div>
@@ -138,17 +149,6 @@
                         <div class="input-group">
                             @include('forms.select',['name'=>'parent_company', 'title'=>'Parent Company', 'placeHolder' => "Choose Parent Company", 'options' => $parent_companies, 'value' => $record->parent_companies ?? ''])
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-12 mb-5">
-                    <div class="form-group">
-                        <label for="address">Address</label>
-                        <textarea name="address" id="address" class="form-control" >{{$record->address ?? old('address')}}</textarea>
-                        @error('address')
-                        <span role="alert">
-            <p class="text-danger mt-3 mb-0">{{ $message }}</p>
-        </span>
-                        @enderror
                     </div>
                 </div>
             </div>
