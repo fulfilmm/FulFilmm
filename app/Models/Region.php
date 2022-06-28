@@ -12,4 +12,5 @@ class Region extends Model
     public function branch(){
         return $this->belongsTo(OfficeBranch::class);
     }
+
 }
