@@ -25,12 +25,12 @@ class CompanyRequest extends FormRequest
     {
         return [
             //
-            // 'name' => 'required|max:64',
-            // 'business_type' => 'required|max:64',
+             'name' => 'required|max:64',
+             'business_type' => 'required|max:64',
              'address' => 'required',
              'phone' => 'required',
-            // 'ceo_name' => 'required|max:32',
-            // 'company_registry' => 'required',
+             'ceo_name' => 'nullable',
+             'company_registry' => 'nullable',
             'email'=>'required',
             'logo' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
