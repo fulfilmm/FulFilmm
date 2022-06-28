@@ -243,7 +243,8 @@
                                                 </div>
                                                 <div class="chat-avatar">
                                                     <a href="#" class="avatar">
-                                                        <img src="{{url(asset(isset($cmt->cmt_user->profile_img)?'img/profile/'.$cmt->cmt_user->profile_img:'img/profiles/avatar-02.jpg'))}}" alt="">
+                                                        <img src="{{$cmt->cmt_user->profile_img!=null? url(asset('img/profiles/'.$cmt->cmt_user->profile_img)):url(asset('img/profiles/avatar-01.jpg'))}}"
+                                                                alt="" class="avatar chat-avatar-sm">
                                                     </a>
                                                 </div>
                                                 <div class="chat-body">
