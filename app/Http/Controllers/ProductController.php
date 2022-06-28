@@ -205,6 +205,7 @@ class ProductController extends Controller
         $variation->item_code = $request->item_code;
         $variation->variant = $request->variant;
         $variation->additional_price=$request->additional_price;
+        $variation->pricing_type=$request->pricing_type;
         $variation->update();
         return redirect('variant/list')->with('success', 'Product Variant Updated');
     }
