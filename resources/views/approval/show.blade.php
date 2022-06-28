@@ -242,7 +242,7 @@
                                                     <a href="{{route('approval_cmt.delete',$cmt->id)}}" class="followers-add" data-toggle="tooltip" data-placement="bottom" ><i class="la la-trash-o"></i></a>
                                                 </div>
                                                 <div class="chat-avatar">
-                                                    <a href="#" class="avatar">
+                                                    <a href="{{route('employees.show',$cmt->cmt_user->id)}}" class="avatar">
                                                         <img src="{{$cmt->cmt_user->profile_img!=null? url(asset('img/profiles/'.$cmt->cmt_user->profile_img)):url(asset('img/profiles/avatar-01.jpg'))}}"
                                                                 alt="" class="avatar chat-avatar-sm">
                                                     </a>
