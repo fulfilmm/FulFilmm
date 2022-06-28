@@ -126,10 +126,10 @@ class SellingUnitController extends Controller
         $products=ProductVariations::all();
         if(Auth::guard('employee')->user()->role->name=='Super Admin'||Auth::guard('employee')->user()->role->name=='CEO'){
             $branch=OfficeBranch::all();
-            $region=Region::all();
+            $region=Region::with('branch')->get();
         }else{
             $branch=OfficeBranch::select('id','name')->where('id',Auth::guard('employee')->user()->office_branch_id)->get();
-            $region=Region::where("branch_id",Auth::guard('employee')->user()->office_branch_id)->get();
+            $region=Region::with('branch')->where("branch_id",Auth::guard('employee')->user()->office_branch_id)->get();
         }
 //        dd($branch);
         return view('sale.sellingunit.price_add',compact('units','main_product','products','branch','region'));

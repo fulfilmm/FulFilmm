@@ -71,7 +71,7 @@
                                         <label for="region">Region</label>
                                         <select name="region_id[]" id="region" class="form-control" multiple>
                                             @foreach($region as $item)
-                                                <option value="{{$item->id}}">{{$item->name}}</option>
+                                                <option value="{{$item->id}}">{{$item->name}} ({{$item->branch->name}})</option>
                                                 @endforeach
                                         </select>
                                     </div>
