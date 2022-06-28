@@ -27,7 +27,7 @@ class CompanyRequest extends FormRequest
             //
              'name' => 'required|max:64',
              'business_type' => 'required|max:64',
-             'address' => 'required',
+             'address' => 'nullable',
              'phone' => 'required',
              'ceo_name' => 'nullable',
              'company_registry' => 'nullable',
