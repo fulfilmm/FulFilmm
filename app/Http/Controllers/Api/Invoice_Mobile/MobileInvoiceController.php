@@ -103,7 +103,7 @@ class MobileInvoiceController extends Controller
                 if($inhand->variant->enable==1){
                     $unit=SellingUnit::where('unit_convert_rate',1)->where('product_id',$inhand->variant->product_id)->first();
                     $price=product_price::where('product_id',$inhand->variant_id)->where('unit_id',$unit->id)->where('min',1)->where('sale_type',"Whole Sale")->first();
-                    $inhand->show_price=$price->price;
+                    $inhand->show_price=$price->price??'Price Does not fixed';
                     array_push($aval_product,$inhand);
                 }
             }

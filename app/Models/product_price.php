@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class product_price extends Model
 {
     use HasFactory;
-    protected $fillable=['product_id','unit_id','sale_type','price','rule','max','min','start_date','end_date','multi_price','region_id'];
+    protected $fillable=['product_id','unit_id','sale_type','price','rule','max','min','start_date','end_date','region_id'];
     public function unit(){
         return $this->belongsTo(SellingUnit::class,'unit_id','id');
     }
