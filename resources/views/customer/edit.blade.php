@@ -40,7 +40,7 @@
                                                 <input type="radio" id="male" name="gender" value="Male"
                                                        class="custom-control-input" {{$record->gender=='Male'?'checked':''}}>
                                                 <label class="custom-control-label" for="male"><i
-                                                            class="fa fa-male"></i> Male </label>
+                                                            class="fa fa-male"></i>Male </label>
                                             </div>
                                         </div>
                                         <div class="form-check form-check-inline">
@@ -58,8 +58,22 @@
                                                                                                          class="ml-1">Can
                                             login</label>
                                     </div>
+                                    <div class="col-12 mb-3">
+                                        <div class="form-group">
+                                            <label for="branch">Branch</label>
+                                            <select name="branch_id" id="branch_id" class="form-control select2">
+                                                @foreach($branch as $item)
+                                                    <option value="{{$item->id}}" {{$item->id==$record->branch_id?'selected':''}}>{{$item->name}}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('branch_id')
+                                            <span class="text-danger">Select the branch where the customer is located</span>
+                                            @enderror
+                                        </div>
+                                    </div>
 
                                 </div>
+
                                 <div class="col-md-8">
                                     <div class="row g-3 date-icon-set-modal">
                                         <div class="col-md-6 mb-3">
