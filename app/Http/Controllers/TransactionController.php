@@ -106,7 +106,7 @@ class TransactionController extends Controller
                     array_push($financeManger,$emp);
                 }
             }
-            dd($branch_acc);
+//            dd($branch_acc);
             $new_revenue = new Revenue();
             $new_revenue->title = $request->title;
             $new_revenue->customer_id = $request->customer_id;
