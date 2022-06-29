@@ -58,19 +58,6 @@
                                                                                                          class="ml-1">Can
                                             login</label>
                                     </div>
-                                    <div class="col-12 mb-3">
-                                        <div class="form-group">
-                                            <label for="branch">Branch</label>
-                                            <select name="branch_id" id="branch_id" class="form-control select2">
-                                                @foreach($branch as $item)
-                                                    <option value="{{$item->id}}" {{$item->id==$record->branch_id?'selected':''}}>{{$item->name}}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('branch_id')
-                                            <span class="text-danger">Select the branch where the customer is located</span>
-                                            @enderror
-                                        </div>
-                                    </div>
 
                                 </div>
 
@@ -153,6 +140,19 @@
                                                 <option value="Supplier" {{$record->customer_type=='Supplier'?'selected':''}}>Supplier</option>
                                                 <option value="Courier" {{$record->customer_type=='Courier'?'selected':''}}>Courier</option>
                                             </select>
+                                        </div>
+                                        <div class="col-12 mb-3">
+                                            <div class="form-group">
+                                                <label for="branch">Branch</label>
+                                                <select name="branch_id" id="branch_id" class="form-control select2">
+                                                    @foreach($branch as $item)
+                                                        <option value="{{$item->id}}" {{$item->id==$record->branch_id?'selected':''}}>{{$item->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('branch_id')
+                                                <span class="text-danger">Select the branch where the customer is located</span>
+                                                @enderror
+                                            </div>
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <div class="form-group">
