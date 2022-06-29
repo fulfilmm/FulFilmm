@@ -15,6 +15,7 @@ use App\Models\product_price;
 use App\Models\products_category;
 use App\Models\products_tax;
 use App\Models\ProductVariations;
+use App\Models\SellingPriceRule;
 use App\Models\SellingUnit;
 use App\Models\Stock;
 use App\Models\StockIn;
@@ -129,6 +130,7 @@ class ProductController extends Controller
                $variation->product_name = $request->name;
                $variation->product_id = $product->id;
                $variation->save();
+               SellingUnit::where('product_id',$request->product_id)->get();
            }catch (\Exception $e){
                return redirect()->back()->with('danger',$e->getMessage());
            }
@@ -173,6 +175,7 @@ class ProductController extends Controller
             $variation->item_code =$request->variant[$i].'-'.$product->product_code;
             $variation->additional_price=$request->additional_price[$i]??0;
             $variation->save();
+            SellingUnit::where('product_id',$request->product_id)->get();
         }
         return redirect(route('products.show', $request->product_id));
     }

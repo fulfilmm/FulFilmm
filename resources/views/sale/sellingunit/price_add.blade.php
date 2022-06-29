@@ -85,34 +85,20 @@
                                         <input type="number" class="form-control" name="additional_price" id="add_price">
                                     </div>
                                 </div>
-                               <div class="col-12">
-                                   <div class="form-group">
-                                       <input type="radio" id="price_multi" name="type" onclick="price_type(1)" value="multi">
-                                       <label for="price_multi">Multiple Price</label>
-                                       <input type="radio" id="price_single" name="type" onclick="price_type(0)" checked value="single">
-                                       <label for="price_single">Single Price</label>
-                                   </div>
-                               </div>
-                                <div class="col-md-6" id="single_price">
-                                    <div class="form-group">
-                                        <label for="price">Unit Price</label>
-                                        <input type="number" class="form-control shadow-sm" name="single_price" placeholder="Enter Unit Price">
-                                    </div>
-                                </div>
-                                <div class="collapse" id="multi_price">
+                                <div class="col-12">
                                     <div class="col-12">
                                         <div class="row border rounded">
                                             <input type="hidden" name="row_no[]" value="rowno">
                                             <div class="col my-2">
                                                 <div class="form-group">
                                                     <label for="min">Min Quantity</label>
-                                                    <input type="number" class="form-control form-control-sm rounded" name="min_qty[]" id="min">
+                                                    <input type="number" class="form-control form-control-sm rounded" name="min_qty[]" id="min" value="1" >
                                                 </div>
                                             </div>
                                             <div class="col my-2">
                                                 <div class="form-group">
                                                     <label for="Max">Max Quantity</label>
-                                                    <input type="number" class="form-control form-control-sm rounded" name="max_qty[]" id="max">
+                                                    <input type="number" class="form-control form-control-sm rounded" name="max_qty[]" id="max" required>
                                                 </div>
                                             </div>
                                             <div class="col my-2">
@@ -179,15 +165,6 @@
             $(document).ready(function () {
                 $('select').select2();
             });
-            function price_type(val){
-                if(val==1){
-                    $('#multi_price').show();
-                    $('#single_price').hide();
-                }else{
-                    $('#single_price').show();
-                    $('#multi_price').hide();
-                }
-            }
             function selectvariant(value){
                 @foreach($products as $pd)
                     if(value=='{{$pd->id}}'){
@@ -201,13 +178,13 @@
                 html +=' <input type="hidden" name="row_no[]" value="rowno">';
                 html += '<div class="col my-2">';
                 html +='<div class="form-group"><label for="min">Min Quantity</label>' +
-                    '<input type="number" class="form-control form-control-sm rounded" name="min_qty[]" id="min">';
+                    '<input type="number" class="form-control form-control-sm rounded" name="min_qty[]" id="min" required>';
                 html +='</div>';
                 html +='</div>';
                 html +='<div class="col my-2">' +
                     '<div class="form-group">' +
                     '<label for="Max">Max Quantity</label>' +
-                    '<input type="number" class="form-control form-control-sm rounded" name="max_qty[]" id="max">' +
+                    '<input type="number" class="form-control form-control-sm rounded" name="max_qty[]" id="max" required>' +
                     '</div>';
                 html +='</div>';
                 html += '<div class="col my-2">';
@@ -225,7 +202,7 @@
                 html += '<div  class="col my-2">';
                 html +='<div class="form-group"> <label>Price</label>';
                 html += '<div class="input-group">';
-                html += '<input type="text" name="price[]" class="form-control  form-control-sm rounded" autocomplete="off">';
+                html += '<input type="text" name="price[]" class="form-control  form-control-sm rounded" autocomplete="off" required>';
                 html += '<div class="input-group-append">';
                 html += '<button id="removeRow" type="button" class="btn btn-danger btn-sm"><i class="fa fa-minus"></i></button>';
                 html += '</div>';

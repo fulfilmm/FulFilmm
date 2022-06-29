@@ -38,7 +38,7 @@
                 <tbody>
                 @foreach($promo_discounts as $item)
                     <tr>
-                        <td><strong>{{$item->variant->product_code}}</strong></td>
+                        <td><strong>{{$item->variant->item_code}}</strong></td>
                         <td>{{$item->variant->product_name}}</td>
                         <td>{{$item->variant->variant}}</td>
                         <td>{{$item->type}}</td>

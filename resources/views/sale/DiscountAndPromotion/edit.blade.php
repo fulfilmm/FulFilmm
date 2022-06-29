@@ -26,7 +26,7 @@
                             <label for="pid">Product Name</label>
                             <select name="variant_id" id="pid" class="form-control select2">
                                 @foreach($products as $item)
-                                    <option value="{{$item->id}}" {{$pro_discount->variant_id==$item->id?'selected':''}}>{{$item->product_name}}({{$item->variant}})</option>
+                                    <option value="{{$item->id}}" {{$pro_discount->variant_id==$item->id?'selected':''}}>{{$item->product_name}}{{isset($item->variant->variant)?"(".$item->variant->variant.")":''}}</option>
                                 @endforeach
                             </select>
                         </div>

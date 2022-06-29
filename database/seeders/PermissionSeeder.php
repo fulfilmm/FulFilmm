@@ -30,6 +30,7 @@ class PermissionSeeder extends Seeder
 
         Permission::create(['name' => 'roles.assignPermission', 'display_name' => "Give permission", 'type' => 'permissions', 'guard_name' => 'employee']);
         Permission::create(['name' => 'duplicate', 'display_name' => "Can duplicate  product", 'type' => 'products', 'guard_name' => 'employee']);
+        Permission::create(['name' => 'item.list', 'display_name' => "Products Items list view", 'type' => 'products', 'guard_name' => 'employee']);
         Permission::create(['name' => 'tax.create', 'display_name' => "Can store tax", 'type' => 'products', 'guard_name' => 'employee']);
         Permission::create(['name' => 'category.create', 'display_name' => "Can store category", 'type' => 'products', 'guard_name' => 'employee']);
         Permission::create(['name' => 'action_confirm', 'display_name' => "Can change product status", 'type' => 'products', 'guard_name' => 'employee']);

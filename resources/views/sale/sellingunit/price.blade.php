@@ -87,7 +87,6 @@
                           <th>Product Code</th>
                           <th>Product Name</th>
                           <th>Variants</th>
-                          <th>Pricing Type</th>
                           <th>Range</th>
                           <th>Sale Price</th>
                           <th>Unit</th>
@@ -106,7 +105,6 @@
                               <td>@foreach($product as $key=>$val) @if($key==$item->variant->product_id) {{$val}} @endif @endforeach </td>
                               <td>{{$item->variant->product_name}}</td>
                               <td>{{$item->variant->variant??$item->variant->product_name}}</td>
-                              <td>{{$item->multi_price?'Multiple Price Rule':'Single Price Rule'}}</td>
                               <td>{{$item->min}} - {{$item->max}}</td>
                               <td>{{$item->price}}</td>
                               <td>{{$item->unit->unit}}</td>
@@ -157,7 +155,6 @@
                                                   </div>
                                               </div>
                                           </div>
-
                                   </div>
                               </td>
                           </tr>

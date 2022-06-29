@@ -50,6 +50,8 @@ class CreateCustomersTable extends Migration
             $table->tinyInteger('main_customer')->default(0);
             $table->double('use_amount')->default(0);
             $table->integer('payment_term')->nullable();
+            $table->string('sales_type')->nullable();
+            $table->string('shop_name')->nullable();
             $table->rememberToken();
             $table->foreignId('company_id');
             $table->softDeletes();

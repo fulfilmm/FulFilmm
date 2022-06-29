@@ -8,6 +8,7 @@ use App\Models\product;
 use App\Models\product_price;
 use App\Models\ProductVariations;
 use App\Models\Region;
+use App\Models\SellingPriceRule;
 use App\Models\SellingUnit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -144,46 +145,18 @@ class SellingUnitController extends Controller
         ]);
         foreach ($request->region_id as $region_id){
             foreach ($request->product_id as $item){
-                $unit=SellingUnit::where('id',$request->unit_id)->first();
-                $unit->active=1;
-                $unit->update();
-                if(isset($request->single_price)){
-                    $exist_price=product_price::where('product_id',$item)->where('sale_type',$request->sale_type)
-                        ->where('unit_id',$request->unit_id)
-                        ->where('active',1)
-                        ->where('region_id',$region_id)
-                        ->first();
-                    $single_data['product_id']=$item;
-                    $single_data['unit_id']=$request->unit_id;
-                    $single_data['sale_type']=$request->sale_type;
-                    $single_data['price']=$request->single_price;
-                    $single_data['region_id']=$region_id;
-                    $single_data['multi_price']=0;
-                    if($exist_price==null) {
-                        product_price::create($single_data);
-                    }else{
-                        $exist_price->active=0;
-                        $exist_price->update();
-                        product_price::create($single_data);
-                    }
-                }
-
-                if($request->type=='multi'){
-                    for($i=0;$i<count($request->row_no);$i ++){
-                        $data['product_id']=$item;
-                        $data['unit_id']=$request->unit_id;
-                        $data['sale_type']=$request->sale_type;
-                        $data['price']=$request->price[$i];
-                        $data['multi_price']=1;
-                        $data['rule']=$request->rule[$i];
-                        $data['min']=$request->min_qty[$i];
-                        $data['max']=$request->max_qty[$i];
-                        $data['start_date']=$request->start_date[$i];
-                        $data['end_date']=$request->end_date[$i];
-                        $data['region_id']=$region_id;
-                        product_price::create($data);
-                    }
-                }
+            for($i=0;$i<count($request->row_no);$i ++){
+                $data['product_id']=$item;
+                $data['unit_id']=$request->unit_id;
+                $data['sale_type']=$request->sale_type;
+                $data['price']=$request->price[$i];
+                $data['min']=$request->min_qty[$i];
+                $data['max']=$request->max_qty[$i];
+                $data['start_date']=$request->start_date[$i];
+                $data['end_date']=$request->end_date[$i];
+                $data['region_id']=$region_id;
+                product_price::create($data);
+            }
             }
         }
         return redirect(route('add.index'));
@@ -205,7 +178,11 @@ class SellingUnitController extends Controller
     }
     public function update_price(Request $request,$id){
         $price=product_price::where('id',$id)->firstOrFail();
-        $price->price=$request->price;
+        if(isset($request->price_type)){
+            $price->multi_price=$request->price_type;
+        }else{
+            $price->price=$request->price;
+        }
         $price->update();
         return redirect()->back();
     }

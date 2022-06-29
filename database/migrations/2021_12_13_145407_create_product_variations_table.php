@@ -23,7 +23,6 @@ class CreateProductVariationsTable extends Migration
             $table->text('image')->nullable();
             $table->text('variant')->nullable();
             $table->double('additional_price')->default(0);
-            $table->tinyInteger('pricing_type')->default(0);//1 is multi 0 is single
             $table->timestamps();
         });
     }
