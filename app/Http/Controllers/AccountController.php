@@ -134,7 +134,8 @@ class AccountController extends Controller
         if ($auth->role->name == 'CEO' || $auth->role->name == 'Super Admin' || $auth->role->name == 'Finance Manager') {
             $account = Account::where('id', $id)->first();
             $branch=OfficeBranch::all()->pluck('name','id')->all();
-            return view('account.edit', compact('account','branch'));
+            $head_office=HeadOffice::all()->pluck('name','id')->all();
+            return view('account.edit', compact('account','branch','head_office'));
         }else{
             return redirect()->back()->with('warning', 'Sorry!You can not edit account.Super Admin,CEO and Finance Manager only can edit account');
         }

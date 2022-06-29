@@ -50,6 +50,17 @@
                                     </select>
                                 </div>
                             </div>
+                           @else
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="head">Head Office</label>
+                                    <select name="head_office" id="head" class="form-control"  onchange="giveSelection(this.value)">
+                                        @foreach($head_office as $key=>$val)
+                                            <option value="{{$key}}" {{$key==$account->head_office?'selected':''}}>{{$val}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                            @endif
                         <div class="form-group col-md-6 required">
                             <label for="number" class="form-control-label">Account Number</label>
