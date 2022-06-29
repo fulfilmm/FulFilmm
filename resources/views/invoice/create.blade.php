@@ -222,7 +222,7 @@
                                                         <option value="">Search Product Code</option>
                                                         @foreach($aval_product as $item)
                                                             <option value="{{$item->variant->id}}"
-                                                                    data-option="{{$item->warehouse_id}}">{{$item->variant->product_code}} </option>
+                                                                    data-option="{{$item->warehouse_id}}">{{$item->variant->item_code}} </option>
                                                         @endforeach
                                                     </select>
                                                     <div class="input-group-append">

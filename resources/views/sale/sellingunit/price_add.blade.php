@@ -85,12 +85,6 @@
                                         <input type="number" class="form-control" name="additional_price" id="add_price">
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="price">Unit Price</label>
-                                        <input type="number" class="form-control shadow-sm" name="single_price" placeholder="Enter Unit Price">
-                                    </div>
-                                </div>
                                <div class="col-12">
                                    <div class="form-group">
                                        <input type="radio" id="price_multi" name="type" onclick="price_type(1)" value="multi">
@@ -99,41 +93,41 @@
                                        <label for="price_single">Single Price</label>
                                    </div>
                                </div>
+                                <div class="col-md-6" id="single_price">
+                                    <div class="form-group">
+                                        <label for="price">Unit Price</label>
+                                        <input type="number" class="form-control shadow-sm" name="single_price" placeholder="Enter Unit Price">
+                                    </div>
+                                </div>
                                 <div class="collapse" id="multi_price">
                                     <div class="col-12">
-                                        <div class="row">
+                                        <div class="row border rounded">
                                             <input type="hidden" name="row_no[]" value="rowno">
-                                            <div class="col-md-2">
-                                                <div class="form-group">
-                                                    <label for="rule">Rule Description</label>
-                                                    <input type="text" class="form-control form-control-sm rounded" name="rule[]" id="rule">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
+                                            <div class="col my-2">
                                                 <div class="form-group">
                                                     <label for="min">Min Quantity</label>
                                                     <input type="number" class="form-control form-control-sm rounded" name="min_qty[]" id="min">
                                                 </div>
                                             </div>
-                                            <div class="col-md-2">
+                                            <div class="col my-2">
                                                 <div class="form-group">
                                                     <label for="Max">Max Quantity</label>
                                                     <input type="number" class="form-control form-control-sm rounded" name="max_qty[]" id="max">
                                                 </div>
                                             </div>
-                                            <div class="col-md-2">
+                                            <div class="col my-2">
                                                 <div class="form-group">
                                                     <label for="start_date">Start Date</label>
                                                     <input type="date" class="form-control form-control-sm rounded" id="start_date" name="start_date[]">
                                                 </div>
                                             </div>
-                                            <div class="col-md-2">
+                                            <div class="col my-2">
                                                 <div class="form-group">
                                                     <label for="end_date">End Date</label>
                                                     <input type="date" class="form-control form-control-sm rounded" id="end_date" name="end_date[]">
                                                 </div>
                                             </div>
-                                            <div class="col-md-2">
+                                            <div class="col my-2">
                                                 <div class="form-group">
                                                     <label for="price">Price</label>
                                                     <input type="number" class="form-control form-control-sm rounded" name="price[]" id="price[]">
@@ -143,7 +137,7 @@
                                         <div id="newRow">
 
                                         </div>
-                                        <div class="row">
+                                        <div class="row my-2">
                                             <div class="col-12">
                                                 <button id="addRow" type="button" class="btn btn-white btn-sm float-right">Add More</button>
                                             </div>
@@ -203,38 +197,32 @@
             }
             $("#addRow").click(function () {
                 var html = '';
-                html +='<div id="inputFormRow" class="row">';
+                html +='<div id="inputFormRow" class="row rounded border my-2">';
                 html +=' <input type="hidden" name="row_no[]" value="rowno">';
-                html += '<div class="col-md-2">';
-                html +='<div class="form-group">';
-                html +='<label for="rule">Rule Description</label>';
-                html +='<input type="text" class="form-control form-control-sm rounded" name="rule[]" id="rule">';
-                html +='</div>';
-                html +='</div>';
-                html += '<div class="col-md-2">';
+                html += '<div class="col my-2">';
                 html +='<div class="form-group"><label for="min">Min Quantity</label>' +
                     '<input type="number" class="form-control form-control-sm rounded" name="min_qty[]" id="min">';
                 html +='</div>';
                 html +='</div>';
-                html +='<div class="col-md-2">' +
+                html +='<div class="col my-2">' +
                     '<div class="form-group">' +
                     '<label for="Max">Max Quantity</label>' +
                     '<input type="number" class="form-control form-control-sm rounded" name="max_qty[]" id="max">' +
                     '</div>';
                 html +='</div>';
-                html += '<div class="col-md-2">';
+                html += '<div class="col my-2">';
                 html +='<div class="form-group">' +
                     '<label for="start_date">Start Date</label>' +
                     '<input type="date" class="form-control form-control-sm rounded" id="start_date" name="start_date[]">' +
                     '</div>';
                 html +='</div>';
-                html += '<div class="col-md-2">';
+                html += '<div class="col my-2">';
                 html +='<div class="form-group">' +
                     '<label for="end_date">End Date</label>' +
                     '<input type="date" class="form-control form-control-sm rounded" id="end_date" name="end_date[]">' +
                     '</div>';
                 html +='</div>';
-                html += '<div  class="col-md-2">';
+                html += '<div  class="col my-2">';
                 html +='<div class="form-group"> <label>Price</label>';
                 html += '<div class="input-group">';
                 html += '<input type="text" name="price[]" class="form-control  form-control-sm rounded" autocomplete="off">';
