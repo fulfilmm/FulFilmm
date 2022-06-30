@@ -29,9 +29,12 @@
                     <div id="map" style="width: 750px; height: 550px;"></div>
                 </div>
                 <div class="col-md-3 col-12 border">
-                        <div class="card">
-                            <img src="{{url(asset('img/profiles/'.$shop->picture))}}" alt="" width="80%" height="50%">
+                        <div class="card mt-2">
+                           <div class="col-12">
+                               <img src="{{url(asset('img/profiles/'.$shop->picture))}}" alt="" width="80%" height="50%">
+                           </div>
                         </div>
+                    <hr>
                         <div class="form-group">
                             <label for="">Shop Name :</label>
                            {{$shop->name}}
