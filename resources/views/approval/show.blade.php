@@ -183,11 +183,11 @@
                                                                                     $infoPath = pathinfo(public_path('approval_doc/'.$val));
                                                                                      $extension = $infoPath['extension'];
                                                                                 $memes=\Illuminate\Support\Facades\File::mimeType(public_path('approval_doc/'.$val));
+                                                                                dd($memes);
 
                                                                                 @endphp
-                                                                                @if($memes=='jpg,jpeg,png')
+                                                                                @if($memes=='jpg'||$memes=='jpeg'||$memes='png')
                                                                                     <img src="{{url(asset('approval_doc/'.$val))}}" alt="">
-
                                                                                     @else
                                                                                     <div class="card-file-thumb">
                                                                                         @if($extension=='xlsx')
