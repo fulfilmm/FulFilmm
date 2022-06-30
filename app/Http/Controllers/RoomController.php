@@ -89,6 +89,13 @@ class RoomController extends Controller
         return view('room.booking',compact('data'));
     }
     public function booking_save(Request $request){
+        $this->validate($request,[
+           'date'=>'required',
+           'start_time'=>'required',
+           'endtime'=>'required',
+           'room_id'=>'required',
+           'subject'=>'nullable'
+        ]);
         $start_time= $request->date . ' ' . $request->start_time;
         $end_time= $request->date . ' ' . $request->endtime;
 
@@ -102,7 +109,6 @@ class RoomController extends Controller
          $book->room_id=$request->room_id;
          $book->created_emp=Auth::guard('employee')->user()->id;
          $book->subject=$request->subject;
-         dd($book);
          $book->save();
          return redirect()->back()->with('success','Your room booking successful');
      }else{
