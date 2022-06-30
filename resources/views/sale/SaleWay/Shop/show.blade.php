@@ -28,7 +28,7 @@
                 <div class="col-md-9 col-12">
                     <div id="map" style="width: 750px; height: 550px;"></div>
                 </div>
-                <div class="col-md-3 col-12 card-shadow">
+                <div class="col-md-3 col-12 card shadow">
                     <div class="col-12 ">
                         <img src="{{url(asset('img/profiles/'.$shop->picture))}}" alt="" width="100%" height="100%">
                     </div>
