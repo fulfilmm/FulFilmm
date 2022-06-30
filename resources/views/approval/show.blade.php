@@ -227,13 +227,13 @@
                                                                                         <i class="fa fa-file-pdf-o"></i>
                                                                                     @elseif($extension=='jpg')
                                                                                         <img src="{{url(asset('approval_doc/'.$val))}}"
-                                                                                             alt="" width="200px" height="200px">
+                                                                                             alt="" width="150px" height="150px">
                                                                                     @elseif($extension=='jpeg')
                                                                                         <img src="{{url(asset('approval_doc/'.$val))}}"
-                                                                                             alt="" width="200px" height="200px">
+                                                                                             alt="" width="150px" height="150px">
                                                                                     @elseif($extension=='png')
                                                                                         <img src="{{url(asset('approval_doc/'.$val))}}"
-                                                                                             alt="" width="200px" height="200px">
+                                                                                             alt="" width="150px" height="150px">
                                                                                     @else
                                                                                         <i class="fa fa-file-word-o"></i>
                                                                                     @endif
