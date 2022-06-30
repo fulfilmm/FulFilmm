@@ -28,8 +28,10 @@
                 <div class="col-md-9 col-12">
                     <div id="map" style="width: 750px; height: 550px;"></div>
                 </div>
-                <div class="col-md-3 col-12 card shadow">
-                        <img src="{{url(asset('img/profiles/'.$shop->picture))}}" alt="" width="100%" height="50%">
+                <div class="col-md-3 col-12 ">
+                        <div class="card">
+                            <img src="{{url(asset('img/profiles/'.$shop->picture))}}" alt="" width="100%" height="50%">
+                        </div>
                         <div class="form-group">
                             <label for="">Shop Name :</label>
                            {{$shop->name}}
