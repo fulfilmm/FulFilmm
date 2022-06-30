@@ -30,7 +30,7 @@
                 </div>
                 <div class="col-md-3 col-12">
                     <div class="col-12">
-                        <img src="{{url(asset('img/profile/'.$shop->picture))}}" alt="" width="100%" height="100%">
+                        <img src="{{url(asset('img/profiles/'.$shop->picture))}}" alt="" width="100%" height="100%">
                     </div>
                         <div class="form-group">
                             <label for="">Shop Name :</label>
