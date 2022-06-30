@@ -105,6 +105,7 @@ class MobileInvoiceController extends Controller
                     $price=product_price::where('product_id',$inhand->variant_id)->where('unit_id',$unit->id)->where('min',1)->where('sale_type',"Whole Sale")->first();
                     if(isset($price->price)){
                         $inhand->show_price=$price->price;
+                        $inhand->image=$inhand->variant->image;
                         array_push($aval_product,$inhand);
 
                     }
@@ -139,6 +140,7 @@ class MobileInvoiceController extends Controller
                     $price=product_price::where('product_id',$inhand->variant_id)->where('unit_id',$unit->id)->where('min',1)->where('sale_type',"Retail Sale")->first();
                     if(isset($price->price)){
                         $inhand->show_price=$price->price;
+                        $inhand->image=$inhand->variant->image;
                         array_push($aval_product,$inhand);
 
                     }

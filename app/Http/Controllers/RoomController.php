@@ -101,7 +101,6 @@ class RoomController extends Controller
         $end_time=Carbon::parse($request->date . ' ' . $request->endtime);
 
         $booked_rooms=RoomBooking::where('room_id',$request->room_id)->whereBetween('start_time',[$start_time,$end_time])->get();
-        dd($booked_rooms);
 
      if(count($booked_rooms)==0){
         try{
