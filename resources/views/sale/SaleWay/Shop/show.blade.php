@@ -29,6 +29,9 @@
                     <div id="map" style="width: 750px; height: 550px;"></div>
                 </div>
                 <div class="col-md-3 col-12">
+                    <div class="col-12">
+                        <img src="{{url(asset('img/profile/'.$shop->picture))}}" alt="" width="100%" height="100%">
+                    </div>
                         <div class="form-group">
                             <label for="">Shop Name :</label>
                            {{$shop->name}}
@@ -44,10 +47,6 @@
                         <div class="form-group">
                             <label for="">Location :</label>
                             {{$shop->location}}
-                        </div>
-                        <div class="form-group">
-                            <label for="">Picture</label>
-                            <input type="file" name="picture">
                         </div>
                 </div>
 
