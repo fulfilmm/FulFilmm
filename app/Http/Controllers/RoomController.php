@@ -104,8 +104,8 @@ class RoomController extends Controller
      if(count($booked_rooms)==0){
         try{
             $book=new RoomBooking();
-            $book->start_time=$start_time;
-            $book->endtime=$end_time;
+            $book->start_time=Carbon::parse($start_time);
+            $book->endtime=Carbon::parse($end_time);
             $book->date=$request->date;
             $book->room_id=$request->room_id;
             $book->created_emp=Auth::guard('employee')->user()->id;
