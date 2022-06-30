@@ -102,15 +102,19 @@ class RoomController extends Controller
         $booked_rooms=RoomBooking::where('room_id',$request->room_id)->whereBetween('start_time',[$start_time,$end_time])->get();
 
      if(count($booked_rooms)==0){
-         $book=new RoomBooking();
-         $book->start_time=$start_time;
-         $book->endtime=$end_time;
-         $book->date=$request->date;
-         $book->room_id=$request->room_id;
-         $book->created_emp=Auth::guard('employee')->user()->id;
-         $book->subject=$request->subject;
-         $book->save();
-         return redirect()->back()->with('success','Your room booking successful');
+        try{
+            $book=new RoomBooking();
+            $book->start_time=$start_time;
+            $book->endtime=$end_time;
+            $book->date=$request->date;
+            $book->room_id=$request->room_id;
+            $book->created_emp=Auth::guard('employee')->user()->id;
+            $book->subject=$request->subject;
+            $book->save();
+            return redirect()->back()->with('success','Your room booking successful');
+        }catch (\Exception $e){
+            return redirect()->back()->with('error',$e->getMessage());
+        }
      }else{
          dd('hello');
          return redirect()->back()->with('error','This room has been booked in your selected time! Please select another time');
