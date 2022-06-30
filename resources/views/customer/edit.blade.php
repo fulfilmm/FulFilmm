@@ -460,21 +460,21 @@
             });
         });
 
-        var main = document.querySelector('#cus_region_id');
-        var child = document.querySelector('#zone_id');
-        var zone_optoion = child.querySelectorAll('option');
-        // console.log(options3);
-        // alert(product)
-        function childregion(selValue) {
-            zone_id.innerHTML='';
-
-            for(var i = 0; i < zone_optoion.length; i++) {
-                if(zone_optoion[i].dataset.option === selValue) {
-                    zone_id.appendChild(zone_optoion[i]);
-
-                }
-            }
-        }
-        childregion(main.value);
+        // var main = document.querySelector('#cus_region_id');
+        // var child = document.querySelector('#zone_id');
+        // var zone_optoion = child.querySelectorAll('option');
+        // // console.log(options3);
+        // // alert(product)
+        // function childregion(selValue) {
+        //     zone_id.innerHTML='';
+        //
+        //     for(var i = 0; i < zone_optoion.length; i++) {
+        //         if(zone_optoion[i].dataset.option === selValue) {
+        //             zone_id.appendChild(zone_optoion[i]);
+        //
+        //         }
+        //     }
+        // }
+        // childregion(main.value);
     </script>
 @endsection
