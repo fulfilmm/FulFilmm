@@ -102,6 +102,7 @@ class RoomController extends Controller
          $book->room_id=$request->room_id;
          $book->created_emp=Auth::guard('employee')->user()->id;
          $book->subject=$request->subject;
+         dd($book);
          $book->save();
          return redirect()->back()->with('success','Your room booking successful');
      }else{
