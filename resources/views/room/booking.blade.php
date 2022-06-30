@@ -53,7 +53,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($data['bookedroom'] as $booking)
+                        @foreach($data['allbooked'] as $booking)
                             <tr>
                                 <th>{{$booking->subject}}</th>
                                 <td>{{$booking->bookroom->room_no}}</td>
