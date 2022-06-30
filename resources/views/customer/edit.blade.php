@@ -21,7 +21,7 @@
                                             <div class="text-center">
                                                 <img id="output" onClick="openSelect('#file1')"
                                                      class="rounded mt-2 mb-4"
-                                                     src="{{isset($record)?(url(asset($record->profile_img?'img/profiles/'.$record->profile:'img/profiles/plus.jpg'))):url(asset('/img/profiles/plus.jpg'))}}"
+                                                     src="{{$record->profile!=null? url(asset('img/profiles/'.$record->profile)):url(asset('img/profiles/avatar-01.jpg'))}}"
                                                      width="100px" height="100px;" alt=""><br>
                                             </div>
                                         </div>
