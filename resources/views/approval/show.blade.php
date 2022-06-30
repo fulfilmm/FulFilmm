@@ -184,15 +184,19 @@
                                                                                      $extension = $infoPath['extension'];
 
                                                                                 @endphp
-                                                                                <div class="card-file-thumb">
-                                                                                    @if($extension=='xlsx')
-                                                                                        <i class="fa fa-file-excel-o"></i>
-                                                                                    @elseif($extension=='pdf')
-                                                                                        <i class="fa fa-file-pdf-o"></i>
+                                                                                @if(\Illuminate\Support\Facades\File::mimeType(public_path('approval_doc/'.$val))!='image')
+                                                                                    <div class="card-file-thumb">
+                                                                                        @if($extension=='xlsx')
+                                                                                            <i class="fa fa-file-excel-o"></i>
+                                                                                        @elseif($extension=='pdf')
+                                                                                            <i class="fa fa-file-pdf-o"></i>
+                                                                                        @else
+                                                                                            <i class="fa fa-file-word-o"></i>
+                                                                                        @endif
+                                                                                    </div>
                                                                                     @else
-                                                                                        <i class="fa fa-file-word-o"></i>
+                                                                                    <img src="{{url(asset('approval_doc/'.$val))}}" alt="">
                                                                                     @endif
-                                                                                </div>
                                                                                 <div class="card-body">
                                                                                     <h6><a href="{{url(asset('approval_doc/'.$val))}}" download>{{$val}}</a></h6>
                                                                                 </div>
