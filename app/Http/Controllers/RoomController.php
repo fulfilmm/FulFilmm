@@ -95,10 +95,9 @@ class RoomController extends Controller
         $booked_rooms=RoomBooking::where('room_id',$request->room_id)->whereBetween('start_time',[$start_time,$end_time])->get();
 
      if(count($booked_rooms)==0){
-         dd('booked_rooms');
          $book=new RoomBooking();
-         $book->start_time=$request->start_time;
-         $book->endtime=$request->endtime;
+         $book->start_time=$start_time;
+         $book->endtime=$end_time;
          $book->date=$request->date;
          $book->room_id=$request->room_id;
          $book->created_emp=Auth::guard('employee')->user()->id;
