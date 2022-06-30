@@ -58,10 +58,14 @@ class MeetingController extends Controller
     public function create()
     {
         $employees=Employee::all()->pluck('name','id')->all();
-        $room=Room::all()->pluck('room_no','id')->all();
+        $room=RoomBooking::with('bookroom','booking_emp')->where('start_time','>=',Carbon::now())->where('created_emp',Auth::id())->get();
+        if(count($room)==0){
+            return redirect('booking')->with('warning','You do not have any booked romm. Firstly,Create Room booking');
+        }else{
+            $data=['employees'=>$employees,'rooms'=>$room];
+            return view('meeting.create',compact('data'));
+        }
 
-        $data=['employees'=>$employees,'rooms'=>$room];
-        return view('meeting.create',compact('data'));
     }
 
     /**

@@ -83,7 +83,7 @@ class RoomController extends Controller
     }
     public function booking(){
         $room=Room::all()->pluck('room_no','id')->all();
-        $booked_room=RoomBooking::with('bookroom','booking_emp')->get();
+        $booked_room=RoomBooking::with('bookroom','booking_emp')->where('start_time','>=',Carbon::now())->get();
         $emp_id=Auth::guard('employee')->user()->id;
         $data=['room'=>$room,'bookedroom'=>$booked_room,'emp_id'=>$emp_id];
         return view('room.booking',compact('data'));
