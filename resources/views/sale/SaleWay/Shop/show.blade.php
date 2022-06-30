@@ -30,7 +30,7 @@
                 </div>
                 <div class="col-md-3 col-12 ">
                         <div class="card">
-                            <img src="{{url(asset('img/profiles/'.$shop->picture))}}" alt="" width="100%" height="50%">
+                            <img src="{{url(asset('img/profiles/'.$shop->picture))}}" alt="" width="80%" height="50%">
                         </div>
                         <div class="form-group">
                             <label for="">Shop Name :</label>
