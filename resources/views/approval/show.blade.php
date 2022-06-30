@@ -182,9 +182,13 @@
 
                                                                                     $infoPath = pathinfo(public_path('approval_doc/'.$val));
                                                                                      $extension = $infoPath['extension'];
+                                                                                $memes=\Illuminate\Support\Facades\File::mimeType(public_path('approval_doc/'.$val));
 
                                                                                 @endphp
-                                                                                @if(\Illuminate\Support\Facades\File::mimeType(public_path('approval_doc/'.$val))!='image')
+                                                                                @if($memes=='jpg,jpeg,png')
+                                                                                    <img src="{{url(asset('approval_doc/'.$val))}}" alt="">
+
+                                                                                    @else
                                                                                     <div class="card-file-thumb">
                                                                                         @if($extension=='xlsx')
                                                                                             <i class="fa fa-file-excel-o"></i>
@@ -194,8 +198,6 @@
                                                                                             <i class="fa fa-file-word-o"></i>
                                                                                         @endif
                                                                                     </div>
-                                                                                    @else
-                                                                                    <img src="{{url(asset('approval_doc/'.$val))}}" alt="">
                                                                                     @endif
                                                                                 <div class="card-body">
                                                                                     <h6><a href="{{url(asset('approval_doc/'.$val))}}" download>{{$val}}</a></h6>
