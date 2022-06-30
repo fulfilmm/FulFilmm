@@ -1,4 +1,7 @@
 @extends('layout.mainlayout')
+@section('googlemap')
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCM0ZdauyzVy2mYk0SeH9SUGIeQwF045vM"></script>
+    @endsection
 @section('content')
     <!-- Page Wrapper -->
 
