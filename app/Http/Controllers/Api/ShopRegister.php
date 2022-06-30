@@ -74,7 +74,7 @@ class ShopRegister extends Controller
             'name'=>'required',
             'location'=>'required',
             'customer_id'=>'nullable',
-            'picture'=>'nullable',
+            'img'=>'nullable',
             'contact'=>'required',
             'phone'=>'required',
             'description'=>'nullable',
@@ -85,8 +85,8 @@ class ShopRegister extends Controller
         ]);
         $data=$request->all();
         $data['emp_id']=Auth::guard('api')->user()->id;
-        if ($request->picture != 0) {
-            $image = $request->file('picture');
+        if ($request->img != 0) {
+            $image = $request->file('img');
             $input['imagename'] = Str::random(10).time().'.'.$image->extension();
             $filePath = public_path('/img/profiles');
             $img =Image::make($image->path());
