@@ -97,10 +97,10 @@ class RoomController extends Controller
            'room_id'=>'required',
            'subject'=>'nullable'
         ]);
-        $start_time= $request->date . ' ' . $request->start_time;
-        $end_time= $request->date . ' ' . $request->endtime;
+        $start_time=Carbon::parse( $request->date . ' ' . $request->start_time);
+        $end_time=Carbon::parse($request->date . ' ' . $request->endtime);
 
-        $booked_rooms=RoomBooking::where('room_id',$request->room_id)->whereBetween('start_time',[$start_time,$end_time])->get();
+        $booked_rooms=RoomBooking::where('room_id',$request->room_id)->where('start_time','<',$start_time)->where('start_time','>',$end_time)->get();
 
      if(count($booked_rooms)==0){
         try{
@@ -117,7 +117,6 @@ class RoomController extends Controller
             return redirect()->back()->with('error',$e->getMessage());
         }
      }else{
-         dd('hello');
          return redirect()->back()->with('error','This room has been booked in your selected time! Please select another time');
      }
 
