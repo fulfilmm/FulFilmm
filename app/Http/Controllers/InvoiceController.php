@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 use App\Exports\InvoiceExport;
-use App\Jobs\leadactivityschedulemail;
 use App\Models\Account;
-use App\Models\AdvancePayment;
 use App\Models\AmountDiscount;
-use App\Models\ChartOfAccount;
 use App\Models\Company;
 use App\Models\Customer;
 use App\Models\DiscountPromotion;
@@ -18,10 +15,8 @@ use App\Models\OfficeBranch;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\MainCompany;
-use App\Models\product;
 use App\Models\product_price;
 use App\Models\products_tax;
-use App\Models\ProductVariations;
 use App\Models\Region;
 use App\Models\Revenue;
 use App\Models\SaleZone;
@@ -38,7 +33,6 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
-use function PHPUnit\Framework\isEmpty;
 
 class InvoiceController extends Controller
 {

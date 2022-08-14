@@ -77,7 +77,7 @@ class ShopRegister extends Controller
             'phone'=>'required',
             'description'=>'nullable',
             'region_id'=>'required',
-            'zone_id'=>'required',
+            'zone_id'=>'nullable',
             'branch_id'=>'required'
 
         ]);
