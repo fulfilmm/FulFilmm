@@ -94,6 +94,22 @@
 
                 </ul>
             </li>
+            <li class="submenu">
+                <a href="#"><span> Assignment</span>
+                    <span
+                            class="menu-arrow"></span></a>
+                <ul style="display: none;">
+
+                    <li><a class="{{ Request::is('assignments') ? 'active' : '' }}"
+                           href="{{ route('assignments.index') }}" style="text-decoration: none">Task</a>
+                    </li>
+
+                    <li><a class="{{ Request::is('schedule') ? 'active' : '' }}"
+                           href="{{ route('schedule.index') }}" style="text-decoration: none">Schedules
+                        </a></li>
+
+                </ul>
+            </li>
         </ul>
 
 
