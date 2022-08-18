@@ -42,4 +42,6 @@ Route::middleware(['auth:employee'])->group(function () {
     Route::get('approval/cmt/delete/{id}', [CommentController::class, 'delete_approval_cmt'])->name('approval_cmt.delete');
     Route::post('complete/minutes', [MinutesController::class, 'complete'])->name('complete.minutes');
     Route::resource('expense_record', ExpensesRecordController::class);
+    Route::get('schedule',[\App\Http\Controllers\ScheduleController::class,'index'])->name('schedule.index');
+    Route::resource('assignments',\App\Http\Controllers\AssigmentController::class);
 });
