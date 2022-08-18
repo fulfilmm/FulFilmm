@@ -8,8 +8,8 @@
                 <div class="col-sm-12">
                     <h3 class="page-title">Purchase Order Create</h3>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                        <li class="breadcrumb-item active"><a href="{{route('purchase_request.index')}}">RFQs</a></li>
+                        <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
+                        <li class="breadcrumb-item "><a href="{{route('purchase_request.index')}}">RFQs</a></li>
                         <li class="breadcrumb-item active">Create</li>
                     </ul>
                 </div>

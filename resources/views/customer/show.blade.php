@@ -263,52 +263,81 @@
                            </div>
                            <div class="tab-pane" id="pending_tasks">
                                <div class="col-12">
-                                   <h5>Activity Schedule :</h5>
-                                   <div class="bs-offset-main bs-canvas-anim mt-2">
-                                       <button class="btn btn-primary btn-sm" type="button" data-toggle="canvas"
-                                               data-target="#activity_schedule" aria-expanded="false"
-                                               aria-controls="bs-canvas-right">Add New
-                                       </button>
-                                   </div>
+                                   <section class="vh-100" style="background-color: #eee;">
 
+                                   <div class="container py-5 h-100">
+                                       <div class="row d-flex justify-content-center align-items-center h-100">
+                                           <div class="col-md-12 col-xl-12">
 
-                                   <div class="iq-timeline0 m-0 d-flex align-items-center justify-content-between position-relative activity_schedule" style="overflow: auto">
-
-                                       <ul class="list-inline p-0 m-0">
-                                           @foreach($data['activity_schedule'] as $activity)
-                                               <li>
-                                                   <div class="timeline-dots timeline-dot1 border-primary text-primary pt-1"></div>
-                                                   <div class="pt-3">
-                                                       <p class="mb-0 text-muted font-weight-bold text-uppercase">{{\Carbon\Carbon::parse($activity->date_time)->toFormattedDateString()}}   {{date('h:i a', strtotime($activity->date_time))}}</p>
+                                               <div class="card">
+                                                   <div class="card-header p-3">
+                                                       <h5 class="mb-0"><i class="fas fa-tasks me-2"></i>Activity Schedule :</h5>
                                                    </div>
-                                               </li>
-                                               <li>
-
-
-                                                   <div class="d-inline-block w-100">
-                                                       <div class="d-inline-block w-100">
-                                                           <p></p>
-                                                           <p class="mb-0">{{$activity->description}}</p>
-                                                       </div>
-                                                       <a href="{{route('delete_schedule',$activity->id)}}" class="btn btn-danger btn-sm float-right">Delete</a>
-                                                       @if($activity->work_done!=1)
-                                                           @if(\Carbon\Carbon::now()>$activity->date_time)
-                                                               <a href="{{route('work.done',$activity->id)}}" class="btn btn-danger float-right btn-sm mr-3">Overdue Date</a>
-                                                           @else
-                                                               <a href="{{route('work.done',$activity->id)}}"
-                                                                  class="btn btn-primary float-right btn-sm mr-3">Done</a>
-                                                           @endif
-                                                       @else
-                                                           <button class="btn btn-success float-right btn-sm mr-3"><i
-                                                                       class="la la-check-circle-o"></i> Complete
+                                                   <div class="col-12">
+                                                       <div class="bs-offset-main bs-canvas-anim mt-2">
+                                                           <button class="btn btn-primary btn-sm" type="button" data-toggle="canvas"
+                                                                   data-target="#activity_schedule" aria-expanded="false"
+                                                                   aria-controls="bs-canvas-right">Add New
                                                            </button>
-                                                       @endif
+                                                       </div>
                                                    </div>
-                                               </li>
+                                                   <div class="card-body" data-mdb-perfect-scrollbar="true" style="position: relative; height: 400px">
 
-                                           @endforeach
-                                       </ul>
+                                                       <table class="table mb-0">
+                                                           <thead>
+                                                           <tr>
+                                                               <th scope="col">Employee</th>
+                                                               <th scope="col">Title</th>
+                                                               <th scope="col">Type</th>
+                                                               <th scope="col">Date</th>
+                                                               <th scope="col">Status</th>
+                                                               <th scope="col">Actions</th>
+                                                           </tr>
+                                                           </thead>
+                                                           <tbody>
+                                                           @foreach($data['activity_schedule'] as $activity)
+                                                           <tr class="fw-normal">
+                                                               <th>
+                                                                   <img src="{{$activity->employee->profile_img!=null? url(asset('img/profiles/'.$activity->employee->profile_img)):url(asset('img/profiles/avatar-01.jpg'))}}"
+                                                                        class="shadow-1-strong rounded-circle" alt="avatar 1"
+                                                                        style="width: 55px; height: auto;">
+                                                                   <span class="ms-2">{{$activity->employee->name}}</span>
+                                                               </th>
+                                                               <td>
+                                                                   {{$activity->description}}
+                                                               </td>
+                                                               <td class="align-middle">
+                                                                   <span>{{$activity->type}}</span>
+                                                               </td>
+                                                               <td>{{\Carbon\Carbon::parse($activity->date_time)->toFormattedDateString()}} {{date('h:i a', strtotime(\Carbon\Carbon::parse($activity->date_time)))}}</td>
+                                                               <td class="align-middle">
+                                                                   <h6 class="mb-0"> @if($activity->work_done!=1)
+                                                                           @if(\Carbon\Carbon::now()>$activity->date_time)
+                                                                               <span class="text-danger"> Overdue </span>
+                                                                           @else
+                                                                               <span class="text-info">Working</span>
+                                                                           @endif
+                                                                       @else
+                                                                           <span class="text-success  btn-sm mr-3"> Done
+                                                                           </span>
+                                                                       @endif</h6>
+                                                               </td>
+                                                               <td class="align-middle">
+                                                                   <a href="{{route('work.done',$activity->id)}}" class="btn btn-info  btn-sm mr-3">Done</a>
+                                                                   <a href="{{route('delete_schedule',$activity->id)}}" class="btn btn-danger btn-sm">Delete</a>
+                                                               </td>
+                                                           </tr>
+                                                           @endforeach
+                                                           </tbody>
+                                                       </table>
+
+                                                   </div>
+                                               </div>
+
+                                           </div>
+                                       </div>
                                    </div>
+                                   </section>
                                </div>
                            </div>
                            <div class="tab-pane" id="completed_tasks">

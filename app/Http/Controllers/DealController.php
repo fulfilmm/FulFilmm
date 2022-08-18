@@ -244,7 +244,7 @@ class DealController extends Controller
         $schedule=new DealActivitySchedule();
         $schedule->description=$request->description;
         $schedule->to_date=Carbon::create($request->end_date.''.$request->time);
-        $schedule->from_date=Carbon::create($request->start_date);
+        $schedule->from_date=Carbon::create($request->start_date)->startOfDay();
         $schedule->deal_id=$request->deal_id;
         $schedule->emp_id=Auth::guard('employee')->user()->id;
         $schedule->type=$request->type;

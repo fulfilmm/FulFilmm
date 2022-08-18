@@ -45,112 +45,6 @@
                             <strong>Notes : </strong><span>{{$deal->next_step}}</span>
                         </div>
                     </div>
-                    <div class="card ">
-                        <div class="card-body p-0">
-                            <ul class="nav tab-nav-pane nav-tabs pt-2 mb-0">
-                                <li class="pb-2 mb-0 nav-item"><a data-toggle="tab" class="font-weight-bold text-uppercase px-5 py-2 active" href="#activity">Activity Schedule</a></li>
-                                <li class="pb-2 mb-0 nav-item"><a data-toggle="tab" class="font-weight-bold text-uppercase px-5 py-2" href="#comment">Comment </a></li>
-                            </ul>
-
-                            <div class="tab-content">
-                                <div id="activity" class="tab-pane fade show active p-3">
-                                    <div class="bs-offset-main bs-canvas-anim">
-                                        <button class="btn btn-primary btn-sm" type="button" data-toggle="canvas"
-                                                data-target="#bs-canvas-left" aria-expanded="false"
-                                                aria-controls="bs-canvas-right">Add New
-                                        </button>
-                                    </div>
-
-                                    <div class="iq-timeline0 m-0 d-flex align-items-center justify-content-between position-relative activity_schedule">
-
-                                        <ul class="list-inline p-0 m-0">
-                                            @foreach($schedules as $activity)
-                                                <li>
-                                                    <div class="pt-5">
-
-                                                        <h5>{{$activity->type}}</h5>
-                                                        <div class="timeline-dots timeline-dot1 border-primary text-primary mt-5"></div>
-                                                        @if($activity->type=='Meeting')
-
-                                                            <p class="mb-0 text-muted font-weight-bold text-uppercase">{{\Carbon\Carbon::parse($activity->meeting_time)->toFormattedDateString()}} {{date('h:i a', strtotime($activity->meeting_time))}}</p>
-                                                            @else
-                                                            <p class="mb-0 text-muted font-weight-bold text-uppercase">{{\Carbon\Carbon::parse($activity->from_date)->toFormattedDateString()}} - {{\Carbon\Carbon::parse($activity->to_date)->toFormattedDateString()}}</p>
-                                                            @endif
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="d-inline-block w-100">
-                                                        <div class="d-inline-block w-100">
-                                                            <p>{{$activity->description}}</p>
-                                                        </div>
-                                                        @if($activity->work_done!=1)
-                                                           @if($activity->type=="Meeting")
-                                                                @if(\Carbon\Carbon::now()>$activity->meeting_time)
-                                                                    <a href="{{route('schedule.done',$activity->id)}}" class="btn btn-danger float-right btn-sm mr-3">Overdue Date</a>
-                                                                @else
-                                                                    <a href="{{route('schedule.done',$activity->id)}}"
-                                                                       class="btn btn-primary float-right btn-sm mr-3">Done</a>
-                                                                @endif
-                                                               @else
-                                                                @if(\Carbon\Carbon::now()>$activity->to_date)
-                                                                    <a href="{{route('schedule.done',$activity->id)}}" class="btn btn-danger float-right btn-sm mr-3">Overdue Date</a>
-                                                                @else
-                                                                    <a href="{{route('schedule.done',$activity->id)}}"
-                                                                       class="btn btn-primary float-right btn-sm mr-3">Done</a>
-                                                                @endif
-                                                               @endif
-                                                        @else
-                                                            <button class="btn btn-success float-right btn-sm mr-3"><i
-                                                                        class="la la-check-circle-o"></i> Complete
-                                                            </button>
-                                                        @endif
-                                                    </div>
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div id="comment" class="tab-pane fade p-3">
-                                    <div class="card ">
-                                        <div class="card-body scroll">
-                                            <ul class="files-list">
-                                                @foreach($comments as $comment)
-                                                    <div class="chat chat-left">
-                                                        <div class="chat-avatar">
-                                                            <a href="profile" class="avatar">
-                                                                <img src="img/profiles/avatar-02.jpg" alt="">
-                                                            </a>
-                                                        </div>
-                                                        <div class="chat-body">
-                                                            <div class="chat-bubble">
-                                                                <div class="chat-content">
-                                                                    <span class="task-chat-user">{{$comment->user->name}}</span>
-                                                                    <p>{{$comment->comment}}</p>
-                                                                    <span class="chat-time">{{$comment->created_at->toFormattedDateString()}} at {{date('h:i:s a', strtotime($comment->created_at))}}</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                        <form method="POST" action="{{url("/deal/post/comment")}}" class="mt-2">
-                                            {{csrf_field()}}
-                                            <div class="row " >
-                                                <div class="col-xl-9 col-md-9 col-9">
-                                                    <input type="hidden" name="deal_id" value="{{$deal->id}}">
-                                                    <div class="input-group col-12" >
-                                                        <input type="text" class="form-control" name="comment" style="border-color: black">
-                                                        <button class="btn btn-outline-dark" type="submit" >Add Note</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                 </div>
             </div>
@@ -267,6 +161,141 @@
                 </div>
             </div>
         </div>
+        <div class="card ">
+            <div class="card-body p-0">
+                <ul class="nav tab-nav-pane nav-tabs pt-2 mb-0">
+                    <li class="pb-2 mb-0 nav-item"><a data-toggle="tab" class="font-weight-bold text-uppercase px-5 py-2 active" href="#activity">Activity Schedule</a></li>
+                    <li class="pb-2 mb-0 nav-item"><a data-toggle="tab" class="font-weight-bold text-uppercase px-5 py-2" href="#comment">Comment </a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <div id="activity" class="tab-pane fade show active p-3">
+
+                        <section class="vh-100" style="background-color: #eee;">
+
+                            <div class="container py-5 h-100">
+                                <div class="row d-flex justify-content-center align-items-center h-100">
+                                    <div class="col-md-12 col-xl-12">
+
+                                        <div class="card">
+                                            <div class="card-header p-3">
+                                                <h5 class="mb-0"><i class="fas fa-tasks me-2"></i>Activity Schedule :</h5>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="bs-offset-main bs-canvas-anim">
+                                                    <button class="btn btn-primary btn-sm" type="button" data-toggle="canvas"
+                                                            data-target="#bs-canvas-left" aria-expanded="false"
+                                                            aria-controls="bs-canvas-right">Add New
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="card-body" data-mdb-perfect-scrollbar="true" style="position: relative; height: 400px">
+                                                <div class="row" style="overflow: auto">
+                                                    <table class="table mb-0">
+                                                        <thead>
+                                                        <tr>
+                                                            <th scope="col">Employee</th>
+                                                            <th scope="col">Title</th>
+                                                            <th scope="col">Type</th>
+                                                            <th scope="col">Due Date</th>
+                                                            <th scope="col">Status</th>
+                                                            <th scope="col">Actions</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        @foreach($schedules as $activity)
+                                                            <tr class="fw-normal">
+                                                                <th>
+                                                                    <img src="{{$activity->employee->profile_img!=null? url(asset('img/profiles/'.$activity->employee->profile_img)):url(asset('img/profiles/avatar-01.jpg'))}}"
+                                                                         class="shadow-1-strong rounded-circle" alt="avatar 1"
+                                                                         style="width: 55px; height: auto;">
+                                                                    <span class="ms-2">{{$activity->employee->name}}</span>
+                                                                </th>
+                                                                <td>
+                                                                    {{$activity->description}}
+                                                                </td>
+                                                                <td>{{$activity->type}}</td>
+                                                                <td>{{\Carbon\Carbon::parse($activity->from_date)->toFormattedDateString()}}</td>
+                                                                <td class="align-middle">
+                                                                    @if($activity->work_done!=1)
+                                                                        @if($activity->type=="Meeting")
+                                                                            @if(\Carbon\Carbon::now()>$activity->meeting_time)
+                                                                                <span class="text-danger" >Overdue</span>
+                                                                            @else
+                                                                                <span class="text-info">Working</span>
+                                                                            @endif
+                                                                        @else
+                                                                            @if(\Carbon\Carbon::now()>$activity->to_date)
+                                                                                <span class="btn btn-danger float-right btn-sm mr-3">Overdue</span>
+                                                                            @else
+                                                                                <span class="text-info">Working</span>
+                                                                            @endif
+                                                                        @endif
+                                                                    @else
+                                                                        <span class="text-success"> Complete
+                                                                        </span>
+                                                                    @endif
+                                                                </td>
+                                                                <td class="align-middle">
+                                                                    <div class="row">
+                                                                        <a href="{{route('schedule.done',$activity->id)}}" class="btn btn-info  btn-sm mr-3">Done</a>
+                                                                        <a href="{{route('delete_schedule',$activity->id)}}" class="btn btn-danger btn-sm">Delete</a>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <div id="comment" class="tab-pane fade p-3">
+                        <div class="card ">
+                            <div class="card-body scroll">
+                                <ul class="files-list">
+                                    @foreach($comments as $comment)
+                                        <div class="chat chat-left">
+                                            <div class="chat-avatar">
+                                                <a href="profile" class="avatar">
+                                                    <img src="{{$comment->user->profile_img!=null? url(asset('img/profiles/'.$comment->user->profile_img)):url(asset('img/profiles/avatar-01.jpg'))}}" alt="">
+                                                </a>
+                                            </div>
+                                            <div class="chat-body">
+                                                <div class="chat-bubble">
+                                                    <div class="chat-content">
+                                                        <span class="task-chat-user">{{$comment->user->name}}</span>
+                                                        <p>{{$comment->comment}}</p>
+                                                        <span class="chat-time">{{$comment->created_at->toFormattedDateString()}} at {{date('h:i:s a', strtotime($comment->created_at))}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            <form method="POST" action="{{url("/deal/post/comment")}}" class="mt-2">
+                                {{csrf_field()}}
+                                <div class="row " >
+                                    <div class="col-xl-9 col-md-9 col-9">
+                                        <input type="hidden" name="deal_id" value="{{$deal->id}}">
+                                        <div class="input-group col-12" >
+                                            <input type="text" class="form-control" name="comment" style="border-color: black">
+                                            <button class="btn btn-outline-dark" type="submit" >Add Note</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div id="bs-canvas-left" class="bs-canvas bs-canvas-anim bs-canvas-right position-fixed bg-light h-100"
          style="max-width: 300px">
@@ -297,7 +326,7 @@
                     </select>
                 </div>
                 <div class="form-group" id="start_date_div">
-                    <label for="start_date">Start Date</label>
+                    <label for="start_date">Alert Date</label>
                     <input type="date" class="form-control" id="start_date" name="start_date">
                 </div>
                 <div class="form-group" id="end_date_div">

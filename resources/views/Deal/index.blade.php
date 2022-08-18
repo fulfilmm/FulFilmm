@@ -33,41 +33,42 @@
             <!-- /Page Header -->
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade " id="list_view" role="tabpanel" aria-labelledby="home-tab">
-                    <table class="table" id="deal">
-                        <thead>
-                        <tr>
-                            <th></th>
-                            <th>Contact Name</th>
-                            <th>Amount</th>
-                            <th>Organization</th>
-                            <th>Created Date</th>
-                            <th>Sale Stage</th>
-                            <th>Assign To</th>
-                            <th>Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($alldeals as $deal)
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td><a href="{{route('deals.show',$deal->id)}}">{{$deal->customer->name??''}}</a></td>
-                            <td>{{$deal->amount}} <strong>{{$deal->unit}}</strong></td>
-                            <td>{{$deal->customer_company->name}}</td>
-                            <td>{{$deal->created_at->toFormattedDateString()}}</td>
-                            <td>{{$deal->sale_stage}}</td>
-                            <td>{{$deal->employee->name??'N/A'}}</td>
-                            <td>
-                                <a href="#" class="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-ellipsis-v ml-2 mt-2" style="font-size: 18px;"></i></a>
-                                <div class="dropdown-menu">
-                                    <a href="{{route('deals.edit',$deal->id)}}" class="dropdown-item"><i class="fa fa-edit mr-2"></i>Edit</a>
-                                    <a href="{{route('deals.destroy',$deal->id)}}" class="dropdown-item"><i class="fa fa-trash-o mr-2"></i>Delete</a>
-                                </div>
-                            </td>
-                        </tr>
+                   <div class="card shadow col-12" style="overflow: auto">
+                     <div class="col-12 my-5">
+                         <table class="table" id="deal">
+                             <thead>
+                             <tr>
+                                 <th></th>
+                                 <th>Contact Name</th>
+                                 <th>Amount</th>
+                                 <th>Organization</th>
+                                 <th>Created Date</th>
+                                 <th>Sale Stage</th>
+                                 <th>Assign To</th>
+                                 <th>Action</th>
+                             </tr>
+                             </thead>
+                             <tbody>
+                             @foreach($alldeals as $deal)
+                                 <tr>
+                                     <td><input type="checkbox"></td>
+                                     <td><a href="{{route('deals.show',$deal->id)}}">{{$deal->customer->name??''}}</a></td>
+                                     <td>{{$deal->amount}} <strong>{{$deal->unit}}</strong></td>
+                                     <td>{{$deal->customer_company->name}}</td>
+                                     <td>{{$deal->created_at->toFormattedDateString()}}</td>
+                                     <td>{{$deal->sale_stage}}</td>
+                                     <td>{{$deal->employee->name??'N/A'}}</td>
+                                     <td>
+                                         <a href="{{route('deals.edit',$deal->id)}}" class="btn btn-sm btn-info"><i class="fa fa-edit"></i></a>
+                                         <a href="{{route('deals.destroy',$deal->id)}}" class="btn btn-sm btn-danger"><i class="fa fa-trash-o"></i></a>
+                                     </td>
+                                 </tr>
 
-                        @endforeach
-                        </tbody>
-                    </table>
+                             @endforeach
+                             </tbody>
+                         </table>
+                     </div>
+                   </div>
                 </div>
                 <div class="tab-pane fade show active" id="kaban_view" role="tabpanel" aria-labelledby="home-tab">
                     <div class="kanban-board card mb-0 col-12 shadow">
@@ -83,7 +84,7 @@
                                                 <div class="card panel">
                                                     <div class="kanban-box">
                                                         <div class="task-board-header">
-                                                            <span class="status-title"><a href="{{route('deals.show',$deal->id)}}">{{$deal->name}}</a></span>
+                                                            <span class="status-title"><a href="{{route('deals.show',$deal->id)}}"><h3>{{$deal->name}}</h3></a></span>
                                                             <div class="dropdown kanban-task-action">
                                                                 <a href="" data-toggle="dropdown">
                                                                     <i class="fa fa-angle-down"></i>
@@ -132,7 +133,7 @@
                                                 <div class="card panel">
                                                     <div class="kanban-box">
                                                         <div class="task-board-header">
-                                                            <span class="status-title"><a href="">{{$deal->name}}</a></span>
+                                                            <span class="status-title"><a href="{{route('deals.show',$deal->id)}}"><h3>{{$deal->name}}</h3></a></span>
                                                             <div class="dropdown kanban-task-action">
                                                                 <a href="" data-toggle="dropdown">
                                                                     <i class="fa fa-angle-down"></i>
@@ -179,7 +180,7 @@
                                                 <div class="card panel">
                                                     <div class="kanban-box">
                                                         <div class="task-board-header">
-                                                            <span class="status-title"><a href="">{{$deal->name}}</a></span>
+                                                            <span class="status-title"><a href="{{route('deals.show',$deal->id)}}"><h3>{{$deal->name}}</h3></a></span>
                                                             <div class="dropdown kanban-task-action">
                                                                 <a href="" data-toggle="dropdown">
                                                                     <i class="fa fa-angle-down"></i>
@@ -228,7 +229,7 @@
                                                 <div class="card panel">
                                                     <div class="kanban-box">
                                                         <div class="task-board-header">
-                                                            <span class="status-title"><a href="">{{$deal->name}}</a></span>
+                                                            <span class="status-title"><a href="{{route('deals.show',$deal->id)}}"><h3>{{$deal->name}}</h3></a></span>
                                                             <div class="dropdown kanban-task-action">
                                                                 <a href="" data-toggle="dropdown">
                                                                     <i class="fa fa-angle-down"></i>
@@ -278,7 +279,7 @@
                                                 <div class="card panel">
                                                     <div class="kanban-box">
                                                         <div class="task-board-header">
-                                                            <span class="status-title"><a href="">{{$deal->name}}</a></span>
+                                                            <span class="status-title"><a href="{{route('deals.show',$deal->id)}}"><h3>{{$deal->name}}</h3></a></span>
                                                             <div class="dropdown kanban-task-action">
                                                                 <a href="" data-toggle="dropdown">
                                                                     <i class="fa fa-angle-down"></i>
@@ -325,7 +326,7 @@
                                                 <div class="card panel">
                                                     <div class="kanban-box">
                                                         <div class="task-board-header">
-                                                            <span class="status-title"><a href="">{{$deal->name}}</a></span>
+                                                            <span class="status-title"><a href="{{route('deals.show',$deal->id)}}"><h3>{{$deal->name}}</h3></a></span>
                                                             <div class="dropdown kanban-task-action">
                                                                 <a href="" data-toggle="dropdown">
                                                                     <i class="fa fa-angle-down"></i>
