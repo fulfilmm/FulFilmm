@@ -108,15 +108,17 @@
                                                 <td><a href="{{route('employees.show',$todo->responsible_emp->id)}}">{{$todo->responsible_emp->name}}</a></td>
                                                 <td>{{\Carbon\Carbon::parse($todo->end_date)->toFormattedDateString()}}</td>
                                                 <td><a href="{{route('employees.show',$todo->owner->id)}}">{{$todo->owner->name}}</a></td>
-                                                <td><label class="badge badge-gradient-danger">{{$todo->status}}</label></td>
+                                                 <td><button type="button" class="btn btn-sm text-white {{$todo->status=='Not Working'?'gradient-purple':($todo->status=='Working'?"gradient-yellow":
+                                                 ($todo->status=='Pending'?"gradient-blue":($todo->status=='Cancel'?'gradient-red':'gradient-green')))}}">{{$todo->status}}</button></td>
                                                 <td>
                                                 </td>
-                                                <td class="checkBox">{{$todo->priority}}</td>
+                                                <td class="checkBox"><span class="{{$todo->priority=='High'?'soft-purple':($todo->priority=='Medium'?'soft-blue':'soft-green')}}">{{$todo->priority}}</span></td>
                                                 <td class="text-center">
                                                     <div class="dropdown dropdown-action">
                                                         <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                                         <div class="dropdown-menu dropdown-menu-right">
-                                                            <a class="dropdown-item" href="{{route('assignments.edit',$todo->id)}}" data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                            <a class="dropdown-item" href="{{route('assignments.edit',$todo->id)}}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                            <a class="dropdown-item" href="{{route('assignments.show',$todo->id)}}"><i class="fa fa-eye m-r-5"></i> Show</a>
                                                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#change_process{{$todo->id}}"><i class="fa fa-pencil m-r-5"></i>Edit Percentage</a>
                                                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#change_status{{$todo->id}}"><i class="fa fa-pencil m-r-5"></i>Edit Status</a>
                                                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_client"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
@@ -210,80 +212,5 @@
                 </div>
             </div>
         </div>
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-            <div class="offcanvas-header">
-                <h5 id="offcanvasRightLabel">Add Task</h5>
-                <button type="button" class="btn btn-white btn-sm" data-bs-dismiss="offcanvas" aria-label="Close"><i class="la la-close"></i></button>
-            </div>
-            <div class="offcanvas-body">
-                <form action="{{route('assignments.store')}}" method="POST">
-                    @csrf
-                    <input type="hidden" name="assignee_id" value="{{\Illuminate\Support\Facades\Auth::guard('employee')->user()->id}}">
-                    <div class="col-12">
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="title">Title</label>
-                                    <input type="text" id="title" class="form-control" name="title" required>
-                                </div>
-                            </div>
-                           @if($role=='CEO'||$role=='Super Admin'||$role=='Sales Manager'||$role=='Finance Manager'||$role=='General Manager'||$role=='Stock Manager'||$role=='HR Manager'
-                           ||$role=='Customer Service Manager'||$role=='Car Admin')
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label for="emp">Responsible Employee</label>
-                                        <select name="emp_id" id="emp" class="form-control">
-                                            @foreach($employees as $emp)
-                                                <option value="{{$emp->id}}">{{$emp->name}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                               @else
-                                <input type="hidden" name="emp_id" value="{{\Illuminate\Support\Facades\Auth::guard('employee')->user()->id}}">
-                            @endif
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="end_date">Estimates Finished Date</label>
-                                    <input type="date" class="form-control" name="end_date" id="end_date">
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="priority">Priority</label>
-                                    <select name="priority" id="priority" class="form-control">
-                                        <option value="High">High</option>
-                                        <option value="Medium">Medium</option>
-                                        <option value="Low">Low</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="status">Status</label>
-                                    <select name="status" id="status" class="form-control">
-                                        <option value="Not Working">Not Working</option>
-                                        <option value="Start Working">Start Working</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label for="desc">Description</label>
-                                    <textarea name="description" id="desc" cols="30" rows="5" class="form-control"></textarea>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="row text-center">
-                                    <div class="col-12 text-center">
-                                        <button type="button" data-bs-dismiss="offcanvas" class="btn btn-sm btn-danger mr-3">Cancel</button>
-                                        <button type="submit" class="btn btn-sm btn-info">Save</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
+       @include('Assignment.create')
 @endsection

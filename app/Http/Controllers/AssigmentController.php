@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AssginmentComment;
 use App\Models\Assignment;
 use App\Models\Employee;
 use Illuminate\Http\Request;
@@ -88,57 +89,53 @@ class AssigmentController extends Controller
     }
     public function edit($id){
         $auth=Auth::guard('employee')->user();
-        switch ($auth->role->name){
-            case 'CEO':
-                $todo_list=Assignment::with('owner','responsible_emp')->where('id',$id)->firstOrFail();
-                $employees=Employee::all();
-                return view('Assignment.edit',compact('todo_list','employees'));
-                break;
-            case 'Super Admin':
-                $todo_list=Assignment::with('owner','responsible_emp')->where('id',$id)->firstOrFail();
-                $employees=Employee::all();
-                return view('Assignment.edit',compact('todo_list','employees'));
-                break;
-            case 'Sales Manager':
-                 $todo_list=Assignment::with('owner','responsible_emp')->where('id',$id)->firstOrFail();
-                $employees=Employee::where('department_id',$auth->department_id)->get();
-                return view('Assignment.edit',compact('todo_list','employees'));
-                break;
-            case 'Finance Manager':
-                $todo_list=Assignment::with('owner','responsible_emp')->where('id',$id)->firstOrFail();
-                $employees=Employee::where('department_id',$auth->department_id)->get();
-                return view('Assignment.edit',compact('todo_list','employees'));
-                break;
-            case 'Customer Service Manager':
-                $todo_list=Assignment::with('owner','responsible_emp')->where('id',$id)->firstOrFail();
-                $employees=Employee::where('department_id',$auth->department_id)->get();
-                return view('Assignment.edit',compact('todo_list','employees'));
-                break;
-            case 'HR Manager':
-                $todo_list=Assignment::with('owner','responsible_emp')->where('id',$id)->firstOrFail();
-                $employees=Employee::where('department_id',$auth->department_id)->get();
-                return view('Assignment.edit',compact('todo_list','employees'));
-                break;
-            case 'Stock Manager':
-               $todo_list=Assignment::with('owner','responsible_emp')->where('id',$id)->firstOrFail();
-                $employees=Employee::where('department_id',$auth->department_id)->get();
-                return view('Assignment.edit',compact('todo_list','employees'));
-                break;
-            case'General Manager':
-                $todo_list=Assignment::with('owner','responsible_emp')->where('id',$id)->firstOrFail();
-                $employees=Employee::where('department_id',$auth->department_id)->get();
-                return view('Assignment.edit',compact('todo_list','employees'));
-                break;
-            case 'Car Admin':
-                 $todo_list=Assignment::with('owner','responsible_emp')->where('id',$id)->firstOrFail();
-                $employees=Employee::where('department_id',$auth->department_id)->get();
-                return view('Assignment.edit',compact('todo_list','employees'));
-                break;
-            default:
-                $todo_list=Assignment::with('owner','responsible_emp')->where('id',$id)->firstOrFail();
-                $employees=Employee::where('id',$auth->id)->get();
-                return view('Assignment.edit',compact('todo_list','employees'));
-        }
+        $role=$auth->role->name;
+        $todo_list=Assignment::with('owner','responsible_emp')->where('id',$id)->firstOrFail();
+      if($todo_list->assignee_id==$auth->id){
+          switch ($auth->role->name){
+              case 'CEO':
+                  $employees=Employee::all();
+                  return view('Assignment.edit',compact('todo_list','employees','role'));
+                  break;
+              case 'Super Admin':
+                  $employees=Employee::all();
+                  return view('Assignment.edit',compact('todo_list','employees','role'));
+                  break;
+              case 'Sales Manager':
+                  $employees=Employee::where('department_id',$auth->department_id)->get();
+                  return view('Assignment.edit',compact('todo_list','employees','role'));
+                  break;
+              case 'Finance Manager':
+                  $employees=Employee::where('department_id',$auth->department_id)->get();
+                  return view('Assignment.edit',compact('todo_list','employees','role'));
+                  break;
+              case 'Customer Service Manager':
+                  $employees=Employee::where('department_id',$auth->department_id)->get();
+                  return view('Assignment.edit',compact('todo_list','employees','role'));
+                  break;
+              case 'HR Manager':
+                  $employees=Employee::where('department_id',$auth->department_id)->get();
+                  return view('Assignment.edit',compact('todo_list','employees','role'));
+                  break;
+              case 'Stock Manager':
+                  $employees=Employee::where('department_id',$auth->department_id)->get();
+                  return view('Assignment.edit',compact('todo_list','employees','role'));
+                  break;
+              case'General Manager':
+                  $employees=Employee::where('department_id',$auth->department_id)->get();
+                  return view('Assignment.edit',compact('todo_list','employees','role'));
+                  break;
+              case 'Car Admin':
+                  $employees=Employee::where('department_id',$auth->department_id)->get();
+                  return view('Assignment.edit',compact('todo_list','employees','role'));
+                  break;
+              default:
+                  $employees=Employee::where('id',$auth->id)->get();
+                  return view('Assignment.edit',compact('todo_list','employees','role'));
+          }
+      }else{
+          return redirect()->back()->with('error','You Can not edit this task');
+      }
     }
     public function update(Request $request,$id){
         $todo=Assignment::where('id',$id)->first();
@@ -153,5 +150,18 @@ class AssigmentController extends Controller
         $todo->update();
 
         return redirect('assignments')->with('success','Task Updated');
+    }
+    public function show($id){
+        $todo_list=Assignment::with('owner','responsible_emp')->where('id',$id)->firstOrFail();
+        $comments=AssginmentComment::with('employee')->where('assignment_id',$id)->get();
+//        dd($comments);
+        return view('Assignment.show',compact('todo_list','comments'));
+    }
+    public function comment(Request $request){
+        $this->validate($request,[
+            'comment'=>'required'
+        ]);
+        AssginmentComment::create($request->all());
+        return redirect(route('assignments.show',$request->assignment_id))->with('success','Add new comment');
     }
 }

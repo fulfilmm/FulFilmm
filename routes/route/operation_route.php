@@ -44,4 +44,5 @@ Route::middleware(['auth:employee'])->group(function () {
     Route::resource('expense_record', ExpensesRecordController::class);
     Route::get('schedule',[\App\Http\Controllers\ScheduleController::class,'index'])->name('schedule.index');
     Route::resource('assignments',\App\Http\Controllers\AssigmentController::class);
+    Route::post('todo/comment',[\App\Http\Controllers\AssigmentController::class,'comment'])->name('todo.comment');
 });

@@ -1,0 +1,47 @@
+.gradient-purple{
+    background: rgb(228,133,236);
+    background: linear-gradient(90deg, rgba(228,133,236,0.9668242296918768) 0%, rgba(227,62,173,1) 100%);
+}
+.gradient-yellow {
+    background: rgb(217, 210, 105);
+    background: linear-gradient(90deg, rgba(217, 210, 105, 0.9668242296918768) 0%, rgba(208, 192, 7, 1) 100%);
+}
+.gradient-blue{
+    background: rgb(18, 194, 205);
+    background: linear-gradient(90deg, rgba(18, 194, 205, 1) 0%, rgba(0, 212, 255, 1) 100%);
+}
+.gradient-red{
+    background: rgb(242, 122, 103);
+    background: linear-gradient(90deg, rgba(242, 122, 103, 0.9668242296918768) 0%, rgba(227, 67, 62, 1) 100%);
+}
+.gradient-green{
+    background: rgb(132,193,70);
+    background: linear-gradient(90deg, rgba(132,193,70,0.9668242296918768) 0%, rgba(31,180,17,1) 100%);')))}}"
+}
+.colorhint-gradient {
+    background: linear-gradient(to top, lime, 20%, cyan);
+}
+.soft-green{
+    color: rgb(132,193,70);
+}
+.soft-purple{
+    color:#d9138a;
+}
+.soft-yellow{
+    color:#e2d810;
+}
+.soft-blue{
+    color:#12a4d9;
+}
+.mute-purple{
+    color:#fbcbc9;
+}
+.blue-black{
+    color:#3b4d61;
+}
+.cyan{
+    color:#ecc19c;
+}
+.gray-white{
+    color:#e5e5dc;
+}

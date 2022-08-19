@@ -15,6 +15,7 @@
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="{{url(asset("css/bootstrap.min.css"))}}">
         <link rel="stylesheet" href="{{asset("css/select2.min.css")}}">
+        <link rel="stylesheet" href="{{asset('css/color.css')}}">
         
 
         <!--------------------- Vue Link ----------------------->
