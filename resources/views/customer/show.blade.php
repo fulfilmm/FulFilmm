@@ -410,6 +410,9 @@
                             <option value="Phone Call">Phone Call</option>
                             <option value="Follow Up">Follow Up</option>
                             <option value="Meeting">Meeting</option>
+                            <option value="Email">Email</option>
+                            <option value="Appointment">Appointment</option>
+                            <option value="Task">Task</option>
                             <option value="Entertainment">Entertainment</option>
                             <option value="Event">Event</option>
                             <option value="Visit">Visit</option>
