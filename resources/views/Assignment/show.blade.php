@@ -16,27 +16,26 @@
         </div>
         <div class="card my-3" style="background-color: #e9e9e6">
             <div class="col-12 ml-2 mr-2">
-            <div class="row my-2">
-                <div class="col-3">
-                            <span class="btn btn gradient-red text-white"
-                                  type="button">Due Date : {{\Carbon\Carbon::parse($todo_list->end_date)->toFormattedDateString()}}</span>
-                </div>
-
-
-                <div class="col-3">
+            <div class="row my-2 justify-content-between">
+                <div class="col">
                                     <span class="btn btn gradient-purple"
-                                          type="button">Employee : {{$todo_list->responsible_emp->name}}</span>
+                                          type="button">{{$todo_list->responsible_emp->name}}</span>
                 </div>
-                <div class="col-2">
+                <div class="col">
+                            <span class="btn btn gradient-red text-white"
+                                  type="button">{{\Carbon\Carbon::parse($todo_list->end_date)->toFormattedDateString()}}</span>
+                </div>
+
+                <div class="col">
                                     <span class="btn btn {{$todo_list->priority=='High'?'gradient-red text-white':($todo_list->priority=='Medium'?'gradient-blue':'gradient-green')}}"
                                           type="button">Priority : {{$todo_list->priority}}</span>
                 </div>
-                <div class="col-2">
-                                    <span class="btn btn {{$todo_list->status=='Not Working'?'gradient-purple':($todo_list->status=='Working'?"gradient-yellow":
+                <div class="col">
+                                    <span class="btn btn {{$todo_list->status=='Not Started'?'gradient-purple':($todo_list->status=='Working'?"gradient-yellow":
                                                  ($todo_list->status=='Pending'?"gradient-blue":($todo_list->status=='Cancel'?'gradient-red':'gradient-green')))}}"
-                                          type="button">Status : {{$todo_list->status}}</span>
+                                          type="button">{{$todo_list->status}}</span>
                 </div>
-                <div class="col-2">
+                <div class="col">
                             <span class="btn btn {{$todo_list->progress==100?"bg-success":($todo_list->progress>=75?"bg-info":($todo_list->progress>=50?'bg-warning':'bg-danger text-white'))}}"
                                   type="button">Percentage : {{$todo_list->progress}} %</span>
                 </div>

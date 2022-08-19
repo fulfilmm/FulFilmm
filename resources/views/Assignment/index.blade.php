@@ -108,7 +108,7 @@
                                                 <td><a href="{{route('employees.show',$todo->responsible_emp->id)}}">{{$todo->responsible_emp->name}}</a></td>
                                                 <td>{{\Carbon\Carbon::parse($todo->end_date)->toFormattedDateString()}}</td>
                                                 <td><a href="{{route('employees.show',$todo->owner->id)}}">{{$todo->owner->name}}</a></td>
-                                                 <td><button type="button" class="btn btn-sm text-white {{$todo->status=='Not Working'?'gradient-purple':($todo->status=='Working'?"gradient-yellow":
+                                                 <td><button type="button" class="btn btn-sm text-white {{$todo->status=='Not Started'?'gradient-purple':($todo->status=='Working'?"gradient-yellow":
                                                  ($todo->status=='Pending'?"gradient-blue":($todo->status=='Cancel'?'gradient-red':'gradient-green')))}}">{{$todo->status}}</button></td>
                                                 <td>
                                                 </td>
@@ -184,7 +184,7 @@
                                                                         <div class="form-group">
                                                                             <label for="status">Status</label>
                                                                             <select name="status" id="status" class="form-control">
-                                                                                <option value="Not Working">Not Working</option>
+                                                                                <option value="Not Started">Not Started</option>
                                                                                 <option value="Working">Working</option>
                                                                                 <option value="Pending">Pending</option>
                                                                                 <option value="Finished">Finished</option>

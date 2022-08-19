@@ -53,7 +53,7 @@
                         <div class="form-group">
                             <label for="status">Status</label>
                             <select name="status" id="status" class="form-control">
-                                <option value="Not Working">Not Working</option>
+                                <option value="Not Started">Not Started</option>
                                 <option value="Start Working">Start Working</option>
                             </select>
                         </div>
