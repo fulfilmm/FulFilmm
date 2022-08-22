@@ -34,6 +34,57 @@
                            aria-controls="profile" aria-selected="false">Assignments</a>
                     </li>
                 </ul>
+                <form action="{{route('assignments.index')}}" method="GET">
+                    @csrf
+                    <div class="row mt-5">
+                        <div class="col">
+                            <div class="from-group">
+                                <select name="emp_id" id="" class="form-control">
+                                    <option value="">None</option>
+                                    @foreach($employees as $emp)
+                                        <option value="{{$emp->id}} {{$emp->id==$emp_id?'selected':''}}">{{$emp->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div><div class="col">
+                            <div class="from-group">
+                                <input type="date" class="form-control" name="start_date" value="{{\Carbon\Carbon::parse($start)->format('Y-m-d')}}">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="from-group">
+                                <input type="date" class="form-control" name="end_date" value="{{\Carbon\Carbon::parse($end)->format('Y-m-d')}}">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="from-group">
+                                <select name="priority" id="" class="form-control">
+                                    <option value="">None</option>
+                                    <option value="High" {{$priority=='High'?'selected':''}}>High</option>
+                                    <option value="Medium" {{$priority=='Medium'?'selected':''}}>Medium</option>
+                                    <option value="Low" {{$priority=='Low'?'selected':''}}>Low</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="from-group">
+                                <select name="status" id="" class="form-control">
+                                    <option value="">None</option>
+                                    <option value="Not Started" {{$status=='Not Started'?'selected':''}}>Not Started</option>
+                                    <option value="Working" {{$status=='Working'?'selected':''}}>Working</option>
+                                    <option value="Pending" {{$status=='Pending'?'selected':''}}>Pending</option>
+                                    <option value="Finished" {{$status=='Finished'?'selected':''}}>Finished</option>
+                                    <option value="Cancel" {{$status=='Cancel'?'selected':''}}>Cancel</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-white col-12"><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
                 <div class="tab-content" id="myTabContent">
 
                     <div class="tab-pane fade show active" id="todo" role="tabpanel" aria-labelledby="home-tab">

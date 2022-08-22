@@ -13,24 +13,6 @@
                         <li class="breadcrumb-item active">Schedules</li>
                     </ul>
                 </div>
-                <div class="col-auto float-right ml-auto">
-                    <form action="{{route('schedule.index')}}" method="get">
-                        @csrf
-                        <div class="col-12">
-                            <div class="row">
-                                <div class="col">
-                                    <input type="date" class="form-control" name="start_date">
-                                </div>
-                                <div class="col">
-                                    <input type="date" class="form-control" name="end_date">
-                                </div>
-                                <div class="col">
-                                    <button type="submit" class="btn btn-white"><i class="fa fa-search"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
             </div>
         </div>
         <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -41,6 +23,28 @@
                 <a class="nav-link" id="profile-tab" data-toggle="tab" href="#deal_schedule" role="tab" aria-controls="profile" aria-selected="false">Deal Schedule</a>
             </li>
         </ul>
+        <form action="{{route('schedule.index')}}" method="get">
+            @csrf
+            <div class="row">
+                <div class="col">
+                    <select name="customer_id" id="" class="form-control">
+                        <option value="">None</option>
+                        @foreach($customers as $item)
+                            <option value="{{$item->id}}">{{$item->name}}</option>
+                            @endforeach
+                    </select>
+                </div>
+                <div class="col">
+                    <input type="date" class="form-control" name="start_date">
+                </div>
+                <div class="col">
+                    <input type="date" class="form-control" name="end_date">
+                </div>
+                <div class="col">
+                    <button type="submit" class="btn btn-white"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+        </form>
         {{--@dd($stock)--}}
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="lead_schedule" role="tabpanel" aria-labelledby="home-tab">

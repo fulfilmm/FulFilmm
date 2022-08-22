@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use App\Models\DealActivitySchedule;
 use App\Models\Employee;
 use App\Models\next_plan;
@@ -12,26 +13,29 @@ use Illuminate\Support\Facades\Auth;
 class ScheduleController extends Controller
 {
     public function index(Request $request)
+
     {
         $start = Carbon::parse($request->start_date)->startOfDay();
         $end = Carbon::parse($request->end_date)->endOfDay();
         $auth = Auth::guard('employee')->user();
+        $customers=Customer::all();
         switch ($auth->role->name) {
             case "Super Admin":
+//                if(isset($request->))
                 $schedules = DealActivitySchedule::whereBetween('from_date', [$start, $end])->get();
                 $next_plan = next_plan::with('employee','customer')->orWhereBetween("date_time", [$start, $end])->orWhereBetween('alert_date',[$start,$end])->orderBy('id', 'desc')->get();
 //                dd($schedules,$next_plan);
-                return view('Schedule.index',compact('schedules','next_plan'));
+                return view('Schedule.index',compact('schedules','next_plan','customers'));
                 break;
             case "CEO":
                 $schedules = DealActivitySchedule::whereBetween('from_date', [$start, $end])->get();
                 $next_plan = next_plan::with('employee','customer')->whereBetween("date_time", [$start, $end])->orderBy('id', 'desc')->get();
-                return view('Schedule.index',compact('schedules','next_plan'));
+                return view('Schedule.index',compact('schedules','next_plan','customers'));
                 break;
             case "General Manager":
                 $schedules = DealActivitySchedule::whereBetween('from_date', [$start, $end])->get();
                 $next_plan = next_plan::with('employee','customer')->whereBetween("date_time", [$start, $end])->orderBy('id', 'desc')->get();
-                return view('Schedule.index',compact('schedules','next_plan'));
+                return view('Schedule.index',compact('schedules','next_plan','customers'));
                 break;
             case "Customer Service Manager":
                 $employees=Employee::where('department_id',$auth->department->id)->get();
@@ -48,7 +52,7 @@ class ScheduleController extends Controller
                     }
 
                 }
-                return view('Schedule.index',compact('schedules','next_plan'));
+                return view('Schedule.index',compact('schedules','next_plan','customers'));
                 break;
             case "Stock Manager":
                 $employees=Employee::where('department_id',$auth->department->id)->get();
@@ -65,7 +69,7 @@ class ScheduleController extends Controller
                     }
 
                 }
-                return view('Schedule.index',compact('schedules','next_plan'));
+                return view('Schedule.index',compact('schedules','next_plan','customers'));
                 break;
 
             case "Finance Manager":
@@ -83,7 +87,7 @@ class ScheduleController extends Controller
                     }
 
                 }
-                return view('Schedule.index',compact('schedules','next_plan'));
+                return view('Schedule.index',compact('schedules','next_plan','customers'));
                 break;
             case "HR Manager":
                 $employees=Employee::where('department_id',$auth->department->id)->get();
@@ -100,7 +104,7 @@ class ScheduleController extends Controller
                     }
 
                 }
-                return view('Schedule.index',compact('schedules','next_plan'));
+                return view('Schedule.index',compact('schedules','next_plan','customers'));
                 break;
             case "Sales Manager":
                 $employees=Employee::where('department_id',$auth->department->id)->get();
@@ -117,7 +121,7 @@ class ScheduleController extends Controller
                     }
 
                 }
-                return view('Schedule.index',compact('schedules','next_plan'));
+                return view('Schedule.index',compact('schedules','next_plan','customers'));
                 break;
             case "Car Admin":
                 $employees=Employee::where('department_id',$auth->department->id)->get();
@@ -134,12 +138,12 @@ class ScheduleController extends Controller
                     }
 
                 }
-                return view('Schedule.index',compact('schedules','next_plan'));
+                return view('Schedule.index',compact('schedules','next_plan','customers'));
                 break;
             default:
                 $schedules = DealActivitySchedule::whereBetween('from_date', [$start, $end])->where('emp_id',$auth->id)->get();
                 $next_plan = next_plan::with('employee','customer')->where('emp_id',$auth->id)->whereBetween("date_time", [$start, $end])->orderBy('id', 'desc')->get();
-                return view('Schedule.index',compact('schedules','next_plan'));
+                return view('Schedule.index',compact('schedules','next_plan','customers'));
         }
         }
     }

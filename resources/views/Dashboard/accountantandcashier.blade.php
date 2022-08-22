@@ -149,4 +149,30 @@
             </a>
         </div>
     </div>
+    <div class="col my-2">
+        <div class="alert-info alert mb-0 shadow">
+            <a href="{{route('schedule.index')}}">
+                <div class="d-flex align-items-center">
+                    <div class="avatar rounded no-thumbnail bg-info text-light shadow"><i class="fa fa-list" aria-hidden="true"></i></div>
+                    <div class="flex-fill ms-3 text-truncate">
+                        <div class="h6 mb-0">Upcoming Schedule</div>
+                        <span class="small">{{$items['upcoming_schedule']}}</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col my-2">
+        <div class="alert-info alert mb-0 shadow">
+            <a href="{{route('assignments.index')}}">
+                <div class="d-flex align-items-center">
+                    <div class="avatar rounded no-thumbnail bg-info text-light shadow"><i class="fa fa-list" aria-hidden="true"></i></div>
+                    <div class="flex-fill ms-3 text-truncate">
+                        <div class="h6 mb-0">Upcoming Task</div>
+                        <span class="small">{{$items['upcoming_task']}}</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
 </div>

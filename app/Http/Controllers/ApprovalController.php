@@ -188,6 +188,7 @@ class ApprovalController extends Controller
                 $doc_file->move(public_path() . '/approval_doc/', $input['filename']);
                 $data[] = $input['filename'];
             }
+
             $approval->doc_file=json_encode($data);
         }
         if(isset($request->secondary_id)){
