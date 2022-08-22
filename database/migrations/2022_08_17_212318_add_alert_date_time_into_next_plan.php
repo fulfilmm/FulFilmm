@@ -15,7 +15,7 @@ class AddAlertDateTimeIntoNextPlan extends Migration
     {
         Schema::table('next_plans', function (Blueprint $table) {
             $table->dateTime('alert_date')->default(\Carbon\Carbon::now());
-            $table->string('repeat')->default(0);
+            $table->tinyInteger('repeat')->default(0);
             $table->string('repeat_type')->nullable();
         });
     }

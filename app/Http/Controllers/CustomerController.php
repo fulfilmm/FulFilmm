@@ -279,7 +279,36 @@ class CustomerController extends Controller
                 $open_unpaid = $open_unpaid + $invoice->grand_total;
             }
         }
-        $next_plan = next_plan::with('employee')->where("contact_id", $id)->orderBy('id', 'desc')->get();
+        $next_plan=[];
+        $plan= next_plan::with('employee')->where("contact_id", $id)->orderBy('id', 'desc')->get();
+        foreach ($plan as $item){
+            if($item->repeat){
+                if($item->repeat_type=='Monthly'){
+                    if($item->date_time<Carbon::now()){
+                        $alert_date=Carbon::parse($item->alert_date)->addMonth(1);
+                        $date=Carbon::parse($item->date_time)->addMonth(1);
+                        $item->alert_date=$alert_date;
+                        $item->date_time=$date;
+                        $item->update();
+                    }
+                    array_push($next_plan,$item);
+
+                }else{
+                    if($item->date_time<Carbon::now()){
+                        $alert_date=Carbon::parse($item->alert_date)->addYear(1);
+                        $item->alert_date=$alert_date;
+                        $date=Carbon::parse($item->date_time)->addYear(1);
+                        $item->alert_date=$alert_date;
+                        $item->date_time=$date;
+                        $item->update();
+                    }
+                    array_push($next_plan,$item);
+                }
+            }else{
+                array_push($next_plan,$item);
+            }
+        }
+//        dd($next_plan);
 //        var_dump($next_plan);
         $data = [
             'customer' => $customer,

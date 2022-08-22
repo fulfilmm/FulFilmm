@@ -62,6 +62,11 @@ class LeadController extends Controller
         $next_plan->date_time=Carbon::create($request->date_time);
         $next_plan->contact_id=$request->lead_id;
         $next_plan->work_done=0;
+        if(isset($request->repeat)){
+            $next_plan->repeat=$request->repeat;
+            $next_plan->repeat_type=$request->repeat_type;
+        }
+
         $next_plan->emp_id=Auth::guard('employee')->user()->id;
         $next_plan->save();
 

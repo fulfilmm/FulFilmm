@@ -420,8 +420,27 @@
 
                     </div>
                     <div class="form-group">
+                        <label for="alert_date">Alert Date</label>
+                        <input type="date" class="form-control" name="alert_date">
+                    </div>
+                    <div class="form-group">
                         <label for="date_time">Date Time</label>
                         <input type="text" name="date_time" id="date_time" class="form-control">
+                    </div>
+                    <div class="form-group">
+
+                        <input id="repeat" type="checkbox" name="repeat" value="1">
+                        <label for="repeat">Repeat Schedule</label>
+                    </div>
+                    <div class="form-group" id="repeat_type">
+                        <label for="type">Type</label>
+                        <select name="repeat_type" id="type" class="form-control">
+                            <option value="Monthly">Monthly</option>
+                            <option value="Yearly">Yearly</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for=""></label>
                     </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-outline-danger ml-2 text-sm  btn-md" id="add">Add Item</button>
@@ -513,5 +532,15 @@
                 $('#mytab a[href="' + activeTab + '"]').tab('show');
             }
         });
+       $(document).ready(function () {
+           $('#repeat_type').hide();
+           $('#repeat').change(function () {
+               if($(this).is(':checked')){
+                   $('#repeat_type').show();
+               }else {
+                   $('#repeat_type').hide();
+               }
+           });
+       })
     </script>
 @endsection

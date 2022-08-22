@@ -19,18 +19,18 @@ class ScheduleController extends Controller
         switch ($auth->role->name) {
             case "Super Admin":
                 $schedules = DealActivitySchedule::whereBetween('from_date', [$start, $end])->get();
-                $next_plan = next_plan::with('employee')->whereBetween("date_time", [$start, $end])->orderBy('id', 'desc')->get();
+                $next_plan = next_plan::with('employee','customer')->orWhereBetween("date_time", [$start, $end])->orWhereBetween('alert_date',[$start,$end])->orderBy('id', 'desc')->get();
 //                dd($schedules,$next_plan);
                 return view('Schedule.index',compact('schedules','next_plan'));
                 break;
             case "CEO":
                 $schedules = DealActivitySchedule::whereBetween('from_date', [$start, $end])->get();
-                $next_plan = next_plan::with('employee')->whereBetween("date_time", [$start, $end])->orderBy('id', 'desc')->get();
+                $next_plan = next_plan::with('employee','customer')->whereBetween("date_time", [$start, $end])->orderBy('id', 'desc')->get();
                 return view('Schedule.index',compact('schedules','next_plan'));
                 break;
             case "General Manager":
                 $schedules = DealActivitySchedule::whereBetween('from_date', [$start, $end])->get();
-                $next_plan = next_plan::with('employee')->whereBetween("date_time", [$start, $end])->orderBy('id', 'desc')->get();
+                $next_plan = next_plan::with('employee','customer')->whereBetween("date_time", [$start, $end])->orderBy('id', 'desc')->get();
                 return view('Schedule.index',compact('schedules','next_plan'));
                 break;
             case "Customer Service Manager":
@@ -39,7 +39,7 @@ class ScheduleController extends Controller
                 $next_plan=[];
                 foreach ($employees as $item) {
                     $schedule = DealActivitySchedule::whereBetween('from_date', [$start, $end])->where('emp_id',$item->id)->get();
-                    $next = next_plan::with('employee')->where('emp_id',$item->id)->whereBetween("date_time", [$start, $end])->orderBy('id', 'desc')->get();
+                    $next = next_plan::with('employee','customer')->where('emp_id',$item->id)->whereBetween("date_time", [$start, $end])->orderBy('id', 'desc')->get();
                    foreach ($schedule as $sche){
                         array_push($schedules, $sche);
                     }
@@ -56,7 +56,7 @@ class ScheduleController extends Controller
                 $next_plan=[];
                 foreach ($employees as $item) {
                     $schedule = DealActivitySchedule::whereBetween('from_date', [$start, $end])->where('emp_id',$item->id)->get();
-                    $next = next_plan::with('employee')->where('emp_id',$item->id)->whereBetween("date_time", [$start, $end])->orderBy('id', 'desc')->get();
+                    $next = next_plan::with('employee','customer')->where('emp_id',$item->id)->whereBetween("date_time", [$start, $end])->orderBy('id', 'desc')->get();
                     foreach ($schedule as $sche){
                         array_push($schedules, $sche);
                     }
@@ -74,7 +74,7 @@ class ScheduleController extends Controller
                 $next_plan=[];
                 foreach ($employees as $item) {
                     $schedule = DealActivitySchedule::whereBetween('from_date', [$start, $end])->where('emp_id',$item->id)->get();
-                    $next = next_plan::with('employee')->where('emp_id',$item->id)->whereBetween("date_time", [$start, $end])->orderBy('id', 'desc')->get();
+                    $next = next_plan::with('employee','customer')->where('emp_id',$item->id)->whereBetween("date_time", [$start, $end])->orderBy('id', 'desc')->get();
                     foreach ($schedule as $sche){
                         array_push($schedules, $sche);
                     }
@@ -91,7 +91,7 @@ class ScheduleController extends Controller
                 $next_plan=[];
                 foreach ($employees as $item) {
                     $schedule = DealActivitySchedule::whereBetween('from_date', [$start, $end])->where('emp_id',$item->id)->get();
-                    $next = next_plan::with('employee')->where('emp_id',$item->id)->whereBetween("date_time", [$start, $end])->orderBy('id', 'desc')->get();
+                    $next = next_plan::with('employee','customer')->where('emp_id',$item->id)->whereBetween("date_time", [$start, $end])->orderBy('id', 'desc')->get();
                     foreach ($schedule as $sche){
                         array_push($schedules, $sche);
                     }
@@ -108,7 +108,7 @@ class ScheduleController extends Controller
                 $next_plan=[];
                 foreach ($employees as $item) {
                     $schedule = DealActivitySchedule::whereBetween('from_date', [$start, $end])->where('emp_id',$item->id)->get();
-                    $next = next_plan::with('employee')->where('emp_id',$item->id)->whereBetween("date_time", [$start, $end])->orderBy('id', 'desc')->get();
+                    $next = next_plan::with('employee','customer')->where('emp_id',$item->id)->whereBetween("date_time", [$start, $end])->orderBy('id', 'desc')->get();
                     foreach ($schedule as $sche){
                         array_push($schedules, $sche);
                     }
@@ -125,7 +125,7 @@ class ScheduleController extends Controller
                 $next_plan=[];
                 foreach ($employees as $item) {
                     $schedule = DealActivitySchedule::whereBetween('from_date', [$start, $end])->where('emp_id',$item->id)->get();
-                    $next = next_plan::with('employee')->where('emp_id',$item->id)->whereBetween("date_time", [$start, $end])->orderBy('id', 'desc')->get();
+                    $next = next_plan::with('employee','customer')->where('emp_id',$item->id)->whereBetween("date_time", [$start, $end])->orderBy('id', 'desc')->get();
                     foreach ($schedule as $sche){
                         array_push($schedules, $sche);
                     }
@@ -138,7 +138,7 @@ class ScheduleController extends Controller
                 break;
             default:
                 $schedules = DealActivitySchedule::whereBetween('from_date', [$start, $end])->where('emp_id',$auth->id)->get();
-                $next_plan = next_plan::with('employee')->where('emp_id',$auth->id)->whereBetween("date_time", [$start, $end])->orderBy('id', 'desc')->get();
+                $next_plan = next_plan::with('employee','customer')->where('emp_id',$auth->id)->whereBetween("date_time", [$start, $end])->orderBy('id', 'desc')->get();
                 return view('Schedule.index',compact('schedules','next_plan'));
         }
         }
