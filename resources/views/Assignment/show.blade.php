@@ -72,11 +72,13 @@
                                         <div class="chat-bubble">
                                             <div class="chat-content col-12">
                                                 <span class="task-chat-user">{{$comment->employee->name}}</span><br>
-                                                <a href="{{asset('attach_file/'.$comment->attach)}}" download="" title="One Click For Download">
-                                                    <i class="fa fa-file"></i><br>
-                                                    <span style="font-size: 12px;"> {{$comment->attach}}</span>
+                                               @if($comment->attach!=null)
+                                                    <a href="{{asset('attach_file/'.$comment->attach)}}" download="" title="One Click For Download">
+                                                        <i class="fa fa-file"></i><br>
+                                                        <span style="font-size: 12px;"> {{$comment->attach}}</span>
 
-                                                </a>
+                                                    </a>
+                                                   @endif
                                                 <p>{{$comment->comment}}</p>
                                                 <span class="chat-time">{{$comment->created_at->toFormattedDateString()}} at {{date('h:i:s a', strtotime($comment->created_at))}}</span>
                                             </div>
