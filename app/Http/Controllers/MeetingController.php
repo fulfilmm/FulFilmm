@@ -62,8 +62,8 @@ class MeetingController extends Controller
         $room=[];
         foreach ($all_room as $rm){
             $booked_room=RoomBooking::with('bookroom','booking_emp')
-                ->where('start_time','<',Carbon::now())
-                ->where('created_emp',Auth::id())
+                ->where('start_time','>',Carbon::now())
+                ->where('created_emp',Auth::guard('employee')->user()->id)
                 ->first();
             if($booked_room!=null){
                 array_push($room,$rm);
