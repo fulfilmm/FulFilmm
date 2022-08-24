@@ -565,15 +565,15 @@ class HomeController extends Controller
                     $valuation = $item->stock_balance * $item->variant->purchase_price ?? 0;
                     $total += $valuation;
                 }
-                $no_of_items = [];
-                foreach ($warehouse as $wh) {
-                    $inhand_product = Stock::with('variant')->where('warehouse_id', $wh->id)->where('stock_balance', '>', 0)->get();
-                    foreach ($inhand_product as $item) {
-                        if (!in_array($item->variant->product_code, $no_of_items)) {
-                            array_push($no_of_items, $item->variant->product_code);
-                        }
-                    }
-                }
+                $no_of_items =ProductVariations::count();
+//                foreach ($warehouse as $wh) {
+//                    $inhand_product = Stock::with('variant')->where('warehouse_id', $wh->id)->where('stock_balance', '>', 0)->get();
+//                    foreach ($inhand_product as $item) {
+//                        if (!in_array($item->variant->product_code, $no_of_items)) {
+//                            array_push($no_of_items, $item->variant->product_code);
+//                        }
+//                    }
+//                }
                 $employee = Employee::where('department_id', $user->department_id)->get();
                 $upcoming_schedule = 0;
                 $task = Assignment::where('end_date', '>=', Carbon::today())->where('assignee_id', $user->id)->count();
