@@ -52,13 +52,13 @@
                                </div><div class="col">
                                    <div class="from-group">
                                        <label for="">Start Date</label>
-                                       <input type="date" class="form-control" name="start_date" value="{{\Carbon\Carbon::parse($start)->format('Y-m-d')}}">
+                                       <input type="date" class="form-control" name="start_date" value="{{$start!=null?$start->format('Y-m-d'):''}}">
                                    </div>
                                </div>
                                <div class="col">
                                    <div class="from-group">
                                        <label for="">End Date</label>
-                                       <input type="date" class="form-control" name="end_date" value="{{\Carbon\Carbon::parse($end)->format('Y-m-d')}}">
+                                       <input type="date" class="form-control" name="end_date" value="{{$end!=null?$end->format('Y-m-d'):''}}">
                                    </div>
                                </div>
                                <div class="col">
@@ -204,7 +204,8 @@
                                                                     <a href="{{route('employees.show',$todo->owner->id)}}">{{$todo->owner->name}}</a>
                                                                 </td>
                                                                 <td>
-                                                                    <button type="button" class="btn btn-sm text-white {{$todo->status=='Not Started'?'gradient-purple':($todo->status=='Working'?"gradient-yellow":
+                                                                    <button type="button"  data-toggle="modal"
+                                                                            data-target="#change_status{{$todo->id}}"  class="btn btn-sm text-white {{$todo->status=='Not Started'?'gradient-purple':($todo->status=='Working'?"gradient-yellow":
                                                  ($todo->status=='Pending'?"gradient-blue":($todo->status=='Cancel'?'gradient-red':'gradient-green')))}}">{{$todo->status}}</button>
                                                                 </td>
                                                                 <td>
@@ -238,9 +239,42 @@
                                                                                 Status</a>
                                                                             <a class="dropdown-item" href="#"
                                                                                data-toggle="modal"
-                                                                               data-target="#delete_client"><i
+                                                                               data-target="#delete{{$todo->id}}"><i
                                                                                         class="fa fa-trash-o m-r-5"></i>
                                                                                 Delete</a>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div id="delete{{$todo->id}}"
+                                                                         class="modal custom-modal fade" role="dialog">
+                                                                        <div class="modal-dialog modal-dialog-centered modal-sm">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header border-bottom">
+                                                                                    <h5 class="modal-title">Delete</h5>
+                                                                                    <button type="button" class="close"
+                                                                                            data-dismiss="modal"
+                                                                                            aria-label="Close">
+                                                                                        <span aria-hidden="true">&times;</span>
+                                                                                    </button>
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <form action="{{route('assignments.destroy',$todo->id)}}"
+                                                                                          method="POST">
+                                                                                        @csrf
+                                                                                        @method('DELETE')
+                                                                                       <h4> Are you sure ?</h4>
+                                                                                        <div class="form-group mt-5">
+                                                                                            <button type="submit"
+                                                                                                    class="btn btn-info">
+                                                                                                Yes
+                                                                                            </button>
+                                                                                            <button type="button" data-dimiss="modal"
+                                                                                                    class="btn btn-info">
+                                                                                                No
+                                                                                            </button>
+                                                                                        </div>
+                                                                                    </form>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                     <div id="change_process{{$todo->id}}"
@@ -502,7 +536,8 @@
                                                                     </td>
                                                                     <td>
                                                                         <button type="button"
-                                                                                class="btn btn-sm text-white {{$todo->status=='Not Started'?'gradient-purple':($todo->status=='Working'?"gradient-yellow":
+                                                                                data-toggle="modal"
+                                                                                data-target="#change_status{{$todo->id}}" class="btn btn-sm text-white {{$todo->status=='Not Started'?'gradient-purple':($todo->status=='Working'?"gradient-yellow":
                                                  ($todo->status=='Pending'?"gradient-blue":($todo->status=='Cancel'?'gradient-red':'gradient-green')))}}">{{$todo->status}}</button>
                                                                     </td>
                                                                     <td>
@@ -538,9 +573,42 @@
                                                                                     Status</a>
                                                                                 <a class="dropdown-item" href="#"
                                                                                    data-toggle="modal"
-                                                                                   data-target="#delete_client"><i
+                                                                                   data-target="#delete{{$todo->id}}"><i
                                                                                             class="fa fa-trash-o m-r-5"></i>
                                                                                     Delete</a>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div id="delete{{$todo->id}}"
+                                                                             class="modal custom-modal fade" role="dialog">
+                                                                            <div class="modal-dialog modal-dialog-centered modal-sm">
+                                                                                <div class="modal-content">
+                                                                                    <div class="modal-header border-bottom">
+                                                                                        <h5 class="modal-title">Delete</h5>
+                                                                                        <button type="button" class="close"
+                                                                                                data-dismiss="modal"
+                                                                                                aria-label="Close">
+                                                                                            <span aria-hidden="true">&times;</span>
+                                                                                        </button>
+                                                                                    </div>
+                                                                                    <div class="modal-body">
+                                                                                        <form action="{{route('assignments.destroy',$todo->id)}}"
+                                                                                              method="POST">
+                                                                                            @csrf
+                                                                                            @method('DELETE')
+                                                                                            <h4> Are you sure ?</h4>
+                                                                                            <div class="form-group mt-5">
+                                                                                                <button type="submit"
+                                                                                                        class="btn btn-info">
+                                                                                                    Yes
+                                                                                                </button>
+                                                                                                <button type="button" data-dimiss="modal"
+                                                                                                        class="btn btn-info">
+                                                                                                    No
+                                                                                                </button>
+                                                                                            </div>
+                                                                                        </form>
+                                                                                    </div>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                         <div id="change_process{{$todo->id}}"

@@ -25,20 +25,20 @@
         </ul>
         <form action="{{route('schedule.index')}}" method="get">
             @csrf
-            <div class="row">
+            <div class="row mt-3">
                 <div class="col">
                     <select name="customer_id" id="" class="form-control">
                         <option value="">None</option>
                         @foreach($customers as $item)
-                            <option value="{{$item->id}}">{{$item->name}}</option>
+                            <option value="{{$item->id}}" {{$select_customer==$item->id?'selected':''}}>{{$item->name}}</option>
                             @endforeach
                     </select>
                 </div>
                 <div class="col">
-                    <input type="date" class="form-control" name="start_date">
+                    <input type="date" class="form-control" name="start_date" value="{{$start!=null?$start->format('Y-m-d'):''}}">
                 </div>
                 <div class="col">
-                    <input type="date" class="form-control" name="end_date">
+                    <input type="date" class="form-control" name="end_date" value="{{$end!=null?$end->format('Y-m-d'):''}}">
                 </div>
                 <div class="col">
                     <button type="submit" class="btn btn-white"><i class="fa fa-search"></i></button>

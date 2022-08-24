@@ -30,6 +30,9 @@
 .soft-yellow{
     color:#e2d810;
 }
+.solid-yellow{
+    color: #e0f209;
+}
 .soft-blue{
     color:#12a4d9;
 }
@@ -44,4 +47,13 @@
 }
 .gray-white{
     color:#e5e5dc;
+}
+.bg-lightgrey{
+    background-color: #D3D3D3;
+}
+.gray{
+    color: rgba(147, 163, 151, 0.53);
+}
+.text-red{
+    color:red;
 }

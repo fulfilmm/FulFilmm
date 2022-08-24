@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AssginmentComment;
 use App\Models\Assignment;
+use App\Models\AssignmentCheckList;
 use App\Models\Employee;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -14,8 +15,13 @@ class AssigmentController extends Controller
 {
     public function index(Request $request)
     {
-        $start = Carbon::parse($request->start_date)->startOfDay();
-        $end = Carbon::parse($request->end_date)->endOfDay();
+       if(isset($request->start_date)){
+           $start = Carbon::parse($request->start_date)->startOfDay();
+           $end =Carbon::parse($request->end_date)->endOfDay();
+       }else{
+           $start=null;
+           $end=null;
+       }
         $auth = Auth::guard('employee')->user();
         $role = $auth->role->name;
         $emp_id = $request->emp_id;
@@ -26,14 +32,14 @@ class AssigmentController extends Controller
                 if ($request->emp_id != null && $request->priority == null && $request->status == null) {
                     $todo_list = Assignment::with('owner', 'responsible_emp')
                         ->where('emp_id', $request->emp_id)
-                        ->whereBetween('end_date', [$start, $end])
+                        ->where('end_date','>=',Carbon::today())
                         ->get();
 
                 } elseif ($request->emp_id != null && $request->priority != null && $request->status == null) {
                     $todo_list = Assignment::with('owner', 'responsible_emp')
                         ->where('emp_id', $request->emp_id)
                         ->where('priority', $request->priority)
-                        ->whereBetween('end_date', [$start, $end])
+                        ->where('end_date','>=',Carbon::today())
                         ->get();
 
                 } elseif ($request->emp_id != null && $request->priority == null && $request->status != null) {
@@ -72,7 +78,7 @@ class AssigmentController extends Controller
 
                 } else {
                     $todo_list = Assignment::with('owner', 'responsible_emp')
-                        ->whereBetween('end_date', [$start, $end])
+                        ->whereDate('end_date','>=',Carbon::today())
                         ->get();
 
                 }
@@ -131,7 +137,7 @@ class AssigmentController extends Controller
 
                 } else {
                     $todo_list = Assignment::with('owner', 'responsible_emp')
-                        ->whereBetween('end_date', [$start, $end])
+                        ->whereDate('end_date','>=',Carbon::today())
                         ->get();
 
                 }
@@ -195,7 +201,7 @@ class AssigmentController extends Controller
 
                 } else {
                     $todo_list = Assignment::with('owner', 'responsible_emp')
-                        ->whereBetween('end_date', [$start, $end])
+                        ->whereDate('end_date','>=',Carbon::today())
                         ->where('assignee_id', $auth->id)
                         ->get();
 
@@ -260,7 +266,7 @@ class AssigmentController extends Controller
 
                 } else {
                     $todo_list = Assignment::with('owner', 'responsible_emp')
-                        ->whereBetween('end_date', [$start, $end])
+                        ->whereDate('end_date','>=',Carbon::today())
                         ->where('assignee_id', $auth->id)
                         ->get();
 
@@ -325,7 +331,7 @@ class AssigmentController extends Controller
 
                 } else {
                     $todo_list = Assignment::with('owner', 'responsible_emp')
-                        ->whereBetween('end_date', [$start, $end])
+                        ->whereDate('end_date','>=',Carbon::today())
                         ->where('assignee_id', $auth->id)
                         ->get();
 
@@ -390,7 +396,7 @@ class AssigmentController extends Controller
 
                 } else {
                     $todo_list = Assignment::with('owner', 'responsible_emp')
-                        ->whereBetween('end_date', [$start, $end])
+                        ->whereDate('end_date','>=',Carbon::today())
                         ->where('assignee_id', $auth->id)
                         ->get();
 
@@ -455,7 +461,7 @@ class AssigmentController extends Controller
 
                 } else {
                     $todo_list = Assignment::with('owner', 'responsible_emp')
-                        ->whereBetween('end_date', [$start, $end])
+                        ->whereDate('end_date','>=',Carbon::today())
                         ->where('assignee_id', $auth->id)
                         ->get();
 
@@ -520,7 +526,7 @@ class AssigmentController extends Controller
 
                 } else {
                     $todo_list = Assignment::with('owner', 'responsible_emp')
-                        ->whereBetween('end_date', [$start, $end])
+                        ->whereDate('end_date','>=',Carbon::today())
                         ->where('assignee_id', $auth->id)
                         ->get();
 
@@ -585,7 +591,7 @@ class AssigmentController extends Controller
 
                 } else {
                     $todo_list = Assignment::with('owner', 'responsible_emp')
-                        ->whereBetween('end_date', [$start, $end])
+                        ->whereDate('end_date','>=',Carbon::today())
                         ->where('assignee_id', $auth->id)
                         ->get();
 
@@ -650,7 +656,7 @@ class AssigmentController extends Controller
 
                 } else {
                     $todo_list = Assignment::with('owner', 'responsible_emp')
-                        ->whereBetween('end_date', [$start, $end])
+                        ->whereDate('end_date','>=',Carbon::today())
                         ->where('emp_id', $auth->id)
                         ->get();
 
@@ -679,7 +685,7 @@ class AssigmentController extends Controller
             'priority' => 'required',
             'status' => 'nullable',
             'end_date' => 'required',
-            'attach' => 'nullable'
+            'attach' => 'nullable||mimes:pdf,xlsx,doc,docx,jpg,jpeg,ppt,pptx,bip,png|max:2048'
         ]);
        $task= Assignment::create($request->all());
         $emp=Employee::where('id',$request->emp_id)->first();
@@ -767,15 +773,29 @@ class AssigmentController extends Controller
         $todo->assignee_id = $request->assignee_id;
         $todo->update();
 
-        return redirect('assignments')->with('success', 'Task Updated');
+        return redirect()->back()->with('success', 'Task Updated');
     }
 
     public function show($id)
     {
         $todo_list = Assignment::with('owner', 'responsible_emp')->where('id', $id)->firstOrFail();
-        $comments = AssginmentComment::with('employee')->where('assignment_id', $id)->get();
+        if(Auth::guard('employee')->user()->id==$todo_list->emp_id||Auth::guard('employee')->user()->id==$todo_list->assignee_id){
+            $comments = AssginmentComment::with('employee')->where('assignment_id', $id)->get();
 //        dd($comments);
-        return view('Assignment.show', compact('todo_list', 'comments'));
+            $check_list=AssignmentCheckList::where('assignment_id',$id)->get();
+            $complete_check=AssignmentCheckList::where('assignment_id',$id)->where('done',1)->count();
+            $number_of_checklist=Count($check_list);
+           if($number_of_checklist!=0){
+               $work_done=round(($complete_check/$number_of_checklist)*100,1);
+               $todo_list->progress=$work_done;
+               $todo_list->update();
+           }
+
+            return view('Assignment.show', compact('todo_list', 'comments','check_list'));
+        }else{
+            return redirect()->back()->with('error', 'You are not relative this task');
+        }
+
     }
 
     public function comment(Request $request)
@@ -798,5 +818,15 @@ class AssigmentController extends Controller
 //        dd($comment);
         $comment->save();
         return redirect(route('assignments.show', $request->assignment_id))->with('success', 'Add new comment');
+    }
+    public function destroy($id){
+        $assignment=Assignment::where('id',$id)->firstOrFail();
+        if(Auth::guard('employee')->user()->id==$assignment->assignee_id){
+            $assignment->delete();
+            return redirect(route('assignments.index'))->with('error','Deleted Successful');
+        }else{
+            return redirect()->back()->with('error', 'You Can not delete this task');
+        }
+
     }
 }
