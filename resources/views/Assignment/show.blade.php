@@ -16,11 +16,11 @@
         </div>
         <div class="col-12 border bg-lightgrey rounded">
             <div class="card my-3" style="background-color: #e9e9e6">
-                <div class="col-12 ml-2 mr-2">
+                <div class="col-12 ">
                     <div class="row my-2 justify-content-between">
                         <div class="col">
                             <button class="btn btn-white text-red col-12"
-                                    type="button">Due Date :<span class="text-red">{{\Carbon\Carbon::parse($todo_list->end_date)->toFormattedDateString()}}</span></button>
+                                    type="button">Due On :<span class="text-red">{{\Carbon\Carbon::parse($todo_list->end_date)->toFormattedDateString()}}</span></button>
                         </div>
                         <div class="col">
                                     <span class="btn btn-white col-12"
