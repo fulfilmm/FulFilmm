@@ -99,6 +99,7 @@ class RoomController extends Controller
         ]);
         $start_time=Carbon::parse( $request->date . ' ' . $request->start_time);
         $end_time=Carbon::parse($request->date . ' ' . $request->endtime);
+//        dd($start_time);
 
         $booked_rooms=RoomBooking::where('room_id',$request->room_id)->whereBetween('start_time',[$start_time,$end_time])->get();
 

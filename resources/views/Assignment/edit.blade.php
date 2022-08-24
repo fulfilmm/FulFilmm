@@ -18,6 +18,7 @@
             <form action="{{route('assignments.update',$todo_list->id)}}" method="POST">
                 @csrf
                 @method('PUT')
+                <input type="hidden" name="return_route" value="assignments/{{$todo_list->id}}">
                 <input type="hidden" name="assignee_id" value="{{\Illuminate\Support\Facades\Auth::guard('employee')->user()->id}}">
                 <div class="col-12">
                     <div class="row">
@@ -88,8 +89,8 @@
                         <div class="col-12">
                             <div class="row text-center">
                                 <div class="col-12 text-center">
-                                    <button type="button" data-bs-dismiss="offcanvas" class="btn btn-sm btn-danger mr-3">Cancel</button>
-                                    <button type="submit" class="btn btn-sm btn-info">Save</button>
+                                    <button type="button" data-bs-dismiss="offcanvas" class="btn btn-danger mr-3">Cancel</button>
+                                    <button type="submit" class="btn btn-info">Save</button>
                                 </div>
                             </div>
                         </div>

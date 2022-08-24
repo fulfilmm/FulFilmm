@@ -92,8 +92,8 @@
                                        <label for="room_no">Room No(Room Name) <span class="text-danger">*</span></label>
                                        <select id="room_no" name="room_no" class="form-control select" >
                                            <option value="">Choose Your Booking Room</option>
-                                          @foreach($data['rooms'] as $key=>$val)
-                                           <option value="{{$key}}">{{$val}}</option>
+                                          @foreach($data['rooms'] as $item)
+                                           <option value="{{$item->id}}">{{$item->room_no}}</option>
                                            @endforeach
                                        </select>
                                    </div>

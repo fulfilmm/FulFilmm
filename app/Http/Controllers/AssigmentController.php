@@ -772,8 +772,13 @@ class AssigmentController extends Controller
         $todo->emp_id = $request->emp_id;
         $todo->assignee_id = $request->assignee_id;
         $todo->update();
+//        dd($request->all());
+        if(isset($request->return_route)){
+            return redirect($request->return_route)->with('success', 'Task Updated');
+        }else{
+            return redirect()->back()->with('success', 'Task Updated');
+        }
 
-        return redirect()->back()->with('success', 'Task Updated');
     }
 
     public function show($id)
