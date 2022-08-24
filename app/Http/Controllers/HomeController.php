@@ -565,7 +565,7 @@ class HomeController extends Controller
                     $valuation = $item->stock_balance * $item->variant->purchase_price ?? 0;
                     $total += $valuation;
                 }
-                $no_of_items =count(ProductVariations::all());
+                $no_of_items =ProductVariations::all();
 //                foreach ($warehouse as $wh) {
 //                    $inhand_product = Stock::with('variant')->where('warehouse_id', $wh->id)->where('stock_balance', '>', 0)->get();
 //                    foreach ($inhand_product as $item) {
