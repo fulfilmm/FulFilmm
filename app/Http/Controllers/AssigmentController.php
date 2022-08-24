@@ -809,7 +809,7 @@ class AssigmentController extends Controller
 //            dd('hell');
             $attach = $request->file('attach');
             $input['filename'] =\Illuminate\Support\Str::random(10).time().'.'.$attach->getClientOriginalExtension();
-            $request->attach->move(public_path() . '/ticket_attach/', $input['filename']);
+            $request->attach->move(public_path() . '/attach_file/', $input['filename']);
             $comment->attach =$input['filename'];
         }
         $comment->emp_id = $request->emp_id;

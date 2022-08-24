@@ -1,6 +1,14 @@
 @extends('layout.mainlayout')
 @section('name', 'Details Todo List')
 @section('content')
+    <style>
+        .custom-file-upload {
+            border: 1px solid #ccc;
+            display: inline-block;
+            padding: 6px 12px;
+            cursor: pointer;
+        }
+    </style>
     <!-- Page Header -->
     <div class="content container-fluid">
         <div class="page-header">
@@ -10,6 +18,7 @@
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url('/')}}">Dashboard</a></li>
                         <li class="breadcrumb-item active">Details Todo List</li>
+                        <li class="breadcrumb-item active">{{ucfirst($todo_list->title)}}</li>
                     </ul>
                 </div>
             </div>
@@ -20,7 +29,9 @@
                     <div class="row my-2 justify-content-between">
                         <div class="col">
                             <button class="btn btn-white text-red col-12"
-                                    type="button">Due On :<span class="text-red">{{\Carbon\Carbon::parse($todo_list->end_date)->toFormattedDateString()}}</span></button>
+                                    type="button">Due On :<span
+                                        class="text-red">{{\Carbon\Carbon::parse($todo_list->end_date)->toFormattedDateString()}}</span>
+                            </button>
                         </div>
                         <div class="col">
                                     <span class="btn btn-white col-12"
@@ -29,13 +40,17 @@
 
 
                         <div class="col">
-                                    <button class="col-12 btn btn-white text-{{$todo_list->priority=='High'?'danger':($todo_list->priority=='Medium'?'info':'success')}}"
-                                          type="button">Priority : {{$todo_list->priority}}</button>
+                            <button class="col-12 btn btn-white "
+                                    type="button">Priority : <span
+                                        class="text-{{$todo_list->priority=='High'?'danger':($todo_list->priority=='Medium'?'info':'success')}}">{{$todo_list->priority}}</span>
+                            </button>
                         </div>
                         <div class="col">
-                            <button data-toggle="modal" data-target="#change_status{{$todo_list->id}}" class="btn btn-white col-12 "
-                                    type="button"><span class="{{$todo_list->status=='Not Started'?'text-dark':($todo_list->status=='Working'?"text-warning":
-                                                 ($todo_list->status=='Pending'?"text-info":($todo_list->status=='Cancel'?'text-danger':'text-success')))}}">{{$todo_list->status}}</span></button>
+                            <button data-toggle="modal" data-target="#change_status{{$todo_list->id}}"
+                                    class="btn btn-white col-12 "
+                                    type="button">Status : <span class="{{$todo_list->status=='Not Started'?'text-dark':($todo_list->status=='Working'?"text-warning":
+                                                 ($todo_list->status=='Pending'?"text-info":($todo_list->status=='Cancel'?'text-danger':'text-success')))}}">{{$todo_list->status}}</span>
+                            </button>
                         </div>
 
                         <div class="col">
@@ -49,10 +64,9 @@
                 <div class="col-md-8 col-12">
                     <div class="card" style="height: 200px;">
                         <div class="card-header">
-                            {{$todo_list->title}}
+                            Description
                         </div>
                         <div class="card-body">
-                            <div class="col-12"><h5>Description</h5></div>
                             <div class="col-12">
                                 <p>{{$todo_list->description}}</p>
                             </div>
@@ -77,7 +91,7 @@
 
                             </div>
                             <div class="border-bottom"></div>
-                            <div class="col-12" style="list-style-type: none;height:350px;overflow: auto">
+                            <div class="col-12" style="list-style-type: none;height:420px;overflow: auto">
                                 @foreach($check_list as $item)
                                     <div class="row my-2 border rounded " style="height: 40px;">
                                         <div class="col-11 my-2">
@@ -85,19 +99,23 @@
                                                 <input type="checkbox" id="not_complete{{$item->id}}" value="0" checked>
                                                 <strike class="ml-2">{{$item->description}}</strike>
                                             @else
-                                                <input type="checkbox" class="complete{{$item->id}}" id="complete{{$item->id}}" value="1">
+                                                <input type="checkbox" class="complete{{$item->id}}"
+                                                       id="complete{{$item->id}}" value="1">
                                                 <span class="ml-2">{{$item->description}}</span>
                                             @endif
                                         </div>
                                         <div class="col-1 my-2">
                                             <div class="row">
                                                 @if($item->remark==1)
-                                                    <a href="" id="cancel_remark{{$item->id}}" class="mx-2"><i class="fa fa-star" style="color:yellow"></i></a>
+                                                    <a href="" id="cancel_remark{{$item->id}}" class="mx-2"><i
+                                                                class="fa fa-star" style="color:yellow"></i></a>
                                                 @else
-                                                    <a href="" id="remark{{$item->id}}" class="mx-2 gray"><i class="fa fa-star"></i></a>
+                                                    <a href="" id="remark{{$item->id}}" class="mx-2 gray"><i
+                                                                class="fa fa-star"></i></a>
 
                                                 @endif
-                                                <a href="" data-toggle="modal" data-target="#delete_check{{$item->id}}"><i class="fa fa-trash"></i></a>
+                                                <a href="" data-toggle="modal" data-target="#delete_check{{$item->id}}"><i
+                                                            class="fa fa-trash"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -124,12 +142,26 @@
                                                 <div class="chat-content col-12">
                                                     <span class="task-chat-user">{{$comment->employee->name}}</span><br>
                                                     @if($comment->attach!=null)
-                                                        <a href="{{asset('attach_file/'.$comment->attach)}}" download=""
-                                                           title="One Click For Download">
-                                                            <i class="fa fa-file"></i><br>
-                                                            <span style="font-size: 12px;"> {{$comment->attach}}</span>
+                                                        @php
 
-                                                        </a>
+                                                            $infoPath = pathinfo(public_path('attach_file/'.$comment->attach));
+                                                             $extension = $infoPath['extension'];
+                                                        $memes=\Illuminate\Support\Facades\File::mimeType(public_path('attach_file/'.$comment->attach));
+
+                                                        @endphp
+                                                        @if($extension=='jpg'||$extension=='png'||$extension=='jpeg'||$extension=='gif')
+                                                            <a href="{{asset('attach_file/'.$comment->attach)}}"
+                                                               title="One Click For Download">
+                                                                <img src="{{asset('attach_file/'.$comment->attach)}}" alt="" style='max-width: 100px;max-height: 80px'><br>
+                                                                <span style="font-size: 12px;"> {{$comment->attach}}</span>
+                                                            </a>
+                                                            @else
+                                                            <a href="{{asset('attach_file/'.$comment->attach)}}" download
+                                                               title="One Click For Download">
+                                                                <i class="fa fa-file"></i><br>
+                                                                <span style="font-size: 12px;"> {{$comment->attach}}</span>
+                                                            </a>
+                                                            @endif
                                                     @endif
                                                     <p>{{$comment->comment}}</p>
                                                     <span class="chat-time">{{$comment->created_at->toFormattedDateString()}} at {{date('h:i:s a', strtotime($comment->created_at))}}</span>
@@ -150,18 +182,34 @@
                                         <input type="hidden" name="assignment_id" value="{{$todo_list->id}}">
                                         <input type="hidden" name="emp_id"
                                                value="{{\Illuminate\Support\Facades\Auth::guard('employee')->user()->id}}">
-                                        <div class="input-group">
-                                            {{--<input type="hidden" name="ticket_id" value="{{$ticket->id}}">--}}
-                                            <input type="file" id="file1" name="attach" style="display:none"/>
-                                            <button class="btn btn-white" onClick="openSelect('#file1')"
-                                                    id="attchment_field" type="button"><i class="la la-paperclip"></i>
-                                            </button>
-                                            <input type="text" class="form-control" name="comment"
-                                                   placeholder="Add Note...">
-                                            <span class="input-group-append">
-                                        <button class="btn btn-primary text-white" type="submit"><i
-                                                    class="la la-save"></i></button>
-                                    </span>
+                                        <div class="border rounded">
+                                            <div class="col-12">
+                                                <div class="form-group my-2 border rounded">
+                                                    <label for="file-upload" class="col-12 my-1">
+                                                        <i class="fa fa-upload"></i>Add Attach....
+                                                    </label>
+                                                    <input id="file-upload" name='attach' type="file"
+                                                           style="display:none;">
+                                                </div>
+                                            </div>
+                                            <div class="col-12 mb-2">
+                                                <div class="input-group">
+                                                    {{--<input type="hidden" name="ticket_id" value="{{$ticket->id}}">--}}
+                                                    {{--<input type="file" id="file1" name="attach" style="display:none"/>--}}
+                                                    {{--<label for="file1" class="custom-file-upload">--}}
+                                                    {{--<i class="fa fa-cloud-upload"></i> Upload Image--}}
+                                                    {{--</label>--}}
+                                                    {{--<button class="btn btn-white" onClick="openSelect('#file1')"--}}
+                                                    {{--id="attchment_field" type="button"><i class="la la-paperclip"></i>--}}
+                                                    {{--</button>--}}
+                                                    <input type="text" class="form-control" name="comment"
+                                                           placeholder="Add Note...">
+                                                    <div class="input-group-append">
+                                                    </div>
+                                                    <button class="btn btn-primary text-white" type="submit"><i
+                                                                class="la la-save"></i></button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </form>
                                 </div>
@@ -171,19 +219,23 @@
                     </div>
                 </div>
             </div>
-            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight"
+                 aria-labelledby="offcanvasRightLabel">
                 <div class="offcanvas-header">
                     <h5 id="offcanvasRightLabel">Add Check List</h5>
-                    <button type="button" class="btn btn-white btn-sm" data-bs-dismiss="offcanvas" aria-label="Close"><i class="la la-close"></i></button>
+                    <button type="button" class="btn btn-white btn-sm" data-bs-dismiss="offcanvas" aria-label="Close"><i
+                                class="la la-close"></i></button>
                 </div>
                 <div class="offcanvas-body">
                     <form action="{{route('todo_checklists.store')}}" method="POST">
                         @csrf
-                        <input type="hidden" name="emp_id" value="{{\Illuminate\Support\Facades\Auth::guard('employee')->user()->id}}">
+                        <input type="hidden" name="emp_id"
+                               value="{{\Illuminate\Support\Facades\Auth::guard('employee')->user()->id}}">
                         <input type="hidden" name="assignment_id" value="{{$todo_list->id}}">
                         <div class="col-12">
                             <div class="form-group">
-                                <textarea name="description" id="" cols="30" class="form-control"  rows="5" placeholder="Add text" required>
+                                <textarea name="description" id="" cols="30" class="form-control" rows="5"
+                                          placeholder="Add text" required>
 
                                 </textarea>
                             </div>
@@ -364,9 +416,12 @@
             </div>
         </div>
         <script>
-            function openSelect(file) {
-                $(file).trigger('click');
-            }
+            $('#file-upload').change(function () {
+                var i = $(this).prev('label').clone();
+                var file = $('#file-upload')[0].files[0].name;
+                $(this).prev('label').text(file);
+            });
+
 
         </script>
 @endsection
