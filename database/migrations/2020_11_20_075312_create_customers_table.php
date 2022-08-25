@@ -53,7 +53,11 @@ class CreateCustomersTable extends Migration
             $table->string('sales_type')->nullable();
             $table->string('shop_name')->nullable();
             $table->rememberToken();
-            $table->foreignId('company_id');
+            $table->foreignId('company_id')->nullable();
+            $table->bigInteger('item_id')->unsigned()->nullable();
+            $table->tinyInteger('existing_business')->default(0);
+            $table->string('segment')->nullable();
+            $table->string('interest_level')->nullable();
             $table->softDeletes();
             $table->timestamps();
             $table->foreign('company_id')

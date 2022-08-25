@@ -18,12 +18,7 @@ class CreatePurchaseOrdersTable extends Migration
             $table->bigInteger('vendor_id')->unsigned();
             $table->string('po_id');
             $table->bigInteger('pr_id')->unsigned()->nullable();
-            $table->dateTime('ordered_date');
-            $table->dateTime('deadline')->nullable();
-            $table->string('purchase_type');
-            $table->string('vendor_reference')->nullable();
-            $table->text('description')->nullable();
-            $table->double('subtotal');
+            $table->bigInteger('rfq_id')->unsigned()->nullable();
             $table->double('discount')->default(0);
             $table->double('tax_amount')->default(0);
             $table->bigInteger('tax_id')->unsigned();

@@ -18,6 +18,7 @@ class CreateRequestItemsTable extends Migration
             $table->string('product_name');
             $table->string('variant')->nullable();
             $table->double('qty');
+            $table->double('amount')->nullable();
             $table->tinyInteger('approve')->default(0);
             $table->bigInteger('approval_id')->unsigned();
             $table->timestamps();

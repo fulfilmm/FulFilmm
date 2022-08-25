@@ -23,6 +23,9 @@ class CreateNextPlansTable extends Migration
             $table->index('contact_id');
             $table->text('attach_file')->nullable();
             $table->bigInteger('emp_id')->unsigned();
+            $table->dateTime('alert_date')->default(\Carbon\Carbon::now());
+            $table->tinyInteger('repeat')->default(0);
+            $table->string('repeat_type')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
