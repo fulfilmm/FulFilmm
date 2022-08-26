@@ -272,6 +272,28 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                    <script>
+                                                        $(document).ready(function () {
+                                                            $(".ui-datepicker-calendar").hide();
+                                                            $('#alert_month{{$item->id}}').datepicker({
+                                                                changeYear: true,
+                                                                changeMonth:true,
+                                                                changeCalender:false,
+                                                                showButtonPanel: true,
+                                                                dateFormat: 'yy-mm',
+                                                                onClose: function(dateText, inst) {
+                                                                    var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                                                                    var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+                                                                    $(this).datepicker('setDate', new Date(year,month));
+                                                                }
+                                                            });
+                                                            $("#datepicker").focus(function() {
+                                                                $(".ui-datepicker-month").show();
+                                                                $(".ui-datepicker-calender").hide();
+
+                                                            });
+                                                        });
+                                                    </script>
                                             @endif
                                         </td>
                                     </tr>
@@ -288,26 +310,7 @@
         <div id="print_me"  style="visibility: hidden">
     </div>
     <script>
-        $(document).ready(function () {
-            $(".ui-datepicker-calendar").hide();
-            $('#alert_month').datepicker({
-                changeYear: true,
-                changeMonth:true,
-                changeCalender:false,
-                showButtonPanel: true,
-                dateFormat: 'yy-mm',
-                onClose: function(dateText, inst) {
-                    var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-                    var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-                    $(this).datepicker('setDate', new Date(year,month));
-                }
-            });
-            $("#datepicker").focus(function() {
-                $(".ui-datepicker-month").show();
-                $(".ui-datepicker-calender").hide();
 
-            });
-        });
         (function () {
             var
                 form = $('.form'),
