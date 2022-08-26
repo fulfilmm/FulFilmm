@@ -1,7 +1,5 @@
 @extends('layout.mainlayout')
-
-@section('name', 'Supplier')
-@section('title','Supplier')
+@section('title','Customers')
 
 @section('content')
 
@@ -56,7 +54,7 @@
                                 <td>{{$customer->zone->name??'N/A'}}</td>
                                 <td>{{$customer->credit_limit??0}}</td>
                                 <td><span class="text-{{$customer->current_credit>$customer->credit_limit?'danger':''}}">{{$customer->current_credit??0}}</span></td>
-                                <td>{{ $customer->company->name }}</td>
+                                <td>{{ $customer->company->name ??'N/A'}}</td>
                                 <td>{{$customer->customer_type}}</td>
                                 <td style="display: flex">
                                     <a class="btn btn-success btn-sm" data-toggle="tooltip" title="View Detail" href="{{route('customers.show',$customer->id)}}"><span class='fa fa-eye'></span></a>&nbsp;

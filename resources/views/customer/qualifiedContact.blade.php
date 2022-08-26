@@ -32,7 +32,7 @@
                                 <td><img src="{{$customer->profile!=null? url(asset('img/profiles/'.$customer->profile)):url(asset('img/profiles/avatar-01.jpg'))}}" alt="" class="avatar chat-avatar-sm">{{$customer->name}}</td>
                                 <td>{{ $customer->phone }}</td>
                                 <td>{{ $customer->email }}</td>
-                                <td>{{ $customer->company->name }}</td>
+                                <td>{{ $customer->company->name??'N/A' }}</td>
                                 <td>{{$customer->customer_type}}</td>
                                 <td style="display: flex">
                                     <a class="btn btn-success" href="{{route('customers.show',$customer->id)}}"><span class='fa fa-eye'></span></a>&nbsp;
