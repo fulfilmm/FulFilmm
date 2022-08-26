@@ -205,8 +205,10 @@ class CustomerController extends Controller
             'case'=>$request->case,
             'credit_limit'=>$request->credit_limit??0,
             'lead_title'=>$request->title,
-            'interest_level'=>$request->intrest_level,
-            'item_id'=>$request->item_id,
+            'interest_level'=>$request->interest_level??'null',
+            'segment'=>$request->segment,
+            'item_id'=>$request->item_id??'null',
+            'existing_business'=>$request->existing_business
 
         ];
         try{

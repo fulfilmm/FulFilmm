@@ -94,9 +94,12 @@
                                             </div>
                                             <div class="col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label for="interest_level"  class="form-label font-weight-bold text-muted text-uppercase pro_label">Product</label>
-                                                    <select name="interest_level" id="interest_level" class="form-control select2">
+                                                    <label for="item_id"  class="form-label font-weight-bold text-muted text-uppercase pro_label">Product</label>
+                                                    <select name="item_id" id="item_id" class="form-control select2">
                                                         <option value="">None</option>
+                                                        @foreach($items as $item)
+                                                            <option value="{{$item->id}}">{{$item->product_name}}{{isset($item->variant)?"(".$item->variant.")":''}}</option>
+                                                            @endforeach
                                                     </select>
                                                 </div>
                                             </div>

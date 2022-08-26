@@ -121,7 +121,7 @@
                             <select name="report_to" id="report_to" class="form-control">
                                 <option value="">Select Report Person</option>
                                 @foreach($all_employee as $emp)
-                                    @if($emp->role->name=='Sale Manager'|| $emp->role->name=='Stock Manager'||
+                                    @if($emp->role->name=='Sales Manager'|| $emp->role->name=='Stock Manager'||
                                     $emp->role->name=='Finance Manager'||$emp->role->name=='Super Admin'||$emp->role->name=='CEO'||
                                     $emp->role->name=='Admin Manager'||$emp->role->name=='General Manager'||$emp->role->name=='Hr Manager'||$emp->role->name=='Customer Service Manager')
                                         <option value="{{$emp->id}}" {{isset($employee)?($emp->id==$employee->report_to?'selected':''):old('report_to')}}>{{$emp->name}}</option>

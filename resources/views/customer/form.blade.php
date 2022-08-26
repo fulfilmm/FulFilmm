@@ -29,6 +29,7 @@
                                         class="fa fa-male"></i> Male </label>
                         </div>
                     </div>
+                    <br>
                     <div class="form-check form-check-inline">
                         <div class="custom-control custom-radio custom-control-inline">
                             <input type="radio" id="female" name="gender" value="Female"
@@ -45,16 +46,17 @@
                     <div class="form-group">
                         <label for="" class="form-label font-weight-bold text-muted text-uppercase">New Business/Existing Business</label><br>
                         <input type="radio" name="existing_business" value="0" checked>
-                        <label for="">New Business</label>
-                        <input type="radio" name="existing_business" class="ml-5" value="1">
+                        <label for="">New Business</label><br>
+                        <input type="radio" name="existing_business"  value="1">
                         <label for="">Existing Business</label>
                     </div>
                 </div>
 
+
             </div>
             <div class="col-md-8">
                 <div class="row g-3 date-icon-set-modal">
-                    <div class="col-md-6 mb-3">
+                    <div class="col-md-6 ">
                         <div class="form-group">
                             <label for="name"
                                    class="form-label font-weight-bold text-muted text-uppercase">Full
@@ -68,7 +70,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 mb-3">
+                    <div class="col-md-6">
                         <label for="company_id"
                                class="form-label font-weight-bold text-muted text-uppercase">Company
                             Name<span class="text-danger">*</span></label>
@@ -117,7 +119,7 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-6 mb-3" id="refesh_div">
+                    <div class="col-md-6 " id="refesh_div">
                         <label for="customer_type" class="form-label font-weight-bold text-muted text-uppercase">
                             Type</label>
                         <select name="customer_type" id="customer_type" class="form-control select2">
@@ -130,9 +132,9 @@
                             <option value="Courier" {{old('customer_type')=='Courier'?'selected':''}}>Courier</option>
                         </select>
                     </div>
-                    <div class="col-md-6 col-12 mb-3">
+                    <div class="col-md-6 col-12">
                         <div class="form-group">
-                            <label for="branch">Branch</label>
+                            <label for="branch" class="form-label font-weight-bold text-muted text-uppercase">Branch</label>
                             <select name="branch_id" id="branch_id" class="form-control select2">
                                 @foreach($branch as $item)
                                     <option value="{{$item->id}}">{{$item->name}}</option>
@@ -143,9 +145,9 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-md-6 mb-3">
+                    <div class="col-md-6">
                         <div class="form-group">
-                            <label for="region_id">Region</label>
+                            <label for="region_id" class="form-label font-weight-bold text-muted text-uppercase">Region</label>
                             <select name="region_id" id="region_id" class="form-control select2" onchange="region_select(this.value)">
                                 <option value="">None</option>
                                 @foreach($region as $item)
@@ -157,9 +159,9 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-6 mb-3">
+                    <div class="col-md-6">
                         <div class="form-group">
-                            <label for="zone">Sale Zone</label>
+                            <label for="zone" class="form-label font-weight-bold text-muted text-uppercase">Sale Zone</label>
                             <div class="input-group">
                                 <select name="zone_id" id="zone" class="form-control select2">
                                     <option value="">None</option>
@@ -175,6 +177,12 @@
                                 <span class="text-danger">Select the zone where the customer is located</span>
                                 @enderror
                             </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="segment" class="form-label font-weight-bold text-muted text-uppercase">Segment</label>
+                            <input type="text" class="form-control" name="segment" id="segment">
                         </div>
                     </div>
 

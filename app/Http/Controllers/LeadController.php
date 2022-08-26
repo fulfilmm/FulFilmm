@@ -13,6 +13,7 @@ use App\Models\lead_follower;
 
 use App\Models\next_plan;
 use App\Models\OfficeBranch;
+use App\Models\ProductVariations;
 use App\Models\Region;
 use App\Models\SalePipelineRecord;
 use App\Models\SaleZone;
@@ -65,7 +66,8 @@ class LeadController extends Controller
             $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
             $region=Region::where('branch_id',$auth->office_branch_id)->get();
         }
-        return view('Lead.create', compact('companies', 'last_tag', 'tags','parent_companies','zone','region','branch'));
+        $items=ProductVariations::all();
+        return view('Lead.create', compact('companies', 'last_tag', 'tags','parent_companies','zone','region','branch','items'));
     }
 
     /**
