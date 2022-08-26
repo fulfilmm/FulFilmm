@@ -473,6 +473,7 @@
             var source = $('#source option:selected').val();
             var ship_to = $('#ship_to').val();
             var approver=$('#approver option:selected').val();
+            var ordered_date=$('#ordered_date').val();
             $.ajax({
                 data: {
                     supplier_id: supplier,
@@ -490,7 +491,8 @@
                     source: source,
                     emp: emp,
                     ship_to: ship_to,
-                    approver:approver
+                    approver:approver,
+                    ordered_date:ordered_date
 
                 },
                 type: 'POST',
