@@ -212,7 +212,7 @@
                                                                         <div class="col-md-6">
                                                                             <div class="form-group">
                                                                                 <label for="exp_date">Alert Month</label>
-                                                                                <input type="text" class="form-control" name="alert_month" id="alert_month" value="{{old('alert_month')}}" dataformatas="Y-M">
+                                                                                <input type="text" class="form-control" name="alert_month" id="alert_month{{$item->id}}" value="{{old('alert_month')}}" dataformatas="Y-M">
                                                                                 @error('alert_month')
                                                                                 <span class="text-danger">{{$message}}</span>
                                                                                 @enderror
