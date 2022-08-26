@@ -41,17 +41,13 @@
                         <span class="text-danger">{{$message}}</span>
                     @enderror
                 </div>
-                <div class="col-12 mb-3">
+                <div class="col-md-12 col-12">
                     <div class="form-group">
-                        <label for="branch">Branch</label>
-                        <select name="branch_id" id="branch_id" class="form-control select2">
-                            @foreach($branch as $item)
-                                <option value="{{$item->id}}">{{$item->name}}</option>
-                                @endforeach
-                        </select>
-                        @error('branch_id')
-                        <span class="text-danger">Select the branch where the customer is located</span>
-                        @enderror
+                        <label for="" class="form-label font-weight-bold text-muted text-uppercase">New Business/Existing Business</label><br>
+                        <input type="radio" name="existing_business" value="0" checked>
+                        <label for="">New Business</label>
+                        <input type="radio" name="existing_business" class="ml-5" value="1">
+                        <label for="">Existing Business</label>
                     </div>
                 </div>
 
@@ -81,6 +77,7 @@
                                 <span class="input-group-text"><i class="fa fa-building"></i></span>
                             </div>
                             <select name="company_id" id="company_id" class="form-control select2">
+                                <option value="">None</option>
                                 @foreach($companies as $key=>$val)
                                     <option value="{{$key}}" {{$key==old('company_id')?'selected':''}}>{{$val}}</option>
                                 @endforeach
@@ -119,15 +116,6 @@
                         <span class="text-danger">{{$message}}</span>
                         @enderror
                     </div>
-                    <div class="col-md-6 col-sm-6 col-12">
-                        <div class="form-group">
-                            <label for="credit">Credit Limit</label>
-                            <input type="number" class="form-control" name="credit_limit" value="{{old('credit_limit')}}">
-                            @error('credit_limit')
-                            <span class="text-danger">{{$message}}</span>
-                            @enderror
-                        </div>
-                    </div>
 
                     <div class="col-md-6 mb-3" id="refesh_div">
                         <label for="customer_type" class="form-label font-weight-bold text-muted text-uppercase">
@@ -141,6 +129,19 @@
                             <option value="Supplier" {{old('customer_type')=='Supplier'?'selected':''}}>Supplier</option>
                             <option value="Courier" {{old('customer_type')=='Courier'?'selected':''}}>Courier</option>
                         </select>
+                    </div>
+                    <div class="col-md-6 col-12 mb-3">
+                        <div class="form-group">
+                            <label for="branch">Branch</label>
+                            <select name="branch_id" id="branch_id" class="form-control select2">
+                                @foreach($branch as $item)
+                                    <option value="{{$item->id}}">{{$item->name}}</option>
+                                @endforeach
+                            </select>
+                            @error('branch_id')
+                            <span class="text-danger">Select the branch where the customer is located</span>
+                            @enderror
+                        </div>
                     </div>
                     <div class="col-md-6 mb-3">
                         <div class="form-group">
@@ -220,6 +221,26 @@
                           placeholder="Enter linkedin link" value="{{old('linkedin')}}">
                </div>
            </div>
+           <div class="col-md-6 col-12 mb-3">
+               <label for="address"
+                      class="form-label font-weight-bold text-muted text-uppercase">Address</label>
+               <div class="input-group">
+                   <div class="input-group-prepend">
+                       <span class="input-group-text"><i class="fa fa-map-o"></i></span>
+                   </div>
+                   <input type="text" class="form-control" id="address" name="address"
+                          placeholder="Enter Address" value="{{old('address')}}">
+               </div>
+           </div>
+           <div class="col-md-6 col-sm-6 col-12">
+               <div class="form-group">
+                   <label for="credit">Credit Limit</label>
+                   <input type="number" class="form-control" name="credit_limit" value="{{old('credit_limit')}}">
+                   @error('credit_limit')
+                   <span class="text-danger">{{$message}}</span>
+                   @enderror
+               </div>
+           </div>
            <div class="col-md-6 mb-3">
                <label for="payment_term"
                       class="form-label font-weight-bold text-muted text-uppercase">Payment Terms</label>
@@ -234,17 +255,7 @@
                    </div>
                </div>
            </div>
-           <div class="col-md-12 mb-3">
-               <label for="address"
-                      class="form-label font-weight-bold text-muted text-uppercase">Address</label>
-               <div class="input-group">
-                   <div class="input-group-prepend">
-                       <span class="input-group-text"><i class="fa fa-map-o"></i></span>
-                   </div>
-                   <input type="text" class="form-control" id="address" name="address"
-                          placeholder="Enter Address" value="{{old('address')}}">
-               </div>
-           </div>
+
        </div>
    </div>
     <div class="card shadow col-12">

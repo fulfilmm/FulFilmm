@@ -35,7 +35,7 @@
                                 <div class="row">
                                     <div class="col-md-5">
                                         <div class="profile-info-left">
-                                            <h3 class="user-name m-t-0">{{$data['customer']->company->name}}</h3>
+                                            <h3 class="user-name m-t-0">{{$data['customer']->company->name??''}}</h3>
                                             <h5 class="company-role m-t-0 mb-0">{{$data['customer']->name}}</h5>
                                             <small class="text-muted">{{$data['customer']->position??'N/A'}}</small>
                                             <div class="staff-id">Gender : {{$data['customer']->gender}}</div>

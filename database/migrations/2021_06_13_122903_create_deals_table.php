@@ -19,7 +19,7 @@ class CreateDealsTable extends Migration
             $table->string('deal_id');
             $table->double("amount");
             $table->string("unit");
-            $table->bigInteger("org_name")->unsigned();
+            $table->bigInteger("org_name")->unsigned()->nullable();
             $table->foreign("org_name")->references("id")->on("companies")->onDelete("cascade");
             $table->bigInteger("contact")->unsigned()->nullable();
             $table->foreign("contact")->references("id")->on("customers")->onDelete("cascade");

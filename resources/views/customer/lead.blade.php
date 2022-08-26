@@ -16,7 +16,7 @@
                     </ul>
                 </div>
                 <div class="col-auto float-right ml-auto">
-                    <a href="{{route('customers.create')}}" class="btn add-btn shadow-sm"><i class="fa fa-plus"></i> Add Lead</a>
+                    <a href="{{route('leads.create')}}" class="btn add-btn shadow-sm"><i class="fa fa-plus"></i> Add Lead</a>
                 </div>
             </div>
         </div>
@@ -42,12 +42,11 @@
                             <th>Phone No</th>
                             <th>Email</th>
                             <th>Branch</th>
-                            <th>Region</th>
-                            <th>Zone</th>
-                            <th>Credit Limit</th>
-                            <th>Credit Amount</th>
+                            <th>Status</th>
+                            <th>Owner</th>
                             <th>Company</th>
-                            <th>Type</th>
+                            <th>Priority</th>
+                            <th>Interest Level</th>
                             <th>Action</th>
                         </tr>
                         </thead>
@@ -60,12 +59,11 @@
                                 <td>{{ $customer->phone }}</td>
                                 <td>{{ $customer->email }}</td>
                                 <td>{{$customer->branch->name??'N/A'}}</td>
-                                <td>{{$customer->region->name??'N/A'}}</td>
-                                <td>{{$customer->zone->name??'N/A'}}</td>
-                                <td>{{$customer->credit_limit??0}}</td>
-                                <td><span class="text-{{$customer->current_credit>$customer->credit_limit?'danger':''}}">{{$customer->current_credit??0}}</span></td>
-                                <td>{{ $customer->company->name }}</td>
-                                <td>{{$customer->customer_type}}</td>
+                                <td>{{$customer->status??'N/A'}}</td>
+                                <td>{{$customer->employee->name}}</td>
+                                <td>{{ $customer->company->name??'N/A' }}</td>
+                                <td>{{$customer->priority}}</td>
+                                <td>{{$customer->interest_level}}</td>
                                 <td style="display: flex">
                                     <a class="btn btn-success btn-sm" data-toggle="tooltip" title="View Detail" href="{{route('customers.show',$customer->id)}}"><span class='fa fa-eye'></span></a>&nbsp;
                                     <a class="btn btn-success btn-sm" data-toggle="tooltip" title="Edit" href="{{route('customers.edit',$customer->id)}}"><span class='fa fa-edit'></span></a>&nbsp;

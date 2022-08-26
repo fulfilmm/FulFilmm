@@ -204,7 +204,9 @@ class CustomerController extends Controller
             'status'=>$request->status,
             'case'=>$request->case,
             'credit_limit'=>$request->credit_limit??0,
-            'lead_title'=>$request->title
+            'lead_title'=>$request->title,
+            'interest_level'=>$request->intrest_level,
+            'item_id'=>$request->item_id,
 
         ];
         try{
@@ -225,7 +227,7 @@ class CustomerController extends Controller
                 $deal->deal_id=$deal_id;
                 $deal->amount=0;
                 $deal->unit="MMK";
-                $deal->org_name=$request->company_id;
+                $deal->org_name=$request->company_id??null;
                 $deal->contact=$customer->id;
                 $deal->sale_stage=$request->status;
                 $deal->lead_title=$request->title;

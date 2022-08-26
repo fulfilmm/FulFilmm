@@ -67,4 +67,7 @@ class Customer extends Authenticatable
     public function region(){
         return $this->belongsTo(Region::class);
     }
+    public function employee(){
+        return $this->belongsTo(Employee::class,'emp_id','id');
+    }
 }

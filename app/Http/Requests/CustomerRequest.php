@@ -27,7 +27,7 @@ class CustomerRequest extends FormRequest
             'name' => 'required',
             'phone' => 'max:16|required',
             'email' => 'required',
-            'company_id' => 'required',
+            'company_id' => 'nullable',
             'profile_img' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'credit_limit' => 'nullable',
             'gender'=>'required'

@@ -195,11 +195,12 @@ class ApprovalController extends Controller
             $approval->secondary_approved=$request->secondary_id;
         }
         $approval->save();
-        if($request->type=='Items Request'){
+        if($request->type=='Items Request'||$request->type=='Payment'||$request->type=='Procurement'){
             for($i=0;$i<count($request->product);$i++){
                 $item=new RequestItem();
                 $item->product_name=$request->product[$i];
                 $item->variant=$request->variant[$i];
+                $item->amount=$request->amount[$i];
                 $item->qty=$request->qty[$i];
                 $item->approval_id=$approval->id;
                 $item->save();

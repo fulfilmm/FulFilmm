@@ -37,4 +37,5 @@ Route::middleware(['auth:employee'])->group(function () {
     Route::get('quotations/delete/{id}',[QuotationController::class,'destroy']);
     Route::post('deal/post/comment',[DealController::class,'comment'])->name('deals.comment');
     Route::get("deal/workdone/{id}", [DealController::class, 'workdone'])->name('schedule.done');
+    Route::resource('leads',LeadController::class);
 });

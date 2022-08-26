@@ -12,8 +12,13 @@ use App\Models\lead_follower;
 
 
 use App\Models\next_plan;
+use App\Models\OfficeBranch;
+use App\Models\Region;
 use App\Models\SalePipelineRecord;
+use App\Models\SaleZone;
 use App\Models\tags_industry;
+use App\Repositories\Contracts\CompanyContract;
+use App\Repositories\Contracts\CustomerContract;
 use Carbon\Carbon;
 
 use Illuminate\Http\Request;
@@ -22,6 +27,16 @@ use Illuminate\Support\Facades\Auth;
 
 class LeadController extends Controller
 {
+    public $state = ['Yangon Division', 'Mandalay Division', 'Bago Division', 'Ayeyarwady Division', 'Tanintharyi Division', 'Magway Division', 'Sagaing Division', 'Kachin State', 'Kayah State', 'Kayin State', 'Chin State', 'Mon State', 'Rakhine State', 'Shan State'];
+
+    private $customerContract, $company_contract;
+
+    public function __construct(CustomerContract $customerContract, CompanyContract $company_contract)
+    {
+        $this->customerContract = $customerContract;
+        $this->company_contract = $company_contract;
+
+    }
     public function index()
     {
         $customers=Customer::where('customer_type','Lead')->get();
@@ -36,8 +51,21 @@ class LeadController extends Controller
      */
     public function create()
     {
-
-        return view();
+        $auth=Auth::guard('employee')->user();
+        $tags = tags_industry::all();
+        $last_tag = tags_industry::orderBy('id', 'desc')->first();
+        $companies = $this->company_contract->all()->pluck('name', 'id')->all();
+        $parent_companies = $this->company_contract->parentCompanies()->pluck('name', 'id')->all();
+        $zone=SaleZone::all();
+        $auth=Auth::guard('employee')->user();
+        if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'||$auth->role->name=='Sale Manager'){
+            $branch=OfficeBranch::all();
+            $region=Region::all();
+        }else{
+            $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
+            $region=Region::where('branch_id',$auth->office_branch_id)->get();
+        }
+        return view('Lead.create', compact('companies', 'last_tag', 'tags','parent_companies','zone','region','branch'));
     }
 
     /**

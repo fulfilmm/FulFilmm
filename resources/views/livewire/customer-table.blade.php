@@ -65,7 +65,7 @@
                             <td><span class="text-{{$customer->current_credit>$customer->credit_limit?'danger':''}}">{{$customer->current_credit??0}}</span></td>
                             <td>{{$customer->advance_balance??0}}</td>
                             <td>{{$customer->payment_term?$customer->payment_term.' Days':''}}</td>
-                            <td>{{ $customer->company->name }}</td>
+                            <td>{{ $customer->company->name??'None' }}</td>
                             <td>{{$customer->customer_type}}</td>
                             <td style="display: flex">
                                 <a class="btn btn-success btn-sm" data-toggle="tooltip" title="View Detail" href="{{route('customers.show',$customer->id)}}"><span class='fa fa-eye'></span></a>&nbsp;

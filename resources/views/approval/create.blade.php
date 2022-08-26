@@ -182,7 +182,7 @@
                        </div>
                        <div class="row" id="payment">
                            <div class="col-md-6 col-12">
-                               <label for="contact">Contact</label>
+                               <label for="contact">Supplier</label>
                                <div class="input-group">
                                    <div class="input-group-prepend">
                                        <span class="input-group-text"><i class="fa fa-users"></i></span>
@@ -226,12 +226,9 @@
                                </div>
                            </div>
                            <div class="col-md-6 col-12">
-                               <label for="contact">Supplier</label>
-                               <div class="input-group">
-                                   <div class="input-group-prepend">
-                                       <span class="input-group-text"><i class="fa fa-users"></i></span>
-                                   </div>
-                                   <select name="supplier" id="contact" class="form-control ">
+                               <div class="form-group">
+                                   <label for="contact">Supplier</label>
+                                   <select name="supplier" id="contact" class="form-control " style="width: 100%;">
                                        <option value="">Choose Supplier</option>
                                        @foreach($customer as $contact)
                                            @if($contact->customer_type=='Supplier')
@@ -260,15 +257,17 @@
                            <table class="table-hover table table-bordered">
                                <tr>
                                    <th><input class='check_all' type='checkbox' onclick="select_all()"/></th>
-                                   <th>Product</th>
+                                   <th>Product/Particular</th>
                                    <th>Variant</th>
                                    <th>Quantity</th>
+                                   <th>Amount</th>
                                </tr>
                                <tr>
                                    <td><input type='checkbox' class='case'/></td>
                                    <td><input type='text' class="form-control form-control-sm" id='product' name='product[]'/></td>
                                    <td><input type='text' class="form-control form-control-sm" id='varaiant' name='variant[]'/></td>
                                    <td><input type='text' class="form-control form-control-sm" id='qty' name='qty[]'/></td>
+                                   <td><input type='text' class="form-control form-control-sm" id='amount' name='amount[]'/></td>
                                </tr>
                            </table>
 
@@ -335,13 +334,13 @@
                     $('#payment').show();
                     $('#procurement').hide();
                     $('#warehouse_div').hide();
-                    $('#item_table').hide();
+                    $('#item_table').show();
                 }else if (type=='Procurement') {
                     $('#business_trip').hide();
                     $('#payment').hide();
                     $('#procurement').show();
                     $('#warehouse_div').hide();
-                    $('#item_table').hide();
+                    $('#item_table').show();
 
                 }else if(type=='Items Request'){
                     $('#business_trip').hide();
@@ -371,7 +370,7 @@
         $(".addmore").on('click',function(){
             count=$('table tr').length;
             var data="<tr><td><input type='checkbox' class='case'/></td>";
-            data +="<td><input type='text' class='form-control form-control-sm' id='product"+i+"' name='product[]'/></td> <td><input type='text' class='form-control form-control-sm' id='variant"+i+"' name='variant[]'/></td><td><input type='text' class='form-control form-control-sm' id='qty"+i+"' name='qty[]'/></td></tr>";
+            data +="<td><input type='text' class='form-control form-control-sm' id='product"+i+"' name='product[]'/></td> <td><input type='text' class='form-control form-control-sm' id='variant"+i+"' name='variant[]'/></td><td><input type='text' class='form-control form-control-sm' id='qty"+i+"' name='qty[]'/></td><td><input type='text' class='form-control form-control-sm' id='amount"+i+"' name='amount[]'/></td></tr>";
             $('table').append(data);
             i++;
         });
