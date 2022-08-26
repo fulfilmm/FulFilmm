@@ -56,7 +56,7 @@ class PurchaseOrderItemController extends Controller
                     'total'=>$product_variant->purchase_price??0,
                     'price'=>$product_variant->purchase_price??0,
                     'creation_id'=>$request->creation_id,
-                    'unit'=>$unit->id
+                    'unit'=>$unit->id,
                 ]
             );
         }else{

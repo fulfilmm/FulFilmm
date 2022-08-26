@@ -46,9 +46,9 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="">Ordered Date</label>
-                                <input type="date" name="ordered_date" id="deadline" class="form-control"
-                                       value="{{$po_data[0]['deadline']??''}}">
+                                <label for="ordered_date">Ordered Date</label>
+                                <input type="date" name="ordered_date" id="ordered_date" class="form-control"
+                                       value="{{$po_data[0]['ordered_date']??''}}">
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -59,10 +59,19 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <label for="">Source</label>
-                            <select name="rfq_id" id="source" class="select2 form-control">
+                            <label for="">PR Source</label>
+                            <select name="pr_id" id="source" class="select2 form-control">
                                 <option value="">None</option>
                                 @foreach($source as $key=>$val)
+                                    <option value="{{$key}}">{{$val}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="">RFQ Source</label>
+                            <select name="rfq_id" id="source" class="select2 form-control">
+                                <option value="">None</option>
+                                @foreach($rfqs as $key=>$val)
                                     <option value="{{$key}}">{{$val}}</option>
                                 @endforeach
                             </select>
@@ -74,11 +83,27 @@
                                        value="{{$po_data[0]['received_date']??''}}">
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label for="ship">Ship To</label>
                                 <input type="text" class="form-control" id="ship_to" name="ship_to"
                                        value="{{$po_data[0]['ship_to']??''}}">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="">Approver</label>
+                                <select name="approver_id" id="approver" class="form-control select2" >
+                                    @foreach($emps as $emp )
+                                        @if($emp->role->name=='Manager'||$emp->role->name=='CEO')
+                                            @if(isset($po_data[0]['approver']))
+                                                <option value="{{$emp->id}}" {{$po_data[0]['approver']=$emp->id?'selected':''}} >{{$emp->name}}</option>
+                                            @else
+                                                <option value="{{$emp->id}}">{{$emp->name}}</option>
+                                            @endif
+                                        @endif
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -95,22 +120,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="">Approver</label>
-                                <select name="approver_id" id="approver" class="form-control select2" >
-                                    @foreach($emps as $emp )
-                                       @if($emp->role->name=='Manager'||$emp->role->name=='CEO')
-                                            @if(isset($po_data[0]['approver']))
-                                                <option value="{{$emp->id}}" {{$po_data[0]['approver']=$emp->id?'selected':''}} >{{$emp->name}}</option>
-                                            @else
-                                                <option value="{{$emp->id}}">{{$emp->name}}</option>
-                                            @endif
-                                           @endif
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
+
                         <div class="col-12">
                             <label for="">Description</label>
                             <textarea name="description" id="description" cols="30" rows="5"

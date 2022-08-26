@@ -55,6 +55,7 @@ class PurchaseOrderController extends Controller
         $product=ProductVariations::with('product')->get();
         $suppliers = Customer::where('customer_type', 'Supplier')->get();
         $source=PurchaseRequest::all()->pluck('pr_id','id')->all();
+        $rfqs=RequestForQuotation::all()->pluck('purchase_id','id')->all();
         $units=SellingUnit::all();
         $session_value = \Illuminate\Support\Str::random(10);
         $Auth = "PO-" . Auth::guard('employee')->user()->id;
@@ -82,7 +83,7 @@ class PurchaseOrderController extends Controller
             $po_id = "PO-00001";
         }
         $emps=Employee::all();
-        return view('Purchase.PurchaseOrder.create',compact('product','suppliers','source','creation_id','po_data','items','taxes','grand_total','po_id','emps','units'));
+        return view('Purchase.PurchaseOrder.create',compact('product','suppliers','source','creation_id','po_data','items','taxes','grand_total','po_id','emps','units','rfqs'));
     }
 
     /**
@@ -115,6 +116,7 @@ class PurchaseOrderController extends Controller
             $data['ordered_date']=$request->ordered_date;
             $data['purchase_type']=$request->purchase_type;
             $data['pr_id']=$request->pr_id;
+            $data['rfq_id']=$request->rfq_id;
             $data['deadline']=$request->deadline;
             $data['vendor_reference']=$request->vendor_reference;
             $data['description']=$request->descripion;
@@ -135,7 +137,7 @@ class PurchaseOrderController extends Controller
                     $this->addnotify($emp,'warning',' Added as a follower of '.$request->po_id,'purchaseorders/'.$po->id,Auth::guard('employee')->user()->id);
                 }
             }
-            Session::forget('poformdata-' . Auth::guard('employee')->user()->id);
+
             $Auth = "PO-" . Auth::guard('employee')->user()->id;
             $creation_id = Session::get($Auth);
             $items=PurchaseOrderItem::where('creation_id',$creation_id)->get();
@@ -144,6 +146,7 @@ class PurchaseOrderController extends Controller
                 $poitem->po_id=$po->id;
                 $poitem->update();
             }
+            Session::forget('poformdata-' . Auth::guard('employee')->user()->id);
             Session::forget($Auth);
             $this->addnotify($request->approver_id,'warning','Request Purchase Order to you '.$request->po_id,'purchaseorders/'.$po->id,Auth::guard('employee')->user()->id);
             return redirect('purchaseorders');

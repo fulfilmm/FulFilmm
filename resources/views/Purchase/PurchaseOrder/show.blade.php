@@ -200,7 +200,7 @@
                             <div class="col-lg-6 col-6">
                                 <div class="text-right">
                                     <h5 class="font-weight-bold mb-3">Supplier Information</h5>
-                                    <p class="mb-0 mb-1">{{$po->vendor->company->name}}</p>
+                                    <p class="mb-0 mb-1">{{$po->vendor->company->name??'N/A'}}</p>
                                     <p class="mb-0 mb-1">{{$po->vendor->name}}</p>
                                     <p class="mb-0 mb-1">{{$po->vendor->address}}</p>
                                     <p class="mb-0 mb-2">{{$po->vendor->phone}}</p>

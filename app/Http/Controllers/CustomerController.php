@@ -207,7 +207,7 @@ class CustomerController extends Controller
             'lead_title'=>$request->title,
             'interest_level'=>$request->interest_level??'null',
             'segment'=>$request->segment,
-            'item_id'=>$request->item_id??'null',
+            'item_id'=>$request->item_id??null,
             'existing_business'=>$request->existing_business
 
         ];
