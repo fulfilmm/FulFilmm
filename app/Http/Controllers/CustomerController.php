@@ -240,9 +240,12 @@ class CustomerController extends Controller
                 $deal_record->deal_id=$deal->id;
                 $deal_record->emp_id=Auth::guard('employee')->user()->id;
                 $deal_record->save();
-
+                return redirect('leads')->with('success', __('alert.create_success'));
+            }else{
+                return redirect()->route('customers.index')->with('success', __('alert.create_success'));
             }
-        return redirect()->route('customers.index')->with('success', __('alert.create_success'));
+
+
         }catch (Exception $e){
             return redirect()->back()->with('error',$e->getMessage());
         }

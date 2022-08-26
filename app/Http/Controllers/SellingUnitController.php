@@ -145,11 +145,12 @@ class SellingUnitController extends Controller
         ]);
         foreach ($request->region_id as $region_id){
             foreach ($request->product_id as $item){
+                $product_variant=ProductVariations::where('id',$item)->first();
             for($i=0;$i<count($request->row_no);$i ++){
                 $data['product_id']=$item;
                 $data['unit_id']=$request->unit_id;
                 $data['sale_type']=$request->sale_type;
-                $data['price']=$request->price[$i];
+                $data['price']=$request->price[$i]+$product_variant->additional_price;
                 $data['min']=$request->min_qty[$i];
                 $data['max']=$request->max_qty[$i];
                 $data['start_date']=$request->start_date[$i];

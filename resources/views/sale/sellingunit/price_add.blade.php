@@ -79,12 +79,12 @@
                                     <span class="text-danger">{{$message}}</span>
                                     @enderror
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="add_price">Additional Price</label>
-                                        <input type="number" class="form-control" name="additional_price" id="add_price">
-                                    </div>
-                                </div>
+                                {{--<div class="col-md-6">--}}
+                                    {{--<div class="form-group">--}}
+                                        {{--<label for="add_price">Additional Price</label>--}}
+                                        {{--<input type="number" class="form-control" name="additional_price" id="add_price">--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
                                 <div class="col-12">
                                     <div class="col-12">
                                         <div class="row border rounded">
@@ -92,7 +92,7 @@
                                             <div class="col my-2">
                                                 <div class="form-group">
                                                     <label for="min">Min Quantity</label>
-                                                    <input type="number" class="form-control form-control-sm rounded" name="min_qty[]" id="min" value="1" >
+                                                    <input type="number" class="form-control form-control-sm rounded" name="min_qty[]" id="min" value="1" required>
                                                 </div>
                                             </div>
                                             <div class="col my-2">
@@ -116,7 +116,7 @@
                                             <div class="col my-2">
                                                 <div class="form-group">
                                                     <label for="price">Price</label>
-                                                    <input type="number" class="form-control form-control-sm rounded" name="price[]" id="price[]">
+                                                    <input type="number" class="form-control form-control-sm rounded" name="price[]" id="price[]" required>
                                                 </div>
                                             </div>
                                         </div>
@@ -165,13 +165,13 @@
             $(document).ready(function () {
                 $('select').select2();
             });
-            function selectvariant(value){
-                @foreach($products as $pd)
-                    if(value=='{{$pd->id}}'){
-                        $('#add_price').val('{{$pd->additional_price}}');
-                }
-                @endforeach
-            }
+            {{--function selectvariant(value){--}}
+                {{--@foreach($products as $pd)--}}
+                    {{--if(value=='{{$pd->id}}'){--}}
+                        {{--$('#add_price').val('{{$pd->additional_price}}');--}}
+                {{--}--}}
+                {{--@endforeach--}}
+            {{--}--}}
             $("#addRow").click(function () {
                 var html = '';
                 html +='<div id="inputFormRow" class="row rounded border my-2">';

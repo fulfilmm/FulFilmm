@@ -49,7 +49,11 @@ class Customer extends Authenticatable
         'zone_id',
         'branch_id',
         'use_amount',
-        'payment_term'
+        'payment_term',
+        'interest_level',
+        'segment',
+        'existing_business',
+        'item_id'
     ];
 
 
