@@ -20,7 +20,7 @@ class CreateExpenseClaimsTable extends Migration
             $table->bigInteger('approver_id')->unsigned();
             $table->string('status');//for reject,pending,approve
             $table->text('tag_emp')->nullable();
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->dateTime('date');
             $table->double('total');
             $table->bigInteger('financial_approver')->unsigned();

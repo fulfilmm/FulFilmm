@@ -58,7 +58,7 @@ class ExpenseClaimController extends Controller
     {
 //        dd($request->all());
         $this->validate($request,[
-            'description'=>'required',
+//            'description'=>'required',
             'date'=>'required',
             'approver'=>'required',
             'finance_approver'=>'required',
