@@ -41,4 +41,5 @@ Route::middleware(['auth:employee'])->group(function () {
     Route::post('/po/item/add', [PurchaseOrderItemController::class, 'store'])->name('poitem.store');
     Route::post('/po/item/update/{id}', [PurchaseOrderItemController::class, 'update'])->name('poitem.update');
     Route::post('/po/item/delete', [PurchaseOrderItemController::class, 'destroy'])->name('poitem.delete');
+    Route::get('/rfq/duplicate/{id}',[RFQController::class,'duplicate_rfq'])->name('rfqs.duplicate');
 });

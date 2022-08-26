@@ -170,12 +170,17 @@
            <div class="col-md-2">
                <div class="card shadow">
                  <div class="col-12">
-                     <a href="{{route('rfqs.edit',$rfq->id)}}" class="btn btn-primary btn-sm col-12 my-2"><i class="fa fa-edit"></i> Edit</a>
+
+                     @if($rfq->status=='Confirm Order')
                      <a href="{{route('rfq.preparemail',$rfq->id)}}"  class="btn btn-primary btn-sm col-12 my-2">{{$rfq->status=='RFQ Sent'?'Re-Sent':'SEND EMAIL'}}</a>
-                     <a href="{{route('rfq.statuschange',[$rfq->id,'Cancel'])}}" class="btn btn-primary btn-sm col-12 my-2">CANCEL</a>
-                     @if($rfq->status=='RFQ Sent'||$rfq->status='Daft')
-                         <a href="{{route('rfq.statuschange',[$rfq->id,'Confirm Order'])}}" class="btn btn-primary btn-sm col-12 my-2">CONFIRM </a>
+                    @else
+                         <a href="{{route('rfqs.edit',$rfq->id)}}" class="btn btn-primary btn-sm col-12 my-2"><i class="fa fa-edit"></i> Edit</a>
+                         @if($rfq->status=='RFQ Sent'||$rfq->status='Daft')
+                             <a href="{{route('rfq.statuschange',[$rfq->id,'Confirm Order'])}}" class="btn btn-primary btn-sm col-12 my-2">CONFIRM </a>
+                         @endif
                      @endif
+                     <a href="{{route('rfq.statuschange',[$rfq->id,'Cancel'])}}" class="btn btn-primary btn-sm col-12 my-2">CANCEL</a>
+
                      <button class="btn btn-danger btn-sm col-12 my-2" type="button" id="create_pdf"><i class="fa fa-file-pdf-o mr-2"></i>PDF</button>
                  </div>
                </div>

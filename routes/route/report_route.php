@@ -20,4 +20,5 @@ Route::middleware(['auth:employee', 'authorize', 'ownership'])->group(function (
     Route::get('report/receivable', [ReportController::class, 'receivable'])->name('report.receivable');
     Route::get('report/damage', [ReportController::class, 'damage'])->name('report.damage');
     Route::get('report/foc', [ReportController::class, 'foc'])->name('report.foc');
+    Route::get('expense/break/down',[ReportController::class,'exp_break_down'])->name('exp.breakdown');
 });

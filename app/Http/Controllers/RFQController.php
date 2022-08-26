@@ -38,13 +38,13 @@ class RFQController extends Controller
     public function index()
     {
         $rfqs = RequestForQuotation::with('source', 'vendor')->get();
-        $confirm=RequestForQuotation::where('status','Confirm Order')->count();
-        $tosend=RequestForQuotation::where('status','Daft')->count();
-        $waiting=RequestForQuotation::where('status','RFQ Sent')->count();
-        $overdue=RequestForQuotation::whereDate('deadline','<',Carbon::now())->where('status','!=','Confirm Order')->count();
+        $confirm = RequestForQuotation::where('status', 'Confirm Order')->count();
+        $tosend = RequestForQuotation::where('status', 'Daft')->count();
+        $waiting = RequestForQuotation::where('status', 'RFQ Sent')->count();
+        $overdue = RequestForQuotation::whereDate('deadline', '<', Carbon::now())->where('status', '!=', 'Confirm Order')->count();
 
 //        dd($overdue);
-        return view('Purchase.RFQs.index', compact('rfqs','confirm','tosend','waiting','overdue'));
+        return view('Purchase.RFQs.index', compact('rfqs', 'confirm', 'tosend', 'waiting', 'overdue'));
     }
 
     /**
@@ -74,8 +74,8 @@ class RFQController extends Controller
         $data = Session::get($session_key) ?? [];
         $rfq_data = Session::get('rfqformdata-' . Auth::guard('employee')->user()->id);
         $pr = PurchaseRequest::all()->pluck('pr_id', 'id')->all();
-        $emps=Employee::all()->pluck('name','id')->all();
-        return view('Purchase.RFQs.create', compact('items', 'product', 'grand_total', 'creation_id', 'suppliers', 'data', 'rfq_data', 'pr','emps'));
+        $emps = Employee::all()->pluck('name', 'id')->all();
+        return view('Purchase.RFQs.create', compact('items', 'product', 'grand_total', 'creation_id', 'suppliers', 'data', 'rfq_data', 'pr', 'emps'));
     }
 
     /**
@@ -86,11 +86,11 @@ class RFQController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,[
-           'receive_date'=>'required',
-           'type'=>'required',
-           'vendor_id'=>'nullable',
-           'deadline'=>'required',
+        $this->validate($request, [
+            'receive_date' => 'required',
+            'type' => 'required',
+            'vendor_id' => 'nullable',
+            'deadline' => 'required',
         ]);
 //        dd($request->all());
         $last_rfq = RequestForQuotation::orderBy('id', 'desc')->first();
@@ -113,19 +113,19 @@ class RFQController extends Controller
         $rfq->creator_id = Auth::guard('employee')->user()->id;
         $rfq->vendor_reference = $request->vendor_reference;
         $rfq->type = $request->type;
-        if(isset($request->attach)){
+        if (isset($request->attach)) {
             foreach ($request->file('attach') as $attach) {
-                $input['filename'] =\Illuminate\Support\Str::random(10).time().'.'.$attach->extension();
+                $input['filename'] = \Illuminate\Support\Str::random(10) . time() . '.' . $attach->extension();
                 $attach->move(public_path() . '/attach_file/', $input['filename']);
                 $data[] = $input['filename'];
             }
             $rfq->attach = json_encode($data);
         }
         $rfq->save();
-        if($request->tag!=null){
-            foreach ($request->tag as $emp){
-                $this->addtag($emp,$rfq->id);
-                $this->addnotify($emp,'warning',' Added as a follower of '.$purchase_id,'rfqs/'.$rfq->id,Auth::guard('employee')->user()->id);
+        if ($request->tag != null) {
+            foreach ($request->tag as $emp) {
+                $this->addtag($emp, $rfq->id);
+                $this->addnotify($emp, 'warning', ' Added as a follower of ' . $purchase_id, 'rfqs/' . $rfq->id, Auth::guard('employee')->user()->id);
             }
         }
         $Auth = "rfq-" . Auth::guard('employee')->user()->id;
@@ -139,9 +139,11 @@ class RFQController extends Controller
         Session::forget('rfqformdata-' . Auth::guard('employee')->user()->id);
         return redirect(route('rfqs.show', $rfq->id));
     }
-    public function addtag($emp_id,$rfq_id){
-        $data['rfq_id']=$rfq_id;
-        $data['emp_id']=$emp_id;
+
+    public function addtag($emp_id, $rfq_id)
+    {
+        $data['rfq_id'] = $rfq_id;
+        $data['emp_id'] = $emp_id;
         rfq_follower::create($data);
     }
 
@@ -156,10 +158,10 @@ class RFQController extends Controller
     {
         $rfq = RequestForQuotation::with('source', 'vendor')->where('id', $id)->firstOrFail();
         $rfq_items = RFQItems::with('product')->where('rfq_id', $id)->get();
-        $company=MainCompany::where('ismaincompany',true)->first();
-        $followers=rfq_follower::with('emp')->where('rfq_id',$id)->get();
-        $attach=json_decode($rfq->attach)??[];
-        return view('Purchase.RFQs.show', compact('rfq', 'rfq_items','company','followers','attach'));
+        $company = MainCompany::where('ismaincompany', true)->first();
+        $followers = rfq_follower::with('emp')->where('rfq_id', $id)->get();
+        $attach = json_decode($rfq->attach) ?? [];
+        return view('Purchase.RFQs.show', compact('rfq', 'rfq_items', 'company', 'followers', 'attach'));
     }
 
 
@@ -171,7 +173,7 @@ class RFQController extends Controller
      */
     public function edit($id)
     {
-        $rfq=RequestForQuotation::where('id',$id)->first();
+        $rfq = RequestForQuotation::where('id', $id)->first();
         $suppliers = Customer::where('customer_type', 'Supplier')->get();
         $session_value = \Illuminate\Support\Str::random(10);
         $Auth = "rfq-" . Auth::guard('employee')->user()->id;
@@ -181,7 +183,7 @@ class RFQController extends Controller
         } else {
             $creation_id = Session::get($Auth);
         }
-        $items = RFQItems::where('rfq_id',$rfq->id)->get();
+        $items = RFQItems::where('rfq_id', $rfq->id)->get();
         $total = DB::table("r_f_q_items")
             ->select(DB::raw("SUM(total) as total"))
             ->where('creation_id', $creation_id)
@@ -189,7 +191,7 @@ class RFQController extends Controller
         $grand_total = $total[0]->total;
         $product = product::all()->pluck('name', 'id')->all();
         $pr = PurchaseRequest::all()->pluck('pr_id', 'id')->all();
-        return view('Purchase.RFQs.edit', compact('items', 'product', 'grand_total', 'suppliers', 'pr','rfq'));
+        return view('Purchase.RFQs.edit', compact('items', 'product', 'grand_total', 'suppliers', 'pr', 'rfq'));
     }
 
     /**
@@ -201,7 +203,7 @@ class RFQController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $rfq = RequestForQuotation::where('id',$id)->first();
+        $rfq = RequestForQuotation::where('id', $id)->first();
         $rfq->vendor_id = $request->vendor_id;
         $rfq->pr_id = $request->source;
         $rfq->receipt_date = $request->receive_date;
@@ -222,7 +224,7 @@ class RFQController extends Controller
      */
     public function destroy($id)
     {
-        $rfq=RequestForQuotation::where('id',$id)->firstOrFail();
+        $rfq = RequestForQuotation::where('id', $id)->firstOrFail();
         $rfq->delete();
         return redirect()->back();
     }
@@ -268,8 +270,8 @@ class RFQController extends Controller
             $data = Session::get($session_key) ?? [];
             $rfq_data = Session::get('rfqformdata-' . Auth::guard('employee')->user()->id);
             $pr = PurchaseRequest::all()->pluck('pr_id', 'id')->all();
-            $emps=Employee::all()->pluck('name','id')->all();
-            return view('Purchase.RFQs.create', compact('grand_total', 'product', 'items', 'creation_id', 'suppliers', 'data', 'rfq_data', 'pr','emps'));
+            $emps = Employee::all()->pluck('name', 'id')->all();
+            return view('Purchase.RFQs.create', compact('grand_total', 'product', 'items', 'creation_id', 'suppliers', 'data', 'rfq_data', 'pr', 'emps'));
         } else {
             return redirect()->back()->with('error', 'This purchase request does not already approve!');
         }
@@ -278,8 +280,8 @@ class RFQController extends Controller
     public function prepareemail($id)
     {
         $rfq = RequestForQuotation::with('vendor')->where('id', $id)->first();
-        $supplier=Customer::all();
-        return view('Purchase.RFQs.mailprepare', compact('rfq','supplier'));
+        $supplier = Customer::all();
+        return view('Purchase.RFQs.mailprepare', compact('rfq', 'supplier'));
     }
 
     /**
@@ -294,52 +296,95 @@ class RFQController extends Controller
             $file_name = $file->getClientOriginalName();
             $request->attach->move(public_path() . '/attach_file/', $file_name);
         }
-        $rfq= RequestForQuotation::with('vendor')->where('id', $request->rfq_id)->first();
+        $rfq = RequestForQuotation::with('vendor')->where('id', $request->rfq_id)->first();
 
         $details = array(
             'email' => $request->email,
             'title' => "Request For Quotation",
             'body' => $request->body,
-            'rfq' =>$rfq,
+            'rfq' => $rfq,
             'items' => RFQItems::with('product')->where('rfq_id', $request->rfq_id)->get(),
             'attach' => $request->attach != null ? public_path() . '/attach_file/' . $file_name : '',
 
         );
-        Mail::send('Purchase.RFQs.sendmail', $details, function($message)use($details) {
+        Mail::send('Purchase.RFQs.sendmail', $details, function ($message) use ($details) {
             $message->to($details["email"], $details["email"])
                 ->subject($details["title"]);
             if ($details['attach'] != '') {
                 $message->attach($details['attach']);
             }
         });
-        $rfq->status='RFQ Sent';
+        $rfq->status = 'RFQ Sent';
         $rfq->update();
-        return redirect(route('rfqs.show',$rfq->id));
-    }
-    public function statuschange($id,$status){
-        $rfq=RequestForQuotation::where('id',$id)->first();
-        $rfq->status=$status;
-        $rfq->confirm_date=Carbon::now();
-        $rfq->update();
-
-            return redirect(route('rfqs.show',$id));
-
+        return redirect(route('rfqs.show', $rfq->id));
     }
 
-    public function productReceive($id){
-        $last_rfq =ProductReceive::orderBy('id', 'desc')->first();
+    public function statuschange($id, $status)
+    {
+        $rfq = RequestForQuotation::where('id', $id)->first();
+        $rfq->status = $status;
+        $rfq->confirm_date = Carbon::now();
+        $rfq->update();
+
+        return redirect(route('rfqs.show', $id));
+
+    }
+
+    public function productReceive($id)
+    {
+        $last_rfq = ProductReceive::orderBy('id', 'desc')->first();
 
         if ($last_rfq != null) {
             $last_rfq->purchase_id++;
             $received_id = $last_rfq->received_id;
         } else {
-            $received_id = "WH/IN/"."00001";
+            $received_id = "WH/IN/" . "00001";
         }
-        $rfq=RequestForQuotation::with('vendor')->where('id',$id)->first();
+        $rfq = RequestForQuotation::with('vendor')->where('id', $id)->first();
         $rfq_items = RFQItems::with('product')->where('rfq_id', $id)->get();
-        $rfq->status='Receipt Product';
+        $rfq->status = 'Receipt Product';
         $rfq->update();
 
-        return view('Purchase.RFQs.receivedproduct',compact('received_id','rfq','rfq_items'));
+        return view('Purchase.RFQs.receivedproduct', compact('received_id', 'rfq', 'rfq_items'));
+    }
+
+    public function duplicate_rfq($id)
+    {
+        $last_rfq = RequestForQuotation::orderBy('id', 'desc')->first();
+
+        if ($last_rfq != null) {
+            $last_rfq->purchase_id++;
+            $purchase_id = $last_rfq->purchase_id;
+        } else {
+            $purchase_id = "RFQ-00001";
+        }
+        $old_rfq = RequestForQuotation::where('id', $id)->first();
+        $rfq = new  RequestForQuotation();
+        $rfq->purchase_id = $purchase_id;
+        $rfq->vendor_id = $old_rfq->vendor_id;
+        $rfq->pr_id = $old_rfq->pr_id;
+        $rfq->receipt_date = $old_rfq->receipt_date;
+        $rfq->deadline = $old_rfq->deadline;
+        $rfq->description = $old_rfq->description;
+        $rfq->total_cost = $old_rfq->total_cost ?? 0;
+        $rfq->status = 'Daft';
+        $rfq->creator_id = Auth::guard('employee')->user()->id;
+        $rfq->vendor_reference = $old_rfq->vendor_reference;
+        $rfq->type = $old_rfq->type;
+        $rfq->attach = $old_rfq->attach;
+        $rfq->save();
+        $items = RFQItems::where('rfq_id', $id)->get();
+        foreach ($items as $item) {
+            $data['product_id'] =$item->product_id;
+            $data['description']=$item->description;
+            $data['price']=$item->price;
+            $data['qty']=$item->qty;
+            $data['creation_id']=$item->creation_id;
+            $data['total']=$item->total;
+            $data['rfq_id'] = $rfq->id;
+            RFQItems::create($data);
+        }
+        return redirect()->back();
+
     }
 }

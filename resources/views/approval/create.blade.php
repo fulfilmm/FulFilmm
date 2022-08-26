@@ -164,7 +164,7 @@
                                        <div class="input-group-prepend">
                                            <span class="input-group-text"><i class="fa fa-money"></i></span>
                                        </div>
-                                       <input type="number" class="form-control" id="budget" name="budget">
+                                       <input type="number" class="form-control " id="budget" name="budget">
                                    </div>
                                </div>
                            </div>
@@ -202,7 +202,7 @@
                                        <div class="input-group-prepend">
                                            <span class="input-group-text"><i class="fa fa-money"></i></span>
                                        </div>
-                                       <input type="number" class="form-control" name="payment_amount" id="payment_amount">
+                                       <input type="number" class="form-control total_amount" name="payment_amount" id="payment_amount">
                                    </div>
                                </div>
                            </div>
@@ -221,7 +221,7 @@
                                        <div class="input-group-prepend">
                                            <span class="input-group-text"><i class="fa fa-money"></i></span>
                                        </div>
-                                       <input type="number" class="form-control" name="procurement_amount" id="procurement_amount">
+                                       <input type="number" class="form-control total_amount" name="procurement_amount" id="procurement_amount">
                                    </div>
                                </div>
                            </div>
@@ -267,7 +267,7 @@
                                    <td><input type='text' class="form-control form-control-sm" id='product' name='product[]'/></td>
                                    <td><input type='text' class="form-control form-control-sm" id='varaiant' name='variant[]'/></td>
                                    <td><input type='text' class="form-control form-control-sm" id='qty' name='qty[]'/></td>
-                                   <td><input type='text' class="form-control form-control-sm" id='amount' name='amount[]'/></td>
+                                   <td><input type='text' class="form-control form-control-sm sub_amount" id='amount' name='amount[]'></td>
                                </tr>
                            </table>
 
@@ -306,6 +306,15 @@
 
     <!-- /Add Event Modal -->
     <script>
+        $(document).keyup(".sub_amount", function(){
+            var sum=0;
+            $(".sub_amount").each(function(){
+                if($(this).val() != "")
+                    sum += parseInt($(this).val());
+            });
+
+            $(".total_amount").val(sum);
+        });
         jQuery(document).ready(function () {
             'use strict';
 
@@ -370,7 +379,7 @@
         $(".addmore").on('click',function(){
             count=$('table tr').length;
             var data="<tr><td><input type='checkbox' class='case'/></td>";
-            data +="<td><input type='text' class='form-control form-control-sm' id='product"+i+"' name='product[]'/></td> <td><input type='text' class='form-control form-control-sm' id='variant"+i+"' name='variant[]'/></td><td><input type='text' class='form-control form-control-sm' id='qty"+i+"' name='qty[]'/></td><td><input type='text' class='form-control form-control-sm' id='amount"+i+"' name='amount[]'/></td></tr>";
+            data +="<td><input type='text' class='form-control form-control-sm' id='product"+i+"' name='product[]'/></td> <td><input type='text' class='form-control form-control-sm' id='variant"+i+"' name='variant[]'/></td><td><input type='text' class='form-control form-control-sm' id='qty"+i+"' name='qty[]'/></td><td><input type='text' class='form-control form-control-sm sub_amount' id='amount"+i+"' name='amount[]' /></td></tr>";
             $('table').append(data);
             i++;
         });
@@ -392,5 +401,6 @@
                 $('#'+id).html(key+1);
             });
         }
+
     </script>
 @endsection

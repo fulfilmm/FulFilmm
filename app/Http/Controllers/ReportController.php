@@ -32,6 +32,7 @@ use App\Models\StockReturn;
 use App\Models\StockTransaction;
 use App\Models\StockTransferRecord;
 use App\Models\Transaction;
+use App\Models\TransactionCategory;
 use App\Models\Warehouse;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -990,6 +991,19 @@ class ReportController extends Controller
         return view('Report.sales_analysis', compact('data', 'employee','branch','region','zone','branch_sales','region_sales','zone_sales','saleman_sales','months','search_month','years','search_year'));
 
     }//Finish ပီးပီ
+    public function exp_break_down(){
+        $categories=TransactionCategory::where('type',0)->get();
+        $expense=[];
+        foreach ($categories as $cat){
+
+               $amount= DB::table("expenses")
+                ->select(DB::raw("SUM(amount) as amount"))
+                ->where('category',$cat->id)->get();
+            $expense[$cat->name]=$amount[0]->amount;
+        }
+        return view("Report.exp_break_down",compact('expense'));
+    }
+
 
 
 }

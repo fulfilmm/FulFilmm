@@ -120,6 +120,8 @@
                                     <td>{{$rfq->vendor->name??'N/A'}}</td>
                                     <td>
                                         <div class="row">
+                                            <a href="{{route('rfqs.duplicate',$rfq->id)}}"
+                                               class="btn btn-white btn-sm mr-1"><i class="fa fa-copy"></i></a>
                                             <a href="{{route('rfqs.show',$rfq->id)}}"
                                                class="btn btn-white btn-sm mr-1"><i class="fa fa-eye"></i></a>
                                             <a href="{{route('rfqs.edit',$rfq->id)}}"

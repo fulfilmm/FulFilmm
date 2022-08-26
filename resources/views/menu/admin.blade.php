@@ -14,8 +14,8 @@
                 <ul style="display: none;">
                     <li><a class="{{ Request::is('reports') ? 'active' : '' }}"
                            href="{{ url('reports') }}" style="text-decoration: none">Report</a></li>
-                    {{--<li><a class="{{ Request::is('selling/report') ? 'active' : '' }}"--}}
-                           {{--href="{{ route('sale.report') }}" style="text-decoration: none">Sales Report</a></li>--}}
+                    <li><a class="{{ Request::is('expense/break/down') ? 'active' : '' }}"
+                           href="{{ route('exp.breakdown') }}" style="text-decoration: none">Expense Breakdown </a></li>
                     <li><a class="{{ Request::is('sale/performance') ? 'active' : '' }}"
                            href="{{ route('report.saleprformance') }}" style="text-decoration: none">Sales Performance</a></li>
                     <li><a class="{{ Request::is('summary') ? 'active' : '' }}"

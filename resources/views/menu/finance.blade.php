@@ -10,7 +10,10 @@
             <li><a href="{{ url('/') }}" class="{{ Request::is('/') ? 'active' : '' }}" style="text-decoration: none">
                     Dashboard</a></li>
         </ul>
+
     </li>
+    <li><a class="{{ Request::is('expense/break/down') ? 'active' : '' }}"
+           href="{{ route('exp.breakdown') }}" style="text-decoration: none">Expense Breakdown </a></li>
     <li class="submenu">
         <a href="#"><i class="la la-th-list" style="font-size: 18px;"></i><span> Contact</span> <span
                     class="menu-arrow"></span></a>
