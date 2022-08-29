@@ -1,13 +1,11 @@
-@extends(\Illuminate\Support\Facades\Auth::guard('employee')->check()?'layout.mainlayout':'layouts.app')
+@extends('layout.mainlayout')
 @section('title','Order Create')
 @section('content')
     {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>--}}
 
     {{--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />--}}
     <!-- Page Content -->
-    @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
-        <div class="content container-fluid">
-            @endif
+    <div class="content container-fluid">
 
         <!-- Page Header -->
         <div class="page-header">
@@ -22,479 +20,465 @@
             </div>
         </div>
         <!-- /Page Header -->
-                <div class="row">
-                    <div class="col-lg-12 col-md-12">
-                        <div class="card shadow">
-                            <div class="card-header">
-                                <h5 class="font-weight-bold">Customer Details</h5>
-                                @csrf
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="card shadow">
+                    <div class="card-header">
+                        <h5 class="font-weight-bold">Customer Details</h5>
+                        @csrf
+                    </div>
+                    <div class="col-12 my-3">
+
+                        <div class="row">
+
+                            <div class="col-md-4 mb-3">
+                                <label for="Text1" class="form-label font-weight-bold text-muted text-uppercase">Customer
+                                    <span class="text-danger">*</span></label>
+                                <select name="customer_id" class="form-control" id="customer_id" required>
+                                    <option value="">Choose Customer</option>
+                                    @foreach($data['customer'] as $customer)
+                                        @if(\Illuminate\Support\Facades\Auth::guard('customer')->check()&& \Illuminate\Support\Facades\Auth::guard('customer')->user()->id==$customer->id)
+                                            <option value="{{$customer->id}}">{{$customer->name}}</option>
+                                        @else
+                                            <option value="{{$customer->id}}" {{$session_data!=null?($session_data[0]['customer_id']==$customer->id ?'selected':''):''}}>{{$customer->name}}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                                <span class="text-danger customer_id_err"></span>
                             </div>
-                            <div class="col-12 my-3">
 
-                                <div class="row">
-
-                                    <div class="col-md-4 mb-3">
-                                        <label for="Text1" class="form-label font-weight-bold text-muted text-uppercase">Customer <span class="text-danger">*</span></label>
-                                        <select name="customer_id" class="form-control" id="customer_id" required>
-                                            <option value="">Choose Customer</option>
-                                            @foreach($data['customer'] as $customer)
-                                                @if(\Illuminate\Support\Facades\Auth::guard('customer')->check()&& \Illuminate\Support\Facades\Auth::guard('customer')->user()->id==$customer->id)
-                                                    <option value="{{$customer->id}}" >{{$customer->name}}</option>
-                                                @else
-                                                    <option value="{{$customer->id}}" {{$session_data!=null?($session_data[0]['customer_id']==$customer->id ?'selected':''):''}}>{{$customer->name}}</option>
-                                                @endif
-                                            @endforeach
-                                        </select>
-                                        <span class="text-danger customer_id_err"></span>
-                                    </div>
-
-                                    <div class="col-md-4 mb-3">
-                                        <label for="phone" class="form-label font-weight-bold text-muted text-uppercase">Phone <span class="text-danger">*</span></label>
-                                        <input type="text"  class="form-control" id="phone" name="phone" placeholder="Enter Phone" value="{{$session_data[0]['phone']??''}}" required>
-                                        <span class="text-danger phone_err"></span>
-                                    </div>
-                                    <div class="col-md-4 mb-3">
-                                        <label for="email" class="form-label font-weight-bold text-muted text-uppercase">Email <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email" value="{{$session_data[0]['email']??''}}" required>
-                                        <span class="text-danger email_err"></span>
-                                    </div>
-                                    <div class="col-md-4 mb-3">
-                                        <label for="address" class="form-label font-weight-bold text-muted text-uppercase">Address <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" name="address" id="address" placeholder="Enter Address" value="{{$session_data[0]['address']??''}}" required>
-                                        <span class="text-danger address_err"></span>
-                                    </div>
-                                    <div class="col-md-4 mb-3">
-                                        <label for="email" class="form-label font-weight-bold text-muted text-uppercase">Billing Address <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="billing_address" name="billing_address" placeholder="Enter Billing Address" value="{{$session_data[0]['billing_address']??''}}" required>
-                                        <span class="text-danger email_err"></span>
-                                    </div>
-                                    <div class="col-md-4 mb-3">
-                                        <div class="form-group">
-                                            <label for="" class="form-label font-weight-bold text-muted text-uppercase">Shipping Type</label><br>
-                                            <input type="radio" class="shipping_type" name="shipping_type" value="pickup" {{$session_data!=null?($session_data[0]['shipping_type']=='pickup'?'checked':''):'checked'}}> <label for="shipping_address" class="ml-2 mr-3">Pick Up</label>
-                                            <input type="radio" class="shipping_type" name="shipping_type" value="delivery" {{$session_data!=null?($session_data[0]['shipping_type']=='delivery'?'checked':''):''}}><label for="shipping_address" class="ml-2 mr-3">Delivery</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 mb-3">
-                                        <div class="form-group" id="delivery_address">
-                                            <label for='' class='form-label font-weight-bold text-muted text-uppercase'>Shipping Address</label>
-                                            <input type='text' class='form-control' name='shipping_address' id='shipping_address' placeholder='Shipping Address' value="{{$session_data[0]['shipping_address']??''}}">
-                                        </div>
-                                    </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="phone" class="form-label font-weight-bold text-muted text-uppercase">Phone
+                                    <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="phone" name="phone"
+                                       placeholder="Enter Phone" value="{{$session_data[0]['phone']??''}}" required>
+                                <span class="text-danger phone_err"></span>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="email" class="form-label font-weight-bold text-muted text-uppercase">Email
+                                    <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="email" name="email"
+                                       placeholder="Enter Email" value="{{$session_data[0]['email']??''}}" required>
+                                <span class="text-danger email_err"></span>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="address" class="form-label font-weight-bold text-muted text-uppercase">Address
+                                    <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="address" id="address"
+                                       placeholder="Enter Address" value="{{$session_data[0]['address']??''}}" required>
+                                <span class="text-danger address_err"></span>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="email" class="form-label font-weight-bold text-muted text-uppercase">Billing
+                                    Address <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="billing_address" name="billing_address"
+                                       placeholder="Enter Billing Address"
+                                       value="{{$session_data[0]['billing_address']??''}}" required>
+                                <span class="text-danger email_err"></span>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="form-group">
+                                    <label for="" class="form-label font-weight-bold text-muted text-uppercase">Shipping
+                                        Type</label><br>
+                                    <input type="radio" class="shipping_type" name="shipping_type"
+                                           value="pickup" {{$session_data!=null?($session_data[0]['shipping_type']=='pickup'?'checked':''):'checked'}}>
+                                    <label for="shipping_address" class="ml-2 mr-3">Pick Up</label>
+                                    <input type="radio" class="shipping_type" name="shipping_type"
+                                           value="delivery" {{$session_data!=null?($session_data[0]['shipping_type']=='delivery'?'checked':''):''}}><label
+                                            for="shipping_address" class="ml-2 mr-3">Delivery</label>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-12">
-                        <div class="card shadow">
-                            <div class="card-header">
-                                <h5 class="font-weight-bold ">Order Details</h5>
-                            </div>
-                            <div class="col-12 my-3">
-                                <div class="row g-3">
-                                    <div class="col-md-6 mb-3">
-                                        <label for="order_date" class="form-label font-weight-bold text-muted text-uppercase">Date <span class="text-danger">*</span></label>
-                                        <input type="date" class="form-control" id="order_date" placeholder="DD MM YYYY" value="{{$session_data[0]['order_date']??\Carbon\Carbon::today()->format('Y-m-d')}}" required>
-                                        <span class="text-danger order_date_err"></span>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="Text7" class="form-label font-weight-bold text-muted text-uppercase">Payment Method <span class="text-danger">*</span></label><br>
-                                        <div class="form-group"  aria-label="Basic outlined example">
-                                            <input type="radio" name="payment_type" id="payment_type" value="Cash" class="mr-2" {{$session_data!=null?($session_data[0]['payment_method']=='Cash'?'checked':''):'checked'}}><label for="">Cash</label>
-                                            <input type="radio" name="payment_type" id="payment_type" value="Mobile Banking" class="mr-2 ml-2" {{$session_data!=null?($session_data[0]['payment_method']=='Mobile Banking'?'checked':''):''}}><label>Mobile Banking</label>
-                                            <input type="radio" name="payment_type" id="payment_type" value="Bank Transfer" class="mr-2 ml-2" {{$session_data!=null?($session_data[0]['payment_method']=='Bank Transfer'?'checked':''):''}}><label for="">Bank Transfer</label>
-                                        </div>
-                                        <span class="text-danger payment_type_err"></span>
-                                    </div>
-                                    <div class="col-md-6 ">
-                                        <label for="Text7" class="form-label font-weight-bold text-muted text-uppercase">Payment Term <span class="text-danger">*</span></label><br>
-                                        <div class="form-group"  aria-label="Basic outlined example">
-                                            <select class="form-control" name="payment_term" id="payment_term" required>
-                                                <option value="COD - Cash on delivery" {{$session_data!=null?($session_data[0]['payment_term']=='COD - Cash on delivery'?'selected':''):''}}>COD - Cash on delivery</option>
-                                                <option value="Payment seven days after invoice date" {{$session_data!=null?($session_data[0]['payment_term']=='Payment seven days after invoice date'?'selected':''):''}}>Payment seven days after invoice date</option>
-                                                <option value="EOM - End of month" {{$session_data!=null?($session_data[0]['payment_term']=='EOM - End of month'?'selected':''):''}}>EOM - End of month</option>
-
-                                            </select>
-                                            <span class="text-danger payment_term_err"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        {{--@dd($data['quotation'])--}}
-                                        <div class="form-group">
-                                            <label for="quotation_id" class="font-weight-bold text-muted text-uppercase">Quotation ID</label>
-                                            <select name="quotation_id" id="quotation_id" class="form-control">
-                                                <option value="">None</option>
-                                                @foreach($data['quotation'] as $quotation)
-                                                    <option value="{{$quotation->id}}" {{$session_data!=null?($session_data[0]['quotation_id']==$quotation->id?'selected':''):''}}>#{{$quotation->quotation_id}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="approver">Approver</label>
-                                            <select name="approver_id" id="approver" class="form-control">
-                                                @foreach($emps as $key=>$val)
-                                                    <option value="{{$key}}">{{$val}}</option>
-                                                    @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="cc">Cc</label>
-                                            <select name="cc[]" id="cc" class="form-control" multiple>
-                                                @foreach($emps as $key=>$val)
-                                                    <option value="{{$key}}">{{$val}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 mb-3">
-                                        <label for="comment" class="form-label font-weight-bold text-muted text-uppercase">Remark</label>
-                                        <textarea type="text" class="form-control" id="comment" name="comment" rows="2.5" placeholder="Enter your comment">{{$session_data[0]['comment']??''}}</textarea>
-                                    </div>
+                            <div class="col-md-12 mb-3">
+                                <div class="form-group" id="delivery_address">
+                                    <label for='' class='form-label font-weight-bold text-muted text-uppercase'>Shipping
+                                        Address</label>
+                                    <input type='text' class='form-control' name='shipping_address'
+                                           id='shipping_address' placeholder='Shipping Address'
+                                           value="{{$session_data[0]['shipping_address']??''}}">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="card shadow rounded">
+            </div>
+            <div class="col-lg-12">
+                <div class="card shadow">
                     <div class="card-header">
-                        <h5 class="font-weight-bold mb-3">Order Items</h5>
+                        <h5 class="font-weight-bold ">Order Details</h5>
                     </div>
-                    <div class="col-12">
-
-                        <input type="hidden" id="creation_id" value="{{$data['id'][0]}}">
-                        <div class="table-responsive">
-                            @if(!isset($order_data))
-                                <div class="col-12">
-                                    <div class="row my-3">
-                                        <div class="input-group col-md-6 col-6">
-                                            <select name="" id="variant" class="form-control">
-                                                <option value="">Select Product</option>
-                                                @foreach($data['variants'] as $variant)
-                                                    <option value="{{$variant->id}}" data-option="{{$variant->product_id}}">{{$variant->product_name}} {{$variant->variant?'('.$variant->variant.')':''}}</option>
-                                                @endforeach
-                                            </select>
-
-                                            <div class="input-group-prepend">
-                                                <button class="btn btn-primary rounded-right" id="add_item">Add</button>
-                                            </div>
-                                        </div>
-                                    </div>
+                    <div class="col-12 my-3">
+                        <div class="row g-3">
+                            <div class="col-md-6 mb-3">
+                                <label for="order_date" class="form-label font-weight-bold text-muted text-uppercase">Date
+                                    <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="order_date" placeholder="DD MM YYYY"
+                                       value="{{$session_data[0]['order_date']??\Carbon\Carbon::today()->format('Y-m-d')}}"
+                                       required>
+                                <span class="text-danger order_date_err"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="Text7" class="form-label font-weight-bold text-muted text-uppercase">Payment
+                                    Method <span class="text-danger">*</span></label><br>
+                                <div class="form-group" aria-label="Basic outlined example">
+                                    <input type="radio" name="payment_type" id="payment_type" value="Cash"
+                                           class="mr-2" {{$session_data!=null?($session_data[0]['payment_method']=='Cash'?'checked':''):'checked'}}><label
+                                            for="">Cash</label>
+                                    <input type="radio" name="payment_type" id="payment_type" value="Mobile Banking"
+                                           class="mr-2 ml-2" {{$session_data!=null?($session_data[0]['payment_method']=='Mobile Banking'?'checked':''):''}}><label>Mobile
+                                        Banking</label>
+                                    <input type="radio" name="payment_type" id="payment_type" value="Bank Transfer"
+                                           class="mr-2 ml-2" {{$session_data!=null?($session_data[0]['payment_method']=='Bank Transfer'?'checked':''):''}}><label
+                                            for="">Bank Transfer</label>
                                 </div>
-                            @endif
-                            <table class="table table-hover table-white table-bordered" id="order_table">
-                                <thead>
-                                <th colspan="3">Product</th>
-                                <th>Quantity</th>
-                                <th>Price</th>
-                                <th>Unit</th>
-                                <th>Total</th>
-                                <th>Action</th>
-                                </thead>
-                                <tbody id="tbody">
-                                @foreach($data['items'] as $order)
-                                    <tr>
-                                        <td style="min-width: 200px;" colspan="3">
-                                            <input type="hidden" id="order_id_{{$order->id}}" value="{{$order->id}}">
-                                            <div class="row">
-                                                <input type="hidden" name="product_id" id="product_{{$order->id}}"
-                                                       value="{{$order->product_id}}">
-                                                @php
-                                                    $img=json_decode($order->variant->image);
-                                                @endphp
-                                                @if($img!=null)
-                                                    <div class="col-md-4">
-                                                        <img src="{{url(asset('product_picture/'.$img[0]??''))}}"
-                                                             alt="" style="max-width: 50px;max-height: 50px;">
-                                                    </div>
-                                                @endif
-                                                <div class="col-8">
-                                                    <div>
-                                                        <span class="font-weight-bold">{{$order->variant->product_name}}</span><br>
-                                                    </div>
-                                                    <p class="m-0 mt-1">
-                                                        {{$order->variant->variant}}
-                                                        {!! $order->variant->description !!}
+                                <span class="text-danger payment_type_err"></span>
+                            </div>
+                            <div class="col-md-6 ">
+                                <label for="Text7" class="form-label font-weight-bold text-muted text-uppercase">Payment
+                                    Term <span class="text-danger">*</span></label><br>
+                                <div class="form-group" aria-label="Basic outlined example">
+                                    <select class="form-control" name="payment_term" id="payment_term" required>
+                                        <option value="COD - Cash on delivery" {{$session_data!=null?($session_data[0]['payment_term']=='COD - Cash on delivery'?'selected':''):''}}>
+                                            COD - Cash on delivery
+                                        </option>
+                                        <option value="Payment seven days after invoice date" {{$session_data!=null?($session_data[0]['payment_term']=='Payment seven days after invoice date'?'selected':''):''}}>
+                                            Payment seven days after invoice date
+                                        </option>
+                                        <option value="EOM - End of month" {{$session_data!=null?($session_data[0]['payment_term']=='EOM - End of month'?'selected':''):''}}>
+                                            EOM - End of month
+                                        </option>
 
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <input type="number" name="quantity" id="quantity_{{$order->id}}"
-                                                   class="form-control update_item_{{$order->id}}"
-                                                   value="{{$order->quantity}}" min="0" {{isset($order_data)?'readonly':''}}>
-                                        </td>
-                                        <td>
-                                            <div class="col-12">
-                                                <div class="row">
-                                                    <input type="number" id="price_{{$order->id}}"
-                                                           class="form-control update_item_{{$order->id}}"
-                                                           value="{{$order->unit_price}}" min="0"
-                                                           oninput="validity.valid||(value='');" style="min-width: 120px;">
-
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <select name="" class="select_update" id="unit{{$order->id}}" style="min-width: 100px">
-
-
-                                                @foreach($unit_price as $item)
-                                                    @if($order->variant->product_id==$item->product_id)
-
-                                                        <option value="{{$item->id}}" {{$item->id==$order->sell_unit?'selected':''}}>{{$item->unit}}</option>
-                                                    @endif
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <input type="text" name="total" id="total_{{$order->id}}"
-                                                   class="form-control update_item_{{$order->id}} total"
-                                                   value="{{$order->foc?0:$order->total}}">
-                                        </td>
-
-                                        <td>
-                                            @if(!isset($order_data))
-                                                <button type="button" class="btn btn-danger btn-sm"
-                                                        id="remove{{$order->id}}"><i class="fa fa-trash-o "></i>
-                                                </button>
-                                                @include('invoice.item_remove')
-                                            @endif
-                                        </td>
-
-                                    </tr>
-                                    <script>
-                                        $(".update_item_{{$order->id}}").keyup(function () {
-                                            var unit_id=$('#unit{{$order->id}} option:selected').val();
-                                           if(!$('#unit{{$order->id}} option:selected').val()){
-                                               var price=$('#price_{{$order->id}}').val();
-
-                                           }else {
-                                               @foreach($prices as $item)
-                                               if(unit_id=="{{$item->unit_id}}") {
-                                                   if('{{$order->variant->pricing_type}}'==1){
-                                                       var qty=$('#quantity_{{$order->id}}').val();
-                                                       if(parseInt("{{$item->min}}")<= qty){
-                                                           var price = "{{$item->price}}";
-                                                       }
-
-                                                   }else {
-                                                       if('{{$item->multi_price}}'== 0){
-
-                                                           var price = "{{$item->price}}";
-
-                                                       }
-                                                   }
-                                               }
-                                               @endforeach
-                                           }
-
-                                            @if($order->foc)
-                                            $('#price_{{$order->id}}').val(0);
-                                            $('#total_{{$order->id}}').val(0);
-                                            @else
-                                            $('#price_{{$order->id}}').val(price);
-                                            var quantity = $('#quantity_{{$order->id}}').val();
-                                            var sub_total =quantity * price;
-                                            $('#total_{{$order->id}}').val(sub_total);
-                                            var sum = 0;
-                                            $('.total').each(function() {
-                                                sum += parseFloat($(this).val());
-                                            });
-                                            $('#total').val(sum);
-                                            @endif
-
-                                        });
-                                        $(document).ready(function () {
-
-                                            var unit_id=$('#unit{{$order->id}} option:selected').val();
-                                            @foreach($prices as $item)
-                                            if(unit_id=="{{$item->unit_id}}") {
-                                                if('{{$order->variant->pricing_type}}'==1){
-                                                    var qty=$('#quantity_{{$order->id}}').val();
-                                                    if(parseInt("{{$item->min}}")<= qty){
-                                                        var price = "{{$item->price}}";
-                                                    }
-
-
-                                                }else {
-                                                    if('{{$item->multi_price}}'== 0){
-
-                                                        var price = "{{$item->price}}";
-
-                                                    }
-                                                }
-                                            }
-                                                    @endforeach
-
-                                            var quantity = $('#quantity_{{$order->id}}').val();
-                                            var sub_total =quantity * price;
-                                            $('#total_{{$order->id}}').val(sub_total);
-                                            var sum = 0;
-                                            $('.total').each(function() {
-                                                sum += parseFloat($(this).val());
-                                            });
-                                            $('#total').val(sum);
-                                            $('.select_update').change(function () {
-                                                var unit_id=$('#unit{{$order->id}} option:selected').val();
-                                                @foreach($prices as $item)
-                                                if(unit_id=="{{$item->unit_id}}") {
-                                                    if('{{$order->variant->pricing_type}}'==1){
-                                                        var qty=$('#quantity_{{$order->id}}').val();
-                                                        if(parseInt("{{$item->min}}")<= qty){
-                                                            var price = "{{$item->price}}";
-                                                        }
-
-
-                                                    }else {
-                                                        if('{{$item->multi_price}}'== 0){
-
-                                                            var price = "{{$item->price}}";
-
-                                                        }
-                                                    }
-                                                }
-                                                @endforeach
-                                                        // alert(price);
-                                                $('#price_{{$order->id}}').val(price);
-
-                                                var quantity = $('#quantity_{{$order->id}}').val();
-                                                var sub_total =quantity * price;
-                                                $('#total_{{$order->id}}').val(sub_total);
-                                                var sum = 0;
-                                                $('.total').each(function() {
-                                                    sum += parseFloat($(this).val());
-                                                });
-                                                $('#total').val(sum);
-                                                var product = $('#product_{{$order->id}}').val();
-                                                var sell_unit=$('#unit{{$order->id}} option:selected').val();
-                                                var discount_pro=$('#dis_pro{{$order->id}} option:selected').val();
-                                                $.ajax({
-                                                    data: {
-                                                        "product_id": product,
-                                                        'quantity': quantity,
-                                                        'unit_price': price,
-                                                        "total": total,
-                                                        'sell_unit':sell_unit,
-                                                        'discount_pro':discount_pro
-                                                    },
-                                                    type: 'PUT',
-                                                    url: "{{route('invoice_items.update',$order->id)}}",
-                                                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                                                    success: function (data) {
-                                                        console.log(data);
-
-                                                    }
-                                                });
-                                            });
-                                        });
-                                        $(document).ready(function () {
-                                            $(".update_item_{{$order->id}}").keyup(function () {
-                                                @if($order->foc)
-                                                $('#price_{{$order->id}}').val(0);
-                                                $('#total_{{$order->id}}').val(0);
-                                                        @else
-                                                var quantity = $('#quantity_{{$order->id}}').val();
-                                                var price = $('#price_{{$order->id}}').val();
-                                                {{--var dis_pro=$('#dis_pro{{$order->id}} option:selected').val();--}}
-                                                var sub_total =quantity * price??0;
-                                                $('#total_{{$order->id}}').val(sub_total);
-                                                var sum = 0;
-                                                $('.total').each(function() {
-                                                    sum += parseFloat($(this).val());
-                                                });
-                                                $('#total').val(sum);
-                                                @endif
-                                            });
-                                        });
-                                        $(document).ready(function () {
-                                            $(".update_item_{{$order->id}}").keyup(function () {
-                                                var product = $('#product_{{$order->id}}').val();
-                                                var quantity = $('#quantity_{{$order->id}}').val();
-                                                var price = $('#price_{{$order->id}}').val();
-                                                var dis_pro=$('#dis_pro{{$order->id}} option:selected').val();
-                                                var sub_total =quantity * price;
-                                                var amount=(dis_pro/100)*sub_total;
-                                                var total=sub_total-amount;
-                                                var sell_unit=$('#unit{{$order->id}} option:selected').val();
-                                                $.ajax({
-                                                    data: {
-                                                        "product_id": product,
-                                                        'quantity': quantity,
-                                                        'unit_price': price,
-                                                        "total": total,
-                                                        'sell_unit':sell_unit,
-                                                        'discount_pro':0
-                                                    },
-                                                    type: 'PUT',
-                                                    url: "{{route('invoice_items.update',$order->id)}}",
-                                                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                                                    success: function (data) {
-                                                        console.log(data);
-
-                                                    }
-                                                });
-                                            });
-                                        });
-                                    </script>
-                                @endforeach
-
-
-                                <tr>
-                                    <th colspan="7" class="text-right"><span class="mt-5">Total</span></th>
-                                    <td id="total_div" colspan="2"><input class="form-control" type="number" id="total">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th colspan="7" class="text-right"><span class="mt-5">Discount</span></th>
-
-                                    <td id="discount_div" colspan="2"><input class="form-control" type="text"
-                                                                             id="discount" value="0.0"></td>
-                                </tr>
-                                <tr id="delivery">
-                                    <th colspan="7" class="text-right"><span class="mt-5">Delivery Fee</span></th>
-                                    <td colspan="2">
-                                        <input type="number" class="form-control" name="delivery_fee" id="deli_fee" value="0.0">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th colspan="7" class="text-right"><span class="mt-5">Tax</span></th>
-                                    <td colspan="2">
-                                        <select name="" id="tax" class="form-control select_update" style="width: 100%">
-                                            @foreach($data['taxes'] as $tax)
-                                                <option value="{{$tax->id}}">{{$tax->name}} ({{$tax->rate}} %)</option>
-                                            @endforeach
-                                        </select>
-                                        <input type="hidden" id="tax_amount" name="tax_mount">
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <th colspan="7" class="text-right"><span class="mt-5">Grand Total</span></th>
-                                    <td colspan="2" id="grand_total_div">
-                                        <input class="form-control" type="text" id="grand_total">
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                                    </select>
+                                    <span class="text-danger payment_term_err"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                {{--@dd($data['quotation'])--}}
+                                <div class="form-group">
+                                    <label for="quotation_id" class="font-weight-bold text-muted text-uppercase">Quotation
+                                        ID</label>
+                                    <select name="quotation_id" id="quotation_id" class="form-control">
+                                        <option value="">None</option>
+                                        @foreach($data['quotation'] as $quotation)
+                                            <option value="{{$quotation->id}}" {{$session_data!=null?($session_data[0]['quotation_id']==$quotation->id?'selected':''):''}}>
+                                                #{{$quotation->quotation_id}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="approver">Approver</label>
+                                    <select name="approver_id" id="approver" class="form-control">
+                                        @foreach($emps as $key=>$val)
+                                            <option value="{{$key}}">{{$val}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="cc">Cc</label>
+                                    <select name="cc[]" id="cc" class="form-control" multiple>
+                                        @foreach($emps as $key=>$val)
+                                            <option value="{{$key}}">{{$val}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="comment" class="form-label font-weight-bold text-muted text-uppercase">Remark</label>
+                                <textarea type="text" class="form-control" id="comment" name="comment" rows="2.5"
+                                          placeholder="Enter your comment">{{$session_data[0]['comment']??''}}</textarea>
+                            </div>
                         </div>
-                       <div class="row justify-content-between">
-                          <div class="col-12">
-                              <div class="text-center">
-                                  <buttton type="button" class="btn btn-primary my-2 " id="order_submit">Submit</buttton>
-                              </div>
-                          </div>
-                       </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="card shadow rounded">
+            <div class="card-header">
+                <h5 class="font-weight-bold mb-3">Order Items</h5>
+            </div>
+            <div class="col-12">
+
+                <input type="hidden" id="creation_id" value="{{$data['id'][0]}}">
+                <div class="table-responsive">
+                    @if(!isset($order_data))
+                        <div class="col-12">
+                            <div class="row my-3">
+                                <div class="input-group col-md-6 col-6">
+                                    <select name="" id="variant" class="form-control">
+                                        <option value="">Select Product</option>
+                                        @foreach($data['variants'] as $variant)
+                                            <option value="{{$variant->id}}"
+                                                    data-option="{{$variant->product_id}}">{{$variant->product_name}} {{$variant->variant?'('.$variant->variant.')':''}}</option>
+                                        @endforeach
+                                    </select>
+
+                                    <div class="input-group-prepend">
+                                        <button class="btn btn-primary rounded-right" id="add_item">Add</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                    <table class="table table-hover table-white table-bordered" id="order_table">
+                        <thead>
+                        <th colspan="3">Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Unit</th>
+                        <th>Total</th>
+                        <th>Action</th>
+                        </thead>
+                        <tbody id="tbody">
+                        @foreach($data['items'] as $order)
+                            <tr>
+                                <td style="min-width: 200px;" colspan="3">
+                                    <input type="hidden" id="order_id_{{$order->id}}" value="{{$order->id}}">
+                                    <div class="row">
+                                        <input type="hidden" name="product_id" id="product_{{$order->id}}"
+                                               value="{{$order->product_id}}">
+                                        @php
+                                            $img=json_decode($order->variant->image);
+                                        @endphp
+                                        @if($img!=null)
+                                            <div class="col-md-4">
+                                                <img src="{{url(asset('product_picture/'.$img[0]??''))}}"
+                                                     alt="" style="max-width: 50px;max-height: 50px;">
+                                            </div>
+                                        @endif
+                                        <div class="col-8">
+                                            <div>
+                                                <span class="font-weight-bold">{{$order->variant->product_name}}</span><br>
+                                            </div>
+                                            <p class="m-0 mt-1">
+                                                {{$order->variant->variant}}
+                                                {!! $order->variant->description !!}
+
+                                            </p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input type="number" name="quantity" id="quantity_{{$order->id}}"
+                                           class="form-control update_item_{{$order->id}}"
+                                           value="{{$order->quantity}}" min="0" {{isset($order_data)?'readonly':''}}>
+                                </td>
+                                <td>
+                                    <div class="col-12">
+                                        <div class="row">
+                                            <input type="number" id="price_{{$order->id}}"
+                                                   class="form-control update_item_{{$order->id}}"
+                                                   value="{{$order->unit_price}}" min="0"
+                                                   oninput="validity.valid||(value='');" style="min-width: 120px;">
+
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <select name="" class="select_update" id="unit{{$order->id}}"
+                                            style="min-width: 100px">
+
+
+                                        @foreach($unit_price as $item)
+                                            @if($order->variant->product_id==$item->product_id)
+
+                                                <option value="{{$item->id}}" {{$item->id==$order->sell_unit?'selected':''}}>{{$item->unit}}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" name="total" id="total_{{$order->id}}"
+                                           class="form-control update_item_{{$order->id}} total"
+                                           value="{{$order->foc?0:$order->total}}">
+                                </td>
+
+                                <td>
+                                    @if(!isset($order_data))
+                                        <button type="button" class="btn btn-danger btn-sm"
+                                                id="remove{{$order->id}}"><i class="fa fa-trash-o "></i>
+                                        </button>
+                                        @include('invoice.item_remove')
+                                    @endif
+                                </td>
+
+                            </tr>
+                            <script>
+                                $(document).ready(function () {
+                                    var unit_id = $('#unit{{$order->id}} option:selected').val();
+                                    @foreach($prices as $item)
+                                    if ('{{$order->variant_id}}' == '{{$item->product_id}}') {
+                                        if (unit_id == "{{$item->unit_id}}") {
+                                            var qty = $('#quantity_{{$order->id}}').val();
+                                            if (parseInt("{{$item->min}}") <= qty) {
+                                                var price = "{{$item->price}}";
+                                            }
+
+                                        }
+                                    }
+                                            @endforeach
+
+                                    var quantity = $('#quantity_{{$order->id}}').val();
+                                    var sub_total = quantity * price;
+                                    // alert(sub_total);
+                                    $('#total_{{$order->id}}').val(sub_total);
+                                    var sum = 0;
+                                    $('.total').each(function () {
+                                        sum += parseFloat($(this).val());
+                                    });
+                                    $('#total').val(sum);
+                                    $('.select_update').change(function () {
+                                        var unit_id = $('#unit{{$order->id}} option:selected').val();
+                                        @foreach($prices as $item)
+                                        if ('{{$order->variant_id}}' == '{{$item->product_id}}') {
+                                            if (unit_id == "{{$item->unit_id}}") {
+                                                var qty = $('#quantity_{{$order->id}}').val();
+                                                if (parseInt("{{$item->min}}") <= qty) {
+                                                    var price = "{{$item->price}}";
+                                                }
+
+                                            }
+                                        }
+                                        @endforeach
+                                        // alert(price);
+                                        $('#price_{{$order->id}}').val(price);
+
+                                        var quantity = $('#quantity_{{$order->id}}').val();
+                                        var sub_total = quantity * price;
+                                        $('#total_{{$order->id}}').val(sub_total);
+                                        var sum = 0;
+                                        $('.total').each(function () {
+                                            sum += parseFloat($(this).val());
+                                        });
+                                        $('#total').val(sum);
+                                        var product = $('#product_{{$order->id}}').val();
+                                        var sell_unit = $('#unit{{$order->id}} option:selected').val();
+                                        var discount_pro = $('#dis_pro{{$order->id}} option:selected').val();
+                                        $.ajax({
+                                            data: {
+                                                "product_id": product,
+                                                'quantity': quantity,
+                                                'unit_price': price,
+                                                "total": total,
+                                                'sell_unit': sell_unit,
+                                                'discount_pro': discount_pro
+                                            },
+                                            type: 'PUT',
+                                            url: "{{route('invoice_items.update',$order->id)}}",
+                                            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                                            success: function (data) {
+                                                console.log(data);
+
+                                            }
+                                        });
+                                    });
+                                });
+                                $(document).ready(function () {
+                                    $(".update_item_{{$order->id}}").keyup(function () {
+                                        @if($order->foc)
+                                        $('#price_{{$order->id}}').val(0);
+                                        $('#total_{{$order->id}}').val(0);
+                                                @else
+                                        var quantity = $('#quantity_{{$order->id}}').val();
+                                        var price = $('#price_{{$order->id}}').val();
+                                                {{--var dis_pro=$('#dis_pro{{$order->id}} option:selected').val();--}}
+                                        var sub_total = quantity * price ?? 0;
+                                        $('#total_{{$order->id}}').val(sub_total);
+                                        var sum = 0;
+                                        $('.total').each(function () {
+                                            sum += parseFloat($(this).val());
+                                        });
+                                        $('#total').val(sum);
+                                        @endif
+                                    });
+                                });
+                                $(document).ready(function () {
+                                    $(".update_item_{{$order->id}}").keyup(function () {
+                                        var product = $('#product_{{$order->id}}').val();
+                                        var quantity = $('#quantity_{{$order->id}}').val();
+                                        var price = $('#price_{{$order->id}}').val();
+                                                {{--var dis_pro = $('#dis_pro{{$order->id}} option:selected').val();--}}
+                                        var sub_total = quantity * price;
+                                        // var amount = (dis_pro / 100) * sub_total;
+                                        // var total = sub_total - amount;
+                                        var sell_unit = $('#unit{{$order->id}} option:selected').val();
+                                        $.ajax({
+                                            data: {
+                                                "product_id": product,
+                                                'quantity': quantity,
+                                                'unit_price': price,
+                                                "total": sub_total,
+                                                'sell_unit': sell_unit,
+                                                'discount_pro': 0,
+                                                'type': 'order'
+                                            },
+                                            type: 'PUT',
+                                            url: "{{route('invoice_items.update',$order->id)}}",
+                                            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                                            success: function (data) {
+                                                console.log(data);
+
+                                            }
+                                        });
+                                    });
+                                });
+                            </script>
+                        @endforeach
+
+
+                        <tr>
+                            <th colspan="7" class="text-right"><span class="mt-5">Total</span></th>
+                            <td id="total_div" colspan="2"><input class="form-control" type="number" id="total">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="7" class="text-right"><span class="mt-5">Discount</span></th>
+
+                            <td id="discount_div" colspan="2"><input class="form-control" type="text"
+                                                                     id="discount" value="0.0"></td>
+                        </tr>
+                        <tr id="delivery">
+                            <th colspan="7" class="text-right"><span class="mt-5">Delivery Fee</span></th>
+                            <td colspan="2">
+                                <input type="number" class="form-control" name="delivery_fee" id="deli_fee" value="0.0">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="7" class="text-right"><span class="mt-5">Tax</span></th>
+                            <td colspan="2">
+                                <select name="" id="tax" class="form-control select_update" style="width: 100%">
+                                    @foreach($data['taxes'] as $tax)
+                                        <option value="{{$tax->id}}">{{$tax->name}} ({{$tax->rate}} %)</option>
+                                    @endforeach
+                                </select>
+                                <input type="hidden" id="tax_amount" name="tax_mount">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th colspan="7" class="text-right"><span class="mt-5">Grand Total</span></th>
+                            <td colspan="2" id="grand_total_div">
+                                <input class="form-control" type="text" id="grand_total">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row justify-content-between">
+                    <div class="col-12">
+                        <div class="text-center">
+                            <buttton type="button" class="btn btn-primary my-2 " id="order_submit">Submit</buttton>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- /Page Content -->
-@include('saleorder.jquery_for_order_create')
+    @include('saleorder.jquery_for_order_create')
 
 
 @endsection

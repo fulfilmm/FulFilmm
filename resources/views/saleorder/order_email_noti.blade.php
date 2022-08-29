@@ -8,7 +8,7 @@
     <title>Document</title>
 </head>
 <body>
-  <span>Dear</span><strong>{{$name}}</strong><br>
+  <span>Dear</span><strong> {{$name}},</strong><br>
   <p>
   {{$from_name}} {{$status}} Order {{$order_id}} you submitted on {{$order_date}}.
   </p>

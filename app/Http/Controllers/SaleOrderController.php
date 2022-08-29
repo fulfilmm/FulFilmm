@@ -52,63 +52,79 @@ class SaleOrderController extends Controller
         return view('saleorder.index',compact('data'));
     }
     public function create(){
-        $Auth=Auth::guard('employee')->user();
-        $unit_price=SellingUnit::all();
-        $prices =product_price::where('sale_type', 'Whole Sale')->where('active',1)->where('region_id',$Auth->region_id)->get();
-        $variants=ProductVariations::with('product')->get();
-        $taxes=products_tax::all();
-        $allcustomers=Customer::all();
-        $session_value=\Illuminate\Support\Str::random(10);
-        if(Auth::guard('employee')->check()){
-//            dd('emp');
-            $Auth="order-".Auth::guard('employee')->user()->name;
-        }elseif(Auth::guard('customer')->check()){
-
-            $Auth="order-".Auth::guard('customer')->user()->name;
-        }
-        if(!Session::has($Auth)){
-            Session::push("$Auth",$session_value);
-            $request_id=Session::get($Auth);
-        }else{
-            $request_id=Session::get($Auth);
-        }
-//        $generate_id=Str::uuid();
-        $items=OrderItem::with('variant')->where('creation_id',$request_id)->get();
-//        dd($orderline);
-        $grand_total=0;
-        for ($i=0;$i<count($items);$i++){
-            $grand_total=$grand_total+$items[$i]->total;
-        }
-        $products=product::all();
         if(Auth::guard('customer')->check()){
-            $quotations=Quotation::where('is_confirm',1)->where('customer_name',Auth::guard('customer')->user()->id)->get();
-          $quotation=[];
-            foreach ($quotations as $quo){
-                $is_exist=Order::where('quotation_id',$quo->id)->first();
-                if($is_exist==null){
-                    array_push($quotation,$quo);
-                }
-            }
+            $region=Auth::guard('customer')->user()->region_id;
+            $emps=Employee::where('office_branch_id',Auth::guard('customer')->user()->branch_id)->pluck('name','id')->all();
+
+
         }else{
-            $quotations=Quotation::where('is_confirm',1)->get();
-            $quotation=[];
-            foreach ($quotations as $quo){
-                $is_exist=Order::where('quotation_id',$quo->id)->first();
-                if($is_exist==null){
-                    array_push($quotation,$quo);
-                }
-            }
+            $region=Auth::guard('employee')->user()->region_id;
+            $emps=Employee::where('office_branch_id',Auth::guard('employee')->user()->office_branch_id)->pluck('name','id')->all();
+
+
         }
-       if(Auth::guard('customer')->check()){
-           $session_data=Session::get("order-".Auth::guard('customer')->user()->id);
+       if($region==null){
+          return redirect()->back()->with('error','Firstly,You need to set branch and region for order create');
        }else{
-           $session_data=Session::get("order-".Auth::guard('employee')->user()->id);
-       }
-        $dis_promo=DiscountPromotion::where('sale_type','Whole Sale')->get();
+           $Auth=Auth::guard('employee')->user();
+           $unit_price=SellingUnit::all();
+           $prices =product_price::where('sale_type', 'Whole Sale')->where('active',1)->where('region_id',$region)->get();
+//      dd($prices);
+           $variants=ProductVariations::with('product')->get();
+           $taxes=products_tax::all();
+           $session_value=\Illuminate\Support\Str::random(10);
+           if(Auth::guard('employee')->check()){
+//            dd('emp');
+               $Auth="order-".Auth::guard('employee')->user()->name;
+               $allcustomers=Customer::all();
+           }elseif(Auth::guard('customer')->check()){
+
+               $Auth="order-".Auth::guard('customer')->user()->name;
+               $allcustomers=Customer::where('id',Auth::guard('customer')->user()->id)->get();
+           }
+           if(!Session::has($Auth)){
+               Session::push("$Auth",$session_value);
+               $request_id=Session::get($Auth);
+           }else{
+               $request_id=Session::get($Auth);
+           }
+//        $generate_id=Str::uuid();
+           $items=OrderItem::with('variant')->where('creation_id',$request_id)->get();
+//        dd($items);
+           $grand_total=0;
+           for ($i=0;$i<count($items);$i++){
+               $grand_total=$grand_total+$items[$i]->total;
+           }
+           $products=product::all();
+           if(Auth::guard('customer')->check()){
+               $quotations=Quotation::where('is_confirm',1)->where('customer_name',Auth::guard('customer')->user()->id)->get();
+               $quotation=[];
+               foreach ($quotations as $quo){
+                   $is_exist=Order::where('quotation_id',$quo->id)->first();
+                   if($is_exist==null){
+                       array_push($quotation,$quo);
+                   }
+               }
+           }else{
+               $quotations=Quotation::where('is_confirm',1)->get();
+               $quotation=[];
+               foreach ($quotations as $quo){
+                   $is_exist=Order::where('quotation_id',$quo->id)->first();
+                   if($is_exist==null){
+                       array_push($quotation,$quo);
+                   }
+               }
+           }
+           if(Auth::guard('customer')->check()){
+               $session_data=Session::get("order-".Auth::guard('customer')->user()->id);
+           }else{
+               $session_data=Session::get("order-".Auth::guard('employee')->user()->id);
+           }
+           $dis_promo=DiscountPromotion::where('sale_type','Whole Sale')->get();
 //          dd($session_data);
-        $data=['customer'=>$allcustomers,'items'=>$items,'grand_total'=>$grand_total,'id'=>$request_id,'products'=>$products,'quotation'=>$quotation, 'variants'=>$variants,'taxes'=>$taxes];
-        $emps=Employee::where('office_branch_id',Auth::guard('employee')->user()->office_branch_id)->pluck('name','id')->all();
-        return view('saleorder.create',compact('data','session_data','unit_price','dis_promo','prices','emps'));
+           $data=['customer'=>$allcustomers,'items'=>$items,'grand_total'=>$grand_total,'id'=>$request_id,'products'=>$products,'quotation'=>$quotation, 'variants'=>$variants,'taxes'=>$taxes];
+           return view('saleorder.create',compact('data','session_data','unit_price','dis_promo','prices','emps'));
+       }
     }
     public function store(Request $request){
 //dd($request->all());
@@ -156,34 +172,42 @@ class SaleOrderController extends Controller
             $order->total=$request->total??0;
             $order->discount=$request->discount??0;
             $order->status="New";
-            $order->emp_id=Auth::guard('employee')->user()->id;
+            $order->emp_id=Auth::guard('employee')->user()->id??$request->approver_id;
             $order->order_date = Carbon::create($request->order_date);
 
-            $Auth="order-".Auth::guard('employee')->user()->name;
+           if(Auth::guard('employee')->check()){
+               $Auth="order-".Auth::guard('employee')->user()->name;
+           }else{
+               $Auth= "order-" .Auth::guard('customer')->user()->name;
+           }
             $request_id=Session::get($Auth);
+//            dd($request_id);
             $confirm_order_item=OrderItem::where("creation_id",$request_id)->get();
-            if($confirm_order_item->isEmpty()){
+            if(count($confirm_order_item)==0){
                 return response()->json(['orderempty'=>'Order Item Empty']);
             }else{
                 $order->save();
             }
+//            dd($confirm_order_item);
             foreach ($confirm_order_item as $item){
                 $item->order_id=$order->id;
                 $item->update();
             }
             Session::forget($Auth);
 //            dd($request->cc );
-            foreach ($request->cc as $key=>$val){
-                $exists_cc=OrderCc::where('order_id',$order->id)->where('emp_id',$val)->first();
-                if($exists_cc==null){
-                    $employee=Employee::where('id',$val)->first();
-                    $cc=new OrderCc();
-                    $cc->order_id=$order->id;
-                    $cc->emp_id=$val;
-                    $cc->emp_name=$employee->name;
-                    $cc->save();
-                }
-            }
+           if($request->cc!=null){
+               foreach ($request->cc as $key=>$val){
+                   $exists_cc=OrderCc::where('order_id',$order->id)->where('emp_id',$val)->first();
+                   if($exists_cc==null){
+                       $employee=Employee::where('id',$val)->first();
+                       $cc=new OrderCc();
+                       $cc->order_id=$order->id;
+                       $cc->emp_id=$val;
+                       $cc->emp_name=$employee->name;
+                       $cc->save();
+                   }
+               }
+           }
             return response()->json(['Success' => 'Order Create Success']);
         }else{
             return response()->json(['error'=>$validator->errors()]);
@@ -275,9 +299,9 @@ class SaleOrderController extends Controller
         $assign_info=order_assign::with('employee','department','group')->where('order_id',$id)->first();
 //        dd($assign_info);
         $account=Account::all();
-        $advance_pay=AdvancePayment::where('order_id',$id)->first();
+//        $advance_pay=AdvancePayment::where('order_id',$id)->first();
 
-        $data=['advance_pay'=>$advance_pay,'account'=>$account,'grand_total'=>$grand_total,'product'=>$product,'Order'=>$Order,'items'=>$items,'comments'=>$comments,'emp'=>$employees,'dept'=>$depts,'group'=>$groups,'assign_info'=>$assign_info];
+        $data=['account'=>$account,'grand_total'=>$grand_total,'product'=>$product,'Order'=>$Order,'items'=>$items,'comments'=>$comments,'emp'=>$employees,'dept'=>$depts,'group'=>$groups,'assign_info'=>$assign_info];
         return view('saleorder.show',compact('data'));
     }
     public function destroy($id){
@@ -389,6 +413,7 @@ class SaleOrderController extends Controller
         $status_change->grand_total=$grand_total;
         $status_change->update();
         $company = MainCompany::where('ismaincompany', 1)->first();
+        $tag_emp=OrderCc::with('employee')->where('order_id',$id)->get();
         $details = [
 
             'subject' => $company->name??''."Order Notification.",
@@ -408,6 +433,27 @@ class SaleOrderController extends Controller
                 $message->to($details['email']);
             $message->subject($details['subject']);
         });
+        foreach ($tag_emp as $emp){
+            $details = [
+
+                'subject' => $company->name??''."Order Notification.",
+                'email' =>$emp->employee->email,
+                'name' =>$status_change->customer->name,
+                'order_id' =>$status_change->order_id,
+                'id'=>$status_change->id,
+                'status'=>$status,
+                'order_date'=>$status_change->order_date,
+                'from' => Auth::guard('employee')->user()->email,
+                'from_name' => Auth::guard('employee')->user()->name,
+                'company' => $company->name??'',
+
+            ];
+            Mail::send('saleorder.order_email_noti', $details, function ($message) use ($details) {
+                $message->from($details['from'], $details['company']);
+                $message->to($details['email']);
+                $message->subject($details['subject']);
+            });
+        }
         return redirect()->back()->with('success','This Order is '.$status);
     }
     public function assign(Request $request,$id){

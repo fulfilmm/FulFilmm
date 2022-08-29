@@ -2,7 +2,10 @@
 
 use App\Http\Controllers\AdvancePaymentController;
 use App\Http\Controllers\Auth\Login\CustomerAuth;
+use App\Http\Controllers\CustomerProtal;
+use App\Http\Controllers\InvoiceItemController;
 use App\Http\Controllers\RequestTicket;
+use App\Http\Controllers\SaleOrderController;
 use App\Http\Controllers\ShippmentController;
 use Illuminate\Support\Facades\Route;
 
@@ -11,6 +14,8 @@ Route::namespace('Auth\Login')->group(function () {
     Route::post('logout', [CustomerAuth::class, 'logout'])->name('customers.logout');
 });
 Route::middleware(['guadcheck'])->group(function () {
+    Route::resource("invoice_items", InvoiceItemController::class);
+    Route::resource('saleorders', SaleOrderController::class);
     Route::resource('deliveries', ShippmentController::class);
     Route::resource('advancepayments',AdvancePaymentController::class)->only('index','show');
     Route::get('delivery/transaction',[ShippmentController::class,'transaction'])->name('delivery.transaction');
