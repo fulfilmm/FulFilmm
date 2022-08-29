@@ -10,8 +10,18 @@
     </li>
     <li><a class="{{ Request::is('advancepayments') ? 'active' : '' }}"
            href="{{ route('advancepayments.index') }}" style="text-decoration: none"><i class="la la-money mr-2" style="font-size: 18px"></i>Advance Payment</a></li>
-    <li><a class="{{ Request::is('saleorders') ? 'active' : '' }}"
-           href="{{ route('orders.index') }}" style="text-decoration: none"><i class="la la-cube mr-2" style="font-size: 18px"></i>All Orders</a></li>
+    <li class="submenu">
+        <a href="{{ route('deliveries.index') }}"><i class="la la-file-text mr-2" style="font-size: 18px;"></i>Order<span class="menu-arrow"></span></a>
+        <ul style="display: none;">
+        <li> <a class="{{ Request::is('saleorders') ? 'active' : '' }}"
+           href="{{ route('orders.index') }}" style="text-decoration: none"><i class="la la-cube mr-2" style="font-size: 18px"></i> All Orders</a></li>
+            <li>
+                <a class="{{Request::is('orders/create')}}" href="{{route('orders.create')}}">
+                   <i class="la la-cube mr-2" style="font-size: 18px;"></i> Post Order
+                </a>
+            </li>
+        </ul>
+    </li>
     <li class="submenu">
         <a href="{{ route('deliveries.index') }}"><i class="la la-truck mr-2" style="font-size: 18px;"></i>Delivery<span class="menu-arrow"></span></a>
         <ul style="display: none;">
