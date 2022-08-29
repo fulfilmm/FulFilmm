@@ -720,7 +720,7 @@ class HomeController extends Controller
                     ->get();
                 $bill = Bill::whereMonth('bill_date', date('m'))->count();
                 $bank_transaction_count = Transaction::whereMonth('created_at', date('m'))->count();
-                $exp_claim_count = ExpenseClaim::where('created_at', date('m'))->count();
+                $exp_claim_count = ExpenseClaim::whereMonth('created_at', date('m'))->count();
                 $account_count = Account::count();
                 $employee = Employee::where('department_id', $user->department_id)->get();
                 $upcoming_schedule = 0;
