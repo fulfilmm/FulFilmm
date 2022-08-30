@@ -583,8 +583,8 @@ class TransactionController extends Controller
         } else {
             $expense = Expense::where('id', $id)->first();
             if ($expense->approver_id == Auth::guard('employee')->user()->id) {
-                $withdraw_acc = Account::where('id',Auth::guard('employee')->user()->office_branch_id)
-                    ->where('head_account',0)
+                $withdraw_acc = Account::where('head_office',Auth::guard('employee')->user()->head_office)
+                    ->where('head_account',1)
                     ->first();
                 $withdraw_acc->balance = $withdraw_acc->balance - $expense->amount;
                 $expense->approve = 1;
