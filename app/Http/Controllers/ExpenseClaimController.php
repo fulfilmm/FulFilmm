@@ -194,7 +194,7 @@ class ExpenseClaimController extends Controller
       $this->addnotify($exp_claim->emp_id,'danger',$status.' your expense claim','expenseclaims/'.$exp_claim->id,$exp_claim->financial_approver);
         return redirect(route('expenseclaims.show',$id));
     }
-    public function CashClaim($id){
+    public function financial_approve($id){
         $exp_claim=ExpenseClaim::where('id',$id)->firstorFail();
         $account=Account::where('enabled',1)->get();
         $recurring=['No','Daily','Weekly','Monthly','Yearly'];
@@ -202,10 +202,16 @@ class ExpenseClaimController extends Controller
         $category=TransactionCategory::all();
         $emps=Employee::all();
         $customer=Customer::where('customer_type','Supplier')->get();
-        $coas=ChartOfAccount::all();
-        $data=['coas'=>$coas,'emps'=>$emps,'customers'=>$customer,'account'=>$account,'recurring'=>$recurring,'payment_method'=>$payment_method,'category'=>$category];
+//        $coas=ChartOfAccount::all();
+        $data=['emps'=>$emps,'customers'=>$customer,'account'=>$account,'recurring'=>$recurring,'payment_method'=>$payment_method,'category'=>$category];
         $this->addnotify($exp_claim->emp_id,'danger','Claimed  expense claim','expenseclaims/'.$exp_claim->id,$exp_claim->financial_approver);
 
         return view('transaction.Expense.create',compact('data','exp_claim'));
+    }
+    public function CashClaim($id){
+        $exp_claim=ExpenseClaim::where('id',$id)->firstOrFail();
+        $exp_claim->is_claim=1;
+        $exp_claim->update();
+        return redirect()->back()->with('success','Received Your Expense Claim');
     }
 }

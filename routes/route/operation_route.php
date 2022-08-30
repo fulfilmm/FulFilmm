@@ -37,6 +37,7 @@ Route::middleware(['meeting_view_relative_emp', 'auth:employee', 'authorize', 'o
 
 });
 Route::middleware(['auth:employee'])->group(function () {
+    Route::get('exp_claim/financial/approve/{id}',[ExpenseClaimController::class,'financial_approve'])->name('exp_claim.financial_approve');
     Route::get('filter/minute/{id}', [MinutesController::class, 'filter'])->name('filter.minutes');
     Route::post('approval/post/comment/{id}', [CommentController::class, 'approval_cmt'])->name('approval_cmt');
     Route::get('approval/cmt/delete/{id}', [CommentController::class, 'delete_approval_cmt'])->name('approval_cmt.delete');

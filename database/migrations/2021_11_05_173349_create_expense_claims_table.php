@@ -25,6 +25,7 @@ class CreateExpenseClaimsTable extends Migration
             $table->double('total');
             $table->bigInteger('financial_approver')->unsigned();
             $table->text('attach')->nullable();
+            $table->tinyInteger('finance_approved')->default(0);
             $table->tinyInteger('is_claim')->default(0);//for is cash claim or un claim
             $table->timestamps();
         });

@@ -342,7 +342,7 @@ class TransactionController extends Controller
                 }
                 if (isset($request->exp_id)) {
                     $exp = ExpenseClaim::where('id', $request->exp_id)->first();
-                    $exp->is_claim = 1;
+                    $exp->finance_approved = 1;
                     $exp->update();
                 }
                 $this->transaction_add($request->account, $request->type, $new_expense->id, null);
@@ -389,7 +389,7 @@ class TransactionController extends Controller
             }
             if (isset($request->exp_id)) {
                 $exp = ExpenseClaim::where('id', $request->exp_id)->first();
-                $exp->is_claim = 1;
+                $exp->finance_approved = 1;
                 $exp->update();
             }
             $this->transaction_add($request->account, $request->type, $new_expense->id, null);
