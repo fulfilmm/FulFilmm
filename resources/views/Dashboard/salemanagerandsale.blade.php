@@ -1,6 +1,6 @@
 
 <div class="row g-3 row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4 my-3">
-    <div class="col-6 col-sm-3 col-md-4 my-2">
+    <div class="col-6 col-sm-3 col-md-4 col-md-4 offset-md-2 offset-0 my-2">
         <div class="alert-light alert mb-0 shadow">
             <a href="{{route('invoices.create')}}">
                 <div class="d-flex align-items-center">
@@ -12,7 +12,7 @@
             </a>
         </div>
     </div>
-    <div class="col-6 col-sm-3 col-md-4 my-2">
+    <div class="col-6 col-sm-3 col-md-4 my-2 offset-md-2 offset-0">
         <div class="alert-light alert mb-0 shadow">
             <a href="{{url('retail/invoice/create')}}">
                 <div class="d-flex align-items-center">
