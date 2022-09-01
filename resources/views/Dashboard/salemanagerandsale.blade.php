@@ -1,5 +1,5 @@
 
-<div class="row g-3 col-md-8 offset-md-2 offset-0 col-sm-8 offset-md-2 col-12 offset-0 my-3 justify-content-center">
+<div class="row g-3 row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4 my-3">
     <div class="col-6 col-sm-3 col-md-4 my-2">
         <div class="alert-light alert mb-0 shadow">
             <a href="{{route('invoices.create')}}">
