@@ -12,7 +12,7 @@
             </a>
         </div>
     </div>
-    <div class="col-6 col-sm-3 col-md-4 my-2 offset-md-2 offset-0">
+    <div class="col-6 col-sm-3 col-md-4 my-2 ">
         <div class="alert-light alert mb-0 shadow">
             <a href="{{url('retail/invoice/create')}}">
                 <div class="d-flex align-items-center">
