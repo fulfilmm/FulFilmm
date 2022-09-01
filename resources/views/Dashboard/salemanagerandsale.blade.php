@@ -197,30 +197,30 @@
             </a>
         </div>
     </div>
-    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-        <a href="{{route('schedule.index')}}">
-            <div class="card dash-widget ">
-                <div class="card-body">
-                    <span class="dash-widget-icon"><i class="fa fa-list"></i></span>
-                    <div class="dash-widget-info">
-                        <h3>{{$items['upcoming_schedule']??0}}</h3>
-                        <span>Upcoming Schedule</span>
+    <div class="col-6 col-sm-3 col-md-4 my-2">
+        <div class="alert-success alert mb-0 shadow">
+            <a href="{{route('schedule.index')}}">
+                <div class="d-flex align-items-center">
+                    <div class="avatar rounded no-thumbnail bg-success text-light shadow"><i class="fa fa-calendar fa-lg"></i></div>
+                    <div class="flex-fill ms-3 text-truncate">
+                        <div class="h6 mb-0">Upcoming Schedule</div>
+                        <span class="small">{{$items['upcoming_schedule']??0}}</span>
                     </div>
                 </div>
-            </div>
-        </a>
+            </a>
+        </div>
     </div>
-    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-        <a href="{{route('assignments.index')}}">
-            <div class="card dash-widget ">
-                <div class="card-body">
-                    <span class="dash-widget-icon"><i class="fa fa-list"></i></span>
-                    <div class="dash-widget-info">
-                        <h3>{{$items['upcoming_task']??0}}</h3>
-                        <span>Upcoming Task</span>
+    <div class="col-6 col-sm-3 col-md-4 my-2">
+        <div class="alert-success alert mb-0 shadow">
+            <a href="{{route('assignments.index')}}">
+                <div class="d-flex align-items-center">
+                    <div class="avatar rounded no-thumbnail bg-success text-light shadow"><i class="fa fa-calendar fa-lg"></i></div>
+                    <div class="flex-fill ms-3 text-truncate">
+                        <div class="h6 mb-0">Upcoming Task</div>
+                        <span class="small">{{$items['upcoming_task']??0}}</span>
                     </div>
                 </div>
-            </div>
-        </a>
+            </a>
+        </div>
     </div>
 </div>
