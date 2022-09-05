@@ -49,7 +49,17 @@ class PettyCashController extends Controller
             $no = "PTC-00001";
         }
         $user=Auth::guard('employee')->user();
-        $employees=Employee::where('office_branch_id',$user->office_branch_id)->get();
+        $admin_ceo=Employee::all();
+        $employees=[];
+//        Employee::where('office_branch_id',$user->office_branch_id)->get();
+        foreach ($admin_ceo as $admin){
+            if($admin->role->name=='CEO'||$admin->role->name=='Super Admin'){
+                array_push($employees,$admin);
+            }
+            if ($admin->office_branch_id==$user->office_branch_id){
+                array_push($employees,$admin);
+            }
+        }
 
         return view('PettyCash.create',compact('employees','no','user'));
     }
@@ -68,6 +78,8 @@ class PettyCashController extends Controller
             'date'=>'required',
             'no'=>'required',
             'amount'=>'required',
+            'target_date'=>'required',
+            'priority'=>'required'
         ]);
         PettyCash::create($request->all());
         return redirect(route('petty_cash.index'))->with('success','Petty Cash Submitted');

@@ -10,7 +10,7 @@ class PettyCash extends Model
     use HasFactory;
     protected $fillable=[
         'no','manager_id','tag_finance_id','amount','date','manager_approve',
-        'finance_approve','emp_id','description','status','remaining'
+        'finance_approve','emp_id','description','status','remaining','target_date','priority'
     ];
     public function manager(){
         return $this->belongsTo(Employee::class,'manager_id','id');

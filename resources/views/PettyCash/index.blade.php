@@ -27,6 +27,8 @@
                                 <th>Finance Tag</th>
                                 <th>Amount</th>
                                 <th>Status</th>
+                                <th>Priority</th>
+                                <th>Target Date</th>
                                 <th>Finance Status</th>
                                 <th>Manager Status</th>
                                 <th>Action</th>
@@ -42,6 +44,9 @@
                                 <td>{{$item->finance->name}}</td>
                                 <td>{{$item->amount}}</td>
                                 <td>{{$item->status}}</td>
+                                <td>{{$item->priority}}</td>
+                                <td>{{\Carbon\Carbon::parse($item->target_date)->toFormattedDateString()}}</td>
+
                                 <td>{{$item->finance_approve?'Confirm':'UnConfirmed'}}</td>
                                 <td>{{$item->manager_approve?'Approve':'Not Approved'}}</td>
                                 <td style="width: 120px;">

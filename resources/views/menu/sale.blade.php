@@ -52,7 +52,7 @@
                    href="{{ route('expense_record.index') }}" style="text-decoration: none">My Expense</a></li>
             <li>
             <li class="submenu">
-                <a href="#"><span>Petty Cash</span>
+                <a href="#"><span>Advance Cash</span>
                     <span
                             class="menu-arrow"></span></a>
                 <ul style="display: none;">

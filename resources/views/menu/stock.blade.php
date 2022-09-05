@@ -16,13 +16,13 @@
                    href="{{ route('expense_record.index') }}" style="text-decoration: none">My Expense</a></li>
             <li>
             <li class="submenu">
-                <a href="#"><span>Petty Cash</span>
+                <a href="#"><span>Advance Cash</span>
                     <span
                             class="menu-arrow"></span></a>
                 <ul style="display: none;">
 
                     <li><a class="{{ Request::is('petty_cash') ? 'active' : '' }}"
-                           href="{{ route('petty_cash.index') }}" style="text-decoration: none">All Petty Cash</a>
+                           href="{{ route('petty_cash.index') }}" style="text-decoration: none">All Advance Cash</a>
                     </li>
                     <li><a class="{{ Request::is('petty_cash/create') ? 'active' : '' }}"
                            href="{{ route('petty_cash.create') }}" style="text-decoration: none">Create</a>

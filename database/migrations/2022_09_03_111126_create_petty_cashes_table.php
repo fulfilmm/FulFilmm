@@ -26,6 +26,8 @@ class CreatePettyCashesTable extends Migration
             $table->text('description')->nullable();
             $table->string('status');
             $table->double('remaining');
+            $table->string('priority');
+            $table->dateTime('target_date');
             $table->timestamps();
         });
     }
