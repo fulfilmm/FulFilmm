@@ -42,12 +42,16 @@
                                    @endif
                             </div>
                         </div>
+                        <div class="col-md-3 col-12  float-right">
+                           <h5 class="text-left text-{{$petty_cash->priority=='High'?'danger':($petty_cash->priority=='Medium'?'info':'primary')}}">Priority :{{$petty_cash->priority}}</h5>
+                           <h5 class="text-left">Target Date :{{\Carbon\Carbon::parse($petty_cash->target_date)->toFormattedDateString()}}</h5>
+                        </div>
                         <div class="col-md-12 col-12">
                             <div class="form-group float-right">
                                 <label for="no">
                                     No
                                 </label>
-                                <input type="text" class="form-control" name="no" id="no" value="{{$petty_cash->no}}"
+                                <input type="text" class="form-control form-control-sm" name="no" id="no" value="{{$petty_cash->no}}"
                                        readonly>
                             </div>
                         </div>
