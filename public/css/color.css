@@ -21,6 +21,10 @@
 .colorhint-gradient {
     background: linear-gradient(to top, lime, 20%, cyan);
 }
+.bg-grey{
+    background: rgb(200, 211, 201);
+    background: linear-gradient(90deg, rgba(236, 249, 237, 0.96) 0%, rgb(239, 248, 227) 100%);')))}}"
+}
 .soft-green{
     color: rgb(132,193,70);
 }

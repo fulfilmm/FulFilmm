@@ -16,6 +16,7 @@ use App\Models\ExpenseBudget;
 use App\Models\ExpenseClaim;
 use App\Models\Invoice;
 use App\Models\MainCompany;
+use App\Models\PettyCash;
 use App\Models\PurchaseOrder;
 use App\Models\Revenue;
 use App\Models\RevenueBudget;
@@ -282,7 +283,7 @@ class TransactionController extends Controller
 
         $auth = Auth::guard('employee')->user();
         if ($auth->role->name == 'CEO' || $auth->role->name == 'Super Admin' || $auth->role->name == 'Finance Manager') {
-            $expenses = Expense::with('cat', 'supplier', 'approver', 'employee', 'bill')->get();
+            $expenses = Expense::with('cat', 'supplier', 'approver', 'employee', 'bill','petty_cash')->get();
         } else {
             $expenses = Expense::with('cat', 'supplier', 'approver', 'employee', 'bill')
                 ->orWhere('emp_id', $auth->id)
@@ -373,6 +374,9 @@ class TransactionController extends Controller
                 $new_expense->branch_id = Auth::guard('employee')->user()->office_branch_id;
                 $new_expense->currency = $request->currency;
                 $new_expense->bill_id = $request->bill_id ?? null;
+                if (isset($request->petty_cash_id)) {
+                    $new_expense->petty_cash_id=$request->petty_cash_id;
+                }
 //        dd($new_expense);
                 if (isset($request->attachment)) {
                     if ($request->attachment != null) {
@@ -391,6 +395,11 @@ class TransactionController extends Controller
                 $exp = ExpenseClaim::where('id', $request->exp_id)->first();
                 $exp->finance_approved = 1;
                 $exp->update();
+            }
+            if (isset($request->petty_cash_id)){
+                $petty_cash=PettyCash::where('id',$request->petty_cash_id)->first();
+                $petty_cash->status='Clearance';
+                $petty_cash->update();
             }
             $this->transaction_add($request->account, $request->type, $new_expense->id, null);
             $this->addnotify($request->approver_id, 'noti', 'Add new expense', 'expense', Auth::guard('employee')->user()->id);

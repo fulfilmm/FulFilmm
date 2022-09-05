@@ -48,4 +48,6 @@ Route::middleware(['auth:employee'])->group(function () {
     Route::post('todo/comment',[\App\Http\Controllers\AssigmentController::class,'comment'])->name('todo.comment');
     Route::resource('todo_checklists',\App\Http\Controllers\CheckListController::class);
     Route::get('todo/remark',[\App\Http\Controllers\CheckListController::class,'remark'])->name('remark');
+    Route::resource('petty_cash',\App\Http\Controllers\PettyCashController::class);
+    Route::post('petty/cash/item/delete',[\App\Http\Controllers\PettyCashController::class,'item_delete']);
 });

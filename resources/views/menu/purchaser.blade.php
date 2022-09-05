@@ -37,6 +37,20 @@
                    href="{{ route('expense_record.index') }}" style="text-decoration: none">My Expense</a></li>
             <li>
             <li class="submenu">
+                <a href="#"><span>Petty Cash</span>
+                    <span
+                            class="menu-arrow"></span></a>
+                <ul style="display: none;">
+
+                    <li><a class="{{ Request::is('petty_cash') ? 'active' : '' }}"
+                           href="{{ route('petty_cash.index') }}" style="text-decoration: none">All Petty Cash</a>
+                    </li>
+                    <li><a class="{{ Request::is('petty_cash/create') ? 'active' : '' }}"
+                           href="{{ route('petty_cash.create') }}" style="text-decoration: none">Create</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="submenu">
                 <a href="#"><span> Expense Claim</span>
                     <span
                             class="menu-arrow"></span></a>

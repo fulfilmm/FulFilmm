@@ -26,4 +26,7 @@ class Expense extends Model
     public function cat(){
         return $this->belongsTo(TransactionCategory::class,'category','id');
     }
+    public function petty_cash(){
+        return $this->belongsTo(PettyCash::class,'petty_cash_id','id');
+    }
 }

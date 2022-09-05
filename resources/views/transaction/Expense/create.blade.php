@@ -19,6 +19,8 @@
                   class="form-loading-button needs-validation">
                 @csrf
                 <input type="hidden" name="exp_id" value="{{$exp_claim->id??''}}">
+                <input type="hidden" name="petty_cash_id" value="{{$petty_cash->id??''}}">
+
                 <div class="card-body">
                     <div class="row">
                         <input type="hidden" name="type" value="Expense">
@@ -28,6 +30,14 @@
                                 <input type="text" class="form-control" id="title" name="title">
                             </div>
                         </div>
+                       @if(isset($petty_cash))
+                            <div class="col-md-6">
+                               <div class="form-group">
+                                   <label for="no">Petty Cash No</label>
+                                   <input type="text" id="no" class="form-control"  value="{{$petty_cash->no??''}}" readonly>
+                               </div>
+                            </div>
+                           @endif
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="date">Date</label>
@@ -44,7 +54,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fa fa-money"></i></span>
                                     </div>
-                                    <input type="text" class="form-control" id="amount" name="amount" value="{{$exp_claim->total??''}}">
+                                    <input type="text" class="form-control" id="amount" name="amount" value="{{$exp_claim->total??$use_amount??''}}">
                                     <div class="input-group-prepend">
                                         <select name="currency" id="" class="select">
                                             <option value="MMK">MMK</option>
@@ -114,7 +124,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="payment_method">Casher</label>
+                                <label for="payment_method">Cashier</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fa fa-user"></i></span>
@@ -122,7 +132,7 @@
                                     <select name="approver_id" id="payment_method" class="form-control ">
                                         @foreach($data['emps'] as $emps)
                                             @if($emps->department->name=='Finance Department')
-                                                <option value="{{$emps->id}}">{{$emps->name}}</option>
+                                                <option value="{{$emps->id}}" {{isset($petty_cash->tag_finance_id)?($petty_cash->tag_finance_id==$emps->id?'selected':''):''}}>{{$emps->name}}</option>
                                             @endif
                                         @endforeach
                                     </select>

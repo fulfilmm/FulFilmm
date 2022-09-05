@@ -27,6 +27,7 @@
                         <th>Date</th>
                         <th>Bill ID</th>
                         <th>Title</th>
+                        <th>Petty Cash No</th>
                         <th>Amount</th>
                         <th>Supplier</th>
                         <th>Category</th>
@@ -51,6 +52,7 @@
                                     <a href="{{route('bills.show',$transaction->bill_id)}}">{{$transaction->bill->bill_id}}</a>@else
                                     N/A @endif</td>
                             <td>{{$transaction->title}}</td>
+                            <td>{{$transaction->petty_cash->no??'N/A'}}</td>
                             <td>{{number_format($transaction->amount)}}</td>
                             <td>{{$transaction->supplier->name??'N/A'}}</td>
                             <td>{{$transaction->cat->name}}</td>
