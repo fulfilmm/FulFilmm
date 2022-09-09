@@ -44,7 +44,6 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
 
     Route::resource("api_invoices",InvoiceController::class);
 //    Route::apiResource("invoice" , InvoiceDataController::class);
-
     Route::resource("mobile_invoice", MobileInvoiceController::class);
     Route::post('invoice/cancel/{id}',[MobileInvoiceController::class,'cancel']);
     Route::get('retail/invoice' , [App\Http\Controllers\Api\Invoice_Mobile\MobileInvoiceController::class,'retail']);
@@ -70,6 +69,7 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
     Route::apiResource('ecommerce_banner', ProductBannerController::class);
 
     Route::resource('revenues',\App\Http\Controllers\Api\RevenueController::class);
+    Route::get('home',[\App\Http\Controllers\Api\HomeController::class,'index']);
 });
 
 //Api for Car

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 use Tymon\JWTAuth\Contracts\Providers\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Http\Middleware\Authenticate;
@@ -31,7 +32,11 @@ class ApiAuthController extends Controller
         if (!$token) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-        return $this->respondWithToken($token);
+        $result=['token'=>$token,'id'=>Str::uuid(),'name'=>\auth('api')->user()->name,'email'=>\auth('api')->user()->email];
+        return response()->json([
+            'con'=>true,
+            'msg'=>'Login Success',
+            'result'=>$result]);
     }
 
     /**
@@ -71,6 +76,8 @@ class ApiAuthController extends Controller
     protected function respondWithToken($token)
     {
         return response()->json([
+            'con'=>true,
+            'message'=>'Login Success',
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth('api')->factory()->getTTL() * 60
