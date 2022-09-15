@@ -32,7 +32,7 @@ class ApiAuthController extends Controller
         if (!$token) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-        $result=['token'=>$token,'id'=>Str::uuid(),'name'=>\auth('api')->user()->name,'email'=>\auth('api')->user()->email];
+        $result=['token'=>$token,'id'=>Str::uuid(),'name'=>\auth('api')->user()->name,'email'=>\auth('api')->user()->email,'phone'=>\auth('api')->user()->phone,'profile_img'=>\auth('api')->user()->profile_img];
         return response()->json([
             'con'=>true,
             'msg'=>'Login Success',
