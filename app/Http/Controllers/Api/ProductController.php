@@ -7,8 +7,10 @@ use App\Models\EcommerceProduct;
 use App\Models\product;
 use App\Models\products_category;
 use App\Models\products_tax;
+use App\Models\ProductVariations;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use PhpOffice\PhpSpreadsheet\Calculation\Category;
 
 class ProductController extends Controller
 {
@@ -151,14 +153,6 @@ class ProductController extends Controller
             'tax' => "success",
         ]);
     }
-    public function category(Request $request){
-        $cat=new products_category();
-        $cat->name=$request->name;
-        $cat->save();
-        return response()->json([
-            'tax' => "success",
-        ]);
-    }
     public function duplicate($id){
         $product=product::where("id",$id)->first();
         $duplicate_product=$product->replicate();
@@ -196,4 +190,19 @@ class ProductController extends Controller
 
         }
     }
+    public function category(){
+        $cats=products_category::with('product')->get();
+        foreach ($cats as $cat){
+            $items=[];
+            foreach ($cat->product as $p){
+            $item=ProductVariations::where('product_id',$p->id)->get();
+            foreach ($item as $it){
+                array_push($items,$it);
+            }
+            }
+            $cat['items']=$items;
+        }
+        return response()->json(['con'=>true,'result'=>$cats]);
+    }
+
 }

@@ -89,4 +89,5 @@ Route::get('retail/invoice/create' , [InvoiceDataController::class, 'retail_inv'
 
 
 Route::post('/auth/login',[ApiAuthController::class,'login'])->name('login');
+Route::get('categories',[App\Http\Controllers\Api\ProductController::class,'category']);
 
