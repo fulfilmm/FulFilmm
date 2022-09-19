@@ -8,9 +8,12 @@ use App\Models\product;
 use App\Models\products_category;
 use App\Models\products_tax;
 use App\Models\ProductVariations;
+use App\Models\Stock;
+use App\Models\Warehouse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PhpOffice\PhpSpreadsheet\Calculation\Category;
+use function PHPUnit\Framework\isEmpty;
 
 class ProductController extends Controller
 {
@@ -204,5 +207,43 @@ class ProductController extends Controller
         }
         return response()->json(['con'=>true,'result'=>$cats]);
     }
+    public function product_category($id){
+        $auth=Auth::guard('api')->user();
+        if(Auth::guard('api')->user()->mobile_seller==1){
+            $warehouse =Warehouse::where('warehouse_id', $auth->warehouse_id)
+                ->where('mobile_warehouse',1)
+                ->get();
+        }else{
+            $warehouse =Warehouse::where('branch_id', $auth->office_branch_id)
+                ->where('mobile_warehouse',0)
+                ->get();
+        }
+
+        $aval_product =[];
+        $in_stock=[];
+        foreach ($warehouse as $wh){
+           $stock =Stock::with('variant','unit')->where('available', '>', 0)
+                ->where('warehouse_id',$wh->id)
+                ->get();
+            if(!$stock->isEmpty()){
+                array_push($in_stock,$stock);
+            }
+
+        }
+       foreach ($in_stock as $st){
+           foreach ($st as $inhand){
+//               return response()->json(['data'=>$inhand->id]);
+               $product=ProductVariations::with('product')->where('id',$inhand->variant_id)->first();
+
+               $inhand['cat_id']=$product->product->cat_id;
+               if($inhand->variant->enable==1 && $inhand->cat_id==$id){
+
+                   array_push($aval_product,$inhand);
+               }
+           }
+       }
+        return response()->json(['result'=>$aval_product,'con'=>true]);
+    }
+
 
 }
