@@ -253,7 +253,7 @@ class ProductController extends Controller
                             }
 
                         }
-                        if (!in_array($product->id, $avl)) {
+                        if (!in_array($product->id, $aval_product)) {
                             array_push($aval_product, $inhand);
                         }
 
