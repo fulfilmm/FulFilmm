@@ -244,22 +244,21 @@ class ProductController extends Controller
                 $product = ProductVariations::with('product')->where('id', $inhand->variant_id)->first();
                 $inhand['cat_id'] = $product->product->cat_id;
                 if ($inhand->variant->enable == 1 && $inhand->cat_id == $id) {
-
-
-                    if (count($aval_product)==0) {
+                    if (count($aval_product) == 0) {
                         array_push($aval_product, $inhand);
                     } else {
-                        foreach ($aval_product as $avl)
+                        foreach ($aval_product as $avl) {
                             if ($avl->variant_id == $product->id) {
-                                $avl['stock_balance'] =$avl->stock_balance+$inhand->stock_balance;
-                            }else{
-                                if(!in_array($product->id,$avl)){
-                                    array_push($aval_product, $inhand);
-                                }
+                                $avl['stock_balance'] = $avl->stock_balance + $inhand->stock_balance;
                             }
+
+                        }
+                        if (!in_array($product->id, $avl)) {
+                            array_push($aval_product, $inhand);
+                        }
+
+
                     }
-
-
                 }
             }
         }
