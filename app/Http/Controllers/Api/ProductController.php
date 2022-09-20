@@ -19,9 +19,9 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $ecommerce_stocks=EcommerceProduct::with('variant')->get();
-        $auth=Auth::guard('api')->user();
-        return response()->json(['product'=>$auth]);
+        $ecommerce_stocks = EcommerceProduct::with('variant')->get();
+        $auth = Auth::guard('api')->user();
+        return response()->json(['product' => $auth]);
     }
 
     /**
@@ -31,225 +31,227 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $taxes=products_tax::all();
-        $lasttax=products_tax::orderBy('id', 'desc')->first();
-        $allcat=products_category::all();
-        $lastcat=products_category::orderBy('id', 'desc')->first();
-        return view("product.create",compact("taxes","lasttax","allcat","lastcat"));
+        $taxes = products_tax::all();
+        $lasttax = products_tax::orderBy('id', 'desc')->first();
+        $allcat = products_category::all();
+        $lastcat = products_category::orderBy('id', 'desc')->first();
+        return view("product.create", compact("taxes", "lasttax", "allcat", "lastcat"));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $product=new product();
-        $product->name=$request->name;
-        $product->tax=$request->tax;
-        $product->currency_unit=$request->unit;
-        $product->description=$request->description;
-        $product->sale_price=$request->sale_price;
-        $product->purchase_price=$request->purchase_price;
-        $product->cat_id=$request->cat_id;
-        $product->model_no=$request->model_no;
-        $product->serial_no=$request->serial_no;
-        $product->sku=$request->sku;
-        $product->part_no=$request->part_no;
-        $product->available_stock=$request->aval_stock;
-        if(isset($request->enable))
-        {
-            $product->enable=1;
-        }else{
-            $product->enable=0;
+        $product = new product();
+        $product->name = $request->name;
+        $product->tax = $request->tax;
+        $product->currency_unit = $request->unit;
+        $product->description = $request->description;
+        $product->sale_price = $request->sale_price;
+        $product->purchase_price = $request->purchase_price;
+        $product->cat_id = $request->cat_id;
+        $product->model_no = $request->model_no;
+        $product->serial_no = $request->serial_no;
+        $product->sku = $request->sku;
+        $product->part_no = $request->part_no;
+        $product->available_stock = $request->aval_stock;
+        if (isset($request->enable)) {
+            $product->enable = 1;
+        } else {
+            $product->enable = 0;
         }
         $image = $request->picture;
-        if($image!=null) {
+        if ($image != null) {
             $name = $image->getClientOriginalName();
             $request->picture->move(public_path() . '/product_picture/', $name);
             $product->image = $name;
         }
         $product->save();
-        return redirect("/products")->with("message","Product Create Success");
+        return redirect("/products")->with("message", "Product Create Success");
 
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $product=product::with("taxes","category")->where("id",$id)->first();
-        return view("product.show",compact("product"));
+        $product = product::with("taxes", "category")->where("id", $id)->first();
+        return view("product.show", compact("product"));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $taxes=products_tax::all();
-        $allcat=products_category::all();
-        $product=product::with("category","taxes")->where("id",$id)->first();
-        return view("product.edit",compact("taxes","product","allcat"));
+        $taxes = products_tax::all();
+        $allcat = products_category::all();
+        $product = product::with("category", "taxes")->where("id", $id)->first();
+        return view("product.edit", compact("taxes", "product", "allcat"));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        $product=product::where("id",$id)->first();
-        $product->name=$request->name;
-        $product->tax=$request->tax;
-        $product->description=$request->description;
-        $product->sale_price=$request->sale_price;
-        $product->purchase_price=$request->purchase_price;
-        $product->cat_id=$request->cat_id;
-        $product->currency_unit=$request->unit;
-        if(isset($request->enable))
-        {
-            $product->enable=1;
-        }else{
-            $product->enable=0;
+        $product = product::where("id", $id)->first();
+        $product->name = $request->name;
+        $product->tax = $request->tax;
+        $product->description = $request->description;
+        $product->sale_price = $request->sale_price;
+        $product->purchase_price = $request->purchase_price;
+        $product->cat_id = $request->cat_id;
+        $product->currency_unit = $request->unit;
+        if (isset($request->enable)) {
+            $product->enable = 1;
+        } else {
+            $product->enable = 0;
         }
         $image = $request->picture;
-        if($image!=null) {
+        if ($image != null) {
             $name = $image->getClientOriginalName();
             $request->picture->move(public_path() . '/product_picture/', $name);
             $product->image = $name;
         }
         $product->update();
-        return redirect("/products")->with("message","Product Updated Success");
+        return redirect("/products")->with("message", "Product Updated Success");
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $product=product::where("id",$id)->first();
+        $product = product::where("id", $id)->first();
         $product->delete();
-        return redirect()->back()->with("delete","Delete $product->name successful");
+        return redirect()->back()->with("delete", "Delete $product->name successful");
     }
-    public function tax(Request $request){
-        $tax=new products_tax();
-        $tax->name=$request->name;
-        $tax->rate=$request->p_rate;
+
+    public function tax(Request $request)
+    {
+        $tax = new products_tax();
+        $tax->name = $request->name;
+        $tax->rate = $request->p_rate;
         $tax->save();
         return response()->json([
             'tax' => "success",
         ]);
     }
-    public function duplicate($id){
-        $product=product::where("id",$id)->first();
-        $duplicate_product=$product->replicate();
+
+    public function duplicate($id)
+    {
+        $product = product::where("id", $id)->first();
+        $duplicate_product = $product->replicate();
         $duplicate_product->save();
-        return redirect("/products")->with("message","Product Create Success");
+        return redirect("/products")->with("message", "Product Create Success");
     }
-    public function action_confirm(Request $request){
+
+    public function action_confirm(Request $request)
+    {
 //        dd($request->all());
-        if($request->action_Type=="Enable"){
-            foreach ($request->product_id as $product){
-                if($product!="on") {
+        if ($request->action_Type == "Enable") {
+            foreach ($request->product_id as $product) {
+                if ($product != "on") {
                     $action_product = product::where("id", $product)->first();
                     $action_product->enable = 1;
                     $action_product->update();
                 }
             }
 
-        }elseif ($request->action_Type="Disable"){
-            foreach ($request->product_id as $product){
-                if($product!="on") {
+        } elseif ($request->action_Type = "Disable") {
+            foreach ($request->product_id as $product) {
+                if ($product != "on") {
                     $action_product = product::where("id", $product)->first();
                     $action_product->enable = 0;
                     $action_product->update();
                 }
             }
 
-        }elseif ($request->action_Type=="Delete"){
-            foreach ($request->product_id as $product){
-                if($product!="on") {
+        } elseif ($request->action_Type == "Delete") {
+            foreach ($request->product_id as $product) {
+                if ($product != "on") {
                     $action_product = product::where("id", $product)->first();
                     $action_product->delete();
                 }
             }
-        }elseif ($request->action_Type="Export"){
+        } elseif ($request->action_Type = "Export") {
 
         }
     }
-    public function category(){
-        $cats=products_category::with('product')->get();
-        foreach ($cats as $cat){
-            $items=[];
-            foreach ($cat->product as $p){
-            $item=ProductVariations::where('product_id',$p->id)->get();
-            foreach ($item as $it){
-                array_push($items,$it);
+
+    public function category()
+    {
+        $cats = products_category::with('product')->get();
+        foreach ($cats as $cat) {
+            $items = [];
+            foreach ($cat->product as $p) {
+                $item = ProductVariations::where('product_id', $p->id)->get();
+                foreach ($item as $it) {
+                    array_push($items, $it);
+                }
             }
-            }
-            $cat['items']=$items;
+            $cat['items'] = $items;
         }
-        return response()->json(['con'=>true,'result'=>$cats]);
+        return response()->json(['con' => true, 'result' => $cats]);
     }
-    public function product_category($id){
-        $auth=Auth::guard('api')->user();
-        if(Auth::guard('api')->user()->mobile_seller==1){
-            $warehouse =Warehouse::where('warehouse_id', $auth->warehouse_id)
-                ->where('mobile_warehouse',1)
+
+    public function product_category($id)
+    {
+        $auth = Auth::guard('api')->user();
+        if (Auth::guard('api')->user()->mobile_seller == 1) {
+            $warehouse = Warehouse::where('warehouse_id', $auth->warehouse_id)
+                ->where('mobile_warehouse', 1)
                 ->get();
-        }else{
-            $warehouse =Warehouse::where('branch_id', $auth->office_branch_id)
-                ->where('mobile_warehouse',0)
+        } else {
+            $warehouse = Warehouse::where('branch_id', $auth->office_branch_id)
+                ->where('mobile_warehouse', 0)
                 ->get();
         }
 
-        $aval_product =[];
-        $in_stock=[];
-        foreach ($warehouse as $wh){
-           $stock =Stock::with('variant','unit')->where('available', '>', 0)
-                ->where('warehouse_id',$wh->id)
+        $aval_product = [];
+        $in_stock = [];
+        foreach ($warehouse as $wh) {
+            $stock = Stock::with('variant', 'unit')->where('available', '>', 0)
+                ->where('warehouse_id', $wh->id)
                 ->get();
-            if(!$stock->isEmpty()){
-                array_push($in_stock,$stock);
+            if (!$stock->isEmpty()) {
+                array_push($in_stock, $stock);
             }
 
         }
-       foreach ($in_stock as $st){
-           foreach ($st as $inhand){
+        foreach ($in_stock as $st) {
+            foreach ($st as $inhand) {
 //               return response()->json(['data'=>$inhand->id]);
-               $product=ProductVariations::with('product')->where('id',$inhand->variant_id)->first();
+                $product = ProductVariations::with('product')->where('id', $inhand->variant_id)->first();
+                $inhand['cat_id'] = $product->product->cat_id;
+                if ($inhand->variant->enable == 1 && $inhand->cat_id == $id) {
 
-               $inhand['cat_id']=$product->product->cat_id;
-               if($inhand->variant->enable==1 && $inhand->cat_id==$id){
-                    foreach ($aval_product as $product){
-                        if($product->variant_id==$inhand->variant_id){
-                            $product->available+=$inhand->available;
-                            $product->stock_balance+=$inhand->stock_balance;
-                        }else {
-                            array_push($aval_product, $inhand);
-                        }
-                    }
+                    array_push($aval_product, $inhand);
 
-               }
-           }
-       }
-        return response()->json(['result'=>$aval_product,'con'=>true]);
+
+                }
+            }
+        }
+        return response()->json(['result' => $aval_product, 'con' => true]);
     }
 
 
