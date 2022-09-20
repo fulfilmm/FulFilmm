@@ -251,7 +251,7 @@ class ProductController extends Controller
                     } else {
                         foreach ($aval_product as $avl)
                             if ($avl->variant_id == $product->id) {
-                                $avl->stock_balance += $inhand->stock_balance;
+                                $avl['stock_balance'] =$avl->stock_balance+$inhand->stock_balance;
 
 
                             }
