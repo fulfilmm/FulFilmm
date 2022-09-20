@@ -246,7 +246,7 @@ class ProductController extends Controller
                 if ($inhand->variant->enable == 1 && $inhand->cat_id == $id) {
 
 
-                    if (in_array($inhand->variant_id, $aval_product)) {
+                    if (!in_array($inhand->variant_id, $aval_product)) {
                         array_push($aval_product, $inhand);
                     } else {
                         foreach ($aval_product as $avl)
