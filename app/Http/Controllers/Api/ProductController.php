@@ -253,7 +253,7 @@ class ProductController extends Controller
                             if ($avl->variant_id == $product->id) {
                                 $avl['stock_balance'] =$avl->stock_balance+$inhand->stock_balance;
                             }else{
-                                if(!in_array($product->id,$aval_product)){
+                                if(!in_array($product->id,$avl)){
                                     array_push($aval_product, $inhand);
                                 }
                             }
