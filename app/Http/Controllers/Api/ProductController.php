@@ -250,6 +250,7 @@ class ProductController extends Controller
                         foreach ($aval_product as $avl) {
                             if ($avl->variant_id == $product->id) {
                                 $avl['stock_balance'] = $avl->stock_balance + $inhand->stock_balance;
+                                $avl['available'] = $avl->available + $inhand->available;
                                 break;
                             }else{
                             array_push($aval_product, $inhand);
