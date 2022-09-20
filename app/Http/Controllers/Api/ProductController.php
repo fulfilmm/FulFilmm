@@ -242,7 +242,7 @@ class ProductController extends Controller
                }
            }
        }
-        return response()->json(['result'=>$aval_product,'con'=>true]);
+        return response()->json(['result'=>json_encode($aval_product),'con'=>true]);
     }
 
 

@@ -44,6 +44,7 @@ class EmployeeAuthController extends LoginController
     protected function loggedOut(Request $request)
     {
         //
+        Auth::guard('employee')->logout();
         return redirect('/employee/login');
     }
 }
