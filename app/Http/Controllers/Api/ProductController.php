@@ -245,7 +245,17 @@ class ProductController extends Controller
                 $inhand['cat_id'] = $product->product->cat_id;
                 if ($inhand->variant->enable == 1 && $inhand->cat_id == $id) {
 
-                    array_push($aval_product, $inhand);
+
+                    if(count($aval_product)==0){
+                        array_push($aval_product, $inhand);
+                        foreach ($aval_product as $avl){
+                            if($avl->variant_id==$product->id){
+                                $avl->stock_balance+=$inhand->stock_balance;
+                            }else{
+                                array_push($aval_product, $inhand);
+                            }
+                        }
+                    }
 
 
                 }
