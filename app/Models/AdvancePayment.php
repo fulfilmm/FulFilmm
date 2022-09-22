@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class AdvancePayment extends Model
 {
     use HasFactory;
-    protected $fillable=['amount','emp_id','customer_id','payment_type','approver_id'];
+    protected $fillable=['amount','emp_id','customer_id','payment_type','approver_id','description'];
     public function customer(){
         return $this->belongsTo(Customer::class,'customer_id','id');
     }

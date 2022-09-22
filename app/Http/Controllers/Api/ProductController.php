@@ -230,7 +230,7 @@ class ProductController extends Controller
         $aval_product = [];
         $in_stock = [];
         foreach ($warehouse as $wh) {
-            $stock = Stock::with('variant', 'unit')->where('available', '>', 0)
+            $stock = Stock::with( 'unit')->where('available', '>', 0)
                 ->where('warehouse_id', $wh->id)
                 ->get();
             if (!$stock->isEmpty()) {
@@ -241,14 +241,18 @@ class ProductController extends Controller
         foreach ($in_stock as $st) {
             foreach ($st as $inhand) {
 //               return response()->json(['data'=>$inhand->id]);
-                $product = ProductVariations::with('product')->where('id', $inhand->variant_id)->first();
-                $inhand['cat_id'] = $product->product->cat_id;
+                $variant = ProductVariations::with('product')->where('id', $inhand->variant_id)->first();
+                $inhand['cat_id'] = $variant->product->cat_id;
+                $inhand['name']=$variant->product->name;
+                $inhand['variant_name']=$variant->variant;
+                $inhand['item_code']=$variant->item_code;
+                $inhand['image']=$variant->image;
                 if ($inhand->variant->enable == 1 && $inhand->cat_id == $id) {
                     if (count($aval_product) == 0) {
                         array_push($aval_product, $inhand);
                     } else {
                         foreach ($aval_product as $avl) {
-                            if ($avl->variant_id == $product->id) {
+                            if ($avl->variant_id == $variant->id) {
                                 $avl['stock_balance'] = $avl->stock_balance + $inhand->stock_balance;
                                 $avl['available'] = $avl->available + $inhand->available;
                                 break;

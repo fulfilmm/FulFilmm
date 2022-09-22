@@ -148,6 +148,12 @@
                                             @enderror
                                         </div>
                                     </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="desc">Description</label>
+                                            <textarea name="description" id="desc" cols="30" rows="5" class="form-control"></textarea>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <input type="hidden" name="emp_id" value="{{\Illuminate\Support\Facades\Auth::guard('employee')->user()->id}}">
@@ -166,6 +172,7 @@
         </div>
         <script>
             $(document).ready(function () {
+                $('select').select2();
                 var type=$('#type option:selected').val();
                 if(type=='Cash'){
                     $('#account_div').hide();
