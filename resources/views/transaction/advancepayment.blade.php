@@ -29,6 +29,7 @@
                             <tr>
                                 <th>Date</th>
                                 <th>Customer</th>
+                                <th>Employee</th>
                                 <th>Advance Balance</th>
                                 @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
                                     <th>Action</th>
@@ -40,6 +41,7 @@
                                 <tr>
                                     <td>{{$item->created_at->toFormattedDateString()}}</td>
                                     <td>{{$item->name}}</td>
+                                    <td>{{$item->emp->name}}</td>
                                     <td>{{$item->advance_balance}}</td>
                                     @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
                                         <td><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#history{{$item->id}}">Received History</button>
