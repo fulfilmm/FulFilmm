@@ -36,7 +36,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($history as $item)
+                            @foreach($advancepayment as $item)
                                 <tr>
                                     <td>{{$item->created_at->toFormattedDateString()}}</td>
                                     <td>{{$item->name}}</td>
