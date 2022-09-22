@@ -26,7 +26,8 @@ class AdvancePaymentController extends Controller
            $auth=Auth::guard('employee')->user();
 
            if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'){
-               $history=AdvancePayment::with('approver','emp','customer')->get();
+               $advancepayment=Customer::where('advance_balance','>',0)->get();
+               $history=AdvancePayment::with('approver','emp')->get();
                $customer=Customer::all();
                $employee=Employee::all();
                $approver=[];
@@ -36,7 +37,8 @@ class AdvancePaymentController extends Controller
                    }
                }
            }else{
-               $history=AdvancePayment::with('approver','emp','customer')->get();
+               $advancepayment=Customer::where('advance_balance','>',0)->where('emp_id',$auth->id)->get();
+               $history=AdvancePayment::with('approver','emp')->get();
                $employee=Employee::where('office_branch_id',$auth->office_branch_id)->get();
                $customer=Customer::where('branch_id',$auth->office_branch_id)->get();
                foreach ($employee as $emp){
