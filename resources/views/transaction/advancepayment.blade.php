@@ -57,6 +57,7 @@
                                                                         <th>
                                                                             Customer
                                                                         </th>
+                                                                        <th>Description</th>
                                                                         <th>Amount</th>
                                                                         <th>Received Employee</th>
                                                                         <th>Date</th>
@@ -65,6 +66,7 @@
                                                                         @if($his->customer_id==$item->id)
                                                                             <tr>
                                                                                 <td>{{$item->name}}</td>
+                                                                                <td>{{$item->description}}</td>
                                                                                 <td>{{$his->amount}}</td>
                                                                                 <td>{{$his->emp->name}}</td>
                                                                                 <td>{{$his->created_at->toFormattedDateString()}}</td>
@@ -104,7 +106,7 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label for="approver">Approver</label>
-                                            <select name="approver_id" id="approver" class="form-control">
+                                            <select name="approver_id" id="approver" class="form-control" style="width: 100%">
                                                 @foreach($approver as $approve)
                                                     <option value="{{$approve->id}}">{{$approve->name}}</option>
                                                 @endforeach
@@ -127,7 +129,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="customer">Customer</label>
-                                            <select name="customer_id" id="customer" class="form-control">
+                                            <select name="customer_id" id="customer" class="form-control" style="width: 100%">
                                                 @foreach($customer as $cust)
                                                     <option value="{{$cust->id}}">{{$cust->name}}</option>
                                                     @endforeach
