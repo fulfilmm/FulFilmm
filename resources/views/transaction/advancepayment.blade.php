@@ -27,7 +27,6 @@
                         <table class="table " id="advance_pay">
                             <thead>
                             <tr>
-                                <th>Date</th>
                                 <th>Customer</th>
                                 <th>Advance Balance</th>
                                 @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
@@ -38,7 +37,6 @@
                             <tbody>
                             @foreach($advancepayment as $item)
                                 <tr>
-                                    <td>{{$item->created_at->toFormattedDateString()}}</td>
                                     <td>{{$item->name}}</td>
                                     <td>{{$item->advance_balance}}</td>
                                     @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
