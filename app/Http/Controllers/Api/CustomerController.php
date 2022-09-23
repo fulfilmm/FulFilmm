@@ -41,7 +41,8 @@ class CustomerController extends Controller
     public function index()
     {
 	$auth=Auth::guard('api')->user();
-        $customers = Customer::where('region_id',$auth->region_id)->paginate(20);
+        $customers = Customer::where('region_id',$auth->region_id)->get();
+//            ->paginate(20);
         return response()->json(['result'=>$customers,'con'=>true]);
     }
 
