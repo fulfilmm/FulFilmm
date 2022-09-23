@@ -12,6 +12,7 @@ use App\Models\ProductVariations;
 use App\Models\SellingUnit;
 use App\Models\Stock;
 use App\Models\Warehouse;
+use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PhpOffice\PhpSpreadsheet\Calculation\Category;
@@ -245,13 +246,16 @@ class ProductController extends Controller
 //               return response()->json(['data'=>$inhand->id]);
                 $variant = ProductVariations::with('product')->where('id', $inhand->variant_id)->first();
 //                $sell_unit=SellingUnit::where('product_id',$variant->product->id)->where('unit_convert_rate',1)->first();
-                $price=product_price::where('product_id',$variant->id)->where('unit_id',$inhand->unit[0]->id)->where('region_id',Auth::guard('api')->user()->region_id)->first();
+                $unit_price=product_price::where('product_id',$variant->id)
+                    ->where('unit_id',$inhand->unit[0]->id)
+                    ->where('region_id',Auth::guard('api')->user()->region_id)
+                    ->first();
                 $inhand['cat_id'] = $variant->product->cat_id;
                 $inhand['name']=$variant->product->name;
                 $inhand['variant_name']=$variant->variant;
                 $inhand['item_code']=$variant->item_code;
                 $inhand['image']=$variant->image??"sesm7sXhUD1662004688.png";
-                $inhand['price']=$price->price;
+                $inhand['price']=$unit_price->price??0;
                 if ($inhand->variant->enable == 1 && $inhand->cat_id == $id) {
                     if (count($aval_product) == 0) {
                         array_push($aval_product, $inhand);
