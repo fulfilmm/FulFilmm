@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\EcommerceProduct;
 use App\Models\product;
+use App\Models\product_price;
 use App\Models\products_category;
 use App\Models\products_tax;
 use App\Models\ProductVariations;
+use App\Models\SellingUnit;
 use App\Models\Stock;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
@@ -242,11 +244,14 @@ class ProductController extends Controller
             foreach ($st as $inhand) {
 //               return response()->json(['data'=>$inhand->id]);
                 $variant = ProductVariations::with('product')->where('id', $inhand->variant_id)->first();
+                $unit=SellingUnit::where('product_id',$variant->product->id)->where('unit_convert_rate',1)->first();
+                $price=product_price::where('product_id',$variant->id)->where('unit_id',$unit->id)->where('region_id',Auth::guard('api')->region_id)->first();
                 $inhand['cat_id'] = $variant->product->cat_id;
                 $inhand['name']=$variant->product->name;
                 $inhand['variant_name']=$variant->variant;
                 $inhand['item_code']=$variant->item_code;
-                $inhand['image']=$variant->image;
+                $inhand['image']=$variant->image??"sesm7sXhUD1662004688.png";
+                $inhand['price']=$price->price;
                 if ($inhand->variant->enable == 1 && $inhand->cat_id == $id) {
                     if (count($aval_product) == 0) {
                         array_push($aval_product, $inhand);
