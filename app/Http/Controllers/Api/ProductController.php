@@ -244,8 +244,8 @@ class ProductController extends Controller
             foreach ($st as $inhand) {
 //               return response()->json(['data'=>$inhand->id]);
                 $variant = ProductVariations::with('product')->where('id', $inhand->variant_id)->first();
-                $unit=SellingUnit::where('product_id',$variant->product->id)->where('unit_convert_rate',1)->first();
-                $price=product_price::where('product_id',$variant->id)->where('unit_id',$unit->id)->where('region_id',Auth::guard('api')->region_id)->first();
+                $sell_unit=SellingUnit::where('product_id',$variant->product->id)->where('unit_convert_rate',1)->first();
+                $price=product_price::where('product_id',$variant->id)->where('unit_id',$sell_unit->id)->where('region_id',Auth::guard('api')->region_id)->first();
                 $inhand['cat_id'] = $variant->product->cat_id;
                 $inhand['name']=$variant->product->name;
                 $inhand['variant_name']=$variant->variant;
