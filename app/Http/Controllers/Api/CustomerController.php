@@ -42,7 +42,7 @@ class CustomerController extends Controller
     {
 	$auth=Auth::guard('api')->user();
         $customers = Customer::where('region_id',$auth->region_id)->paginate(20);
-        return response()->json(['customer'=>$customers]);
+        return response()->json(['result'=>$customers,'con'=>true]);
     }
 
 
