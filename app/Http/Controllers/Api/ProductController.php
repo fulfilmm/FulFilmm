@@ -278,6 +278,67 @@ class ProductController extends Controller
         }
         return response()->json(['result' => $aval_product, 'con' => true]);
     }
+    public function allProduct()
+    {
+        $auth = Auth::guard('api')->user();
+        if (Auth::guard('api')->user()->mobile_seller == 1) {
+            $warehouse = Warehouse::where('warehouse_id', $auth->warehouse_id)
+                ->where('mobile_warehouse', 1)
+                ->get();
+        } else {
+            $warehouse = Warehouse::where('branch_id', $auth->office_branch_id)
+                ->where('mobile_warehouse', 0)
+                ->get();
+        }
+
+        $aval_product = [];
+        $in_stock = [];
+        foreach ($warehouse as $wh) {
+            $stock = Stock::with( 'unit')->where('available', '>', 0)
+                ->where('warehouse_id', $wh->id)
+                ->get();
+            if (!$stock->isEmpty()) {
+                array_push($in_stock, $stock);
+            }
+
+        }
+        foreach ($in_stock as $st) {
+            foreach ($st as $inhand) {
+//               return response()->json(['data'=>$inhand->id]);
+                $variant = ProductVariations::with('product')->where('id', $inhand->variant_id)->first();
+//                $sell_unit=SellingUnit::where('product_id',$variant->product->id)->where('unit_convert_rate',1)->first();
+                $unit_price=product_price::where('product_id',$variant->id)
+                    ->where('unit_id',$inhand->unit[0]->id)
+                    ->where('region_id',Auth::guard('api')->user()->region_id)
+                    ->first();
+                $inhand['cat_id'] = $variant->product->cat_id;
+                $inhand['name']=$variant->product->name;
+                $inhand['variant_name']=$variant->variant;
+                $inhand['item_code']=$variant->item_code;
+                $inhand['image']=$variant->image??"sesm7sXhUD1662004688.png";
+                $inhand['price']=$unit_price->price??0;
+                if ($inhand->variant->enable == 1) {
+                    if (count($aval_product) == 0) {
+                        array_push($aval_product, $inhand);
+                    } else {
+                        foreach ($aval_product as $avl) {
+                            if ($avl->variant_id == $variant->id) {
+                                $avl['stock_balance'] = $avl->stock_balance + $inhand->stock_balance;
+                                $avl['available'] = $avl->available + $inhand->available;
+                                break;
+                            }else{
+                            array_push($aval_product, $inhand);
+                            }
+                        }
+
+
+
+                    }
+                }
+            }
+        }
+        return response()->json(['result' => $aval_product, 'con' => true]);
+    }
 
 
 }

@@ -71,6 +71,7 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
     Route::resource('revenues',\App\Http\Controllers\Api\RevenueController::class);
     Route::get('home',[\App\Http\Controllers\Api\HomeController::class,'index']);
     Route::get('product/category/{id}',[App\Http\Controllers\Api\ProductController::class,'product_category']);
+    Route::get('products',[App\Http\Controllers\Api\ProductController::class,'allProduct']);
 });
 
 //Api for Car

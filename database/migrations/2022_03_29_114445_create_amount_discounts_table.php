@@ -15,8 +15,8 @@ class CreateAmountDiscountsTable extends Migration
     {
         Schema::create('amount_discounts', function (Blueprint $table) {
             $table->id();
-            $table->double('min_amount')->default(0);
-            $table->double('max_amount')->default(0);
+            $table->double('min_amount')->default(0.0);
+            $table->double('max_amount')->default(0.0);
             $table->dateTime('start_date')->nullable();
             $table->dateTime('end_date')->nullable();
             $table->tinyInteger('has_date_limit')->default(0);
