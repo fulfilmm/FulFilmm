@@ -335,16 +335,26 @@ class ProductController extends Controller
 //        dd($request->all());
         $cat = new products_category();
         $cat->name = $request->name;
-        $cat->parent_id = $request->parent_id;
-        if ($request->parent_id == null) {
+
+        if (isset($request->image)) {
+//            if ($request->picture != null) {
+            $image = $request->file('image');
+            $input['imagename'] = \Illuminate\Support\Str::random(10) . time() . '.' . $image->extension();
+            $filePath = public_path('/product_picture/');
+            $img = Image::make($image->path());
+            $img->resize(400, 800, function ($const) {
+                $const->aspectRatio();
+            })->save($filePath . '/' . $input['imagename']);
+            $cat->image = $input['imagename'];
+        }
+        if ($request->parent == 1) {
             $cat->parent = 1;
         } else {
             $cat->parent = 0;
+            $cat->parent_id = $request->parent_id;
         }
         $cat->save();
-        return response()->json([
-            'tax' => "success",
-        ]);
+        return redirect('product/category')->with('success','Added new category');
     }
 
     public function category_index()
@@ -358,6 +368,17 @@ class ProductController extends Controller
 //        dd($request->all());
         $cat = products_category::where('id', $id)->first();
         $cat->name = $request->cat_name;
+        if (isset($request->image)) {
+//            if ($request->picture != null) {
+            $image = $request->file('image');
+            $input['imagename'] = \Illuminate\Support\Str::random(10) . time() . '.' . $image->extension();
+            $filePath = public_path('/product_picture/');
+            $img = Image::make($image->path());
+            $img->resize(400, 800, function ($const) {
+                $const->aspectRatio();
+            })->save($filePath . '/' . $input['imagename']);
+            $cat->image = $input['imagename'];
+        }
         $cat->update();
         return redirect()->back();
     }

@@ -8,9 +8,15 @@
                 </button>
             </div>
             <div class="modal-body">
+                <form action="{{url('/cat/create')}}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                <div class="form-group ">
+                    <label>Category Icon</label>
+                    <input type="file" id="caticon" class="form-control" name="image" required>
+                </div>
                 <div class="form-group ">
                     <label>Category Name</label>
-                    <input type="text" id="cat_name" class="form-control" name="cat_name" >
+                    <input type="text" id="cat_name" class="form-control" name="name" >
                 </div>
                 <input type="checkbox" name="parent" id="isparent" value="1"><span class="ml-2">Parent</span>
                 <div class="form-group mt-2" id="parent">
@@ -23,7 +29,8 @@
                        </select>
                    </div>
                 </div>
-                <button   id="cat_create" data-dismiss="modal" class="btn btn-primary float-right">Add</button>
+                <button  type="submit"  id="cat_create"  class="btn btn-primary float-right">Add</button>
+                </form>
             </div>
         </div>
     </div>
@@ -37,27 +44,5 @@
                 $('#parent').show();
             }
         });
-    $(document).ready(function() {
-        $(document).on('click', '#cat_create', function () {
-            var name=$("#cat_name").val();
-            var parent_id=$('#parent_id option:selected').val();
-            var isparent=$('#isparent:checked').val();
-            $.ajax({
-                type:'POST',
-                data : {
-                    name:name,
-                    parent_id:isparent!=1?parent_id:null
-                },
-                url:'/cat/create',
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                success:function(data){
-                    console.log(data);
-                    $("#cat_div").load(location.href + " #cat_div>* ");
-                    $("#cat_add").load(location.href + " #cat_add>* ");
-                    $("#category").load(location.href + " #category>* ");
-                }
-            });
-        });
-    });
 
 </script>

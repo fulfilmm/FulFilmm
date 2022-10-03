@@ -70,7 +70,7 @@
                     {{--@dd($category)--}}
                     @foreach($category as $cat)
                         <tr>
-                            <td><i class="fa fa-bars mr-3"></i>{{$cat->name}}</td>
+                            <td><img src="{{url(asset('/product_picture/'.$cat->image))}}" alt="" width="30px" height="30px" class="mr-3">{{$cat->name}}</td>
                             <td>{{$cat->parent==1?'Main Category':'Sub Category'}}</td>
                             <td>{{$cat->main->name ??'N/A'}}</td>
                             <td>

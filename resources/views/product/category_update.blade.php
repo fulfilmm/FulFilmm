@@ -8,8 +8,12 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="{{url('product/category/update/'.$cat->id)}}" method="POST">
+                <form action="{{url('product/category/update/'.$cat->id)}}" method="POST" enctype="multipart/form-data">
                     @csrf
+                    <div class="form-group ">
+                        <label>Category Name</label>
+                        <input type="file" id="icon" class="form-control" name="image" >
+                    </div>
                     <div class="form-group ">
                         <label>Category Name</label>
                         <input type="text" id="cat_name" class="form-control" name="cat_name" value="{{$cat->name}}" >
