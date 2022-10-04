@@ -261,9 +261,7 @@ class ProductController extends Controller
                     }
                     for ($i=0;$i<count($inhand->unit);$i++){
                         if($inhand->unit[$i]->id==$u_price->unit_id) {
-                            $inhand->unit[$i]['price'] = $u_price->price;
-                        }else{
-                            $inhand->unit[$i]['price']=0;
+                            $inhand->unit[$i]['price'] = $u_price->price??0;
                         }
                     }
                 }
