@@ -256,12 +256,9 @@ class ProductController extends Controller
                 $inhand['item_code']=$variant->item_code;
                 $inhand['image']=$variant->image??"sesm7sXhUD1662004688.png";
                 foreach ($unit_price as $price){
-                    if($inhand->unit[0]->id==$price->unit_id) {
-                        $inhand['price'] = $unit_price->price ?? 0;
-                    }
-                    foreach ($inhand->unit as $item) {
-                        $item['price']=$price->price;
-                    }
+                    if($inhand->unit[0]->id){
+                        $inhand['price']=$price->price??0;
+                        }
                 }
 
                 $inhand['description']=$variant->product->description??"N/A";
