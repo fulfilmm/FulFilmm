@@ -262,6 +262,8 @@ class ProductController extends Controller
                     foreach ($inhand->unit as $u){
                         if($u->id==$u_price->unit_id) {
                             $u['price'] = $u_price->price;
+                        }else{
+                            $u['price']=0;
                         }
                     }
                 }
