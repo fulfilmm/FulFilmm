@@ -256,6 +256,7 @@ class ProductController extends Controller
                 $inhand['item_code']=$variant->item_code;
                 $inhand['image']=$variant->image??"sesm7sXhUD1662004688.png";
                 $inhand['price']=$unit_price->price??0;
+                $inhand['description']=$variant->product->description??"N/A";
                 if ($inhand->variant->enable == 1 && $inhand->cat_id == $id) {
                     if (count($aval_product) == 0) {
                         array_push($aval_product, $inhand);
