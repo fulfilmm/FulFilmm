@@ -318,15 +318,23 @@ class ProductController extends Controller
                 $variant = ProductVariations::with('product')->where('id', $inhand->variant_id)->first();
 //                $sell_unit=SellingUnit::where('product_id',$variant->product->id)->where('unit_convert_rate',1)->first();
                 $unit_price=product_price::where('product_id',$variant->id)
-                    ->where('unit_id',$inhand->unit[0]->id)
                     ->where('region_id',Auth::guard('api')->user()->region_id)
-                    ->first();
+                    ->get();
                 $inhand['cat_id'] = $variant->product->cat_id;
                 $inhand['name']=$variant->product->name;
                 $inhand['variant_name']=$variant->variant;
                 $inhand['item_code']=$variant->item_code;
                 $inhand['image']=$variant->image??"sesm7sXhUD1662004688.png";
-                $inhand['price']=$unit_price->price??0;
+                foreach ($unit_price as $u_price){
+                    if($u_price->unit_id==$inhand->unit[0]->id){
+                        $inhand['price']=$u_price->price;
+                    }
+                    for ($i=0;$i<count($inhand->unit);$i++){
+                        if($inhand->unit[$i]->id==$u_price->unit_id) {
+                            $inhand->unit[$i]['price'] = $u_price->price??0;
+                        }
+                    }
+                }
                 $inhand['description']=$variant->product->description??'HEllo';
                 if ($inhand->variant->enable == 1) {
                     if (count($aval_product) == 0) {
