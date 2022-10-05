@@ -312,6 +312,7 @@ class ProductController extends Controller
             }
 
         }
+
         foreach ($in_stock as $st) {
             foreach ($st as $inhand) {
 //               return response()->json(['data'=>$inhand->id]);
@@ -348,6 +349,7 @@ class ProductController extends Controller
                                 break;
                             }else{
                                 array_push($aval_product, $inhand);
+                                break;
                             }
                         }
 
