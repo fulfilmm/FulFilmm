@@ -318,6 +318,7 @@ class ProductController extends Controller
                 $variant = ProductVariations::with('product')->where('id', $inhand->variant_id)->first();
 //                $sell_unit=SellingUnit::where('product_id',$variant->product->id)->where('unit_convert_rate',1)->first();
                 $unit_price=product_price::where('product_id',$variant->id)
+//                    ->where('unit_id',$inhand->unit[0]->id)
                     ->where('region_id',Auth::guard('api')->user()->region_id)
                     ->get();
                 $inhand['cat_id'] = $variant->product->cat_id;
@@ -335,8 +336,8 @@ class ProductController extends Controller
                         }
                     }
                 }
-                $inhand['description']=$variant->product->description??'HEllo';
-                if ($inhand->variant->enable == 1) {
+                $inhand['description']=$variant->product->description??"N/A";
+                if ($inhand->variant->enable == 1 ) {
                     if (count($aval_product) == 0) {
                         array_push($aval_product, $inhand);
                     } else {
@@ -346,7 +347,7 @@ class ProductController extends Controller
                                 $avl['available'] = $avl->available + $inhand->available;
                                 break;
                             }else{
-                            array_push($aval_product, $inhand);
+                                array_push($aval_product, $inhand);
                             }
                         }
 
