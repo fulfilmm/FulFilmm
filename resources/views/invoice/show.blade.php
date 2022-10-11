@@ -58,7 +58,7 @@
             <div class="col-md-2">
                 Customer
                 <br> <strong><span class="float-left"><a href="{{route('customers.show',$detail_inv->customer->id)}}">
-                      {{$detail_inv->customer[0]->name}}
+                      {{$detail_inv->customer->name}}
                     </a></span></strong> <br><br></div>
             <div class="col-md-2">
                 Order ID
@@ -215,11 +215,11 @@
                                     <div class="col-lg-6 col-6">
                                         <div class="text-right">
                                             <h5 class="font-weight-bold mb-3">Invoice To</h5>
-                                            <p class="mb-0 mb-1">{{$detail_inv->customer[0]->company->name}}</p>
-                                            <p class="mb-0 mb-1">{{$detail_inv->customer[0]->name}}</p>
-                                            <p class="mb-0 mb-1">{{$detail_inv->customer[0]->address}}</p>
-                                            <p class="mb-0 mb-2">{{$detail_inv->customer[0]->phone}}</p>
-                                            <p class="mb-0 mb-2">{{$detail_inv->customer[0]->email}}</p>
+                                            <p class="mb-0 mb-1">{{$detail_inv->customer->company->name}}</p>
+                                            <p class="mb-0 mb-1">{{$detail_inv->customer->name}}</p>
+                                            <p class="mb-0 mb-1">{{$detail_inv->customer->address}}</p>
+                                            <p class="mb-0 mb-2">{{$detail_inv->customer->phone}}</p>
+                                            <p class="mb-0 mb-2">{{$detail_inv->customer->email}}</p>
                                         </div>
                                     </div>
                                 </div>

@@ -58,6 +58,10 @@ class MobileInvoiceController extends Controller
         }else{
             $allinv=Invoice::with('customer','employee','branch','zone','region')->orderBy('id', 'desc')->where('emp_id',Auth::guard('api')->user()->id)->get();//ရိုးရိုးsale man တေက သူဖွင့်ထားတဲ့ invoice ကိုဘဲကြည့်လို့ရမယ်
         }
+        
+        foreach($allinv as $item){
+                $item['inv_customer']=$item->customer;
+        }
 
 
         $status=$this->status;
