@@ -207,10 +207,10 @@
                                 <td>
                                     @if($invoice->cancel==1)
                                         <strike>
-                                            {{$invoice->customer[0]->name}}
+                                            {{$invoice->customer->name}}
                                         </strike>
                                     @else
-                                        {{$invoice->customer[0]->name}}
+                                        {{$invoice->customer->name}}
                                     @endif
                                 </td>
                                 <td>
