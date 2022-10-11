@@ -60,7 +60,8 @@ class MobileInvoiceController extends Controller
         }
         $invoices=[];
         foreach($allinv as $item){
-                $item['inv_customer']=$item->customer;
+            $customer=Customer::where('id',$item->customer_id)->get();
+                $item['inv_customer']=$customer;
                 array_push($invoices,$item);
         }
 
