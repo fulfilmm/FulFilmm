@@ -62,7 +62,7 @@ class MobileInvoiceController extends Controller
         $status=$this->status;
 //        dd($allinv);
 //        return \response()->json(['lajsldfjs']);
-        return response()->json(['allinv'=>$allinv,'status'=>$status,'zone'=>$zone,'branch'=>$branch,'region'=>$region]);
+        return response()->json(['result'=>$allinv,'status'=>$status,'zone'=>$zone,'branch'=>$branch,'region'=>$region,'con'=>true]);
 
     }
 

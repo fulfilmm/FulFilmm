@@ -277,6 +277,7 @@ class ProductController extends Controller
                                 break;
                             }else{
                             array_push($aval_product, $inhand);
+                            break;
                             }
                         }
 
