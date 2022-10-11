@@ -58,16 +58,17 @@ class MobileInvoiceController extends Controller
         }else{
             $allinv=Invoice::with('customer','employee','branch','zone','region')->orderBy('id', 'desc')->where('emp_id',Auth::guard('api')->user()->id)->get();//ရိုးရိုးsale man တေက သူဖွင့်ထားတဲ့ invoice ကိုဘဲကြည့်လို့ရမယ်
         }
-        
+        $invoices=[];
         foreach($allinv as $item){
                 $item['inv_customer']=$item->customer;
+                array_push($invoices,$item);
         }
 
 
         $status=$this->status;
 //        dd($allinv);
 //        return \response()->json(['lajsldfjs']);
-        return response()->json(['result'=>$allinv,'status'=>$status,'zone'=>$zone,'branch'=>$branch,'region'=>$region,'con'=>true]);
+        return response()->json(['result'=>$invoices,'status'=>$status,'zone'=>$zone,'branch'=>$branch,'region'=>$region,'con'=>true]);
 
     }
 
