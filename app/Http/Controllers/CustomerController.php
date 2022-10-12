@@ -379,7 +379,7 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
-//        dd($request->all());
+    //    dd($request->all());
 
         $customer = Customer::where('id', $id)->first();
         if($request->customer_type=='Lead') {

@@ -18,12 +18,16 @@
                                 <div class="col-md-4 mb-3">
                                     <div class="card-body rounded bg-light">
                                         <div class="d-flex justify-content-center mt-5">
-                                            <div class="text-center">
-                                                <img id="output" onClick="openSelect('#file1')"
-                                                     class="rounded mt-2 mb-4"
-                                                     src="{{$record->profile!=null? url(asset('img/profiles/'.$record->profile)):url(asset('img/profiles/avatar-01.jpg'))}}"
-                                                     width="100px" height="100px;" alt=""><br>
-                                            </div>
+                                        <div class="text-center">
+                            <input type="file" id="file1" accept="image/*" name="profile_img"
+                                   class="offset-md-1" onchange="loadFile(event)"
+                                   style="display:none"/>
+                            <img id="output" onClick="openSelect('#file1')"
+                                 class="rounded mt-2 mb-4"
+                                 src="{{isset($record)?(url(asset($record->profile?'img/profiles/'.$record->profile:'img/profiles/plus.jpg'))):url(asset('/img/profiles/plus.jpg'))}}"
+                                 width="50px" height="50px;" alt=""><br>
+                                 <input type="hidden" name="oldpic" value={{$record->profile}}>
+                        </div>
                                         </div>
                                         <div class="d-flex justify-content-center mt-2 mb-3">
                                             <p class="mb-0 text-muted font-weight-bold">Upload Image</p>
