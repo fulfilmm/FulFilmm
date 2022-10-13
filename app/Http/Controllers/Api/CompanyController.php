@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\OfficeBranch;
+use App\Models\Region;
+use App\Models\SaleZone;
 use Illuminate\Http\Request;
 use App\Models\Company;
+use Illuminate\Support\Facades\Auth;
 
 class CompanyController extends Controller
 {
@@ -15,8 +19,27 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $companies =Company::all();
-        return response()->json(['result'=>$companies,'con'=>true]);
+        $auth=Auth::guard('api')->user();
+
+        $companies=Company::all();
+        $branch=OfficeBranch::where('id',$auth->branch_office_id)->get();
+        $regions=[];
+
+        foreach ($branch as $branch) {
+            $region=Region::where('branch_id',$branch->id)->get();
+            if(count($region)!=0){
+                array_push($regions,$region);
+            }
+        }
+        $zones=[];
+        foreach ($regions as $reg){
+            $zone=SaleZone::where('region_id',$reg->id)->get();
+            if(count($zone)!=0){
+                array_push($zones,$zone);
+            }
+        }
+
+        return response()->json(['result'=>$companies,'region'=>$regions,'zone'=>$zones,'con'=>true]);
     }
 
     /**
