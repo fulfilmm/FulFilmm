@@ -42,9 +42,9 @@ class CompanyController extends Controller
 
         }
 
-      
 
-        return response()->json(['result'=>$auth,'region'=>$regions,'zone'=>$zones,'con'=>true]);
+
+        return response()->json(['result'=>$auth,'branch'=>$branch,'region'=>$regions,'zone'=>$zones,'con'=>true]);
     }
 
     /**
