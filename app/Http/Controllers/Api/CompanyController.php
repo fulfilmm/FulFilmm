@@ -21,25 +21,30 @@ class CompanyController extends Controller
     {
         $auth=Auth::guard('api')->user();
 
+//
         $companies=Company::all();
-        $branch=OfficeBranch::where('id',$auth->branch_office_id)->get();
-        $regions=[];
+        $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
 
-        foreach ($branch as $branch) {
-            $region=Region::where('branch_id',$branch->id)->get();
+        $regions=[];
+        $zones=[];
+        foreach ($branch as $bh) {
+            $region=Region::where('branch_id',$bh->id)->get();
             if(count($region)!=0){
                 array_push($regions,$region);
             }
-        }
-        $zones=[];
-        foreach ($regions as $reg){
-            $zone=SaleZone::where('region_id',$reg->id)->get();
-            if(count($zone)!=0){
-                array_push($zones,$zone);
+            foreach ($region as $reg){
+                $zone=SaleZone::where('region_id',$reg->id)->get();
+
+                if(count($zone)!=0){
+                    array_push($zones,$zone);
+                }
             }
+
         }
 
-        return response()->json(['result'=>$companies,'region'=>$regions,'zone'=>$zones,'con'=>true]);
+      
+
+        return response()->json(['result'=>$auth,'region'=>$regions,'zone'=>$zones,'con'=>true]);
     }
 
     /**
