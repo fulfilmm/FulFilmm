@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\ApiAuthController;
 use App\Http\Controllers\Api\ComplainTicket;
 use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Api\CompanyController;
 use App\Http\Controllers\Api\InvoiceController;
 use App\Http\Controllers\Api\CarController;
 use App\Http\Controllers\Api\MaintainController;
@@ -43,6 +44,7 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
     Route::resource('api_customers', CustomerController::class);
 
     Route::resource("api_invoices",InvoiceController::class);
+    Route::resource('api_companies',CompanyController::class);
 //    Route::apiResource("invoice" , InvoiceDataController::class);
     Route::resource("mobile_invoice", MobileInvoiceController::class);
     Route::post('invoice/cancel/{id}',[MobileInvoiceController::class,'cancel']);
