@@ -20,32 +20,44 @@ class CompanyController extends Controller
     public function index()
     {
         $auth=Auth::guard('api')->user();
-
-//
         $companies=Company::all();
+        return response()->json(['result'=>$companies,'con'=>true]);
+    }
+    public function branches(){
+        $auth=Auth::guard('api')->user();
         $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
+        return response()->json(['result'=>$branch,'con'=>true]);
+    }
+    public function region(){
+        $auth=Auth::guard('api')->user();
+        $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
+    $regions=[];
 
-        $regions=[];
+    foreach ($branch as $bh) {
+        $region = Region::where('branch_id', $bh->id)->get();
+        if (count($region) != 0) {
+            array_push($regions, $region);
+        }
+    }
+        return response()->json(['region'=>$regions,'con'=>true]);
+    }
+    public function zone(){
+        $auth=Auth::guard('api')->user();
+        $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
         $zones=[];
         foreach ($branch as $bh) {
-            $region=Region::where('branch_id',$bh->id)->get();
-            if(count($region)!=0){
-                array_push($regions,$region);
-            }
-            foreach ($region as $reg){
-                $zone=SaleZone::where('region_id',$reg->id)->get();
+            $region = Region::where('branch_id', $bh->id)->get();
+            
+            foreach ($region as $reg) {
+                $zone = SaleZone::where('region_id', $reg->id)->get();
 
-                if(count($zone)!=0){
-                    array_push($zones,$zone);
+                if (count($zone) != 0) {
+                    array_push($zones, $zone);
                 }
             }
-
         }
-
-
-
-        return response()->json(['result'=>$companies,'branch'=>$branch,'region'=>$regions,'zone'=>$zones,'con'=>true]);
-    }
+            return response()->json(['region'=>$zones,'con'=>true]);
+        }
 
     /**
      * Show the form for creating a new resource.

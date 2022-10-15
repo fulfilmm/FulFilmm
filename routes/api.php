@@ -42,6 +42,9 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
     Route::resource('api_employees',App\Http\Controllers\Api\EmployeeController::class);
     Route::post('logout',[ApiAuthController::class,'login'])->name('logout');
     Route::resource('api_customers', CustomerController::class);
+    Route::get('mobile_branch',[CompanyController::class,'branches']);
+    Route::get('mobile_region',[CompanyController::class,'region']);
+    Route::get('mobile_zone',[CompanyController::class,'zone']);
 
     Route::resource("api_invoices",InvoiceController::class);
     Route::resource('api_companies',CompanyController::class);
