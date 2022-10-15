@@ -120,11 +120,12 @@ class CustomerController extends Controller
             'status'=>$request->status,
             'credit_limit'=>$request->credit_limit??0,
             'lead_title'=>$request->title,
-            'use_amount'=>0
+            'use_amount'=>0,
+            'shop_name'=>$request->shop_name
 
         ];
         $this->customerContract->create($data);
-        return response()->json(['msg'=>'Success']);
+        return response()->json(['msg'=>'Success','con'=>true]);
     }
 
     /**
