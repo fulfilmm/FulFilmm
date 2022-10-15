@@ -32,11 +32,12 @@ class CompanyController extends Controller
         $auth=Auth::guard('api')->user();
         $branch=OfficeBranch::where('id',$auth->office_branch_id)->get();
     $regions=[];
-
     foreach ($branch as $bh) {
         $region = Region::where('branch_id', $bh->id)->get();
-        if (count($region) != 0) {
-            array_push($regions, $region);
+            if (count($region) != 0) {
+                foreach ($region as $rg){
+                array_push($regions, $rg);
+            }
         }
     }
         return response()->json(['region'=>$regions,'con'=>true]);
@@ -47,12 +48,13 @@ class CompanyController extends Controller
         $zones=[];
         foreach ($branch as $bh) {
             $region = Region::where('branch_id', $bh->id)->get();
-            
+
             foreach ($region as $reg) {
                 $zone = SaleZone::where('region_id', $reg->id)->get();
-
                 if (count($zone) != 0) {
-                    array_push($zones, $zone);
+                    foreach ($zone as $zn){
+                        array_push($zones, $zn);
+                    }
                 }
             }
         }
