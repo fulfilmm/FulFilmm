@@ -40,7 +40,7 @@ class CompanyController extends Controller
             }
         }
     }
-        return response()->json(['region'=>$regions,'con'=>true]);
+        return response()->json(['result'=>$regions,'con'=>true]);
     }
     public function zone(){
         $auth=Auth::guard('api')->user();
@@ -58,7 +58,7 @@ class CompanyController extends Controller
                 }
             }
         }
-            return response()->json(['region'=>$zones,'con'=>true]);
+            return response()->json(['result'=>$zones,'con'=>true]);
         }
 
     /**
