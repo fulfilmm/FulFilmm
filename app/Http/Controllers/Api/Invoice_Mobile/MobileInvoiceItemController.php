@@ -39,9 +39,10 @@ class MobileInvoiceItemController extends Controller
     {
         $items=OrderItem::with('variant','unit')->where('inv_id',$id)->get();
         foreach ($items as $item){
-            $item['unit']=$item->unit->unit_name;
+            $item['unit']=$item->unit->unit;
             $item['product_name']=$item->variant->product_name;
             $item['variant']=$item->variant->variant;
+            $item['image']=$item->variant->image;
         }
         return response()->json(['con'=>true,'result'=>$items]);
     }
