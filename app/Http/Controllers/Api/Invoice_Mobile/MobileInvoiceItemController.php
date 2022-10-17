@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Invoice_Mobile;
 
 use App\Http\Controllers\Controller;
+use App\Models\OrderItem;
 use Illuminate\Http\Request;
 
 class MobileInvoiceItemController extends Controller
@@ -36,7 +37,8 @@ class MobileInvoiceItemController extends Controller
      */
     public function show($id)
     {
-        //
+        $item=OrderItem::where('inv_id',$id)->get();
+        return response()->json(['con'=>true,'result'=>$item]);
     }
 
     /**
