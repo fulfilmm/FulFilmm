@@ -217,7 +217,7 @@ class ProductController extends Controller
         return response()->json(['con' => true, 'result' => $cats]);
     }
 
-    public function product_category($id)
+    public function product_category($id,$sales_type)
     {
         $auth = Auth::guard('api')->user();
         if (Auth::guard('api')->user()->mobile_seller == 1) {
@@ -248,6 +248,7 @@ class ProductController extends Controller
 //                $sell_unit=SellingUnit::where('product_id',$variant->product->id)->where('unit_convert_rate',1)->first();
                 $unit_price=product_price::where('product_id',$variant->id)
 //                    ->where('unit_id',$inhand->unit[0]->id)
+                        ->where('sale_type',$sales_type)
                     ->where('region_id',Auth::guard('api')->user()->region_id)
                     ->get();
                 $inhand['cat_id'] = $variant->product->cat_id;
@@ -289,7 +290,7 @@ class ProductController extends Controller
         }
         return response()->json(['result' => $aval_product, 'con' => true]);
     }
-    public function allProduct()
+    public function allProduct($sale_type)
     {
         $auth = Auth::guard('api')->user();
         if (Auth::guard('api')->user()->mobile_seller == 1) {
@@ -322,6 +323,7 @@ class ProductController extends Controller
                 $unit_price=product_price::where('product_id',$variant->id)
 //                    ->where('unit_id',$inhand->unit[0]->id)
                     ->where('region_id',Auth::guard('api')->user()->region_id)
+                    ->where('sale_type',$sale_type)
                     ->get();
                 $inhand['cat_id'] = $variant->product->cat_id;
                 $inhand['name']=$variant->product->name;
