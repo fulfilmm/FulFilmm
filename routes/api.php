@@ -76,6 +76,7 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
 
     Route::resource('revenues',\App\Http\Controllers\Api\RevenueController::class);
     Route::get('home',[\App\Http\Controllers\Api\HomeController::class,'index']);
+    Route::get('categories',[App\Http\Controllers\Api\ProductController::class,'category']);
     Route::get('product/category/{id}/{sale_type}',[App\Http\Controllers\Api\ProductController::class,'product_category']);
     Route::get('products/{sale_type}',[App\Http\Controllers\Api\ProductController::class,'allProduct']);
 });
@@ -97,5 +98,5 @@ Route::get('retail/invoice/create' , [InvoiceDataController::class, 'retail_inv'
 
 
 Route::post('/auth/login',[ApiAuthController::class,'login'])->name('login');
-Route::get('categories',[App\Http\Controllers\Api\ProductController::class,'category']);
+
 
