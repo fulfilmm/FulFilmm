@@ -202,6 +202,7 @@ class MobileInvoiceController extends Controller
     }
     public function store(Request $request)
     {
+        return response()->json($request->all());
         $validator = Validator::make($request -> all(), [
 //            'title' => 'required',
             'client_id' => 'required',
