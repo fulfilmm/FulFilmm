@@ -271,7 +271,7 @@ class MobileInvoiceController extends Controller
                 $newInvoice->invoice_type = $request->invoice_type;
                 $newInvoice->delivery_fee = $request->delivery_fee;
                 $newInvoice->due_amount = $request->inv_grand_total;
-                $newInvoice->warehouse_id = $request->warehouse_id;
+                $newInvoice->warehouse_id = Auth::guard('api')->user()->warehouse_id;
                 $newInvoice->inv_type = $request->sale_type;
                 $newInvoice->region_id=Auth::guard('api')->user()->region_id;
                 $newInvoice->zone_id=$request->zone_id;
@@ -325,7 +325,7 @@ class MobileInvoiceController extends Controller
                     $newInvoice->invoice_cos=$inv_item[0]->total;
                     $newInvoice->update();
                 }
-                return response()->json(['message'=>'success','invoice_id'=>$newInvoice->id]);
+                return response()->json(['message'=>'success','invoice_id'=>$newInvoice->id,'con'=>true]);
             }catch (\Exception $e){
                 return \response()->json($e->getMessage());
             }
