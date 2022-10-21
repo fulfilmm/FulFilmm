@@ -202,7 +202,7 @@ class MobileInvoiceController extends Controller
     }
     public function store(Request $request)
     {
-        return response()->json($request->all());
+//        return response(count(json_decode($request->order_items)));
         $validator = Validator::make($request -> all(), [
 //            'title' => 'required',
             'client_id' => 'required',
@@ -282,6 +282,8 @@ class MobileInvoiceController extends Controller
                 $newInvoice->save();
                 $order_item = json_decode($request->order_items);
                 $foc=json_decode($request->foc_items);
+
+
                 if(count($order_item)!=0){
 
                     foreach ($order_item as $item){
@@ -297,10 +299,13 @@ class MobileInvoiceController extends Controller
                         $this->foc_add($item);
                     }
                 }
+//                return response($order_item);
                 $confirm_order_item = OrderItem::where("inv_id", $newInvoice->id)->get(); //invoice item တေကို ပြန် confirm ပီး invoice id နဲ့တွဲတာ
                 if (count($confirm_order_item) != 0) {
                     foreach ($confirm_order_item as $item) {
-                        if ($item->foc) {
+//                        return response($item);
+                        if ($item->foc!=0) {
+                            
                             $unit = SellingUnit::where('id', $item->sell_unit)->first();
                             $foc_stock = Freeofchare::where('variant_id', $item->variant_id)->first();
                             $item->inv_id = $newInvoice->id;
@@ -310,7 +315,7 @@ class MobileInvoiceController extends Controller
                             $foc_stock->update();
                         } else {
                             $unit = SellingUnit::where('id',$item->sell_unit)->first();
-                            $stock = Stock::where('variant_id', $item->variant_id)->where('warehouse_id', $request->warehouse_id)->first();
+                            $stock = Stock::where('variant_id', $item->variant_id)->where('warehouse_id', Auth::guard('api')->user()->warehouse_id)->first();
                             $item->inv_id = $newInvoice->id;
                             $item->cos_total=($item->quantity * $unit->unit_convert_rate)*$stock->cos;
                             $item->update();
@@ -582,7 +587,9 @@ class MobileInvoiceController extends Controller
     }
     public function item_store($request)
     {
+//        return response($request);
         $variant = ProductVariations::where('id', $request->variant_id)->first();
+//        return response($variant);
         if ($request->type == 'invoice') {
             $sub_total=$request->qty*$request->price;
             $discount=($request->discount/100)*$sub_total;
