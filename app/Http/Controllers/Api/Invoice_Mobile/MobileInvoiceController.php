@@ -657,4 +657,9 @@ class MobileInvoiceController extends Controller
         return response()->json(['message'=>'Canceled this invoice','invoice_id'=>$id]);
     }
 
+    public function taxes(){
+        $taxes=products_tax::all();
+        return response()->json(['result'=>$taxes,'con'=>true]);
+    }
+
 }

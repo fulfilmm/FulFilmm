@@ -45,6 +45,7 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
     Route::get('mobile_branch',[CompanyController::class,'branches']);
     Route::get('mobile_region',[CompanyController::class,'region']);
     Route::get('mobile_zone',[CompanyController::class,'zone']);
+    Route::get('taxes',[MobileInvoiceController::class,'taxes']);
 
     Route::resource("api_invoices",InvoiceController::class);
     Route::resource('api_companies',CompanyController::class);
