@@ -16,6 +16,7 @@ use App\Models\Stock;
 use App\Models\Transaction;
 use App\Models\TransactionCategory;
 use Carbon\Carbon;
+use http\Env\Response;
 use Illuminate\Http\Request;
 
 use App\Models\MainCompany;
@@ -202,7 +203,7 @@ class MobileInvoiceController extends Controller
     }
     public function store(Request $request)
     {
-//        return response(count(json_decode($request->order_items)));
+//        return response(Auth::guard('api')->user());
         $validator = Validator::make($request -> all(), [
 //            'title' => 'required',
             'client_id' => 'required',
@@ -280,16 +281,16 @@ class MobileInvoiceController extends Controller
                 $newInvoice->emp_id = Auth::guard('api')->user()->id;
                 $newInvoice->branch_id=Auth::guard('api')->user()->office_branch_id;
                 $newInvoice->save();
-                $order_item = json_decode($request->order_items);
-                $foc=json_decode($request->foc_items);
-
-
+                $order_item = $request->order_items;
+                $foc=$request->foc_items??[];
+//                return response(count($order_item));
                 if(count($order_item)!=0){
-
                     foreach ($order_item as $item){
-                        $item->invoice_id=$newInvoice->id;
-                        $item->type='invoice';
+
+                        $item['invoice_id']=$newInvoice->id;
+                        $item['type']='invoice';
                         $this->item_store($item);
+
                     }
                 }
                 if(count($foc)!=0){
@@ -299,13 +300,13 @@ class MobileInvoiceController extends Controller
                         $this->foc_add($item);
                     }
                 }
-//                return response($order_item);
+                
                 $confirm_order_item = OrderItem::where("inv_id", $newInvoice->id)->get(); //invoice item တေကို ပြန် confirm ပီး invoice id နဲ့တွဲတာ
                 if (count($confirm_order_item) != 0) {
                     foreach ($confirm_order_item as $item) {
 //                        return response($item);
                         if ($item->foc!=0) {
-                            
+
                             $unit = SellingUnit::where('id', $item->sell_unit)->first();
                             $foc_stock = Freeofchare::where('variant_id', $item->variant_id)->first();
                             $item->inv_id = $newInvoice->id;
@@ -588,23 +589,23 @@ class MobileInvoiceController extends Controller
     public function item_store($request)
     {
 //        return response($request);
-        $variant = ProductVariations::where('id', $request->variant_id)->first();
+        $variant = ProductVariations::where('id', $request['variant_id'])->first();
 //        return response($variant);
-        if ($request->type == 'invoice') {
-            $sub_total=$request->qty*$request->price;
-            $discount=($request->discount/100)*$sub_total;
+        if ($request['type'] == 'invoice') {
+            $sub_total=$request['qty']*$request['price'];
+            $discount=($request['discount']/100)*$sub_total;
             $total=$sub_total-$discount;
             $items = new OrderItem();
             $items->description =$variant->description;
-            $items->quantity =$request->qty;
-            $items->variant_id = $request->variant_id;
-            $items->sell_unit = $request->unit_id;
-            $items->unit_price =$request->price ?? 0;
+            $items->quantity =$request['qty'];
+            $items->variant_id = $request['variant_id'];
+            $items->sell_unit = $request['unit_id'];
+            $items->unit_price =$request['price'] ?? 0;
             $items->total =$total ?? 0;
-            $items->discount_promotion=$request->discount;
+            $items->discount_promotion=$request['discount'];
             $items->creation_id =\Illuminate\Support\Str::random(10);
-            $items->inv_id = $request->invoice_id;
-            $items->order_id = $request->order_id ?? null;
+            $items->inv_id = $request['invoice_id'];
+            $items->order_id = $request['order_id'] ?? null;
             $items->state = 1;
             $items->save();
         }
