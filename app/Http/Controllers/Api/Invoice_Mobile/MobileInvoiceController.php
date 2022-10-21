@@ -300,7 +300,7 @@ class MobileInvoiceController extends Controller
                         $this->foc_add($item);
                     }
                 }
-                
+
                 $confirm_order_item = OrderItem::where("inv_id", $newInvoice->id)->get(); //invoice item တေကို ပြန် confirm ပီး invoice id နဲ့တွဲတာ
                 if (count($confirm_order_item) != 0) {
                     foreach ($confirm_order_item as $item) {
@@ -332,7 +332,7 @@ class MobileInvoiceController extends Controller
                     $newInvoice->invoice_cos=$inv_item[0]->total;
                     $newInvoice->update();
                 }
-                return response()->json(['message'=>'success','invoice_id'=>$newInvoice->id,'con'=>true]);
+                return response()->json(['msg'=>'Success','con'=>true]);
             }catch (\Exception $e){
                 return \response()->json($e->getMessage());
             }
