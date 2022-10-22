@@ -215,9 +215,11 @@ class SaleDashboardController extends Controller
             'transferred_amount'=>$transferred_amount,
             'stock_balance'=>$stock_balance[0]->total,
             'expense'=>$emp_expense[0]->total??0];
+        $data=[];
+        array_push($data,$result);
 //dd($gp);
        return response()->json([
-           'result'=>$result,'con'=>true
+           'result'=>$data,'con'=>true
        ]);
 
     }
