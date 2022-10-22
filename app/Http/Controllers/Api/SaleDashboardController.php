@@ -201,6 +201,7 @@ class SaleDashboardController extends Controller
             'cos'=>$cos,
             'gross_profit'=>$gp,
             'receivable'=>$receivable,
+                'total_sales'=>$monthly[date('M')]->total,
             'yearly_target'=>$yearly_target[date('Y')]->target??0,
             'sale_target'=>$sale_target[0]->target??0,
             'total_receivable'=>$total_receivable[0]->total??0,
