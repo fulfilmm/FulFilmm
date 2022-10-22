@@ -193,31 +193,31 @@ class SaleDashboardController extends Controller
 
 
 
-
+        $result=['month'=>$month,
+            'monthly'=>$monthly,
+            'year'=>$year,
+            'yearly'=>$yearly,
+            'sale_target'=>$sale_target,
+            'monthlysaletarget'=>$monthlysaletarget,
+            'yearly_target'=>$yearly_target,
+            'cos'=>$cos,
+            'gross_profit'=>$gp,
+            'receivable'=>$receivable,
+            'total_receivable'=>$total_receivable,
+            'saleactivity'=>$sale_activity,
+            'my_groups'=>$group,
+            'meeting'=>$meeting,
+            'customer'=>$customer,
+            'assignment'=>$assignment,
+            'all_ticket'=>$emp_ticket,
+            'requestation'=>$requestation,
+            'invoice'=>$saleMan_invoice,
+            'transferred_amount'=>$transferred_amount,
+            'stock_balance'=>$stock_balance[0]->total,
+            'expense'=>$emp_expense[0]->total??0];
 //dd($gp);
        return response()->json([
-           'month'=>$month,
-           'monthly'=>$monthly,
-           'year'=>$year,
-           'yearly'=>$yearly,
-           'sale_target'=>$sale_target,
-           'monthlysaletarget'=>$monthlysaletarget,
-           'yearly_target'=>$yearly_target,
-           'cos'=>$cos,
-           'gross_profit'=>$gp,
-           'receivable'=>$receivable,
-           'total_receivable'=>$total_receivable,
-           'saleactivity'=>$sale_activity,
-           'my_groups'=>$group,
-           'meeting'=>$meeting,
-           'customer'=>$customer,
-           'assignment'=>$assignment,
-           'all_ticket'=>$emp_ticket,
-           'requestation'=>$requestation,
-           'invoice'=>$saleMan_invoice,
-           'transferred_amount'=>$transferred_amount,
-           'stock_balance'=>$stock_balance[0]->total,
-           'expense'=>$emp_expense[0]->total??0
+           'result'=>$result,'con'=>true
        ]);
 
     }

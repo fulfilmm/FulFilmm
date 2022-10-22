@@ -274,7 +274,7 @@ class MobileInvoiceController extends Controller
                 $newInvoice->delivery_fee = $request->delivery_fee;
                 $newInvoice->due_amount = $request->inv_grand_total;
                 $newInvoice->warehouse_id = Auth::guard('api')->user()->warehouse_id;
-                $newInvoice->inv_type = $request->sale_type;
+                $newInvoice->inv_type = $request->sale_type.'Sale';
                 $newInvoice->region_id=Auth::guard('api')->user()->region_id;
                 $newInvoice->zone_id=$request->zone_id;
                 $newInvoice->include_delivery_fee=$request->deli_fee_include=='on'?1:0;
