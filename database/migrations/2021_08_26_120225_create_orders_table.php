@@ -27,8 +27,8 @@ class CreateOrdersTable extends Migration
             $table->string('phone');
             $table->string('email');
             $table->text('address');
-            $table->string('payment_method');
-            $table->string('payment_term');
+            $table->string('payment_method')->nullable();
+            $table->string('payment_term')->nullable();
             $table->dateTime('order_date');
             $table->bigInteger('tax_id')->unsigned();
             $table->double('discount')->nullable();

@@ -516,7 +516,7 @@ class MobileInvoiceController extends Controller
                 $update_inv->due_date = Carbon::create($request->due_date);
                 $update_inv->other_information = $request->more_info;
                 $update_inv->grand_total = $request->inv_grand_total;
-                $update_inv->status = "Draft";
+                $update_inv->status = "Paid";
                 $update_inv->order_id = $request->order_id;
                 $update_inv->send_email = isset($request->save_type) ? 1 : 0;
                 $update_inv->payment_method = $request->payment_method;
@@ -663,7 +663,7 @@ class MobileInvoiceController extends Controller
         $invoice=Invoice::where('id',$id)->first();
         $invoice->cancel=1;
         $invoice->update();
-        return response()->json(['message'=>'Canceled this invoice','invoice_id'=>$id]);
+        return response()->json(['message'=>'Canceled this invoice','invoice_id'=>$id,'con'=>true]);
     }
 
     public function taxes(){

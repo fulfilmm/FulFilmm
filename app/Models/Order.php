@@ -20,4 +20,7 @@ class Order extends Model
     public function follower(){
         return $this->hasMany(OrderCc::class,'order_id','id');
     }
+    public function items(){
+        return $this->hasMany(OrderItem::class,'order_id','id');
+    }
 }

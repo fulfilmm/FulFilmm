@@ -216,7 +216,7 @@ class SaleDashboardController extends Controller
             'transferred_amount'=>$transferred_amount??0,
             'stock_balance'=>$stock_balance[0]->total??0,
             'expense'=>$emp_expense[0]->total??0,
-            'inhand'=>Auth::guard('api')->user()->amount_in_hand
+            'inhand'=>Auth::guard('api')->user()->amount_in_hand??0
             ];
         $data=[];
         array_push($data,$result);

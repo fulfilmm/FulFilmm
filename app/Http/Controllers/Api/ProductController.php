@@ -246,7 +246,7 @@ class ProductController extends Controller
 //               return response()->json(['data'=>$inhand->id]);
                 $variant = ProductVariations::with('product')->where('id', $inhand->variant_id)->first();
 //                $sell_unit=SellingUnit::where('product_id',$variant->product->id)->where('unit_convert_rate',1)->first();
-                $unit_price=product_price::where('product_id',$variant->id)
+                $unit_price=product_price::with('unit')->where('product_id',$inhand->variant_id)
 //                    ->where('unit_id',$inhand->unit[0]->id)
                         ->where('sale_type',$sales_type." Sale")
                     ->where('region_id',Auth::guard('api')->user()->region_id)
@@ -257,7 +257,7 @@ class ProductController extends Controller
                 $inhand['item_code']=$variant->item_code;
                 $inhand['image']=$variant->image??"sesm7sXhUD1662004688.png";
                 foreach ($unit_price as $u_price){
-                    if($u_price->unit_id==$inhand->unit[0]->id){
+                    if($u_price->unit->unit_convert_rate==1){
                         $inhand['price']=$u_price->price;
                     }
                     for ($i=0;$i<count($inhand->unit);$i++){
