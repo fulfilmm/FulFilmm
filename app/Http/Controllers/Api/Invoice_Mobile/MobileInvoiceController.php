@@ -334,11 +334,11 @@ class MobileInvoiceController extends Controller
                 }
                 return response()->json(['msg'=>'Success','con'=>true]);
             }catch (\Exception $e){
-                return \response()->json($e->getMessage());
+                return \response()->json(['con'=>false,'msg'=>$e->getMessage()]);
             }
 
         }else{
-            return response()->json(['error'=>$validator->errors()]);
+            return response()->json(['con'=>false,'error'=>$validator->errors()]);
         }
 
 

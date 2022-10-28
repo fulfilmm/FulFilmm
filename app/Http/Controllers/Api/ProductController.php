@@ -241,6 +241,7 @@ class ProductController extends Controller
             }
 
         }
+
         foreach ($in_stock as $st) {
             foreach ($st as $inhand) {
 //               return response()->json(['data'=>$inhand->id]);
@@ -331,14 +332,19 @@ class ProductController extends Controller
                 $inhand['item_code']=$variant->item_code;
                 $inhand['image']=$variant->image??"sesm7sXhUD1662004688.png";
                 foreach ($unit_price as $u_price){
-                    if($u_price->unit_id==$inhand->unit[0]->id){
-                        $inhand['price']=$u_price->price;
-                    }
-                    for ($i=0;$i<count($inhand->unit);$i++){
-                        if($inhand->unit[$i]->id==$u_price->unit_id) {
-                            $inhand->unit[$i]['price'] = $u_price->price??0;
+                    if($u_price->product_id==$variant->id){
+                        if($u_price->unit_id==$inhand->unit[0]->id){
+                            $inhand['price']=$u_price->price;
+                        }
+                        for ($i=0;$i<count($inhand->unit);$i++){
+
+                            if($inhand->unit[$i]->id==$u_price->unit_id) {
+                                $inhand->unit[$i]['price'] = $u_price->price??0;
+                            }
+
                         }
                     }
+
                 }
                 $inhand['description']=$variant->product->description??"N/A";
                 if ($inhand->variant->enable == 1 ) {
