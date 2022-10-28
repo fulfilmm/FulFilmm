@@ -40,7 +40,7 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
 
     Route::resource('api_products',App\Http\Controllers\Api\ProductController::class);
     Route::resource('api_employees',App\Http\Controllers\Api\EmployeeController::class);
-    Route::post('logout',[ApiAuthController::class,'login'])->name('logout');
+    Route::post('logout',[ApiAuthController::class,'logout'])->name('logout');
     Route::resource('api_customers', CustomerController::class);
     Route::get('mobile_branch',[CompanyController::class,'branches']);
     Route::get('mobile_region',[CompanyController::class,'region']);
