@@ -17,4 +17,7 @@ class SaleActivity extends Model
     public function report(){
         return $this->belongsTo(Employee::class,'report_to','id');
     }
+    public function follower(){
+        return $this->hasMany(SaleActivityFollower::class,'activity_id','id');
+    }
 }

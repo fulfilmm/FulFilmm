@@ -17,9 +17,7 @@
                         <li class="breadcrumb-item active">Create</li>
                     </ul>
                 </div>
-                <div class="col-auto float-right ml-auto">
-                    <a href="{{route('approvals.create')}}" class="btn add-btn" ><i class="fa fa-plus"></i> Add Activity</a>
-                </div>
+
             </div>
         </div>
         <!-- /Page Header -->
@@ -147,7 +145,7 @@
                                     </div>
                                 <select name="report_to" id="report" class="form-control">
                                     @foreach($emps as $emp)
-                                        @if($emp->role->name=='Sale Manager'||$emp->role->name=='CEO')
+                                        @if($emp->role->name=='Sales Manager'||$emp->role->name=='CEO')
                                         <option value="{{$emp->id}}" {{\Illuminate\Support\Facades\Auth::guard('employee')->user()->report_to==$emp->id?'selected':''}}>{{$emp->name}}</option>
                                         @endif
                                     @endforeach
