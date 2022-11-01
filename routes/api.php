@@ -84,6 +84,7 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
     Route::resource('api_employees',\App\Http\Controllers\Api\EmployeeController::class);
     Route::resource('myexpense',\App\Http\Controllers\Api\MyexpenseController::class);
     Route::resource('api_expense_claim',\App\Http\Controllers\Api\ExpenseClaimController::class);
+    Route::resource('api_salesactivities',\App\Http\Controllers\Api\SalesActivityController::class);
 //    Route::
 });
 
