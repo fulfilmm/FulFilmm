@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\EmpExpense;
 use App\Models\Expense;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MyexpenseController extends Controller
 {
@@ -16,7 +17,7 @@ class MyexpenseController extends Controller
      */
     public function index()
     {
-        $expense=EmpExpense::with('employee')->get();
+        $expense=EmpExpense::with('employee')->where('emp_id',Auth::guard('api')->user()->id)->get();
         return response()->json(['result'=>$expense,'con'=>true]);
     }
 
@@ -44,7 +45,10 @@ class MyexpenseController extends Controller
            'description'=>'required',
 
         ]);
-        EmpExpense::create($request->all());
+        $data=$request->all();
+        $data['emp_id']=Auth::guard('api')->user()->id;
+        EmpExpense::create($data);
+        return response()->json(['con'=>true,'msg'=>"Successful"]);
     }
 
     /**
