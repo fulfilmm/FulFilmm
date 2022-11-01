@@ -82,6 +82,8 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
     Route::get('products/{sale_type}',[App\Http\Controllers\Api\ProductController::class,'allProduct']);
     Route::resource('mobile_orders',\App\Http\Controllers\Api\OrderController::class);
     Route::resource('api_employees',\App\Http\Controllers\Api\EmployeeController::class);
+    Route::resource('myexpense',\App\Http\Controllers\Api\MyexpenseController::class);
+    Route::resource('api_expense_claim',\App\Http\Controllers\Api\ExpenseClaimController::class);
 //    Route::
 });
 
