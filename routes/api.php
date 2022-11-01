@@ -81,6 +81,8 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
     Route::get('product/category/{id}/{sale_type}',[App\Http\Controllers\Api\ProductController::class,'product_category']);
     Route::get('products/{sale_type}',[App\Http\Controllers\Api\ProductController::class,'allProduct']);
     Route::resource('mobile_orders',\App\Http\Controllers\Api\OrderController::class);
+    Route::resource('employees',\App\Http\Controllers\Api\EmployeeController::class);
+//    Route::
 });
 
 //Api for Car
@@ -96,6 +98,8 @@ Route::get('invoice/sendmail/{id}',[InvoiceDataController::class , 'sending_form
 Route::post("invoice/mail/send" , [InvoiceDataController::class, 'email']);
 Route::post('invoice/status/{id}', [InvoiceDataController::class, 'status_change']);
 Route::get('retail/invoice/create' , [InvoiceDataController::class, 'retail_inv']);
+
+
 
 
 
