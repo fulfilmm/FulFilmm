@@ -26,7 +26,7 @@ class EmployeeController extends Controller
             $emp['department_name']=$emp->department_name();
             array_push($allemps,$emp);
         }
-        return response()->json(['employees'=>$allemps]);
+        return response()->json(['employees'=>$allemps,'con'=>true]);
     }
 
     public function card(){
