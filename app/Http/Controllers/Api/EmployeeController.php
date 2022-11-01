@@ -19,8 +19,14 @@ class EmployeeController extends Controller
     }
     public function index()
     {
-        $employees = Employee::paginate(20);
-        return response()->json(['employees'=>$employees]);
+        $employees = Employee::all();
+        $allemps=[];
+        foreach ($employees as $emp){
+            $emp['role_name']=$emp->role->name;
+            $emp['department_name']=$emp->department_name();
+            array_push($allemps,$emp);
+        }
+        return response()->json(['employees'=>$allemps]);
     }
 
     public function card(){
