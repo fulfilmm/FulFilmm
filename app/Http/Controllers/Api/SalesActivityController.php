@@ -83,8 +83,8 @@ class SalesActivityController extends Controller
             $activity->attachment = json_encode($data);
         }
 //        dd('hello');
-        $api_fol=json_decode($request->follower);
-        return response()->json(['data'=>$api_fol]);
+        $api_fol=$request->follower;
+//        return response()->json(['data'=>$api_fol]);
         $activity->save();
 
         if(isset($request->follower)){
