@@ -80,8 +80,9 @@ class SalesActivityController extends Controller
         }
 //        dd('hello');
         $activity->save();
+        $api_fol=json_decode($request->follower);
         if(isset($request->follower)){
-            foreach ($request->follower as $follower_id){
+            foreach ($api_fol as $follower_id){
                 $this->addFollower($follower_id,$activity->id);
             }
         }
