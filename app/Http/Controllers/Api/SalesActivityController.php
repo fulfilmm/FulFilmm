@@ -53,6 +53,7 @@ class SalesActivityController extends Controller
      */
     public function store(Request $request)
     {
+        return response()->json(['data'=>$request->all()]);
         $this->validate($request,[
             'report_to'=>'required',
             'date'=>'required',
@@ -130,7 +131,7 @@ class SalesActivityController extends Controller
 
             });
         }
-        return response()->json(['con'=>true,'message'=>'Successful']);
+        return response()->json(['con'=>true,'msg'=>'Successful']);
     }
     public function addFollower($emp_id,$activity_id){
         $addfollow=new SaleActivityFollower();
