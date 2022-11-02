@@ -6,12 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use App\Models\SaleActivity;
 use App\Models\SaleActivityFollower;
+use App\Traits\NotifyTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 class SalesActivityController extends Controller
+
 {
+    use NotifyTrait;
     /**
      * Display a listing of the resource.
      *
