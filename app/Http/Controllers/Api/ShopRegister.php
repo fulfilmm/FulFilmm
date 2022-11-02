@@ -42,7 +42,7 @@ class ShopRegister extends Controller
             }
         }
 
-        return response()->json(['shops'=>$shops,'branch'=>$branch,'region'=>$region,'zone'=>$zones]);
+        return response()->json(['result'=>$shops,'con'=>true]);
     }
 
     /**
@@ -78,13 +78,15 @@ class ShopRegister extends Controller
             'contact'=>'required',
             'phone'=>'required',
             'description'=>'nullable',
-            'branch_id'=>'required',
-            'region_id'=>'required',
-            'zone_id'=>'required'
+
 
         ]);
+        $user=Auth::guard('api')->user();
         $data=$request->all();
-        $data['emp_id']=Auth::guard('api')->user()->id;
+        $data['zone_id']=$user->zone_id;
+        $data['region_id']=$user->region_id;
+        $data['branch_id']=$user->office_branch_id;
+        $data['emp_id']=$user->id;
         if ($request->img != 0) {
             $image = $request->file('img');
             $input['imagename'] = Str::random(10).time().'.'.$image->extension();
@@ -96,7 +98,7 @@ class ShopRegister extends Controller
             $data['picture']=$input['imagename'];
         }
         ShopLocation::create($data);
-        return response()->json(['message'=>'Added new shop']);
+        return response()->json(['msg'=>'Added new shop','con'=>true]);
     }
 
     /**
