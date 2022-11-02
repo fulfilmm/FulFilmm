@@ -53,7 +53,7 @@ class SalesActivityController extends Controller
      */
     public function store(Request $request)
     {
-        return response()->json(['data'=>$request->all()]);
+
         $this->validate($request,[
             'report_to'=>'required',
             'date'=>'required',
@@ -83,8 +83,10 @@ class SalesActivityController extends Controller
             $activity->attachment = json_encode($data);
         }
 //        dd('hello');
-        $activity->save();
         $api_fol=json_decode($request->follower);
+        return response()->json(['data'=>$api_fol]);
+        $activity->save();
+
         if(isset($request->follower)){
             foreach ($api_fol as $follower_id){
                 $this->addFollower($follower_id,$activity->id);
