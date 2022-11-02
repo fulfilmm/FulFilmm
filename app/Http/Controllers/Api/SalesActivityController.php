@@ -96,7 +96,7 @@ class SalesActivityController extends Controller
                     'subject' => 'Add activity Notification',
                     'emp_name' => $report_to->name,
                     'cc'=>$follower_emp->email,
-                    'addby'=>Auth::guard('employee')->user()->name,
+                    'addby'=>Auth::guard('api')->user()->name,
                     'title'=>$request->title,
                     'activity_id'=>$activity->id,
                 );
@@ -116,7 +116,7 @@ class SalesActivityController extends Controller
                 'email' => $report_to->email,
                 'subject' => 'Add activity Notification',
                 'emp_name' => $report_to->name,
-                'addby'=>Auth::guard('employee')->user()->name,
+                'addby'=>Auth::guard('api')->user()->name,
                 'activity_id'=>$activity->id,
                 'title'=>$request->title,
             );
@@ -134,7 +134,7 @@ class SalesActivityController extends Controller
         $addfollow->emp_id=$emp_id;
         $addfollow->activity_id=$activity_id;
         $addfollow->save();
-        $this->addnotify($emp_id,'success','Added you as a follower of sale activity.','sale/activity/show/'.$activity_id,Auth::guard('employee')->user()->id);
+        $this->addnotify($emp_id,'success','Added you as a follower of sale activity.','sale/activity/show/'.$activity_id,Auth::guard('api')->user()->id);
     }
     /**
      * Display the specified resource.
