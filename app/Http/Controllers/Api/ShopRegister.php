@@ -83,7 +83,6 @@ class ShopRegister extends Controller
         ]);
         $user=Auth::guard('api')->user();
         $data=$request->all();
-        $data['zone_id']=$user->zone_id;
         $data['region_id']=$user->region_id;
         $data['branch_id']=$user->office_branch_id;
         $data['emp_id']=$user->id;
