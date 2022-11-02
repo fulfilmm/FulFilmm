@@ -129,7 +129,13 @@ class SalesActivityController extends Controller
         }
         return response()->json(['con'=>true,'message'=>'Successful']);
     }
-
+    public function addFollower($emp_id,$activity_id){
+        $addfollow=new SaleActivityFollower();
+        $addfollow->emp_id=$emp_id;
+        $addfollow->activity_id=$activity_id;
+        $addfollow->save();
+        $this->addnotify($emp_id,'success','Added you as a follower of sale activity.','sale/activity/show/'.$activity_id,Auth::guard('employee')->user()->id);
+    }
     /**
      * Display the specified resource.
      *
