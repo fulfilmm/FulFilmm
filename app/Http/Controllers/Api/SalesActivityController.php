@@ -92,7 +92,7 @@ class SalesActivityController extends Controller
         $report_to=Employee::where('id',$request->report_to)->first();
         $this->addnotify($report_to->id,'success','Add new sale activity posted and reported you.','sale/activity/show/'.$activity->id,Auth::guard('api')->user()->id);
         if(isset($request->follower)){
-            foreach ($request->follower as $follower){
+            foreach ($api_fol as $follower){
                 $follower_emp=Employee::where('id',$follower)->first();
                 $details = array(
                     'email' => $report_to->email,
