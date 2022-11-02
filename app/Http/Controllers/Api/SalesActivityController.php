@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use App\Models\SaleActivity;
+use App\Models\SaleActivityFollower;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -23,6 +24,10 @@ class SalesActivityController extends Controller
             $activities=SaleActivity::orderby('created_at','desc')->with('employee','customer','report','follower')->get();
         }else{
             $activities=SaleActivity::orderby('created_at','desc')->with('employee','customer','report','follower')->where('emp_id',$user->id)->orWhere('report_to',$user->id)->get();
+        }
+        foreach ($activities as $act){
+            $follower=SaleActivityFollower::with('employee')->where('activity_id',$act->id)->get();
+            $act['followers']=$follower;
         }
         return response()->json(['result'=>$activities,'con'=>true]);
     }
