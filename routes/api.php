@@ -63,6 +63,7 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
     Route::post('check/in/{id}',[\App\Http\Controllers\Api\WayAssignController::class,'check']);
     Route::resource('shops',\App\Http\Controllers\Api\ShopRegister::class);
     Route::resource('complains',ComplainTicket::class)->only('create','store','index');
+    Route::resource('expense_claims',\App\Http\Controllers\Api\ExpenseClaimController::class);
     Route::get('sales/dashboard',[\App\Http\Controllers\Api\SaleDashboardController::class,'dashboard']);
     Route::get('test',function (){
        $aa=\Illuminate\Support\Facades\Auth::guard('api')->user()->role->name;
@@ -90,22 +91,14 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
 
 //Api for Car
 Route::apiResource("car_data", CarController::class);
-
 Route::apiResource("maintainance", MaintainController::class);
 Route::apiResource("maintain_check", MaintainCheckController::class);
-
 // Api for Invoice
 Route::apiResource("invoice" , InvoiceDataController::class);
 Route::get('invoice/sendmail/{id}',[InvoiceDataController::class , 'sending_form']);
-
 Route::post("invoice/mail/send" , [InvoiceDataController::class, 'email']);
 Route::post('invoice/status/{id}', [InvoiceDataController::class, 'status_change']);
 Route::get('retail/invoice/create' , [InvoiceDataController::class, 'retail_inv']);
-
-
-
-
-
 Route::post('/auth/login',[ApiAuthController::class,'login'])->name('login');
 
 
