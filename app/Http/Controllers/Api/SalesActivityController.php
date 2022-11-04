@@ -32,6 +32,8 @@ class SalesActivityController extends Controller
         foreach ($activities as $act){
             $follower=SaleActivityFollower::with('employee')->where('activity_id',$act->id)->get();
             $act['followers']=$follower;
+            $shops=SalesActivityAndShop::with('shop')->where('activity_id',$act->id)->get();
+            $act['shops']=$shops;
         }
         return response()->json(['result'=>$activities,'con'=>true]);
     }
