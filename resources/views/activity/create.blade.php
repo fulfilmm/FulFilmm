@@ -119,7 +119,13 @@
                         <div class="col-md-6" id="shop">
                            <div class="form-group">
                                <label for="shop">Shop Name</label>
-                               <input type="text" id="shop" class="form-control" name="shop" value="{{old('shop')}}">
+                               <select name="shop_id[]" id="shop" class="form-control" multiple style="width: 100%">
+
+                                   @foreach($shops as $shp)
+                                       <option value="{{$shp->id}}">{{$shp->name}}</option>
+                                       @endforeach
+
+                               </select>
                            </div>
                         </div>
                         <div class="col-md-6">

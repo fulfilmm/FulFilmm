@@ -7,6 +7,8 @@ use App\Models\Employee;
 use App\Models\SaleActivity;
 use App\Models\SaleActivityComment;
 use App\Models\SaleActivityFollower;
+use App\Models\SalesActivityAndShop;
+use App\Models\ShopLocation;
 use App\Traits\NotifyTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -83,7 +85,8 @@ class SaleActivityController extends Controller
 "Sanchaung",
 "Seikkan"
 ];
-        return view('activity.create',compact('customers','emps','township'));
+        $shops=ShopLocation::where('region_id',Auth::guard('employee')->user()->region_id)->get();
+        return view('activity.create',compact('customers','emps','township','shops'));
     }
     public function store(Request $request){
 //        dd($request->all());
@@ -117,6 +120,14 @@ class SaleActivityController extends Controller
         }
 //        dd('hello');
        $activity->save();
+        if(count($request->shop_id)!=0){
+            foreach ($request->shop_id as $sh_id){
+                $shop_activity=new SalesActivityAndShop();
+                $shop_activity->shop_id=$sh_id;
+                $shop_activity->activity_id=$activity->id;
+                $shop_activity->save();
+            }
+        }
         if(isset($request->follower)){
             foreach ($request->follower as $follower_id){
                 $this->addFollower($follower_id,$activity->id);

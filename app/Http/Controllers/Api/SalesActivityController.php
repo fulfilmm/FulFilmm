@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use App\Models\SaleActivity;
 use App\Models\SaleActivityFollower;
+use App\Models\SalesActivityAndShop;
 use App\Traits\NotifyTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -86,6 +87,14 @@ class SalesActivityController extends Controller
         $api_fol=$request->follower;
 //        return response()->json(['data'=>$api_fol]);
         $activity->save();
+        if(count($request->shop_id)!=0){
+            foreach ($request->shop_id as $sh_id){
+                $shop_activity=new SalesActivityAndShop();
+                $shop_activity->shop_id=$sh_id;
+                $shop_activity->activity_id=$activity->id;
+                $shop_activity->save();
+            }
+        }
 
         if(isset($request->follower)){
             foreach ($api_fol as $follower_id){

@@ -3,13 +3,18 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\ExpCliamEmailJob;
+use App\Models\Employee;
 use App\Models\ExpenseClaim;
+use App\Models\ExpenseClaimItem;
+use App\Traits\NotifyTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ExpenseClaimController extends Controller
 {
+    use NotifyTrait;
     /**
      * Display a listing of the resource.
      *
@@ -96,6 +101,7 @@ class ExpenseClaimController extends Controller
                     $this->dispatch($emailJobs);
                 }
             }
+            return response()->json(['con'=>true,'msg'=>'Successful']);
         }catch (\Exception $e){
             return response()->json(['con'=>false,'result'=>$e->getMessage()]);
         }
