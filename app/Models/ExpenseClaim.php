@@ -17,4 +17,7 @@ class ExpenseClaim extends Model
     public function finance_approver(){
         return $this->belongsTo(Employee::class,'financial_approver','id');
     }
+    public function items(){
+        return $this->hasMany(ExpenseClaimItem::class,'exp_claim_id','id');
+    }
 }

@@ -22,10 +22,7 @@ class ExpenseClaimController extends Controller
      */
     public function index()
     {
-        $expclaim=ExpenseClaim::with('employee','approver','finance_approver')->get();
-        foreach ($expclaim as $exp){
-            $exp['items']=ExpenseClaimItem::where('exp_claim_id',$expclaim->id)->get();
-        }
+        $expclaim=ExpenseClaim::with('employee','approver','finance_approver','items')->get();
         return response()->json(['result'=>$expclaim,'con'=>true]);
     }
 
