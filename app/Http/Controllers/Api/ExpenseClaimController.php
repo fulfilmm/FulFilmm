@@ -23,6 +23,9 @@ class ExpenseClaimController extends Controller
     public function index()
     {
         $expclaim=ExpenseClaim::with('employee','approver','finance_approver')->get();
+        foreach ($expclaim as $exp){
+            $exp['items']=ExpenseClaimItem::where('exp_claim_id',$expclaim->id)->get();
+        }
         return response()->json(['result'=>$expclaim,'con'=>true]);
     }
 
