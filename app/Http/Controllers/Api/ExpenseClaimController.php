@@ -80,8 +80,8 @@ class ExpenseClaimController extends Controller
             for ($i = 0; $i < count($items); $i++) {
                 $item = new ExpenseClaimItem();
                 $item->exp_claim_id = $exp_claim->id;
-                $item->title = $items[$i]['title'];
-                $item->amount = $items[$i]['amount'];
+                $item->title = $items[$i]->title;
+                $item->amount = $items[$i]->amount;
                 $item->save();
             }
             if ($request->tag != null) {
