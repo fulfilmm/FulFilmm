@@ -153,4 +153,10 @@ class ExpenseClaimController extends Controller
     {
         //
     }
+    public function  receive($id){
+        $exp_claim=ExpenseClaim::where('id',$id)->first();
+        $exp_claim->is_claim=1;
+        $exp_claim->update();
+        return response()->json(['con'=>true,'msg'=>'Successful']);
+    }
 }
