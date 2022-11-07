@@ -74,7 +74,7 @@ class ExpenseClaimController extends Controller
                 $exp_claim->attach = json_encode($data);
             }
             $items=json_decode($request->items);
-            $cc=json_decode($request->tag);
+            $cc=$request->tag;
             return response()->json(['con'=>false,'msg'=>$cc]);
             $exp_claim->save();
             $this->addnotify($request->finance_approver, 'success', 'Request to expense claim.', 'expenseclaims/' . $exp_claim->id, Auth::guard('api')->user()->id);
