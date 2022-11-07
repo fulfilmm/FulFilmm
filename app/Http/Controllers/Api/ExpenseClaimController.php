@@ -73,7 +73,7 @@ class ExpenseClaimController extends Controller
                 }
                 $exp_claim->attach = json_encode($data);
             }
-            $items=json_decode($request->items);
+            $items=$request->items;
             $cc=$request->tag;
             return response()->json(['con'=>false,'msg'=>$cc]);
             $exp_claim->save();
