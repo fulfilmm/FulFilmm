@@ -76,11 +76,12 @@ class ExpenseClaimController extends Controller
             $exp_claim->save();
             $this->addnotify($request->finance_approver, 'success', 'Request to expense claim.', 'expenseclaims/' . $exp_claim->id, Auth::guard('api')->user()->id);
             $this->addnotify($request->approver, 'success', 'Request to expense claim.', 'expenseclaims/' . $exp_claim->id, Auth::guard('api')->user()->id);
-            for ($i = 0; $i < count($request->items); $i++) {
+            $items=json_decode($request->items);
+            for ($i = 0; $i < count($items); $i++) {
                 $item = new ExpenseClaimItem();
                 $item->exp_claim_id = $exp_claim->id;
-                $item->title = $request->items[$i]['title'];
-                $item->amount = $request->items[$i]['amount'];
+                $item->title = $items[$i]['title'];
+                $item->amount = $items[$i]['amount'];
                 $item->save();
             }
             if ($request->tag != null) {
