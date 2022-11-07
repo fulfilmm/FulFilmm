@@ -64,7 +64,7 @@ class ExpenseClaimController extends Controller
             $exp_claim->is_claim = 0;
             $exp_claim->financial_approver = $request->finance_approver;
             $exp_claim->total = $request->total;
-            $exp_claim->tag_emp = json_encode($request->tag);
+            $exp_claim->tag_emp = $request->tag;
             if ($request->hasfile('attach')) {
                 foreach ($request->file('attach') as $attach) {
                     $input['filename'] = \Illuminate\Support\Str::random(10) . time() . '.' . $attach->extension();
