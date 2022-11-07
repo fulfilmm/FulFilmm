@@ -104,7 +104,7 @@ class ExpenseClaimController extends Controller
             }
             return response()->json(['con'=>true,'msg'=>'Successful']);
         }catch (\Exception $e){
-            return response()->json(['con'=>false,'result'=>$e->getMessage()]);
+            return response()->json(['con'=>false,'msg'=>$e->getMessage()]);
         }
 
     }
