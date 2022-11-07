@@ -49,15 +49,14 @@ class ExpenseClaimController extends Controller
             'date'=>'required',
             'approver'=>'required',
             'finance_approver'=>'required',
-            'amount'=>'required',
             'main_title'=>'required',
-            'title'=>'required',
             'total'=>'required',
+            'items'=>'required',
         ]);
         try {
             $exp_claim = new ExpenseClaim();
             $exp_claim->title = $request->main_title;
-            $exp_claim->emp_id = Auth::guard('employee')->user()->id;
+            $exp_claim->emp_id = Auth::guard('api')->user()->id;
             $exp_claim->approver_id = $request->approver;
             $exp_claim->status = 'New';
             $exp_claim->description = $request->description;
@@ -75,17 +74,17 @@ class ExpenseClaimController extends Controller
                 $exp_claim->attach = json_encode($data);
             }
             $exp_claim->save();
-            $this->addnotify($request->finance_approver, 'success', 'Request to expense claim.', 'expenseclaims/' . $exp_claim->id, Auth::guard('employee')->user()->id);
-            $this->addnotify($request->approver, 'success', 'Request to expense claim.', 'expenseclaims/' . $exp_claim->id, Auth::guard('employee')->user()->id);
-            for ($i = 0; $i < count($request->title); $i++) {
+            $this->addnotify($request->finance_approver, 'success', 'Request to expense claim.', 'expenseclaims/' . $exp_claim->id, Auth::guard('api')->user()->id);
+            $this->addnotify($request->approver, 'success', 'Request to expense claim.', 'expenseclaims/' . $exp_claim->id, Auth::guard('api')->user()->id);
+            for ($i = 0; $i < count($request->items); $i++) {
                 $item = new ExpenseClaimItem();
                 $item->exp_claim_id = $exp_claim->id;
-                $item->title = $request->title[$i];
-                $item->amount = $request->amount[$i];
+                $item->title = $request->items[$i]['title'];
+                $item->amount = $request->items[$i]['amount'];
                 $item->save();
             }
             if ($request->tag != null) {
-                $creater = Employee::where('id', Auth::guard('employee')->user()->id)->first();
+                $creater = Employee::where('id', Auth::guard('api')->user()->id)->first();
                 for ($i = 0; $i < count($request->tag); $i++) {
                     $employee = Employee::where('id', $request->tag[$i])->first();
                     $details = array(
