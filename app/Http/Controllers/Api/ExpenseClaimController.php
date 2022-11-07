@@ -75,7 +75,6 @@ class ExpenseClaimController extends Controller
             }
             $items=json_decode($request->items);
             $cc=json_decode($request->tag);
-            return response()->json(['data'=>$cc[0]]);
             $exp_claim->save();
             $this->addnotify($request->finance_approver, 'success', 'Request to expense claim.', 'expenseclaims/' . $exp_claim->id, Auth::guard('api')->user()->id);
             $this->addnotify($request->approver, 'success', 'Request to expense claim.', 'expenseclaims/' . $exp_claim->id, Auth::guard('api')->user()->id);
@@ -88,8 +87,8 @@ class ExpenseClaimController extends Controller
             }
             if ($request->tag != null) {
                 $creater = Employee::where('id', Auth::guard('api')->user()->id)->first();
-                for ($i = 0; $i < count($request->tag); $i++) {
-                    $employee = Employee::where('id', $request->tag[$i])->first();
+                for ($i = 0; $i < count($cc); $i++) {
+                    $employee = Employee::where('id', $cc[$i])->first();
                     $details = array(
                         'email' => $employee->email,
                         'subject' => 'New Expense Claim  Notification',
