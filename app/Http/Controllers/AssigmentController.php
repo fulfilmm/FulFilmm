@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AssginmentComment;
 use App\Models\Assignment;
 use App\Models\AssignmentCheckList;
+use App\Models\AssignmentFollower;
 use App\Models\Employee;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -704,6 +705,14 @@ class AssigmentController extends Controller
             $message->to($details['email']);
             $message->subject($details['subject']);
         });
+        if(count($request->follower)!=0){
+          foreach ($request->follower as $key=>$val){
+              $follower=new AssignmentFollower();
+              $follower->assignment_id=$task->id;
+              $follower->emp_id=$val;
+              $follower->save();
+          }
+        }
         return redirect('assignments')->with('success', 'Add new todo list');
 
     }

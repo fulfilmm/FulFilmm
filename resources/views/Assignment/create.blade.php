@@ -58,6 +58,18 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="follower">Follower</label>
+                            <select name="follower[]" id="follower" class="form-control" multiple>
+                                <option value="">None</option>
+                                @foreach($employees as $emp)
+                                    <option value="{{$emp->id}}">{{$emp->name}}</option>
+                                @endforeach
+
+                            </select>
+                        </div>
+                    </div>
                     <div class="col-12">
                         <div class="form-group">
                             <label for="desc">Description</label>
@@ -77,3 +89,8 @@
         </form>
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+        $('#follower').select2();
+    })
+</script>
