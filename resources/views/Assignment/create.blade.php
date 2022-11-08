@@ -31,6 +31,7 @@
                             </div>
                         </div>
                     @else
+
                         <input type="hidden" name="emp_id" value="{{\Illuminate\Support\Facades\Auth::guard('employee')->user()->id}}">
                     @endif
                     <div class="col-6">

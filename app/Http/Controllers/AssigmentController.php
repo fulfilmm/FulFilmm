@@ -662,7 +662,8 @@ class AssigmentController extends Controller
                         ->get();
 
                 }
-                $employees = Employee::where('id', $auth->id)->get();
+                $employees = Employee::all();
+
                 return view('Assignment.index', compact('todo_list', 'employees', 'role', 'emp_id', 'status', 'priority', 'start', 'end'));
                 break;
         }
