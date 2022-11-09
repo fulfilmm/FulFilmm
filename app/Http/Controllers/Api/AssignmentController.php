@@ -23,6 +23,10 @@ class AssignmentController extends Controller
         $todo_list = Assignment::with('owner', 'responsible_emp')
             ->where('emp_id', $auth->id)
             ->get();
+        foreach ($todo_list as $td_list){
+            $follower=AssignmentFollower::with('emp')->where('assignment_id',$td_list->id)->get();
+            $td_list['followers']=$follower;
+        }
         return response()->json(['con'=>true,'result'=>$todo_list]);
 
     }
