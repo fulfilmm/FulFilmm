@@ -9,6 +9,6 @@ class AssignmentFollower extends Model
 {
     use HasFactory;
     public  function emp(){
-        return $this->belongsTo(Employee::class,'emp_id',id);
+        return $this->belongsTo(Employee::class,'emp_id','id');
     }
 }
