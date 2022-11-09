@@ -66,6 +66,7 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
     Route::resource('expense_claims',\App\Http\Controllers\Api\ExpenseClaimController::class);
     Route::post('exp_claims_receive/{id}',[\App\Http\Controllers\Api\ExpenseClaimController::class,'receive']);
     Route::get('sales/dashboard',[\App\Http\Controllers\Api\SaleDashboardController::class,'dashboard']);
+    Route::resource('api_assignments',\App\Http\Controllers\Api\AssignmentController::class);
     Route::get('test',function (){
        $aa=\Illuminate\Support\Facades\Auth::guard('api')->user()->role->name;
        return response()->json(['role'=>$aa]);
