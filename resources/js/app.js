@@ -3,10 +3,11 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
-
+Vue.config.devtools = false;
 require('./bootstrap');
 
 window.Vue = require('vue').default;
+
 
 import Vue from 'vue';
 
@@ -97,4 +98,4 @@ const app = new Vue({
     components:{App},
     router,
     store
-})
+});
