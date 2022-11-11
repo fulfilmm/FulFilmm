@@ -118,7 +118,19 @@ class AssignmentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $todo = Assignment::where('id', $id)->first();
+        $todo->progress = $request->progress;
+        $todo->title = $request->title;
+        $todo->description = $request->description;
+        $todo->status = $request->status;
+        $todo->priority = $request->priority;
+        $todo->end_date = $request->end_date;
+        $todo->emp_id = $request->emp_id;
+        $todo->assignee_id = $request->assignee_id;
+        $todo->update();
+//        dd($request->all());
+       return response()->json(['con'=>true,'msg'=>'Successful']);
+
     }
 
     /**
