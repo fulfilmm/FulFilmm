@@ -151,7 +151,10 @@ class AssignmentController extends Controller
                 ->where('id', $fol->assignment_id)
                 ->get();
             if(count($todo_list)!=0){
-                array_push($assignments,$todo_list);
+                foreach ($todo_list as $td){
+                    array_push($assignments,$td);
+                }
+
             }
 
         }
