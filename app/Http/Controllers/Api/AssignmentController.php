@@ -143,4 +143,19 @@ class AssignmentController extends Controller
     {
         //
     }
+    public function followedAssignment($id){
+        $follower=AssignmentFollower::where('emp_id',$id)->get();
+        $assignments=[];
+        foreach ($follower as $fol){
+            $todo_list = Assignment::with('owner', 'responsible_emp')
+                ->where('emp_id', $auth->id)
+                ->get();
+            if(count($todo_list)!=0){
+                array_push($assignments,$todo_list);
+            }
+
+        }
+        return response()->json(['con'=>true,'result'=>$assignments]);
+
+    }
 }
