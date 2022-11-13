@@ -148,7 +148,7 @@ class AssignmentController extends Controller
         $assignments=[];
         foreach ($follower as $fol){
             $todo_list = Assignment::with('owner', 'responsible_emp')
-                ->where('emp_id', $auth->id)
+                ->where('id', $fol->assignment_id)
                 ->get();
             if(count($todo_list)!=0){
                 array_push($assignments,$todo_list);
