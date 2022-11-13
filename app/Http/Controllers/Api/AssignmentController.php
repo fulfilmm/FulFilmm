@@ -152,6 +152,8 @@ class AssignmentController extends Controller
                 ->get();
             if(count($todo_list)!=0){
                 foreach ($todo_list as $td){
+                    $follower=AssignmentFollower::with('emp')->where('assignment_id',$td->id)->get();
+                    $td['followers']=$follower;
                     array_push($assignments,$td);
                 }
 
