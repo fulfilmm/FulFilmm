@@ -343,7 +343,7 @@ class ProductController extends Controller
                 $inhand['item_code']=$variant->item_code;
                 $inhand['image']=$variant->image??"sesm7sXhUD1662004688.png";
                 $inhand['prices']=$prices;
-
+                $inhand['price']=0;
                 foreach ($unit_price as $u_price){
                     if($u_price->product_id==$variant->id){
                         if($u_price->unit_id==$inhand->unit[0]->id && $u_price->min=1){
