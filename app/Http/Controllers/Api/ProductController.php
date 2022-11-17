@@ -348,6 +348,8 @@ class ProductController extends Controller
                     if($u_price->product_id==$variant->id){
                         if($u_price->unit_id==$inhand->unit[0]->id && $u_price->min=1){
                             $inhand['price']=$u_price->price;
+                        }else{
+                            $inhand['price']=0;
                         }
                     }
 
