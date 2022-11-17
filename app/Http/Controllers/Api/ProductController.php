@@ -343,9 +343,7 @@ class ProductController extends Controller
                 $inhand['item_code']=$variant->item_code;
                 $inhand['image']=$variant->image??"sesm7sXhUD1662004688.png";
                 $inhand['prices']=$prices;
-                if(count($unit_price)==0){
-                    $inhand['price']=0;
-                }else {
+                if(count($unit_price)!=0){
                     foreach ($unit_price as $u_price) {
                         if ($u_price->product_id == $variant->id) {
                             if ($u_price->unit_id == $inhand->unit[0]->id && $u_price->min = 1) {
@@ -356,6 +354,9 @@ class ProductController extends Controller
                         }
 
                     }
+
+                }else {
+                    $inhand['price']=0;
                 }
                 $inhand['description']=$variant->product->description??"N/A";
                 if ($inhand->variant->enable == 1 ) {
@@ -381,6 +382,20 @@ class ProductController extends Controller
         }
         return response()->json(['result' => $aval_product, 'con' => true]);
     }
+public function getPrice($sale_type,$variant_id,$qty){
 
+    $unit_price=product_price::where('product_id',$variant_id)
+//                    ->where('unit_id',$inhand->unit[0]->id)
+        ->where('region_id',Auth::guard('api')->user()->region_id)
+        ->where('sale_type',$sale_type." Sale")
+        ->get();
+    $price=[];
+    foreach ($unit_price as $p){
+        if($p->min<=$qty){
+            array_push($price,$p);
+        }
+    }
+    return response()->json(['con'=>true,'result'=>$price]);
+}
 
 }
