@@ -344,21 +344,14 @@ class ProductController extends Controller
                 $inhand['image']=$variant->image??"sesm7sXhUD1662004688.png";
                 $inhand['prices']=$prices;
 
-//                foreach ($unit_price as $u_price){
-//                    if($u_price->product_id==$variant->id){
-//                        if($u_price->unit_id==$inhand->unit[0]->id){
-//                            $inhand['price']=$u_price->price;
-//                        }
-//                        for ($i=0;$i<count($inhand->unit);$i++){
-//
-//                            if($inhand->unit[$i]->id==$u_price->unit_id) {
-//                                $inhand->unit[$i]['price'] = $u_price->price??0;
-//                            }
-//
-//                        }
-//                    }
-//
-//                }
+                foreach ($unit_price as $u_price){
+                    if($u_price->product_id==$variant->id){
+                        if($u_price->unit_id==$inhand->unit[0]->id && $u_price->min=1){
+                            $inhand['price']=$u_price->price;
+                        }
+                    }
+
+                }
                 $inhand['description']=$variant->product->description??"N/A";
                 if ($inhand->variant->enable == 1 ) {
                     if (count($aval_product) == 0) {
