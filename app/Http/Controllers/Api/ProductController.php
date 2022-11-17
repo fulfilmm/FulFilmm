@@ -12,6 +12,7 @@ use App\Models\ProductVariations;
 use App\Models\SellingUnit;
 use App\Models\Stock;
 use App\Models\Warehouse;
+use Carbon\Carbon;
 use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -326,26 +327,38 @@ class ProductController extends Controller
                     ->where('region_id',Auth::guard('api')->user()->region_id)
                     ->where('sale_type',$sale_type." Sale")
                     ->get();
+                $prices=[];
+                foreach ($unit_price as $price){
+                   if($price->start_date!=null){
+                       if(Carbon::parse($price->start_date)>=Carbon::today()&& Carbon::parse($price->end_date)<=Carbon::today()){
+                            array_push($prices,$price);
+                       }
+                   }else{
+                       array_push($prices,$price);
+                   }
+                }
                 $inhand['cat_id'] = $variant->product->cat_id;
                 $inhand['name']=$variant->product->name;
                 $inhand['variant_name']=$variant->variant;
                 $inhand['item_code']=$variant->item_code;
                 $inhand['image']=$variant->image??"sesm7sXhUD1662004688.png";
-                foreach ($unit_price as $u_price){
-                    if($u_price->product_id==$variant->id){
-                        if($u_price->unit_id==$inhand->unit[0]->id){
-                            $inhand['price']=$u_price->price;
-                        }
-                        for ($i=0;$i<count($inhand->unit);$i++){
+                $inhand['prices']=$prices;
 
-                            if($inhand->unit[$i]->id==$u_price->unit_id) {
-                                $inhand->unit[$i]['price'] = $u_price->price??0;
-                            }
-
-                        }
-                    }
-
-                }
+//                foreach ($unit_price as $u_price){
+//                    if($u_price->product_id==$variant->id){
+//                        if($u_price->unit_id==$inhand->unit[0]->id){
+//                            $inhand['price']=$u_price->price;
+//                        }
+//                        for ($i=0;$i<count($inhand->unit);$i++){
+//
+//                            if($inhand->unit[$i]->id==$u_price->unit_id) {
+//                                $inhand->unit[$i]['price'] = $u_price->price??0;
+//                            }
+//
+//                        }
+//                    }
+//
+//                }
                 $inhand['description']=$variant->product->description??"N/A";
                 if ($inhand->variant->enable == 1 ) {
                     if (count($aval_product) == 0) {
