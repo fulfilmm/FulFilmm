@@ -772,6 +772,11 @@ class MobileInvoiceController extends Controller
         if (isset($request->invoice_id)) {
             $inv = Invoice::where('id', $request->invoice_id)->first();
             $inv->due_amount = $inv->due_amount - $request->amount;
+            if($inv->due_amount==0){
+                $inv->status='Paid';
+            }else{
+                $inv->status='Partial';
+            }
             $inv->update();
             return response()->json(['con'=>true,'msg'=>'Successful']);
         }
