@@ -8,6 +8,7 @@ use App\Models\Department;
 use App\Models\Employee;
 use http\Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Excel;
 use Spatie\Permission\Models\Role;
 
@@ -19,7 +20,7 @@ class EmployeeController extends Controller
     }
     public function index()
     {
-        $employees = Employee::all();
+        $employees = Employee::where('office_branch_id',Auth::guard('api')->user()->office_branch_id)->get();
         $allemps=[];
         foreach ($employees as $emp){
             $emp['role_name']=$emp->role->name;

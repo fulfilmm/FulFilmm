@@ -663,12 +663,15 @@ class MobileInvoiceController extends Controller
         $invoice=Invoice::where('id',$id)->first();
         $invoice->cancel=1;
         $invoice->update();
-        return response()->json(['message'=>'Canceled this invoice','invoice_id'=>$id,'con'=>true]);
+        return response()->json(['msg'=>'Canceled this invoice','invoice_id'=>$id,'con'=>true]);
     }
-
     public function taxes(){
         $taxes=products_tax::all();
         return response()->json(['result'=>$taxes,'con'=>true]);
+    }
+    public function transactionCategory(){
+        $catories=TransactionCategory::all();
+        return response()->json(['con'=>true,'result'=>$catories]);
     }
 
 }
