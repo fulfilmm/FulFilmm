@@ -122,9 +122,9 @@ class OrderController extends Controller
                     }
                 }
             }
-            return response()->json(['Success' => 'Order Create Success']);
+            return response()->json(['con'=>true,'msg' => 'Order Create Success']);
         }else{
-            return response()->json(['error'=>$validator->errors()]);
+            return response()->json(['con'=>true,'msg'=>$validator->errors()]);
         }
     }
 

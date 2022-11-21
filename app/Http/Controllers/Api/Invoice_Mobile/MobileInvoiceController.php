@@ -332,7 +332,7 @@ class MobileInvoiceController extends Controller
                     $newInvoice->invoice_cos=$inv_item[0]->total;
                     $newInvoice->update();
                 }
-                return response()->json(['msg'=>'Success','con'=>true]);
+                return response()->json(['inv_id'=>$newInvoice->id,'con'=>true]);
             }catch (\Exception $e){
                 return \response()->json(['con'=>false,'msg'=>$e->getMessage()]);
             }
