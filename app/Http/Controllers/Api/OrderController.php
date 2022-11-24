@@ -76,7 +76,7 @@ class OrderController extends Controller
             $order->payment_method = $request->payment_method;
             $order->payment_term = $request->payment_term;
             $order->billing_address=$request->billing_address;
-            $order->quotation_id=$request->quotation_id;
+            $order->quotation_id=$request->quotation_id=='null'?null:$request->quotation_id;
             $order->shipping_type=$request->shipping_type;
             $order->shipping_address=$request->shipping_address;
             $order->billing_address=$request->billing_address;
