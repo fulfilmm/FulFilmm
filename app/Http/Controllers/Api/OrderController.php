@@ -65,73 +65,77 @@ class OrderController extends Controller
         } else {
             $order_id='ORD'."-0001";
         }
-        if($validator->passes()) {
-            $order = new Order();
-            $order->order_id = $order_id;
-            $order->customer_id = $request->customer_id;
-            $order->grand_total = $request->grand_total;
-            $order->phone = $request->phone;
-            $order->email = $request->email;
-            $order->address = $request->address;
-            $order->payment_method = $request->payment_method;
-            $order->payment_term = $request->payment_term;
-            $order->billing_address=$request->billing_address;
-            $order->quotation_id=$request->quotation_id=='null'?null:$request->quotation_id;
-            $order->shipping_type=$request->shipping_type;
-            $order->shipping_address=$request->shipping_address;
-            $order->billing_address=$request->billing_address;
-            $order->tax_id=$request->tax_id;
-            $order->expected_arrival_date=$request->arrival_date;
-            $order->approver_id=$request->approver_id;
-            $order->tax_amount=$request->tax_amount??0;
-            $order->total=$request->total??0;
-            $order->discount=$request->discount??0;
-            $order->status="New";
-            $order->emp_id=Auth::guard('api')->user()->id??$request->approver_id;
-            $order->order_date = Carbon::create($request->order_date);
-            $order->save();
-            $order_item = $request->order_items;
-            $foc=$request->foc_items??[];
-            if(count($order_item)!=0){
-                foreach ($order_item as $item){
+      try{
+          if($validator->passes()) {
+              $order = new Order();
+              $order->order_id = $order_id;
+              $order->customer_id = $request->customer_id;
+              $order->grand_total = $request->grand_total;
+              $order->phone = $request->phone;
+              $order->email = $request->email;
+              $order->address = $request->address;
+              $order->payment_method = $request->payment_method;
+              $order->payment_term = $request->payment_term;
+              $order->billing_address=$request->billing_address;
+              $order->quotation_id=$request->quotation_id=='null'?null:$request->quotation_id;
+              $order->shipping_type=$request->shipping_type;
+              $order->shipping_address=$request->shipping_address;
+              $order->billing_address=$request->billing_address;
+              $order->tax_id=$request->tax_id;
+              $order->expected_arrival_date=$request->arrival_date;
+              $order->approver_id=$request->approver_id;
+              $order->tax_amount=$request->tax_amount??0;
+              $order->total=$request->total??0;
+              $order->discount=$request->discount??0;
+              $order->status="New";
+              $order->emp_id=Auth::guard('api')->user()->id??$request->approver_id;
+              $order->order_date = Carbon::create($request->order_date);
+              $order->save();
+              $order_item = $request->order_items;
+              $foc=$request->foc_items??[];
+              if(count($order_item)!=0){
+                  foreach ($order_item as $item){
 
-                    $item['order_id']=$order->id;
-                    $item['type']='invoice';
-                    $this->item_store($item);
+                      $item['order_id']=$order->id;
+                      $item['type']='Order';
+                      $this->item_store($item);
 
-                }
-            }
-            if(count($foc)!=0){
-                foreach ($foc as $item){
-                    $item->invoice_id=$order->id;
-                    $item->type='invoice';
-                    $this->foc_add($item);
-                }
-            }
-            if($request->cc!=null){
-                foreach ($request->cc as $key=>$val){
-                    $exists_cc=OrderCc::where('order_id',$order->id)->where('emp_id',$val)->first();
-                    if($exists_cc==null){
-                        $employee=Employee::where('id',$val)->first();
-                        $cc=new OrderCc();
-                        $cc->order_id=$order->id;
-                        $cc->emp_id=$val;
-                        $cc->emp_name=$employee->name;
-                        $cc->save();
-                    }
-                }
-            }
-            return response()->json(['con'=>true,'msg' => 'Order Create Success']);
-        }else{
-            return response()->json(['con'=>true,'msg'=>$validator->errors()]);
-        }
+                  }
+              }
+              if(count($foc)!=0){
+                  foreach ($foc as $item){
+                      $item->invoice_id=$order->id;
+                      $item->type='Order';
+                      $this->foc_add($item);
+                  }
+              }
+              if($request->cc!=null){
+                  foreach ($request->cc as $key=>$val){
+                      $exists_cc=OrderCc::where('order_id',$order->id)->where('emp_id',$val)->first();
+                      if($exists_cc==null){
+                          $employee=Employee::where('id',$val)->first();
+                          $cc=new OrderCc();
+                          $cc->order_id=$order->id;
+                          $cc->emp_id=$val;
+                          $cc->emp_name=$employee->name;
+                          $cc->save();
+                      }
+                  }
+              }
+              return response()->json(['con'=>true,'msg' => 'Order Create Success']);
+          }else{
+              return response()->json(['con'=>true,'msg'=>$validator->errors()]);
+          }
+      }catch (\Exception $e){
+          return response()->json(['con'=>true,'msg'=>$e->getMessage()]);
+    }
     }
     public function item_store($request)
     {
 //        return response($request);
         $variant = ProductVariations::where('id', $request['variant_id'])->first();
 //        return response($variant);
-        if ($request['type'] == 'invoice') {
+        if ($request['type'] == 'Order') {
             $sub_total=$request['qty']*$request['price'];
             $discount=($request['discount']/100)*$sub_total;
             $total=$sub_total-$discount;
