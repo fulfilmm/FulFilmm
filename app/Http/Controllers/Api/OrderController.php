@@ -95,7 +95,6 @@ class OrderController extends Controller
               $foc=$request->foc_items??[];
               if(count($order_item)!=0){
                   foreach ($order_item as $item){
-
                       $item['order_id']=$order->id;
                       $item['type']='Order';
                       $this->item_store($item);

@@ -43,9 +43,9 @@ class SaleOrderController extends Controller
     public  $status=['Paid','Unpaid','Pending','Cancel'];
     public function index(){
         if(Auth::guard('customer')->check()){
-            $orders=Order::with("customer")->where('customer_id',Auth::guard('customer')->user()->id)->paginate(10);
+            $orders=Order::with("customer")->where('customer_id',Auth::guard('customer')->user()->id)->get();
         }else{
-            $orders=Order::with("customer")->paginate(10);
+            $orders=Order::with("customer")->get();
         }
 //        dd($orders);
         $data=['orders'=>$orders];
