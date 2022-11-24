@@ -91,6 +91,7 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
     Route::resource('myexpense',\App\Http\Controllers\Api\MyexpenseController::class);
     Route::resource('api_expense_claim',\App\Http\Controllers\Api\ExpenseClaimController::class);
     Route::resource('api_salesactivities',\App\Http\Controllers\Api\SalesActivityController::class);
+    Route::resource('quotation',\App\Http\Controllers\Api\QuotationController::class);
     Route::get('products/price/{sale_type}/{p_id}/{qty}',[\App\Http\Controllers\Api\ProductController::class,'getPrice']);
 //    Route::
 });
