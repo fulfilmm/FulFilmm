@@ -22,7 +22,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders=Order::with('customer','items')->get();
+        $orders=Order::with('customer','items')->where('emp_id',Auth::guard('api')->user()->id)->get();
         return response()->json(['result'=>$orders,'con'=>true]);
     }
 
