@@ -90,7 +90,7 @@ class OrderController extends Controller
               $order->status="New";
               $order->emp_id=Auth::guard('api')->user()->id??$request->approver_id;
               $order->order_date = Carbon::create($request->order_date);
-//              $order->save();
+              $order->save();
               $order_item = $request->order_items;
               $foc=$request->foc_items??[];
               if(count($order_item)!=0){
