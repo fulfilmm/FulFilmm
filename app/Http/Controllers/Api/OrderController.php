@@ -90,8 +90,9 @@ class OrderController extends Controller
               $order->status="New";
               $order->emp_id=Auth::guard('api')->user()->id??$request->approver_id;
               $order->order_date = Carbon::create($request->order_date);
-              $order->save();
+//              $order->save();
               $order_item = $request->order_items;
+              return response()->json(['data'=>count($order_item)]);
               $foc=$request->foc_items??[];
               if(count($order_item)!=0){
                   foreach ($order_item as $item){
@@ -124,10 +125,10 @@ class OrderController extends Controller
               }
               return response()->json(['con'=>true,'msg' => 'Order Create Success']);
           }else{
-              return response()->json(['con'=>true,'msg'=>$validator->errors()]);
+              return response()->json(['con'=>false,'msg'=>$validator->errors()]);
           }
       }catch (\Exception $e){
-          return response()->json(['con'=>true,'msg'=>$e->getMessage()]);
+          return response()->json(['con'=>false,'msg'=>$e->getMessage()]);
     }
     }
     public function item_store($request)
