@@ -92,7 +92,6 @@ class OrderController extends Controller
               $order->order_date = Carbon::create($request->order_date);
 //              $order->save();
               $order_item = $request->order_items;
-              return response()->json(['data'=>count($order_item)]);
               $foc=$request->foc_items??[];
               if(count($order_item)!=0){
                   foreach ($order_item as $item){
