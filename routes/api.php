@@ -70,6 +70,8 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
     Route::get('api_assignments/follower/{id}',[\App\Http\Controllers\Api\AssignmentController::class,'followedAssignment']);
     Route::get('transaction/category/',[MobileInvoiceController::class,'transactionCategory']);
     Route::post('makePyament',[MobileInvoiceController::class,'makePayment']);
+    Route::post('order/status/change/{status}/{id}',[\App\Http\Controllers\Api\OrderController::class,'status_change']);
+    Route::post('order/assign/{id}',[\App\Http\Controllers\Api\OrderController::class,'assign']);
     Route::get('test',function (){
        $aa=\Illuminate\Support\Facades\Auth::guard('api')->user()->role->name;
        return response()->json(['role'=>$aa]);

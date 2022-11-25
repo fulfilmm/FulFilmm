@@ -3,14 +3,28 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\AmountDiscount;
+use App\Models\Company;
+use App\Models\Customer;
+use App\Models\DiscountPromotion;
 use App\Models\Employee;
+use App\Models\Freeofchare;
+use App\Models\MainCompany;
 use App\Models\Order;
+use App\Models\order_assign;
 use App\Models\OrderCc;
 use App\Models\OrderItem;
+use App\Models\product_price;
 use App\Models\ProductVariations;
+use App\Models\Region;
+use App\Models\SaleZone;
+use App\Models\SellingUnit;
+use App\Models\Stock;
+use App\Models\Warehouse;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -213,5 +227,81 @@ class OrderController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function status_change($status,$id){
+        $items=OrderItem::with('variant','invoice')->where('order_id',$id)->get();
+//        dd($orderline);
+        $grand_total=0;
+        for ($i=0;$i<count($items);$i++){
+            $grand_total=$grand_total+$items[$i]->total;
+        }
+        $status_change=Order::with('customer')->where('id',$id)->first();
+        $status_change->status=$status;
+        $status_change->grand_total=$grand_total;
+        $status_change->update();
+        $company = MainCompany::where('ismaincompany', 1)->first();
+        $tag_emp=OrderCc::with('employee')->where('order_id',$id)->get();
+        $details = [
+
+            'subject' => $company->name??''."Order Notification.",
+            'email' =>$status_change->email,
+            'name' =>$status_change->customer->name,
+            'order_id' =>$status_change->order_id,
+            'id'=>$status_change->id,
+            'status'=>$status,
+            'order_date'=>$status_change->order_date,
+            'from' => Auth::guard('api')->user()->email,
+            'from_name' => Auth::guard('api')->user()->name,
+            'company' => $company->name??'',
+
+        ];
+        Mail::send('saleorder.order_email_noti', $details, function ($message) use ($details) {
+            $message->from($details['from'], $details['company']);
+            $message->to($details['email']);
+            $message->subject($details['subject']);
+        });
+        foreach ($tag_emp as $emp){
+            $details = [
+
+                'subject' => $company->name??''."Order Notification.",
+                'email' =>$emp->employee->email,
+                'name' =>$status_change->customer->name,
+                'order_id' =>$status_change->order_id,
+                'id'=>$status_change->id,
+                'status'=>$status,
+                'order_date'=>$status_change->order_date,
+                'from' => Auth::guard('api')->user()->email,
+                'from_name' => Auth::guard('api')->user()->name,
+                'company' => $company->name??'',
+
+            ];
+            Mail::send('saleorder.order_email_noti', $details, function ($message) use ($details) {
+                $message->from($details['from'], $details['company']);
+                $message->to($details['email']);
+                $message->subject($details['subject']);
+            });
+        }
+        return response()->json(['con'=>true,'msg'=>$status]);
+    }
+    public function assign(Request $request,$id){
+        $is_assigned=order_assign::where('order_id',$id)->first();
+        if($is_assigned==null){
+            $assign_order=new order_assign();
+            $assign_order->order_id=$id;
+            $assign_order->assign_type=$request->assignType;
+            if($request->assignType=='Employee'){
+                $assign_order->emp_id=$request->assign_id;
+            }elseif ($request->assignType=='Department'){
+                $assign_order->dept_id=$request->assign_id;
+            }elseif ($request->assignType=='Group'){
+                $assign_order->group_id=$request->assign_id;
+            }
+            $assign_order->save();
+            return response()->json(['con'=>true,'msg'=>'Order assigning successful']);
+
+        }else{
+            return response()->json(['con'=>true,'msg'=>'This order is has been assigned']);
+        }
+
     }
 }
