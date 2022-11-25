@@ -35,9 +35,13 @@ class MobileInvoiceItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id,$type)
     {
-        $items=OrderItem::with('variant','unit')->where('inv_id',$id)->get();
+      if($type=='Order'){
+          $items=OrderItem::with('variant','unit')->where('order_id',$id)->get();
+      }else{
+          $items=OrderItem::with('variant','unit')->where('inv_id',$id)->get();
+      }
         return response()->json(['con'=>true,'result'=>$items]);
     }
 
