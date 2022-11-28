@@ -288,12 +288,15 @@ class OrderController extends Controller
         if($is_assigned==null){
             $assign_order=new order_assign();
             $assign_order->order_id=$id;
-            $assign_order->assign_type=$request->assignType;
-            if($request->assignType=='Employee'){
+
+            if($request->assign_type=='Employee'){
+                $assign_order->assign_type="emp";
                 $assign_order->emp_id=$request->assign_id;
-            }elseif ($request->assignType=='Department'){
+            }elseif ($request->assign_type=='Department'){
+                $assign_order->assign_type="dept";
                 $assign_order->dept_id=$request->assign_id;
-            }elseif ($request->assignType=='Group'){
+            }elseif ($request->assign_type=='Group'){
+                $assign_order->assign_type="group";
                 $assign_order->group_id=$request->assign_id;
             }
             $assign_order->save();
