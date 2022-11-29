@@ -158,6 +158,7 @@
             var tax_id=$('#tax option:selected').val();
             var tax_amount=$('#tax_amount').val();
             var approver=$('#approver option:selected').val();
+            var sale_type=$('input[name=sale_type]:checked').val();
             var cc=[];
             $('#cc :selected').each(function(i, sel){
                 cc.push($(sel).val());
@@ -184,6 +185,7 @@
                     'shipping_type': shipping_type,
                     'quotation_id': quotation_id,
                     'approver_id':approver,
+                    'sale_type':sale_type,
                     'cc':cc
 
                 },

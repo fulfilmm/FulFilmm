@@ -30,7 +30,6 @@
                     <div class="col-12 my-3">
 
                         <div class="row">
-
                             <div class="col-md-4 mb-3">
                                 <label for="Text1" class="form-label font-weight-bold text-muted text-uppercase">Customer
                                     <span class="text-danger">*</span></label>
@@ -108,6 +107,21 @@
                     </div>
                     <div class="col-12 my-3">
                         <div class="row g-3">
+                            <div class="col-md-6 mb-3">
+                                <label for="" class="form-label font-weight-bold text-muted text-uppercase">Sale Type</label>
+                                    <div class="row">
+                                        <div class="col">
+                                            <input type="radio" name="sale_type" value="Whole Sale" checked>
+                                            <label for=""
+                                                   class="form-label font-weight-bold text-muted text-uppercase">Whole Sale</label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="radio" name="sale_type" value="Retail Sale">
+                                            <label for=""
+                                                   class="form-label font-weight-bold text-muted text-uppercase">Retail Sale</label>
+                                        </div>
+                                    </div>
+                            </div>
                             <div class="col-md-6 mb-3">
                                 <label for="order_date" class="form-label font-weight-bold text-muted text-uppercase">Date
                                     <span class="text-danger">*</span></label>

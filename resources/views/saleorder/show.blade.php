@@ -116,9 +116,13 @@
                                             Follower
                                         </td>
                                         <td>
-                                            @foreach($data['Order']->follower as $item)
-                                                {{$item->emp_name}}
+                                            @if(count($data['Order']->follower)==0)
+                                                Empty Follower
+                                                @else
+                                                @foreach($data['Order']->follower as $item)
+                                                    {{$item->emp_name}}
                                                 @endforeach
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr class="white-space-no-wrap">
@@ -163,11 +167,11 @@
                                     </tr>
                                     <tr class="white-space-no-wrap">
                                         <td class="text-muted pl-0">
-                                            Advance Payment
+                                         Sale Type
                                         </td>
                                         <td>
-                                            <p class="mb-0 text-danger font-weight-bold d-flex justify-content-start align-items-center">
-                                                {{number_format($data['advance_pay']->amount??0)}} MMK
+                                            <p class="mb-0  font-weight-bold d-flex justify-content-start align-items-center">
+                                                {{$data['Order']->sales_type??'N/A'}}
                                             </p>
                                         </td>
                                     </tr>
@@ -252,6 +256,16 @@
                                         </td>
                                         <td>
                                             {{$data['Order']->comment}}
+                                        </td>
+                                    </tr>
+                                    <tr class="white-space-no-wrap">
+                                        <td class="text-muted pl-0">
+                                            Advance Payment
+                                        </td>
+                                        <td>
+                                            <p class="mb-0 text-danger font-weight-bold d-flex justify-content-start align-items-center">
+                                                {{number_format($data['advance_pay']->amount??0)}} MMK
+                                            </p>
                                         </td>
                                     </tr>
                                     </tbody>

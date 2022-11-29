@@ -171,6 +171,7 @@ class SaleOrderController extends Controller
             $order->tax_amount=$request->tax_amount??0;
             $order->total=$request->total??0;
             $order->discount=$request->discount??0;
+            $order->sales_type=$request->sale_type;
             $order->status="New";
             $order->emp_id=Auth::guard('employee')->user()->id??$request->approver_id;
             $order->order_date = Carbon::create($request->order_date);
