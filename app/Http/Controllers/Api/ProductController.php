@@ -248,28 +248,44 @@ class ProductController extends Controller
 //               return response()->json(['data'=>$inhand->id]);
                 $variant = ProductVariations::with('product')->where('id', $inhand->variant_id)->first();
 //                $sell_unit=SellingUnit::where('product_id',$variant->product->id)->where('unit_convert_rate',1)->first();
-                $unit_price=product_price::with('unit')->where('product_id',$inhand->variant_id)
+                $unit_price=product_price::where('product_id',$variant->id)
 //                    ->where('unit_id',$inhand->unit[0]->id)
-                        ->where('sale_type',$sales_type." Sale")
                     ->where('region_id',Auth::guard('api')->user()->region_id)
+                    ->where('sale_type',$sales_type." Sale")
                     ->get();
+                $prices=[];
+                foreach ($unit_price as $price){
+                    if($price->start_date!=null){
+                        if(Carbon::parse($price->start_date)>=Carbon::today()&& Carbon::parse($price->end_date)<=Carbon::today()){
+                            array_push($prices,$price);
+                        }
+                    }else{
+                        array_push($prices,$price);
+                    }
+                }
                 $inhand['cat_id'] = $variant->product->cat_id;
                 $inhand['name']=$variant->product->name;
                 $inhand['variant_name']=$variant->variant;
                 $inhand['item_code']=$variant->item_code;
                 $inhand['image']=$variant->image??"sesm7sXhUD1662004688.png";
-                foreach ($unit_price as $u_price){
-                    if($u_price->unit->unit_convert_rate==1){
-                        $inhand['price']=$u_price->price;
-                    }
-                    for ($i=0;$i<count($inhand->unit);$i++){
-                        if($inhand->unit[$i]->id==$u_price->unit_id) {
-                            $inhand->unit[$i]['price'] = $u_price->price??0;
+                $inhand['prices']=$prices;
+                if(count($unit_price)!=0){
+                    foreach ($unit_price as $u_price) {
+                        if ($u_price->product_id == $variant->id) {
+                            if ($u_price->unit_id == $inhand->unit[0]->id && $u_price->min = 1) {
+                                $inhand['price'] = $u_price->price;
+                            } else {
+                                $inhand['price'] = 0;
+                            }
                         }
+
                     }
+
+                }else {
+                    $inhand['price']=0;
                 }
                 $inhand['description']=$variant->product->description??"N/A";
-                if ($inhand->variant->enable == 1 && $inhand->cat_id == $id) {
+                if ($inhand->variant->enable == 1 &&($variant->product->cat_id==$id ||$variant->product->sub_cat_id==$id)) {
                     if (count($aval_product) == 0) {
                         array_push($aval_product, $inhand);
                     } else {
@@ -279,8 +295,8 @@ class ProductController extends Controller
                                 $avl['available'] = $avl->available + $inhand->available;
                                 break;
                             }else{
-                            array_push($aval_product, $inhand);
-                            break;
+                                array_push($aval_product, $inhand);
+                                break;
                             }
                         }
 
@@ -294,6 +310,7 @@ class ProductController extends Controller
     }
     public function allProduct($sale_type)
     {
+
         $auth = Auth::guard('api')->user();
         if (Auth::guard('api')->user()->mobile_seller == 1) {
             $warehouse = Warehouse::where('warehouse_id', $auth->warehouse_id)
