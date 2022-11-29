@@ -239,7 +239,7 @@
                                             Shipment Type
                                         </td>
                                         <td>
-                                            {{$data['Order']->address}}
+                                            {{$data['Order']->shipping_type}}
                                         </td>
                                     </tr>
                                     <tr class="white-space-no-wrap">
