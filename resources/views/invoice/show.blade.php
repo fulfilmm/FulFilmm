@@ -62,7 +62,7 @@
                     </a></span></strong> <br><br></div>
             <div class="col-md-2">
                 Order ID
-                <br> <strong><span class="float-left"><a href="{{$detail_inv->order_id?route('saleorder.show',$detail_inv->order_id):''}}">
+                <br> <strong><span class="float-left"><a href="{{$detail_inv->order_id?route('saleorders.show',$detail_inv->order_id):''}}">
                       {{$detail_inv->order->order_id??"None"}}
                     </a></span></strong> <br><br></div>
             <div class="col-md-2">
