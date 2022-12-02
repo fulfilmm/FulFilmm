@@ -74,6 +74,18 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
     Route::post('order/assign/{id}',[\App\Http\Controllers\Api\OrderController::class,'assign']);
     Route::resource('api_departments',\App\Http\Controllers\Api\DepartmentController::class);
     Route::resource('group',\App\Http\Controllers\Api\GroupController::class);
+    Route::resource('approval',\App\Http\Controllers\Api\ApprovalController::class);
+    Route::resource('meeting',\App\Http\Controllers\Api\MeetingController::class);
+    Route::get('expclaim/comment/{id}',[\App\Http\Controllers\Api\CommentController::class,'expenseClaimComment']);
+    Route::get('assignment/comment/{id}',[\App\Http\Controllers\Api\CommentController::class,'assignmentCommentGet']);
+    Route::get('order/comment/{id}',[\App\Http\Controllers\Api\CommentController::class,'orderCommentGet']);
+    Route::get('activity/comment/{id}',[\App\Http\Controllers\Api\CommentController::class,'saleactivityCommentGet']);
+    Route::post('expclaim/post/comment/{id}',[\App\Http\Controllers\Api\CommentController::class,'expclaimCommmentPost']);
+    Route::post('assignment/post/comment/{id}',[\App\Http\Controllers\Api\CommentController::class,'assignmentCommentPost']);
+    Route::post('order/post/comment/{id}',[\App\Http\Controllers\Api\CommentController::class,'orderCommentPost']);
+    Route::post('activity/post/comment/{id}',[\App\Http\Controllers\Api\CommentController::class,'saleactivityCommentPost']);
+
+
     Route::get('test',function (){
        $aa=\Illuminate\Support\Facades\Auth::guard('api')->user()->role->name;
        return response()->json(['role'=>$aa]);
