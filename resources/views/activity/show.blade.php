@@ -36,7 +36,7 @@
                     <div class="card-body" style="min-height: 300px;">
                         <div class="row">
                             <div class="col-12">
-                                <span class="text-muted">Customer Name</span> : {{$activity->customer->name}}
+                                <span class="text-muted">Customer Name</span> : {{$activity->customer->name??'N/A'}}
                             </div>
                             <div class="col-12">
                                 <span class="text-muted">Type Of Activity</span> : {{$activity->type}}
