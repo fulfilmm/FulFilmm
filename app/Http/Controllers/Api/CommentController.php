@@ -65,7 +65,7 @@ class CommentController extends Controller
             $comment=order_comments::with('employee')->where('id',$order_comment->id)->first();
         }
 
-        return response()->json(['con'=>true,'result'=>$comment]);
+        return response()->json(['con'=>true,'result'=>$comment->id]);
 
     }
     public function saleactivityCommentGet($id){
