@@ -51,7 +51,7 @@ class CommentController extends Controller
 
     }
     public function orderCommentGet($id){
-        $comment=order_comments::with('employee')->where('order_id',$id)->get();
+        $comment=order_comments::with('employee')->orderBy('id','desc')->where('order_id',$id)->get();
         return response()->json(['con'=>true,'result'=>$comment]);
 
     }
@@ -62,8 +62,10 @@ class CommentController extends Controller
             $order_comment->emp_id=Auth::guard('api')->user()->id;
             $order_comment->comment_text=$request->comment_text;
             $order_comment->save();
+            $comment=order_comments::with('employee')->where('id',$order_comment->id)->first();
         }
-        return response()->json(['con'=>true,'msg'=>'Added new comment']);
+
+        return response()->json(['con'=>true,'result'=>$comment]);
 
     }
     public function saleactivityCommentGet($id){
