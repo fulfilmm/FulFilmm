@@ -37,6 +37,8 @@ class MeetingController extends Controller
             }
 
         }
+
+        return response()->json(['con'=>true,result]);
     }
 
     /**

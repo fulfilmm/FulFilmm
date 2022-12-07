@@ -25,9 +25,10 @@ class ApprovalController extends Controller
     {
         $auth=Auth::guard('api')->user();
         if($auth->role->name=='CEO'||$auth->role->name=='Super Admin'){
-            $approvals=Approvalrequest::with('approver','secondary_approver','request_emp')->get();
+            $approvals=Approvalrequest::with('approver','secondary_approver','request_emp','contact','item')->get();
+
         }else{
-            $approvals=Approvalrequest::with('approver','secondary_approver','request_emp')->where('emp_id',$auth->id)->get();
+            $approvals=Approvalrequest::with('approver','secondary_approver','request_emp','contact','item')->where('emp_id',$auth->id)->get();
         }
 
        return response()->json(['con'=>true,'result'=>$approvals]);
