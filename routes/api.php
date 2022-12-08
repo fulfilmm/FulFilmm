@@ -84,6 +84,7 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
     Route::post('assignment/post/comment/{id}',[\App\Http\Controllers\Api\CommentController::class,'assignmentCommentPost']);
     Route::post('order/post/comment/{id}',[\App\Http\Controllers\Api\CommentController::class,'orderCommentPost']);
     Route::post('activity/post/comment/{id}',[\App\Http\Controllers\Api\CommentController::class,'saleactivityCommentPost']);
+    Route::resource('warehouse',\App\Http\Controllers\Api\WarehouseController::class);
 
 
     Route::get('test',function (){
