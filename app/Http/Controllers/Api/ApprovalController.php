@@ -77,7 +77,7 @@ class ApprovalController extends Controller
         $approval->to_date=$request->to_date??null;
         $approval->type=$request->type;
         $approval->state='New';
-        $approval->amount=$request->type=='Procurement'?$request->procurement_amount:($request->type=='Business Trip'?$request->budget:($request->type=='Payment'?$request->payment_amount:null));
+        $approval->amount=$request->amount;
         $approval->location=$request->location??'';
         $approval->contact_id=$request->type=='Payment'?$request->contact:$request->supplier;
         $approval->quantity=$request->quantity??'';
