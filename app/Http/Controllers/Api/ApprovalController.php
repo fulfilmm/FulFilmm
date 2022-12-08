@@ -120,7 +120,7 @@ class ApprovalController extends Controller
         $cc_mail=[];
         if($secondary_approver!=null){
             array_push($cc_mail,$secondary_approver->email);
-            $this->addnotify($request->secondary_id,'success','Add new approval '.$approval->approval_id.'.','approvals/'.$approval->id,Auth::guard('employee')->user()->id);
+            $this->addnotify($request->secondary_id,'success','Add new approval '.$approval->approval_id.'.','approvals/'.$approval->id,Auth::guard('api')->user()->id);
         }
         if(isset($request->cc)){
             $approval=Approvalrequest::orderBy('id', 'desc')->first();
