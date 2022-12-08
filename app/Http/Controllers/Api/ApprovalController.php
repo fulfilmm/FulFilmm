@@ -157,6 +157,7 @@ class ApprovalController extends Controller
             });
             $this->addnotify($request->approve_id,'success','Add new approval '.$approval->approval_id.'.','approvals/'.$approval->id,Auth::guard('api')->user()->id);
         }
+        return response()->json(['con'=>true,'msg'=>'Request Submitted Successful']);
     }
 
     /**
