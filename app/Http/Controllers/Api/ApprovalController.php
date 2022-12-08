@@ -79,7 +79,7 @@ class ApprovalController extends Controller
         $approval->state='New';
         $approval->amount=$request->amount;
         $approval->location=$request->location??'';
-        $approval->contact_id=$request->type=='Payment'?$request->contact:$request->supplier;
+        $approval->contact_id=$request->contact_id;
         $approval->quantity=$request->quantity??'';
         $approval->warehouse_id=$request->warehouse_id;
         if($request->members!=null){
