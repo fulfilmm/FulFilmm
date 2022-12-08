@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Meeting;
 use App\Models\Meetingmember;
+use App\Models\Meetingminutes;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,26 +20,13 @@ class MeetingController extends Controller
     public function index()
     {
         $curren_user=Auth::guard('api')->user();
-        $meetings=Meeting::with('meeting_room')->where('meeting_creater',$curren_user->id)->get();
-        $invites_me=Meetingmember::with('meeting')->where('member_id',$curren_user->id)->get();
-        $alert_meeting=[];
-        foreach ($meetings as $item){
-            if(\Carbon\Carbon::parse($item->date_time)<= (\Carbon\Carbon::now()->addMinutes(30)) && \Carbon\Carbon::parse($item->date_time)->hour(23)>= (\Carbon\Carbon::now()) )
-            {
-                array_push($alert_meeting,$item);
-            }
-            if($invites_me!=null){
-                foreach ($invites_me as $invite){
-                    if(Carbon::parse($invite->meeting->date_time)<= (Carbon::now()->addMinutes(30))){
-                        array_push($alert_meeting,$invite->meeting);
-                    }
-                }
-
-            }
-
+        $mymeeting=Meeting::with('room')->where('meeting_creater',$curren_user->id)->get();
+        $member=Meetingmember::where('member_id',$curren_user->id)->get();
+        foreach ($member as $mb){
+            $mt=Meeting::with('room')->where('id',$mb->meeting_id)->first();
+            array_push($mymeeting,$mt);
         }
-
-        return response()->json(['con'=>true,result]);
+        return response()->json(['con'=>true,'result'=>$mymeeting]);
     }
 
     /**
@@ -105,5 +93,13 @@ class MeetingController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function meeting_members($id){
+        $meeting_member=Meetingmember::with('emp_member','external')->where('meeting_id',$id)->get();
+        return response()->json(['con'=>true,'result'=>$meeting_member]);
+    }
+    public function minutes($id){
+        $minutes=Meetingminutes::where('meeting_id',$id)->get();
+        return response()->json(['con'=>true,'result'=>$minutes]);
     }
 }
