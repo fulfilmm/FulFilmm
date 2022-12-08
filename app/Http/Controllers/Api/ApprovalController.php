@@ -155,7 +155,7 @@ class ApprovalController extends Controller
                 $message->cc($details['cc']);
                 $message->subject($details['subject']);
             });
-            $this->addnotify($request->approve_id,'success','Add new approval '.$approval->approval_id.'.','approvals/'.$approval->id,Auth::guard('employee')->user()->id);
+            $this->addnotify($request->approve_id,'success','Add new approval '.$approval->approval_id.'.','approvals/'.$approval->id,Auth::guard('api')->user()->id);
         }
     }
 
