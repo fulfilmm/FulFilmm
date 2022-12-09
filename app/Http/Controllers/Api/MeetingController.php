@@ -20,10 +20,10 @@ class MeetingController extends Controller
     public function index()
     {
         $curren_user=Auth::guard('api')->user();
-        $mymeeting=Meeting::with('meeting_room')->where('meeting_creater',$curren_user->id)->get();
+        $mymeeting=Meeting::with('meeting_room','emp')->where('meeting_creater',$curren_user->id)->get();
         $member=Meetingmember::where('member_id',$curren_user->id)->get();
         foreach ($member as $mb){
-            $mt=Meeting::with('meeting_room')->where('id',$mb->meeting_id)->first();
+            $mt=Meeting::with('meeting_room','emp')->where('id',$mb->meeting_id)->first();
             array_push($mymeeting,$mt);
         }
         return response()->json(['con'=>true,'result'=>$mymeeting]);
