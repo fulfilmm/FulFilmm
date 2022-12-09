@@ -16,7 +16,7 @@ class BookRoomController extends Controller
         $booked_room=RoomBooking::with('bookroom','booking_emp')->where('start_time','>=',Carbon::now())->get();
         $all_booked=RoomBooking::with('bookroom','booking_emp')->get();
         $data=['room'=>$room,'bookedroom'=>$booked_room,'allbooked'=>$all_booked];
-        return view('room.booking',compact('data'));
+        return response()->json(['con'=>true,'result'=>$data]);
     }
     public function store(Request $request){
         $this->validate($request,[
