@@ -12,11 +12,8 @@ use Illuminate\Support\Facades\Auth;
 class BookRoomController extends Controller
 {
     public function index(){
-        $room=Room::all()->pluck('room_no','id')->all();
         $booked_room=RoomBooking::with('bookroom','booking_emp')->where('start_time','>=',Carbon::now())->get();
-        $all_booked=RoomBooking::with('bookroom','booking_emp')->get();
-        $data=['room'=>$room,'bookedroom'=>$booked_room,'allbooked'=>$all_booked];
-        return response()->json(['con'=>true,'result'=>$data]);
+        return response()->json(['con'=>true,'result'=>$booked_room]);
     }
     public function store(Request $request){
         $this->validate($request,[
@@ -51,5 +48,13 @@ class BookRoomController extends Controller
         }
 
 
+    }
+    public function allBooked(){
+        $all_booked=RoomBooking::with('bookroom','booking_emp')->get();
+        return response()->json(['con'=>true,'result'=>$all_booked]);
+    }
+    public function getRoom(){
+        $room=Room::all();
+        return response()->json(['con'=>true,'result'=>$room]);
     }
 }
