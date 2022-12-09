@@ -87,6 +87,7 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
     Route::resource('warehouse',\App\Http\Controllers\Api\WarehouseController::class);
     Route::get('meeting/member/{id}',[\App\Http\Controllers\Api\MeetingController::class,'meeting_members']);
     Route::get('meeting/minutes/{id}',[\App\Http\Controllers\Api\MeetingController::class,'minutes']);
+    Route::resource('bookroom',\App\Http\Controllers\Api\BookRoomController::class);
 
 
     Route::get('test',function (){
