@@ -39,12 +39,12 @@ class BookRoomController extends Controller
                 $book->created_emp=Auth::guard('employee')->user()->id;
                 $book->subject=$request->subject;
                 $book->save();
-                return redirect()->back()->with('success','Your room booking successful');
+                return response()->json(['con'=>'success','msg'=>'success']);
             }catch (\Exception $e){
-                return redirect()->back()->with('error',$e->getMessage());
+                return response()->json(['con'=>'error','msg'=>$e->getMessage()]);
             }
         }else{
-            return redirect()->back()->with('error','This room has been booked in your selected time! Please select another time');
+            return response()->json(['con'=>'invalid','msg'=>'This room has been booked in your selected time! Please select another time']);
         }
 
 

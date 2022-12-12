@@ -8,7 +8,7 @@
     <title>Document</title>
 </head>
 <body>
-
+{{\Carbon\Carbon::parse('2022-12-14 11:30 PM')}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vuetify/3.0.0-beta.3/vuetify.min.js" integrity="sha512-uFzdvm5//62wefbsZ83gddpk7hUKAI7NK9+4A/Dq6pUBaaWW3REJytElWuGwOiNXeA5UhOY6fp6h5xqmG35DHg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </body>
 </html>

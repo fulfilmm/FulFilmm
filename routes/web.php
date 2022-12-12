@@ -40,6 +40,7 @@ Route::namespace('Auth\Login')->prefix('employees')->as('employees.')->group(fun
     include('route/caradmin_route.php');
 
 Route::get('test', function () {
+
     return view('test');
 })->name('test');
 //Route::get('stockout/show/{id}',[StockTransactionController::class,'show_stockout'])->name('stockout.show');
