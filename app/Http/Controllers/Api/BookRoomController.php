@@ -36,7 +36,7 @@ class BookRoomController extends Controller
                 $book->endtime=Carbon::parse($end_time);
                 $book->date=$request->date;
                 $book->room_id=$request->room_id;
-                $book->created_emp=Auth::guard('employee')->user()->id;
+                $book->created_emp=Auth::guard('api')->user()->id;
                 $book->subject=$request->subject;
                 $book->save();
                 return response()->json(['con'=>'success','msg'=>'success']);
