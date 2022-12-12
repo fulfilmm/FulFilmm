@@ -28,8 +28,8 @@ class BookRoomController extends Controller
 //        dd($start_time);
 
         $booked_rooms=RoomBooking::where('room_id',$request->room_id)
-            ->whereBetween('start_time',[$start_time,$end_time])
-            ->whereBetween('endtime',[$start_time,$end_time])
+            ->orwherebetween('start_time',[$start_time,$end_time])
+            ->orwherebetween('endtime',[$start_time,$end_time])
             ->get();
 
         if(count($booked_rooms)==0){
