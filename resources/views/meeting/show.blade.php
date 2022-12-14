@@ -308,19 +308,20 @@
                                         <h4>Meeting Title{{$meeting->title}}({{$meeting->meeting_type}})</h4>
                                         <hr class="task-line">
                                         <div class="col-md-12">
-                                            @if($meeting->meeting_type=="Visual")
-                                                <div class=" task-head-title">Meeting Type
-                                                    : {{$meeting->meeting_type}}</div>
-                                                <div class=""><span>ID/Link : {{$meeting->link_id}}</span></div>
-                                                <div class="task-assignee">
-                                                    <span>Password : {{$meeting->password}}</span></div>
-                                            @else
+                                            @if($meeting->meeting_type=="Real")
                                                 <div class=" task-head-title">Meeting Type
                                                     : {{$meeting->meeting_type}}</div>
                                                 <div class=""><span>Address : {{$meeting->meeting_room->address}}</span>
                                                 </div>
                                                 <div class="task-assignee">
                                                     <span>Room No : {{$meeting->meeting_room->room_no}}</span></div>
+
+                                            @else
+                                                <div class=" task-head-title">Meeting Type
+                                                    : {{$meeting->meeting_type}}</div>
+                                                <div class=""><span>ID/Link : {{$meeting->link_id}}</span></div>
+                                                <div class="task-assignee">
+                                                    <span>Password : {{$meeting->password}}</span></div>
                                             @endif
                                         </div>
                                         <hr class="task-line">
