@@ -149,7 +149,7 @@ class MeetingController extends Controller
         $minutes=Meetingminutes::where('meeting_id',$id)->get();
         foreach ($minutes as $mu){
             if($mu->is_assign==1){
-                $assign=MinutesAssign::where('minutes_id',$mu->id)->first();
+                $assign=MinutesAssign::with('emp','dept')->where('minutes_id',$mu->id)->first();
                 $mu['assign']=$assign;
             }
         }
