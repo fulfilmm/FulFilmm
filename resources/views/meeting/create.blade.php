@@ -83,7 +83,7 @@
                                <label for="">Meeting Type</label>
                            <div class="form-group" id="meeting_type">
                            <input type="radio" class="ml-3" name="meeting_type"  value="Real" {{old('meeting_type')=="Real" ? 'checked' :""}} checked><label for="real" class="ml-2 mr-3"> Meeting</label>
-                           <input type="radio" class="ml3" name="meeting_type" value="Visual" {{old('meeting_type')=="Visual" ? 'checked' :""}}><label for="visual" class="ml-2"> Online Meeting</label>
+                           <input type="radio" class="ml3" name="meeting_type" value="Visual" {{old('meeting_type')=="Virtual" ? 'checked' :""}}><label for="visual" class="ml-2"> Online Meeting</label>
                            </div>
                            </div>
                            <div id="realtive_field">
