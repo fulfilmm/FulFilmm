@@ -8,6 +8,7 @@ use App\Models\ExternalMeetingMember;
 use App\Models\Meeting;
 use App\Models\Meetingmember;
 use App\Models\Meetingminutes;
+use App\Traits\NotifyTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Mail;
 
 class MeetingController extends Controller
 {
+    use NotifyTrait;
     /**
      * Display a listing of the resource.
      *
@@ -53,7 +55,6 @@ class MeetingController extends Controller
         $this->validate($request,[
             'title'=>'required',
             'meeting_type'=>'required',
-            'agender'=>'required'
         ]);
         $date=Carbon::parse( $request->date . ' ' . $request->start_time);
 //        dd($request->all());
