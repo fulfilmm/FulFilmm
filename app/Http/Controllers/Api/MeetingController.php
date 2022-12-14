@@ -204,8 +204,7 @@ class MeetingController extends Controller
                 array_push($meeting,$mymeeting);
             }
         }
-        $meeting_invite=[];
-        array_push($meeting_invite,$meeting);
+        $meeting_invite=$meeting;
         return response()->json(['con'=>true,'result'=>$meeting_invite]);
 
     }
