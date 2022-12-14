@@ -90,6 +90,7 @@ Route::middleware(['auth:api'])->prefix('auth')->group(function () {
     Route::resource('bookroom',\App\Http\Controllers\Api\BookRoomController::class);
     Route::get('allbooked',[\App\Http\Controllers\Api\BookRoomController::class,'allBooked']);
     Route::get('room',[\App\Http\Controllers\Api\BookRoomController::class,'getRoom']);
+    Route::get('invited/meeting',[\App\Http\Controllers\Api\MeetingController::class,'inviteMeeting']);
 
 
     Route::get('test',function (){

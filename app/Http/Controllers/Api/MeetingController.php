@@ -194,4 +194,17 @@ class MeetingController extends Controller
         }
 
     }
+    public function inviteMeeting(){
+        $curren_user=Auth::guard('api')->user();
+        $member=Meetingmember::where('member_id',$curren_user->id)->get();
+        $meeting=[];
+        foreach ($member as $mb){
+            $mymeeting=Meeting::with('meeting_room','emp')->where('id',$mb->id)->first();
+            if($mymeeting!=null){
+                array_push($meeting,$mymeeting);
+            }
+        }
+        return response()->json(['con'=>true,'result'=>$mymeeting]);
+
+    }
 }
