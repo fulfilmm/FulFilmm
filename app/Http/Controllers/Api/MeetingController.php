@@ -8,6 +8,7 @@ use App\Models\ExternalMeetingMember;
 use App\Models\Meeting;
 use App\Models\Meetingmember;
 use App\Models\Meetingminutes;
+use App\Models\MinutesAssign;
 use App\Traits\NotifyTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -146,6 +147,12 @@ class MeetingController extends Controller
     }
     public function minutes($id){
         $minutes=Meetingminutes::where('meeting_id',$id)->get();
+        foreach ($minutes as $mu){
+            if($mu->is_assign==1){
+                $assign=MinutesAssign::where('minutes_id',$mu->id)->first();
+                $mu['assign']=$assign;
+            }
+        }
         return response()->json(['con'=>true,'result'=>$minutes]);
     }
     public function invitemail($meeting,$receiver_emails,$members_name){
