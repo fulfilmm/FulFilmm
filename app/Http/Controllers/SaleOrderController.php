@@ -253,6 +253,7 @@ class SaleOrderController extends Controller
         }
         $unit_price=SellingUnit::all();
         $dis_promo=DiscountPromotion::where('sale_type','Whole Sale')->get();
+        $region=Auth::guard('employee')->user()->region_id;
         $prices =product_price::where('sale_type', 'Whole Sale')->where('active',1)->where('region_id',$region)->get();
 
 //          dd($session_data);
