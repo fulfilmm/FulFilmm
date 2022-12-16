@@ -195,7 +195,6 @@
                                         <th>Quantity</th>
                                         <th>Price</th>
                                         <th>Unit</th>
-                                        <th>Discount/Promotion</th>
                                         <th>Total</th>
                                         <th>Action</th>
                                         </thead>
@@ -430,8 +429,6 @@
                                             <td colspan="2" id="grand_total_div">
                                                 <input class="form-control" type="text" id="grand_total">
                                             </td>
-                                            <td></td>
-
                                         </tr>
                                         </tbody>
                                     </table>

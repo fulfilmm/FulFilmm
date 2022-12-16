@@ -216,7 +216,6 @@ class SaleOrderController extends Controller
     }
     public function edit($id){
         $edit_order=Order::where('id',$id)->first();
-        $prices =product_price::where('sale_type', 'Whole Sale')->where('active',1)->get();
         $variants=ProductVariations::with('product')->get();
         $taxes=products_tax::all();
         $allcustomers=Customer::all();
@@ -252,8 +251,9 @@ class SaleOrderController extends Controller
         }else{
             $session_data=Session::forget("order-".Auth::guard('employee')->user()->id);
         }
-        $unit_price=product_price::where('sale_type','Whole Sale')->get();
+        $unit_price=SellingUnit::all();
         $dis_promo=DiscountPromotion::where('sale_type','Whole Sale')->get();
+        $prices =product_price::where('sale_type', 'Whole Sale')->where('active',1)->where('region_id',$region)->get();
 
 //          dd($session_data);
         $data=['customer'=>$allcustomers,'items'=>$items,'grand_total'=>$grand_total,'id'=>$items[0]->creation_id,'products'=>$products,'quotation'=>$quotation, 'variants'=>$variants,'taxes'=>$taxes];
