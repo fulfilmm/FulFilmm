@@ -323,8 +323,9 @@
                                                                 'unit_price': price,
                                                                 "total": total,
                                                                 'sell_unit': sell_unit,
-                                                                'discount_pro': discount_pro
+                                                                'discount_pro': 0,
                                                             },
+
                                                             type: 'PUT',
                                                             url: "{{route('invoice_items.update',$order->id)}}",
                                                             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
