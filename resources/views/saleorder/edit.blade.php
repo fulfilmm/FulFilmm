@@ -297,11 +297,22 @@
                                                     });
                                                     $('#total').val(sum);
                                                     $('.select_update').change(function () {
-                                                        var product = $('#product_{{$order->id}}').val();
+                                                        @if($order->foc)
+                                                        $('#price_{{$order->id}}').val(0);
+                                                        $('#total_{{$order->id}}').val(0);
+                                                                @else
                                                         var quantity = $('#quantity_{{$order->id}}').val();
                                                         var price = $('#price_{{$order->id}}').val();
-                                                                {{--var dis_pro = $('#dis_pro{{$order->id}} option:selected').val();--}}
-                                                        var sub_total =$('#total_{{$order->id}}').val();
+                                                                {{--var dis_pro=$('#dis_pro{{$order->id}} option:selected').val();--}}
+                                                        var sub_total = quantity * price ?? 0;
+                                                        $('#total_{{$order->id}}').val(sub_total);
+                                                        var sum = 0;
+                                                        $('.total').each(function () {
+                                                            sum += parseFloat($(this).val());
+                                                        });
+                                                        $('#total').val(sum);
+                                                        @endif
+                                                        var product = $('#product_{{$order->id}}').val();
                                                         // var amount = (dis_pro / 100) * sub_total;
                                                         // var total = sub_total - amount;
                                                         var sell_unit = $('#unit{{$order->id}} option:selected').val();
