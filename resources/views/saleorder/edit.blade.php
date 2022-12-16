@@ -205,7 +205,7 @@
                                                     <input type="hidden" id="order_id_{{$order->id}}" value="{{$order->id}}">
                                                     <div class="row">
                                                         <input type="hidden" name="product_id" id="product_{{$order->id}}"
-                                                               value="{{$order->product_id}}">
+                                                               value="{{$order->variant->id}}">
                                                         @php
                                                             $img=json_decode($order->variant->image);
                                                         @endphp
@@ -296,51 +296,49 @@
                                                         sum += parseFloat($(this).val());
                                                     });
                                                     $('#total').val(sum);
-                                                    $('.select_update').change(function () {
-                                                        var unit_id = $('#unit{{$order->id}} option:selected').val();
-                                                        @foreach($prices as $item)
-                                                        if ('{{$order->variant_id}}' == '{{$item->product_id}}') {
-                                                            if (unit_id == "{{$item->unit_id}}") {
-                                                                var qty = $('#quantity_{{$order->id}}').val();
-                                                                if (parseInt("{{$item->min}}") <= qty) {
-                                                                    var price = "{{$item->price}}";
-                                                                }
 
+                                                });
+                                                $('.select_update').change(function () {
+                                                    var unit_id = $('#unit{{$order->id}} option:selected').val();
+                                                    @foreach($prices as $item)
+                                                    if ('{{$order->variant_id}}' == '{{$item->product_id}}') {
+                                                        if (unit_id == "{{$item->unit_id}}") {
+                                                            var qty = $('#quantity_{{$order->id}}').val();
+                                                            if (parseInt("{{$item->min}}") <= qty) {
+                                                                var price = "{{$item->price}}";
                                                             }
+
                                                         }
-                                                        @endforeach
-                                                        // alert(price);
-                                                        $('#price_{{$order->id}}').val(price);
+                                                    }
+                                                    @endforeach
+                                                    $('#price_{{$order->id}}').val(price??1);
 
-                                                        var quantity = $('#quantity_{{$order->id}}').val();
-                                                        var sub_total = quantity * price;
-                                                        $('#total_{{$order->id}}').val(sub_total);
-                                                        var sum = 0;
-                                                        $('.total').each(function () {
-                                                            sum += parseFloat($(this).val());
-                                                        });
-                                                        $('#total').val(sum);
-                                                        var product = $('#product_{{$order->id}}').val();
-                                                        var sell_unit = $('#unit{{$order->id}} option:selected').val();
-                                                        var discount_pro = $('#dis_pro{{$order->id}} option:selected').val();
-                                                        $.ajax({
-                                                            data: {
-                                                                "product_id": product,
-                                                                'quantity': quantity,
-                                                                'unit_price': price,
-                                                                "total": total,
-                                                                'sell_unit': sell_unit,
-                                                                'discount_pro': discount_pro
-                                                            },
-                                                            type: 'PUT',
-                                                            url: "{{route('invoice_items.update',$order->id)}}",
-                                                            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                                                            success: function (data) {
-                                                                console.log(data);
-
-                                                            }
-                                                        });
+                                                    var quantity = $('#quantity_{{$order->id}}').val();
+                                                    var sub_total = quantity * price;
+                                                    $('#total_{{$order->id}}').val(sub_total);
+                                                    var sum = 0;
+                                                    $('.total').each(function () {
+                                                        sum += parseFloat($(this).val());
                                                     });
+                                                    $('#total').val(sum);
+                                                    var sell_unit = $('#unit{{$order->id}} option:selected').val();
+                                                    $.ajax({
+                                                        data: {
+                                                            'quantity': quantity,
+                                                            'unit_price': price,
+                                                            "total": sub_total,
+                                                            'sell_unit': sell_unit,
+                                                            'discount_pro': 0,
+                                                            'type': 'order'
+                                                        },
+                                                        type: 'PUT',
+                                                        url: "{{route('invoice_items.update',$order->id)}}",
+                                                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                                                        success: function (data) {
+                                                            console.log(data);
+                                                        },
+                                                    });
+
                                                 });
                                                 $(document).ready(function () {
                                                     $(".update_item_{{$order->id}}").keyup(function () {
