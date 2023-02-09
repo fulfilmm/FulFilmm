@@ -18,7 +18,7 @@ class CreateQuotationItemsTable extends Migration
             $table->bigInteger('variant_id')->unsigned();
             $table->text("description")->nullable();
             $table->double("quantity");
-            $table->bigInteger('discount_id')->unsigned()->nullable();
+            $table->double('discount')->default(0.0);
             $table->double("price");
             $table->bigInteger('unit_id')->unsigned();
             $table->string("quotation_id");

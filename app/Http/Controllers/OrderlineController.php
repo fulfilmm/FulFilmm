@@ -99,13 +99,12 @@ class OrderlineController extends Controller
      */
     public function update(Request $request, $id)
     {
-//        dd($request->all());
         $order_line = QuotationItem::where("id", $id)->first();
         $order_line->quantity = $request->quantity;
         $order_line->price = $request->unit_price;
         $order_line->unit_id=$request->unit_id;
         $order_line->total_amount = $request->total;
-        $order_line->discount_id=$request->discount_pro==0?null:$request->discount_pro;
+        $order_line->discount=$request->discount_pro;
         $order_line->update();
     }
 

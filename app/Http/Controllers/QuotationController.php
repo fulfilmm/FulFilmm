@@ -67,13 +67,13 @@ class QuotationController extends Controller
             $grand_total = $grand_total + $orderline[$i]->total_amount;
         }
         $deals = deal::where('sale_stage', 'Qualified')->get();
-        $unit_price=SellingUnit::where('active',1)->get();
-        $prices =product_price::where('sale_type', 'Whole Sale')->where('active',1)->get();
+        $unit_price=SellingUnit::all();
+//        $prices =product_price::where('sale_type', 'Whole Sale')->where('active',1)->get();// not require price because of price is typed in quotation
         $aval_product=Stock::with('variant')->where('available','>',0)->get();
-        $dis_promo=DiscountPromotion::where('sale_type','Whole Sale')->get();
+//        $dis_promo=DiscountPromotion::where('sale_type','Whole Sale')->get();//dicount is typed in quotation
         $focs=Freeofchare::with('variant')->get();
         $type='Whole Sale';
-        return view("quotation.create", compact('deals','dis_promo' ,'focs',"allcustomers", "request_id", "orderline", 'grand_total', "companies", "unit_price", 'data','variants','taxes','aval_product','type','prices'));
+        return view("quotation.create", compact('deals' ,'focs',"allcustomers", "request_id", "orderline", 'grand_total', "companies", "unit_price", 'data','variants','taxes','aval_product','type'));
     }
     public function retailSale()
     {
@@ -98,12 +98,13 @@ class QuotationController extends Controller
             $grand_total = $grand_total + $orderline[$i]->total_amount;
         }
         $deals = deal::where('sale_stage', 'Qualified')->get();
-        $unit_price=product_price::where('sale_type','Retail Sale')->where('active',1)->get();
+//        $unit_price=product_price::where('sale_type','Retail Sale')->where('active',1)->get();// not require price because of price is typed in quotation
         $aval_product=Stock::with('variant')->where('available','>',0)->get();
-        $dis_promo=DiscountPromotion::where('sale_type','Retail Sale')->get();
+//        $dis_promo=DiscountPromotion::where('sale_type','Retail Sale')->get();//discount is typed in quotation
         $focs=Freeofchare::with('variant')->get();
         $type='Retail Sale';
-        return view("quotation.create", compact('deals','dis_promo' ,'focs',"allcustomers", "request_id", "orderline", 'grand_total', "companies", "unit_price", 'data','variants','taxes','aval_product','type'));
+        $unit_price=SellingUnit::all();
+        return view("quotation.create", compact('deals' ,'focs',"allcustomers", "request_id", "orderline", 'grand_total', "companies", 'data','variants','taxes','aval_product','type','unit_price'));
     }
 
     public function store(Request $request)
@@ -276,7 +277,8 @@ class QuotationController extends Controller
         $aval_product=Stock::with('variant')->where('available','>',0)->get();
         $dis_promo=DiscountPromotion::where('sale_type',$quotation->sale_type)->get();
         $focs=Freeofchare::with('variant')->get();
-        return view("quotation.edit", compact('grand_total', 'deals', "allcustomers", 'payterm', "companies", "products", "quotation", 'orderline','unit_price','taxes','aval_product','dis_promo','focs'));
+        $unit_price=SellingUnit::all();
+        return view("quotation.edit", compact('grand_total', 'deals', "allcustomers", 'payterm', "companies", "products", "quotation", 'orderline','unit_price','taxes','aval_product','dis_promo','focs','unit_price'));
     }
 
     public function update(Request $request, $id)

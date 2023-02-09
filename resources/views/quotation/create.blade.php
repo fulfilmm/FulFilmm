@@ -178,28 +178,20 @@
                                            <select name="" class="select2 select_update" id="unit{{$order->id}}" style="min-width: 100px">
                                                @foreach($unit_price as $item)
                                                    @if($order->variant->product_id==$item->product_id)
-                                                       <option value="{{$item->id}}" {{$item->id==$order->sell_unit?'selected':''}}>{{$item->unit}}</option>
+                                                       <option value="{{$item->id}}" {{$item->id==$order->unit_id?'selected':''}}>{{$item->unit}}</option>
                                                    @endif
                                                @endforeach
                                            </select>
                                        </td>
                                        <td style="min-width: 120px"><input type="text" id="edit_price_{{$order->id}}"
-                                                                           class="form-control update_item_{{$order->id}}" value="{{$order->price}}">
+                                                                           class="form-control update_item_{{$order->id}}" value="{{$order->price??0}}">
                                        </td>
                                        <td>
-                                           @if($order->foc)
-                                               <input type="text" class="form-control" value="FOC">
-                                           @else
-                                               <select name=""  id="dis_pro{{$order->id}}" class="form-control select_update">
-                                                   <option value="0">Select Discount</option>
-                                                   @foreach($dis_promo as $item)
-
-                                                       @if($order->variant_id==$item->variant_id)
-                                                           <option value="{{$item->rate}}" {{$item->rate==$order->discount_promotion?'selected':''}}>{{$item->rate}} %</option>
-                                                       @endif
-                                                   @endforeach
-                                               </select>
-                                           @endif
+                                           {{--@if($order->foc)--}}
+                                               {{--<input type="text" class="form-control" value="FOC">--}}
+                                           {{--@else--}}
+                                               <input type="text" class="form-control update_item_{{$order->id}}" id="dis_pro{{$order->id}}" value="{{$order->discount??0}}">
+                                           {{--@endif--}}
                                        </td>
                                        <td style="min-width: 120px;">
                                            <input type="number" name="total" id="edit_total_{{$order->id}}"
@@ -212,127 +204,36 @@
                                            @include('quotation.order_delete')
                                        </td>
                                        <script>
-                                           {{--@dd($prices);--}}
-                                           //order update
-                                           $(".update_item_{{$order->id}}").keyup(function () {
-                                               var unit_id=$('#unit{{$order->id}} option:selected').val();
-                                               @foreach($prices as $item)
-                                               if(unit_id=="{{$item->unit_id}}") {
-                                                   if('{{$order->variant->pricing_type}}'==1){
-                                                       var qty=$('#edit_quantity_{{$order->id}}').val();
-                                                       if(parseInt("{{$item->min}}") <= qty){
-                                                           var price = "{{$item->price}}";
-                                                           alert(price)
-                                                       }
-
-                                                   }else {
-                                                       if('{{$item->multi_price}}'== 0){
-
-                                                           var price = "{{$item->price}}";
-                                                           // alert(price)
-
-                                                       }
-                                                   }
-                                               }
-                                               @endforeach
-
-
-                                               @if($order->foc)
-                                               $('#price_{{$order->id}}').val(0);
-                                               $('#total_{{$order->id}}').val(0);
-                                               @else
-                                               var quantity = $('#edit_quantity_{{$order->id}}').val();
-                                               var dis_pro=$('#dis_pro{{$order->id}} option:selected').val();
-                                               var sub_total =quantity * price;
-                                               var amount=(dis_pro/100)*sub_total;
-                                               var total=sub_total-amount;
-                                               $('#total_{{$order->id}}').val(total);
-                                               var sum = 0;
-                                               $('.total').each(function() {
-                                                   sum += parseFloat($(this).val());
-                                               });
-                                               $('#total').val(sum);
-                                               @endif
-
-                                           });
                                            $(document).ready(function () {
-                                               var unit_id=$('#unit{{$order->id}} option:selected').val();
-                                               @foreach($prices as $item)
-                                               if(unit_id=="{{$item->unit_id}}") {
-                                                   if('{{$order->variant->pricing_type}}'==1){
-                                                       var qty=$('#edit_quantity_{{$order->id}}').val();
-                                                       if(parseInt("{{$item->min}}")<= qty){
-                                                           var price = "{{$item->price}}";
-                                                       }
-                                                   }else {
-                                                       if('{{$item->multi_price}}'== 0){
-
-                                                           var price = "{{$item->price}}";
-
-                                                       }
-                                                   }
-                                               }
-                                               @endforeach
-                                               @if($order->foc)
-                                               $('#edit_price_{{$order->id}}').val(0);
-                                               $('#edit_total_{{$order->id}}').val(0);
-                                               @else
-                                               $('#edit_price_{{$order->id}}').val(price);
-                                               var quantity = $('#edit_quantity_{{$order->id}}').val();
-                                               var dis_pro=$('#dis_pro{{$order->id}} option:selected').val();
-                                               var sub_total =parseInt(quantity) * price;
-                                               if(dis_pro==0){
-                                                   var amount=0;
-                                               }else {
-
-                                                   amount = (dis_pro / 100) * parseFloat(sub_total);
-                                               }
-                                               var total=sub_total-amount;
-                                               $('#edit_total_{{$order->id}}').val(total);
-                                               @endif
-                                               $('.select_update').change(function () {
-                                                   var unit_id=$('#unit{{$order->id}} option:selected').val();
-                                                   @foreach($unit_price as $item)
-                                                   if(unit_id=="{{$item->unit_id}}") {
-                                                       if('{{$order->variant->pricing_type}}'==1){
-                                                           var qty=$('#quantity_{{$order->id}}').val();
-                                                           if(parseInt("{{$item->min}}")<= qty){
-                                                               var price = "{{$item->price}}";
-                                                           }
-
-
-                                                       }else {
-                                                           if('{{$item->multi_price}}'== 0){
-
-                                                               var price = "{{$item->price}}";
-
-                                                           }
-                                                       }
-                                                   }
-                                                   @endforeach
+                                               $(".update_item_{{$order->id}}").keyup(function () {
                                                    @if($order->foc)
                                                    $('#edit_price_{{$order->id}}').val(0);
                                                    $('#edit_total_{{$order->id}}').val(0);
-                                                   @else
-                                                   $('#edit_price_{{$order->id}}').val(parseFloat(price));
-
+                                                           @else
                                                    var quantity = $('#edit_quantity_{{$order->id}}').val();
-                                                   var dis_pro=$('#dis_pro{{$order->id}} option:selected').val();
-                                                   var sub_total =parseFloat(quantity) * parseFloat(price);
-                                                   var amount=(dis_pro/100)*sub_total;
-                                                   var total=sub_total-amount;
+                                                   var price = $('#edit_price_{{$order->id}}').val();
+                                                   var dis_pro=$('#dis_pro{{$order->id}}').val();
+                                                   var sub_total =quantity * price;
+                                                   var total=sub_total-dis_pro;
                                                    $('#edit_total_{{$order->id}}').val(total);
-                                                   var sell_unit=$('#unit{{$order->id}} option:selected').val();
-                                                   var discount_pro=$('#dis_pro{{$order->id}} option:selected').val();
                                                    @endif
+                                               });
+                                           });
+                                           $(document).ready(function () {
+                                               $(".update_item_{{$order->id}}").keyup(function () {
+                                                   var quantity = $('#edit_quantity_{{$order->id}}').val();
+                                                   var price = $('#edit_price_{{$order->id}}').val();
+                                                   var dis_pro=$('#dis_pro{{$order->id}}').val();
+                                                   var sub_total =quantity * price;
+                                                   var total=sub_total-dis_pro;
+                                                   var sell_unit=$('#unit{{$order->id}} option:selected').val();
                                                    $.ajax({
                                                        data: {
                                                            "unit_id": sell_unit,
                                                            'quantity': quantity,
                                                            'unit_price': price,
                                                            "total": total,
-                                                           'sell_unit':sell_unit,
-                                                           'discount_pro':discount_pro
+                                                           'discount_pro':dis_pro
                                                        },
                                                        type: 'PUT',
                                                        url: "{{route('quotation_items.update',$order->id)}}",
@@ -357,43 +258,20 @@
                                                });
                                            });
                                            $(document).ready(function () {
-                                               $(".update_item_{{$order->id}}").keyup(function () {
-                                                   @if($order->foc)
-                                                   $('#edit_price_{{$order->id}}').val(0);
-                                                   $('#edit_total_{{$order->id}}').val(0);
-                                                           @else
+                                               $("#unit{{$order->id}}").change(function () {
                                                    var quantity = $('#edit_quantity_{{$order->id}}').val();
                                                    var price = $('#edit_price_{{$order->id}}').val();
-                                                   var dis_pro=$('#dis_pro{{$order->id}} option:selected').val();
+                                                   var dis_pro=$('#dis_pro{{$order->id}}').val();
                                                    var sub_total =quantity * price;
-                                                   if(dis_pro==0){
-                                                       var amount=0;
-                                                   }else {
-
-                                                       amount = (dis_pro / 100) * parseFloat(sub_total);
-                                                   }
-                                                   var total=sub_total-amount;
-                                                   $('#edit_total_{{$order->id}}').val(total);
-                                                   @endif
-                                               });
-                                           });
-                                           $(document).ready(function () {
-                                               $(".update_item_{{$order->id}}").keyup(function () {
-                                                   var quantity = $('#edit_quantity_{{$order->id}}').val();
-                                                   var price = $('#edit_price_{{$order->id}}').val();
-                                                   var dis_pro=$('#dis_pro{{$order->id}} option:selected').val();
-                                                   var sub_total =quantity * price;
-                                                   var amount=(dis_pro/100)*sub_total;
-                                                   var total=sub_total-amount;
+                                                   var total=sub_total-dis_pro;
                                                    var sell_unit=$('#unit{{$order->id}} option:selected').val();
-                                                   var discount_pro=$('#dis_pro{{$order->id}} option:selected').val();
                                                    $.ajax({
                                                        data: {
                                                            "unit_id": sell_unit,
                                                            'quantity': quantity,
                                                            'unit_price': price,
                                                            "total": total,
-                                                           'discount_pro':discount_pro
+                                                           'discount_pro':dis_pro
                                                        },
                                                        type: 'PUT',
                                                        url: "{{route('quotation_items.update',$order->id)}}",

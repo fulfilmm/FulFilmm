@@ -69,9 +69,8 @@
                             <th>Quantity</th>
                             <th>Unit</th>
                             <th>Price</th>
-                            <th>Discount/Promotion</th>
+                            <th>Discount</th>
                             <th>Total</th>
-                            <th>Action</th>
                             </thead>
                             <tbody id="tbody">
                             @foreach($orderline as $order)
@@ -97,7 +96,7 @@
                                     <td>{{$order->quantity}}</td>
                                     <td>{{$order->unit->unit}}</td>
                                     <td>{{$order->price}}</td>
-                                    <td>{{$order->discount->rate??'N/A'}}</td>
+                                    <td>{{$order->discount}}</td>
                                     <td>{{$order->total_amount}}
                                         <input type="hidden" class="total" value="{{$order->total_amount}}">
                                     </td>
@@ -107,29 +106,29 @@
                             <tr>
                                 <td></td>
                                 <td></td>
-                                <th colspan="2">Total</th>
+                                <th colspan="4">Total</th>
 
-                                <td>{{$quotation->total}}</td>
+                                <td colspan="2">{{$quotation->total}}</td>
                             </tr>
                             <tr>
                                 <td></td>
                                 <td></td>
-                                <th colspan="2">Discount</th>
+                                <th colspan="4">Discount</th>
 
-                                <td>{{$quotation->discount}}</td>
+                                <td colspan="2">{{$quotation->discount}}</td>
                             </tr>
                             <tr>
                                 <td></td>
                                 <td></td>
-                                <th colspan="2">Tax (Rate %)</th>
-                                <td>{{$quotation->tax_amount}} ({{$quotation->tax->rate}} %)</td>
+                                <th colspan="4">Tax (Rate %)</th>
+                                <td colspan="2">{{$quotation->tax_amount}} ({{$quotation->tax->rate}} %)</td>
                             </tr>
                             <tr>
                                 <td></td>
                                 <td></td>
-                                <th colspan="2">Grand Total</th>
+                                <th colspan="4">Grand Total</th>
 
-                                <td>{{$quotation->grand_total}}</td>
+                                <td colspan="2">{{$quotation->grand_total}}</td>
                             </tr>
                         </table>
                     </div>
