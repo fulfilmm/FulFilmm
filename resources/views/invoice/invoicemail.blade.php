@@ -109,12 +109,12 @@
 <div class="invoice-box">
     <table cellpadding="0" cellspacing="0">
         <tr class="top">
-            <td colspan="6">
+            <td colspan="9">
                 <table>
                     <tr>
                         <td class="title">
-                            <img src="{{$company!=null ? url(asset('/img/profiles/'.$company->logo)): url(asset('/img/profiles/avatar-01.jpg'))}}"
-                                 style="max-width:200px;max-height: 200px"/>
+                            <img src="{{$company!=null ? url(asset('/img/profiles/'.$company->logo)): url(asset('/img/profiles/avatar-01.jpg'))}}" width="100" height="100"
+                                 style="max-width:100px;max-height: 100px"/>
 
                         </td>
                         <td>
@@ -123,14 +123,16 @@
                             <span>{{$company->address??''}}</span><br>
                             <span>{{$company->email??''}}</span>
                         </td>
-                        <td style="float: right">
-                            Invoice #: {{$invoice->invoice_id}}<br/>
-                            Created: {{\Illuminate\Support\Carbon::parse($invoice->invoice_date)->toFormattedDateString()}}
-                            <br/>
-                            Due: {{\Illuminate\Support\Carbon::parse($invoice->due_date)->toFormattedDateString()}}
-                        </td>
                     </tr>
                 </table>
+            </td>
+        </tr>
+        <tr>
+            <td style="float: right">
+                Invoice #: {{$invoice->invoice_id}}<br/>
+                Created: {{\Illuminate\Support\Carbon::parse($invoice->invoice_date)->toFormattedDateString()}}
+                <br/>
+                Due: {{\Illuminate\Support\Carbon::parse($invoice->due_date)->toFormattedDateString()}}
             </td>
         </tr>
         <tr class="information">
@@ -161,13 +163,15 @@
         <tr class="heading">
             <td style="min-width: 200px;">Payment Method</td>
             <td></td>
-            <td>:</td>
             <td></td>
             <td></td>
             <td></td>
-            <td>{{$invoice->payment_method}}</td>
+            <td></td>
+            <td colspan="3">{{$invoice->payment_method}}</td>
         </tr>
         <tr>
+            <td></td>
+            <td></td>
             <td></td>
             <td></td>
             <td></td>
