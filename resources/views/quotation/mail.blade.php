@@ -214,11 +214,6 @@
                 <hr>
             </td>
         </tr>
-        <tr>
-            <td colspan="9">
-                <hr>
-            </td>
-        </tr>
         <tr class="total" style="border: 1px">
             <td colspan="6"></td>
             <th colspan="2" style="text-align: left">Grand Total</th>
