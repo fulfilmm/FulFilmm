@@ -130,7 +130,7 @@
             </td>
         </tr>
         <tr>
-            <td style="alignment: right">
+            <td colspan="9" style="alignment: right">
                 Invoice #: {{$invoice->invoice_id}}<br/>
                 Invoice Date: {{\Illuminate\Support\Carbon::parse($invoice->invoice_date)->toFormattedDateString()}}
                 <br/>
@@ -145,63 +145,52 @@
                 <span style="margin-right: 20px;">Name :</span><strong>{{$invoice->customer->name}}</strong><br/>
                 <span style="margin-right: 20px;">Email : </span><strong>{{$invoice->customer->email}}</strong><br>
                 <span style="margin-right: 20px;">Phone :</span><strong>{{$invoice->customer->phone}}</strong><br>
-                <span style="margin-right: 20px;">Address :</span><strong>{{$invoice->customer->address}}</strong>
+                <span style="margin-right: 20px;">Address :</span><strong>{{$invoice->customer->address}}</strong><br><br><br>
             </td>
         </tr>
 
         <tr class="heading">
-            <td style="min-width: 200px;">Payment Method</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td colspan="6">Payment Method</td>
             <td colspan="3">{{$invoice->payment_method}}</td>
         </tr>
         <tr>
-            <td>Invoice Items</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td colspan="9"><br><br><h3>Invoice Items</h3></td>
+
         </tr>
         <tr class="heading">
-            <th>Item</th>
+            <th colspan="3">Item</th>
             <th>Quantity</th>
-            <th style="min-width: 80px;">Price</th>
+            <th >Price</th>
             <th colspan="2">Unit</th>
-            <th colspan="2">Discount</th>
-            <th colspan="2">Total</th>
+            <th >Discount</th>
+            <th>Total</th>
         </tr>
         @foreach($orderItem as $item)
             <tr class="item">
-                <td>{{$item->variant->product_name}}</td>
+                <td colspan="3">{{$item->variant->product_name}}</td>
                 <td>{{$item->quantity}}</td>
                 <td>{{$item->unit_price}}</td>
                 <td colspan="2">{{$item->unit->unit}}</td>
-                <td colspan="2">{{$item->discount_promotion}}%</td>
-                <td colspan="2">{{$item->total}}</td>
+                <td>{{$item->discount_promotion}}%</td>
+                <td>{{$item->total}}</td>
             </tr>
         @endforeach
         <tr class="total">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <th colspan="2">Total:</th>
+            <th colspan="7" style="text-align: right">Total:</th>
             <td colspan="2">{{$invoice->grand_total}}</td>
         </tr>
         <tr>
-            <td style="text-align: left">
-                <h5>Invoice Issue By</h5>
-                <strong>{{$invoice->employee->name}}</strong><br/>
-               <strong>{{$invoice->employee->email}}</strong><br/>
-                <strong>{{$invoice->employee->phone}}</strong><br/>
+            <td colspan="6">
+            </td>
+            <td colspan="3">
+                <h5 align="center">
+                    <strong style="text-align:right">Invoice Issue By,</strong><br>
+                    <strong>{{$invoice->employee->name}}</strong><br/>
+                    <strong>{{$invoice->employee->phone}}</strong><br/>
+                    <strong>{{$invoice->employee->email}}</strong><br/>
+
+                </h5>
+
             </td>
         </tr>
     </table>
@@ -212,7 +201,7 @@
                 <span>Facebook Page : {{$company->facebook_page??'www.facebook.com/...'}}</span> |
                 <span>Linkedin : {{$company->linkedin??'www.linkedin.com/...'}}</span> <br>
                 <span>Phone :{{$company->phone??'09*********'}}</span> |
-                <span>Address : {{$company->address??'......'}}</span> <br>
+                <span>Address : {{$company->address??'......'}}</span>
             </td>
         </tr>
     </table>
