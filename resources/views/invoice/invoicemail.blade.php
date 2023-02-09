@@ -130,11 +130,17 @@
             </td>
         </tr>
         <tr>
+            <td colspan="9">
+                <hr></td>
+        </tr>
+        <tr>
             <td colspan="9" style="alignment: right">
-                Invoice #: {{$invoice->invoice_id}}<br/>
-                Invoice Date: {{\Illuminate\Support\Carbon::parse($invoice->invoice_date)->toFormattedDateString()}}
-                <br/>
-                Due Date: {{\Illuminate\Support\Carbon::parse($invoice->due_date)->toFormattedDateString()}}
+                <h5 align="right">
+                    Invoice #: {{$invoice->invoice_id}}<br/>
+                    Invoice Date: {{\Illuminate\Support\Carbon::parse($invoice->invoice_date)->toFormattedDateString()}}
+                    <br/>
+                    Due Date: {{\Illuminate\Support\Carbon::parse($invoice->due_date)->toFormattedDateString()}}
+                </h5>
             </td>
         </tr>
         <tr class="information">
@@ -157,7 +163,7 @@
             <td colspan="9"><br><br><h3>Invoice Items</h3></td>
 
         </tr>
-        <tr class="heading">
+        <tr class="heading" style="border: 1">
             <th colspan="3">Item</th>
             <th>Quantity</th>
             <th >Price</th>
@@ -166,7 +172,7 @@
             <th>Total</th>
         </tr>
         @foreach($orderItem as $item)
-            <tr class="item">
+            <tr class="item" style="border: 1">
                 <td colspan="3">{{$item->variant->product_name}}</td>
                 <td>{{$item->quantity}}</td>
                 <td>{{$item->unit_price}}</td>
@@ -175,9 +181,35 @@
                 <td>{{$item->total}}</td>
             </tr>
         @endforeach
-        <tr class="total">
-            <th colspan="7" style="text-align: right">Total:</th>
-            <td colspan="2">{{$invoice->grand_total}}</td>
+        <tr class="total" style="border: 1">
+            <th colspan="8" style="text-align: right">Total:</th>
+            <td >{{$invoice->total}}</td>
+        </tr>
+        <tr class="total" style="border: 1">
+            <th colspan="8" style="text-align: right">Discount:</th>
+            <td >{{$invoice->discount}}</td>
+        </tr>
+        <tr class="total" style="border: 1">
+            <th colspan="8" style="text-align: right">Tax ({{$invoice->tax->rate}} %):</th>
+            <td >{{$invoice->tax_amount}}</td>
+        </tr>
+        <tr class="total" style="border: 1">
+            <th colspan="8" style="text-align: right">Delivery Fee:</th>
+            <td >{{$invoice->delivery_fee}}</td>
+        </tr>
+        <tr class="total" style="border: 1">
+            <th colspan="8" style="text-align: right">Delivery Fee:</th>
+            <td >{{$invoice->grand_total}}</td>
+        </tr>
+        <tr>
+            <td colspan="9">
+                Note:
+            </td>
+        </tr>
+        <tr>
+            <td colspan="9">
+                {{$invoice->other_information}}
+            </td>
         </tr>
         <tr>
             <td colspan="6">

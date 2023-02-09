@@ -51,14 +51,11 @@
                                     </ul>
                                 </div>
                                 <div class="col-sm-4 col-lg-4 col-xl-4 m-b-20 offset-lg-2 offset-sm-2 offset-xl-2">
-                                    <h5>Invoice From:</h5>
+                                    <h5>Invoice Issued By:</h5>
                                     <ul class="list-unstyled">
-                                        <li><span>Company Name&nbsp:&nbsp</span><strong>{{$company->name??''}}</strong></li>
-                                        <li><span>{{isset($company->address)?'Address :':''}}</span><strong>{{$company->address??''}}</strong></li>
-                                        <li><span>{{isset($company->phone)?'Phone :':''}}</span><strong>{{$company->phone??''}}</strong></li>
-                                        <li><span>{{isset($company->email)?'Email :':''}}</span><strong>{{$company->address??''}}</strong></li>
-                                        <li><span>{{isset($company->web_link)?'Website :':''}}</span><strong>{{$company->web_link??''}}</strong></li>
-
+                                        <li><strong>{{$detail_inv->employee->name??''}}</strong></li>
+                                        <li><strong>{{$detail_inv->employee->phone??''}}</strong></li>
+                                        <li><strong>{{$detail_inv->email??''}}</strong></li>
                                     </ul>
                                 </div>
                             </div>
