@@ -191,7 +191,7 @@
                                 @endif
                                 @if($petty_cash->status!='Clearance')
                                     <tr>
-                                        <td><input type='checkbox' class='case'/></td>
+                                        <td><input type='checkbox' class='case' /></td>
                                         <td><input type='date' class="form-control form-control-sm" id='product'
                                                    name='date[]'/></td>
                                         <td><input type='text' class="form-control form-control-sm" id='varaiant'

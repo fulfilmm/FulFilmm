@@ -207,6 +207,9 @@ class PettyCashController extends Controller
     public function item_delete(Request $request){
         foreach ($request->id as $id){
             $item=PettyCashExpItem::where('id',$id)->firstOrFail();
+            $pettyCash=PettyCash::where('id',$item->petty_cash_id)->first();
+            $pettyCash->remaining+=$item->amount;
+            $pettyCash->update();
             $item->delete();
         }
         return response()->json(['status'=>'Successful']);

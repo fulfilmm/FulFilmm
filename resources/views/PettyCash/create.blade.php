@@ -83,7 +83,7 @@
                                 <select name="manager_id" id="approver" class="form-control">
                                     @foreach($employees as $emp)
                                       @if($user->department_id==$emp->department_id)
-                                            @if($emp->role->name=='CEO'||$emp->role->name=='Super Admin'||$emp->role->name=='Sales Manager'||$emp->role->name=='Finance Manager'||
+                                            @if($emp->role->name=='CEO'||$emp->role->name=='Sales Manager'||$emp->role->name=='Finance Manager'||
                                         $emp->role->name=='HR Manager'||$emp->role->name=='Stock Manager'||
                                         $emp->role->name=='Customer Service Manager'|| $emp->role->name=='Car Admin')
                                                 <option value="{{$emp->id}}">{{$emp->name}}</option>
