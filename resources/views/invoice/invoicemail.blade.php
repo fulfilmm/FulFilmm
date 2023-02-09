@@ -185,11 +185,6 @@
                 <td>{{$item->discount_promotion}}%</td>
                 <td>{{$item->total}}</td>
             </tr>
-        <tr>
-            <td colspan="9">
-                <hr>
-            </td>
-        </tr>
         @endforeach
         <tr class="total" style="border:1px">
             <td colspan="6"></td>
