@@ -118,10 +118,10 @@
 
                         </td>
                         <td>
-                            <span>{{$company->name??''}}</span><br>
-                            <span>{{$company->phone??''}}</span><br>
-                            <span>{{$company->address??''}}</span><br>
-                            <span>{{$company->email??''}}</span>
+                            <h3 align="center">{{$company->name??''}}</h3><br>
+                            <h5 align="center">{{$company->phone??''}}</h5><br>
+                            <h6 align="center">{{$company->address??''}}</h6><br>
+                            <h6 align="center">{{$company->email??''}}</h6>
                         </td>
                     </tr>
                 </table>
@@ -137,26 +137,13 @@
         </tr>
         <tr class="information">
             <td colspan="9">
-                <table>
-                    <tr>
-                        <td colspan="9">
-                            <h5>Invoice From :</h5>
-                            <span style="margin-right: 20px;"> Name :</span><strong>{{$invoice->employee->name}}</strong><br/>
-                            <span style="margin-right: 20px;"> Email :</span><strong>{{$invoice->employee->email}}</strong><br/>
-                            <span style="margin-right: 20px;"> Phone :</span><strong>{{$invoice->employee->phone}}</strong><br/>
-                            <span style="margin-right: 20px;">Address :</span><strong>{{$invoice->employee->address}}</strong><br/>
-                        </td>
-                        <td style="float: right;">
-                            <h5>Invoice To :</h5>
-                            <span style="margin-right: 20px;">Company:</span><strong>{{$invoice->customer->company->name}}</strong>
-                            <br/>
-                            <span style="margin-right: 20px;">Name :</span><strong>{{$invoice->customer->name}}</strong><br/>
-                            <span style="margin-right: 20px;">Email : </span><strong>{{$invoice->customer->email}}</strong><br>
-                            <span style="margin-right: 20px;">Phone :</span><strong>{{$invoice->customer->phone}}</strong><br>
-                            <span style="margin-right: 20px;">Address :</span><strong>{{$invoice->customer->address}}</strong>
-                        </td>
-                    </tr>
-                </table>
+                <h5>Invoice To :</h5>
+                <span style="margin-right: 20px;">Company:</span><strong>{{$invoice->customer->company->name}}</strong>
+                <br/>
+                <span style="margin-right: 20px;">Name :</span><strong>{{$invoice->customer->name}}</strong><br/>
+                <span style="margin-right: 20px;">Email : </span><strong>{{$invoice->customer->email}}</strong><br>
+                <span style="margin-right: 20px;">Phone :</span><strong>{{$invoice->customer->phone}}</strong><br>
+                <span style="margin-right: 20px;">Address :</span><strong>{{$invoice->customer->address}}</strong>
             </td>
         </tr>
 
@@ -170,7 +157,7 @@
             <td colspan="3">{{$invoice->payment_method}}</td>
         </tr>
         <tr>
-            <td></td>
+            <td>Invoice Items</td>
             <td></td>
             <td></td>
             <td></td>
@@ -184,18 +171,18 @@
             <th>Item</th>
             <th>Quantity</th>
             <th style="min-width: 80px;">Price</th>
-            <th>Unit</th>
-            <th>Discount</th>
-            <th>Total</th>
+            <th colspan="2">Unit</th>
+            <th colspan="2">Discount</th>
+            <th colspan="2">Total</th>
         </tr>
         @foreach($orderItem as $item)
             <tr class="item">
                 <td>{{$item->variant->product_name}}</td>
                 <td>{{$item->quantity}}</td>
                 <td>{{$item->unit_price}}</td>
-                <td>{{$item->unit->unit}}</td>
-                <td>{{$item->discount_promotion}}%</td>
-                <td>{{$item->total}}</td>
+                <td colspan="2">{{$item->unit->unit}}</td>
+                <td colspan="2">{{$item->discount_promotion}}%</td>
+                <td colspan="2">{{$item->total}}</td>
             </tr>
         @endforeach
         <tr class="total">
@@ -204,8 +191,17 @@
             <td></td>
             <td></td>
             <td></td>
-            <th>Total:</th>
-            <td>{{$invoice->grand_total}}</td>
+            <th colspan="2">Total:</th>
+            <td colspan="2">{{$invoice->grand_total}}</td>
+        </tr>
+        <tr>
+            <td style="float: right;">
+                <h5>Invoice Issue By</h5>
+                <span style="margin-right: 20px;"> Name :</span><strong>{{$invoice->employee->name}}</strong><br/>
+                <span style="margin-right: 20px;"> Email :</span><strong>{{$invoice->employee->email}}</strong><br/>
+                <span style="margin-right: 20px;"> Phone :</span><strong>{{$invoice->employee->phone}}</strong><br/>
+                <span style="margin-right: 20px;">Address :</span><strong>{{$invoice->employee->address}}</strong><br/>
+            </td>
         </tr>
     </table>
     <table style="alignment: left" class="footer">
