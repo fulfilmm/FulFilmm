@@ -164,10 +164,11 @@
         <tr class="heading" style="border: 1px">
             <th colspan="3">Item</th>
             <th>Quantity</th>
-            <th >Price</th>
             <th colspan="2">Unit</th>
-            <th >Discount</th>
-            <th>Total</th>
+            <th style="text-align: right" >Price</th>
+
+            <th style="text-align: right">Discount</th>
+            <th style="text-align: right">Total</th>
         </tr>
         <tr>
             <td colspan="9">
@@ -178,8 +179,8 @@
             <tr class="item">
                 <td colspan="3">{{$item->variant->product_name}}</td>
                 <td>{{$item->quantity}}</td>
-                <td style="text-align: right">{{$item->price}}</td>
                 <td colspan="2">{{$item->unit->unit}}</td>
+                <td style="text-align: right">{{$item->price}}</td>
                 <td style="text-align: right">{{$item->discount}}</td>
                 <td style="text-align: right">{{$item->total_amount}}</td>
             </tr>
