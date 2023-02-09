@@ -442,6 +442,7 @@ class CustomerController extends Controller
                 $password = null;
             }
             $data = [
+                'payment_term'=>$request->payment_term,
                 'profile' => isset($request->profile_img) ? $input['imagename'] : $request->oldpic,
                 'name' => $request->name,
                 'phone' => $request->phone,
