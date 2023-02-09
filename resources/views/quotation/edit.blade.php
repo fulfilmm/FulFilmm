@@ -146,6 +146,7 @@
                                           <div class="col-md-9 ml-2">
                                               <div>
                                                   <span class="font-weight-bold">{{$order->variant->product_name}}</span>
+                                                  <p>{{$order->variant->variant??''}}</p>
                                               </div>
                                               <p class="m-0 mt-1">
                                                   {!!$order->description!!}

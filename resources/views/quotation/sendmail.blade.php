@@ -14,12 +14,17 @@
                         <div class="col-md-8 col-6">
                             <div class="row">
                                 <div class="col-10 col-10 text-right">
-                                    <span class="float-right">{{$company->name}}</span><br>
+                                    <span class="float-right">{{$company->name??''}}</span><br>
                                     <span>{{$company->address ?? ''}}</span>
                                 </div>
                                 <div class="col-md-2 col-2">
-                                    <img src="{{url(asset('/img/profiles/'.$company->logo))}}" width="40px"
-                                         height="40px">
+                                    @if(isset($company->logo))
+                                        <img src="{{url(asset('/img/profiles/'.$company->logo))}}" width="40px"
+                                             height="40px">
+                                        @else
+                                        <img src="" width="40px"
+                                             height="40px" alt="Company Logo">
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -27,24 +32,30 @@
                 </div>
                 <div class="col-12">
                     <strong class="ml-3"></strong>
-                    <div class="row  mt-3">
-                        <div class="col-md-2 col-3 offset-md-6  ">
-                            <label for="">Expiration </label>
-                        </div>
-                        <div class="col-md-4 col-9">
-                            <div class="form-group">
-                                <span>: {{$quotation->exp_date}}</span>
-                                <input type="hidden" value="{{$quotation->exp_date}}" name="exp">
+                    <div class="row">
+                        <div class="col-4 offset-md-8">
+                            <div class="row">
+                                <div class="col-5">
+                                    <label for="">Expiration </label>
+                                </div>
+                                <div class="col-7">
+                                    <div class="form-group">
+                                        <span>: {{\Carbon\Carbon::parse($quotation->exp_date)->toFormattedDateString()}}</span>
+                                        <input type="hidden" value="{{$quotation->exp_date}}" name="exp">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row mb-3">
-                        <div class="col-md-2 col-4 offset-md-6 ">
-                            <label for="">PaymentTerms</label>
-                        </div>
-                        <div class="col-md-4 col-6">
-                            <span> : {{$quotation->payment_term}}</span>
-                            <input type="hidden" value="{{$quotation->payment_term}}" name="pay_term">
+                    <div class="col-4 float-right">
+                        <div class="row">
+                            <div class="col-5">
+                                <label for="">PaymentTerms</label>
+                            </div>
+                            <div class="col-7">
+                                <span> : {{$quotation->payment_term}}</span>
+                                <input type="hidden" value="{{$quotation->payment_term}}" name="pay_term">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -53,22 +64,23 @@
                     <table class="table">
                         <thead>
                         <th scope="col">Product</th>
-                        <th>Description</th>
                         <th>Quantity</th>
-                        <th>Unit Price</th>
-                        <th>Taxes(%)</th>
-                        <th>Total(Include Tax)</th>
+                        <th>Unit</th>
+                        <th>Price</th>
+                        <th>Discount</th>
+                        <th>Total</th>
                         </thead>
                         <tbody id="tbody">
                         @foreach($orderline as $order)
                             <tr>
                                 <td>
-                                    {{$order->product->name}}
+                                    {{$order->variant->product_name}}
+                                    <p>{{$order->variant->variant??''}}</p>
                                 </td>
-                                <td>{{$order->description}}</td>
                                 <td>{{$order->quantity}}</td>
+                                <td>{{$order->unit->unit}}</td>
                                 <td>{{$order->price}}</td>
-                                <td>{{$order->tax}}%</td>
+                                <td>{{$order->discount}}</td>
                                 <td>{{$order->total_amount}}
                                     <input type="hidden" class="total" value="{{$order->total_amount}}">
                                 </td>
@@ -78,11 +90,29 @@
                         <tr>
                             <td></td>
                             <td></td>
+                            <th colspan="3">Total</th>
+
+                            <td colspan="2">{{$quotation->total}}</td>
+                        </tr>
+                        <tr>
                             <td></td>
                             <td></td>
-                            <th>Grand Total</th>
-                            <td>{{$grand_total}}
-                                <input type="hidden" name="grand_total" value="{{$grand_total}}"></td>
+                            <th colspan="3">Discount</th>
+
+                            <td colspan="2">{{$quotation->discount}}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <th colspan="3">Tax (Rate %)</th>
+                            <td colspan="2">{{$quotation->tax_amount}} ({{$quotation->tax->rate}} %)</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <th colspan="3">Grand Total</th>
+
+                            <td colspan="2">{{$quotation->grand_total}}</td>
                         </tr>
                     </table>
                 </div>
@@ -98,15 +128,15 @@
                 </div>
                 <div class="card-footer">
                     <div class="col-12 text-center">
-                        {{$company->web_link}}
+                        {{$company->web_link??''}}
                     </div>
                     <div class="col-12 text-center">
-                        {{$company->email ? 'Email: '.$company->email:''}}
+                        {{isset($company->email) ? 'Email: '.$company->email.',':''}}
                     </div>
                     <div class="col-12 text-center">
-                        {{$company->phone ?'Phone:'.$company->phone:''}}
-                        , {{$company->mobile_phone ?'Mobile Phone:'.$company->mobile_phone:''}}
-                        , {{$company->fax ?'Fax:'.$company->fax:''}}
+                        {{isset($company->phone) ?'Phone:'.$company->phone.',':''}}
+                         {{isset($company->mobile_phone) ?'Mobile Phone:'.$company->mobile_phone.',':''}}
+                        {{isset($company->fax) ?'Fax:'.$company->fax:''}}
                     </div>
                 </div>
             </div>
@@ -116,7 +146,7 @@
             <input type="hidden" name="client_name" value="{{$quotation->customer->name}}">
             <div class="offset-md-9 mt-3">
 
-                <input type="hidden" value="{{$quotation->quotation_id}}" name="id">
+                <input type="hidden" value="{{$quotation->id}}" name="id">
             </div>
             <div class="col-md-12 card mt-2">
                 <div class="form-group mt-3">

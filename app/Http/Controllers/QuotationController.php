@@ -226,16 +226,20 @@ class QuotationController extends Controller
         }
 
         $orderline = QuotationItem::with('product')->where("quotation_id", $request->id)->get();
-
+        $quotation= Quotation::with("customer", "sale_person",'tax')->where('id', $request->id)->firstOrFail();
         $details = [
             'email' => $request->email,
             'subject' => $request->subject,
-            'clientname' => $request->client_name,
-            'id' => $request->id,
-            'total' => $request->grand_total,
-            'payterm' => $request->pay_term,
-            'exp' => $request->exp,
-            'term_and_con' => $request->term_condition,
+            'clientname' => $quotation->customer->name,
+            'id' => $quotation->quotation_id,
+            'total' => $quotation->total,
+            'grand_total'=>$quotation->grand_total,
+            'payterm' => $quotation->pay_term,
+            'discount'=>$quotation->discount,
+            'tax'=>$quotation->tax_amount,
+            'tax_rate'=>$quotation->rate,
+            'exp' => $quotation->exp_date,
+            'term_and_con' => $quotation->terms_conditions,
             'company' => $request->company,
             'cc' => $request->email_cc,
             'orders' => $orderline,

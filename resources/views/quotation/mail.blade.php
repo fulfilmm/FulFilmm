@@ -98,10 +98,16 @@
                                                                     <tr>
                                                                         <td align='left'>
                                                                             <a href='#'>
-                                                                                <img align='left' alt='{{$company->logo}}' height='40' padding='5px' src="{{asset('/img/profiles'.$company->logo)}}" width='40' />
+                                                                                @if(isset($company->logo))
+                                                                                    <img src="{{url(asset('/img/profiles/'.$company->logo))}}" width="40px"
+                                                                                         height="40px">
+                                                                                @else
+                                                                                    <img src="" width="40px"
+                                                                                         height="40px" alt="Company Logo">
+                                                                                @endif
                                                                             </a>
                                                                             <h4 style="margin-left: 50px">
-                                                                                {{$company->name}}
+                                                                                {{isset($company->name)?$company->name:'Company Name'}}
                                                                             </h4>
                                                                         </td>
                                                                     </tr>
@@ -153,20 +159,20 @@
                                             <th style='text-align: left; border-bottom: 1px solid #cccccc; color: #4d4d4d; font-weight: 700; padding-bottom: 5px;' width='25%'>
                                                 Products
                                             </th>
-                                            <th style='text-align: right; border-bottom: 1px solid #cccccc; color: #4d4d4d; font-weight: 700; padding-bottom: 5px;' width='15%'>
-                                                Description
-                                            </th>
                                             <th style='text-align: right; border-bottom: 1px solid #cccccc; color: #4d4d4d; font-weight: 700; padding-bottom: 5px; ' width='15%'>
                                                 Quantity
                                             </th>
                                             <th style='text-align: right; border-bottom: 1px solid #cccccc; color: #4d4d4d; font-weight: 700; padding-bottom: 5px; ' width='15%'>
-                                                Unit Price
+                                                Unit
                                             </th>
                                             <th style='text-align: right; border-bottom: 1px solid #cccccc; color: #4d4d4d; font-weight: 700; padding-bottom: 5px; ' width='15%'>
-                                                Taxes(%)
+                                                 Price
                                             </th>
                                             <th style='text-align: right; border-bottom: 1px solid #cccccc; color: #4d4d4d; font-weight: 700; padding-bottom: 5px; ' width='15%'>
-                                                Total(Include Tax)
+                                                Discount
+                                            </th>
+                                            <th style='text-align: right; border-bottom: 1px solid #cccccc; color: #4d4d4d; font-weight: 700; padding-bottom: 5px; ' width='15%'>
+                                                Total
                                             </th>
                                         </tr>
                                     </table>
@@ -183,29 +189,30 @@
                                                         <tr>
                                                             <td style="text-align:left; font-size:14px; line-height:19px; font-family: ' oxygen', 'helvetica neue', helvetica, sans-serif; color: #777777;">
                                       <span style='color: #4d4d4d; font-weight:bold;'>
-                                       {{$order->product->name}}
+                                       {{$order->variant->product_name}}
+
                                       </span>
+                                                                <p>{{$order->variant->variant??''}}</p>
 
                                                             </td>
                                                         </tr>
                                                         </tbody>
                                                     </table>
                                                 </td>
-                                                <td style='text-align:center; ' width='15%'>
-                                                    {{$order->description}}
-                                                </td>
                                                 <td style='text-align:right; ' width='15%'>
                                                     {{$order->quantity}}
+                                                </td>
+                                                <td style='text-align:right; ' width='15%'>
+                                                    {{$order->unit->unit}}
                                                 </td>
                                                 <td style='text-align:right; ' width='15%'>
                                                     {{$order->price}}
                                                 </td>
                                                 <td style='text-align:right; ' width='15%'>
-                                                    {{$order->tax}}%
+                                                    {{$order->discount}}
                                                 </td>
                                                 <td style='text-align:right; ' width='15%'>
                                                     {{$order->total_amount}}
-                                                    <input type="hidden" class="total" value="{{$order->total_amount}}">
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -222,7 +229,54 @@
                                             </td>
                                             <td style='text-align: right; border-top: 1px solid #cccccc;'>
                                                 <span style='display: inline-block;font-weight: bold; color: #4d4d4d'>{{$total}}
-                                <input type="hidden" name="grand_total" value="{{$total}}"></span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align='left' style='font-size:0px;padding:10px 25px;word-break:break-word;'>
+                                    <table border='0' cellpadding='0' cellspacing='0' style='cellpadding:0;cellspacing:0;color:#000000;font-family:Helvetica, Arial, sans-serif;font-size:13px;line-height:22px;table-layout:auto;width:100%;' width='100%'>
+                                        <tr style="font-size:14px; line-height:19px; font-family: 'Oxygen', 'Helvetica Neue', helvetica, sans-serif; color:#777777">
+                                            <td width='50%'></td>
+                                            <td style='text-align:right; padding-right: 10px; border-top: 1px solid #cccccc;'>
+                                                <span style='display: inline-block;font-weight: bold; color: #4d4d4d'>Discount</span>
+                                            </td>
+                                            <td style='text-align: right; border-top: 1px solid #cccccc;'>
+                                                <span style='display: inline-block;font-weight: bold; color: #4d4d4d'>{{$discount}}
+
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align='left' style='font-size:0px;padding:10px 25px;word-break:break-word;'>
+                                    <table border='0' cellpadding='0' cellspacing='0' style='cellpadding:0;cellspacing:0;color:#000000;font-family:Helvetica, Arial, sans-serif;font-size:13px;line-height:22px;table-layout:auto;width:100%;' width='100%'>
+                                        <tr style="font-size:14px; line-height:19px; font-family: 'Oxygen', 'Helvetica Neue', helvetica, sans-serif; color:#777777">
+                                            <td width='50%'></td>
+                                            <td style='text-align:right; padding-right: 10px; border-top: 1px solid #cccccc;'>
+                                                <span style='display: inline-block;font-weight: bold; color: #4d4d4d'>Tax ( Rate % ) </span>
+                                            </td>
+                                            <td style='text-align: right; border-top: 1px solid #cccccc;'>
+                                                <span style='display: inline-block;font-weight: bold; color: #4d4d4d'>{{$tax}} ( {{$tax_rate}} % )
+
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align='left' style='font-size:0px;padding:10px 25px;word-break:break-word;'>
+                                    <table border='0' cellpadding='0' cellspacing='0' style='cellpadding:0;cellspacing:0;color:#000000;font-family:Helvetica, Arial, sans-serif;font-size:13px;line-height:22px;table-layout:auto;width:100%;' width='100%'>
+                                        <tr style="font-size:14px; line-height:19px; font-family: 'Oxygen', 'Helvetica Neue', helvetica, sans-serif; color:#777777">
+                                            <td width='50%'></td>
+                                            <td style='text-align:right; padding-right: 10px; border-top: 1px solid #cccccc;'>
+                                                <span style='display: inline-block;font-weight: bold; color: #4d4d4d'>Grand Total</span>
+                                            </td>
+                                            <td style='text-align: right; border-top: 1px solid #cccccc;'>
+                                                <span style='display: inline-block;font-weight: bold; color: #4d4d4d'>{{$grand_total}}
+
                                             </td>
                                         </tr>
                                     </table>
