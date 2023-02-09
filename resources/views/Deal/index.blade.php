@@ -149,7 +149,7 @@
                                                         </div>
                                                         <div class="task-board-body">
                                                             <div class="kanban-info">
-                                                                Organization Name: <strong>{{$deal->customer_company->name}}</strong>
+                                                                Organization Name: <strong>{{$deal->customer_company->name??'N/A'}}</strong>
                                                             </div>
                                                             Amount: {{$deal->amount}} <strong class="ml-3">{{$deal->unit}}</strong>
                                                             <div class="kanban-footer">
@@ -196,7 +196,7 @@
                                                         </div>
                                                         <div class="task-board-body">
                                                             <div class="kanban-info">
-                                                                Organization Name: <strong>{{$deal->customer_company->name}}</strong>
+                                                                Organization Name: <strong>{{$deal->customer_company->name??'N/A'}}</strong>
 
                                                             </div>
                                                             Amount: {{$deal->amount}} <strong class="ml-3">{{$deal->unit}}</strong>
@@ -247,7 +247,7 @@
                                                         </div>
                                                         <div class="task-board-body">
                                                             <div class="kanban-info">
-                                                                Organization Name: <strong>{{$deal->customer_company->name}}</strong>
+                                                                Organization Name: <strong>{{$deal->customer_company->name??'N/A'}}</strong>
 
                                                             </div>
                                                             Amount: {{$deal->amount}} <strong class="ml-3">{{$deal->unit}}</strong>
@@ -295,7 +295,7 @@
                                                         </div>
                                                         <div class="task-board-body">
                                                             <div class="kanban-info">
-                                                                Organization Name: <strong>{{$deal->customer_company->name}}</strong>
+                                                                Organization Name: <strong>{{$deal->customer_company->name??'N/A'}}</strong>
 
                                                             </div>
                                                             Amount: {{$deal->amount}} <strong class="ml-3">{{$deal->unit}}</strong>
@@ -373,7 +373,7 @@
                                                         </div>
                                                         <div class="task-board-body">
                                                             <div class="kanban-info">
-                                                                Organization Name: <strong>{{$deal->customer_company->name}}</strong>
+                                                                Organization Name: <strong>{{$deal->customer_company->name??'N/A'}}</strong>
 
                                                             </div>
                                                             Amount: {{$deal->amount}} <strong class="ml-3">{{$deal->unit}}</strong>
