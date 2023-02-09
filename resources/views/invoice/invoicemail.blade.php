@@ -109,12 +109,12 @@
 <div class="invoice-box">
     <table cellpadding="0" cellspacing="0">
         <tr class="top">
-            <td colspan="7">
+            <td colspan="6">
                 <table>
                     <tr>
                         <td class="title">
                             <img src="{{$company!=null ? url(asset('/img/profiles/'.$company->logo)): url(asset('/img/profiles/avatar-01.jpg'))}}"
-                                 style="width: 100%; max-width: 300px"/>
+                                 style="max-width:200px;max-height: 200px"/>
 
                         </td>
                         <td>
@@ -179,7 +179,7 @@
         <tr class="heading">
             <th>Item</th>
             <th>Quantity</th>
-            <th style="min-width: 150px;">Price</th>
+            <th style="min-width: 80px;">Price</th>
             <th>Unit</th>
             <th>Discount</th>
             <th>Total</th>
