@@ -53,8 +53,8 @@
                                  <tr>
                                      <td><input type="checkbox"></td>
                                      <td><a href="{{route('deals.show',$deal->id)}}">{{$deal->customer->name??''}}</a></td>
-                                     <td>{{$deal->amount}} <strong>{{$deal->unit}}</strong></td>
-                                     <td>{{$deal->customer_company->name}}</td>
+                                     <td>{{$deal->amount??'0'}} <strong>{{$deal->unit}}</strong></td>
+                                     <td>{{$deal->customer_company->name??'N/A'}}</td>
                                      <td>{{$deal->created_at->toFormattedDateString()}}</td>
                                      <td>{{$deal->sale_stage}}</td>
                                      <td>{{$deal->employee->name??'N/A'}}</td>
