@@ -11,7 +11,7 @@
                         <li class="breadcrumb-item active">Order Details</li>
                     </ul>
                 </div>
-            </div>product
+            </div>
         </div>
       @if(\Illuminate\Support\Facades\Auth::guard('employee')->check())
         <div class="row">
