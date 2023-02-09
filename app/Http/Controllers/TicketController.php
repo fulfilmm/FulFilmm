@@ -149,7 +149,7 @@ class TicketController extends Controller
 //        dd($request->all());
             $this->validate($request, [
                 'files.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'attachment' => 'mimes:pdf,xlsx,doc,docx,jpg,jpeg,ppt,bip',
+                'attachment' => 'mimes:pdf,xlsx,doc,docx,jpg,jpeg,ppt,bip,png',
                 'subject' => 'required',
                 'assignType' => 'required',
                 'description' => 'required',
@@ -343,7 +343,7 @@ class TicketController extends Controller
     public function assignee(Request $request)
     {
         $this->assign_ticket($request->assign_id, $request->id, $request->assignType,$request->ticket_id);
-        return redirect(route('tickets',$request->id))->with('success', 'Success assign ticket');
+        return redirect(route('tickets.show',$request->id))->with('success', 'Success assign ticket');
     }
 
     public function assign_ticket($assigned_id, $id, $type,$ticket_id)
