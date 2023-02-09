@@ -260,8 +260,6 @@
         <tr>
             <td><span>Website : {{$company->web_link??'https://....'}}</span> |
                 <span>Email : {{$company->email??'@gmail.com'}}</span> <br>
-                <span>Facebook Page : {{$company->facebook_page??'www.facebook.com/...'}}</span> |
-                <span>Linkedin : {{$company->linkedin??'www.linkedin.com/...'}}</span> <br>
                 <span>Phone :{{$company->phone??'09*********'}}</span> |
                 <span>Address : {{$company->address??'......'}}</span>
             </td>
