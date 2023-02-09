@@ -178,16 +178,16 @@
             <tr class="item">
                 <td colspan="3">{{$item->variant->product_name}}</td>
                 <td>{{$item->quantity}}</td>
-                <td>{{$item->price}}</td>
+                <td style="text-align: right">{{$item->price}}</td>
                 <td colspan="2">{{$item->unit->unit}}</td>
-                <td>{{$item->discount}}</td>
-                <td>{{$item->total_amount}}</td>
+                <td style="text-align: right">{{$item->discount}}</td>
+                <td style="text-align: right">{{$item->total_amount}}</td>
             </tr>
         @endforeach
         <tr class="total" style="border:1px">
             <td colspan="6"></td>
             <th colspan="2" style="text-align: left">Total</th>
-            <td >{{$quotation->total}}</td>
+            <td style="text-align: right;">{{$quotation->total}}</td>
         </tr>
         <tr>
             <td colspan="9">
@@ -197,7 +197,7 @@
         <tr class="total" style="border: 1px">
             <td colspan="6"></td>
             <th colspan="2" style="text-align: left">Discount</th>
-            <td >{{$quotation->discount}}</td>
+            <td style="text-align: right">{{$quotation->discount}}</td>
         </tr>
         <tr>
             <td colspan="9">
@@ -207,7 +207,7 @@
         <tr class="total" style="border: 1px">
             <td colspan="6"></td>
             <th colspan="2" style="text-align: left">Tax ({{$quotation->tax->rate}} %)</th>
-            <td >{{$quotation->tax_amount}}</td>
+            <td style="text-align: right">{{$quotation->tax_amount}}</td>
         </tr>
         <tr>
             <td colspan="9">
@@ -217,7 +217,7 @@
         <tr class="total" style="border: 1px">
             <td colspan="6"></td>
             <th colspan="2" style="text-align: left">Grand Total</th>
-            <td >{{$quotation->grand_total}}</td>
+            <td style="text-align: right">{{$quotation->grand_total}}</td>
         </tr>
         <tr>
             <td colspan="9">
