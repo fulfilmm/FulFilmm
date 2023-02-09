@@ -146,12 +146,12 @@
         <tr class="information">
             <td colspan="9">
                 <h5>Invoice To :</h5>
-                <span style="margin-right: 20px;">Company:</span><strong>{{$invoice->customer->company->name}}</strong>
-                <br/>
-                <span style="margin-right: 20px;">Name :</span><strong>{{$invoice->customer->name}}</strong><br/>
-                <span style="margin-right: 20px;">Email : </span><strong>{{$invoice->customer->email}}</strong><br>
-                <span style="margin-right: 20px;">Phone :</span><strong>{{$invoice->customer->phone}}</strong><br>
-                <span style="margin-right: 20px;">Address :</span><strong>{{$invoice->customer->address}}</strong><br><br><br>
+                <strong>{{$invoice->customer->name}}</strong><br/>
+                <strong>{{$invoice->customer->email}}</strong><br>
+                <strong>{{$invoice->customer->phone}}</strong><br>
+                <strong>{{$invoice->customer->address}}</strong><br>
+                <strong>{{$invoice->customer->company->name}}</strong>
+                <br><br>
             </td>
         </tr>
 
@@ -163,7 +163,7 @@
             <td colspan="9"><br><br><h3>Invoice Items</h3></td>
 
         </tr>
-        <tr class="heading" style="border: 1">
+        <tr class="heading" style="border: 1px">
             <th colspan="3">Item</th>
             <th>Quantity</th>
             <th >Price</th>
@@ -171,8 +171,13 @@
             <th >Discount</th>
             <th>Total</th>
         </tr>
+        <tr>
+            <td colspan="9">
+                <hr>
+            </td>
+        </tr>
         @foreach($orderItem as $item)
-            <tr class="item" style="border: 1">
+            <tr class="item">
                 <td colspan="3">{{$item->variant->product_name}}</td>
                 <td>{{$item->quantity}}</td>
                 <td>{{$item->unit_price}}</td>
@@ -180,26 +185,51 @@
                 <td>{{$item->discount_promotion}}%</td>
                 <td>{{$item->total}}</td>
             </tr>
+        <tr>
+            <td colspan="9">
+                <hr>
+            </td>
+        </tr>
         @endforeach
-        <tr class="total" style="border: 1">
+        <tr class="total" style="border:1px">
             <th colspan="8" style="text-align: right">Total:</th>
             <td >{{$invoice->total}}</td>
         </tr>
-        <tr class="total" style="border: 1">
+        <tr>
+            <td colspan="9">
+                <hr>
+            </td>
+        </tr>
+        <tr class="total" style="border: 1px">
             <th colspan="8" style="text-align: right">Discount:</th>
             <td >{{$invoice->discount}}</td>
         </tr>
-        <tr class="total" style="border: 1">
+        <tr>
+            <td colspan="9">
+                <hr>
+            </td>
+        </tr>
+        <tr class="total" style="border: 1px">
             <th colspan="8" style="text-align: right">Tax ({{$invoice->tax->rate}} %):</th>
             <td >{{$invoice->tax_amount}}</td>
         </tr>
-        <tr class="total" style="border: 1">
+        <tr class="total" style="border: 1px">
             <th colspan="8" style="text-align: right">Delivery Fee:</th>
             <td >{{$invoice->delivery_fee}}</td>
         </tr>
-        <tr class="total" style="border: 1">
+        <tr>
+            <td colspan="9">
+                <hr>
+            </td>
+        </tr>
+        <tr class="total" style="border: 1px">
             <th colspan="8" style="text-align: right">Delivery Fee:</th>
             <td >{{$invoice->grand_total}}</td>
+        </tr>
+        <tr>
+            <td colspan="9">
+                <hr>
+            </td>
         </tr>
         <tr>
             <td colspan="9">
