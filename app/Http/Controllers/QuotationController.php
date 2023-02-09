@@ -226,22 +226,14 @@ class QuotationController extends Controller
         }
 
         $orderline = QuotationItem::with('product')->where("quotation_id", $request->id)->get();
-        $quotation= Quotation::with("customer", "sale_person",'tax')->where('id', $request->id)->firstOrFail();
+        $quotation= Quotation::with("customer", "sale_person",'tax','deal')->where('id', $request->id)->firstOrFail();
+        $company=MainCompany::where('ismaincompany',true)->first();
         $details = [
             'email' => $request->email,
             'subject' => $request->subject,
-            'clientname' => $quotation->customer->name,
-            'id' => $quotation->quotation_id,
-            'total' => $quotation->total,
-            'grand_total'=>$quotation->grand_total,
-            'payterm' => $quotation->pay_term,
-            'discount'=>$quotation->discount,
-            'tax'=>$quotation->tax_amount,
-            'tax_rate'=>$quotation->rate,
-            'exp' => $quotation->exp_date,
-            'term_and_con' => $quotation->terms_conditions,
-            'company' => $request->company,
             'cc' => $request->email_cc,
+            'company'=>$company,
+            'quotation'=>$quotation,
             'orders' => $orderline,
             'attach' => $request->attach != null ? public_path() . '/attach_file/' . $file_name : '',
         ];

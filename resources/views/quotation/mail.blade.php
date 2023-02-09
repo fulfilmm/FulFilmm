@@ -1,364 +1,268 @@
-<!doctype html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<!DOCTYPE html>
+<html>
 <head>
-    <title>
-    </title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style type="text/css">
-        #outlook a{padding: 0;}
-        .ReadMsgBody{width: 100%;}
-        .ExternalClass{width: 100%;}
-        .ExternalClass *{line-height: 100%;}
-        body{margin: 0; padding: 0; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;}
-        table, td{border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt;}
-        img{border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic;}
-        p{display: block; margin: 13px 0;}
-    </style>
-    <!--[if !mso]><!-->
-    <style type="text/css">
-        @media only screen and (max-width:480px) {
-            @-ms-viewport {width: 320px;}
-            @viewport {	width: 320px; }
-        }
-    </style>
-    <!--<![endif]-->
-    <!--[if mso]>
-    <xml>
-        <o:OfficeDocumentSettings>
-            <o:AllowPNG/>
-            <o:PixelsPerInch>96</o:PixelsPerInch>
-        </o:OfficeDocumentSettings>
-    </xml>
-    <![endif]-->
-    <!--[if lte mso 11]>
-    <style type="text/css">
-        .outlook-group-fix{width:100% !important;}
-    </style>
-    <![endif]-->
-    <style type="text/css">
-        @media only screen and (min-width:480px) {
-            .dys-column-per-100 {
-                width: 100.000000% !important;
-                max-width: 100.000000%;
-            }
-        }
-        @media only screen and (max-width:480px) {
+    <meta charset="utf-8"/>
+    <title>Invoice </title>
 
-            table.full-width-mobile { width: 100% !important; }
-            td.full-width-mobile { width: auto !important; }
+    <style>
+        .invoice-box {
+            max-width: 800px;
+            margin: auto;
+            padding: 30px;
+            border: 1px solid #eee;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+            font-size: 16px;
+            line-height: 24px;
+            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            color: #555;
+        }
 
+        .invoice-box table {
+            width: 100%;
+            line-height: inherit;
+            text-align: left;
         }
-        @media only screen and (min-width:480px) {
-            .dys-column-per-100 {
-                width: 100.000000% !important;
-                max-width: 100.000000%;
+
+        .invoice-box table td {
+            padding: 5px;
+            vertical-align: top;
+        }
+
+        .invoice-box table tr td:nth-child(2) {
+            text-align: right;
+        }
+
+        .invoice-box table tr.top table td {
+            padding-bottom: 20px;
+        }
+
+        .invoice-box table tr.top table td.title {
+            font-size: 45px;
+            line-height: 45px;
+            color: #333;
+        }
+
+        .invoice-box table tr.information table td {
+            padding-bottom: 40px;
+        }
+
+        .invoice-box table tr.heading td {
+            background: #eee;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+        }
+
+        .invoice-box table tr.details td {
+            padding-bottom: 20px;
+        }
+
+        .invoice-box table tr.item td {
+            border-bottom: 1px solid #eee;
+        }
+
+        .invoice-box table tr.item.last td {
+            border-bottom: none;
+        }
+
+        .invoice-box table tr.total td:nth-child(2) {
+            border-top: 2px solid #eee;
+            font-weight: bold;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .invoice-box table tr.top table td {
+                width: 100%;
+                display: block;
+                text-align: center;
+            }
+
+            .invoice-box table tr.information table td {
+                width: 100%;
+                display: block;
+                text-align: center;
             }
         }
-        @media only screen and (min-width:480px) {
-            .dys-column-per-100 {
-                width: 100.000000% !important;
-                max-width: 100.000000%;
-            }
+
+        /** RTL **/
+        .invoice-box.rtl {
+            direction: rtl;
+            font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+        }
+
+        .invoice-box.rtl table {
+            text-align: right;
+        }
+
+        .invoice-box.rtl table tr td:nth-child(2) {
+            text-align: left;
+        }
+
+        .footer {
+            padding-left: 200px;
+            padding-top: 100px;
+            font-size: 10px;
         }
     </style>
 </head>
+
 <body>
-@php $company=\App\Models\MainCompany::where('ismaincompany',true)->first(); @endphp
-<div>
-    Hello,<br>
-    {{$clientname}}<br>
-    Your quotation <strong>{{$id}}</strong> amounting in <strong>{{$total}}</strong> is ready for review.<br>
-    <table align='center' background='https://s3.amazonaws.com/swu-filepicker/4E687TRe69Ld95IDWyEg_bg_top_02.jpg' border='0' cellpadding='0' cellspacing='0' role='presentation' style='background:url(https://s3.amazonaws.com/swu-filepicker/4E687TRe69Ld95IDWyEg_bg_top_02.jpg) top center / auto repeat;width:100%;'>
-        <tbody>
-        <tr>
-            <td>
-                <!--[if mso | IE]>
-                <v:rect style="mso-width-percent:1000;" xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false"><v:fill src="https://s3.amazonaws.com/swu-filepicker/4E687TRe69Ld95IDWyEg_bg_top_02.jpg" origin="0.5, 0" position="0.5, 0" type="tile" /><v:textbox style="mso-fit-shape-to-text:true" inset="0,0,0,0">
-                <![endif]-->
-                <div style='margin:0px auto;max-width:600px;'>
-                    <div style='font-size:0;line-height:0;'>
-                        <table align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='width:100%;'>
-                            <tbody>
-                            <tr>
-                                <td style='direction:ltr;font-size:0px;padding:20px 0px 30px 0px;text-align:center;vertical-align:top;'>
-                                    <!--[if mso | IE]>
-                                    <table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td style="vertical-align:top;width:600px;">
-                                    <![endif]-->
-                                    <div class='dys-column-per-100 outlook-group-fix' style='direction:ltr;display:inline-block;font-size:13px;text-align:left;vertical-align:top;width:100%;'>
-                                        <table border='0' cellpadding='0' cellspacing='0' role='presentation' width='100%'>
-                                            <tbody>
-                                            <tr>
-                                                <td style='padding:0px 20px;vertical-align:top;'>
-                                                    <table border='0' cellpadding='0' cellspacing='0' role='presentation' style='' width='100%'>
-                                                        <tr>
-                                                            <td align='left' style='font-size:0px;padding:0px;word-break:break-word;'>
-                                                                <table border='0' cellpadding='0' cellspacing='0' style='cellpadding:0;cellspacing:0;color:#000000;font-family:Helvetica, Arial, sans-serif;font-size:13px;line-height:22px;table-layout:auto;width:100%;' width='100%'>
-                                                                    <tr>
-                                                                        <td align='left'>
-                                                                            <a href='#'>
-                                                                                @if(isset($company->logo))
-                                                                                    <img src="{{url(asset('/img/profiles/'.$company->logo))}}" width="40px"
-                                                                                         height="40px">
-                                                                                @else
-                                                                                    <img src="" width="40px"
-                                                                                         height="40px" alt="Company Logo">
-                                                                                @endif
-                                                                            </a>
-                                                                            <h4 style="margin-left: 50px">
-                                                                                {{isset($company->name)?$company->name:'Company Name'}}
-                                                                            </h4>
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <!--[if mso | IE]>
-                                    </td></tr></table>
-                                    <![endif]-->
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <!--[if mso | IE]>
-                </v:textbox></v:rect>
-                <![endif]-->
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <!--[if mso | IE]>
-    <table align="center" border="0" cellpadding="0" cellspacing="0" style="width:600px;" width="600"><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;">
-    <![endif]-->
-    <div style='background:#FFFFFF;background-color:#FFFFFF;margin:0px auto;max-width:600px;'>
-        <table align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='background:#FFFFFF;background-color:#FFFFFF;width:100%;'>
-            <tbody>
-            <tr>
-                <td style='direction:ltr;font-size:0px;padding:20px 0;text-align:center;vertical-align:top;'>
-                    <!--[if mso | IE]>
-                    <table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td style="vertical-align:top;width:600px;">
-                    <![endif]-->
-                    <div class='dys-column-per-100 outlook-group-fix' style='direction:ltr;display:inline-block;font-size:13px;text-align:left;vertical-align:top;width:100%;'>
-                        <table border='0' cellpadding='0' cellspacing='0' role='presentation' style='vertical-align:top;' width='100%'>
-                            <tr></tr>
-                            <tr>
-                                <th style="font-size: 20px" >Items</th></tr>
-                            <tr>
-                                <td align='left' style='font-size:0px;padding:10px 25px;word-break:break-word;'>
-                                    <table border='0' cellpadding='0' cellspacing='0' style="cellpadding:0;cellspacing:0;color:#777777;font-family:'Oxygen', 'Helvetica Neue', helvetica, sans-serif;font-size:14px;line-height:21px;table-layout:auto;width:100%;" width='100%'>
-                                        <tr>
-                                            <th style='text-align: left; border-bottom: 1px solid #cccccc; color: #4d4d4d; font-weight: 700; padding-bottom: 5px;' width='25%'>
-                                                Products
-                                            </th>
-                                            <th style='text-align: right; border-bottom: 1px solid #cccccc; color: #4d4d4d; font-weight: 700; padding-bottom: 5px; ' width='15%'>
-                                                Quantity
-                                            </th>
-                                            <th style='text-align: right; border-bottom: 1px solid #cccccc; color: #4d4d4d; font-weight: 700; padding-bottom: 5px; ' width='15%'>
-                                                Unit
-                                            </th>
-                                            <th style='text-align: right; border-bottom: 1px solid #cccccc; color: #4d4d4d; font-weight: 700; padding-bottom: 5px; ' width='15%'>
-                                                 Price
-                                            </th>
-                                            <th style='text-align: right; border-bottom: 1px solid #cccccc; color: #4d4d4d; font-weight: 700; padding-bottom: 5px; ' width='15%'>
-                                                Discount
-                                            </th>
-                                            <th style='text-align: right; border-bottom: 1px solid #cccccc; color: #4d4d4d; font-weight: 700; padding-bottom: 5px; ' width='15%'>
-                                                Total
-                                            </th>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align='left' style='font-size:0px;padding:10px 25px;word-break:break-word;'>
-                                    <table border='0' cellpadding='0' cellspacing='0' style='cellpadding:0;cellspacing:0;color:#000000;font-family:Helvetica, Arial, sans-serif;font-size:13px;line-height:22px;table-layout:auto;width:100%;' width='100%'>
-                                        @foreach($orders as $order)
-                                            <tr style="font-size:14px; line-height:19px; font-family: 'Oxygen', 'Helvetica Neue', helvetica, sans-serif; color:#777777">
-                                                <td width='25%'>
-                                                    <table cellpadding='0' cellspacing='0' width='100%'>
-                                                        <tbody>
-                                                        <tr>
-                                                            <td style="text-align:left; font-size:14px; line-height:19px; font-family: ' oxygen', 'helvetica neue', helvetica, sans-serif; color: #777777;">
-                                      <span style='color: #4d4d4d; font-weight:bold;'>
-                                       {{$order->variant->product_name}}
+<div class="invoice-box">
+    <table cellpadding="0" cellspacing="0">
+        <tr class="top">
+            <td colspan="9">
+                <table>
+                    <tr>
+                        <td class="title">
+                            <img src="{{$company!=null ? url(asset('/img/profiles/'.$company->logo)): url(asset('/img/profiles/avatar-01.jpg'))}}" width="100" height="100"
+                                 style="max-width:100px;max-height: 100px"/>
 
-                                      </span>
-                                                                <p>{{$order->variant->variant??''}}</p>
-
-                                                            </td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </td>
-                                                <td style='text-align:right; ' width='15%'>
-                                                    {{$order->quantity}}
-                                                </td>
-                                                <td style='text-align:right; ' width='15%'>
-                                                    {{$order->unit->unit}}
-                                                </td>
-                                                <td style='text-align:right; ' width='15%'>
-                                                    {{$order->price}}
-                                                </td>
-                                                <td style='text-align:right; ' width='15%'>
-                                                    {{$order->discount}}
-                                                </td>
-                                                <td style='text-align:right; ' width='15%'>
-                                                    {{$order->total_amount}}
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align='left' style='font-size:0px;padding:10px 25px;word-break:break-word;'>
-                                    <table border='0' cellpadding='0' cellspacing='0' style='cellpadding:0;cellspacing:0;color:#000000;font-family:Helvetica, Arial, sans-serif;font-size:13px;line-height:22px;table-layout:auto;width:100%;' width='100%'>
-                                        <tr style="font-size:14px; line-height:19px; font-family: 'Oxygen', 'Helvetica Neue', helvetica, sans-serif; color:#777777">
-                                            <td width='50%'></td>
-                                            <td style='text-align:right; padding-right: 10px; border-top: 1px solid #cccccc;'>
-                                                <span style='display: inline-block;font-weight: bold; color: #4d4d4d'>Total</span>
-                                            </td>
-                                            <td style='text-align: right; border-top: 1px solid #cccccc;'>
-                                                <span style='display: inline-block;font-weight: bold; color: #4d4d4d'>{{$total}}
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align='left' style='font-size:0px;padding:10px 25px;word-break:break-word;'>
-                                    <table border='0' cellpadding='0' cellspacing='0' style='cellpadding:0;cellspacing:0;color:#000000;font-family:Helvetica, Arial, sans-serif;font-size:13px;line-height:22px;table-layout:auto;width:100%;' width='100%'>
-                                        <tr style="font-size:14px; line-height:19px; font-family: 'Oxygen', 'Helvetica Neue', helvetica, sans-serif; color:#777777">
-                                            <td width='50%'></td>
-                                            <td style='text-align:right; padding-right: 10px; border-top: 1px solid #cccccc;'>
-                                                <span style='display: inline-block;font-weight: bold; color: #4d4d4d'>Discount</span>
-                                            </td>
-                                            <td style='text-align: right; border-top: 1px solid #cccccc;'>
-                                                <span style='display: inline-block;font-weight: bold; color: #4d4d4d'>{{$discount}}
-
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align='left' style='font-size:0px;padding:10px 25px;word-break:break-word;'>
-                                    <table border='0' cellpadding='0' cellspacing='0' style='cellpadding:0;cellspacing:0;color:#000000;font-family:Helvetica, Arial, sans-serif;font-size:13px;line-height:22px;table-layout:auto;width:100%;' width='100%'>
-                                        <tr style="font-size:14px; line-height:19px; font-family: 'Oxygen', 'Helvetica Neue', helvetica, sans-serif; color:#777777">
-                                            <td width='50%'></td>
-                                            <td style='text-align:right; padding-right: 10px; border-top: 1px solid #cccccc;'>
-                                                <span style='display: inline-block;font-weight: bold; color: #4d4d4d'>Tax ( Rate % ) </span>
-                                            </td>
-                                            <td style='text-align: right; border-top: 1px solid #cccccc;'>
-                                                <span style='display: inline-block;font-weight: bold; color: #4d4d4d'>{{$tax}} ( {{$tax_rate}} % )
-
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align='left' style='font-size:0px;padding:10px 25px;word-break:break-word;'>
-                                    <table border='0' cellpadding='0' cellspacing='0' style='cellpadding:0;cellspacing:0;color:#000000;font-family:Helvetica, Arial, sans-serif;font-size:13px;line-height:22px;table-layout:auto;width:100%;' width='100%'>
-                                        <tr style="font-size:14px; line-height:19px; font-family: 'Oxygen', 'Helvetica Neue', helvetica, sans-serif; color:#777777">
-                                            <td width='50%'></td>
-                                            <td style='text-align:right; padding-right: 10px; border-top: 1px solid #cccccc;'>
-                                                <span style='display: inline-block;font-weight: bold; color: #4d4d4d'>Grand Total</span>
-                                            </td>
-                                            <td style='text-align: right; border-top: 1px solid #cccccc;'>
-                                                <span style='display: inline-block;font-weight: bold; color: #4d4d4d'>{{$grand_total}}
-
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <!--[if mso | IE]>
-                    </td></tr></table>
-                    <![endif]-->
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <!--[if mso | IE]>
-    </td>
-    </tr>
-    </table>
-    <![endif]-->
-    <table border='0' cellpadding='0' cellspacing='0' style='cellpadding:0;cellspacing:0;color:#000000;font-family:Helvetica, Arial, sans-serif;font-size:13px;line-height:22px;table-layout:auto;width:100%;' width='100%'>
-        <tr style="font-size:14px; line-height:19px; font-family: 'Oxygen', 'Helvetica Neue', helvetica, sans-serif; color:#777777">
-            <td width='30%'></td>
-            <td style='text-align:right; padding-right: 10px; '>
-                <span style='display: inline-block;font-weight: bold; color: #4d4d4d'>Experation</span>
-            </td>
-            <td style='text-align: left; '>
-                <span style='display: inline-block;font-weight: bold; color: #4d4d4d'>{{$exp}}</span>
-
-            </td>
-        </tr>
-        <tr style="font-size:14px; line-height:19px; font-family: 'Oxygen', 'Helvetica Neue', helvetica, sans-serif; color:#777777">
-            <td width='30%'></td>
-            <td style='text-align:right; padding-right: 10px; '>
-                <span style='display: inline-block;font-weight: bold; color: #4d4d4d'>Payment Terms:</span>
-            </td>
-            <td style='text-align: left; '>
-                <span style='display: inline-block;font-weight: bold; color: #4d4d4d'>{{$payterm}}</span>
-
-            </td>
-        </tr>
-    </table>
-    <div style='background:#FFFFFF;background-color:#FFFFFF;margin:0px auto;max-width:600px;'>
-        <table align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='background:#FFFFFF;background-color:#FFFFFF;width:100%;'>
-            <tbody>
-            <tr>
-                <td style='direction:ltr;font-size:0px;padding:20px 0;text-align:center;vertical-align:top;'>
-                    <!--[if mso | IE]>
-                    <table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td style="vertical-align:top;width:600px;">
-                    <![endif]-->
-                    <div class='dys-column-per-100 outlook-group-fix' style='direction:ltr;display:inline-block;font-size:13px;text-align:left;vertical-align:top;width:100%;'>
-                        <table border='0' cellpadding='0' cellspacing='0' role='presentation' style='vertical-align:top;' width='100%'>
-                            <tr>
-                                <td align='center' style='font-size:0px;padding:10px 25px;padding-bottom:5px;word-break:break-word;'>
-                                    <div style='color:#4d4d4d;font-family:Oxygen, Helvetica neue, sans-serif;font-size:24px;font-weight:700;line-height:30px;text-align:center;'>
-                                       Terms and Condition
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align='center' style='font-size:0px;padding:10px 25px;padding-top:0px;word-break:break-word;'>
-                                    <div style='color:#777777;font-family:Oxygen, Helvetica neue, sans-serif;font-size:14px;line-height:21px;text-align:center;'>
-                                        {{$term_and_con}}
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <!--[if mso | IE]>
-                    </td>
+                        </td>
+                        <td>
+                            <h3 align="center">{{$company->name??''}}</h3>
+                            <h6 align="center">
+                                <span style="alignment: center">{{$company->phone??''}}</span><br>
+                                <span style="alignment: center">{{$company->address??''}}</span><br>
+                                <span style="alignment: center">{{$company->email??''}}</span>
+                            </h6>
+                        </td>
                     </tr>
-                    </table>
-                    <![endif]-->
-                </td>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="9">
+                <hr></td>
+        </tr>
+        <tr>
+            <td colspan="9" style="alignment: right">
+                <h5 align="right">
+                    ID #: {{$quotation->quotation_id}}<br/>
+                    Exp Date: {{\Illuminate\Support\Carbon::parse($quotation->exp_date)->toFormattedDateString()}}
+                    <br/>
+                    Deal ID: {{$quotation->deal->deal_id??'N/A'}}
+                    <br>
+                    Payment Term: {{$quotation->payment_term}}
+                </h5>
+            </td>
+        </tr>
+        <tr class="information">
+            <td colspan="9">
+                <h5>Invoice To :</h5>
+                <strong>{{$quotation->customer->name}}</strong><br/>
+                <strong>{{$quotation->customer->email}}</strong><br>
+                <strong>{{$quotation->customer->phone}}</strong><br>
+                <strong>{{$quotation->customer->address??'Address'}}</strong><br>
+                <strong>{{$quotation->customer->company->name}}</strong>
+                <br><br>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="9"><br><br><h3>Quotation Items</h3></td>
+
+        </tr>
+        <tr class="heading" style="border: 1px">
+            <th colspan="3">Item</th>
+            <th>Quantity</th>
+            <th >Price</th>
+            <th colspan="2">Unit</th>
+            <th >Discount</th>
+            <th>Total</th>
+        </tr>
+        <tr>
+            <td colspan="9">
+                <hr>
+            </td>
+        </tr>
+        @foreach($orders as $item)
+            <tr class="item">
+                <td colspan="3">{{$item->variant->product_name}}</td>
+                <td>{{$item->quantity}}</td>
+                <td>{{$item->price}}</td>
+                <td colspan="2">{{$item->unit->unit}}</td>
+                <td>{{$item->discount}}</td>
+                <td>{{$item->total_amount}}</td>
             </tr>
-            </tbody>
-        </table>
-    </div>
-    </td>
-    </tr>
+        @endforeach
+        <tr class="total" style="border:1px">
+            <td colspan="6"></td>
+            <th colspan="2" style="text-align: left">Total</th>
+            <td >{{$quotation->total}}</td>
+        </tr>
+        <tr>
+            <td colspan="9">
+                <hr>
+            </td>
+        </tr>
+        <tr class="total" style="border: 1px">
+            <td colspan="6"></td>
+            <th colspan="2" style="text-align: left">Discount</th>
+            <td >{{$quotation->discount}}</td>
+        </tr>
+        <tr>
+            <td colspan="9">
+                <hr>
+            </td>
+        </tr>
+        <tr class="total" style="border: 1px">
+            <td colspan="6"></td>
+            <th colspan="2" style="text-align: left">Tax ({{$quotation->tax->rate}} %)</th>
+            <td >{{$quotation->tax_amount}}</td>
+        </tr>
+        <tr>
+            <td colspan="9">
+                <hr>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="9">
+                <hr>
+            </td>
+        </tr>
+        <tr class="total" style="border: 1px">
+            <td colspan="6"></td>
+            <th colspan="2" style="text-align: left">Grand Total</th>
+            <td >{{$quotation->grand_total}}</td>
+        </tr>
+        <tr>
+            <td colspan="9">
+                <hr>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="9">
+                Terms and Conditions:
+            </td>
+        </tr>
+        <tr>
+            <td colspan="9">
+                {{$quotation->terms_conditions}}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6">
+            </td>
+            <td colspan="3">
+                <h5 align="center">
+                    <strong style="text-align:right">Quotation Issue By,</strong><br>
+                    <strong>{{$quotation->sale_person->name}}</strong><br/>
+                    <strong>{{$quotation->sale_person->phone}}</strong><br/>
+                    <strong>{{$quotation->sale_person->email}}</strong><br/>
+
+                </h5>
+
+            </td>
+        </tr>
     </table>
-    <![endif]-->
+    <table style="alignment: left" class="footer">
+        <tr>
+            <td><span>Website : {{$company->web_link??'https://....'}}</span> |
+                <span>Email : {{$company->email??'@gmail.com'}}</span> <br>
+                <span>Phone :{{$company->phone??'09*********'}}</span> |
+                <span>Address : {{$company->address??'......'}}</span>
+            </td>
+        </tr>
+    </table>
 </div>
 </body>
 </html>
