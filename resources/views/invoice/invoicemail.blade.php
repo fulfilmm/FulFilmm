@@ -119,20 +119,20 @@
                         </td>
                         <td>
                             <h3 align="center">{{$company->name??''}}</h3>
-                            <span style="text-align: center">{{$company->phone??''}}</span>
-                            <span style="text-align: center">{{$company->address??''}}</span>
-                            <span style="text-align: center">{{$company->email??''}}</h6>
+                            <span style="alignment: center">{{$company->phone??''}}</span><br>
+                            <span style="alignment: center">{{$company->address??''}}</span><br>
+                            <span style="alignment: center">{{$company->email??''}}</span>
                         </td>
                     </tr>
                 </table>
             </td>
         </tr>
         <tr>
-            <td style="text-align: left">
+            <td style="alignment: right">
                 Invoice #: {{$invoice->invoice_id}}<br/>
-                Created: {{\Illuminate\Support\Carbon::parse($invoice->invoice_date)->toFormattedDateString()}}
+                Invoice Date: {{\Illuminate\Support\Carbon::parse($invoice->invoice_date)->toFormattedDateString()}}
                 <br/>
-                Due: {{\Illuminate\Support\Carbon::parse($invoice->due_date)->toFormattedDateString()}}
+                Due Date: {{\Illuminate\Support\Carbon::parse($invoice->due_date)->toFormattedDateString()}}
             </td>
         </tr>
         <tr class="information">
