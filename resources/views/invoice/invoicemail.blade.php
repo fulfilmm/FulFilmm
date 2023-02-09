@@ -119,9 +119,11 @@
                         </td>
                         <td>
                             <h3 align="center">{{$company->name??''}}</h3>
-                            <span style="alignment: center">{{$company->phone??''}}</span><br>
-                            <span style="alignment: center">{{$company->address??''}}</span><br>
-                            <span style="alignment: center">{{$company->email??''}}</span>
+                           <h6 align="center">
+                               <span style="alignment: center">{{$company->phone??''}}</span><br>
+                               <span style="alignment: center">{{$company->address??''}}</span><br>
+                               <span style="alignment: center">{{$company->email??''}}</span>
+                           </h6>
                         </td>
                     </tr>
                 </table>
