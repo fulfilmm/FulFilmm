@@ -192,7 +192,7 @@
         </tr>
         @endforeach
         <tr class="total" style="border:1px">
-            <th colspan="8" style="text-align: right">Total:</th>
+            <th colspan="8" style="text-align: left">Total</th>
             <td >{{$invoice->total}}</td>
         </tr>
         <tr>
@@ -201,7 +201,7 @@
             </td>
         </tr>
         <tr class="total" style="border: 1px">
-            <th colspan="8" style="text-align: right">Discount:</th>
+            <th colspan="8" style="text-align: left">Discount</th>
             <td >{{$invoice->discount}}</td>
         </tr>
         <tr>
@@ -210,11 +210,11 @@
             </td>
         </tr>
         <tr class="total" style="border: 1px">
-            <th colspan="8" style="text-align: right">Tax ({{$invoice->tax->rate}} %):</th>
+            <th colspan="8" style="text-align: left">Tax ({{$invoice->tax->rate}} %)</th>
             <td >{{$invoice->tax_amount}}</td>
         </tr>
         <tr class="total" style="border: 1px">
-            <th colspan="8" style="text-align: right">Delivery Fee:</th>
+            <th colspan="8" style="text-align: left">Delivery Fee</th>
             <td >{{$invoice->delivery_fee}}</td>
         </tr>
         <tr>
@@ -223,7 +223,7 @@
             </td>
         </tr>
         <tr class="total" style="border: 1px">
-            <th colspan="8" style="text-align: right">Delivery Fee:</th>
+            <th colspan="8" style="text-align: left">Grand Total</th>
             <td >{{$invoice->grand_total}}</td>
         </tr>
         <tr>
