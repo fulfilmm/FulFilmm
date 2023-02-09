@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>A simple, clean, and responsive HTML invoice template</title>
+    <title>Invoice </title>
 
     <style>
         .invoice-box {
@@ -118,17 +118,17 @@
 
                         </td>
                         <td>
-                            <h3 align="center">{{$company->name??''}}</h3><br>
-                            <h5 align="center">{{$company->phone??''}}</h5><br>
-                            <h6 align="center">{{$company->address??''}}</h6><br>
-                            <h6 align="center">{{$company->email??''}}</h6>
+                            <h3 align="center">{{$company->name??''}}</h3>
+                            <span style="text-align: center">{{$company->phone??''}}</span>
+                            <span style="text-align: center">{{$company->address??''}}</span>
+                            <span style="text-align: center">{{$company->email??''}}</h6>
                         </td>
                     </tr>
                 </table>
             </td>
         </tr>
         <tr>
-            <td style="float: right">
+            <td style="text-align: left">
                 Invoice #: {{$invoice->invoice_id}}<br/>
                 Created: {{\Illuminate\Support\Carbon::parse($invoice->invoice_date)->toFormattedDateString()}}
                 <br/>
@@ -195,12 +195,11 @@
             <td colspan="2">{{$invoice->grand_total}}</td>
         </tr>
         <tr>
-            <td style="float: right;">
+            <td style="text-align: left">
                 <h5>Invoice Issue By</h5>
-                <span style="margin-right: 20px;"> Name :</span><strong>{{$invoice->employee->name}}</strong><br/>
-                <span style="margin-right: 20px;"> Email :</span><strong>{{$invoice->employee->email}}</strong><br/>
-                <span style="margin-right: 20px;"> Phone :</span><strong>{{$invoice->employee->phone}}</strong><br/>
-                <span style="margin-right: 20px;">Address :</span><strong>{{$invoice->employee->address}}</strong><br/>
+                <strong>{{$invoice->employee->name}}</strong><br/>
+               <strong>{{$invoice->employee->email}}</strong><br/>
+                <strong>{{$invoice->employee->phone}}</strong><br/>
             </td>
         </tr>
     </table>
