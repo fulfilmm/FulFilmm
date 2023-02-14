@@ -671,7 +671,7 @@ class StockTransactionController extends Controller
         $type = 'Expired Alert Product';
         $auth=Auth::guard('employee')->user();
         if($auth->role->name=='Super Admin'||$auth->role->name=='CEO'||$auth->role->name=='Stock Manager'){
-            $stock_transactions = Stock::with('supplier', 'variant','warehouse','branch')->where('alert_month', '<', Carbon::today())->get();
+            $stock_transactions = ProductStockBatch::with('supplier', 'variant','warehouse','branch')->where('alert_month', '<', Carbon::today())->get();
         }elseif ($auth->role->name=='Stock Controller'){
             $stock_transactions = ProductStockBatch::with('supplier', 'variant','warehouse','branch')->where('alert_month', '<', Carbon::today())->where('branch_id',Auth::guard('employee')->user()->office_branch_id)->get();
         }else{
