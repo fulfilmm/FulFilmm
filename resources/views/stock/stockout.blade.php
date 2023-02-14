@@ -218,7 +218,7 @@
             $('#type').change(function () {
                 var type = $(this).val();
                 if (type == 'Invoice') {
-                    $('#inv_id').html('@foreach($invoice as $key=>$val) <option value="{{$key}}">{{$val}}</option> @endforeach')
+                    $('#inv_id').html('@foreach($invoice as $inv) <option value="{{$inv->id}}">{{$inv->invoice_id}}</option> @endforeach')
                 } else {
                     $('#inv_id').html('<option value="">None</option>')
                 }
