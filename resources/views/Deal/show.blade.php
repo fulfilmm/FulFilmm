@@ -27,7 +27,7 @@
                                     <span>Sale Stage: </span> <span class="badge badge-warning">{{$deal->sale_stage}}</span>
                                     <span class="m-l-15 text-muted">Organization: </span>
 {{--                                    @dd($deal)--}}
-                                    <a href="#">{{$deal->customer_company->name}}</a>
+                                    <a href="#">{{$deal->customer_company->name??'N/A'}}</a>
                                     <span class="m-l-15 text-muted">Submitted by:</span>
                                     <span><a href="{{route('employees.show',$deal->created_person->id)}}"><img src="{{$deal->created_person->profile_img!=null? url(asset('img/profiles/'.$deal->created_person->profile_img)):url(asset('img/profiles/avatar-01.jpg'))}}" alt="" class="avatar avatar-xs">{{$deal->created_person->name}}</a></span>
 
