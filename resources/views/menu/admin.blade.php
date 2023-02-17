@@ -55,101 +55,101 @@
 
         </ul>
     </li><!--Company -->
-    <li class="submenu">
-        <a href="#"><i class="la la-group"></i> <span>Operation</span> <span
-                    class="menu-arrow"></span></a>
-        <ul style="display: none;">
-            <li><a class="{{ Request::is('expense_record') ? 'active' : '' }}"
-                   href="{{ route('expense_record.index') }}" style="text-decoration: none">My Expense</a></li>
-            <li>
-            <li class="submenu">
-                <a href="#"><span>Advance Cash</span>
-                    <span
-                            class="menu-arrow"></span></a>
-                <ul style="display: none;">
+    {{--<li class="submenu">--}}
+        {{--<a href="#"><i class="la la-group"></i> <span>Operation</span> <span--}}
+                    {{--class="menu-arrow"></span></a>--}}
+        {{--<ul style="display: none;">--}}
+            {{--<li><a class="{{ Request::is('expense_record') ? 'active' : '' }}"--}}
+                   {{--href="{{ route('expense_record.index') }}" style="text-decoration: none">My Expense</a></li>--}}
+            {{--<li>--}}
+            {{--<li class="submenu">--}}
+                {{--<a href="#"><span>Advance Cash</span>--}}
+                    {{--<span--}}
+                            {{--class="menu-arrow"></span></a>--}}
+                {{--<ul style="display: none;">--}}
 
-                    <li><a class="{{ Request::is('petty_cash') ? 'active' : '' }}"
-                           href="{{ route('petty_cash.index') }}" style="text-decoration: none">All Petty Cash</a>
-                    </li>
-                    <li><a class="{{ Request::is('petty_cash/create') ? 'active' : '' }}"
-                           href="{{ route('petty_cash.create') }}" style="text-decoration: none">Create</a>
-                    </li>
-                </ul>
-            </li>
-            <li class="submenu">
-                <a href="#"><span> Expense Claim</span>
-                    <span
-                            class="menu-arrow"></span></a>
-                <ul style="display: none;">
+                    {{--<li><a class="{{ Request::is('petty_cash') ? 'active' : '' }}"--}}
+                           {{--href="{{ route('petty_cash.index') }}" style="text-decoration: none">All Petty Cash</a>--}}
+                    {{--</li>--}}
+                    {{--<li><a class="{{ Request::is('petty_cash/create') ? 'active' : '' }}"--}}
+                           {{--href="{{ route('petty_cash.create') }}" style="text-decoration: none">Create</a>--}}
+                    {{--</li>--}}
+                {{--</ul>--}}
+            {{--</li>--}}
+            {{--<li class="submenu">--}}
+                {{--<a href="#"><span> Expense Claim</span>--}}
+                    {{--<span--}}
+                            {{--class="menu-arrow"></span></a>--}}
+                {{--<ul style="display: none;">--}}
 
-                    <li><a class="{{ Request::is('expenseclaims') ? 'active' : '' }}"
-                           href="{{ route('expenseclaims.index') }}" style="text-decoration: none">All Expense Claim</a>
-                    </li>
+                    {{--<li><a class="{{ Request::is('expenseclaims') ? 'active' : '' }}"--}}
+                           {{--href="{{ route('expenseclaims.index') }}" style="text-decoration: none">All Expense Claim</a>--}}
+                    {{--</li>--}}
 
-                    <li><a class="{{ Request::is('expenseclaims/create') ? 'active' : '' }}"
-                           href="{{ route('expenseclaims.create') }}" style="text-decoration: none">Submit Expense
-                            Claim</a></li>
+                    {{--<li><a class="{{ Request::is('expenseclaims/create') ? 'active' : '' }}"--}}
+                           {{--href="{{ route('expenseclaims.create') }}" style="text-decoration: none">Submit Expense--}}
+                            {{--Claim</a></li>--}}
 
-                </ul>
-            </li>
-            <li class="submenu">
-                <a href="#"><span>Requestation</span> <span
-                            class="menu-arrow"></span></a>
-                <ul style="display: none;">
-                    <li><a class="{{ Request::is('approvals') ? 'active' : '' }}"
-                           href="{{ route('approvals.index') }}" style="text-decoration: none">Requestation </a></li>
-                    <li><a class="{{ Request::is('requestation/cc') ? 'active' : '' }}"
-                           href="{{ route('requestation.cc') }}" style="text-decoration: none">Requestation Cc</a></li>
-                    <li><a class="{{ Request::is('approvals/request/me') ? 'active' : '' }}"
-                           href="{{ route('request.me') }}" style="text-decoration: none">Approval</a></li>
-                </ul>
-            </li>
-            <li class="submenu">
-                <a href="#"><span> Room</span> <span
-                            class="menu-arrow"></span></a>
-                <ul style="display: none;">
+                {{--</ul>--}}
+            {{--</li>--}}
+            {{--<li class="submenu">--}}
+                {{--<a href="#"><span>Requestation</span> <span--}}
+                            {{--class="menu-arrow"></span></a>--}}
+                {{--<ul style="display: none;">--}}
+                    {{--<li><a class="{{ Request::is('approvals') ? 'active' : '' }}"--}}
+                           {{--href="{{ route('approvals.index') }}" style="text-decoration: none">Requestation </a></li>--}}
+                    {{--<li><a class="{{ Request::is('requestation/cc') ? 'active' : '' }}"--}}
+                           {{--href="{{ route('requestation.cc') }}" style="text-decoration: none">Requestation Cc</a></li>--}}
+                    {{--<li><a class="{{ Request::is('approvals/request/me') ? 'active' : '' }}"--}}
+                           {{--href="{{ route('request.me') }}" style="text-decoration: none">Approval</a></li>--}}
+                {{--</ul>--}}
+            {{--</li>--}}
+            {{--<li class="submenu">--}}
+                {{--<a href="#"><span> Room</span> <span--}}
+                            {{--class="menu-arrow"></span></a>--}}
+                {{--<ul style="display: none;">--}}
 
-                    <li><a class="{{ Request::is('rooms') ? 'active' : '' }}" href="{{route('rooms.index')}}"
-                           style="text-decoration: none">Rooms</a></li>
-                    <li><a class="{{ Request::is('booking') ? 'active' : '' }}" href="{{route('booking')}}"
-                           style="text-decoration: none">Room Booking</a></li>
+                    {{--<li><a class="{{ Request::is('rooms') ? 'active' : '' }}" href="{{route('rooms.index')}}"--}}
+                           {{--style="text-decoration: none">Rooms</a></li>--}}
+                    {{--<li><a class="{{ Request::is('booking') ? 'active' : '' }}" href="{{route('booking')}}"--}}
+                           {{--style="text-decoration: none">Room Booking</a></li>--}}
                     {{--                            <li><a class="{{ Request::is('cases') ? 'active' : '' }}" href="{{ route('cases.index') }}">All Cases</a></li>--}}
                     {{--                            <li><a class="{{ Request::is('priority') ? 'active' : '' }}" href="{{ route('priorities.index') }}">All Priority</a></li>--}}
 
-                </ul>
-            </li>
-            <li class="submenu">
-                <a href="#"><span> Meeting</span> <span
-                            class="menu-arrow"></span></a>
-                <ul style="display: none;">
+                {{--</ul>--}}
+            {{--</li>--}}
+            {{--<li class="submenu">--}}
+                {{--<a href="#"><span> Meeting</span> <span--}}
+                            {{--class="menu-arrow"></span></a>--}}
+                {{--<ul style="display: none;">--}}
 
-                    <li><a class="{{ Request::is('meetings') ? 'active' : '' }}"
-                           href="{{ route('meetings.index') }}" style="text-decoration: none">Meeting</a></li>
-                    <li><a class="{{ Request::is('meetings/create') ? 'active' : '' }}"
-                           href="{{ route('meetings.create') }}" style="text-decoration: none">Meeting Create</a></li>
+                    {{--<li><a class="{{ Request::is('meetings') ? 'active' : '' }}"--}}
+                           {{--href="{{ route('meetings.index') }}" style="text-decoration: none">Meeting</a></li>--}}
+                    {{--<li><a class="{{ Request::is('meetings/create') ? 'active' : '' }}"--}}
+                           {{--href="{{ route('meetings.create') }}" style="text-decoration: none">Meeting Create</a></li>--}}
 
-                </ul>
-            </li>
-            <li class="submenu">
-                <a href="#"><span> Assignment</span>
-                    <span
-                            class="menu-arrow"></span></a>
-                <ul style="display: none;">
+                {{--</ul>--}}
+            {{--</li>--}}
+            {{--<li class="submenu">--}}
+                {{--<a href="#"><span> Assignment</span>--}}
+                    {{--<span--}}
+                            {{--class="menu-arrow"></span></a>--}}
+                {{--<ul style="display: none;">--}}
 
-                    <li><a class="{{ Request::is('assignments') ? 'active' : '' }}"
-                           href="{{ route('assignments.index') }}" style="text-decoration: none">Task</a>
-                    </li>
+                    {{--<li><a class="{{ Request::is('assignments') ? 'active' : '' }}"--}}
+                           {{--href="{{ route('assignments.index') }}" style="text-decoration: none">Task</a>--}}
+                    {{--</li>--}}
 
-                    <li><a class="{{ Request::is('schedule') ? 'active' : '' }}"
-                           href="{{ route('schedule.index') }}" style="text-decoration: none">Schedules
-                        </a></li>
+                    {{--<li><a class="{{ Request::is('schedule') ? 'active' : '' }}"--}}
+                           {{--href="{{ route('schedule.index') }}" style="text-decoration: none">Schedules--}}
+                        {{--</a></li>--}}
 
-                </ul>
-            </li>
-        </ul>
+                {{--</ul>--}}
+            {{--</li>--}}
+        {{--</ul>--}}
 
 
-    </li><!-- Operation -->
+    {{--</li><!-- Operation -->--}}
     <li class="submenu">
         <a href="#"><i class="la la-group"></i> <span>People</span> <span
                     class="menu-arrow"></span></a>
@@ -215,62 +215,62 @@
         </ul>
 
     </li><!--People-->
-    <li class="submenu">
-        <a href="#"><i class="la la-ticket"></i> <span>Complain System</span> <span
-                    class="menu-arrow"></span></a>
-        <ul style="display: none;">
-            @if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Employee')
-                <li><a class="{{ Request::is('tickets') ? 'active' : '' }}"
-                       href="{{ route('tickets.index') }}"> style="text-decoration: none" My Created Ticket</a></li>
-                <li><a class="{{ Request::is('followed') ? 'active' : '' }}"
-                       href="{{ route('followed.tickets') }}" style="text-decoration: none">My Follow Ticket</a></li>
-            @else
-                <li><a class="{{ Request::is('tickets') ? 'active' : '' }}"
-                       href="{{ route('tickets.index') }}" style="text-decoration: none">Tickets</a></li>
-                <li><a class="{{ Request::is('request_tickets') ? 'active' : '' }}"
-                       href="{{ route('request_tickets.index') }}" style="text-decoration: none">Complaints</a></li>
-                <li><a class="{{ Request::is('followed/ticket') ? 'active' : '' }}"
-                       href="{{ route('followed.tickets') }}" style="text-decoration: none">My Follow Ticket</a></li>
-                <li><a class="{{ Request::is('cases') ? 'active' : '' }}"
-                       href="{{ route('cases.index') }}" style="text-decoration: none">All Cases</a></li>
-                <li><a class="{{ Request::is('priorities') ? 'active' : '' }}"
-                       href="{{ route('priorities.index') }}" style="text-decoration: none">All Priority</a></li>
-                <li><a class="{{ Request::is('piechart/report') ? 'active' : '' }}"
-                       href="{{ url('piechart/report') }}" style="text-decoration: none">Pie Chart Report</a></li>
-                <li><a class="{{ Request::is('senders') ? 'active' : '' }}"
-                       href="{{route('senders.index')}}" style="text-decoration: none">Sender Information</a></li>
-            @endif
+    {{--<li class="submenu">--}}
+        {{--<a href="#"><i class="la la-ticket"></i> <span>Complain System</span> <span--}}
+                    {{--class="menu-arrow"></span></a>--}}
+        {{--<ul style="display: none;">--}}
+            {{--@if(\Illuminate\Support\Facades\Auth::guard('employee')->user()->role->name=='Employee')--}}
+                {{--<li><a class="{{ Request::is('tickets') ? 'active' : '' }}"--}}
+                       {{--href="{{ route('tickets.index') }}"> style="text-decoration: none" My Created Ticket</a></li>--}}
+                {{--<li><a class="{{ Request::is('followed') ? 'active' : '' }}"--}}
+                       {{--href="{{ route('followed.tickets') }}" style="text-decoration: none">My Follow Ticket</a></li>--}}
+            {{--@else--}}
+                {{--<li><a class="{{ Request::is('tickets') ? 'active' : '' }}"--}}
+                       {{--href="{{ route('tickets.index') }}" style="text-decoration: none">Tickets</a></li>--}}
+                {{--<li><a class="{{ Request::is('request_tickets') ? 'active' : '' }}"--}}
+                       {{--href="{{ route('request_tickets.index') }}" style="text-decoration: none">Complaints</a></li>--}}
+                {{--<li><a class="{{ Request::is('followed/ticket') ? 'active' : '' }}"--}}
+                       {{--href="{{ route('followed.tickets') }}" style="text-decoration: none">My Follow Ticket</a></li>--}}
+                {{--<li><a class="{{ Request::is('cases') ? 'active' : '' }}"--}}
+                       {{--href="{{ route('cases.index') }}" style="text-decoration: none">All Cases</a></li>--}}
+                {{--<li><a class="{{ Request::is('priorities') ? 'active' : '' }}"--}}
+                       {{--href="{{ route('priorities.index') }}" style="text-decoration: none">All Priority</a></li>--}}
+                {{--<li><a class="{{ Request::is('piechart/report') ? 'active' : '' }}"--}}
+                       {{--href="{{ url('piechart/report') }}" style="text-decoration: none">Pie Chart Report</a></li>--}}
+                {{--<li><a class="{{ Request::is('senders') ? 'active' : '' }}"--}}
+                       {{--href="{{route('senders.index')}}" style="text-decoration: none">Sender Information</a></li>--}}
+            {{--@endif--}}
 
             {{--                            @if(\Auth::guard('employee')->user()->role->name === 'Manager' ||  \Auth::guard('employee')->user()->role->name === 'CEO')--}}
             {{--                                <li><a class="{{ Request::is('tickets/create') ? 'active' : '' }}" href="{{ route('tickets.create') }}">Create Ticket</a></li>--}}
             {{--                            @endif--}}
-        </ul>
-    </li><!--Complaint-->
-    <li class="submenu">
-        <a href="#"><i class="la la-cube"></i> <span>Accounting</span> <span
-                    class="menu-arrow"></span></a>
-        <ul style="display: none;">
-            <li><a class="{{ Request::is('main/customer') ? 'active' : '' }}"
-                   href="{{ route('customer') }}" style="text-decoration: none">Customers</a>
-            </li>
-            <li><a class="{{ Request::is('invoices') ? 'active' : '' }}"
-                   href="{{ route('invoices.index') }}" style="text-decoration: none">All Invoice</a></li>
-            <li><a class="{{ Request::is('inv/view/due') ? 'active' : '' }}"
-                   href="{{ url('inv/view/'.'due') }}" style="text-decoration: none">Due Invoice</a></li>
-            <li><a class="{{ Request::is('inv/view/whole') ? 'active' : '' }}"
-                   href="{{ url('inv/view/whole') }}" style="text-decoration: none">Whole Sales</a></li>
-            <li><a class="{{ Request::is('inv/view/retail') ? 'active' : '' }}"
-                   href="{{ url('inv/view/retail') }}" style="text-decoration: none">Retail Sales</a></li>
-            <li><a class="{{ Request::is('sale_return') ? 'active' : '' }}"
-                   href="{{ route('sale_return.index') }}" style="text-decoration: none">Sales Return</a></li>
-            <li><a class="{{ Request::is('coatype') ? 'active' : '' }}" href="{{route('coatype.index')}}"
-                   style="text-decoration: none"><span>Account Type</span>
-                </a></li>
+        {{--</ul>--}}
+    {{--</li><!--Complaint-->--}}
+    {{--<li class="submenu">--}}
+        {{--<a href="#"><i class="la la-cube"></i> <span>Accounting</span> <span--}}
+                    {{--class="menu-arrow"></span></a>--}}
+        {{--<ul style="display: none;">--}}
+            {{--<li><a class="{{ Request::is('main/customer') ? 'active' : '' }}"--}}
+                   {{--href="{{ route('customer') }}" style="text-decoration: none">Customers</a>--}}
+            {{--</li>--}}
+            {{--<li><a class="{{ Request::is('invoices') ? 'active' : '' }}"--}}
+                   {{--href="{{ route('invoices.index') }}" style="text-decoration: none">All Invoice</a></li>--}}
+            {{--<li><a class="{{ Request::is('inv/view/due') ? 'active' : '' }}"--}}
+                   {{--href="{{ url('inv/view/'.'due') }}" style="text-decoration: none">Due Invoice</a></li>--}}
+            {{--<li><a class="{{ Request::is('inv/view/whole') ? 'active' : '' }}"--}}
+                   {{--href="{{ url('inv/view/whole') }}" style="text-decoration: none">Whole Sales</a></li>--}}
+            {{--<li><a class="{{ Request::is('inv/view/retail') ? 'active' : '' }}"--}}
+                   {{--href="{{ url('inv/view/retail') }}" style="text-decoration: none">Retail Sales</a></li>--}}
+            {{--<li><a class="{{ Request::is('sale_return') ? 'active' : '' }}"--}}
+                   {{--href="{{ route('sale_return.index') }}" style="text-decoration: none">Sales Return</a></li>--}}
+            {{--<li><a class="{{ Request::is('coatype') ? 'active' : '' }}" href="{{route('coatype.index')}}"--}}
+                   {{--style="text-decoration: none"><span>Account Type</span>--}}
+                {{--</a></li>--}}
             {{--<li><a class="{{ Request::is('chartofaccount') ? 'active' : '' }}" href="{{route('chartofaccount.index')}}"--}}
                    {{--style="text-decoration: none"><span>Chart Of Account</span>--}}
                 {{--</a></li>--}}
-            <li><a class="{{ Request::is('accounts') ? 'active' : '' }}" href="{{route('accounts.index')}}"
-                   style="text-decoration: none"><span> Account</span> </a></li>
+            {{--<li><a class="{{ Request::is('accounts') ? 'active' : '' }}" href="{{route('accounts.index')}}"--}}
+                   {{--style="text-decoration: none"><span> Account</span> </a></li>--}}
             {{--<li><a class="{{ Request::is('revenuebudget') ? 'active' : '' }}" href="{{route('revenuebudget.index')}}"--}}
                    {{--style="text-decoration: none"><span> Revenue Budget</span>--}}
                 {{--</a></li>--}}
@@ -278,117 +278,117 @@
                    {{--style="text-decoration: none"><span> Expense Budget</span>--}}
                 {{--</a></li>--}}
             {{--<li>--}}
-                <a class="{{ Request::is('transaction/category') ? 'active' : '' }}"
-                   href="{{route('transaction.category')}}" style="text-decoration: none"><span> Category</span>
-                </a>
-            </li>
-            <li class="submenu">
-                <a href="#"><span>Bills</span> <span
-                            class="menu-arrow"></span></a>
-                <ul style="display: none;">
-                    <li><a class="{{ Request::is('bills') ? 'active' : '' }}" href="{{route('bills.index')}}"
-                           style="text-decoration: none">All Bill</a></li>
-                    <li><a class="{{ Request::is('bills') ? 'active' : '' }}" href="{{route('bills.create')}}"
-                           style="text-decoration: none">Create</a></li>
-                    <li><a class="{{ Request::is('payments') ? 'active' : '' }}" href="{{route('payment')}}"
-                           style="text-decoration: none">Payment</a></li>
-                </ul>
-            </li><!--Bill -->
-        </ul>
+                {{--<a class="{{ Request::is('transaction/category') ? 'active' : '' }}"--}}
+                   {{--href="{{route('transaction.category')}}" style="text-decoration: none"><span> Category</span>--}}
+                {{--</a>--}}
+            {{--</li>--}}
+            {{--<li class="submenu">--}}
+                {{--<a href="#"><span>Bills</span> <span--}}
+                            {{--class="menu-arrow"></span></a>--}}
+                {{--<ul style="display: none;">--}}
+                    {{--<li><a class="{{ Request::is('bills') ? 'active' : '' }}" href="{{route('bills.index')}}"--}}
+                           {{--style="text-decoration: none">All Bill</a></li>--}}
+                    {{--<li><a class="{{ Request::is('bills') ? 'active' : '' }}" href="{{route('bills.create')}}"--}}
+                           {{--style="text-decoration: none">Create</a></li>--}}
+                    {{--<li><a class="{{ Request::is('payments') ? 'active' : '' }}" href="{{route('payment')}}"--}}
+                           {{--style="text-decoration: none">Payment</a></li>--}}
+                {{--</ul>--}}
+            {{--</li><!--Bill -->--}}
+        {{--</ul>--}}
 
-    </li><!--Accounting -->
-    <li class="submenu">
-        <a href="#"><i class="la la-cube"></i> <span>Banking</span> <span
-                    class="menu-arrow"></span></a>
-        <ul style="display: none;">
-            <li><a class="{{ Request::is('advancepayments') ? 'active' : '' }}"
-                   href="{{ route('advancepayments.index') }}" style="text-decoration: none">Advance
-                    Payment</a></li>
-            <li>
-                <a class="{{ Request::is('transaction/category') ? 'active' : '' }}"
-                   href="{{route('transaction.category')}}" style="text-decoration: none"><span> Category</span>
-                </a>
-                <a class="{{ Request::is('accounts') ? 'active' : '' }}" href="{{route('accounts.index')}}"
-                   style="text-decoration: none"><span> Account</span> </a>
+    {{--</li><!--Accounting -->--}}
+    {{--<li class="submenu">--}}
+        {{--<a href="#"><i class="la la-cube"></i> <span>Banking</span> <span--}}
+                    {{--class="menu-arrow"></span></a>--}}
+        {{--<ul style="display: none;">--}}
+            {{--<li><a class="{{ Request::is('advancepayments') ? 'active' : '' }}"--}}
+                   {{--href="{{ route('advancepayments.index') }}" style="text-decoration: none">Advance--}}
+                    {{--Payment</a></li>--}}
+            {{--<li>--}}
+                {{--<a class="{{ Request::is('transaction/category') ? 'active' : '' }}"--}}
+                   {{--href="{{route('transaction.category')}}" style="text-decoration: none"><span> Category</span>--}}
+                {{--</a>--}}
+                {{--<a class="{{ Request::is('accounts') ? 'active' : '' }}" href="{{route('accounts.index')}}"--}}
+                   {{--style="text-decoration: none"><span> Account</span> </a>--}}
                 {{--<a class="{{ Request::is('transactions') ? 'active' : '' }}" href="{{route('transactions.index')}}"--}}
                    {{--style="text-decoration: none"><span> Transaction</span>--}}
                 {{--</a>--}}
-                <a class="{{ Request::is('revenue') ? 'active' : '' }}" href="{{route('revenue')}}"
-                   style="text-decoration: none"><span> Revenue</span> </a>
-                <a class="{{ Request::is('expense') ? 'active' : '' }}" href="{{route('expense')}}"
-                   style="text-decoration: none"><span> Expense</span> </a>
-            </li>
-        </ul>
+                {{--<a class="{{ Request::is('revenue') ? 'active' : '' }}" href="{{route('revenue')}}"--}}
+                   {{--style="text-decoration: none"><span> Revenue</span> </a>--}}
+                {{--<a class="{{ Request::is('expense') ? 'active' : '' }}" href="{{route('expense')}}"--}}
+                   {{--style="text-decoration: none"><span> Expense</span> </a>--}}
+            {{--</li>--}}
+        {{--</ul>--}}
 
-    </li><!--Banking-->
+    {{--</li><!--Banking-->--}}
     <li class="submenu">
         <a href="#"><i class="la la-puzzle-piece"></i> <span> Stock Managements</span> <span
                     class="menu-arrow"></span></a>
 
         <ul style="display: none;">
-            <li><a class="{{ Request::is('barcode/create') ? 'active' : '' }}"
-                   href="{{ route('barcode.create') }}" style="text-decoration: none">Barcode Generate</a></li>
-            <li class="submenu">
-                <a href="#"><span>Supplier</span> <span
-                            class="menu-arrow"></span></a>
-                <ul style="display: none;">
-                    <li><a class="{{ Request::is('suppliers') ? 'active' : '' }}" href="{{route('suppliers')}}"
-                           style="text-decoration: none">All Suppliers</a></li>
-                    <li><a class="{{ Request::is('customers/create') ? 'active' : '' }}"
-                           href="{{route('customers.create')}}" style="text-decoration: none">
-                            Supplier Create</a></li>
+            {{--<li><a class="{{ Request::is('barcode/create') ? 'active' : '' }}"--}}
+                   {{--href="{{ route('barcode.create') }}" style="text-decoration: none">Barcode Generate</a></li>--}}
+            {{--<li class="submenu">--}}
+                {{--<a href="#"><span>Supplier</span> <span--}}
+                            {{--class="menu-arrow"></span></a>--}}
+                {{--<ul style="display: none;">--}}
+                    {{--<li><a class="{{ Request::is('suppliers') ? 'active' : '' }}" href="{{route('suppliers')}}"--}}
+                           {{--style="text-decoration: none">All Suppliers</a></li>--}}
+                    {{--<li><a class="{{ Request::is('customers/create') ? 'active' : '' }}"--}}
+                           {{--href="{{route('customers.create')}}" style="text-decoration: none">--}}
+                            {{--Supplier Create</a></li>--}}
 
-                </ul>
-            </li>
+                {{--</ul>--}}
+            {{--</li>--}}
 
-            <li><a class="{{ Request::is('inventory') ? 'active' : '' }}"
-                   href="{{ route('inventory.index') }}" style="text-decoration: none">Inventory</a>
-            </li>
-            <li><a class="{{ Request::is('warehouses') ? 'active' : '' }}"
-                   href="{{ route('warehouses.index') }}" style="text-decoration: none">Warehouse</a>
-            </li>
-            <li class="submenu">
-                <a href="#"><span>Bin Look Up</span> <span
-                            class="menu-arrow"></span></a>
-                <ul style="display: none;">
-                    <li><a class="{{ Request::is('binlookup') ? 'active' : '' }}" href="{{route('binlookup.index')}}"
-                           style="text-decoration: none">All Bin Look Up</a></li>
-                    <li><a class="{{ Request::is('binlookup/create') ? 'active' : '' }}"
-                           href="{{route('binlookup.create')}}" style="text-decoration: none">
-                            Bin Look Up Create</a></li>
+            {{--<li><a class="{{ Request::is('inventory') ? 'active' : '' }}"--}}
+                   {{--href="{{ route('inventory.index') }}" style="text-decoration: none">Inventory</a>--}}
+            {{--</li>--}}
+            {{--<li><a class="{{ Request::is('warehouses') ? 'active' : '' }}"--}}
+                   {{--href="{{ route('warehouses.index') }}" style="text-decoration: none">Warehouse</a>--}}
+            {{--</li>--}}
+            {{--<li class="submenu">--}}
+                {{--<a href="#"><span>Bin Look Up</span> <span--}}
+                            {{--class="menu-arrow"></span></a>--}}
+                {{--<ul style="display: none;">--}}
+                    {{--<li><a class="{{ Request::is('binlookup') ? 'active' : '' }}" href="{{route('binlookup.index')}}"--}}
+                           {{--style="text-decoration: none">All Bin Look Up</a></li>--}}
+                    {{--<li><a class="{{ Request::is('binlookup/create') ? 'active' : '' }}"--}}
+                           {{--href="{{route('binlookup.create')}}" style="text-decoration: none">--}}
+                            {{--Bin Look Up Create</a></li>--}}
 
-                </ul>
-            </li>
-            <li class="submenu">
-                <a href="#"><span>Stock Return</span> <span
-                            class="menu-arrow"></span></a>
-                <ul style="display: none;">
-                    <li><a class="{{ Request::is('stockreturn') ? 'active' : '' }}" href="{{route('stockreturn.index')}}"
-                           style="text-decoration: none">Stock Return</a></li>
-                    <li><a class="{{ Request::is('stockreturn/create') ? 'active' : '' }}"
-                           href="{{route('stockreturn.create')}}" style="text-decoration: none">
-                            Stock Return Create</a></li>
-                    <li><a class="{{ Request::is('mobile/warehouse/return') ? 'active' : '' }}"
-                           href="{{ route('stockreturn.mobile') }}" style="text-decoration: none">Mobile Stock Return</a></li>
+                {{--</ul>--}}
+            {{--</li>--}}
+            {{--<li class="submenu">--}}
+                {{--<a href="#"><span>Stock Return</span> <span--}}
+                            {{--class="menu-arrow"></span></a>--}}
+                {{--<ul style="display: none;">--}}
+                    {{--<li><a class="{{ Request::is('stockreturn') ? 'active' : '' }}" href="{{route('stockreturn.index')}}"--}}
+                           {{--style="text-decoration: none">Stock Return</a></li>--}}
+                    {{--<li><a class="{{ Request::is('stockreturn/create') ? 'active' : '' }}"--}}
+                           {{--href="{{route('stockreturn.create')}}" style="text-decoration: none">--}}
+                            {{--Stock Return Create</a></li>--}}
+                    {{--<li><a class="{{ Request::is('mobile/warehouse/return') ? 'active' : '' }}"--}}
+                           {{--href="{{ route('stockreturn.mobile') }}" style="text-decoration: none">Mobile Stock Return</a></li>--}}
 
-                </ul>
-            </li>
+                {{--</ul>--}}
+            {{--</li>--}}
             <li><a class="{{ Request::is('stocks') ? 'active' : '' }}"
                    href="{{ route('stocks') }}" style="text-decoration: none">Stocks</a>
             </li>
-            <li><a class="{{ Request::is('ecommerce/stock/index') ? 'active' : '' }}"
-                   href="{{ route('ecommerce_stock') }}" style="text-decoration: none">E-commerce
-                    Stocks</a></li>
-            <li><a class="{{ Request::is('stockin') ? 'active' : '' }}" href="{{route('showstockin')}}"
-                   style="text-decoration: none">Stock In</a></li>
-            <li><a class="{{ Request::is('stockout/index') ? 'active' : '' }}"
-                   href="{{ route('stock.out.index') }}" style="text-decoration: none">Stocks
-                    Out</a></li>
-            <li><a class="{{ Request::is('transfer/index') ? 'active' : '' }}"
-                   href="{{ route('transfer.index') }}" style="text-decoration: none">Stock Transfer</a></li>
-            <li><a class="{{ Request::is('stocks/index') ? 'active' : '' }}" href="{{route('stocks.index')}}"
-                   style="text-decoration: none">Stock
-                    Transaction</a></li>
+            {{--<li><a class="{{ Request::is('ecommerce/stock/index') ? 'active' : '' }}"--}}
+                   {{--href="{{ route('ecommerce_stock') }}" style="text-decoration: none">E-commerce--}}
+                    {{--Stocks</a></li>--}}
+            {{--<li><a class="{{ Request::is('stockin') ? 'active' : '' }}" href="{{route('showstockin')}}"--}}
+                   {{--style="text-decoration: none">Stock In</a></li>--}}
+            {{--<li><a class="{{ Request::is('stockout/index') ? 'active' : '' }}"--}}
+                   {{--href="{{ route('stock.out.index') }}" style="text-decoration: none">Stocks--}}
+                    {{--Out</a></li>--}}
+            {{--<li><a class="{{ Request::is('transfer/index') ? 'active' : '' }}"--}}
+                   {{--href="{{ route('transfer.index') }}" style="text-decoration: none">Stock Transfer</a></li>--}}
+            {{--<li><a class="{{ Request::is('stocks/index') ? 'active' : '' }}" href="{{route('stocks.index')}}"--}}
+                   {{--style="text-decoration: none">Stock--}}
+                    {{--Transaction</a></li>--}}
             <li class="submenu">
                 <a href="#"><span> Product</span> <span
                             class="menu-arrow"></span></a>
@@ -408,16 +408,16 @@
                             Product Create</a></li>
                 </ul>
             </li>
-            <li><a class="{{ Request::is('foc/index') ? 'active' : '' }}" href="{{route('foc.index')}}"
-                   style="text-decoration: none">FOC Product</a></li>
-            <li><a class="{{ Request::is('damage/index') ? 'active' : '' }}"
-                   href="{{ route('damage.index') }}" style="text-decoration: none">Damage Product</a></li>
-            <li><a class="{{ Request::is('qty/alert') ? 'active' : '' }}"
-                   href="{{ route('alert.qty') }}" style="text-decoration: none">Quantity Alert</a></li>
-            <li><a class="{{ Request::is('expired/product') ? 'active' : '' }}"
-                   href="{{ route('expired.products') }}" style="text-decoration: none">Expired Product</a></li>
-            <li><a class="{{ Request::is('expired/alert/product') ? 'active' : '' }}"
-                   href="{{ route('alert.products') }}" style="text-decoration: none">Expired Alert Product</a></li>
+            {{--<li><a class="{{ Request::is('foc/index') ? 'active' : '' }}" href="{{route('foc.index')}}"--}}
+                   {{--style="text-decoration: none">FOC Product</a></li>--}}
+            {{--<li><a class="{{ Request::is('damage/index') ? 'active' : '' }}"--}}
+                   {{--href="{{ route('damage.index') }}" style="text-decoration: none">Damage Product</a></li>--}}
+            {{--<li><a class="{{ Request::is('qty/alert') ? 'active' : '' }}"--}}
+                   {{--href="{{ route('alert.qty') }}" style="text-decoration: none">Quantity Alert</a></li>--}}
+            {{--<li><a class="{{ Request::is('expired/product') ? 'active' : '' }}"--}}
+                   {{--href="{{ route('expired.products') }}" style="text-decoration: none">Expired Product</a></li>--}}
+            {{--<li><a class="{{ Request::is('expired/alert/product') ? 'active' : '' }}"--}}
+                   {{--href="{{ route('alert.products') }}" style="text-decoration: none">Expired Alert Product</a></li>--}}
             <li class="submenu">
                 <a href="#"><span> Selling Unit</span> <span
                             class="menu-arrow"></span></a>
@@ -432,112 +432,112 @@
         </ul>
 
     </li><!--Stock -->
-    <li class="submenu">
-        <a href="#"><i class="la la-shopping-cart"></i> <span>Purchase</span> <span
-                    class="menu-arrow"></span></a>
-        <ul style="display: none;">
-            <li class="submenu">
-                <a href="#"><span> Purchase Request</span> <span
-                            class="menu-arrow"></span></a>
-                <ul style="display: none;">
+    {{--<li class="submenu">--}}
+        {{--<a href="#"><i class="la la-shopping-cart"></i> <span>Purchase</span> <span--}}
+                    {{--class="menu-arrow"></span></a>--}}
+        {{--<ul style="display: none;">--}}
+            {{--<li class="submenu">--}}
+                {{--<a href="#"><span> Purchase Request</span> <span--}}
+                            {{--class="menu-arrow"></span></a>--}}
+                {{--<ul style="display: none;">--}}
 
-                    <li><a class="{{ Request::is('purchase_request') ? 'active' : '' }}"
-                           href="{{ route('purchase_request.index') }}" style="text-decoration: none">Purchase
-                            Request</a></li>
+                    {{--<li><a class="{{ Request::is('purchase_request') ? 'active' : '' }}"--}}
+                           {{--href="{{ route('purchase_request.index') }}" style="text-decoration: none">Purchase--}}
+                            {{--Request</a></li>--}}
 
-                    <li><a class="{{ Request::is('purchase_request/create') ? 'active' : '' }}"
-                           href="{{ route('purchase_request.create') }}" style="text-decoration: none">Create </a></li>
+                    {{--<li><a class="{{ Request::is('purchase_request/create') ? 'active' : '' }}"--}}
+                           {{--href="{{ route('purchase_request.create') }}" style="text-decoration: none">Create </a></li>--}}
 
-                </ul>
-            </li>
+                {{--</ul>--}}
+            {{--</li>--}}
 
-            <li class="submenu">
-                <a href="#"> <span>RFQs</span> <span
-                            class="menu-arrow"></span></a>
-                <ul style="display: none;">
+            {{--<li class="submenu">--}}
+                {{--<a href="#"> <span>RFQs</span> <span--}}
+                            {{--class="menu-arrow"></span></a>--}}
+                {{--<ul style="display: none;">--}}
 
-                    <li><a class="{{ Request::is('rfqs') ? 'active' : '' }}"
-                           href="{{ route('rfqs.index') }}" style="text-decoration: none">All RFQs</a></li>
+                    {{--<li><a class="{{ Request::is('rfqs') ? 'active' : '' }}"--}}
+                           {{--href="{{ route('rfqs.index') }}" style="text-decoration: none">All RFQs</a></li>--}}
 
-                    <li><a class="{{ Request::is('rfqs/create') ? 'active' : '' }}"
-                           href="{{ route('rfqs.create') }}" style="text-decoration: none">Create</a></li>
+                    {{--<li><a class="{{ Request::is('rfqs/create') ? 'active' : '' }}"--}}
+                           {{--href="{{ route('rfqs.create') }}" style="text-decoration: none">Create</a></li>--}}
 
-                </ul>
-            </li>
-            <li class="submenu">
-                <a href="#"><span>Purchase Order</span> <span
-                            class="menu-arrow"></span></a>
-                <ul style="display: none;">
+                {{--</ul>--}}
+            {{--</li>--}}
+            {{--<li class="submenu">--}}
+                {{--<a href="#"><span>Purchase Order</span> <span--}}
+                            {{--class="menu-arrow"></span></a>--}}
+                {{--<ul style="display: none;">--}}
 
-                    <li><a class="{{ Request::is('purchaseorders') ? 'active' : '' }}"
-                           href="{{ route('purchaseorders.index') }}" style="text-decoration: none">All Purchase
-                            Order</a></li>
+                    {{--<li><a class="{{ Request::is('purchaseorders') ? 'active' : '' }}"--}}
+                           {{--href="{{ route('purchaseorders.index') }}" style="text-decoration: none">All Purchase--}}
+                            {{--Order</a></li>--}}
 
-                    <li><a class="{{ Request::is('purchaseorders/create') ? 'active' : '' }}"
-                           href="{{ route('purchaseorders.create') }}" style="text-decoration: none">Create</a></li>
+                    {{--<li><a class="{{ Request::is('purchaseorders/create') ? 'active' : '' }}"--}}
+                           {{--href="{{ route('purchaseorders.create') }}" style="text-decoration: none">Create</a></li>--}}
 
-                </ul>
-            </li>
-        </ul>
+                {{--</ul>--}}
+            {{--</li>--}}
+        {{--</ul>--}}
 
-    </li><!--Purchase-->
-    <li class="submenu">
-        <a href="#"><i class="la la-truck"></i> <span>Shippment</span> <span
-                    class="menu-arrow"></span></a>
-        <ul style="display: none;">
+    {{--</li><!--Purchase-->--}}
+    {{--<li class="submenu">--}}
+        {{--<a href="#"><i class="la la-truck"></i> <span>Shippment</span> <span--}}
+                    {{--class="menu-arrow"></span></a>--}}
+        {{--<ul style="display: none;">--}}
 
-            <li><a class="{{ Request::is('deliveries') ? 'active' : '' }}"
-                   href="{{ route('deliveries.index') }}" style="text-decoration: none">All Shipment</a></li>
+            {{--<li><a class="{{ Request::is('deliveries') ? 'active' : '' }}"--}}
+                   {{--href="{{ route('deliveries.index') }}" style="text-decoration: none">All Shipment</a></li>--}}
 
-            <li><a class="{{ Request::is('deliveries/create') ? 'active' : '' }}"
-                   href="{{ route('deliveries.create') }}" style="text-decoration: none">Shipment Create</a></li>
+            {{--<li><a class="{{ Request::is('deliveries/create') ? 'active' : '' }}"--}}
+                   {{--href="{{ route('deliveries.create') }}" style="text-decoration: none">Shipment Create</a></li>--}}
             {{--<li><a class="{{ Request::is('delivery/transaction') ? 'active' : '' }}"--}}
                    {{--href="{{ route('delivery.transaction') }}" style="text-decoration: none">Delivery Transaction</a>--}}
             {{--</li>--}}
 
-        </ul>
-    </li><!-- Delivery -->
-    <li class="submenu">
-        <a href="#"><i class="la la-automobile" ></i> <span> Cars</span> <span
-                    class="menu-arrow"></span></a>
-        <ul style="display: none;">
+        {{--</ul>--}}
+    {{--</li><!-- Delivery -->--}}
+    {{--<li class="submenu">--}}
+        {{--<a href="#"><i class="la la-automobile" ></i> <span> Cars</span> <span--}}
+                    {{--class="menu-arrow"></span></a>--}}
+        {{--<ul style="display: none;">--}}
 
-            <li>
-                <a class="{{ Request::is('/car-list') ? 'active' : '' }}"
-                   href="{{ route('carList') }}" style="text-decoration: none">
-                    Cars List
-                </a>
-            </li>
+            {{--<li>--}}
+                {{--<a class="{{ Request::is('/car-list') ? 'active' : '' }}"--}}
+                   {{--href="{{ route('carList') }}" style="text-decoration: none">--}}
+                    {{--Cars List--}}
+                {{--</a>--}}
+            {{--</li>--}}
 
-            <li>
-                <a class="{{ Request::is('/maintainance') ? 'active' : '' }}"
-                   href="{{ route('maintain') }}" style="text-decoration: none">
-                    Maintenance
-                </a>
-            </li>
+            {{--<li>--}}
+                {{--<a class="{{ Request::is('/maintainance') ? 'active' : '' }}"--}}
+                   {{--href="{{ route('maintain') }}" style="text-decoration: none">--}}
+                    {{--Maintenance--}}
+                {{--</a>--}}
+            {{--</li>--}}
 
-        </ul>
-    </li><!--Car -->
+        {{--</ul>--}}
+    {{--</li><!--Car -->--}}
     <li class="submenu">
         <a href="#"><i class="la la-dollar"></i> <span>Sales</span> <span
                     class="menu-arrow"></span></a>
         <ul style="display: none;">
-            <li><a class="{{ Request::is('salegroup') ? 'active' : '' }}"
-                   href="{{route('salegroup.index')}}" style="text-decoration: none">Sales Group</a></li>
-            <li><a class="{{ Request::is('saleway') ? 'active' : '' }}"
-                   href="{{route('saleway.index')}}" style="text-decoration: none">Sales Way</a></li>
-            <li><a class="{{ Request::is('shop') ? 'active' : '' }}"
-                   href="{{route('shop.index')}}" style="text-decoration: none">Shop</a></li>
-            <li><a class="{{ Request::is('assignsaleway') ? 'active' : '' }}"
-                   href="{{route('assignsaleway.index')}}" style="text-decoration: none">Assigned Ways</a></li>
-            <li><a class="{{ Request::is('salezone') ? 'active' : '' }}"
-                   href="{{route('salezone.index')}}" style="text-decoration: none">Sales Zone</a></li>
-            <li><a class="{{ Request::is('region') ? 'active' : '' }}"
-                   href="{{route('region.index')}}" style="text-decoration: none">Sales Region</a></li>
-            <li><a class="{{ Request::is('inv/view/whole') ? 'active' : '' }}"
-                   href="{{ url('inv/view/whole') }}" style="text-decoration: none">Whole Sales</a></li>
-            <li><a class="{{ Request::is('inv/view/retail') ? 'active' : '' }}"
-                   href="{{ url('inv/view/retail') }}" style="text-decoration: none">Retail Sales</a></li>
+            {{--<li><a class="{{ Request::is('salegroup') ? 'active' : '' }}"--}}
+                   {{--href="{{route('salegroup.index')}}" style="text-decoration: none">Sales Group</a></li>--}}
+            {{--<li><a class="{{ Request::is('saleway') ? 'active' : '' }}"--}}
+                   {{--href="{{route('saleway.index')}}" style="text-decoration: none">Sales Way</a></li>--}}
+            {{--<li><a class="{{ Request::is('shop') ? 'active' : '' }}"--}}
+                   {{--href="{{route('shop.index')}}" style="text-decoration: none">Shop</a></li>--}}
+            {{--<li><a class="{{ Request::is('assignsaleway') ? 'active' : '' }}"--}}
+                   {{--href="{{route('assignsaleway.index')}}" style="text-decoration: none">Assigned Ways</a></li>--}}
+            {{--<li><a class="{{ Request::is('salezone') ? 'active' : '' }}"--}}
+                   {{--href="{{route('salezone.index')}}" style="text-decoration: none">Sales Zone</a></li>--}}
+            {{--<li><a class="{{ Request::is('region') ? 'active' : '' }}"--}}
+                   {{--href="{{route('region.index')}}" style="text-decoration: none">Sales Region</a></li>--}}
+            {{--<li><a class="{{ Request::is('inv/view/whole') ? 'active' : '' }}"--}}
+                   {{--href="{{ url('inv/view/whole') }}" style="text-decoration: none">Whole Sales</a></li>--}}
+            {{--<li><a class="{{ Request::is('inv/view/retail') ? 'active' : '' }}"--}}
+                   {{--href="{{ url('inv/view/retail') }}" style="text-decoration: none">Retail Sales</a></li>--}}
             <li class="submenu">
                 <a href="#"><span> Selling Price</span> <span
                             class="menu-arrow"></span></a>
@@ -551,22 +551,22 @@
             </li>
             {{--<li><a class="{{ Request::is('selling/report') ? 'active' : '' }}"--}}
                    {{--href="{{ route('sale.report') }}" style="text-decoration: none">Sales Report</a></li>--}}
-            <li><a class="{{ Request::is('sale/activity') ? 'active' : '' }}"
-                   href="{{ route('activity.index') }}" style="text-decoration: none">Sales Activity</a></li>
-            <li><a class="{{ Request::is('sales/target/assigned') ? 'active' : '' }}"
-                   href="{{ route('saletargets.assigned') }}" style="text-decoration: none">Sales Target</a></li>
-            <li><a class="{{ Request::is('contact/qualified') ? 'active' : '' }}"
-                   href="{{ route('qualified_contact') }}" style="text-decoration: none">Qualified Customer</a></li>
-            <li class="submenu">
-                <a href="#"><span> Order</span> <span
-                            class="menu-arrow"></span></a>
-                <ul style="display: none;">
-                    <li><a class="{{ Request::is('saleorders') ? 'active' : '' }}"
-                           href="{{ route('saleorders.index') }}" style="text-decoration: none">All Orders</a></li>
-                    <li><a class="{{ Request::is('saleorders/create') ? 'active' : '' }}"
-                           href="{{ route('saleorders.create') }}" style="text-decoration: none">Orders Create</a></li>
-                </ul>
-            </li>
+            {{--<li><a class="{{ Request::is('sale/activity') ? 'active' : '' }}"--}}
+                   {{--href="{{ route('activity.index') }}" style="text-decoration: none">Sales Activity</a></li>--}}
+            {{--<li><a class="{{ Request::is('sales/target/assigned') ? 'active' : '' }}"--}}
+                   {{--href="{{ route('saletargets.assigned') }}" style="text-decoration: none">Sales Target</a></li>--}}
+            {{--<li><a class="{{ Request::is('contact/qualified') ? 'active' : '' }}"--}}
+                   {{--href="{{ route('qualified_contact') }}" style="text-decoration: none">Qualified Customer</a></li>--}}
+            {{--<li class="submenu">--}}
+                {{--<a href="#"><span> Order</span> <span--}}
+                            {{--class="menu-arrow"></span></a>--}}
+                {{--<ul style="display: none;">--}}
+                    {{--<li><a class="{{ Request::is('saleorders') ? 'active' : '' }}"--}}
+                           {{--href="{{ route('saleorders.index') }}" style="text-decoration: none">All Orders</a></li>--}}
+                    {{--<li><a class="{{ Request::is('saleorders/create') ? 'active' : '' }}"--}}
+                           {{--href="{{ route('saleorders.create') }}" style="text-decoration: none">Orders Create</a></li>--}}
+                {{--</ul>--}}
+            {{--</li>--}}
             <li class="submenu">
                 <a href="#"><span>Promotion and Discount</span>
                     <span class="menu-arrow"></span></a>
