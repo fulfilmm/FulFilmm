@@ -299,8 +299,7 @@
                                                            <tr class="fw-normal">
                                                                <th>
                                                                    <img src="{{$activity->employee->profile_img!=null? url(asset('img/profiles/'.$activity->employee->profile_img)):url(asset('img/profiles/avatar-01.jpg'))}}"
-                                                                        class="shadow-1-strong rounded-circle" alt="avatar 1"
-                                                                        style="width: 55px; height: auto;">
+                                                                        class="shadow-1-strong rounded-circle avatar chat-avatar-sm" alt="avatar 1">
                                                                    <span class="ms-2">{{$activity->employee->name}}</span>
                                                                </th>
                                                                <td>
