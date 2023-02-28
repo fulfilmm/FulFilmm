@@ -75,30 +75,30 @@ class CustomerController extends Controller
         {
             if($request->name==null){
                 if($max==null){
-                    $customers = Customer::paginate(10);
+                    $customers = Customer::paginate(12);
                 }else{
                     $customers = Customer::where('use_amount','>=',$min)
                         ->where('use_amount','<=',$max)
-                        ->paginate(10);
+                        ->paginate(12);
                 }
             }else{
-                $customers = Customer::where('name','LIKE',"%".$request->name.'%')->paginate(10);
+                $customers = Customer::where('name','LIKE',"%".$request->name.'%')->paginate(12);
             }
 
         }else{
             if($request->name==null){
                 if($max==null){
-                    $customers = Customer::where('region_id',$auth->region_id)->paginate(10);
+                    $customers = Customer::where('region_id',$auth->region_id)->paginate(12);
                 }else{
                     $customers = Customer::where('use_amount','>=',$min)
                         ->where('use_amount','<=',$max)
                         ->where('region_id',$auth->region_id)
-                        ->paginate(10);
+                        ->paginate(12);
                 }
             }else{
                 $customers = Customer::where('name','LIKE',"%".$request->name.'%')
                     ->where('region_id',$auth->region_id)
-                    ->paginate(10);
+                    ->paginate(12);
             }
         }
 
