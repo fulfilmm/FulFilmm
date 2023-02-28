@@ -1,4 +1,10 @@
 @extends('customer.index')
+<style>
+    svg {
+        height: 20px;
+    }
+
+</style>
 @section('data')
     <form action="{{url('customers-card')}}" method="GET">
         @csrf
